@@ -2,11 +2,23 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Setup project to your local
+
+git clone http://gitserver/digit-market/dm-admin-portal.git
+
+Run below script to download all the dependencies & setup ready to run the project.
+### `npm install`
+
+**Note: This project is modified to run on different environments such as `development`, `production` etc. The below scrips must use any of the configured environment to start the application**
+## Available Environments
+### `dev`
+### `prod`
+### `qa`
 ## Available Scripts
 
 In the project directory, you can run:
 
-### `npm start`
+### `npm run start:dev`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
@@ -19,7 +31,7 @@ You may also see any lint errors in the console.
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+### `npm run build:prod`
 
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
@@ -65,6 +77,6 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/a
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
+### `npm run build:prod` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

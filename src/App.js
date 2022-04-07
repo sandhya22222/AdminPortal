@@ -1,25 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Suspense } from "react";
+import { Container } from "reactstrap";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
-function App() {
+import "react-toastify/dist/ReactToastify.min.css";
+
+import "./core-ui/app.css";
+
+import LoadingMarkup from "./components/loader/LoadingMarkup";
+import Header from "./components/header/Header";
+import Footer from "./components/footer/Footer";
+import Home from "./pages/home/Home";
+import Dashboard from "./pages/dashboard/Dashboard";
+import Signin from "./pages/signin/Signin";
+import PageNotFound from "./pages/404/PageNotFound";
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Suspense fallback={<LoadingMarkup />}>
+      <Router>
+        <ToastContainer />
+        <Header />
+        <Container fluid className="main">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Navigate to={"/"} />} />
+            <Route path="/signin" element={<Signin />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="*" element={<PageNotFound />} />
+          </Routes>
+        </Container>
+        <Footer />
+      </Router>
+    </Suspense>
   );
-}
+};
 
 export default App;
