@@ -1,0 +1,130 @@
+#components-layout-demo-top-side-2 .logo {
+    float: left;
+    width: 120px;
+    height: 50px;
+    margin: 16px 24px 16px 0;
+    background: rgba(255, 255, 255, 0.3);
+  }
+  
+  .ant-row-rtl #components-layout-demo-top-side-2 .logo {
+    float: right;
+    margin: 16px 0 16px 24px;
+  }
+  
+  .site-layout-background {
+    background: #fff;
+  }
+  
+  .ant-layout-sider-trigger{
+    color: black !important;
+    background-color: rgba(211, 211, 211, 0.998) !important;
+  }
+  
+  .forscroll {
+    /* max-height: 650px;
+    min-height: 100px; */
+    overflow: auto !important;
+    overflow-x: hidden !important;
+  }
+  
+  ant-layout-sider {
+    height: 10px;
+  }
+  /* ant-menu-item{
+    padding-left: 90px;
+  } */
+  .ant-menu-submenu-arrow {
+    position: initial;
+  }
+  
+  .ant-menu-title-content{
+     /* padding-right: 15px; */
+     display: flex;
+      justify-content: flex-start;
+      padding-right: 20px;
+  }
+  
+  
+  .ant-menu-inline .ant-menu-item-group-list .ant-menu-submenu-title, .ant-menu-inline .ant-menu-submenu-title{
+    padding-right: 13px;
+  }
+  
+  .ant-menu-inline .ant-menu-item::after{
+    border-right: 2px solid red !important;
+      border-right-width: 3px;
+      border-right-style: solid !important;
+      border-right-color: red
+    }
+  
+  .ant-menu-item .ant-menu-item-icon{
+    font-size: 18px;
+  }
+  
+  .ant-menu-item a {
+    color: rgb(0 0 0);
+  }
+  
+  .ant-menu-item-selected a{
+     color: red !important;
+     font-weight: 600;
+     font-size: medium;
+  }
+  
+  .ant-menu-item-selected {
+    background-color: #f4f4f4 !important;
+  }
+  
+  .ant-menu-item-selected {
+    color: red !important;
+  }
+  
+  .ant-menu-inline > .ant-menu-item  {
+     height:50px !important;
+  }
+  
+  .ant-menu-item a:hover {
+    color: red;
+    font-weight: 600 !important
+  }
+  
+  .ant-menu-light .ant-menu-submenu-title:hover{
+      color: red;
+    font-weight: 600 !important
+  }
+  
+  .ant-menu-submenu:hover > .ant-menu-submenu-title > .ant-menu-submenu-arrow {
+    color: red;
+    font-weight: 600 !important
+  }
+  
+  .ant-menu-title-content {
+    margin-left: 12px !important;
+  }
+  
+  .pt-3 {
+    padding-top: 0rem!important;
+  }
+  .ant-menu-item .ant-menu-item-icon, .ant-menu-submenu-title .ant-menu-item-icon, .ant-menu-item .anticon, .ant-menu-submenu-title .anticon{
+    font-size: 20px !important;
+  }
+  
+  .ant-menu :hover{
+    color: red !important;
+  }
+  .ant-menu-sub.ant-menu-inline , .ant-menu-item{
+    font-size: 16px !important;
+  }
+  .ant-menu-sub.ant-menu-inline {
+    background: none !important;
+  }
+  .ant-menu-item:hover {
+    font-weight: 600 !important;
+  }
+  .ant-menu-item-icon:hover {
+    color: red !important;
+    font-weight: 600 !important;
+  }
+
+.ant-menu .ant-menu-item{
+  border-radius: 0 !important;
+}
