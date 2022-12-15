@@ -1,16 +1,28 @@
-import { List } from "antd";
-import { React, useState } from "react";
-import { Container, ListInlineItem, Label, CardText } from "reactstrap";
-import { Link, useLocation } from "react-router-dom";
-import { usePageTitle } from "../../hooks/usePageTitle";
-import { AiFillDashboard, AiFillSetting } from "react-icons/ai";
-import "./dashboard.css";
-import { Content } from "antd/es/layout/layout";
+//! Import libraries & components
+import { React } from "react";
 import { Layout, Typography } from "antd";
+import { Container, ListInlineItem, Label, CardText } from "reactstrap";
 import { DashboardOutlined } from "@ant-design/icons";
-import AntDesignBreadcrumbs from "../../components/AntDesignBreadcrumbs/AntDesignBreadcrumbs";
 
+//! Import CSS libraries
+
+//! Import user defined services
+
+//! Import user defined components & hooks
+import AntDesignBreadcrumbs from "../../components/AntDesignBreadcrumbs/AntDesignBreadcrumbs";
+import { usePageTitle } from "../../hooks/usePageTitle";
+
+//! Import user defined functions
+
+//! Import user defined CSS
+import "./dashboard.css";
+
+//! Get all required details from .env file
+
+//! Destructure the components
 const { Title, Text } = Typography;
+const { Content } = Layout;
+
 const Dashboard = () => {
   usePageTitle("Admin Portal - Dashboard");
 
