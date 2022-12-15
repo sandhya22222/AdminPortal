@@ -10,7 +10,7 @@ import {
 } from "react-router-dom";
 import { DashboardOutlined } from "@ant-design/icons";
 import { FaHome } from "react-icons/fa";
-import { LoadingOutlined, GlobalOutlined } from "@ant-design/icons";
+import { LoadingOutlined, GlobalOutlined ,AppstoreOutlined} from "@ant-design/icons";
 
 //! Import CSS libraries
 
@@ -55,41 +55,27 @@ const Sidebar = (props) => {
     },
     {
       key: "2",
+      icon: <AppstoreOutlined />,
+      label: "Store",
+      navigate_to: "/dashboard/store",
+    },
+    {
+      key: "3",
       icon: <GlobalOutlined />,
       label: "Language",
-      navigate_to: "/dashboard/vendoraccess",
+      navigate_to: "/dashboard/language",
     },
   ];
 
   useEffect(() => {
     switch (pathname.split("/")[2]) {
-      case "vendoraccess":
-        // setOpenedItem("2");
-        setSelectedItem("2");
+      case "language":
+        setSelectedItem("3");
         break;
-      //   case "products":
-      //     setOpenedItem(["2"]);
-      //     setSelectedItem("113");
-      //     break;
-      //   case "vendor_types":
-      //     setOpenedItem(["3"]);
-      //     setSelectedItem("114");
-      //     break;
-      //   case "vendor":
-      //     setOpenedItem(["3"]);
-      //     setSelectedItem("115");
-      //     break;
-      //   case "approvals":
-      //     setSelectedItem("4");
-      //     break;
-      //   case "store-settings":
-      //     setSelectedItem("5");
-      //     break;
-      //   case "settings":
-      //     setOpenedItem(["5"]);
-      //     setSelectedItem("111");
-      //     break;
-      default:
+        case "store":
+          setSelectedItem("2");
+          break;
+         default:
         setSelectedItem("1");
         break;
     }
