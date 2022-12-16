@@ -1,11 +1,11 @@
 import React from 'react'
 
-const Demo = () => {
+const Store = () => {
   return (
     <div className=' text-center'>
-      This is language page
+      This is store page
     </div>
   )
 }
 
-export default Demo
+export default Store

@@ -7,11 +7,8 @@ import {
   Navigate,
 } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-
 import "react-toastify/dist/ReactToastify.min.css";
-
 import "./core-ui/app.css";
-
 import LoadingMarkup from "./components/loader/LoadingMarkup";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
@@ -20,9 +17,10 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import Signin from "./pages/signin/Signin";
 import PageNotFound from "./pages/404/PageNotFound";
 import { useFavicon } from "./hooks/useFavicon";
-import Sidebar from "./pages/sidebar/Sidebar";
 import axios from "axios";
-import Demo from "./pages/Demo";
+import Language from "./pages/Language";
+import Store from "./pages/Store";
+import Sidebar from './components/sidebar/Sidebar';
 
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 
@@ -38,9 +36,10 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/home" element={<Navigate to={"/"} />} />
             <Route path="/signin" element={<Signin />} />
-            <Route path="/dashboard" element={<Sidebar color="light" />}>
+            <Route path="/dashboard" element={< Sidebar color="light" />}>
               <Route path="" element={<Dashboard />} />
-              <Route path="vendoraccess" element={<Demo />} />
+              <Route path="language" element={<Language />} />
+              <Route path="store" element={<Store />} />
               <Route path="*" element={<PageNotFound />} />
             </Route>
           </Routes>
