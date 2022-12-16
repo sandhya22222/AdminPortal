@@ -1,77 +1,6 @@
-// import React from "react";
-// import { Container } from "reactstrap";
-
-// const Signin = () => {
-//   return (
-//     <Container fluid>
-//       <h3>Signin Page</h3>
-//     </Container>
-//   );
-// };
-
-// export default Signin;
-
-
-// import React, { useState, useEffect } from "react";
-// import { Container } from "reactstrap";
-
-// import { useAxiosFetch } from "../../hooks/useAxiosFetch";
-
-// const categoryEndPoint = process.env.REACT_APP_CATEGORY_API;
-
-// const Signin = () => {
-//   const [data, setData] = useState(null);
-//   const [response, error, isLoading, requestServer] = useAxiosFetch({
-//     url: categoryEndPoint,
-//     method: "post",
-//     body: {
-//       store_id: 1,
-//     },
-//     headers: {},
-//   });
-
-//   // Call this function on userAction to post/get data
-//   // const submit = (data) => {
-//   //   requestServer({
-//   //     method: "POST",
-//   //     url: categoryEndPoint,
-//   //     headers: {
-//   //       "Content-type": "application/json; charset=UTF-8",
-//   //     },
-//   //     data,
-//   //   });
-//   // };
-
-//   console.log("serverError", error);
-
-//   useEffect(() => {
-//     requestServer({
-//       method: "POST",
-//       url: categoryEndPoint,
-//       headers: {
-//         "Content-type": "application/json; charset=UTF-8",
-//       },
-//       body: {
-//         store_id: 1,
-//       },
-//     });
-//   }, []);
-
-//   return (
-//     <Container fluid>
-//       <h3>Signin Page</h3>
-//     </Container>
-//   );
-// };
-
-// export default Signin;
-
-
-
-
+//! Import libraries & components
 import React, { useState } from "react";
-import { Layout, Input, Typography, Button } from "antd";
-import { BrandLogo, ThbsLogo, LoginBackground } from "../../constants/media";
+import { Layout, Input, Typography } from "antd";
 import {
   EyeInvisibleOutlined,
   EyeTwoTone,
@@ -81,27 +10,38 @@ import {
 } from "@ant-design/icons";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import './signin.css'
-import { fnUserLoggedInInfo } from "../../services/redux/actions/ActionsUser";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
+//! Import CSS libraries
+
+//! Import user defined services
+import { fnUserLoggedInInfo } from "../../services/redux/actions/ActionsUser";
+
+//! Import user defined components & hooks
+import { usePageTitle } from "../../hooks/usePageTitle";
+import { BrandLogo, ThbsLogo } from "../../constants/media";
+
+//! Import user defined functions
+
+//! Import user defined CSS
+import "./signin.css";
+
+//! Get all required details from .env file
+const PortalLoginInfoTitle = JSON.parse(process.env.REACT_APP_PORTAL_INFO);
+
+//! Destructure the components
 const { Content } = Layout;
 const { Text, Link } = Typography;
 
-const PortalLoginInfoTitle = JSON.parse(process.env.REACT_APP_PORTAL_INFO)
-
-
 const Signin = () => {
+  usePageTitle("Admin Portal - Signin");
 
   const dispatch = useDispatch();
-
-  const [passwordVisible, setPasswordVisible] = useState(false);
   const [username, setusername] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [inValidUsername, setInValidUsername] = useState(false);
   const [inValidUserPassword, setInvalidUserPassword] = useState(false);
   const navigate = useNavigate();
-
 
   const handleSubmit = () => {
     let validValues = 2;
@@ -149,20 +89,26 @@ const Signin = () => {
   };
 
   return (
-    <Content className=" temp bg-bottom min-h-screen m-auto" >
-      <Content className=" text-center m-auto" >
+    <Content className=" temp bg-bottom min-h-screen m-auto">
+      <Content className=" text-center m-auto">
         <img src={BrandLogo} className=" mt-5 !inline-block " />
-        <Content className="bg-white !mt-5 text-center p-10 w-[35%] drop-shadow-2xl"  style={{ margin: "0 auto" }}>
-          <Text className=" font-semibold text-2xl ">{PortalLoginInfoTitle.title}</Text>
+        <Content
+          className="bg-white !mt-5 text-center p-10 w-[35%] drop-shadow-2xl"
+          style={{ margin: "0 auto" }}
+        >
+          <Text className=" font-semibold text-2xl ">
+            {PortalLoginInfoTitle.title}
+          </Text>
           <Input
             style={{ marginTop: "18px", marginBottom: "18px" }}
             prefix={<UserOutlined className="" />}
             placeholder="Username"
             value={username}
-            className={`${inValidUsername
-              ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400"
-              : "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
-              }`}
+            className={`${
+              inValidUsername
+                ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400"
+                : "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
+            }`}
             onChange={(e) => {
               handleNameChange(e);
             }}
@@ -174,10 +120,11 @@ const Signin = () => {
               visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
             }
             value={userPassword}
-            className={`${inValidUserPassword
-              ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400"
-              : "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
-              }`}
+            className={`${
+              inValidUserPassword
+                ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400"
+                : "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
+            }`}
             onChange={(e) => {
               handlePasswordChange(e);
             }}
@@ -216,7 +163,11 @@ const Signin = () => {
             A product of Torry Harris Integration Solutions -
           </Text>
           <Text underline>
-            <Link className=" !text-gray-700" href="https://www.torryharris.com/" target="_blank">
+            <Link
+              className=" !text-gray-700"
+              href="https://www.torryharris.com/"
+              target="_blank"
+            >
               torryharris.com
             </Link>
           </Text>
@@ -228,6 +179,3 @@ const Signin = () => {
 };
 
 export default Signin;
-
-
-

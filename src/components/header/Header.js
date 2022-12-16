@@ -1,5 +1,5 @@
+//! Import libraries & components
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import {
   Container,
   Collapse,
@@ -15,17 +15,30 @@ import {
   DropdownItem,
   Dropdown,
 } from "reactstrap";
-import { Layout, Input, Typography, Button } from "antd";
-
-import { BrandLogo } from "../../constants/media";
+import { Typography ,Layout} from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import { fnUserLoggedInInfo } from "../../services/redux/actions/ActionsUser";
 import { toast } from "react-toastify";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { UserOutlined } from "@ant-design/icons";
+
+//! Import CSS libraries
+
+//! Import user defined services
+import { fnUserLoggedInInfo } from "../../services/redux/actions/ActionsUser";
+
+//! Import user defined components & hooks
+import { StoreLogo } from "../../constants/media";
+
+//! Import user defined functions
+
+//! Import user defined CSS
 import "./header.css";
 
+//! Get all required details from .env file
+
+//! Destructure the components
 const { Text } = Typography;
+const { Content } = Layout;
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -64,9 +77,9 @@ const Header = () => {
 
   return (
     <Container fluid className="navbar">
-      <Navbar color="primary" dark expand="md" fixed="top" light>
+      <Navbar color="white" dark expand="md" fixed="top" light>
         <NavbarBrand to="/" tag={Link} className="me-auto">
-          <img src={BrandLogo} alt="logo" width={150} />
+          <img src={StoreLogo} alt="logo" width={150} />
         </NavbarBrand>
         <NavbarToggler
           className="me-2"
@@ -76,7 +89,7 @@ const Header = () => {
         />
         <Collapse navbar isOpen={isOpen}>
           <Nav className="me-auto ps-5" navbar>
-            <NavItem>
+            {/* <NavItem>
               <NavLink tag={Link} to="/">
                 Home
               </NavLink>
@@ -96,7 +109,7 @@ const Header = () => {
                 <DropdownItem divider />
                 <DropdownItem>Reset</DropdownItem>
               </DropdownMenu>
-            </UncontrolledDropdown>
+            </UncontrolledDropdown> */}
           </Nav>
           <Nav navbar>
             {typeof persistedUserLoggedInInfo !== "undefined" ? (
@@ -124,11 +137,10 @@ const Header = () => {
                             header
                             // className="!text-black  !font-semibold cursor-pointer hover:bg-gray-200"
                             className={`!text-black  !font-semibold
-              ${
-                element.id === 1
-                  ? "!text-opacity-30"
-                  : " !text-black  !font-semibold cursor-pointer hover:bg-gray-200 "
-              }
+              ${element.id === 1
+                                ? "!text-opacity-30"
+                                : " !text-black  !font-semibold cursor-pointer hover:bg-gray-200 "
+                              }
               `}
                             key={element.id}
                           >
@@ -142,20 +154,17 @@ const Header = () => {
                 </Dropdown>
               </>
             ) : (
-              <div>
+              <Content className="!no-underline">
                 <Link
                   to={{
                     pathname: "/signin",
                   }}
-                  className=" pl-[5px] font-semibold"
+                  className=" pl-[5px] font-semibold !no-underline"
                 >
                   <Text className="">Signin</Text>
                 </Link>
-              </div>
+              </Content>
             )}
-            {/* <NavLink tag={Link} to="/signin">
-              Signin
-            </NavLink> */}
           </Nav>
         </Collapse>
       </Navbar>

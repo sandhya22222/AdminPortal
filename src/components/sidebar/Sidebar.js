@@ -1,16 +1,14 @@
 //! Import libraries
 import React, { useState, useEffect } from "react";
 import { Layout, Menu, Affix, Spin } from "antd";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
-  Outlet,
-  Link,
-  useLocation,
-  useParams,
-  useNavigate,
-} from "react-router-dom";
-import { DashboardOutlined } from "@ant-design/icons";
-import { FaHome } from "react-icons/fa";
-import { LoadingOutlined, GlobalOutlined ,AppstoreOutlined} from "@ant-design/icons";
+  DashboardOutlined,
+  HomeOutlined,
+  LoadingOutlined,
+  GlobalOutlined,
+  AppstoreOutlined,
+} from "@ant-design/icons";
 
 //! Import CSS libraries
 
@@ -28,20 +26,17 @@ const antIcon = <LoadingOutlined className="text-[10px] hidden" spin />;
 
 const Sidebar = (props) => {
   const [collapsed, setCollapsed] = useState(false);
-  const [currentLanguage, setCurrentLanguage] = useState();
   const [selectedItem, setSelectedItem] = useState([]);
   const [openedItem, setOpenedItem] = useState([]);
-
   const [loadingEffect, setLoadingEffect] = useState(false);
   const { pathname } = useLocation();
 
   const navigate = useNavigate();
-  const params = useParams();
   // testt
   const myData = [
     {
       key: "-1",
-      icon: <FaHome />,
+      icon: <HomeOutlined />,
       label: "Home",
       navigate_to: "/",
       item: null,
@@ -56,13 +51,13 @@ const Sidebar = (props) => {
     {
       key: "2",
       icon: <AppstoreOutlined />,
-      label: "Store",
+      label: "Stores",
       navigate_to: "/dashboard/store",
     },
     {
       key: "3",
       icon: <GlobalOutlined />,
-      label: "Language",
+      label: "Languages",
       navigate_to: "/dashboard/language",
     },
   ];
@@ -72,10 +67,10 @@ const Sidebar = (props) => {
       case "language":
         setSelectedItem("3");
         break;
-        case "store":
-          setSelectedItem("2");
-          break;
-         default:
+      case "store":
+        setSelectedItem("2");
+        break;
+      default:
         setSelectedItem("1");
         break;
     }

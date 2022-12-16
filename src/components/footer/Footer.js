@@ -1,14 +1,22 @@
 import React from "react";
-import { Container } from "reactstrap";
+import { Typography, Layout } from "antd";
+const { Content, Footer } = Layout;
+const { Text, Paragraph } = Typography;
 
-import "./footer.css"
+const portalInfo = JSON.parse(process.env.REACT_APP_PORTAL_INFO);
 
-const Footer = () => {
+const NewFooter = () => {
   return (
-    <Container fluid tag={"footer"} className="p-0">
-      This is a page footer
-    </Container>
+    <Content>
+      <Content className=" bg-[#6F6F6F] text-center ">
+        <Paragraph className="text-[#C6C6C6] text-xs p-1">
+          Copyright (2022) - Torry Harris Integration Solutions - DigitMarket
+          <sup>TM</sup> {portalInfo.title} Version {portalInfo.version} |
+          Credits
+        </Paragraph>
+      </Content>
+    </Content>
   );
 };
 
-export default Footer;
+export default NewFooter;
