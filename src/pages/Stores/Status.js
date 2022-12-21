@@ -3,7 +3,6 @@ import { Switch, Space } from "antd";
 import { IoClose } from "react-icons/io5";
 import Toggle from "react-toggle";
 import { toast, useToast } from "react-toastify";
-import { useLocation, Link } from "react-router-dom";
 
 import axios from "axios";
 
@@ -12,12 +11,16 @@ const storeEditStatusAPI = process.env.REACT_APP_DM_STORE_STATUS_API;
 function Status({ storeId, storeStatus }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [statusChanged, setStatusChanged] = useState(false);
-  const [defaultChecked,setDefaultChecked] =useState(false)
+  const [defaultChecked, setDefaultChecked] = useState(false);
   const [switchstatus, setSwitchstatus] = useState(
     storeStatus === 1 ? true : false
   );
-  const [checkedChildren, setCheckedChildren] = useState(storeStatus === 1 ? true : false);
-  const [unCheckedChildren, setUnCheckedChildren] = useState(storeStatus === 1 ? true : false);
+  const [checkedChildren, setCheckedChildren] = useState(
+    storeStatus === 1 ? true : false
+  );
+  const [unCheckedChildren, setUnCheckedChildren] = useState(
+    storeStatus === 1 ? true : false
+  );
 
   const closeModel = () => {
     setIsModalOpen(false);
@@ -31,7 +34,7 @@ function Status({ storeId, storeStatus }) {
 
   const requestServer = async () => {
     const reqbody = {
-      status: switchstatus === true ?1 :2,
+      status: switchstatus === true ? 1 : 2,
     };
     axios
       .put(storeEditStatusAPI, reqbody, {
@@ -41,13 +44,11 @@ function Status({ storeId, storeStatus }) {
       })
       .then((response) => {
         console.log(response);
-      
-      
-        toast('done', {
+
+        toast("done", {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
         });
-        
       })
       .catch((error) => {
         toast(error.message, {
@@ -130,7 +131,7 @@ function Status({ storeId, storeStatus }) {
     } else {
       setCheckedChildren();
       setUnCheckedChildren("UnActivated");
-      setDefaultChecked()
+      setDefaultChecked();
     }
 
     setSwitchstatus(checked);
@@ -153,7 +154,7 @@ function Status({ storeId, storeStatus }) {
         <Space direction="vertical">
           <Switch
             // checkedChildren={checkedChildren}
-            defaultChecked ={defaultChecked}
+            defaultChecked={defaultChecked}
             unCheckedChildren={unCheckedChildren}
             checked={switchstatus}
             onChange={onChange}
