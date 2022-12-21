@@ -1,0 +1,21 @@
+.btn-secondary {
+  color: #fff !important;
+  outline: none;
+  background-color:white;
+  border-color: #d9d9d9 !important;
+}
+.btn-secondary:hover{
+  background-color: white !important;
+  /* border:1px solid #1890ff !important; */
+}
+     /* border-color: #6c757d;
+   }
+   /* .dropdown{
+     height: 40px;
+     width: 110px;
+     border: none;
+   } */
+ /* button.btn.btn-secondary{
+    width:'45px';
+    height:'30px';
+  } */

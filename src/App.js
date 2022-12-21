@@ -18,9 +18,12 @@ import Signin from "./pages/signin/Signin";
 import PageNotFound from "./pages/404/PageNotFound";
 import { useFavicon } from "./hooks/useFavicon";
 import axios from "axios";
-import Language from "./pages/Language";
+// import Language from "./pages/Language";
 import Store from "./pages/Store";
-import Sidebar from './components/sidebar/Sidebar';
+import Sidebar from "./components/sidebar/Sidebar";
+import Language from "./pages/languagee/Language";
+import AddLanguage from "./pages/languagee/AddLanguage";
+import EditLanguage from "./pages/languagee/EditLanguage";
 
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 
@@ -36,9 +39,11 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/home" element={<Navigate to={"/"} />} />
             <Route path="/signin" element={<Signin />} />
-            <Route path="/dashboard" element={< Sidebar color="light" />}>
+            <Route path="/dashboard" element={<Sidebar color="light" />}>
               <Route path="" element={<Dashboard />} />
               <Route path="language" element={<Language />} />
+              <Route path="language/edit_language" element={<EditLanguage />} />
+              <Route path="language/add_language" element={<AddLanguage />} />
               <Route path="store" element={<Store />} />
               <Route path="*" element={<PageNotFound />} />
             </Route>
