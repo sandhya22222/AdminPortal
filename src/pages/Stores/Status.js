@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Switch, Space } from "antd";
 import { IoClose } from "react-icons/io5";
-import Toggle from "react-toggle";
-import { toast, useToast } from "react-toastify";
+import { toast } from "react-toastify";
 
 import axios from "axios";
 
@@ -11,8 +10,7 @@ const storeEditStatusAPI = process.env.REACT_APP_DM_STORE_STATUS_API;
 function Status({ storeId, storeStatus }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [statusChanged, setStatusChanged] = useState(false);
-  const [defaultChecked, setDefaultChecked] = useState(false);
-  const [switchstatus, setSwitchstatus] = useState(
+  const [switchStatus, setSwitchStatus] = useState(
     storeStatus === 1 ? true : false
   );
   const [checkedChildren, setCheckedChildren] = useState(
@@ -34,7 +32,7 @@ function Status({ storeId, storeStatus }) {
 
   const requestServer = async () => {
     const reqbody = {
-      status: switchstatus === true ? 1 : 2,
+      status: switchStatus === true ? 1 : 2,
     };
     axios
       .put(storeEditStatusAPI, reqbody, {
@@ -44,8 +42,7 @@ function Status({ storeId, storeStatus }) {
       })
       .then((response) => {
         console.log(response);
-
-        toast("done", {
+        toast("Edit Status is done Successfully", {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
         });
@@ -56,6 +53,8 @@ function Status({ storeId, storeStatus }) {
         });
         console.log("error", error);
       });
+
+    console.log("post body for ---", storeEditStatusAPI, " is:", reqbody);
   };
 
   const ModelPopUp = () => {
@@ -71,9 +70,7 @@ function Status({ storeId, storeStatus }) {
             {/* <!-- Modal header --> */}
             <div className="flex justify-between items-center">
               <div className="text-[23px] font-medium text-gray-900 dark:text-white">
-                {statusChanged
-                  ? "Product Activiation"
-                  : "Product Deactiviation"}
+                {switchStatus ? "Product Activiation" : "Product Deactiviation"}
               </div>
               <button
                 type="button"
@@ -123,18 +120,17 @@ function Status({ storeId, storeStatus }) {
       </div>
     );
   };
-  const onChange = (checked) => {
-    if (checked === true) {
-      setCheckedChildren("Activated");
-      setUnCheckedChildren();
-      setDefaultChecked(true);
-    } else {
-      setCheckedChildren();
-      setUnCheckedChildren("UnActivated");
-      setDefaultChecked();
-    }
 
-    setSwitchstatus(checked);
+  const onChange = (checked) => {
+    // if (checked === true) {
+    //   setCheckedChildren("Active");
+    //   setUnCheckedChildren();
+    // } else {
+    //   setCheckedChildren();
+    //   setUnCheckedChildren("InActive");
+    // }
+
+    setSwitchStatus(checked);
     setIsModalOpen(true);
     console.log(`switch to ${checked}`);
   };
@@ -143,25 +139,27 @@ function Status({ storeId, storeStatus }) {
     <div>
       <ModelPopUp></ModelPopUp>
       <div>
-        {/* <Toggle
-          checked={status}
-          disabled={totalTypesEnabled && totalTypesEnabled[0].status == 2}
-          className="dm-toggle"
-          onChange={(e) => {
-            openModel(e);
-          }}
-        /> */}
         <Space direction="vertical">
           <Switch
+            className="bg-gray-500"
             // checkedChildren={checkedChildren}
-            defaultChecked={defaultChecked}
-            unCheckedChildren={unCheckedChildren}
-            checked={switchstatus}
+            // unCheckedChildren={unCheckedChildren}
+            defaultChecked={switchStatus}
+            checked={storeStatus}
             onChange={onChange}
           />
         </Space>
       </div>
-      {/* </div> */}
+      {/* <div
+            className={`pl-1  ${
+              totalTypesEnabled[0].name === title &&
+              totalTypesEnabled.length === 1
+                ? "text-gray-400"
+                : "text-[#393939]"
+            }`}
+          >
+            {storeStatus ? "Active" : "Inactive"}
+          </div> */}
     </div>
   );
 }
