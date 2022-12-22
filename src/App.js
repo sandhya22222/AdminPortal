@@ -19,7 +19,7 @@ import PageNotFound from "./pages/404/PageNotFound";
 import { useFavicon } from "./hooks/useFavicon";
 import axios from "axios";
 // import Language from "./pages/Language";
-import Store from "./pages/Store";
+import Store from "./pages/Stores/Store";
 import Sidebar from "./components/sidebar/Sidebar";
 import Language from "./pages/languagee/Language";
 import AddLanguage from "./pages/languagee/AddLanguage";

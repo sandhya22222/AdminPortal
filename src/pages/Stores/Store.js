@@ -83,7 +83,13 @@ const Stores = () => {
       key: "status",
       width: "20%",
       render: (text, record) => {
-        return <Status storeId={record.id} storeStatus={record.status} />;
+        return (
+          <Status
+            storeId={record.id}
+            storeStatus={record.status === "Active" ? true : false}
+          />
+        );
+       
         // <Switch onChange={onChange} defaultChecked />;
       },
     },

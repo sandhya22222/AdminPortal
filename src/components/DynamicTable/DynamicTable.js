@@ -543,7 +543,6 @@ const DynamicTable = ({ tableComponentData }) => {
                               {dataSource.filter_settings.filter_data.length >
                               0 ? (
                                 <Button
-                                
                                   className="mt-3 mx-2"
                                   onClick={handleFilteringDataBasedOnCheckBox}
                                 >
@@ -584,9 +583,9 @@ const DynamicTable = ({ tableComponentData }) => {
         </div>
       ) : (
         <div className="h-28 flex items-center justify-center !bg-white">
-          <h1 className="!font-medium">
+          <h3 className="!font-medium">
             Currently no data available to display in table
-          </h1>
+          </h3>
         </div>
       )}
     </div>
