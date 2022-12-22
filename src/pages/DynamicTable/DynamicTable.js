@@ -14,7 +14,7 @@ import {
 } from "antd";
 import { sortObjectArrayByKey, deepCopy } from "../../util/util";
 import { AiFillFilter } from "react-icons/ai";
-import "./tablelayout.css";
+import "./DynamicTable.css";
 const { Content } = Layout;
 const { Search } = Input;
 const { Text } = Typography;

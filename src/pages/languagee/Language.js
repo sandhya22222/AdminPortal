@@ -8,7 +8,7 @@ import { Navigate, useNavigate, Link } from "react-router-dom";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
 //! Import user defined components
-import DynamicTable from "../tablelayoutcomponent/DynamicTable";
+import DynamicTable from "../DynamicTable/DynamicTable";
 import StoreModal from "../../components/storeModal/StoreModal";
 
 const { Title } = Typography;
