@@ -11,32 +11,31 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import DynamicTable from "../../components/DynamicTable/DynamicTable";
 import StoreModal from "../../components/storeModal/StoreModal";
 import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
-
 import "./language.css";
 
 const { Title } = Typography;
-toast.configure();
+const { Content } = Layout;
 
 const languageAPI = process.env.REACT_APP_DM_LANGUAGE_API;
 
 const Language = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [response, setResponse] = useState([]);
+  const [languageData, setLanguageData] = useState([]);
   const [isNetworkErrorLanguage, setIsNetworkErrorLanguage] = useState(false);
-  const [error, setError] = useState(false);
-  const [deleteLanguageModal, setDeleteLanguageModal] = useState(false);
-  const [languageListAPIData, setLanguageListAPIData] = useState();
-  const { Content } = Layout;
+  const [deleteLanguageID, setDeleteLanguageID] = useState("")
+  const [isDeleteLanguageModalOpen, setIsDeleteLanguageModalOpen] = useState(false);
+
   const navigate = useNavigate();
 
   // closing the delete popup model
   const closeDeleteModal = () => {
-    setDeleteLanguageModal(false);
+    setIsDeleteLanguageModalOpen(false);
   };
 
   // opening the delete popup model
-  const openDeleteModal = () => {
-    setDeleteLanguageModal(true);
+  const openDeleteModal = (id) => {
+    setIsDeleteLanguageModalOpen(true);
+    setDeleteLanguageID(id);
   };
 
   const columns = [
@@ -110,11 +109,11 @@ const Language = () => {
             </Link>
             <>
               <StoreModal
-                isVisible={deleteLanguageModal}
+                isVisible={isDeleteLanguageModalOpen}
                 okButtonText={"Ok"}
                 cancelButtonText={"Cancel"}
                 title={"Warning"}
-                okCallback={() => deleteLanguage(record.id)}
+                okCallback={() => deleteLanguage()}
                 cancelCallback={() => closeDeleteModal()}
               >
                 {<div>{"Are you sure you want to delete the language ?"}</div>}
@@ -134,17 +133,19 @@ const Language = () => {
   ];
 
   //delete function
-  const deleteLanguage = (id) => {
+  const deleteLanguage = () => {
     axios
       .delete(languageAPI, {
         params: {
-          _id: id,
+          _id: deleteLanguageID,
         },
       })
       .then((response) => {
-        console.log("response from delete===>", response);
+        console.log("response from delete===>", response, deleteLanguageID)
         if (response.status === 202) {
-          setDeleteLanguageModal(false);
+          setIsDeleteLanguageModalOpen(false);
+          let removedData = languageData.filter(({id})=>id !== deleteLanguageID);
+          setLanguageData(removedData)
           toast("Language Deleted Successfully", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
@@ -171,18 +172,16 @@ const Language = () => {
       .then(function (response) {
         console.log("response", response);
         setIsLoading(false);
-        setError(false);
         setIsNetworkErrorLanguage(false);
         console.log(
           "response status language list-------------------",
           response.data
         );
-        setResponse(response.data);
+        setLanguageData(response.data);
         // setIsNetworkErrorLanguage(false);
       })
       .catch((error) => {
         setIsLoading(true);
-        setError(true);
         setIsNetworkErrorLanguage(true);
         console.log("Catch block of ----------------------");
       });
@@ -220,7 +219,7 @@ const Language = () => {
   //dynamic table data
   const tablepropsData = {
     table_header: columns,
-    table_content: response,
+    table_content: languageData,
     pagenationSettings: pagination,
 
     search_settings: {

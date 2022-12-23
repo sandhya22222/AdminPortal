@@ -7,47 +7,41 @@ import {
   Col,
   Typography,
   Button,
-  Form,
   Input,
   Select,
-  Breadcrumb,
 } from "antd";
 import { toast } from "react-toastify";
 import { BsArrowLeft } from "react-icons/bs";
-import { Navigate, useNavigate } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
-
 import "./language.css";
 
 const { Title } = Typography;
 const { Option } = Select;
-
 const languageAPI = process.env.REACT_APP_DM_LANGUAGE_API;
-
-toast.configure();
+const { Content } = Layout;
 
 const AddLanguage = () => {
-  const [script, setScript] = useState("");
-  const [inValidLanguageId, setInValidLanguageId] = useState(false);
-  const [inValidLanguageCode, setInValidLanguageCode] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [response, setResponse] = useState();
+  const [isLanguageFieldEmpty, setIsLanguageFieldEmpty] = useState(false);
+  const [isLanguageCodeFieldEmpty, setIsLanguageCodeFieldEmpty] = useState(false);
   const [language, setLanguage] = useState("");
   const [languageCode, setLanguageCode] = useState("");
   const [nativeName, setNativeName] = useState("");
   const [scriptDirection, setScriptDirection] = useState("");
-  const [check, setCheck] = useState(null);
   const navigate = useNavigate();
-
-  const { Content } = Layout;
 
   const handleLanguageChange = (e) => {
     setLanguage(e.target.value);
+    if (e.target.value != "") {
+      setIsLanguageFieldEmpty(false)
+    }
   };
 
   const handleLanguageCodeChange = (e) => {
     setLanguageCode(e.target.value);
+    if (e.target.value != "") {
+      setIsLanguageCodeFieldEmpty(false)
+    }
   };
 
   const handleNativeNameChange = (e) => {
@@ -58,13 +52,11 @@ const AddLanguage = () => {
     setScriptDirection(value);
   };
 
-  // const [form] = Form.useForm();
-
-  const validateFieldForLanguage = () => {
-    let validValues = 2;
+  const validateLanguageFieldEmptyOrNot = () => {
+    // let validValues = 2;
     if (language === "") {
-      setInValidLanguageId(true);
-      validValues -= 1;
+      setIsLanguageFieldEmpty(true);
+      // validValues -= 1;
       toast("Please Enter Language Id", {
         autoClose: 5000,
         position: toast.POSITION.TOP_RIGHT,
@@ -72,72 +64,51 @@ const AddLanguage = () => {
       });
     }
     if (languageCode === "") {
-      setInValidLanguageCode(true);
-      validValues -= 1;
+      setIsLanguageCodeFieldEmpty(true);
+      // validValues -= 1;
       toast("Please Enter Language Code", {
         autoClose: 5000,
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
     }
-    if (validValues === 2) {
+    if (language !== "" && languageCode !== "") {
       PostLanguageAPI();
     }
   };
 
-  //post function useEffect
-  // useEffect(() => {
-  //   console.log("Checking inside useeffect", check);
-  //   if (check != null) {
-  //     console.log("Inside if condition", check);
-  //     const temp = [...response];
-  //     temp.push(check);
-  //     setResponse(temp);
-  //   }
-  // }, [check]);
-
   //post function
   const PostLanguageAPI = () => {
     // const events = [
-    //   {
-    //     language: language,
-    //     language_code: languageCode,
-    //     native_name: nativeName,
-    //     writing_script_direction: scriptDirection,
-    //   },
+      // {
+        // language: language,
+        // language_code: languageCode,
+        // native_name: nativeName,
+        // writing_script_direction: scriptDirection,
+      // }
     // ];
     const paramsData = new FormData();
     paramsData.append("language", language);
     paramsData.append("language_code", languageCode);
     paramsData.append("native_name", nativeName);
     paramsData.append("writing_script_direction", scriptDirection);
-
     console.log("This is from Params Data---->", paramsData);
-
-    console.log("print language api--->", languageAPI);
     axios
       .post(languageAPI, paramsData)
       .then((res) => {
         console.log("from response----->", res.data);
         console.log("from--->", res);
-
         if (res.status === 201) {
           if (res.data) {
             toast("Language Details created", {
               position: toast.POSITION.TOP_RIGHT,
               type: "success",
             });
-            setLanguage("");
-            setLanguageCode("");
-            setNativeName("");
-            setScriptDirection("");
             navigate(-1);
-            console.log("response data------------------------>", res.data);
           }
         }
       })
       .catch((error) => {
-        // console.log("--->", error.response.status);
         if (error.response.status === 409) {
           toast("Data already exist", {
             position: toast.POSITION.TOP_RIGHT,
@@ -149,7 +120,6 @@ const AddLanguage = () => {
             type: "error",
           });
         }
-        // console.log("Error from post call===>", error);
       });
   };
 
@@ -208,7 +178,7 @@ const AddLanguage = () => {
                     placeholder="Enter Language Id"
                     value={language}
                     className={`${
-                      inValidLanguageId
+                      isLanguageFieldEmpty
                         ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400"
                         : "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
                     }`}
@@ -225,7 +195,7 @@ const AddLanguage = () => {
                     placeholder="Enter Language Code"
                     value={languageCode}
                     className={`${
-                      inValidLanguageCode
+                      isLanguageCodeFieldEmpty
                         ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400"
                         : "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
                     }`}
@@ -271,8 +241,7 @@ const AddLanguage = () => {
                 type="primary"
                 htmlType="submit"
                 onClick={() => {
-                  validateFieldForLanguage();
-                  //  form.resetFields();
+                  validateLanguageFieldEmptyOrNot();
                 }}
               >
                 Save
