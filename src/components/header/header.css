@@ -1,3 +1,22 @@
 .navbar {
-    height: 10%;
+    height: 4rem;
+}
+
+.dropdown-toggle::after {
+    color: black !important;
+}
+
+.btn-check:focus+.btn-secondary, .btn-secondary:focus {
+    box-shadow: none !important;
+}
+
+.btn {
+    border: none !important;
+}
+.btn-secondary:hover{
+    border: none !important;
+}
+
+.btn-check:focus+.btn-secondary, .btn-secondary:focus{
+    background-color: white !important;
 }

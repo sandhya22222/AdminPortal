@@ -9,6 +9,7 @@ import {
   GlobalOutlined,
   AppstoreOutlined,
 } from "@ant-design/icons";
+import { FaHome } from "react-icons/fa";
 
 //! Import CSS libraries
 
@@ -36,7 +37,7 @@ const Sidebar = (props) => {
   const myData = [
     {
       key: "-1",
-      icon: <HomeOutlined />,
+      icon: <FaHome />,
       label: "Home",
       navigate_to: "/",
       item: null,
