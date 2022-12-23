@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Switch, Space } from "antd";
+import { Switch, Space, Row, Col } from "antd";
 import { IoClose } from "react-icons/io5";
 import { toast } from "react-toastify";
 
@@ -11,12 +11,6 @@ function Status({ storeId, storeStatus }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [statusChanged, setStatusChanged] = useState(false);
   const [switchStatus, setSwitchStatus] = useState(
-    storeStatus === 1 ? true : false
-  );
-  const [checkedChildren, setCheckedChildren] = useState(
-    storeStatus === 1 ? true : false
-  );
-  const [unCheckedChildren, setUnCheckedChildren] = useState(
     storeStatus === 1 ? true : false
   );
 
@@ -81,7 +75,7 @@ function Status({ storeId, storeStatus }) {
               </button>
             </div>
             {/* <!-- Modal body --> */}
-            {statusChanged ? (
+            {switchStatus ? (
               <div className="mt-4">
                 <p>{`Awesome!`}</p>
                 <p>{`You are about the activate to your store. Would you like to proceed?`}</p>
@@ -105,7 +99,7 @@ function Status({ storeId, storeStatus }) {
               <button
                 type="button"
                 className={`text-white ${
-                  statusChanged ? "bg-[#0047BB]" : "bg-[#A00A18]"
+                  switchStatus ? "bg-[#0047BB]" : "bg-[#A00A18]"
                 } font-medium rounded-md text-sm px-[1.5rem] py-2.5 text-center`}
                 onClick={() => {
                   closeModel();
@@ -122,14 +116,6 @@ function Status({ storeId, storeStatus }) {
   };
 
   const onChange = (checked) => {
-    // if (checked === true) {
-    //   setCheckedChildren("Active");
-    //   setUnCheckedChildren();
-    // } else {
-    //   setCheckedChildren();
-    //   setUnCheckedChildren("InActive");
-    // }
-
     setSwitchStatus(checked);
     setIsModalOpen(true);
     console.log(`switch to ${checked}`);
@@ -137,29 +123,26 @@ function Status({ storeId, storeStatus }) {
 
   return (
     <div>
-      <ModelPopUp></ModelPopUp>
-      <div>
-        <Space direction="vertical">
-          <Switch
-            className="bg-gray-500"
-            // checkedChildren={checkedChildren}
-            // unCheckedChildren={unCheckedChildren}
-            defaultChecked={switchStatus}
-            checked={storeStatus}
-            onChange={onChange}
-          />
-        </Space>
-      </div>
-      {/* <div
-            className={`pl-1  ${
-              totalTypesEnabled[0].name === title &&
-              totalTypesEnabled.length === 1
-                ? "text-gray-400"
-                : "text-[#393939]"
-            }`}
-          >
-            {storeStatus ? "Active" : "Inactive"}
-          </div> */}
+      <ModelPopUp />
+      <Row>
+        <Col>
+          <Space direction="vertical">
+            <Switch
+              className="bg-gray-400"
+              defaultChecked={storeStatus}
+              checked={storeStatus}
+              onChange={onChange}
+            />
+          </Space>
+        </Col>
+        <div
+          className={`pl-1 ${
+            storeStatus === "Active" ? "text-gray-400" : "#00c3b3"
+          }`}
+        >
+          {storeStatus ? "Active" : "Inactive"}
+        </div>
+      </Row>
     </div>
   );
 }
