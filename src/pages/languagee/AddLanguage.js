@@ -10,10 +10,15 @@ import {
   Form,
   Input,
   Select,
+  Breadcrumb,
 } from "antd";
 import { toast } from "react-toastify";
 import { BsArrowLeft } from "react-icons/bs";
 import { Navigate, useNavigate } from "react-router-dom";
+
+import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
+
+import "./language.css";
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -155,7 +160,7 @@ const AddLanguage = () => {
           <Button
             icon={<BsArrowLeft className="w-4 h-4 ml-[6px]" />}
             onClick={() => navigate(-1)}
-            className="w-18 h-9 border-[1px] border-solid border-[#393939] box-border rounded py-[6px] px-[16px] mr-[16px]"
+            className="w-2 h-10 border-[1px] border-solid border-[#393939] box-border py-[6px] px-[16px] mr-[16px]"
           ></Button>
           <Title level={3} className="m-0 inline-block !font-normal">
             Add a Language
@@ -167,73 +172,111 @@ const AddLanguage = () => {
 
   return (
     <Layout className="p-3">
+      {/* <Content className="">
+        <Breadcrumb separator="/">
+          <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+          <Breadcrumb.Item href="/">Language</Breadcrumb.Item>
+          <Breadcrumb.Item active>Add Language</Breadcrumb.Item>
+        </Breadcrumb>
+      </Content> */}
+      <Content className="mt-2">
+        <AntDesignBreadcrumbs
+          data={[
+            { title: "Home", navigationPath: "/", displayOrder: 1 },
+            { title: "Language", navigationPath: "/", displayOrder: 2 },
+            { title: "Add Language", navigationPath: "", displayOrder: 3 },
+          ]}
+        />
+      </Content>
       {addLanguageButtonHeader()}
       <Content>
         <Row>
           <Col span={14}>
             <Content className="p-3 bg-white mt-0">
-              <Typography.Title level={3} className="inline-block !font-normal">
-                Language Details
-              </Typography.Title>
               <Content>
-                <Form layout="vertical">
-                  <Form.Item name="language">
-                    <label className="text-[13px]">
-                      Language<sup className="text-red-600 text-sm">*</sup>
-                    </label>
-                    <Input
-                      value={language}
-                      onChange={(e) => {
-                        handleLanguageChange(e);
-                      }}
-                    />
-                  </Form.Item>
-                  <Form.Item name="languageCode">
-                    <label className="text-[13px]">
-                      Language Code<sup className="text-red-600 text-sm">*</sup>
-                    </label>
-                    <Input
-                      onChange={(e) => {
-                        handleLanguageCodeChange(e);
-                      }}
-                      placeholder="Please enter language code here"
-                      value={languageCode}
-                    />
-                  </Form.Item>
-                  <Form.Item label="Native Name" name="nativeName">
-                    <Input
-                      onChange={(e) => {
-                        handleNativeNameChange(e);
-                      }}
-                      value={nativeName}
-                    />
-                  </Form.Item>
-                  <Form.Item label="Script Direction" name="scriptDirection">
-                    <Select
-                      value={scriptDirection}
-                      placeholder="---"
-                      allowClear
-                      onChange={(e) => {
-                        handleScriptDirectionChange(e);
-                      }}
-                    >
-                      <Option value="LTR">LTR</Option>
-                      <Option value="RTL">RTL</Option>
-                    </Select>
-                  </Form.Item>
-                </Form>
-                <Button
-                  style={{ backgroundColor: "#393939" }}
-                  type="primary"
-                  htmlType="submit"
-                  onClick={() => {
-                    validateFieldForLanguage();
-                    //  form.resetFields();
-                  }}
+                <Typography.Title
+                  level={3}
+                  className="inline-block !font-normal"
                 >
-                  Save
-                </Button>
+                  Language Details
+                </Typography.Title>
+                <Content className="my-2">
+                  <label className="text-[13px]">
+                    Language <sup className="text-red-600 text-sm">*</sup>
+                  </label>
+                  <Input
+                    placeholder="Enter Language Id"
+                    value={language}
+                    className={`${
+                      inValidLanguageId
+                        ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400"
+                        : "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
+                    }`}
+                    onChange={(e) => {
+                      handleLanguageChange(e);
+                    }}
+                  />
+                </Content>
+                <Content className="my-2">
+                  <label className="text-[13px]">
+                    Language Code<sup className="text-red-600 text-sm">*</sup>
+                  </label>
+                  <Input
+                    placeholder="Enter Language Code"
+                    value={languageCode}
+                    className={`${
+                      inValidLanguageCode
+                        ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400"
+                        : "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
+                    }`}
+                    onChange={(e) => {
+                      handleLanguageCodeChange(e);
+                    }}
+                  />
+                </Content>
+                <Content className="my-2">
+                  <label className="text-[13px]">Native Name</label>
+                  <Input
+                    placeholder="Enter Native Name"
+                    value={nativeName}
+                    onChange={(e) => {
+                      handleNativeNameChange(e);
+                    }}
+                    className={
+                      "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
+                    }
+                  />
+                </Content>
+                <Content className="my-2">
+                  <label className="text-[13px]">Script Direction</label>
+                  <Select
+                    size={"large"}
+                    style={{ display: "flex" }}
+                    value={scriptDirection}
+                    placeholder="---"
+                    allowClear
+                    onChange={(e) => {
+                      handleScriptDirectionChange(e);
+                    }}
+                  >
+                    <Option value="LTR">LTR</Option>
+                    <Option value="RTL">RTL</Option>
+                  </Select>
+                </Content>
               </Content>
+            </Content>
+            <Content className="mt-3">
+              <Button
+                style={{ backgroundColor: "#393939" }}
+                type="primary"
+                htmlType="submit"
+                onClick={() => {
+                  validateFieldForLanguage();
+                  //  form.resetFields();
+                }}
+              >
+                Save
+              </Button>
             </Content>
           </Col>
         </Row>

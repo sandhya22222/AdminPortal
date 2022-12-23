@@ -10,6 +10,9 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 //! Import user defined components
 import DynamicTable from "../../components/DynamicTable/DynamicTable";
 import StoreModal from "../../components/storeModal/StoreModal";
+import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
+
+import "./language.css";
 
 const { Title } = Typography;
 toast.configure();
@@ -249,32 +252,36 @@ const Language = () => {
       </h5>
     </Layout>
   ) : (
-    <Layout>
-      <Content className="p-2">
-        <Breadcrumb separator="/">
-          <Breadcrumb.Item href="/">Dashboard</Breadcrumb.Item>
-          <Breadcrumb.Item>Language</Breadcrumb.Item>
-        </Breadcrumb>
-      </Content>
-      <Content className="ml-[12px]">
-        <Row>
-          <Col span={17}>
-            <Content className=" float-left mt-3 ">
-              <Title level={5} className="">
-                Language
-              </Title>
-            </Content>
-          </Col>
-          <Col span={7}>
-            <Row>
-              <Col span={12}>
-                <Content className="text-right mt-2 mb-2">
+    <><Layout>
+          {/* <Content className="p-2">
+      <Breadcrumb separator="/">
+        <Breadcrumb.Item href="/">Dashboard</Breadcrumb.Item>
+        <Breadcrumb.Item>Language</Breadcrumb.Item>
+      </Breadcrumb>
+    </Content> */}
+          <Content className="p-2.5 mt-2">
+            <AntDesignBreadcrumbs
+              data={[
+                { title: "Home", navigationPath: "/", displayOrder: 1 },
+
+                { title: "Language", navigationPath: "", displayOrder: 3 },
+              ]} />
+            <Row justify="space-between">
+              <Col>
+                <Content className=" float-left mt-3 ">
+                  <Title level={3} className="!font-normal">
+                    Language
+                  </Title>
+                </Content>
+              </Col>
+
+              <Col>
+                <Content className="text-right mt-3 p-2">
                   <Button
+                    className="rounded-none"
                     onClick={() => navigate("add_language")}
                     type="primary"
                     style={{
-                      marginTop: "10px",
-                      marginLeft: "195px",
                       background: "black",
                     }}
                   >
@@ -283,12 +290,16 @@ const Language = () => {
                 </Content>
               </Col>
             </Row>
-          </Col>
-        </Row>
-        <DynamicTable tableComponentData={tablepropsData} />
-      </Content>
-    </Layout>
+
+          </Content>
+        </Layout>
+        <Layout>
+            <Content className="p-3">
+              <DynamicTable tableComponentData={tablepropsData} />
+            </Content>
+          </Layout></>
   );
 };
+
 
 export default Language;

@@ -3,8 +3,19 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { Content } from "antd/lib/layout/layout";
 import { ArrowLeftOutlined } from "@ant-design/icons";
-import { Row, Col, Typography, Input, Select, Button, Layout } from "antd";
+import {
+  Row,
+  Col,
+  Typography,
+  Input,
+  Select,
+  Button,
+  Layout,
+  Breadcrumb,
+} from "antd";
 import { Navigate, useNavigate, useLocation } from "react-router-dom";
+
+import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
 
 //! Import CSS libraries
 import { Container } from "reactstrap";
@@ -117,7 +128,7 @@ const EditLanguage = () => {
         setNativeName(languageData.native_name);
         setScriptDirection(languageData.scriptDirection);
       }
-     
+
       console.log("found---->", languageData);
       console.log("found---->", _id);
     }
@@ -135,7 +146,7 @@ const EditLanguage = () => {
       });
     }
     if (languageCode === "") {
-      setInValidLanguageCode(true); 
+      setInValidLanguageCode(true);
       validValues -= 1;
       toast("Please Enter Language Code", {
         autoClose: 5000,
@@ -176,14 +187,16 @@ const EditLanguage = () => {
   const editLanguagePutCall = (putObject) => {
     console.log("PutObject----->", putObject);
     axios
-      .put(languageAPI, putObject, 
-      //   {
-      //   params: {
-      //     _id: parseInt(_id),
-      //     language: language,
-      //     language_code: languageCode,
-      //   },
-      // }
+      .put(
+        languageAPI,
+        putObject
+        //   {
+        //   params: {
+        //     _id: parseInt(_id),
+        //     language: language,
+        //     language_code: languageCode,
+        //   },
+        // }
       )
       .then(function (response) {
         console.log(response);
@@ -206,15 +219,34 @@ const EditLanguage = () => {
 
   return (
     <Layout className="p-3">
+      {/* <Content className="">
+        <Breadcrumb separator="/">
+          <Breadcrumb.Item href="/">Dashboard</Breadcrumb.Item>
+          <Breadcrumb.Item href="/">Language</Breadcrumb.Item>
+          <Breadcrumb.Item>Add Language</Breadcrumb.Item>
+        </Breadcrumb>
+      </Content> */}
+      <Content className="mt-2">
+        <AntDesignBreadcrumbs
+          data={[
+            { title: "Home", navigationPath: "/", displayOrder: 1 },
+            { title: "Language", navigationPath: "/", displayOrder: 2 },
+            { title: "Edit Language", navigationPath: "", displayOrder: 3 },
+          ]}
+        />
+      </Content>
       {editLanguageButtonHeader()}
       <Content>
         <Row>
           <Col span={16}>
             <Content className="bg-white">
               <Content className="p-3">
-                <Title level={3} className="inline-block !font-normal">
+                <Typography.Title
+                  level={3}
+                  className="inline-block !font-normal"
+                >
                   Language Details
-                </Title>
+                </Typography.Title>
                 <Content className="my-2">
                   <label className="text-[13px]">
                     Language <sup className="text-red-600 text-sm">*</sup>
@@ -257,11 +289,15 @@ const EditLanguage = () => {
                     onChange={(e) => {
                       handleNativeNameChange(e);
                     }}
+                    className={
+                      "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
+                    }
                   />
                 </Content>
                 <Content className="my-2">
-                  <label className="text-[13px]">Script Description</label>
+                  <label className="text-[13px]">Script Direction</label>
                   <Select
+                    size={"large"}
                     style={{ display: "flex" }}
                     value={scriptDirection}
                     placeholder="---"
@@ -277,15 +313,18 @@ const EditLanguage = () => {
               </Content>
             </Content>
             <Content className="mt-3">
-            <Button
-            onClick={()=>{editLanguagePutCall(); validateFieldForLanguage()}}
-              // onClick={validateFieldForLanguage}
-              style={{ backgroundColor: "#393939" }}
-              type="primary"
-              htmlType="submit"
-            >
-              Update
-            </Button>
+              <Button
+                onClick={() => {
+                  editLanguagePutCall();
+                  validateFieldForLanguage();
+                }}
+                // onClick={validateFieldForLanguage}
+                style={{ backgroundColor: "#393939" }}
+                type="primary"
+                htmlType="submit"
+              >
+                Update
+              </Button>
             </Content>
           </Col>
         </Row>
