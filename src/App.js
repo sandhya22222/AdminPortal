@@ -9,6 +9,7 @@ import {
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import "./core-ui/app.css";
+import "./core-ui/buttons.css";
 import LoadingMarkup from "./components/loader/LoadingMarkup";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
