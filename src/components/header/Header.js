@@ -27,7 +27,7 @@ import { UserOutlined } from "@ant-design/icons";
 import { fnUserLoggedInInfo } from "../../services/redux/actions/ActionsUser";
 
 //! Import user defined components & hooks
-import { StoreLogo } from "../../constants/media";
+import { BrandLogo } from "../../constants/media";
 
 //! Import user defined functions
 
@@ -76,10 +76,10 @@ const Header = () => {
   };
 
   return (
-    <Container fluid className="navbar">
-      <Navbar color="white" dark expand="md" fixed="top" light>
+    <Container fluid className="navbar z-20">
+      <Navbar color="white"  expand="md" fixed="top"  className="drop-shadow">
         <NavbarBrand to="/" tag={Link} className="me-auto">
-          <img src={StoreLogo} alt="logo" width={150} />
+          <img src={BrandLogo} alt="logo"  />
         </NavbarBrand>
         <NavbarToggler
           className="me-2"
@@ -114,7 +114,7 @@ const Header = () => {
           <Nav navbar>
             {typeof persistedUserLoggedInInfo !== "undefined" ? (
               <>
-                <span className="text-[#A00A18] font-bold  mr-5 text-center mt-2">
+                <span className="text-[#A00A18]   mr-5 text-center mt-2">
                   Welcome {""}
                   {persistedUserLoggedInInfo &&
                     persistedUserLoggedInInfo[0].name}
@@ -125,7 +125,7 @@ const Header = () => {
                 >
                   <DropdownToggle
                     caret
-                    className=" !text-black bg-white outline-none !shadow-none"
+                    className="flex  items-center !text-black bg-white outline-none !shadow-none"
                   >
                     <UserOutlined className=" align-middle" />
                   </DropdownToggle>
@@ -154,7 +154,7 @@ const Header = () => {
                 </Dropdown>
               </>
             ) : (
-              <Content className="!no-underline">
+              <Content className="">
                 <Link
                   to={{
                     pathname: "/signin",
