@@ -30,37 +30,40 @@ toast.configure();
 
 const EditLanguage = () => {
   const search = useLocation().search;
-  const _id = new URLSearchParams(search).get("_id");
-  const putObject = {};
-  const [languageListAPIData, setLanguageListAPIData] = useState();
-  // const [isLoadingEditLanguage, setIsLoadingEditLanguage] = useState(true);
-  // const [isNetworkErrorEditLanguage, setIsNetworkErrorEditLanguage] =
-  //   useState(false);
-  const [language, setLanguage] = useState("");
-  const [languageCode, setLanguageCode] = useState("");
-  const [nativeName, setNativeName] = useState("");
-  const [scriptDirection, setScriptDirection] = useState("");
-  // const [languageId, setLangaugeId] = useState();
-  const [inValidLanguageId, setInValidLanguageId] = useState(false);
-  const [inValidLanguageCode, setInValidLanguageCode] = useState(false);
+  const _id = new URLSearchParams(search).get("_id");;
+  const [languageDetails, setLanguageDetails] = useState({
+        language: "",
+        language_code: "",
+        native_name: "",
+        writing_script_direction: "",
+        islanguageDetailsEdited: false
+  })
+  const [isLanguageFieldEmpty, setIsLanguageFieldEmpty] = useState(false);
+  const [isLanguageCodeFieldEmpty, setIsLanguageCodeFieldEmpty] = useState(false);
   const navigate = useNavigate();
 
-  const handleLanguageChange = (e) => {
-    setLanguage(e.target.value);
-  };
-
-  const handleLanguageCodeChange = (e) => {
-    setLanguageCode(e.target.value);
-  };
-
-  const handleNativeNameChange = (e) => {
-    setNativeName(e.target.value);
-  };
-
-  const handleScriptDirectionChange = (value) => {
-    setScriptDirection(value);
-  };
-
+  // hanler for language, language_code, native_name, writing_script_direction
+  const languageHandler = (fieldName, value) => {
+    let copyofLanguageDetails = { ...languageDetails }
+    if (fieldName === "language") {
+      copyofLanguageDetails.language = value;
+      if (value != "") {
+        setIsLanguageFieldEmpty(false)
+      }
+    } else if (fieldName === "language_code") {
+      copyofLanguageDetails.language_code = value;
+      if (value != "") {
+        setIsLanguageCodeFieldEmpty(false)
+      }
+    } else if (fieldName === "native_name") {
+      copyofLanguageDetails.native_name = value
+    } else if (fieldName === "writing_script_direction") {
+      copyofLanguageDetails.writing_script_direction = value
+    }
+    copyofLanguageDetails.islanguageDetailsEdited = true
+    setLanguageDetails(copyofLanguageDetails)
+  }
+  
   const editLanguageButtonHeader = () => {
     return (
       <>
@@ -72,7 +75,7 @@ const EditLanguage = () => {
           ></Button>
 
           <Title level={3} className="m-0 inline-block !font-normal">
-            Edit a Vendor
+            Edit Language
           </Title>
         </Content>
       </>
@@ -83,133 +86,85 @@ const EditLanguage = () => {
   const getLanguageAPI = () => {
     axios
       .get(languageAPI)
-      .then(function (response) {
+      .then((response) => {
         console.log(
-          "Response from  edit language server-----> ",
-          response.data
+          "Response from  edit language server-----> ", response.data
         );
-        setLanguageListAPIData(response.data);
-        // setIsLoadingEditLanguage(false);
-        // setIsNetworkErrorEditLanguage(false);
+        let languageData = response?.data.filter((element) => element.id === parseInt(_id));
+        if (languageData && languageData.length > 0) {
+          let copyofLanguageDetails = {...languageDetails}
+          copyofLanguageDetails.language = languageData[0].language
+          copyofLanguageDetails.language_code = languageData[0].language_code
+          copyofLanguageDetails.native_name = languageData[0].native_name
+          copyofLanguageDetails.writing_script_direction = languageData[0].writing_script_direction
+          setLanguageDetails(copyofLanguageDetails)
+        }
       })
       .catch((error) => {
         console.log("errorFromLanguageApi====>", error);
-        // setIsNetworkErrorEditLanguage(true);
-        // setIsLoadingEditLanguage(false);
       });
   };
 
-  // useEffect(() => {
-  //   window.scrollTo(0, 0);
-  //   getLanguageAPI();
-  // }, []);
-
-  // useEffect(() => {
-  //   if (languageListAPIData && languageListAPIData.length > 0) {
-  //     const found = languageListAPIData.find((element) => element.id === _id);
-  //     setLanguage(languageListAPIData[0].language);
-  //     setLanguageCode(languageListAPIData[0].languageCode);
-  //     setNativeName(languageListAPIData[0].nativeName);
-  //     setScriptDirection(languageListAPIData[0].scriptDirection);
-  //     console.log("found ----->", found);
-  //   }
-  // }, [_id]);
-
   useEffect(() => {
-    if (_id !== null) {
-      var languageData =
-        languageListAPIData &&
-        languageListAPIData.length > 0 &&
-        languageListAPIData.filter((element) => element.id === parseInt(_id));
+    window.scrollTo(0, 0);
+    getLanguageAPI();
+  }, []);
 
-      if (languageListAPIData && languageListAPIData.length > 0) {
-        setLanguage(languageData.language);
-        setLanguageCode(languageData.language_code);
-        setNativeName(languageData.native_name);
-        setScriptDirection(languageData.scriptDirection);
-      }
-
-      console.log("found---->", languageData);
-      console.log("found---->", _id);
-    }
-  }, [_id]);
-
-  const validateFieldForLanguage = () => {
-    let validValues = 2;
-    if (language === "") {
-      setInValidLanguageId(true);
-      validValues -= 1;
+ 
+  const validateLanguageFieldEmptyOrNot = () => {
+    if (languageDetails.language === "") {
+      setIsLanguageFieldEmpty(true);
       toast("Please Enter Language Id", {
         autoClose: 5000,
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
     }
-    if (languageCode === "") {
-      setInValidLanguageCode(true);
-      validValues -= 1;
+    if (languageDetails.language_code === "") {
+      setIsLanguageCodeFieldEmpty(true);
       toast("Please Enter Language Code", {
         autoClose: 5000,
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
     }
-    // if (validValues === 2) {
-    //   if (
-    //     languageListAPIData &&
-    //     languageListAPIData.length > 0 &&
-    //     languageCode === languageListAPIData[0].languageCode &&
-    //     language !== languageListAPIData[0].language
-    //   ) {
-    //     putObject.language = language;
-    //     editLanguagePutCall(putObject);
-    //   } else if (
-    //     languageListAPIData &&
-    //     languageListAPIData.length > 0 &&
-    //     language === languageListAPIData[0].language &&
-    //     languageCode !== languageListAPIData[0].languageCode
-    //   ) {
-    //     putObject.languageCode = languageCode;
-    //     editLanguagePutCall(putObject);
-    //   } else if (
-    //     languageListAPIData &&
-    //     languageListAPIData.length > 0 &&
-    //     language !== languageListAPIData[0].language &&
-    //     languageCode !== languageListAPIData[0].languageCode
-    //   ) {
-    //     putObject.language = language;
-    //     putObject.languageCode = languageCode;
-    //     editLanguagePutCall(putObject);
-    //   }
+
+    if(languageDetails.language !== "" && languageDetails.language_code !== "" && languageDetails.islanguageDetailsEdited){
+      editLanguage()
+    }
+   
   };
 
   // Language PUT API call
-  const editLanguagePutCall = (putObject) => {
-    console.log("PutObject----->", putObject);
+  const editLanguage = () => {
+    const langaugeData = new FormData();
+    langaugeData.append("language", languageDetails.language);
+    langaugeData.append("language_code", languageDetails.language_code);
+    langaugeData.append("native_name", languageDetails.native_name);
+    langaugeData.append("writing_script_direction", languageDetails.writing_script_direction)
+    console.log("PutObject----->", langaugeData);
     axios
       .put(
         languageAPI,
-        putObject
-        //   {
-        //   params: {
-        //     _id: parseInt(_id),
-        //     language: language,
-        //     language_code: languageCode,
-        //   },
-        // }
+        langaugeData,
+          {
+          params: {
+            _id: parseInt(_id)
+          },
+        }
       )
       .then(function (response) {
         console.log(response);
         if (response.status === 200 || response.status === 201) {
-          getLanguageAPI();
-          toast("Edit Language is Successfully Done! ", {
+          // getLanguageAPI();
+          toast("Language edited sucessfully.", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
           });
         }
       })
       .catch((error) => {
-        toast(error.response.data.message, {
+        toast(error.response.data.message + "_field in language edition", {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
         });
@@ -217,6 +172,8 @@ const EditLanguage = () => {
       });
   };
 
+
+  console.log("language_details", languageDetails)
   return (
     <Layout className="p-3">
       {/* <Content className="">
@@ -253,14 +210,14 @@ const EditLanguage = () => {
                   </label>
                   <Input
                     placeholder="Enter Language Id"
-                    value={language}
+                    value={languageDetails.language}
                     className={`${
-                      inValidLanguageId
+                      isLanguageFieldEmpty
                         ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400"
                         : "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
                     }`}
                     onChange={(e) => {
-                      handleLanguageChange(e);
+                      languageHandler("language", e.target.value);
                     }}
                   />
                 </Content>
@@ -270,14 +227,14 @@ const EditLanguage = () => {
                   </label>
                   <Input
                     placeholder="Enter Language Code"
-                    value={languageCode}
+                    value={languageDetails.language_code}
                     className={`${
-                      inValidLanguageCode
+                      isLanguageCodeFieldEmpty
                         ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400"
                         : "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
                     }`}
                     onChange={(e) => {
-                      handleLanguageCodeChange(e);
+                      languageHandler("language_code", e.target.value);
                     }}
                   />
                 </Content>
@@ -285,9 +242,9 @@ const EditLanguage = () => {
                   <label className="text-[13px]">Native Name</label>
                   <Input
                     placeholder="Enter Native Name"
-                    value={nativeName}
+                    value={languageDetails.native_name}
                     onChange={(e) => {
-                      handleNativeNameChange(e);
+                      languageHandler("native_name", e.target.value);
                     }}
                     className={
                       "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
@@ -299,11 +256,12 @@ const EditLanguage = () => {
                   <Select
                     size={"large"}
                     style={{ display: "flex" }}
-                    value={scriptDirection}
+                    defaultValue={languageDetails.writing_script_direction}
+                    value={languageDetails.writing_script_direction}
                     placeholder="---"
                     allowClear
                     onChange={(e) => {
-                      handleScriptDirectionChange(e);
+                      languageHandler("writing_script_direction",e);
                     }}
                   >
                     <Option value="LTR">LTR</Option>
@@ -315,10 +273,8 @@ const EditLanguage = () => {
             <Content className="mt-3">
               <Button
                 onClick={() => {
-                  editLanguagePutCall();
-                  validateFieldForLanguage();
+                  validateLanguageFieldEmptyOrNot();
                 }}
-                // onClick={validateFieldForLanguage}
                 style={{ backgroundColor: "#393939" }}
                 type="primary"
                 htmlType="submit"
