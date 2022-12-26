@@ -11,6 +11,7 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import DynamicTable from "../../components/DynamicTable/DynamicTable";
 import StoreModal from "../../components/storeModal/StoreModal";
 import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
+import SkeletonComponent from "../../components/Skeleton/SkeletonComponent";
 import "./language.css";
 
 const { Title } = Typography;
@@ -116,7 +117,7 @@ const Language = () => {
                 okCallback={() => deleteLanguage()}
                 cancelCallback={() => closeDeleteModal()}
               >
-                {<div>{"Are you sure you want to delete the language ?"}</div>}
+                {<div className="my-4">{"Are you sure you want to delete the language ?"}</div>}
               </StoreModal>
               <DeleteOutlined
                 className="app-delete-icon"
@@ -221,7 +222,6 @@ const Language = () => {
     table_header: columns,
     table_content: languageData,
     pagenationSettings: pagination,
-
     search_settings: {
       is_enabled: true,
       search_title: "Search by language",
@@ -239,65 +239,61 @@ const Language = () => {
     },
   };
 
-  return isLoading ? (
-    <div>
-      <h1>Loading....</h1>
-    </div>
-  ) : isNetworkErrorLanguage ? (
-    <Layout className="p-0 text-center mb-3 bg-[#F4F4F4]">
-      <h5>
-        Your's back-end server/services seems to be down, please start your
-        server/services and try again.
-      </h5>
-    </Layout>
-  ) : (
-    <><Layout>
-          {/* <Content className="p-2">
-      <Breadcrumb separator="/">
-        <Breadcrumb.Item href="/">Dashboard</Breadcrumb.Item>
-        <Breadcrumb.Item>Language</Breadcrumb.Item>
-      </Breadcrumb>
-    </Content> */}
-          <Content className="p-2.5 mt-2">
-            <AntDesignBreadcrumbs
-              data={[
-                { title: "Home", navigationPath: "/", displayOrder: 1 },
+  return <>
+          <Layout>
+            <Content className="p-3 mb-3">
+              <AntDesignBreadcrumbs
+                data={[
+                  { title: "Home", navigationPath: "/", displayOrder: 1 },
 
-                { title: "Language", navigationPath: "", displayOrder: 3 },
-              ]} />
-            <Row justify="space-between">
-              <Col>
-                <Content className=" float-left mt-3 ">
-                  <Title level={3} className="!font-normal">
-                    Language
-                  </Title>
-                </Content>
-              </Col>
+                  { title: "Language", navigationPath: "", displayOrder: 3 },
+                ]} />
+              <Row justify={"space-between"}>
+                <Col>
+                  <Content className=" float-left mt-3 ">
+                    <Title level={3} className="!font-normal">
+                      Language
+                    </Title>
+                  </Content>
+                </Col>
 
-              <Col>
-                <Content className="text-right mt-3 p-2">
-                  <Button
-                    className="rounded-none"
-                    onClick={() => navigate("add_language")}
-                    type="primary"
-                    style={{
-                      background: "black",
-                    }}
-                  >
-                    Add Language
-                  </Button>
-                </Content>
-              </Col>
-            </Row>
+                <Col>
+                  <Content className="text-right mt-3">
+                    <Button
+                      className="rounded-none"
+                      onClick={() => navigate("add_language")}
+                      type="primary"
+                      style={{
+                        background: "black",
+                      }}
+                    >
+                      Add Language
+                    </Button>
+                  </Content>
+                </Col>
+              </Row>
 
-          </Content>
-        </Layout>
-        <Layout>
-            <Content className="p-3">
-              <DynamicTable tableComponentData={tablepropsData} />
             </Content>
-          </Layout></>
-  );
+          </Layout>
+    {isLoading ? (
+      <Content className=" bg-white p-3 mb-3">
+        <SkeletonComponent />
+        <SkeletonComponent Layout="layout1" />
+      </Content>
+    ) : isNetworkErrorLanguage ? (
+      <Layout className="p-0 text-center mb-3 bg-[#F4F4F4]">
+        <h5>
+          Your's back-end server/services seems to be down, please start your
+          server/services and try again.
+        </h5>
+      </Layout>
+    ) : <Layout>
+      <Content className="p-3">
+        <DynamicTable tableComponentData={tablepropsData} />
+      </Content>
+    </Layout>}
+          </>
+  
 };
 
 

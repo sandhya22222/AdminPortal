@@ -11,8 +11,8 @@ import {
   Select,
 } from "antd";
 import { toast } from "react-toastify";
-import { BsArrowLeft } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
+import { ArrowLeftOutlined } from "@ant-design/icons";
+import { useNavigate, Link } from "react-router-dom";
 import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
 import "./language.css";
 
@@ -27,11 +27,12 @@ const AddLanguage = () => {
   const [language, setLanguage] = useState("");
   const [languageCode, setLanguageCode] = useState("");
   const [nativeName, setNativeName] = useState("");
-  const [scriptDirection, setScriptDirection] = useState("");
+  const [scriptDirection, setScriptDirection] = useState("LTR");
   const navigate = useNavigate();
 
   const handleLanguageChange = (e) => {
     setLanguage(e.target.value);
+    setNativeName(e.target.value);
     if (e.target.value != "") {
       setIsLanguageFieldEmpty(false)
     }
@@ -126,14 +127,13 @@ const AddLanguage = () => {
   const addLanguageButtonHeader = () => {
     return (
       <>
-        <Content className="w-[50%] float-left my-3">
-          <Button
-            icon={<BsArrowLeft className="w-4 h-4 ml-[6px]" />}
-            onClick={() => navigate(-1)}
-            className="w-2 h-10 border-[1px] border-solid border-[#393939] box-border py-[6px] px-[16px] mr-[16px]"
-          ></Button>
+        <Content className="w-[50%] float-left flex items-center my-3">
+          <Link to="/dashboard/language">
+              <ArrowLeftOutlined role={"button"} className={"mr-4 text-black  w-12  h-10 border-[1px] border-solid border-[#393939] rounded-md pt-[11px]"} />
+          </Link>
+
           <Title level={3} className="m-0 inline-block !font-normal">
-            Add a Language
+            Add Language
           </Title>
         </Content>
       </>
@@ -142,18 +142,11 @@ const AddLanguage = () => {
 
   return (
     <Layout className="p-3">
-      {/* <Content className="">
-        <Breadcrumb separator="/">
-          <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-          <Breadcrumb.Item href="/">Language</Breadcrumb.Item>
-          <Breadcrumb.Item active>Add Language</Breadcrumb.Item>
-        </Breadcrumb>
-      </Content> */}
       <Content className="mt-2">
         <AntDesignBreadcrumbs
           data={[
             { title: "Home", navigationPath: "/", displayOrder: 1 },
-            { title: "Language", navigationPath: "/", displayOrder: 2 },
+            { title: "Language", navigationPath: "/dashboard/language", displayOrder: 2 },
             { title: "Add Language", navigationPath: "", displayOrder: 3 },
           ]}
         />
@@ -236,16 +229,31 @@ const AddLanguage = () => {
               </Content>
             </Content>
             <Content className="mt-3">
-              <Button
-                style={{ backgroundColor: "#393939" }}
-                type="primary"
-                htmlType="submit"
-                onClick={() => {
-                  validateLanguageFieldEmptyOrNot();
-                }}
-              >
-                Save
-              </Button>
+            <Row>
+                  <Col>
+                    <Link to="/dashboard/language">
+                      <Button
+                        style={{ background: "#FFFFFF" }}
+                        className="w-24 h-10 p-2 app-btn-secondary cursor-pointer"
+                      >
+                        <label className="h-5 text-[14px]  text-[#393939] cursor-pointer">
+                          Discard
+                        </label>
+                      </Button>
+                    </Link>
+                  </Col>
+                  <Col className="pl-4">
+                    <Button
+                      style={{ backgroundColor: "#393939" }}
+                      className="w-24 h-10 p-2 cursor-pointer app-btn-primary"
+                      onClick={validateLanguageFieldEmptyOrNot}
+                    >
+                      <label className=" h-5  text-[14px]  text-[#FFFFFF] cursor-pointer">
+                        Save
+                      </label>
+                    </Button>
+                  </Col>
+                </Row>
             </Content>
           </Col>
         </Row>
