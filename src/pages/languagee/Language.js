@@ -81,7 +81,7 @@ const Language = () => {
       },
     },
     {
-      title: "Language Support Documents",
+      title: "Language Support Document",
       dataIndex: "lang_support_docs",
       key: "lang_support_docs",
       render: (text, record) => {
@@ -94,7 +94,7 @@ const Language = () => {
       key: "",
       render: (text, record) => {
         return (
-          <Col span={20}>
+          <Col span={20} className="whitespace-nowrap">
             <Link
               to={{
                 pathname: "edit_language",
