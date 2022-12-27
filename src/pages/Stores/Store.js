@@ -7,7 +7,8 @@ import {
   Button,
   Drawer,
   Input,
-  Breadcrumb,
+  Spin,
+  Skeleton,
 } from "antd";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -50,6 +51,7 @@ const Stores = () => {
 
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isUpLoading, setIsUpLoading] = useState(false);
   const [isNetworkError, setIsNetworkError] = useState(false);
   const [storeApiData, setStoreApiData] = useState([]);
   const [name, setName] = useState("");
@@ -59,6 +61,7 @@ const Stores = () => {
   const [selectedTabDataForStore, setSelectedTabDataForStore] = useState();
   const [drawerAction, setDrawerAction] = useState();
   const [countApi, setCountApi] = useState(0);
+  const [postData, setPostData] = useState(null);
   //! table columns
   const StoreTableColumn = [
     {
@@ -237,7 +240,17 @@ const Stores = () => {
   };
   useEffect(() => {
     getStoreApi();
-  }, [countApi]);
+  }, []);
+
+  //!useEffect for getting the table in table without refreshing
+  useEffect(() => {
+    if (postData != null) {
+      const temp = [...storeApiData];
+      temp.push(postData);
+      setStoreApiData(temp);
+    }
+  }, [postData]);
+
   //! post call for stores
   const addStoreData = () => {
     // validation for name
@@ -251,6 +264,7 @@ const Stores = () => {
     const postBody = {
       name: name,
     };
+    setIsUpLoading(true);
     axios
       .post(storeDataAPI, postBody)
       .then((response) => {
@@ -258,7 +272,10 @@ const Stores = () => {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
         });
+        setIsUpLoading(false);
+        onClose();
         console.log("Server Success Response From stores", response.data);
+        setPostData(response.data);
       })
       .catch((error) => {
         toast(error.response.data.message, {
@@ -266,8 +283,10 @@ const Stores = () => {
           type: "error",
         });
         console.log(error.response);
+        setIsUpLoading(false);
+        // onClose();
       });
-    setCountApi(countApi + 1);
+    // setCountApi(countApi + 1);
   };
   //!put call for stores
   const editStoreData = () => {
@@ -283,12 +302,23 @@ const Stores = () => {
     const putObject = {
       name: editName,
     };
+    // enabling spinner
+    setIsUpLoading(true);
     axios
       .put(storeEditIdAPI.replace("{id}", store_id), putObject)
       .then((response) => {
-        console.log(response);
+        console.log("put response", response, storeApiData);
+        let copyofStoreAPIData = [...storeApiData];
+        copyofStoreAPIData.forEach((obj) => {
+          if (obj.id === response.data.id) {
+            obj.name = response.data.name;
+          }
+        });
+        setStoreApiData(copyofStoreAPIData);
+        // disabling spinner
+        setIsUpLoading(false);
+        onClose();
         if (response.status == 200 || response.status == 201) {
-          getStoreApi();
           toast("Edit Store is Successfully Done! ", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
@@ -296,13 +326,16 @@ const Stores = () => {
         }
       })
       .catch((error) => {
+        // disabling spinner
+        setIsUpLoading(false);
+        // onClose();
         toast(error.response.data.res, {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
         });
         console.log(error.response.data);
       });
-    setCountApi(countApi + 1);
+    // setCountApi(countApi + 1);
   };
   useEffect(() => {
     if (store_id !== null) {
@@ -317,8 +350,8 @@ const Stores = () => {
   }, [store_id]);
 
   return (
-    <Content className="p-2">
-      <Content className="p-2">
+    <Content>
+      <Content>
         <AntDesignBreadcrumbs
           data={[
             { title: "Dashboard", navigationPath: "/", displayOrder: 1 },
@@ -326,34 +359,40 @@ const Stores = () => {
           ]}
         />
       </Content>
-      <Content className="p-2">
-        <Row className="flex items-center">
-          <Col span={4}>
-            <Title level={3} className="!font-normal float-left">
+      {/* <Content className="pt-2"> */}
+      <Row justify={"space-between"}>
+        <Col span={4}>
+          <Content className=" float-left mt-3 ">
+            <Title level={3} className="!font-normal">
               Stores
             </Title>
-          </Col>
-          <Col span={4} offset={16}>
-            <Content className="text-right">
-              <Button className="!bg-black text-white rounded-none" onClick={showAddDrawer}>
-                Add Stores
-              </Button>
-              <Drawer
-                title={
-                  drawerAction && drawerAction === "post"
-                    ? "Add Store"
-                    : "Edit Store"
-                }
-                placement="right"
-                onClose={onClose}
-                open={open}
-              >
-                <Title level={5}>
-                  Name
-                  <sup className="text-red-600 text-sm pl-1">*</sup>
-                </Title>
-                {drawerAction && drawerAction === "post" ? (
-                  <>
+          </Content>
+        </Col>
+        <Col span={4} offset={16}>
+          <Content className="text-right mt-3">
+            <Button
+              className="!bg-black text-white rounded-none"
+              onClick={showAddDrawer}
+            >
+              Add Stores
+            </Button>
+            <Drawer
+              title={
+                drawerAction && drawerAction === "post"
+                  ? "Add Store"
+                  : "Edit Store"
+              }
+              placement="right"
+              onClose={onClose}
+              open={open}
+            >
+              <Title level={5}>
+                Name
+                <sup className="text-red-600 text-sm pl-1">*</sup>
+              </Title>
+              {drawerAction && drawerAction === "post" ? (
+                <>
+                  <Spin tip="Please wait!" size="large" spinning={isUpLoading}>
                     <Input
                       placeholder="Enter store name"
                       value={name}
@@ -371,14 +410,15 @@ const Stores = () => {
                       className="bg-black text-white"
                       onClick={() => {
                         addStoreData();
-                        onClose();
                       }}
                     >
                       Save
                     </Button>
-                  </>
-                ) : (
-                  <>
+                  </Spin>
+                </>
+              ) : (
+                <>
+                  <Spin tip="Please wait!" size="large" spinning={isUpLoading}>
                     <Input
                       value={editName}
                       className={`${
@@ -394,22 +434,27 @@ const Stores = () => {
                       className="bg-black text-white"
                       onClick={() => {
                         editStoreData();
-                        onClose();
                       }}
                     >
                       Update
                     </Button>
-                  </>
-                )}
-              </Drawer>
-            </Content>
-          </Col>
-        </Row>
-      </Content>
+                  </Spin>
+                </>
+              )}
+            </Drawer>
+          </Content>
+        </Col>
+      </Row>
+      {/* </Content> */}
       {isLoading ? (
-        <Content className=" bg-white p-3 mb-3">
-          <SkeletonComponent />
-          <SkeletonComponent Layout="layout1" />
+        <Content className=" bg-white mb-3">
+          <Skeleton
+            active
+            paragraph={{
+              rows: 6,
+            }}
+            className="p-3"
+          ></Skeleton>
         </Content>
       ) : isNetworkError ? (
         <Layout className="p-0 text-center mb-3 bg-[#F4F4F4]">
@@ -419,7 +464,7 @@ const Stores = () => {
           </h5>
         </Layout>
       ) : (
-        <Layout className="p-2">
+        <Content>
           <Content className="px-3">
             <DmTabAntDesign
               tabData={storeTabData}
@@ -432,7 +477,7 @@ const Stores = () => {
           <Content>
             <DynamicTable tableComponentData={tablePropsData} />
           </Content>
-        </Layout>
+        </Content>
       )}
     </Content>
   );

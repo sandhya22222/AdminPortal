@@ -44,18 +44,19 @@ function Status({ storeId, storeStatus }) {
         },
       })
       .then((response) => {
-        setIsModalOpen(false);
         console.log(response);
         toast("Edit Status is done Successfully", {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
         });
+        closeModal()
       })
       .catch((error) => {
         toast(error.message, {
           type: "error",
         });
         console.log("error", error);
+        closeModal()
       });
 
     console.log("post body for ---", storeEditStatusAPI, " is:", reqbody);
@@ -152,7 +153,6 @@ function Status({ storeId, storeStatus }) {
         ) : (
           <div>
             <p>{`You are about the deactivate from your store. Would you like to proceed?`}</p>
-            {/* <p>{`All products created under this category will be lost Are you sure you like to proceed deactivating?`}</p> */}
           </div>
         )}
       </StoreModal>
