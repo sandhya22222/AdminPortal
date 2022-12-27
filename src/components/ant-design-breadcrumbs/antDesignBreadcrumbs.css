@@ -1,0 +1,7 @@
+.ant-breadcrumb-link {
+    text-decoration: none !important;
+    background: none !important;
+}
+.ant-breadcrumb li:last-child {
+    color: rgba(0, 0, 0, 0.85);
+}
