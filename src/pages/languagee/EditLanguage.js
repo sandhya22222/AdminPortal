@@ -38,6 +38,8 @@ const EditLanguage = () => {
         language_code: "",
         native_name: "",
         writing_script_direction: "",
+        lang_support_docs: "",
+        lang_file_name: "",
         islanguageDetailsEdited: false
   })
   const [isLanguageFieldEmpty, setIsLanguageFieldEmpty] = useState(false);
@@ -62,6 +64,23 @@ const EditLanguage = () => {
       copyofLanguageDetails.native_name = value
     } else if (fieldName === "writing_script_direction") {
       copyofLanguageDetails.writing_script_direction = value
+    }else if(fieldName === "lang_support_docs"){
+      if (value[0].size < 4 * 1000000) {
+        let file = value[0];
+        let fileExtension = file.name.split(".").pop();
+        copyofLanguageDetails.lang_support_docs = file
+        // setFileData(file);
+        // setFileExtension(fileExtension)
+        console.log("Final FIle In Function", file, fileExtension);
+      } else {
+        toast(
+          `Please select File less than four mb`,
+          {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "warning",
+          }
+        );
+      }
     }
     copyofLanguageDetails.islanguageDetailsEdited = true
     setLanguageDetails(copyofLanguageDetails)
@@ -100,6 +119,8 @@ const EditLanguage = () => {
           copyofLanguageDetails.language_code = languageData[0].language_code
           copyofLanguageDetails.native_name = languageData[0].native_name
           copyofLanguageDetails.writing_script_direction = languageData[0].writing_script_direction
+          copyofLanguageDetails.lang_support_docs = languageData[0].lang_support_docs
+          copyofLanguageDetails.lang_file_name = languageData[0].lang_support_docs
           setLanguageDetails(copyofLanguageDetails)
         }
         // disabling skeleton
@@ -149,6 +170,9 @@ const EditLanguage = () => {
     langaugeData.append("language_code", languageDetails.language_code);
     langaugeData.append("native_name", languageDetails.native_name);
     langaugeData.append("writing_script_direction", languageDetails.writing_script_direction)
+    if(typeof languageDetails.lang_support_docs === "object"){
+      langaugeData.append("lang_support_docs", languageDetails.lang_support_docs)
+      }
     console.log("PutObject----->", langaugeData);
     // enabling spinner
     setIsLoading(true);
@@ -191,7 +215,7 @@ const EditLanguage = () => {
 
   console.log("language_details", languageDetails)
   return (
-    <Layout className="p-3">
+    <Layout>
       <Content className="mt-2">
         <AntDesignBreadcrumbs
           data={[
@@ -281,6 +305,19 @@ const EditLanguage = () => {
                       <Option value="RTL">RTL</Option>
                     </Select>
                   </Content>
+                  {/* TODO: As the langauge api is not supporting the put call for the browse, so we are commiting the code for now:
+                  will uncomment once the api is ready..
+                  */}
+                    {/* <Content className="my-2">
+                      <label className="text-[13px] pb-1">Language Supported Document</label>
+                      <Input
+                        type="file"
+                        name="filename"
+                        onChange={(e) => languageHandler("lang_support_docs", e.target.files)}
+                        accept=".csv"
+                      />
+                      <p className="mt-2">Currently <span className="text-red-600">{languageDetails.lang_file_name} </span> is selected as Language supported document.</p>
+                    </Content> */}
                 </Content>}
               </Content>
             <Content className="mt-3">

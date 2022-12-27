@@ -26,7 +26,7 @@ const Dashboard = () => {
   usePageTitle("Admin Portal - Dashboard");
 
   return (
-    <Content className="p-3">
+    <Content>
       <AntDesignBreadcrumbs
         data={[
           { title: "Home", navigationPath: "/", displayOrder: 1 },
