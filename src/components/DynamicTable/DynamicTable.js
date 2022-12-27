@@ -571,21 +571,21 @@ const DynamicTable = ({ tableComponentData }) => {
               //   hideOnSinglePage: false,
               // }}
               pagination={false}
-              rowSelection={{
-                type: "checkbox",
-                selectedRowKeys: alreadySelectedRows,
-                onChange: (keys) => {
-                  setAlreadySelectedRows(keys);
-                },
-              }}
+              // rowSelection={{
+              //   type: "checkbox",
+              //   selectedRowKeys: alreadySelectedRows,
+              //   onChange: (keys) => {
+              //     setAlreadySelectedRows(keys);
+              //   },
+              // }}
             ></Table>
           </Content>
         </div>
       ) : (
         <div className="h-28 flex items-center justify-center !bg-white">
-          <h3 className="!font-medium">
+          <h6 className="!font-medium">
             Currently no data available to display in table
-          </h3>
+          </h6>
         </div>
       )}
     </div>
