@@ -18,6 +18,7 @@ import { useLocation, Link } from "react-router-dom";
 import DmTabAntDesign from "../../components/DmTabAntDesign/DmTabAntDesign";
 import DynamicTable from "../../components/DynamicTable/DynamicTable";
 import SkeletonComponent from "../../components/Skeleton/SkeletonComponent";
+import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
 import Status from "./Status";
 const { Content } = Layout;
 const { Title } = Typography;
@@ -57,15 +58,14 @@ const Stores = () => {
   const [inValidEditName, setInValidEditName] = useState("");
   const [selectedTabDataForStore, setSelectedTabDataForStore] = useState();
   const [drawerAction, setDrawerAction] = useState();
-  const [visible, setVisible] = useState(false);
-
+  const [countApi, setCountApi] = useState(0);
   //! table columns
   const StoreTableColumn = [
     {
       title: "Id",
       dataIndex: "id",
       key: "id",
-      width: "5%",
+      width: "8%",
       render: (text, record) => {
         return <>{record.id}</>;
       },
@@ -99,7 +99,7 @@ const Stores = () => {
       title: "Created Date",
       dataIndex: "created_on",
       key: "created_on",
-      width: "45%",
+      width: "42%",
       render: (text, record) => {
         return (
           <Row>
@@ -237,12 +237,11 @@ const Stores = () => {
   };
   useEffect(() => {
     getStoreApi();
-  }, []);
+  }, [countApi]);
   //! post call for stores
   const addStoreData = () => {
-    let count = 1;
+    // validation for name
     if (name === "" || name === null || name === undefined) {
-      count--;
       setInValidName(true);
       toast("Please provide the Name", {
         position: toast.POSITION.TOP_RIGHT,
@@ -252,7 +251,6 @@ const Stores = () => {
     const postBody = {
       name: name,
     };
-    console.log("postBody", postBody);
     axios
       .post(storeDataAPI, postBody)
       .then((response) => {
@@ -260,12 +258,7 @@ const Stores = () => {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
         });
-        // var selectedStoreData = storeApiData.filter(
-        //   (item) => item.id === store_id
-        // );
-        // setNewStoreData([[...newStoreData], [selectedStoreData]]);
         console.log("Server Success Response From stores", response.data);
-        // console.log("newStoreData",selectedStoreData)
       })
       .catch((error) => {
         toast(error.response.data.message, {
@@ -274,6 +267,7 @@ const Stores = () => {
         });
         console.log(error.response);
       });
+    setCountApi(countApi + 1);
   };
   //!put call for stores
   const editStoreData = () => {
@@ -308,6 +302,7 @@ const Stores = () => {
         });
         console.log(error.response.data);
       });
+    setCountApi(countApi + 1);
   };
   useEffect(() => {
     if (store_id !== null) {
@@ -321,124 +316,125 @@ const Stores = () => {
     }
   }, [store_id]);
 
-  return isLoading ? (
-    <Content className=" bg-white p-3 mb-3">
-      <SkeletonComponent />
-      <SkeletonComponent Layout="layout1" />
-    </Content>
-  ) : isNetworkError ? (
-    <Layout className="p-0 text-center mb-3 bg-[#F4F4F4]">
-      <h5>
-        Your's back-end server/services seems to be down, please start your
-        server/services and try again.
-      </h5>
-    </Layout>
-  ) : (
-    <Layout>
+  return (
+    <Content className="p-2">
       <Content className="p-2">
-        <Breadcrumb separator="/">
-          <Breadcrumb.Item href="/">Dashboard</Breadcrumb.Item>
-          <Breadcrumb.Item>Store</Breadcrumb.Item>
-        </Breadcrumb>
+        <AntDesignBreadcrumbs
+          data={[
+            { title: "Dashboard", navigationPath: "/", displayOrder: 1 },
+            { title: "Store", navigationPath: "", displayOrder: 2 },
+          ]}
+        />
       </Content>
-      <Layout className="bg-blue mt-2 p-3">
-        <Content>
-          <Row>
-            <Col span={4}>
-              <Title level={3} className="!font-normal float-left">
-                Stores
-              </Title>
-            </Col>
-            <Col span={4} offset={16}>
-              <Content className="text-right">
-                <Button
-                  className="!bg-black text-white"
-                  onClick={showAddDrawer}
-                >
-                  Add Stores
-                </Button>
-                <Drawer
-                  title={
-                    drawerAction && drawerAction === "post"
-                      ? "Add Store"
-                      : "Edit Store"
-                  }
-                  placement="right"
-                  onClose={onClose}
-                  open={open}
-                  className="mt-[50px]"
-                >
-                  <Title level={5}>
-                    Name
-                    <sup className="text-red-600 text-sm pl-1">*</sup>
-                  </Title>
-                  {drawerAction && drawerAction === "post" ? (
-                    <>
-                      <Input
-                        placeholder="Enter store name"
-                        value={name}
-                        className={`${
-                          inValidName
-                            ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400 mb-4"
-                            : "h-10 px-3 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm mb-4"
-                        }`}
-                        onChange={(e) => {
-                          setName(e.target.value);
-                        }}
-                      />
-                      <Button
-                        className="bg-black text-white"
-                        onClick={() => {
-                          addStoreData();
-                          onClose();
-                        }}
-                      >
-                        Save
-                      </Button>
-                    </>
-                  ) : (
-                    <>
-                      <Input
-                        value={editName}
-                        className={`${
-                          inValidEditName
-                            ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400 mb-4"
-                            : "h-10 px-3 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm mb-4"
-                        }`}
-                        onChange={(e) => {
-                          setEditName(e.target.value);
-                        }}
-                      />
-                      <Button
-                        className="bg-black text-white"
-                        onClick={() => {
-                          editStoreData();
-                          onClose();
-                        }}
-                      >
-                        Update
-                      </Button>
-                    </>
-                  )}
-                </Drawer>
-              </Content>
-            </Col>
-          </Row>
+      <Content className="p-2">
+        <Row className="flex items-center">
+          <Col span={4}>
+            <Title level={3} className="!font-normal float-left">
+              Stores
+            </Title>
+          </Col>
+          <Col span={4} offset={16}>
+            <Content className="text-right">
+              <Button className="!bg-black text-white rounded-none" onClick={showAddDrawer}>
+                Add Stores
+              </Button>
+              <Drawer
+                title={
+                  drawerAction && drawerAction === "post"
+                    ? "Add Store"
+                    : "Edit Store"
+                }
+                placement="right"
+                onClose={onClose}
+                open={open}
+              >
+                <Title level={5}>
+                  Name
+                  <sup className="text-red-600 text-sm pl-1">*</sup>
+                </Title>
+                {drawerAction && drawerAction === "post" ? (
+                  <>
+                    <Input
+                      placeholder="Enter store name"
+                      value={name}
+                      className={`${
+                        inValidName
+                          ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400 mb-4"
+                          : "h-10 px-3 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm mb-4"
+                      }`}
+                      onChange={(e) => {
+                        setName(e.target.value);
+                        setInValidName(false);
+                      }}
+                    />
+                    <Button
+                      className="bg-black text-white"
+                      onClick={() => {
+                        addStoreData();
+                        onClose();
+                      }}
+                    >
+                      Save
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Input
+                      value={editName}
+                      className={`${
+                        inValidEditName
+                          ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400 mb-4"
+                          : "h-10 px-3 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm mb-4"
+                      }`}
+                      onChange={(e) => {
+                        setEditName(e.target.value);
+                      }}
+                    />
+                    <Button
+                      className="bg-black text-white"
+                      onClick={() => {
+                        editStoreData();
+                        onClose();
+                      }}
+                    >
+                      Update
+                    </Button>
+                  </>
+                )}
+              </Drawer>
+            </Content>
+          </Col>
+        </Row>
+      </Content>
+      {isLoading ? (
+        <Content className=" bg-white p-3 mb-3">
+          <SkeletonComponent />
+          <SkeletonComponent Layout="layout1" />
         </Content>
-        <Content>
-          <DmTabAntDesign
-            tabData={storeTabData}
-            handleTabChangeFunction={handleTabChangeStore}
-            defaultSelectedTabKey={0}
-            tabType={"line"}
-            tabBarPosition={"bottom"}
-          />
-        </Content>
-        <Content>
-          <DynamicTable tableComponentData={tablePropsData} />
-        </Content>
-      </Layout>
-    </Layout>
+      ) : isNetworkError ? (
+        <Layout className="p-0 text-center mb-3 bg-[#F4F4F4]">
+          <h5>
+            Your's back-end server/services seems to be down, please start your
+            server/services and try again.
+          </h5>
+        </Layout>
+      ) : (
+        <Layout className="p-2">
+          <Content className="px-3">
+            <DmTabAntDesign
+              tabData={storeTabData}
+              handleTabChangeFunction={handleTabChangeStore}
+              defaultSelectedTabKey={0}
+              tabType={"line"}
+              tabBarPosition={"bottom"}
+            />
+          </Content>
+          <Content>
+            <DynamicTable tableComponentData={tablePropsData} />
+          </Content>
+        </Layout>
+      )}
+    </Content>
   );
 };
 
