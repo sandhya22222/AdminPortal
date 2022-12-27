@@ -11,9 +11,11 @@ import {
   Select,
   Button,
   Layout,
-  Breadcrumb,
+  Spin,
+  Skeleton,
+
 } from "antd";
-import { Navigate, useNavigate, useLocation } from "react-router-dom";
+import {Link, Navigate, useNavigate, useLocation } from "react-router-dom";
 
 import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
 
@@ -40,7 +42,8 @@ const EditLanguage = () => {
   })
   const [isLanguageFieldEmpty, setIsLanguageFieldEmpty] = useState(false);
   const [isLanguageCodeFieldEmpty, setIsLanguageCodeFieldEmpty] = useState(false);
-  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isDataLoading, setIsDataLoading] = useState(false);
 
   // hanler for language, language_code, native_name, writing_script_direction
   const languageHandler = (fieldName, value) => {
@@ -67,12 +70,10 @@ const EditLanguage = () => {
   const editLanguageButtonHeader = () => {
     return (
       <>
-        <Content className="w-[50%] float-left my-3">
-          <Button
-            icon={<ArrowLeftOutlined className="w-4 h-4" />}
-            onClick={() => navigate(-1)}
-            className="ant-btn mr-4 ant-btn-default ant-btn-icon-only w-12 h-10 border-[1px] border-solid border-[#393939] box-border rounded py-[6px] px-[16px]"
-          ></Button>
+        <Content className="w-[50%] float-left flex items-center my-3">
+          <Link to="/dashboard/language">
+              <ArrowLeftOutlined role={"button"} className={"mr-4 text-black  w-12  h-10 border-[1px] border-solid border-[#393939] rounded-md pt-[11px]"} />
+          </Link>
 
           <Title level={3} className="m-0 inline-block !font-normal">
             Edit Language
@@ -84,6 +85,8 @@ const EditLanguage = () => {
 
   // language API GET call
   const getLanguageAPI = () => {
+    // Enabling skeleton
+    setIsDataLoading(true)
     axios
       .get(languageAPI)
       .then((response) => {
@@ -99,8 +102,12 @@ const EditLanguage = () => {
           copyofLanguageDetails.writing_script_direction = languageData[0].writing_script_direction
           setLanguageDetails(copyofLanguageDetails)
         }
+        // disabling skeleton
+        setIsDataLoading(false)
       })
       .catch((error) => {
+        // disabling skeleton
+        setIsDataLoading(false)
         console.log("errorFromLanguageApi====>", error);
       });
   };
@@ -143,6 +150,8 @@ const EditLanguage = () => {
     langaugeData.append("native_name", languageDetails.native_name);
     langaugeData.append("writing_script_direction", languageDetails.writing_script_direction)
     console.log("PutObject----->", langaugeData);
+    // enabling spinner
+    setIsLoading(true);
     axios
       .put(
         languageAPI,
@@ -154,6 +163,11 @@ const EditLanguage = () => {
         }
       )
       .then(function (response) {
+        let copyofLanguageDetails = { ...languageDetails }
+        copyofLanguageDetails.islanguageDetailsEdited = false
+        setLanguageDetails(copyofLanguageDetails)
+        // disabling spinner
+        setIsLoading(false);
         console.log(response);
         if (response.status === 200 || response.status === 201) {
           // getLanguageAPI();
@@ -164,6 +178,8 @@ const EditLanguage = () => {
         }
       })
       .catch((error) => {
+        // disabling spinner
+        setIsLoading(false);
         toast(error.response.data.message + "_field in language edition", {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
@@ -176,115 +192,128 @@ const EditLanguage = () => {
   console.log("language_details", languageDetails)
   return (
     <Layout className="p-3">
-      {/* <Content className="">
-        <Breadcrumb separator="/">
-          <Breadcrumb.Item href="/">Dashboard</Breadcrumb.Item>
-          <Breadcrumb.Item href="/">Language</Breadcrumb.Item>
-          <Breadcrumb.Item>Add Language</Breadcrumb.Item>
-        </Breadcrumb>
-      </Content> */}
       <Content className="mt-2">
         <AntDesignBreadcrumbs
           data={[
             { title: "Home", navigationPath: "/", displayOrder: 1 },
-            { title: "Language", navigationPath: "/", displayOrder: 2 },
+            { title: "Language", navigationPath: "/dashboard/language", displayOrder: 2 },
             { title: "Edit Language", navigationPath: "", displayOrder: 3 },
           ]}
         />
       </Content>
       {editLanguageButtonHeader()}
+    
+      <Spin tip="Please wait!" size="large" spinning = {isLoading}>
       <Content>
         <Row>
           <Col span={16}>
-            <Content className="bg-white">
-              <Content className="p-3">
-                <Typography.Title
-                  level={3}
-                  className="inline-block !font-normal"
-                >
-                  Language Details
-                </Typography.Title>
-                <Content className="my-2">
-                  <label className="text-[13px]">
-                    Language <sup className="text-red-600 text-sm">*</sup>
-                  </label>
-                  <Input
-                    placeholder="Enter Language Id"
-                    value={languageDetails.language}
-                    className={`${
-                      isLanguageFieldEmpty
-                        ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400"
-                        : "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
-                    }`}
-                    onChange={(e) => {
-                      languageHandler("language", e.target.value);
-                    }}
-                  />
-                </Content>
-                <Content className="my-2">
-                  <label className="text-[13px]">
-                    Language Code<sup className="text-red-600 text-sm">*</sup>
-                  </label>
-                  <Input
-                    placeholder="Enter Language Code"
-                    value={languageDetails.language_code}
-                    className={`${
-                      isLanguageCodeFieldEmpty
-                        ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400"
-                        : "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
-                    }`}
-                    onChange={(e) => {
-                      languageHandler("language_code", e.target.value);
-                    }}
-                  />
-                </Content>
-                <Content className="my-2">
-                  <label className="text-[13px]">Native Name</label>
-                  <Input
-                    placeholder="Enter Native Name"
-                    value={languageDetails.native_name}
-                    onChange={(e) => {
-                      languageHandler("native_name", e.target.value);
-                    }}
-                    className={
-                      "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
-                    }
-                  />
-                </Content>
-                <Content className="my-2">
-                  <label className="text-[13px]">Script Direction</label>
-                  <Select
-                    size={"large"}
-                    style={{ display: "flex" }}
-                    defaultValue={languageDetails.writing_script_direction}
-                    value={languageDetails.writing_script_direction}
-                    placeholder="---"
-                    allowClear
-                    onChange={(e) => {
-                      languageHandler("writing_script_direction",e);
-                    }}
+              <Content className="bg-white">
+                {isDataLoading ? <Skeleton active
+                  paragraph={{
+                    rows: 5,
+                  }}
+                  className="p-3"></Skeleton> : <Content className="p-3">
+                  <Typography.Title
+                    level={3}
+                    className="inline-block !font-normal"
                   >
-                    <Option value="LTR">LTR</Option>
-                    <Option value="RTL">RTL</Option>
-                  </Select>
-                </Content>
+                    Language Details
+                  </Typography.Title>
+                  <Content className="my-2">
+                    <label className="text-[13px]">
+                      Language <sup className="text-red-600 text-sm">*</sup>
+                    </label>
+                    <Input
+                      placeholder="Enter Language Id"
+                      value={languageDetails.language}
+                      className={`${isLanguageFieldEmpty
+                          ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400"
+                          : "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
+                        }`}
+                      onChange={(e) => {
+                        languageHandler("language", e.target.value);
+                      }}
+                    />
+                  </Content>
+                  <Content className="my-2">
+                    <label className="text-[13px]">
+                      Language Code<sup className="text-red-600 text-sm">*</sup>
+                    </label>
+                    <Input
+                      placeholder="Enter Language Code"
+                      value={languageDetails.language_code}
+                      className={`${isLanguageCodeFieldEmpty
+                          ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400"
+                          : "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
+                        }`}
+                      onChange={(e) => {
+                        languageHandler("language_code", e.target.value);
+                      }}
+                    />
+                  </Content>
+                  <Content className="my-2">
+                    <label className="text-[13px]">Native Name</label>
+                    <Input
+                      placeholder="Enter Native Name"
+                      value={languageDetails.native_name}
+                      onChange={(e) => {
+                        languageHandler("native_name", e.target.value);
+                      }}
+                      className={
+                        "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
+                      }
+                    />
+                  </Content>
+                  <Content className="my-2">
+                    <label className="text-[13px]">Script Direction</label>
+                    <Select
+                      size={"large"}
+                      style={{ display: "flex" }}
+                      defaultValue={languageDetails.writing_script_direction}
+                      value={languageDetails.writing_script_direction}
+                      placeholder="---"
+                      allowClear
+                      onChange={(e) => {
+                        languageHandler("writing_script_direction", e);
+                      }}
+                    >
+                      <Option value="LTR">LTR</Option>
+                      <Option value="RTL">RTL</Option>
+                    </Select>
+                  </Content>
+                </Content>}
               </Content>
-            </Content>
             <Content className="mt-3">
-              <Button
-                onClick={() => {
-                  validateLanguageFieldEmptyOrNot();
-                }}
-                style={{ backgroundColor: "#393939" }}
-                type="primary"
-                htmlType="submit"
-              >
-                Update
-              </Button>
+                <Row>
+                  <Col>
+                    <Link to="/dashboard/language">
+                      <Button
+                        style={{ background: "#FFFFFF" }}
+                        className="w-24 h-10 p-2 app-btn-secondary cursor-pointer"
+                      >
+                        <label className="h-5 text-[14px]  text-[#393939] cursor-pointer">
+                          Go Back
+                        </label>
+                      </Button>
+                    </Link>
+                  </Col>
+                  <Col className="pl-4">
+                    <Button
+                      style={{ backgroundColor: "#393939" }}
+                      className="w-24 h-10 p-2 cursor-pointer app-btn-primary"
+                      onClick={validateLanguageFieldEmptyOrNot}
+                    >
+                      <label className=" h-5  text-[14px]  text-[#FFFFFF] cursor-pointer">
+                        Update
+                      </label>
+                    </Button>
+                  </Col>
+                </Row>
             </Content>
           </Col>
         </Row>
       </Content>
+      </Spin> 
     </Layout>
   );
 };

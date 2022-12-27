@@ -2,3 +2,11 @@
     min-height: 90%;
     background-image: linear-gradient(to bottom, #fafafa, #f6f6f6, #f2f2f2, #eeeeee, #eaeaea);
 }
+/* ant delete icon */
+.anticon-delete{
+    color: #A00A18!important;
+  }
+
+.ant-switch-checked {
+      background: #00C3B3 !important
+  }
