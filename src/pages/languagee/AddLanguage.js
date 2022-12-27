@@ -9,6 +9,7 @@ import {
   Button,
   Input,
   Select,
+  Spin
 } from "antd";
 import { toast } from "react-toastify";
 import { ArrowLeftOutlined } from "@ant-design/icons";
@@ -28,6 +29,10 @@ const AddLanguage = () => {
   const [languageCode, setLanguageCode] = useState("");
   const [nativeName, setNativeName] = useState("");
   const [scriptDirection, setScriptDirection] = useState("LTR");
+  const [fileData, setFileData] = useState("");
+  const [fileName, setFileName] = useState("");
+  const [fileExtensiom, setFileExtension] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLanguageChange = (e) => {
@@ -52,6 +57,26 @@ const AddLanguage = () => {
   const handleScriptDirectionChange = (value) => {
     setScriptDirection(value);
   };
+
+  const handleUploadFile = (e) => {
+    if (e.target.files[0].size < 4 * 1000000) {
+      let file = e.target.files[0];
+      let fileExtension = file.name.split(".").pop();
+      let fileName = file.name
+      setFileData(file);
+      setFileExtension(fileExtension)
+      setFileName(fileName)
+      console.log("Final FIle In Function", file, fileExtension, fileName);
+    } else {
+      toast(
+        `Please select File less than four mb`,
+        {
+          position: toast.POSITION.TOP_RIGHT,
+          type: "warning",
+        }
+      );
+    }
+  }
 
   const validateLanguageFieldEmptyOrNot = () => {
     // let validValues = 2;
@@ -80,20 +105,17 @@ const AddLanguage = () => {
 
   //post function
   const PostLanguageAPI = () => {
-    // const events = [
-      // {
-        // language: language,
-        // language_code: languageCode,
-        // native_name: nativeName,
-        // writing_script_direction: scriptDirection,
-      // }
-    // ];
     const paramsData = new FormData();
     paramsData.append("language", language);
     paramsData.append("language_code", languageCode);
     paramsData.append("native_name", nativeName);
     paramsData.append("writing_script_direction", scriptDirection);
+    if(typeof fileData === "object"){
+    paramsData.append("lang_support_docs", fileData)
+    }
     console.log("This is from Params Data---->", paramsData);
+    // enabling spinner
+    setIsLoading(true)
     axios
       .post(languageAPI, paramsData)
       .then((res) => {
@@ -105,11 +127,15 @@ const AddLanguage = () => {
               position: toast.POSITION.TOP_RIGHT,
               type: "success",
             });
+            // disabbling spinner
+            setIsLoading(false)
             navigate(-1);
           }
         }
       })
       .catch((error) => {
+        // disabbling spinner
+        setIsLoading(false)
         if (error.response.status === 409) {
           toast("Data already exist", {
             position: toast.POSITION.TOP_RIGHT,
@@ -141,7 +167,7 @@ const AddLanguage = () => {
   };
 
   return (
-    <Layout className="p-3">
+    <Layout>
       <Content className="mt-2">
         <AntDesignBreadcrumbs
           data={[
@@ -152,6 +178,7 @@ const AddLanguage = () => {
         />
       </Content>
       {addLanguageButtonHeader()}
+      <Spin tip="Please wait!" size="large" spinning = {isLoading}>
       <Content>
         <Row>
           <Col span={14}>
@@ -226,6 +253,15 @@ const AddLanguage = () => {
                     <Option value="RTL">RTL</Option>
                   </Select>
                 </Content>
+                <Content className="my-2">
+                <label className="text-[13px] pb-1">Language Supported Document</label>
+                      <Input
+                        type="file"
+                        name="filename"
+                        onChange={(e) => handleUploadFile(e)}
+                        accept=".csv"
+                      />
+                </Content>
               </Content>
             </Content>
             <Content className="mt-3">
@@ -258,6 +294,7 @@ const AddLanguage = () => {
           </Col>
         </Row>
       </Content>
+      </Spin>
     </Layout>
   );
 };

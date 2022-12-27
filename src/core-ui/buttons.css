@@ -28,3 +28,6 @@
     border: 1px solid #393939 !important; 
     height: unset !important;
 }
+.ant-btn{
+    border-radius:  0.23em !important;
+}

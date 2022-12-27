@@ -2,7 +2,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { Layout, Breadcrumb, Table, Row, Col, Button, Typography } from "antd";
+import { Layout, Breadcrumb, Table, Row, Col, Button, Typography, Skeleton } from "antd";
 import axios from "axios";
 import { Navigate, useNavigate, Link } from "react-router-dom";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
@@ -20,7 +20,7 @@ const { Content } = Layout;
 const languageAPI = process.env.REACT_APP_DM_LANGUAGE_API;
 
 const Language = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [languageData, setLanguageData] = useState([]);
   const [isNetworkErrorLanguage, setIsNetworkErrorLanguage] = useState(false);
   const [deleteLanguageID, setDeleteLanguageID] = useState("")
@@ -145,7 +145,7 @@ const Language = () => {
         console.log("response from delete===>", response, deleteLanguageID)
         if (response.status === 202) {
           setIsDeleteLanguageModalOpen(false);
-          let removedData = languageData.filter(({id})=>id !== deleteLanguageID);
+          let removedData = languageData.filter(({ id }) => id !== deleteLanguageID);
           setLanguageData(removedData)
           toast("Language Deleted Successfully", {
             position: toast.POSITION.TOP_RIGHT,
@@ -168,6 +168,8 @@ const Language = () => {
   }, []);
 
   const getLanguageData = () => {
+    // enabling spinner
+    setIsLoading(true);
     axios
       .get(languageAPI)
       .then(function (response) {
@@ -182,7 +184,7 @@ const Language = () => {
         // setIsNetworkErrorLanguage(false);
       })
       .catch((error) => {
-        setIsLoading(true);
+        setIsLoading(false);
         setIsNetworkErrorLanguage(true);
         console.log("Catch block of ----------------------");
       });
@@ -240,45 +242,49 @@ const Language = () => {
   };
 
   return <>
-          <Layout>
-            <Content className="p-3 mb-3">
-              <AntDesignBreadcrumbs
-                data={[
-                  { title: "Home", navigationPath: "/", displayOrder: 1 },
+    <Layout>
+      <Content className="mb-3">
+        <AntDesignBreadcrumbs
+          data={[
+            { title: "Home", navigationPath: "/", displayOrder: 1 },
 
-                  { title: "Language", navigationPath: "", displayOrder: 3 },
-                ]} />
-              <Row justify={"space-between"}>
-                <Col>
-                  <Content className=" float-left mt-3 ">
-                    <Title level={3} className="!font-normal">
-                      Language
-                    </Title>
-                  </Content>
-                </Col>
-
-                <Col>
-                  <Content className="text-right mt-3">
-                    <Button
-                      className="rounded-none"
-                      onClick={() => navigate("add_language")}
-                      type="primary"
-                      style={{
-                        background: "black",
-                      }}
-                    >
-                      Add Language
-                    </Button>
-                  </Content>
-                </Col>
-              </Row>
-
+            { title: "Language", navigationPath: "", displayOrder: 3 },
+          ]} />
+        <Row justify={"space-between"}>
+          <Col>
+            <Content className=" float-left mt-3 ">
+              <Title level={3} className="!font-normal">
+                Language
+              </Title>
             </Content>
-          </Layout>
+          </Col>
+
+          <Col>
+            <Content className="text-right mt-3">
+              <Button
+                className="rounded-none"
+                onClick={() => navigate("add_language")}
+                type="primary"
+                style={{
+                  background: "black",
+                }}
+              >
+                Add Language
+              </Button>
+            </Content>
+          </Col>
+        </Row>
+
+      </Content>
+    </Layout>
     {isLoading ? (
-      <Content className=" bg-white p-3 mb-3">
-        <SkeletonComponent />
-        <SkeletonComponent Layout="layout1" />
+      <Content className=" bg-white mb-3">
+       <Skeleton active
+                  paragraph={{
+                    rows: 6,
+                  }}
+                  className="p-3"></Skeleton>
+
       </Content>
     ) : isNetworkErrorLanguage ? (
       <Layout className="p-0 text-center mb-3 bg-[#F4F4F4]">
@@ -288,12 +294,12 @@ const Language = () => {
         </h5>
       </Layout>
     ) : <Layout>
-      <Content className="p-3">
+      <Content>
         <DynamicTable tableComponentData={tablepropsData} />
       </Content>
     </Layout>}
-          </>
-  
+  </>
+
 };
 
 
