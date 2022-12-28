@@ -113,7 +113,7 @@ const Language = () => {
                 isVisible={isDeleteLanguageModalOpen}
                 okButtonText={"Ok"}
                 cancelButtonText={"Cancel"}
-                title={"Warning"}
+                title={"Confirmation"}
                 okCallback={() => deleteLanguage()}
                 cancelCallback={() => closeDeleteModal()}
               >
