@@ -9,13 +9,11 @@ const storeEditStatusAPI = process.env.REACT_APP_DM_STORE_STATUS_API;
 
 function Status({ storeId, storeStatus }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [statusChanged, setStatusChanged] = useState(false);
   const [switchStatus, setSwitchStatus] = useState(
     storeStatus === 1 ? true : false
   );
   const [changeSwitchStatus, setChangeSwitchStatus] = useState("");
 
- 
   // closing the delete popup model
   const closeModal = () => {
     setIsModalOpen(false);
@@ -27,7 +25,7 @@ function Status({ storeId, storeStatus }) {
     setChangeSwitchStatus(e.target.checked);
   };
 
-   // const openModel = (e) => {
+  // const openModel = (e) => {
   //   console.log("modal1", e.target.checked);
   //   setStatusChanged(e.target.checked);
   //   setIsModalOpen(true);
@@ -44,19 +42,22 @@ function Status({ storeId, storeStatus }) {
         },
       })
       .then((response) => {
-        console.log(response);
+        console.log("status put response", response);
         toast("Edit Status is done Successfully", {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
         });
-        closeModal()
+        closeModal();
       })
       .catch((error) => {
-        toast(error.message, {
-          type: "error",
-        });
-        console.log("error", error);
-        closeModal()
+        toast(
+          "Please create Minimum one default language from Store Management Portal to activate store",
+          {
+            type: "error",
+          }
+        );
+        console.log("error", error.response.data.message);
+        closeModal();
       });
 
     console.log("post body for ---", storeEditStatusAPI, " is:", reqbody);
@@ -148,7 +149,7 @@ function Status({ storeId, storeStatus }) {
         {switchStatus ? (
           <div>
             <p>{`Awesome!`}</p>
-            <p>{`You are about the activate to your store. Would you like to proceed?`}</p>
+            <p>{`You are about the activate your store. Would you like to proceed?`}</p>
           </div>
         ) : (
           <div>

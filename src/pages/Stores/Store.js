@@ -13,7 +13,7 @@ import {
 import axios from "axios";
 import { toast } from "react-toastify";
 import { EditOutlined } from "@ant-design/icons";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useSearchParams } from "react-router-dom";
 
 //! Import user defined components
 import DmTabAntDesign from "../../components/DmTabAntDesign/DmTabAntDesign";
@@ -49,6 +49,7 @@ const Stores = () => {
 
   const store_id = new URLSearchParams(search).get("store_id");
 
+  const [searchParams, setSearchParams] = useSearchParams();
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isUpLoading, setIsUpLoading] = useState(false);
@@ -60,7 +61,6 @@ const Stores = () => {
   const [inValidEditName, setInValidEditName] = useState("");
   const [selectedTabDataForStore, setSelectedTabDataForStore] = useState();
   const [drawerAction, setDrawerAction] = useState();
-  const [countApi, setCountApi] = useState(0);
   const [postData, setPostData] = useState(null);
   //! table columns
   const StoreTableColumn = [
@@ -134,6 +134,11 @@ const Stores = () => {
   };
   //! handleTabChangeStore to get the data according to the status
   const handleTabChangeStore = (status) => {
+    // var presentPage = searchParams.get("page") ? searchParams.get("page") : 1;
+    // setSearchParams({
+    //   // page: presentPage,
+    //   tab: status,
+    // });
     if (status === "0") {
       setSelectedTabDataForStore(storeApiData);
     } else if (status === "1") {
@@ -217,6 +222,7 @@ const Stores = () => {
 
   //!get call for stores
   const getStoreApi = () => {
+    // setIsLoading(true);
     axios
       .get(storeDataAPI, {
         params: {
@@ -233,7 +239,7 @@ const Stores = () => {
         setStoreApiData(response.data.data);
       })
       .catch((error) => {
-        setIsLoading(true);
+        setIsLoading(false);
         setIsNetworkError(true);
         console.log("Server error from getStoreApi Function ", error.response);
       });
@@ -251,9 +257,8 @@ const Stores = () => {
     }
   }, [postData]);
 
-  //! post call for stores
-  const addStoreData = () => {
-    // validation for name
+  //! validation for post call
+  const validateStorePostField = () => {
     if (name === "" || name === null || name === undefined) {
       setInValidName(true);
       toast("Please provide the Name", {
@@ -261,6 +266,13 @@ const Stores = () => {
         type: "error",
       });
     }
+
+    if (name !== "") {
+      addStoreData();
+    }
+  };
+  //! post call for stores
+  const addStoreData = () => {
     const postBody = {
       name: name,
     };
@@ -274,6 +286,7 @@ const Stores = () => {
         });
         setIsUpLoading(false);
         onClose();
+        setName("");
         console.log("Server Success Response From stores", response.data);
         setPostData(response.data);
       })
@@ -286,28 +299,36 @@ const Stores = () => {
         setIsUpLoading(false);
         // onClose();
       });
-    // setCountApi(countApi + 1);
   };
-  //!put call for stores
-  const editStoreData = () => {
-    let count = 1;
+  //! validation for put call
+  const validateStorePutField = () => {
     if (editName === "" || editName === null || editName === undefined) {
-      count--;
       setInValidEditName(true);
       toast("Please provide the Name", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
     }
+    if (editName !== "") {
+      editStoreData();
+    } else {
+      toast("No Changes Detected !", {
+        autoClose: 5000,
+        position: toast.POSITION.TOP_RIGHT,
+        type: "info",
+      });
+    }
+  };
+  //!put call for stores
+  const editStoreData = () => {
     const putObject = {
       name: editName,
     };
-    // enabling spinner
     setIsUpLoading(true);
     axios
       .put(storeEditIdAPI.replace("{id}", store_id), putObject)
       .then((response) => {
-        console.log("put response", response, storeApiData);
+        console.log("put response", response.data, storeApiData);
         let copyofStoreAPIData = [...storeApiData];
         copyofStoreAPIData.forEach((obj) => {
           if (obj.id === response.data.id) {
@@ -315,7 +336,6 @@ const Stores = () => {
           }
         });
         setStoreApiData(copyofStoreAPIData);
-        // disabling spinner
         setIsUpLoading(false);
         onClose();
         if (response.status == 200 || response.status == 201) {
@@ -326,7 +346,6 @@ const Stores = () => {
         }
       })
       .catch((error) => {
-        // disabling spinner
         setIsUpLoading(false);
         // onClose();
         toast(error.response.data.res, {
@@ -335,7 +354,6 @@ const Stores = () => {
         });
         console.log(error.response.data);
       });
-    // setCountApi(countApi + 1);
   };
   useEffect(() => {
     if (store_id !== null) {
@@ -348,50 +366,47 @@ const Stores = () => {
       }
     }
   }, [store_id]);
-
+  console.log("first", storeApiData.length);
   return (
-    <Content>
+    <Layout>
       <Content>
         <AntDesignBreadcrumbs
           data={[
-            { title: "Dashboard", navigationPath: "/", displayOrder: 1 },
+            { title: "Home", navigationPath: "/", displayOrder: 1 },
             { title: "Store", navigationPath: "", displayOrder: 2 },
           ]}
         />
-      </Content>
-      {/* <Content className="pt-2"> */}
-      <Row justify={"space-between"}>
-        <Col span={4}>
-          <Content className=" float-left mt-3 ">
-            <Title level={3} className="!font-normal">
-              Stores
-            </Title>
-          </Content>
-        </Col>
-        <Col span={4} offset={16}>
-          <Content className="text-right mt-3">
-            <Button
-              className="!bg-black text-white rounded-none"
-              onClick={showAddDrawer}
-            >
-              Add Stores
-            </Button>
-            <Drawer
-              title={
-                drawerAction && drawerAction === "post"
-                  ? "Add Store"
-                  : "Edit Store"
-              }
-              placement="right"
-              onClose={onClose}
-              open={open}
-            >
-              <Title level={5}>
-                Name
-                <sup className="text-red-600 text-sm pl-1">*</sup>
+        <Row justify={"space-between"}>
+          <Col>
+            <Content className="float-left mt-3">
+              <Title level={3} className="!font-normal">
+                Stores
               </Title>
-              {drawerAction && drawerAction === "post" ? (
-                <>
+            </Content>
+          </Col>
+          <Col>
+            <Content className="text-right mt-3">
+              <Button
+                className="!bg-black text-white rounded-none border border-neutral-500"
+                onClick={showAddDrawer}
+              >
+                Add Stores
+              </Button>
+              <Drawer
+                title={
+                  drawerAction && drawerAction === "post"
+                    ? "Add Store"
+                    : "Edit Store"
+                }
+                placement="right"
+                onClose={onClose}
+                open={open}
+              >
+                <Title level={5}>
+                  Name
+                  <sup className="text-red-600 text-sm pl-1">*</sup>
+                </Title>
+                {drawerAction && drawerAction === "post" ? (
                   <Spin tip="Please wait!" size="large" spinning={isUpLoading}>
                     <Input
                       placeholder="Enter store name"
@@ -407,17 +422,15 @@ const Stores = () => {
                       }}
                     />
                     <Button
-                      className="bg-black text-white"
+                      className="!bg-black text-white border border-neutral-500"
                       onClick={() => {
-                        addStoreData();
+                        validateStorePostField();
                       }}
                     >
                       Save
                     </Button>
                   </Spin>
-                </>
-              ) : (
-                <>
+                ) : (
                   <Spin tip="Please wait!" size="large" spinning={isUpLoading}>
                     <Input
                       value={editName}
@@ -431,23 +444,22 @@ const Stores = () => {
                       }}
                     />
                     <Button
-                      className="bg-black text-white"
+                      className="!bg-black text-white border border-neutral-500"
                       onClick={() => {
-                        editStoreData();
+                        validateStorePutField();
                       }}
                     >
                       Update
                     </Button>
                   </Spin>
-                </>
-              )}
-            </Drawer>
-          </Content>
-        </Col>
-      </Row>
-      {/* </Content> */}
+                )}
+              </Drawer>
+            </Content>
+          </Col>
+        </Row>
+      </Content>
       {isLoading ? (
-        <Content className=" bg-white mb-3">
+        <Content className="bg-white mb-3">
           <Skeleton
             active
             paragraph={{
@@ -455,6 +467,7 @@ const Stores = () => {
             }}
             className="p-3"
           ></Skeleton>
+          {/* <SkeletonComponent Layout="layout1" /> */}
         </Content>
       ) : isNetworkError ? (
         <Layout className="p-0 text-center mb-3 bg-[#F4F4F4]">
@@ -469,7 +482,10 @@ const Stores = () => {
             <DmTabAntDesign
               tabData={storeTabData}
               handleTabChangeFunction={handleTabChangeStore}
-              defaultSelectedTabKey={0}
+              defaultSelectedTabKey={handleTabChangeStore}
+              // activeKey={
+              //   searchParams.get("tab") ? searchParams.get("tab") : "0"
+              // }
               tabType={"line"}
               tabBarPosition={"bottom"}
             />
@@ -479,7 +495,7 @@ const Stores = () => {
           </Content>
         </Content>
       )}
-    </Content>
+    </Layout>
   );
 };
 
