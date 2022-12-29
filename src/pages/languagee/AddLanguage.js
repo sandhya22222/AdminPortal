@@ -243,8 +243,6 @@ const AddLanguage = () => {
                     size={"large"}
                     style={{ display: "flex" }}
                     value={scriptDirection}
-                    placeholder="---"
-                    allowClear
                     onChange={(e) => {
                       handleScriptDirectionChange(e);
                     }}
