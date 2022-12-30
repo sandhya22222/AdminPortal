@@ -47,7 +47,8 @@ const storeTabData = [
 const Stores = () => {
   const search = useLocation().search;
 
-  const store_id = new URLSearchParams(search).get("store_id");
+  // const store_id = new URLSearchParams(search).get("store_id");
+  const tab_id = new URLSearchParams(search).get("tab");
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [open, setOpen] = useState(false);
@@ -59,9 +60,11 @@ const Stores = () => {
   const [inValidName, setInValidName] = useState("");
   const [editName, setEditName] = useState("");
   const [inValidEditName, setInValidEditName] = useState("");
-  const [selectedTabDataForStore, setSelectedTabDataForStore] = useState();
   const [drawerAction, setDrawerAction] = useState();
   const [postData, setPostData] = useState(null);
+  const [selectedTabTableContent, setSelectedTabTableContent] = useState([]);
+  const [serverStoreName, setServerStoreName] = useState();
+  const [storeEditId, setStoreEditId] = useState();
   //! table columns
   const StoreTableColumn = [
     {
@@ -109,18 +112,18 @@ const Stores = () => {
             {" "}
             <Col span={10}>{new Date(record.created_on).toLocaleString()}</Col>
             <Col span={9} offset={5}>
-              <Link
+              {/* <Link
                 to={{
                   pathname: "",
                   search: `?store_id=${record.id}`,
                 }}
                 className=" pl-[8px] font-semibold app-table-data-title"
-              >
-                <EditOutlined
-                  className="app-edit-icon font-bold text-black"
-                  onClick={showEditDrawer}
-                />
-              </Link>
+              > */}
+              <EditOutlined
+                className="app-edit-icon font-bold text-black"
+                onClick={() => showEditDrawer(record.id)}
+              />
+              {/* </Link> */}
             </Col>
           </Row>
         );
@@ -134,26 +137,34 @@ const Stores = () => {
   };
   //! handleTabChangeStore to get the data according to the status
   const handleTabChangeStore = (status) => {
-    // var presentPage = searchParams.get("page") ? searchParams.get("page") : 1;
-    // setSearchParams({
-    //   // page: presentPage,
-    //   tab: status,
-    // });
+    setSearchParams({
+      tab: status,
+    });
     if (status === "0") {
-      setSelectedTabDataForStore(storeApiData);
+      tableStoreData(storeApiData);
     } else if (status === "1") {
-      setSelectedTabDataForStore(
+      tableStoreData(
         storeApiData.filter((element) => element.status == status)
       );
     } else if (status === "2") {
-      setSelectedTabDataForStore(
+      tableStoreData(
         storeApiData.filter((element) => element.status == status)
       );
     }
   };
   //!this useEffect for tab(initial rendering)
   useEffect(() => {
-    handleTabChangeStore("0");
+    if (storeApiData && storeApiData.length > 0) {
+      setIsLoading(false);
+      // handleTabChangeStore(
+      //   searchParams.get("tab") ? searchParams.get("tab") : "0"
+      // );
+      if (tab_id === "0" || tab_id === "1" || tab_id === "2") {
+        handleTabChangeStore(tab_id);
+      } else {
+        handleTabChangeStore("0");
+      }
+    }
   }, [storeApiData]);
   //!pagination
   const pagination = [
@@ -164,17 +175,17 @@ const Stores = () => {
     },
   ];
   //!storeData to get the table data
-  const storeData = [];
-  {
-    selectedTabDataForStore &&
-      selectedTabDataForStore.length > 0 &&
-      selectedTabDataForStore.map((element, index) => {
+  const tableStoreData = (filteredData) => {
+    const tempArray = [];
+    filteredData &&
+      filteredData.length > 0 &&
+      filteredData.map((element, index) => {
         var storeId = element.id;
         var storeName = element.name;
         var createdOn = element.created_on;
         var storeStatus = element.status;
-        storeData &&
-          storeData.push({
+        tempArray &&
+          tempArray.push({
             key: index,
             name: storeName,
             id: storeId,
@@ -182,11 +193,12 @@ const Stores = () => {
             status: statusForStores[storeStatus],
           });
       });
-  }
+    setSelectedTabTableContent(tempArray);
+  };
   //! tablepropsData to render the table columns,data,pagination
   const tablePropsData = {
     table_header: StoreTableColumn,
-    table_content: storeData && storeData,
+    table_content: selectedTabTableContent,
     pagenationSettings: pagination,
 
     search_settings: {
@@ -212,14 +224,14 @@ const Stores = () => {
     setDrawerAction("post");
   };
   //!edit drawer
-  const showEditDrawer = () => {
+  const showEditDrawer = (id) => {
+    setStoreEditId(id);
     setOpen(true);
     setDrawerAction("put");
   };
   const onClose = () => {
     setOpen(false);
   };
-
   //!get call for stores
   const getStoreApi = () => {
     // setIsLoading(true);
@@ -230,8 +242,8 @@ const Stores = () => {
         },
       })
       .then(function (response) {
-        setIsLoading(false);
         setIsNetworkError(false);
+        setIsLoading(false);
         console.log(
           "Server Response from getStoreApi Function: ",
           response.data.data
@@ -266,7 +278,6 @@ const Stores = () => {
         type: "error",
       });
     }
-
     if (name !== "") {
       addStoreData();
     }
@@ -300,25 +311,7 @@ const Stores = () => {
         // onClose();
       });
   };
-  //! validation for put call
-  const validateStorePutField = () => {
-    if (editName === "" || editName === null || editName === undefined) {
-      setInValidEditName(true);
-      toast("Please provide the Name", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-      });
-    }
-    if (editName !== "") {
-      editStoreData();
-    } else {
-      toast("No Changes Detected !", {
-        autoClose: 5000,
-        position: toast.POSITION.TOP_RIGHT,
-        type: "info",
-      });
-    }
-  };
+
   //!put call for stores
   const editStoreData = () => {
     const putObject = {
@@ -326,7 +319,7 @@ const Stores = () => {
     };
     setIsUpLoading(true);
     axios
-      .put(storeEditIdAPI.replace("{id}", store_id), putObject)
+      .put(storeEditIdAPI.replace("{id}", storeEditId), putObject)
       .then((response) => {
         console.log("put response", response.data, storeApiData);
         let copyofStoreAPIData = [...storeApiData];
@@ -347,7 +340,6 @@ const Stores = () => {
       })
       .catch((error) => {
         setIsUpLoading(false);
-        // onClose();
         toast(error.response.data.res, {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
@@ -356,17 +348,37 @@ const Stores = () => {
       });
   };
   useEffect(() => {
-    if (store_id !== null) {
+    if (storeEditId !== null) {
       var storeData =
         storeApiData &&
         storeApiData.length > 0 &&
-        storeApiData.filter((element) => element.id === parseInt(store_id));
+        storeApiData.filter((element) => element.id === parseInt(storeEditId));
       if (storeApiData && storeApiData.length > 0) {
         setEditName(storeData[0].name);
+        setServerStoreName(storeData[0].name);
       }
     }
-  }, [store_id]);
-  console.log("first", storeApiData.length);
+  }, [storeEditId]);
+
+  //! validation for put call
+  const validateStorePutField = () => {
+    if (editName === "" || editName === null || editName === undefined) {
+      setInValidEditName(true);
+      toast("Please provide the Name", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+      });
+    }
+    if (editName === serverStoreName) {
+      toast("No Changes Detected !", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "info",
+      });
+    } else {
+      editStoreData();
+    }
+  };
+
   return (
     <Layout>
       <Content>
@@ -441,6 +453,7 @@ const Stores = () => {
                       }`}
                       onChange={(e) => {
                         setEditName(e.target.value);
+                        setInValidEditName(false);
                       }}
                     />
                     <Button
@@ -482,10 +495,10 @@ const Stores = () => {
             <DmTabAntDesign
               tabData={storeTabData}
               handleTabChangeFunction={handleTabChangeStore}
-              defaultSelectedTabKey={handleTabChangeStore}
-              // activeKey={
-              //   searchParams.get("tab") ? searchParams.get("tab") : "0"
-              // }
+              // defaultSelectedTabKey={handleTabChangeStore}
+              activeKey={
+                searchParams.get("tab") ? searchParams.get("tab") : "0"
+              }
               tabType={"line"}
               tabBarPosition={"bottom"}
             />
