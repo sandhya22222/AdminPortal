@@ -209,11 +209,8 @@ const EditLanguage = () => {
       "writing_script_direction",
       languageDetails.writing_script_direction
     );
-    if (typeof languageDetails.lang_support_docs === "object") {
-      langaugeData.append(
-        "lang_support_docs",
-        languageDetails.lang_support_docs
-      );
+    if (languageDetails.lang_support_docs !== null && typeof languageDetails.lang_support_docs === "object") {
+      langaugeData.append("lang_support_docs", languageDetails.lang_support_docs)
     }
     console.log("PutObject----->", langaugeData);
     // enabling spinner
