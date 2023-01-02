@@ -147,22 +147,22 @@ const EditLanguage = () => {
   }, []);
 
   const validateLanguageFieldEmptyOrNot = () => {
-    if (languageDetails.language === "") {
-      setIsLanguageFieldEmpty(true);
-      toast("Please Enter Language Id", {
-        autoClose: 5000,
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-      });
-    }
-    if (languageDetails.language_code === "") {
-      setIsLanguageCodeFieldEmpty(true);
-      toast("Please Enter Language Code", {
-        autoClose: 5000,
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-      });
-    }
+    // if (languageDetails.language === "") {
+    //   setIsLanguageFieldEmpty(true);
+    //   toast("Please Enter Language Id", {
+    //     autoClose: 5000,
+    //     position: toast.POSITION.TOP_RIGHT,
+    //     type: "error",
+    //   });
+    // }
+    // if (languageDetails.language_code === "") {
+    //   setIsLanguageCodeFieldEmpty(true);
+    //   toast("Please Enter Language Code", {
+    //     autoClose: 5000,
+    //     position: toast.POSITION.TOP_RIGHT,
+    //     type: "error",
+    //   });
+    // }
 
     if (
       languageDetails.language !== "" &&
@@ -170,6 +170,26 @@ const EditLanguage = () => {
       languageDetails.islanguageDetailsEdited
     ) {
       editLanguage();
+    } else if (
+      languageDetails.language === "" ||
+      languageDetails.language_code === ""
+    ) {
+      if (languageDetails.language === "") {
+      setIsLanguageFieldEmpty(true);
+      toast("Please Enter Language Id", {
+        autoClose: 5000,
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+      });
+      }
+      if (languageDetails.language_code === "") {
+      setIsLanguageCodeFieldEmpty(true);
+      toast("Please Enter Language Code", {
+        autoClose: 5000,
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+      });
+    }
     } else {
       toast("No Changes Detected !", {
         autoClose: 5000,
@@ -189,9 +209,12 @@ const EditLanguage = () => {
       "writing_script_direction",
       languageDetails.writing_script_direction
     );
-    if(typeof languageDetails.lang_support_docs === "object"){
-      langaugeData.append("lang_support_docs", languageDetails.lang_support_docs)
-      }
+    if (typeof languageDetails.lang_support_docs === "object") {
+      langaugeData.append(
+        "lang_support_docs",
+        languageDetails.lang_support_docs
+      );
+    }
     console.log("PutObject----->", langaugeData);
     // enabling spinner
     setIsLoading(true);
