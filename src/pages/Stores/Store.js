@@ -95,6 +95,8 @@ const Stores = () => {
           <Status
             storeId={record.id}
             storeStatus={record.status === "Active" ? true : false}
+            storeApiData={storeApiData}
+            setStoreApiData={tableStoreData}            
           />
         );
 
@@ -381,7 +383,7 @@ const Stores = () => {
 
   return (
     <Layout>
-      <Content>
+      <Content className="mb-1">
         <AntDesignBreadcrumbs
           data={[
             { title: "Home", navigationPath: "/", displayOrder: 1 },
