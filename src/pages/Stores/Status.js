@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Switch, Space, Row, Col, Button } from "antd";
+import { Switch, Space, Row, Col, Button, Spin} from "antd";
 import { toast } from "react-toastify";
 import StoreModal from "../../components/storeModal/StoreModal";
 import axios from "axios";
 
 const storeEditStatusAPI = process.env.REACT_APP_DM_STORE_STATUS_API;
 
-function Status({ storeId, storeStatus, storeApiData, setStoreApiData }) {
+function Status({ storeId, storeStatus, selectedTabTableContent, setSelectedTabTableContent, storeApiData, setStoreApiData }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [switchStatus, setSwitchStatus] = useState(storeStatus);
   const [changeSwitchStatus, setChangeSwitchStatus] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   // closing the delete popup model
   const closeModal = () => {
@@ -22,14 +23,14 @@ function Status({ storeId, storeStatus, storeApiData, setStoreApiData }) {
   // opening the delete popup model
   const openModal = (e) => {
     setIsModalOpen(true);
-    // setChangeSwitchStatus(e.target.checked);
   };
 
   const requestServer = async () => {
     const reqbody = {
       status: changeSwitchStatus === true ? 1 : 2,
     };
-
+    // Enabling spinner
+    setIsLoading(true)
     axios
       .put(storeEditStatusAPI, reqbody, {
         params: {
@@ -37,35 +38,29 @@ function Status({ storeId, storeStatus, storeApiData, setStoreApiData }) {
         },
       })
       .then((response) => {
-        console.log(
-          "status put response",
-          response.config.params.store_id,
-          storeApiData
-        );
         setSwitchStatus(changeSwitchStatus);
         if (changeSwitchStatus) {
-          setStoreApiData(
-            storeApiData.forEach((element) => {
-              if (element.id == response.config.params.store_id) {
-                element.status = 1;
-              }
-            })
-          );
+          storeApiData.forEach((element) => {
+            if (element.id == response.config.params.store_id) {
+              element.status = 1;
+            }
+          })
+          setStoreApiData(storeApiData);
         } else {
-          setStoreApiData(
-            storeApiData.forEach((element) => {
-              if (element.id == response.config.params.store_id) {
-                element.status = 2;
-              }
-            })
-          );
+          storeApiData.forEach((element) => {
+            if (element.id == response.config.params.store_id) {
+              element.status = 2;
+            }
+          })
+          setStoreApiData(storeApiData);
         }
-
+        console.log("Selecte content", selectedTabTableContent, response.config.params.store_id )
+        setSelectedTabTableContent(selectedTabTableContent.filter((element)=> element.id !== response.config.params.store_id))
         toast("Edit Status is done Successfully", {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
         });
-
+        setIsLoading(false)
         closeModal();
       })
       .catch((error) => {
@@ -76,6 +71,7 @@ function Status({ storeId, storeStatus, storeApiData, setStoreApiData }) {
           "Error from the status response ===>",
           error.response.data.message
         );
+        setIsLoading(false)
         closeModal();
       });
 
@@ -97,17 +93,18 @@ function Status({ storeId, storeStatus, storeApiData, setStoreApiData }) {
         cancelButtonText={"Cancel"}
         okCallback={() => requestServer()}
         cancelCallback={() => closeModal()}
+        isSpin={isLoading}
       >
-        {changeSwitchStatus ? (
-          <div>
-            <p>{`Awesome!`}</p>
-            <p>{`You are about the activate your store. Would you like to proceed?`}</p>
-          </div>
-        ) : (
-          <div>
-            <p>{`You are about the deactivate from your store. Would you like to proceed?`}</p>
-          </div>
-        )}
+          {changeSwitchStatus ? (
+            <div>
+              <p>{`Awesome!`}</p>
+              <p>{`You are about the activate your store. Would you like to proceed?`}</p>
+            </div>
+          ) : (
+            <div>
+              <p>{`You are about the deactivate from your store. Would you like to proceed?`}</p>
+            </div>
+          )}
       </StoreModal>
       <Row>
         <Col>
