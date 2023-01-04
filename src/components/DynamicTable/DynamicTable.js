@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Dropdown, DropdownToggle, DropdownMenu } from "reactstrap";
-import { Button } from "antd";
+import { Button, Skeleton } from "antd";
 import {
   Layout,
   Table,
@@ -559,7 +559,7 @@ const DynamicTable = ({ tableComponentData }) => {
               </Row>
             ) : null}
 
-            <Table
+           {tableData ? <Table
               className="p-3"
               dataSource={tableData}
               columns={dataSource.table_header}
@@ -571,14 +571,9 @@ const DynamicTable = ({ tableComponentData }) => {
               //   hideOnSinglePage: false,
               // }}
               pagination={false}
-              // rowSelection={{
-              //   type: "checkbox",
-              //   selectedRowKeys: alreadySelectedRows,
-              //   onChange: (keys) => {
-              //     setAlreadySelectedRows(keys);
-              //   },
-              // }}
-            ></Table>
+            ></Table> : <Skeleton className="p-3" active paragraph={{
+              rows: 6,
+            }}></Skeleton> }
           </Content>
         </div>
       ) : (

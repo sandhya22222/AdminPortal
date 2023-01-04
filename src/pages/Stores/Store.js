@@ -96,7 +96,9 @@ const Stores = () => {
             storeId={record.id}
             storeStatus={record.status === "Active" ? true : false}
             storeApiData={storeApiData}
-            setStoreApiData={tableStoreData}            
+            setSelectedTabTableContent={setSelectedTabTableContent}      
+            selectedTabTableContent={selectedTabTableContent}
+            setStoreApiData={setStoreApiData}
           />
         );
 
@@ -158,9 +160,6 @@ const Stores = () => {
   useEffect(() => {
     if (storeApiData && storeApiData.length > 0) {
       setIsLoading(false);
-      // handleTabChangeStore(
-      //   searchParams.get("tab") ? searchParams.get("tab") : "0"
-      // );
       if (tab_id === "0" || tab_id === "1" || tab_id === "2") {
         handleTabChangeStore(tab_id);
       } else {
@@ -240,7 +239,7 @@ const Stores = () => {
     axios
       .get(storeDataAPI, {
         params: {
-          page_limit: 100,
+          page_limit: 1000,
         },
       })
       .then(function (response) {
@@ -332,6 +331,7 @@ const Stores = () => {
         });
         setStoreApiData(copyofStoreAPIData);
         setIsUpLoading(false);
+        setServerStoreName(response.data.name);
         onClose();
         if (response.status == 200 || response.status == 201) {
           toast("Edit Store is Successfully Done! ", {
@@ -350,7 +350,7 @@ const Stores = () => {
       });
   };
   useEffect(() => {
-    if (storeEditId !== null) {
+    if (storeEditId) {
       var storeData =
         storeApiData &&
         storeApiData.length > 0 &&
@@ -380,6 +380,8 @@ const Stores = () => {
       editStoreData();
     }
   };
+
+console.log("tablessss.. prop data", tablePropsData, storeApiData)
 
   return (
     <Layout>
@@ -473,7 +475,7 @@ const Stores = () => {
           </Col>
         </Row>
       </Content>
-      {isLoading ? (
+      {isLoading   ? (
         <Content className="bg-white mb-3">
           <Skeleton
             active
@@ -497,7 +499,6 @@ const Stores = () => {
             <DmTabAntDesign
               tabData={storeTabData}
               handleTabChangeFunction={handleTabChangeStore}
-              // defaultSelectedTabKey={handleTabChangeStore}
               activeKey={
                 searchParams.get("tab") ? searchParams.get("tab") : "0"
               }
@@ -506,7 +507,7 @@ const Stores = () => {
             />
           </Content>
           <Content>
-            <DynamicTable tableComponentData={tablePropsData} />
+          {tablePropsData.table_content.length > 0 ? <DynamicTable tableComponentData={tablePropsData} />: ""}
           </Content>
         </Content>
       )}

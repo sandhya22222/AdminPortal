@@ -21,6 +21,7 @@ const languageAPI = process.env.REACT_APP_DM_LANGUAGE_API;
 
 const Language = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [islanguageDeleting, setIslanguageDeleting] = useState(false)
   const [languageData, setLanguageData] = useState([]);
   const [isNetworkErrorLanguage, setIsNetworkErrorLanguage] = useState(false);
   const [deleteLanguageID, setDeleteLanguageID] = useState("")
@@ -109,16 +110,6 @@ const Language = () => {
               />
             </Link>
             <>
-              <StoreModal
-                isVisible={isDeleteLanguageModalOpen}
-                okButtonText={"Ok"}
-                cancelButtonText={"Cancel"}
-                title={"Confirmation"}
-                okCallback={() => deleteLanguage()}
-                cancelCallback={() => closeDeleteModal()}
-              >
-                {<div className="my-4">{"Are you sure you want to delete the language ?"}</div>}
-              </StoreModal>
               <DeleteOutlined
                 className="app-delete-icon"
                 style={{ fontSize: "16px", marginLeft: "20px" }}
@@ -135,6 +126,8 @@ const Language = () => {
 
   //delete function
   const deleteLanguage = () => {
+    // enabling spinner
+    setIslanguageDeleting(true)
     axios
       .delete(languageAPI, {
         params: {
@@ -152,8 +145,12 @@ const Language = () => {
             type: "success",
           });
         }
+        // disabling spinner
+        setIslanguageDeleting(false)
       })
       .catch((error) => {
+        // disabling spinner
+        setIslanguageDeleting(false)
         console.log("response from delete===>", error.response);
         toast("Language not deleted", {
           position: toast.POSITION.TOP_RIGHT,
@@ -165,6 +162,7 @@ const Language = () => {
   //get function
   useEffect(() => {
     getLanguageData();
+    // window.scrollTo(0, 0)
   }, []);
 
   const getLanguageData = () => {
@@ -243,6 +241,17 @@ const Language = () => {
 
   return <>
     <Layout>
+      <StoreModal
+        isVisible={isDeleteLanguageModalOpen}
+        okButtonText={"Ok"}
+        cancelButtonText={"Cancel"}
+        title={"Confirmation"}
+        okCallback={() => deleteLanguage()}
+        cancelCallback={() => closeDeleteModal()}
+        isSpin={islanguageDeleting}
+      >
+        {<div className="my-4">{"Are you sure you want to delete the language ?"}</div>}
+      </StoreModal>
       <Content className="mb-3">
         <AntDesignBreadcrumbs
           data={[
