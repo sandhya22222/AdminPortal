@@ -25,8 +25,8 @@ const { Content } = Layout;
 const { Title } = Typography;
 
 //! Get all required details from .env file
-const storeDataAPI = process.env.REACT_APP_DM_STORE_API;
-const storeEditIdAPI = process.env.REACT_APP_DM_STORE_UPDATE_API;
+const storeAPI = process.env.REACT_APP_STORE_API;
+const storeUpdateAPI = process.env.REACT_APP_STORE_UPDATE_API;
 
 //! tab data
 const storeTabData = [
@@ -96,7 +96,7 @@ const Stores = () => {
             storeId={record.id}
             storeStatus={record.status === "Active" ? true : false}
             storeApiData={storeApiData}
-            setSelectedTabTableContent={setSelectedTabTableContent}      
+            setSelectedTabTableContent={setSelectedTabTableContent}
             selectedTabTableContent={selectedTabTableContent}
             setStoreApiData={setStoreApiData}
           />
@@ -237,9 +237,10 @@ const Stores = () => {
   const getStoreApi = () => {
     // setIsLoading(true);
     axios
-      .get(storeDataAPI, {
+      .get(storeAPI, {
         params: {
-          page_limit: 1000,
+          "page-limit": 1000,
+          "page-number": 1,
         },
       })
       .then(function (response) {
@@ -290,7 +291,7 @@ const Stores = () => {
     };
     setIsUpLoading(true);
     axios
-      .post(storeDataAPI, postBody)
+      .post(storeAPI, postBody)
       .then((response) => {
         toast("Store created successfully.", {
           position: toast.POSITION.TOP_RIGHT,
@@ -320,7 +321,7 @@ const Stores = () => {
     };
     setIsUpLoading(true);
     axios
-      .put(storeEditIdAPI.replace("{id}", storeEditId), putObject)
+      .put(storeUpdateAPI.replace("{id}", storeEditId), putObject)
       .then((response) => {
         console.log("put response", response.data, storeApiData);
         let copyofStoreAPIData = [...storeApiData];
@@ -381,7 +382,7 @@ const Stores = () => {
     }
   };
 
-console.log("tablessss.. prop data", tablePropsData, storeApiData)
+  console.log("tablessss.. prop data", tablePropsData, storeApiData);
 
   return (
     <Layout>
@@ -475,7 +476,7 @@ console.log("tablessss.. prop data", tablePropsData, storeApiData)
           </Col>
         </Row>
       </Content>
-      {isLoading   ? (
+      {isLoading ? (
         <Content className="bg-white mb-3">
           <Skeleton
             active
@@ -507,7 +508,11 @@ console.log("tablessss.. prop data", tablePropsData, storeApiData)
             />
           </Content>
           <Content>
-          {tablePropsData.table_content.length > 0 ? <DynamicTable tableComponentData={tablePropsData} />: ""}
+            {tablePropsData.table_content.length > 0 ? (
+              <DynamicTable tableComponentData={tablePropsData} />
+            ) : (
+              ""
+            )}
           </Content>
         </Content>
       )}

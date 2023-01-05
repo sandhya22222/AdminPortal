@@ -25,7 +25,7 @@ import { Container } from "reactstrap";
 const { Title } = Typography;
 const { Option } = Select;
 
-const languageAPI = process.env.REACT_APP_DM_LANGUAGE_API;
+const languageAPI = process.env.REACT_APP_LANGUAGE_API;
 
 toast.configure();
 
@@ -46,6 +46,7 @@ const EditLanguage = () => {
     useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(false);
+  const navigate = useNavigate();
 
   // hanler for language, language_code, native_name, writing_script_direction
   const languageHandler = (fieldName, value) => {
@@ -175,21 +176,21 @@ const EditLanguage = () => {
       languageDetails.language_code === ""
     ) {
       if (languageDetails.language === "") {
-      setIsLanguageFieldEmpty(true);
-      toast("Please Enter Language Id", {
-        autoClose: 5000,
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-      });
+        setIsLanguageFieldEmpty(true);
+        toast("Please Enter Language Id", {
+          autoClose: 5000,
+          position: toast.POSITION.TOP_RIGHT,
+          type: "error",
+        });
       }
       if (languageDetails.language_code === "") {
-      setIsLanguageCodeFieldEmpty(true);
-      toast("Please Enter Language Code", {
-        autoClose: 5000,
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-      });
-    }
+        setIsLanguageCodeFieldEmpty(true);
+        toast("Please Enter Language Code", {
+          autoClose: 5000,
+          position: toast.POSITION.TOP_RIGHT,
+          type: "error",
+        });
+      }
     } else {
       toast("No Changes Detected !", {
         autoClose: 5000,
@@ -209,8 +210,14 @@ const EditLanguage = () => {
       "writing_script_direction",
       languageDetails.writing_script_direction
     );
-    if (languageDetails.lang_support_docs !== null && typeof languageDetails.lang_support_docs === "object") {
-      langaugeData.append("lang_support_docs", languageDetails.lang_support_docs)
+    if (
+      languageDetails.lang_support_docs !== null &&
+      typeof languageDetails.lang_support_docs === "object"
+    ) {
+      langaugeData.append(
+        "lang_support_docs",
+        languageDetails.lang_support_docs
+      );
     }
     console.log("PutObject----->", langaugeData);
     // enabling spinner
@@ -234,6 +241,7 @@ const EditLanguage = () => {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
           });
+          navigate(-1);
         }
       })
       .catch((error) => {
