@@ -17,7 +17,7 @@ import "./language.css";
 const { Title } = Typography;
 const { Content } = Layout;
 
-const languageAPI = process.env.REACT_APP_DM_LANGUAGE_API;
+const languageAPI = process.env.REACT_APP_LANGUAGE_API;
 
 const Language = () => {
   const [isLoading, setIsLoading] = useState(false);

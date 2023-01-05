@@ -10,6 +10,7 @@ import { DashboardOutlined } from "@ant-design/icons";
 //! Import user defined components & hooks
 import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
 import { usePageTitle } from "../../hooks/usePageTitle";
+import { WorkInProgress } from "../../constants/media";
 
 //! Import user defined functions
 
@@ -39,6 +40,9 @@ const Dashboard = () => {
           Dashboard
         </Title>
       </Content>
+      <Layout>
+        <img src={WorkInProgress} alt="WorkInProgress" className="mt-3" />
+      </Layout>
     </Content>
   );
 };

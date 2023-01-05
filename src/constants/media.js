@@ -5,5 +5,7 @@ import LoginBackground from "../assets/images/common/login_background.png";
 import ThbsLogo from "../assets/images/common/thbs-logo.jpg"
 import Favicon from '../assets/images/logo/dm-favicon.png'
 import StoreLogo from '../assets/images/logo/store-logo.png'
+import WorkInProgress from '../assets/images/common/WorkInProgress.png'
 
-export { BrandLogo, AppStoreLogo, PlayStoreLogo,LoginBackground,ThbsLogo,Favicon,StoreLogo };
+export { BrandLogo, AppStoreLogo, PlayStoreLogo,LoginBackground,ThbsLogo,Favicon,StoreLogo, WorkInProgress };
+
