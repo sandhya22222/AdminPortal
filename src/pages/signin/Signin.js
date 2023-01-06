@@ -43,7 +43,8 @@ const Signin = () => {
   const [inValidUserPassword, setInvalidUserPassword] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    
     let validValues = 2;
     if (username === "" && userPassword === "") {
       setInValidUsername(true);
@@ -88,6 +89,13 @@ const Signin = () => {
     setUserPassword(e.target.value);
   };
 
+  const onKeyDownHandler = (e) => {
+    if (e.keyCode === 13) {
+      console.log("hello")
+    }
+
+  };
+
   return (
     <Content className=" temp bg-bottom min-h-screen m-auto">
       <Content className=" text-center m-auto">
@@ -99,7 +107,7 @@ const Signin = () => {
           <Text className=" font-semibold text-2xl ">
             {PortalLoginInfoTitle.title}
           </Text>
-          <Input
+          <Input 
             style={{ marginTop: "18px", marginBottom: "18px" }}
             prefix={<UserOutlined className="" />}
             placeholder="Username"
@@ -112,6 +120,7 @@ const Signin = () => {
             onChange={(e) => {
               handleNameChange(e);
             }}
+           
           />
           <Input.Password
             prefix={<LockOutlined className="" />}
@@ -128,6 +137,8 @@ const Signin = () => {
             onChange={(e) => {
               handlePasswordChange(e);
             }}
+            onPressEnter={(e)=>handleSubmit(e)}
+            
           />
           {/* <Content className="mt-3">
           <Button block onClick={handleSubmit}
@@ -139,13 +150,13 @@ const Signin = () => {
           <Content
             className=" bg-black rounded-sm h-10 text-center mt-3 text-white flex justify-center 
             cursor-pointer p-1"
-            onClick={handleSubmit}
+            onClick={(e) => handleSubmit(e)}
           >
             <span className=" mr-1">
               <UnlockOutlined />
             </span>
             <span>
-              <label className=" pt-1 cursor-pointer"> Login </label>
+              <label className=" pt-1 cursor-pointer" > Login </label>
             </span>
           </Content>
         </Content>
