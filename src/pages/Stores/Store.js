@@ -115,19 +115,20 @@ const Stores = () => {
           <Row>
             {" "}
             <Col span={10}>{new Date(record.created_on).toLocaleString()}</Col>
-            <Col span={9} offset={5}>
-              {/* <Link
-                to={{
-                  pathname: "",
-                  search: `?store_id=${record.id}`,
-                }}
-                className=" pl-[8px] font-semibold app-table-data-title"
-              > */}
+            <Col span={3} offset={11}>
               <EditOutlined
                 className="app-edit-icon font-bold text-black"
-                onClick={() => showEditDrawer(record.id)}
+                onClick={() => {
+                  showEditDrawer(record.id),
+                    setEditName(
+                      storeApiData &&
+                        storeApiData.length > 0 &&
+                        storeApiData.filter(
+                          (element) => element.id === record.id
+                        )[0].name
+                    );
+                }}
               />
-              {/* </Link> */}
             </Col>
           </Row>
         );
@@ -232,6 +233,7 @@ const Stores = () => {
   };
   const onClose = () => {
     setOpen(false);
+    setName("");
   };
   //!get call for stores
   const getStoreApi = () => {
@@ -343,13 +345,15 @@ const Stores = () => {
       })
       .catch((error) => {
         setIsUpLoading(false);
-        toast(error.response.data.res, {
+        toast(error.response.data.message, {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
         });
-        console.log(error.response.data);
+        console.log(error.response.data.message);
       });
+    console.log("post body for ---", storeUpdateAPI, " is:", putObject);
   };
+
   useEffect(() => {
     if (storeEditId) {
       var storeData =
@@ -362,7 +366,6 @@ const Stores = () => {
       }
     }
   }, [storeEditId]);
-
   //! validation for put call
   const validateStorePutField = () => {
     if (editName === "" || editName === null || editName === undefined) {
@@ -382,15 +385,13 @@ const Stores = () => {
     }
   };
 
-  console.log("tablessss.. prop data", tablePropsData, storeApiData);
-
   return (
     <Layout>
       <Content className="mb-1">
         <AntDesignBreadcrumbs
           data={[
             { title: "Home", navigationPath: "/", displayOrder: 1 },
-            { title: "Store", navigationPath: "", displayOrder: 2 },
+            { title: "Stores", navigationPath: "", displayOrder: 2 },
           ]}
         />
         <Row justify={"space-between"}>
