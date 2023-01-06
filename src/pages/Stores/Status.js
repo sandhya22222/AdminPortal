@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import StoreModal from "../../components/storeModal/StoreModal";
 import axios from "axios";
 
-const storeEditStatusAPI = process.env.REACT_APP_DM_STORE_STATUS_API;
+const storeEditStatusAPI = process.env.REACT_APP_STORE_STATUS_API;
 
 function Status({
   storeId,
@@ -82,10 +82,7 @@ function Status({
         toast(error.response.data.message, {
           type: "error",
         });
-        console.log(
-          "Error from the status response ===>",
-          error.response.data.message
-        );
+        console.log("Error from the status response ===>", error.response);
         setIsLoading(false);
         closeModal();
       });
@@ -97,7 +94,6 @@ function Status({
     setChangeSwitchStatus(checked);
     setIsModalOpen(true);
   };
-  console.log("switch status", switchStatus, storeStatus, changeSwitchStatus);
 
   return (
     <div>
