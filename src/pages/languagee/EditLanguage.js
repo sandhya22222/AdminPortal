@@ -237,7 +237,7 @@ const EditLanguage = () => {
         console.log(response);
         if (response.status === 200 || response.status === 201) {
           // getLanguageAPI();
-          toast("Language edited sucessfully.", {
+          toast("Language edited successfully.", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
           });
@@ -360,25 +360,7 @@ const EditLanguage = () => {
                           <Option value="RTL">RTL</Option>
                         </Select>
                       </Content>
-                      {/* TODO: As the langauge api is not supporting the put call for the browse, so we are commiting the code for now:
-                  will uncomment once the api is ready..
-                  */}
                       <Content className="my-2">
-                        {languageDetails.lang_file_name !== null ? (
-                          <p className="mt-2">
-                            <span className="text-red-600">
-                              {languageDetails.lang_file_name}{" "}
-                            </span>{" "}
-                            was uploaded for{" "}
-                            <span className="text-red-600">
-                              {languageDetails.language}
-                            </span>{" "}
-                            Language. You can update the file by browsing below.
-                          </p>
-                        ) : (
-                          ""
-                        )}
-
                         <label className="text-[13px] pb-1">
                           Language Supported Document
                         </label>
@@ -390,6 +372,22 @@ const EditLanguage = () => {
                           }
                           accept=".csv"
                         />
+
+                        {languageDetails.lang_file_name !== null ? (
+                          <p className="mt-2">
+                            <span className="text-red-600">
+                              {languageDetails.lang_file_name}{" "}
+                            </span>{" "}
+                            was uploaded for{" "}
+                            <span className="text-red-600">
+                              {languageDetails.language}
+                            </span>{" "}
+                            Language. You can update the file by browsing new
+                            file above.
+                          </p>
+                        ) : (
+                          ""
+                        )}
                       </Content>
                     </Content>
                   </Content>
