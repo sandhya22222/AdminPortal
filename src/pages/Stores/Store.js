@@ -101,17 +101,25 @@ const Stores = () => {
             setStoreApiData={setStoreApiData}
           />
         );
-
-        // <Switch onChange={onChange} defaultChecked />;
       },
     },
     {
       title: "Created Date",
       dataIndex: "created_on",
       key: "created_on",
-      width: "42%",
+      width: "34%",
+      render: (text, record) => {
+        return <>{new Date(record.created_on).toLocaleString()}</>;
+      },
+    },
+    {
+      title: "",
+      dataIndex: "",
+      key: "",
+      width: "8%",
       render: (text, record) => {
         return (
+<<<<<<< HEAD
           <Row>
             {" "}
             <Col span={10}>{new Date(record.created_on).toLocaleString()}</Col>
@@ -124,6 +132,23 @@ const Stores = () => {
               />
             </Col>
           </Row>
+=======
+          <>
+            <EditOutlined
+              className="app-edit-icon font-bold text-black flex justify-content-end pr-6"
+              onClick={() => {
+                showEditDrawer(record.id),
+                  setEditName(
+                    storeApiData &&
+                      storeApiData.length > 0 &&
+                      storeApiData.filter(
+                        (element) => element.id === record.id
+                      )[0].name
+                  );
+              }}
+            />
+          </>
+>>>>>>> 90e7565157a11e22b7811e5bc85f3027586a4940
         );
       },
     },
@@ -217,17 +242,22 @@ const Stores = () => {
   const showAddDrawer = () => {
     setOpen(true);
     setDrawerAction("post");
+    setInValidName(false);
   };
   //!edit drawer
   const showEditDrawer = (id) => {
     setStoreEditId(id);
     setOpen(true);
     setDrawerAction("put");
+<<<<<<< HEAD
     setEditName(
       storeApiData &&
         storeApiData.length > 0 &&
         storeApiData.filter((element) => element.id === id)[0].name
     );
+=======
+    setInValidEditName(false);
+>>>>>>> 90e7565157a11e22b7811e5bc85f3027586a4940
   };
   const onClose = () => {
     setOpen(false);
@@ -310,6 +340,7 @@ const Stores = () => {
         });
         console.log(error.response);
         setIsUpLoading(false);
+        // setInValidName(true)
         // onClose();
       });
   };
@@ -372,8 +403,7 @@ const Stores = () => {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
-    }
-    if (editName === serverStoreName) {
+    } else if (editName === serverStoreName) {
       toast("No Changes Detected !", {
         position: toast.POSITION.TOP_RIGHT,
         type: "info",
@@ -382,7 +412,6 @@ const Stores = () => {
       editStoreData();
     }
   };
-
   return (
     <Layout>
       <Content className="mb-1">
@@ -507,11 +536,7 @@ const Stores = () => {
             />
           </Content>
           <Content>
-            {tablePropsData.table_content.length > 0 ? (
-              <DynamicTable tableComponentData={tablePropsData} />
-            ) : (
-              ""
-            )}
+            <DynamicTable tableComponentData={tablePropsData} />
           </Content>
         </Content>
       )}
