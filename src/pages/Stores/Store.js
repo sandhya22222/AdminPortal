@@ -328,6 +328,11 @@ const Stores = () => {
       name: editName,
     };
     setIsUpLoading(true);
+    console.log(
+      "editStoreData() Endpoint:",
+      storeUpdateAPI.replace("{id}", storeEditId)
+    );
+    console.log("editStoreData() putBody:", putObject);
     axios
       .put(storeUpdateAPI.replace("{id}", storeEditId), putObject)
       .then((response) => {
@@ -342,8 +347,8 @@ const Stores = () => {
         setIsUpLoading(false);
         setServerStoreName(response.data.name);
         onClose();
-        if (response.status == 200 || response.status == 201) {
-          toast("Edit Store is Successfully Done! ", {
+        if (response.status === 200 || response.status === 201) {
+          toast("Store updated successfully! ", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
           });
@@ -351,13 +356,11 @@ const Stores = () => {
       })
       .catch((error) => {
         setIsUpLoading(false);
-        toast(error.response.data.message, {
+        toast(error.response.data.message.name[0], {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
         });
-        console.log(error.response.data.message);
       });
-    console.log("post body for ---", storeUpdateAPI, " is:", putObject);
   };
 
   useEffect(() => {
