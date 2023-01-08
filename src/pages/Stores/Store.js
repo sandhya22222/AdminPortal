@@ -121,8 +121,7 @@ const Stores = () => {
         return (
           <Row>
             {" "}
-            <Col span={10}>{new Date(record.created_on).toLocaleString()}</Col>
-            <Col span={3} offset={11}>
+            <Col span={3} offset={8}>
               <EditOutlined
                 className="app-edit-icon font-bold text-black"
                 onClick={() => {
