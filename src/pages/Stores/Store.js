@@ -119,17 +119,12 @@ const Stores = () => {
       width: "8%",
       render: (text, record) => {
         return (
-          <Row>
-            {" "}
-            <Col span={3} offset={8}>
-              <EditOutlined
-                className="app-edit-icon font-bold text-black"
-                onClick={() => {
-                  showEditDrawer(record.id);
-                }}
-              />
-            </Col>
-          </Row>
+          <EditOutlined
+            className="app-edit-icon font-bold text-black flex justify-content-end pr-6"
+            onClick={() => {
+              showEditDrawer(record.id);
+            }}
+          />
         );
       },
     },
@@ -235,6 +230,7 @@ const Stores = () => {
         storeApiData.length > 0 &&
         storeApiData.filter((element) => element.id === id)[0].name
     );
+    setInValidEditName(false);
   };
   const onClose = () => {
     setOpen(false);
