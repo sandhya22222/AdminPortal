@@ -119,14 +119,7 @@ const Stores = () => {
               <EditOutlined
                 className="app-edit-icon font-bold text-black"
                 onClick={() => {
-                  showEditDrawer(record.id),
-                    setEditName(
-                      storeApiData &&
-                        storeApiData.length > 0 &&
-                        storeApiData.filter(
-                          (element) => element.id === record.id
-                        )[0].name
-                    );
+                  showEditDrawer(record.id);
                 }}
               />
             </Col>
@@ -230,6 +223,11 @@ const Stores = () => {
     setStoreEditId(id);
     setOpen(true);
     setDrawerAction("put");
+    setEditName(
+      storeApiData &&
+        storeApiData.length > 0 &&
+        storeApiData.filter((element) => element.id === id)[0].name
+    );
   };
   const onClose = () => {
     setOpen(false);
