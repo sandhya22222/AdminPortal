@@ -44,7 +44,6 @@ const Signin = () => {
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
-    
     let validValues = 2;
     if (username === "" && userPassword === "") {
       setInValidUsername(true);
@@ -91,9 +90,8 @@ const Signin = () => {
 
   const onKeyDownHandler = (e) => {
     if (e.keyCode === 13) {
-      console.log("hello")
+      console.log("hello");
     }
-
   };
 
   return (
@@ -107,7 +105,7 @@ const Signin = () => {
           <Text className=" font-semibold text-2xl ">
             {PortalLoginInfoTitle.title}
           </Text>
-          <Input 
+          <Input
             style={{ marginTop: "18px", marginBottom: "18px" }}
             prefix={<UserOutlined className="" />}
             placeholder="Username"
@@ -120,7 +118,6 @@ const Signin = () => {
             onChange={(e) => {
               handleNameChange(e);
             }}
-           
           />
           <Input.Password
             prefix={<LockOutlined className="" />}
@@ -137,8 +134,7 @@ const Signin = () => {
             onChange={(e) => {
               handlePasswordChange(e);
             }}
-            onPressEnter={(e)=>handleSubmit(e)}
-            
+            onPressEnter={(e) => handleSubmit(e)}
           />
           {/* <Content className="mt-3">
           <Button block onClick={handleSubmit}
@@ -156,14 +152,18 @@ const Signin = () => {
               <UnlockOutlined />
             </span>
             <span>
-              <label className=" pt-1 cursor-pointer" > Login </label>
+              <label className=" pt-1 cursor-pointer"> Login </label>
             </span>
           </Content>
         </Content>
         <Content className="mt-3 text-[#F4F4F4]">
           <Text>A component of </Text>
           <Text underline>
-            <Link className=" !text-gray-700" href="" target="_blank">
+            <Link
+              className=" !text-gray-700"
+              href="https://www.torryharris.com/products/digital-marketplace"
+              target="_blank"
+            >
               DigitMarket
             </Link>
           </Text>
