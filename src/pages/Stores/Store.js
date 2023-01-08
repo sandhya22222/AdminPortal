@@ -119,7 +119,6 @@ const Stores = () => {
       width: "8%",
       render: (text, record) => {
         return (
-<<<<<<< HEAD
           <Row>
             {" "}
             <Col span={10}>{new Date(record.created_on).toLocaleString()}</Col>
@@ -132,23 +131,6 @@ const Stores = () => {
               />
             </Col>
           </Row>
-=======
-          <>
-            <EditOutlined
-              className="app-edit-icon font-bold text-black flex justify-content-end pr-6"
-              onClick={() => {
-                showEditDrawer(record.id),
-                  setEditName(
-                    storeApiData &&
-                      storeApiData.length > 0 &&
-                      storeApiData.filter(
-                        (element) => element.id === record.id
-                      )[0].name
-                  );
-              }}
-            />
-          </>
->>>>>>> 90e7565157a11e22b7811e5bc85f3027586a4940
         );
       },
     },
@@ -249,15 +231,11 @@ const Stores = () => {
     setStoreEditId(id);
     setOpen(true);
     setDrawerAction("put");
-<<<<<<< HEAD
     setEditName(
       storeApiData &&
         storeApiData.length > 0 &&
         storeApiData.filter((element) => element.id === id)[0].name
     );
-=======
-    setInValidEditName(false);
->>>>>>> 90e7565157a11e22b7811e5bc85f3027586a4940
   };
   const onClose = () => {
     setOpen(false);
