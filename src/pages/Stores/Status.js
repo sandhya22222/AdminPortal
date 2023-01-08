@@ -53,6 +53,7 @@ function Status({
             }
           });
           setStoreApiData(storeApiData);
+          console.log("storeapidata==>", storeApiData);
         } else {
           storeApiData.forEach((element) => {
             if (element.id == response.config.params.store_id) {
@@ -62,7 +63,7 @@ function Status({
           setStoreApiData(storeApiData);
         }
         console.log(
-          "Selecte content",
+          "Selected content",
           selectedTabTableContent,
           response.config.params.store_id
         );
