@@ -4,6 +4,7 @@ import { Button, Layout, Typography } from "antd";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { backendUrl, keycloakData } from "../../keycloak";
 
 //! Import CSS libraries
 
@@ -17,27 +18,36 @@ import { usePageTitle } from "../../hooks/usePageTitle";
 //! Import user defined CSS
 import "./home.css";
 
+
 //! Get all required details from .env file
 
 //! Destructure the components
 const { Title } = Typography;
 const { Content } = Layout;
 
-const Home = () => {
-  const realmName = 'dmadmin'
-  const clientId = 'dmadmin-client'
+const realmName = keycloakData.realmName
+const keycloakUrl = keycloakData.url
+const isLoggedInURL = backendUrl.isLoggedInURL
+const getPermissionsUrl = backendUrl.getPermissionsUrl
+const logoutUrl = backendUrl.logoutUrl
+const getAccessTokenUrl = backendUrl.getAccessTokenUrl
+
+
+const Home = ({isLoggedIn, setIsLoggedIn}) => {
+
 
   const location = useLocation();
   const [token, setToken] = useState('');
   const [refreshToken, setrefreshToken] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [getPermissionsData, setGetPermissionsData] = useState([])
 
   const handleSignIn = () => {
-    window.location = `http://54.210.56.174:8080/realms/${realmName}/protocol/openid-connect/auth?response_type=code&client_id=${clientId}`;
+    window.location = keycloakUrl;
   }
 
   const handleisLoggedIn = () => {
-    let baseurl = 'http://127.0.0.1:5000/authenticate/is_loggedin';
+    let baseurl = isLoggedInURL;
     axios({
       url: baseurl,
       method: 'post',
@@ -49,6 +59,7 @@ const Home = () => {
     }
     ).then(res => {
       setIsLoggedIn(res.data.is_loggedin)
+      sessionStorage.setItem('is_loggedIn', res.data.is_loggedin )
     }).catch(err => {
       console.log('isLoggedIn err', err)
     })
@@ -60,22 +71,39 @@ const Home = () => {
       let code = urlparams.get('code');
       console.log('code', code)
 
-      let baseurl = 'http://127.0.0.1:5000/authenticate/get_access_token?code=' + code;
+      let baseurl = getAccessTokenUrl + code;
 
       axios(baseurl).then(res => {
         // console.log('get access token res', res);
         if (res.data.access_token) {
           setToken(res.data.access_token);
           setrefreshToken(res.data.refresh_token)
+          sessionStorage.setItem('access_token', res.data.access_token )
         }
       }).catch(err => {
         console.log('get access token err', err)
       })
     }
   }
-
+  const getPermissions = () => {
+    let baseurl = getPermissionsUrl;
+    axios({
+      url: baseurl,
+      method: 'post',
+      data: {
+        account_name: realmName,
+        token: token
+      },
+    }).then(res => {
+      console.log('get access token res', res);
+      setGetPermissionsData(res.data)
+      sessionStorage.setItem("permissions_data", res.data);
+    }).catch(err => {
+      console.log('get access token err', err)
+    })
+  }
   const handleLogout = () => {
-    let baseurl = 'http://127.0.0.1:5000/authenticate/logout';
+    let baseurl = logoutUrl;
     axios({
       url: baseurl,
       method: 'post',
@@ -86,9 +114,9 @@ const Home = () => {
       }
     }).then(res => {
       console.log('logged out res', res);
-      alert("Logging out")
       if (res.data === "success") {
-        window.location = `http://54.210.56.174:8080/realms/${realmName}/protocol/openid-connect/auth?response_type=code&client_id=${clientId}`
+        sessionStorage.clear()
+        window.location = keycloakUrl
         setIsLoggedIn(false)
       }
 
@@ -96,6 +124,12 @@ const Home = () => {
       console.log('logged out err', err)
     })
   }
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      getPermissions();
+    }
+  }, [isLoggedIn])
 
   useEffect(() => {
     if (location.search === "") {
