@@ -15,7 +15,7 @@ import {
   DropdownItem,
   Dropdown,
 } from "reactstrap";
-import { Typography ,Layout} from "antd";
+import { Typography ,Layout, Button} from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { useNavigate, Link } from "react-router-dom";
@@ -33,6 +33,9 @@ import { BrandLogo } from "../../constants/media";
 
 //! Import user defined CSS
 import "./header.css";
+import { backendUrl } from "../../urlPages/backendUrl";
+import { keycloakData } from "../../urlPages/keycloak";
+import axios from "axios";
 
 //! Get all required details from .env file
 
@@ -40,11 +43,47 @@ import "./header.css";
 const { Text } = Typography;
 const { Content } = Layout;
 
+const logoutUrl = backendUrl.logoutUrl
+const keycloakUrl = keycloakData.url
+
+const handleSignIn = () => {
+  window.location = keycloakUrl;
+}
+
+
+
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+
+  const isLoggedIn = sessionStorage.getItem('is_loggedIn');
+  const token = sessionStorage.getItem('access_token');
+  const refreshToken = sessionStorage.getItem('refresh_token');
+
+  const handleLogout = () => {
+    let baseurl = logoutUrl;
+    axios({
+      url: baseurl,
+      method: 'post',
+      headers: {
+        Authorization: token
+      },
+      data: {
+        refresh_token: refreshToken,
+      },
+  
+    }).then(res => {
+      console.log('logged out res', res);
+      if (res.status === 200) {
+        sessionStorage.clear()
+        window.location = keycloakUrl
+      }
+    }).catch(err => {
+      console.log('logged out err', err)
+    })
+  }
 
   const persistedUserLoggedInInfo = useSelector(
     (state) => state.reducerUserLoggedInfo.userLoggedInfo
@@ -155,14 +194,17 @@ const Header = () => {
               </>
             ) : (
               <Content className="">
-                <Link
+                <Button onClick={isLoggedIn ? handleLogout : handleSignIn} className="!h-10 !bg-[#393939] text-white !border-[1px] !border-solid !border-[#393939] !box-border !rounded !pl-[15px]">
+                    {isLoggedIn ? "Logout" : "Signin"}
+                </Button>
+                {/* <Link
                   to={{
                     pathname: "/signin",
                   }}
                   className=" pl-[5px] font-semibold !no-underline"
                 >
                   <Text className="">Signin</Text>
-                </Link>
+                </Link> */}
               </Content>
             )}
           </Nav>

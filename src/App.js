@@ -39,7 +39,6 @@ const App = () => {
 
   const isLoggedInFromSession = sessionStorage.getItem("is_loggedIn");
 
-  // console.log('isLoggedInFromSession', isLoggedInFromSession)
   return (
     <Suspense fallback={<LoadingMarkup />}>
       <Router>
@@ -47,7 +46,6 @@ const App = () => {
         <Header />
         <Container fluid className="p-0 bg-[#F4F4F4] text-[#393939]">
           <Routes>
-            
             <Route path="/" element={<Home setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} />} />
             <Route path="/home" element={<Navigate to={"/"} />} />
             <Route path="/signin" element={<Signin />} />
@@ -60,8 +58,7 @@ const App = () => {
                 <Route path="store" element={<Store />} />
                 <Route path="*" element={<PageNotFound />} />
             </Route>
-            ) : <Route path="*" element={<PageNotFound />} />}
-            
+            ) : <Route path="*" element={<PageNotFound />} />}   
           </Routes>
         </Container>
         <Footer />
