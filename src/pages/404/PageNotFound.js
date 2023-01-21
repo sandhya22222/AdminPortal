@@ -1,5 +1,6 @@
 import React from "react";
-import { keycloakData } from "../../keycloak";
+import { keycloakData } from "../../urlPages/keycloak";
+
 
 const keycloakUrl = keycloakData.url
 const PageNotFound = () => {

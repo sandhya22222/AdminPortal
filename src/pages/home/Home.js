@@ -4,7 +4,6 @@ import { Button, Layout, Typography } from "antd";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import { backendUrl, keycloakData } from "../../keycloak";
 
 //! Import CSS libraries
 
@@ -17,7 +16,8 @@ import { usePageTitle } from "../../hooks/usePageTitle";
 
 //! Import user defined CSS
 import "./home.css";
-
+import { keycloakData } from "../../urlPages/keycloak";
+import { backendUrl } from "../../urlPages/backendUrl";
 
 //! Get all required details from .env file
 
@@ -26,12 +26,11 @@ const { Title } = Typography;
 const { Content } = Layout;
 
 const realmName = keycloakData.realmName
+const clientId = keycloakData.clientId
 const keycloakUrl = keycloakData.url
 const isLoggedInURL = backendUrl.isLoggedInURL
 const getPermissionsUrl = backendUrl.getPermissionsUrl
-const logoutUrl = backendUrl.logoutUrl
 const getAccessTokenUrl = backendUrl.getAccessTokenUrl
-
 
 const Home = ({isLoggedIn, setIsLoggedIn}) => {
 
@@ -39,27 +38,23 @@ const Home = ({isLoggedIn, setIsLoggedIn}) => {
   const location = useLocation();
   const [token, setToken] = useState('');
   const [refreshToken, setrefreshToken] = useState('');
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [getPermissionsData, setGetPermissionsData] = useState([])
 
   const handleSignIn = () => {
     window.location = keycloakUrl;
   }
-
   const handleisLoggedIn = () => {
     let baseurl = isLoggedInURL;
     axios({
       url: baseurl,
-      method: 'post',
-      data: {
-        realmname: realmName,
-        account_name: realmName,
-        token: token
+      method: 'get',
+      headers: {
+        Authorization: token
       },
     }
     ).then(res => {
       setIsLoggedIn(res.data.is_loggedin)
-      sessionStorage.setItem('is_loggedIn', res.data.is_loggedin )
+      sessionStorage.setItem('is_loggedIn', res.data.is_loggedin)
     }).catch(err => {
       console.log('isLoggedIn err', err)
     })
@@ -71,14 +66,23 @@ const Home = ({isLoggedIn, setIsLoggedIn}) => {
       let code = urlparams.get('code');
       console.log('code', code)
 
-      let baseurl = getAccessTokenUrl + code;
+      let baseurl = getAccessTokenUrl;
 
-      axios(baseurl).then(res => {
+      axios({
+        url: baseurl,
+        method: 'post',
+        data: {
+          code: code,
+          realmname: realmName,
+          client_id: clientId,
+        }
+      }).then(res => {
         // console.log('get access token res', res);
         if (res.data.access_token) {
           setToken(res.data.access_token);
           setrefreshToken(res.data.refresh_token)
-          sessionStorage.setItem('access_token', res.data.access_token )
+          sessionStorage.setItem('access_token', res.data.access_token)
+          sessionStorage.setItem('refresh_token', res.data.refresh_token)
         }
       }).catch(err => {
         console.log('get access token err', err)
@@ -89,10 +93,9 @@ const Home = ({isLoggedIn, setIsLoggedIn}) => {
     let baseurl = getPermissionsUrl;
     axios({
       url: baseurl,
-      method: 'post',
-      data: {
-        account_name: realmName,
-        token: token
+      method: 'get',
+      headers: {
+        Authorization: token
       },
     }).then(res => {
       console.log('get access token res', res);
@@ -102,29 +105,6 @@ const Home = ({isLoggedIn, setIsLoggedIn}) => {
       console.log('get access token err', err)
     })
   }
-  const handleLogout = () => {
-    let baseurl = logoutUrl;
-    axios({
-      url: baseurl,
-      method: 'post',
-      data: {
-        account_name: realmName,
-        refresh_token: refreshToken,
-        token: token
-      }
-    }).then(res => {
-      console.log('logged out res', res);
-      if (res.data === "success") {
-        sessionStorage.clear()
-        window.location = keycloakUrl
-        setIsLoggedIn(false)
-      }
-
-    }).catch(err => {
-      console.log('logged out err', err)
-    })
-  }
-
   useEffect(() => {
     if (isLoggedIn) {
       getPermissions();
@@ -165,11 +145,11 @@ const Home = ({isLoggedIn, setIsLoggedIn}) => {
               Go to Dashboard
             </Button>
           </Link>
-          <Link to="/signin">
+          {/* <Link to="/signin">
             <Button onClick={handleLogout} className="!h-10 !bg-[#393939] text-white !border-[1px] !border-solid !border-[#393939] !box-border !rounded !pl-[15px]">
               Logout
             </Button>
-          </Link>
+          </Link> */}
         </>
       }
       {/* <Title level={4}>This is Home page</Title> */}
