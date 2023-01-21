@@ -32,9 +32,10 @@ const isLoggedInURL = backendUrl.isLoggedInURL
 const getPermissionsUrl = backendUrl.getPermissionsUrl
 const getAccessTokenUrl = backendUrl.getAccessTokenUrl
 
+const instance = axios.create();
+delete instance.defaults.headers.common['Authorization'];
+
 const Home = ({isLoggedIn, setIsLoggedIn}) => {
-
-
   const location = useLocation();
   const [token, setToken] = useState('');
   const [refreshToken, setrefreshToken] = useState('');
@@ -45,7 +46,7 @@ const Home = ({isLoggedIn, setIsLoggedIn}) => {
   }
   const handleisLoggedIn = () => {
     let baseurl = isLoggedInURL;
-    axios({
+    instance({
       url: baseurl,
       method: 'get',
       headers: {
@@ -68,7 +69,7 @@ const Home = ({isLoggedIn, setIsLoggedIn}) => {
 
       let baseurl = getAccessTokenUrl;
 
-      axios({
+      instance({
         url: baseurl,
         method: 'post',
         data: {
@@ -91,7 +92,7 @@ const Home = ({isLoggedIn, setIsLoggedIn}) => {
   }
   const getPermissions = () => {
     let baseurl = getPermissionsUrl;
-    axios({
+    instance({
       url: baseurl,
       method: 'get',
       headers: {
