@@ -28,9 +28,14 @@ import EditLanguage from "./pages/languagee/EditLanguage";
 
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 
+const auth = process.env.REACT_APP_AUTH;
+
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   useFavicon();
+  if(auth==='true'){
+    axios.defaults.headers.common['Authorization'] = sessionStorage.getItem('access_token');
+  }
 
   const isLoggedInFromSession = sessionStorage.getItem("is_loggedIn");
 
