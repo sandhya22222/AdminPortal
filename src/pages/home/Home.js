@@ -56,6 +56,7 @@ const Home = ({isLoggedIn, setIsLoggedIn}) => {
     ).then(res => {
       setIsLoggedIn(res.data.is_loggedin)
       sessionStorage.setItem('is_loggedIn', res.data.is_loggedin)
+      getPermissions()
     }).catch(err => {
       console.log('isLoggedIn err', err)
     })
@@ -84,6 +85,7 @@ const Home = ({isLoggedIn, setIsLoggedIn}) => {
           setrefreshToken(res.data.refresh_token)
           sessionStorage.setItem('access_token', res.data.access_token)
           sessionStorage.setItem('refresh_token', res.data.refresh_token)
+          
         }
       }).catch(err => {
         console.log('get access token err', err)
@@ -106,18 +108,13 @@ const Home = ({isLoggedIn, setIsLoggedIn}) => {
       console.log('get access token err', err)
     })
   }
-  useEffect(() => {
-    if (isLoggedIn) {
-      getPermissions();
-    }
-  }, [isLoggedIn])
+
 
   useEffect(() => {
     if (location.search === "") {
       handleSignIn();
-    } else {
-      console.log('signed in')
-      getAccessToken()
+    } else if(!sessionStorage.getItem('access_token')){
+      getAccessToken();
     }
 
   }, [location.search])
@@ -125,6 +122,15 @@ const Home = ({isLoggedIn, setIsLoggedIn}) => {
   useEffect(() => {
     if (token) {
       handleisLoggedIn();
+    }
+    else if(sessionStorage.getItem('access_token')){
+      // setToken(sessionStorage.getItem('access_token'));
+      if(sessionStorage.getItem('is_loggedIn')){
+        setIsLoggedIn(sessionStorage.getItem('is_loggedIn'))
+      }
+      else{
+        handleisLoggedIn();
+      }
     }
   }, [token])
 
