@@ -48,7 +48,7 @@ function Status({
         setSwitchStatus(changeSwitchStatus);
         if (changeSwitchStatus) {
           storeApiData.forEach((element) => {
-            if (element.id == response.config.params.store_id) {
+            if (element.id == response.config.params["store-id"]) {
               element.status = 1;
             }
           });
@@ -56,7 +56,7 @@ function Status({
           console.log("storeapidata==>", storeApiData);
         } else {
           storeApiData.forEach((element) => {
-            if (element.id == response.config.params.store_id) {
+            if (element.id == response.config.params["store-id"]) {
               element.status = 2;
             }
           });
@@ -65,11 +65,11 @@ function Status({
         console.log(
           "Selected content",
           selectedTabTableContent,
-          response.config.params.store_id
+          response.config.params["store-id"]
         );
         setSelectedTabTableContent(
           selectedTabTableContent.filter(
-            (element) => element.id !== response.config.params.store_id
+            (element) => element.id !== response.config.params["store-id"]
           )
         );
         toast("Edit Status is done Successfully", {
