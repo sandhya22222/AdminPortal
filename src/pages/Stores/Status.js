@@ -105,8 +105,7 @@ function Status({
         cancelButtonText={"Cancel"}
         okCallback={() => requestServer()}
         cancelCallback={() => closeModal()}
-        // isSpin={isLoading}
-        isSpin={false}
+        isSpin={isLoading}
       >
         {changeSwitchStatus ? (
           <div>
