@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useState } from "react";
 import { Container } from "reactstrap";
 import {
   BrowserRouter as Router,
@@ -28,8 +28,17 @@ import EditLanguage from "./pages/languagee/EditLanguage";
 
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 
+const auth = process.env.REACT_APP_AUTH;
+
 const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   useFavicon();
+  if(auth==='true'){
+    axios.defaults.headers.common['Authorization'] = sessionStorage.getItem('access_token');
+  }
+
+  const isLoggedInFromSession = sessionStorage.getItem("is_loggedIn");
+
   return (
     <Suspense fallback={<LoadingMarkup />}>
       <Router>
@@ -37,17 +46,19 @@ const App = () => {
         <Header />
         <Container fluid className="p-0 bg-[#F4F4F4] text-[#393939]">
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} />} />
             <Route path="/home" element={<Navigate to={"/"} />} />
             <Route path="/signin" element={<Signin />} />
-            <Route path="/dashboard" element={<Sidebar color="light" />}>
-              <Route path="" element={<Dashboard />} />
-              <Route path="language" element={<Language />} />
-              <Route path="language/edit_language" element={<EditLanguage />} />
-              <Route path="language/add_language" element={<AddLanguage />} />
-              <Route path="store" element={<Store />} />
-              <Route path="*" element={<PageNotFound />} />
+            {isLoggedInFromSession ? (
+              <Route path="/dashboard" element={<Sidebar color="light" />}>
+                <Route path="" element={<Dashboard />} />
+                <Route path="language" element={<Language />} />
+                <Route path="language/edit_language" element={<EditLanguage />} />
+                <Route path="language/add_language" element={<AddLanguage />} />
+                <Route path="store" element={<Store />} />
+                <Route path="*" element={<PageNotFound />} />
             </Route>
+            ) : <Route path="*" element={<PageNotFound />} />}   
           </Routes>
         </Container>
         <Footer />
