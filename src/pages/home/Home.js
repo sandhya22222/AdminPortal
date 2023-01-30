@@ -25,12 +25,13 @@ import { backendUrl } from "../../urlPages/backendUrl";
 const { Title } = Typography;
 const { Content } = Layout;
 
-const realmName = keycloakData.realmName
-const clientId = keycloakData.clientId
-const keycloakUrl = keycloakData.url
-const isLoggedInURL = backendUrl.isLoggedInURL
-const getPermissionsUrl = backendUrl.getPermissionsUrl
-const getAccessTokenUrl = backendUrl.getAccessTokenUrl
+const realmName = process.env.REACT_APP_REALMNAME
+const clientId = process.env.REACT_APP_CLIENTID
+const keyUrl = process.env.REACT_APP_KEYCLOAK_URL
+const umsBaseUrl = process.env.REACT_APP_USM_BASE_URL;
+const isLoggedInURL = process.env.REACT_APP_ISLOGGEDIN
+const getPermissionsUrl = process.env.REACT_APP_PERMISSIONS
+const getAccessTokenUrl = process.env.REACT_APP_ACCESSTOKEN
 
 const instance = axios.create();
 delete instance.defaults.headers.common['Authorization'];
@@ -42,10 +43,10 @@ const Home = ({isLoggedIn, setIsLoggedIn}) => {
   const [getPermissionsData, setGetPermissionsData] = useState([])
 
   const handleSignIn = () => {
-    window.location = keycloakUrl;
+    window.location = `${keyUrl}/realms/${realmName}/protocol/openid-connect/auth?response_type=code&client_id=${clientId}`;
   }
   const handleisLoggedIn = () => {
-    let baseurl = isLoggedInURL;
+    let baseurl = `${umsBaseUrl}${isLoggedInURL}`;
     instance({
       url: baseurl,
       method: 'get',
@@ -68,7 +69,7 @@ const Home = ({isLoggedIn, setIsLoggedIn}) => {
       let code = urlparams.get('code');
       console.log('code', code)
 
-      let baseurl = getAccessTokenUrl;
+      let baseurl = `${umsBaseUrl}${getAccessTokenUrl}`;
 
       instance({
         url: baseurl,
@@ -93,7 +94,7 @@ const Home = ({isLoggedIn, setIsLoggedIn}) => {
     }
   }
   const getPermissions = () => {
-    let baseurl = getPermissionsUrl;
+    let baseurl = `${umsBaseUrl}${getPermissionsUrl}`;
     instance({
       url: baseurl,
       method: 'get',

@@ -43,13 +43,12 @@ import axios from "axios";
 const { Text } = Typography;
 const { Content } = Layout;
 
-const logoutUrl = backendUrl.logoutUrl
-const keycloakUrl = keycloakData.url
 
-const handleSignIn = () => {
-  window.location = keycloakUrl;
-}
-
+const realmName = process.env.REACT_APP_REALMNAME
+const clientId = process.env.REACT_APP_CLIENTID
+const keyUrl = process.env.REACT_APP_KEYCLOAK_URL
+const umsBaseUrl = process.env.REACT_APP_USM_BASE_URL;
+const logoutUrl = process.env.REACT_APP_LOGOUT;
 
 
 const Header = () => {
@@ -62,8 +61,12 @@ const Header = () => {
   const token = sessionStorage.getItem('access_token');
   const refreshToken = sessionStorage.getItem('refresh_token');
 
+  const handleSignIn = () => {
+    window.location = `${keyUrl}/realms/${realmName}/protocol/openid-connect/auth?response_type=code&client_id=${clientId}`;
+  }
+
   const handleLogout = () => {
-    let baseurl = logoutUrl;
+    let baseurl = `${umsBaseUrl}${logoutUrl}`;
     axios({
       url: baseurl,
       method: 'post',
@@ -78,7 +81,7 @@ const Header = () => {
       console.log('logged out res', res);
       if (res.status === 200) {
         sessionStorage.clear()
-        window.location = keycloakUrl
+        window.location = `${keyUrl}/realms/${realmName}/protocol/openid-connect/auth?response_type=code&client_id=${clientId}`;
       }
     }).catch(err => {
       console.log('logged out err', err)
