@@ -13,7 +13,13 @@ import {
   Skeleton,
 } from "antd";
 import axios from "axios";
-import { Navigate, useNavigate, Link } from "react-router-dom";
+import {
+  Navigate,
+  useNavigate,
+  Link,
+  useSearchParams,
+  useParams,
+} from "react-router-dom";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
 //! Import user defined components
@@ -21,14 +27,21 @@ import DynamicTable from "../../components/DynamicTable/DynamicTable";
 import StoreModal from "../../components/storeModal/StoreModal";
 import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
 import SkeletonComponent from "../../components/Skeleton/SkeletonComponent";
+import DmPagination from "../../components/DmPagination/DmPagination";
+import { usePageTitle } from "../../hooks/usePageTitle";
 import "./language.css";
 
 const { Title } = Typography;
 const { Content } = Layout;
 
 const languageAPI = process.env.REACT_APP_LANGUAGE_API;
+const pageLimit = process.env.REACT_APP_ITEM_PER_PAGE;
 
 const Language = () => {
+  usePageTitle("Admin Portal - Language");
+
+  const params = useParams();
+
   const [isLoading, setIsLoading] = useState(false);
   const [islanguageDeleting, setIslanguageDeleting] = useState(false);
   const [languageData, setLanguageData] = useState([]);
@@ -36,7 +49,13 @@ const Language = () => {
   const [deleteLanguageID, setDeleteLanguageID] = useState("");
   const [isDeleteLanguageModalOpen, setIsDeleteLanguageModalOpen] =
     useState(false);
-
+  const [currentPage, setCurrentPage] = useState(
+    params.page ? params.page.slice(5, params.page.length) : null
+  );
+  const [currentCount, setCurrentCount] = useState(
+    params.count ? params.count.slice(6, params.count.length) : null
+  );
+  const [countForLanguage, setCountForLanguage] = useState();
   const navigate = useNavigate();
 
   // closing the delete popup model
@@ -181,14 +200,19 @@ const Language = () => {
   //get function
   useEffect(() => {
     getLanguageData();
-    // window.scrollTo(0, 0)
+    window.scrollTo(0, 0);
   }, []);
 
-  const getLanguageData = () => {
+  const getLanguageData = (page, limit) => {
     // enabling spinner
     setIsLoading(true);
     axios
-      .get(languageAPI)
+      .get(languageAPI, {
+        params: {
+          "page-number": page,
+          "page-limit": limit,
+        },
+      })
       .then(function (response) {
         console.log("response", response);
         setIsLoading(false);
@@ -198,6 +222,7 @@ const Language = () => {
           response.data
         );
         setLanguageData(response.data);
+        setCountForLanguage(response.data.length);
         // setIsNetworkErrorLanguage(false);
       })
       .catch((error) => {
@@ -256,6 +281,19 @@ const Language = () => {
       sorting_title: "Sorting by",
       sorting_data: ProductSortingOption,
     },
+  };
+
+  const handlePageNumberChange = (page, pageSize) => {
+    if (page === 1) {
+      if (pageSize != 20) {
+        navigate(`/dashboard/language/page=1/count=${pageSize}`);
+      } else {
+        navigate("/dashboard/language");
+      }
+    } else {
+      navigate(`/dashboard/language=${page}/count=${pageSize}`);
+    }
+    navigate(0);
   };
 
   return (
@@ -331,6 +369,17 @@ const Language = () => {
         <Layout>
           <Content>
             <DynamicTable tableComponentData={tablepropsData} />
+            {countForLanguage >= pageLimit ? (
+              <Content className=" grid justify-items-end">
+                <DmPagination
+                  currentPage={currentPage ? currentPage : 1}
+                  totalItemsCount={countForLanguage}
+                  defaultPageSize={pageLimit}
+                  pageSize={currentCount ? currentCount : pageLimit}
+                  handlePageNumberChange={handlePageNumberChange}
+                />
+              </Content>
+            ) : null}
           </Content>
         </Layout>
       )}
