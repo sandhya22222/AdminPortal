@@ -13,7 +13,7 @@ import {
 import axios from "axios";
 import { toast } from "react-toastify";
 import { EditOutlined } from "@ant-design/icons";
-import { useLocation, Link, useSearchParams } from "react-router-dom";
+import { useLocation, Link, useSearchParams, useParams, useNavigate } from "react-router-dom";
 
 //! Import user defined components
 import DmTabAntDesign from "../../components/DmTabAntDesign/DmTabAntDesign";
@@ -21,12 +21,15 @@ import DynamicTable from "../../components/DynamicTable/DynamicTable";
 import SkeletonComponent from "../../components/Skeleton/SkeletonComponent";
 import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
 import Status from "./Status";
+import DmPagination from "../../components/DmPagination/DmPagination";
+import { usePageTitle } from "../../hooks/usePageTitle";
 const { Content } = Layout;
 const { Title } = Typography;
 
 //! Get all required details from .env file
 const storeAPI = process.env.REACT_APP_STORE_API;
 const storeUpdateAPI = process.env.REACT_APP_STORE_UPDATE_API;
+const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE);
 
 //! tab data
 const storeTabData = [
@@ -45,7 +48,10 @@ const storeTabData = [
 ];
 
 const Stores = () => {
+  usePageTitle("Admin Portal - Store");
   const search = useLocation().search;
+  const params = useParams();
+  const navigate = useNavigate();
 
   // const store_id = new URLSearchParams(search).get("store_id");
   const tab_id = new URLSearchParams(search).get("tab");
@@ -65,6 +71,14 @@ const Stores = () => {
   const [selectedTabTableContent, setSelectedTabTableContent] = useState([]);
   const [serverStoreName, setServerStoreName] = useState();
   const [storeEditId, setStoreEditId] = useState();
+  const [isPaginationDataLoaded, setIsPaginationDataLoaded] = useState(true);
+  const [currentPage, setCurrentPage] = useState(
+    params.page ? params.page.slice(5, params.page.length) : null
+  );
+  const [currentCount, setCurrentCount] = useState(
+    params.count ? params.count.slice(6, params.count.length) : null
+  );
+  const [countForStore, setCountForStore] = useState();
   //! table columns
   const StoreTableColumn = [
     {
@@ -227,8 +241,8 @@ const Stores = () => {
     setDrawerAction("put");
     setEditName(
       storeApiData &&
-        storeApiData.length > 0 &&
-        storeApiData.filter((element) => element.id === id)[0].name
+      storeApiData.length > 0 &&
+      storeApiData.filter((element) => element.id === id)[0].name
     );
     setInValidEditName(false);
   };
@@ -237,13 +251,14 @@ const Stores = () => {
     setName("");
   };
   //!get call for stores
-  const getStoreApi = () => {
+  const getStoreApi = (page, limit) => {
     // setIsLoading(true);
     axios
       .get(storeAPI, {
         params: {
-          "page-limit": 1000,
-          "page-number": 1,
+          // store_id: parseInt(storeId),
+          "page-number": page,
+          "page-limit": limit,
         },
       })
       .then(function (response) {
@@ -254,6 +269,9 @@ const Stores = () => {
           response.data.data
         );
         setStoreApiData(response.data.data);
+        setIsPaginationDataLoaded(false);
+        setCountForStore(response.data.count)
+        // console.log("hii",response.data.count)
       })
       .catch((error) => {
         setIsLoading(false);
@@ -324,14 +342,13 @@ const Stores = () => {
       name: editName,
     };
     setIsUpLoading(true);
-    console.log("editStoreData() Endpoint:", storeAPI, putObject);
+    console.log(
+      "editStoreData() Endpoint:",
+      storeUpdateAPI.replace("{id}", storeEditId)
+    );
     console.log("editStoreData() putBody:", putObject);
     axios
-      .put(storeAPI, putObject, {
-        params: {
-          store_id: parseInt(storeEditId),
-        },
-      })
+      .put(storeUpdateAPI.replace("{id}", storeEditId), putObject)
       .then((response) => {
         console.log("put response", response.data, storeApiData);
         let copyofStoreAPIData = [...storeApiData];
@@ -389,6 +406,27 @@ const Stores = () => {
       editStoreData();
     }
   };
+
+  useEffect(() => {
+    if (currentPage && currentCount) {
+      getStoreApi(currentPage, currentCount);
+    } else {
+      getStoreApi(1, pageLimit);
+    }
+  }, []);
+  const handlePageNumberChange = (page, pageSize) => {
+    if (page === 1) {
+      if (pageSize != 20) {
+        navigate(`/dashboard/store/page=1/count=${pageSize}`);
+      } else {
+        navigate("/dashboard/store");
+      }
+    } else {
+      navigate(`/dashboard/store=${page}/count=${pageSize}`);
+    }
+    navigate(0);
+  };
+
   return (
     <Layout>
       <Content className="mb-1">
@@ -433,11 +471,10 @@ const Stores = () => {
                     <Input
                       placeholder="Enter store name"
                       value={name}
-                      className={`${
-                        inValidName
-                          ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400 mb-4"
-                          : "h-10 px-3 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm mb-4"
-                      }`}
+                      className={`${inValidName
+                        ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400 mb-4"
+                        : "h-10 px-3 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm mb-4"
+                        }`}
                       onChange={(e) => {
                         setName(e.target.value);
                         setInValidName(false);
@@ -456,11 +493,10 @@ const Stores = () => {
                   <Spin tip="Please wait!" size="large" spinning={isUpLoading}>
                     <Input
                       value={editName}
-                      className={`${
-                        inValidEditName
-                          ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400 mb-4"
-                          : "h-10 px-3 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm mb-4"
-                      }`}
+                      className={`${inValidEditName
+                        ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400 mb-4"
+                        : "h-10 px-3 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm mb-4"
+                        }`}
                       onChange={(e) => {
                         setEditName(e.target.value);
                         setInValidEditName(false);
@@ -515,7 +551,19 @@ const Stores = () => {
           <Content>
             <DynamicTable tableComponentData={tablePropsData} />
           </Content>
+          {countForStore >= pageLimit ? (
+            <Content className=" grid justify-items-end">
+              <DmPagination
+                currentPage={currentPage ? currentPage : 1}
+                totalItemsCount={countForStore}
+                defaultPageSize={pageLimit}
+                pageSize={currentCount ? currentCount : pageLimit}
+                handlePageNumberChange={handlePageNumberChange}
+              />
+            </Content>
+          ) : null}
         </Content>
+
       )}
     </Layout>
   );
