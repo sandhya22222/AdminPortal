@@ -324,13 +324,14 @@ const Stores = () => {
       name: editName,
     };
     setIsUpLoading(true);
-    console.log(
-      "editStoreData() Endpoint:",
-      storeUpdateAPI.replace("{id}", storeEditId)
-    );
+    console.log("editStoreData() Endpoint:", storeAPI, putObject);
     console.log("editStoreData() putBody:", putObject);
     axios
-      .put(storeUpdateAPI.replace("{id}", storeEditId), putObject)
+      .put(storeAPI, putObject, {
+        params: {
+          store_id: parseInt(storeEditId),
+        },
+      })
       .then((response) => {
         console.log("put response", response.data, storeApiData);
         let copyofStoreAPIData = [...storeApiData];

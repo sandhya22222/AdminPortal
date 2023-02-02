@@ -39,11 +39,13 @@ const EditLanguage = () => {
     writing_script_direction: "",
     lang_support_docs: null,
     lang_file_name: "",
+    dm_language_regex: "",
     islanguageDetailsEdited: false,
   });
   const [isLanguageFieldEmpty, setIsLanguageFieldEmpty] = useState(false);
   const [isLanguageCodeFieldEmpty, setIsLanguageCodeFieldEmpty] =
     useState(false);
+  const [isRegexFieldEmpty, setIsRegexFieldEmpty] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const navigate = useNavigate();
@@ -65,6 +67,11 @@ const EditLanguage = () => {
       copyofLanguageDetails.native_name = value;
     } else if (fieldName === "writing_script_direction") {
       copyofLanguageDetails.writing_script_direction = value;
+    } else if (fieldName === "dm_language_regex") {
+      copyofLanguageDetails.dm_language_regex = value;
+      if (value != "") {
+        setIsRegexFieldEmpty(false);
+      }
     } else if (fieldName === "lang_support_docs") {
       if (value[0].size < 4 * 1000000) {
         let file = value[0];
@@ -130,6 +137,8 @@ const EditLanguage = () => {
             languageData[0].lang_support_docs;
           copyofLanguageDetails.lang_file_name =
             languageData[0].lang_support_docs;
+          copyofLanguageDetails.dm_language_regex =
+            languageData[0].dm_language_regex;
           setLanguageDetails(copyofLanguageDetails);
         }
         // disabling skeleton
@@ -168,12 +177,14 @@ const EditLanguage = () => {
     if (
       languageDetails.language !== "" &&
       languageDetails.language_code !== "" &&
+      languageDetails.dm_language_regex !== "" &&
       languageDetails.islanguageDetailsEdited
     ) {
       editLanguage();
     } else if (
       languageDetails.language === "" ||
-      languageDetails.language_code === ""
+      languageDetails.language_code === "" ||
+      languageDetails.dm_language_regex === ""
     ) {
       if (languageDetails.language === "") {
         setIsLanguageFieldEmpty(true);
@@ -186,6 +197,14 @@ const EditLanguage = () => {
       if (languageDetails.language_code === "") {
         setIsLanguageCodeFieldEmpty(true);
         toast("Please Enter Language Code", {
+          autoClose: 5000,
+          position: toast.POSITION.TOP_RIGHT,
+          type: "error",
+        });
+      }
+      if (languageDetails.dm_language_regex === "") {
+        setIsRegexFieldEmpty(true);
+        toast("Please Enter Regex", {
           autoClose: 5000,
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
@@ -205,6 +224,7 @@ const EditLanguage = () => {
     const langaugeData = new FormData();
     langaugeData.append("language", languageDetails.language);
     langaugeData.append("language_code", languageDetails.language_code);
+    langaugeData.append("dm_language_regex", languageDetails.dm_language_regex);
     langaugeData.append("native_name", languageDetails.native_name);
     langaugeData.append(
       "writing_script_direction",
@@ -327,6 +347,27 @@ const EditLanguage = () => {
                           }`}
                           onChange={(e) => {
                             languageHandler("language_code", e.target.value);
+                          }}
+                        />
+                      </Content>
+                      <Content className="my-2">
+                        <label className="text-[13px]">
+                          Language Regex
+                          <sup className="text-red-600 text-sm">*</sup>
+                        </label>
+                        <Input
+                          placeholder="Enter Language Code"
+                          value={languageDetails.dm_language_regex}
+                          className={`${
+                            isRegexFieldEmpty
+                              ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400"
+                              : "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
+                          }`}
+                          onChange={(e) => {
+                            languageHandler(
+                              "dm_language_regex",
+                              e.target.value
+                            );
                           }}
                         />
                       </Content>
