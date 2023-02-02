@@ -13,7 +13,13 @@ import {
 import axios from "axios";
 import { toast } from "react-toastify";
 import { EditOutlined } from "@ant-design/icons";
-import { useLocation, Link, useSearchParams, useParams, useNavigate } from "react-router-dom";
+import {
+  useLocation,
+  Link,
+  useSearchParams,
+  useParams,
+  useNavigate,
+} from "react-router-dom";
 
 //! Import user defined components
 import DmTabAntDesign from "../../components/DmTabAntDesign/DmTabAntDesign";
@@ -241,8 +247,8 @@ const Stores = () => {
     setDrawerAction("put");
     setEditName(
       storeApiData &&
-      storeApiData.length > 0 &&
-      storeApiData.filter((element) => element.id === id)[0].name
+        storeApiData.length > 0 &&
+        storeApiData.filter((element) => element.id === id)[0].name
     );
     setInValidEditName(false);
   };
@@ -270,7 +276,7 @@ const Stores = () => {
         );
         setStoreApiData(response.data.data);
         setIsPaginationDataLoaded(false);
-        setCountForStore(response.data.count)
+        setCountForStore(response.data.count);
         // console.log("hii",response.data.count)
       })
       .catch((error) => {
@@ -281,6 +287,7 @@ const Stores = () => {
   };
   useEffect(() => {
     getStoreApi();
+    window.scrollTo(0, 0);
   }, []);
 
   //!useEffect for getting the table in table without refreshing
@@ -471,10 +478,11 @@ const Stores = () => {
                     <Input
                       placeholder="Enter store name"
                       value={name}
-                      className={`${inValidName
-                        ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400 mb-4"
-                        : "h-10 px-3 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm mb-4"
-                        }`}
+                      className={`${
+                        inValidName
+                          ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400 mb-4"
+                          : "h-10 px-3 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm mb-4"
+                      }`}
                       onChange={(e) => {
                         setName(e.target.value);
                         setInValidName(false);
@@ -493,10 +501,11 @@ const Stores = () => {
                   <Spin tip="Please wait!" size="large" spinning={isUpLoading}>
                     <Input
                       value={editName}
-                      className={`${inValidEditName
-                        ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400 mb-4"
-                        : "h-10 px-3 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm mb-4"
-                        }`}
+                      className={`${
+                        inValidEditName
+                          ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400 mb-4"
+                          : "h-10 px-3 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm mb-4"
+                      }`}
                       onChange={(e) => {
                         setEditName(e.target.value);
                         setInValidEditName(false);
@@ -563,7 +572,6 @@ const Stores = () => {
             </Content>
           ) : null}
         </Content>
-
       )}
     </Layout>
   );
