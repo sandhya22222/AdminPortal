@@ -26,8 +26,10 @@ const AddLanguage = () => {
   const [isLanguageFieldEmpty, setIsLanguageFieldEmpty] = useState(false);
   const [isLanguageCodeFieldEmpty, setIsLanguageCodeFieldEmpty] =
     useState(false);
+  const [isRegexFieldEmpty, setIsRegexFieldEmpty] = useState(false);
   const [language, setLanguage] = useState("");
   const [languageCode, setLanguageCode] = useState("");
+  const [regex, setRegex] = useState("");
   const [nativeName, setNativeName] = useState("");
   const [scriptDirection, setScriptDirection] = useState("LTR");
   const [fileData, setFileData] = useState("");
@@ -48,6 +50,13 @@ const AddLanguage = () => {
     setLanguageCode(e.target.value);
     if (e.target.value != "") {
       setIsLanguageCodeFieldEmpty(false);
+    }
+  };
+
+  const handleRegexChange = (e) => {
+    setRegex(e.target.value);
+    if (e.target.value != "") {
+      setIsRegexFieldEmpty(false);
     }
   };
 
@@ -96,7 +105,16 @@ const AddLanguage = () => {
         type: "error",
       });
     }
-    if (language !== "" && languageCode !== "") {
+    if (regex === "") {
+      setIsRegexFieldEmpty(true);
+      // validValues -= 1;
+      toast("Please Enter Regex", {
+        autoClose: 5000,
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+      });
+    }
+    if (language !== "" && languageCode !== "" && regex !== "") {
       PostLanguageAPI();
     }
   };
@@ -106,6 +124,7 @@ const AddLanguage = () => {
     const paramsData = new FormData();
     paramsData.append("language", language);
     paramsData.append("language_code", languageCode);
+    paramsData.append("dm_language_regex", regex);
     paramsData.append("native_name", nativeName);
     paramsData.append("writing_script_direction", scriptDirection);
     if (typeof fileData === "object") {
@@ -228,6 +247,24 @@ const AddLanguage = () => {
                       }`}
                       onChange={(e) => {
                         handleLanguageCodeChange(e);
+                      }}
+                    />
+                  </Content>
+                  <Content className="my-2">
+                    <label className="text-[13px]">
+                      Language Regex
+                      <sup className="text-red-600 text-sm">*</sup>
+                    </label>
+                    <Input
+                      placeholder="Enter Language Code"
+                      value={regex}
+                      className={`${
+                        isRegexFieldEmpty
+                          ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400"
+                          : "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
+                      }`}
+                      onChange={(e) => {
+                        handleRegexChange(e);
                       }}
                     />
                   </Content>

@@ -2,7 +2,16 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { Layout, Breadcrumb, Table, Row, Col, Button, Typography, Skeleton } from "antd";
+import {
+  Layout,
+  Breadcrumb,
+  Table,
+  Row,
+  Col,
+  Button,
+  Typography,
+  Skeleton,
+} from "antd";
 import axios from "axios";
 import { Navigate, useNavigate, Link } from "react-router-dom";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
@@ -21,11 +30,12 @@ const languageAPI = process.env.REACT_APP_LANGUAGE_API;
 
 const Language = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [islanguageDeleting, setIslanguageDeleting] = useState(false)
+  const [islanguageDeleting, setIslanguageDeleting] = useState(false);
   const [languageData, setLanguageData] = useState([]);
   const [isNetworkErrorLanguage, setIsNetworkErrorLanguage] = useState(false);
-  const [deleteLanguageID, setDeleteLanguageID] = useState("")
-  const [isDeleteLanguageModalOpen, setIsDeleteLanguageModalOpen] = useState(false);
+  const [deleteLanguageID, setDeleteLanguageID] = useState("");
+  const [isDeleteLanguageModalOpen, setIsDeleteLanguageModalOpen] =
+    useState(false);
 
   const navigate = useNavigate();
 
@@ -42,7 +52,7 @@ const Language = () => {
 
   const columns = [
     {
-      title: "Language Id",
+      title: "Id",
       dataIndex: "id",
       key: "id",
       render: (text, record) => {
@@ -90,6 +100,14 @@ const Language = () => {
       },
     },
     {
+      title: "Language Regex",
+      dataIndex: "dm_language_regex",
+      key: "dm_language_regex",
+      render: (text, record) => {
+        return <>{record.dm_language_regex}</>;
+      },
+    },
+    {
       title: "",
       dataIndex: "",
       key: "",
@@ -111,7 +129,7 @@ const Language = () => {
             </Link>
             <>
               <DeleteOutlined
-                className="app-delete-icon"
+                className="app-delete-icon pr-4"
                 style={{ fontSize: "16px", marginLeft: "20px" }}
                 onClick={() => {
                   openDeleteModal(record.id);
@@ -123,11 +141,10 @@ const Language = () => {
       },
     },
   ];
-
   //delete function
   const deleteLanguage = () => {
     // enabling spinner
-    setIslanguageDeleting(true)
+    setIslanguageDeleting(true);
     axios
       .delete(languageAPI, {
         params: {
@@ -135,22 +152,24 @@ const Language = () => {
         },
       })
       .then((response) => {
-        console.log("response from delete===>", response, deleteLanguageID)
-        if (response.status === 202) {
+        console.log("response from delete===>", response, deleteLanguageID);
+        if (response.status === 200) {
           setIsDeleteLanguageModalOpen(false);
-          let removedData = languageData.filter(({ id }) => id !== deleteLanguageID);
-          setLanguageData(removedData)
+          let removedData = languageData.filter(
+            ({ id }) => id !== deleteLanguageID
+          );
+          setLanguageData(removedData);
           toast("Language Deleted Successfully", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
           });
         }
         // disabling spinner
-        setIslanguageDeleting(false)
+        setIslanguageDeleting(false);
       })
       .catch((error) => {
         // disabling spinner
-        setIslanguageDeleting(false)
+        setIslanguageDeleting(false);
         console.log("response from delete===>", error.response);
         toast("Language not deleted", {
           position: toast.POSITION.TOP_RIGHT,
@@ -239,77 +258,84 @@ const Language = () => {
     },
   };
 
-  return <>
-    <Layout>
-      <StoreModal
-        isVisible={isDeleteLanguageModalOpen}
-        okButtonText={"Ok"}
-        cancelButtonText={"Cancel"}
-        title={"Confirmation"}
-        okCallback={() => deleteLanguage()}
-        cancelCallback={() => closeDeleteModal()}
-        isSpin={islanguageDeleting}
-      >
-        {<div className="my-4">{"Are you sure you want to delete the language ?"}</div>}
-      </StoreModal>
-      <Content className="mb-3">
-        <AntDesignBreadcrumbs
-          data={[
-            { title: "Home", navigationPath: "/", displayOrder: 1 },
+  return (
+    <>
+      <Layout>
+        <StoreModal
+          isVisible={isDeleteLanguageModalOpen}
+          okButtonText={"Ok"}
+          cancelButtonText={"Cancel"}
+          title={"Confirmation"}
+          okCallback={() => deleteLanguage()}
+          cancelCallback={() => closeDeleteModal()}
+          isSpin={islanguageDeleting}
+        >
+          {
+            <div className="my-4">
+              {"Are you sure you want to delete the language ?"}
+            </div>
+          }
+        </StoreModal>
+        <Content className="mb-3">
+          <AntDesignBreadcrumbs
+            data={[
+              { title: "Home", navigationPath: "/", displayOrder: 1 },
 
-            { title: "Language", navigationPath: "", displayOrder: 3 },
-          ]} />
-        <Row justify={"space-between"}>
-          <Col>
-            <Content className=" float-left mt-3 ">
-              <Title level={3} className="!font-normal">
-                Language
-              </Title>
-            </Content>
-          </Col>
+              { title: "Language", navigationPath: "", displayOrder: 3 },
+            ]}
+          />
+          <Row justify={"space-between"}>
+            <Col>
+              <Content className=" float-left mt-3 ">
+                <Title level={3} className="!font-normal">
+                  Language
+                </Title>
+              </Content>
+            </Col>
 
-          <Col>
-            <Content className="text-right mt-3">
-              <Button
-                className="rounded-none"
-                onClick={() => navigate("add_language")}
-                type="primary"
-                style={{
-                  background: "black",
-                }}
-              >
-                Add Language
-              </Button>
-            </Content>
-          </Col>
-        </Row>
-
-      </Content>
-    </Layout>
-    {isLoading ? (
-      <Content className=" bg-white mb-3">
-       <Skeleton active
-                  paragraph={{
-                    rows: 6,
+            <Col>
+              <Content className="text-right mt-3">
+                <Button
+                  className="rounded-none"
+                  onClick={() => navigate("add_language")}
+                  type="primary"
+                  style={{
+                    background: "black",
                   }}
-                  className="p-3"></Skeleton>
-
-      </Content>
-    ) : isNetworkErrorLanguage ? (
-      <Layout className="p-0 text-center mb-3 bg-[#F4F4F4]">
-        <h5>
-          Your's back-end server/services seems to be down, please start your
-          server/services and try again.
-        </h5>
+                >
+                  Add Language
+                </Button>
+              </Content>
+            </Col>
+          </Row>
+        </Content>
       </Layout>
-    ) : <Layout>
-      <Content>
-        <DynamicTable tableComponentData={tablepropsData} />
-      </Content>
-    </Layout>}
-  </>
-
+      {isLoading ? (
+        <Content className=" bg-white mb-3">
+          <Skeleton
+            active
+            paragraph={{
+              rows: 6,
+            }}
+            className="p-3"
+          ></Skeleton>
+        </Content>
+      ) : isNetworkErrorLanguage ? (
+        <Layout className="p-0 text-center mb-3 bg-[#F4F4F4]">
+          <h5>
+            Your's back-end server/services seems to be down, please start your
+            server/services and try again.
+          </h5>
+        </Layout>
+      ) : (
+        <Layout>
+          <Content>
+            <DynamicTable tableComponentData={tablepropsData} />
+          </Content>
+        </Layout>
+      )}
+    </>
+  );
 };
-
 
 export default Language;
