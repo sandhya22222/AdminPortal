@@ -40,9 +40,9 @@ const Dashboard = () => {
           Dashboard
         </Title>
       </Content>
-      <Layout>
-        <img src={WorkInProgress} alt="WorkInProgress" className="mt-3" />
-      </Layout>
+      <Content className="">
+        <img src={WorkInProgress} alt="WorkInProgress" className="mt-3 w-[50%] mx-auto" />
+      </Content>
     </Content>
   );
 };
