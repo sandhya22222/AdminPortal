@@ -188,7 +188,7 @@ const EditLanguage = () => {
     ) {
       if (languageDetails.language === "") {
         setIsLanguageFieldEmpty(true);
-        toast("Please Enter Language Id", {
+        toast("Please Enter Language Name", {
           autoClose: 5000,
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
@@ -204,7 +204,7 @@ const EditLanguage = () => {
       }
       if (languageDetails.dm_language_regex === "") {
         setIsRegexFieldEmpty(true);
-        toast("Please Enter Regex", {
+        toast("Please Enter Laguage Regex", {
           autoClose: 5000,
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
@@ -320,7 +320,7 @@ const EditLanguage = () => {
                           Language <sup className="text-red-600 text-sm">*</sup>
                         </label>
                         <Input
-                          placeholder="Enter Language Id"
+                          placeholder="Enter Language Name"
                           value={languageDetails.language}
                           className={`${
                             isLanguageFieldEmpty
@@ -356,8 +356,9 @@ const EditLanguage = () => {
                           <sup className="text-red-600 text-sm">*</sup>
                         </label>
                         <Input
-                          placeholder="Enter Language Code"
+                          placeholder="Enter Language Regex"
                           value={languageDetails.dm_language_regex}
+                          maxLength={128}
                           className={`${
                             isRegexFieldEmpty
                               ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400"

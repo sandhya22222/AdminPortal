@@ -9,6 +9,7 @@ export default function DmPagination({
   totalItemsCount,
   handlePageNumberChange,
   pageSize,
+  showSizeChanger,
   defaultPageSize,
 }) {
   const handlePageChange = (page, pageSize) => {
@@ -17,7 +18,7 @@ export default function DmPagination({
   return (
     <Content className="mt-3 mb-5">
       <Pagination
-        showSizeChanger
+        showSizeChanger={showSizeChanger}
         defaultCurrent={currentPage}
         total={totalItemsCount}
         onChange={handlePageChange}

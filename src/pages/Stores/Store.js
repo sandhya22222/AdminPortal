@@ -34,7 +34,6 @@ const { Title } = Typography;
 
 //! Get all required details from .env file
 const storeAPI = process.env.REACT_APP_STORE_API;
-const storeUpdateAPI = process.env.REACT_APP_STORE_UPDATE_API;
 const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE);
 
 //! tab data
@@ -79,10 +78,10 @@ const Stores = () => {
   const [storeEditId, setStoreEditId] = useState();
   const [isPaginationDataLoaded, setIsPaginationDataLoaded] = useState(true);
   const [currentPage, setCurrentPage] = useState(
-    params.page ? params.page.slice(5, params.page.length) : null
+    params.page ? params.page.slice(5, params.page.length) : 1
   );
   const [currentCount, setCurrentCount] = useState(
-    params.count ? params.count.slice(6, params.count.length) : null
+    params.count ? params.count.slice(6, params.count.length) : 20
   );
   const [countForStore, setCountForStore] = useState();
   //! table columns
@@ -257,14 +256,14 @@ const Stores = () => {
     setName("");
   };
   //!get call for stores
-  const getStoreApi = (page, limit) => {
+  const getStoreApi = () => {
     // setIsLoading(true);
     axios
       .get(storeAPI, {
         params: {
           // store_id: parseInt(storeId),
-          "page-number": page,
-          "page-limit": limit,
+          "page-number": currentPage,
+          "page-limit": currentCount,
         },
       })
       .then(function (response) {
@@ -288,7 +287,7 @@ const Stores = () => {
   useEffect(() => {
     getStoreApi();
     window.scrollTo(0, 0);
-  }, []);
+  }, [currentCount,currentPage]);
 
   //!useEffect for getting the table in table without refreshing
   useEffect(() => {
@@ -349,13 +348,14 @@ const Stores = () => {
       name: editName,
     };
     setIsUpLoading(true);
-    console.log(
-      "editStoreData() Endpoint:",
-      storeUpdateAPI.replace("{id}", storeEditId)
-    );
+    console.log("editStoreData() Endpoint:", storeAPI, putObject);
     console.log("editStoreData() putBody:", putObject);
     axios
-      .put(storeUpdateAPI.replace("{id}", storeEditId), putObject)
+      .put(storeAPI, putObject, {
+        params: {
+          store_id: parseInt(storeEditId),
+        },
+      })
       .then((response) => {
         console.log("put response", response.data, storeApiData);
         let copyofStoreAPIData = [...storeApiData];
@@ -421,6 +421,7 @@ const Stores = () => {
       getStoreApi(1, pageLimit);
     }
   }, []);
+
   const handlePageNumberChange = (page, pageSize) => {
     if (page === 1) {
       if (pageSize != 20) {
@@ -429,7 +430,7 @@ const Stores = () => {
         navigate("/dashboard/store");
       }
     } else {
-      navigate(`/dashboard/store=${page}/count=${pageSize}`);
+      navigate(`/dashboard/store/page=${page}/count=${pageSize}`);
     }
     navigate(0);
   };
@@ -478,6 +479,7 @@ const Stores = () => {
                     <Input
                       placeholder="Enter store name"
                       value={name}
+                      maxLength={255}
                       className={`${
                         inValidName
                           ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400 mb-4"
@@ -506,6 +508,7 @@ const Stores = () => {
                           ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400 mb-4"
                           : "h-10 px-3 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm mb-4"
                       }`}
+                      maxLength={255}
                       onChange={(e) => {
                         setEditName(e.target.value);
                         setInValidEditName(false);
@@ -568,6 +571,7 @@ const Stores = () => {
                 defaultPageSize={pageLimit}
                 pageSize={currentCount ? currentCount : pageLimit}
                 handlePageNumberChange={handlePageNumberChange}
+                showSizeChanger={true}
               />
             </Content>
           ) : null}
