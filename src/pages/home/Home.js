@@ -1,7 +1,7 @@
 //! Import libraries & components
 import React, { useEffect, useState } from "react";
 import { Button, Layout, Typography } from "antd";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
@@ -33,11 +33,14 @@ const isLoggedInURL = process.env.REACT_APP_ISLOGGEDIN
 const getPermissionsUrl = process.env.REACT_APP_PERMISSIONS
 const getAccessTokenUrl = process.env.REACT_APP_ACCESSTOKEN
 
+const auth = process.env.REACT_APP_AUTH;
+
 const instance = axios.create();
 delete instance.defaults.headers.common['Authorization'];
 
 const Home = ({isLoggedIn, setIsLoggedIn}) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [token, setToken] = useState('');
   const [refreshToken, setrefreshToken] = useState('');
   const [getPermissionsData, setGetPermissionsData] = useState([])
@@ -112,12 +115,16 @@ const Home = ({isLoggedIn, setIsLoggedIn}) => {
 
 
   useEffect(() => {
+    if(auth=== 'true') {
     if (location.search === "") {
       handleSignIn();
     } else if(!sessionStorage.getItem('access_token')){
       getAccessToken();
     }
-
+    else{
+      navigate('/dashboard');
+    }
+  }
   }, [location.search])
 
   useEffect(() => {
