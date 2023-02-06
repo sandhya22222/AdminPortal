@@ -30,6 +30,7 @@ import SkeletonComponent from "../../components/Skeleton/SkeletonComponent";
 import DmPagination from "../../components/DmPagination/DmPagination";
 import { usePageTitle } from "../../hooks/usePageTitle";
 import "./language.css";
+import { use } from "i18next";
 
 const { Title } = Typography;
 const { Content } = Layout;
@@ -49,14 +50,21 @@ const Language = () => {
   const [deleteLanguageID, setDeleteLanguageID] = useState("");
   const [isDeleteLanguageModalOpen, setIsDeleteLanguageModalOpen] =
     useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(
-    params.page ? params.page.slice(5, params.page.length) : null
+    params.page ? params.page.slice(5, params.page.length) : 1
   );
   const [currentCount, setCurrentCount] = useState(
-    params.count ? params.count.slice(6, params.count.length) : null
+    params.count ? params.count.slice(6, params.count.length) : 20
   );
+  const [languageFilteredData, setLanguageFilteredData] = useState([]);
   const [countForLanguage, setCountForLanguage] = useState();
   const navigate = useNavigate();
+  console.log("first", params.page);
+  console.log("first123", params.count);
+
+  // const page = searchParams.get("page") ? searchParams.get("page") : 1
+  // const limit = searchParams.get("limit") ? searchParams.get("limit") : pageLimit;
 
   // closing the delete popup model
   const closeDeleteModal = () => {
@@ -160,6 +168,45 @@ const Language = () => {
       },
     },
   ];
+
+  // const tableLanguageData = (filteredData) => {
+  let tempArray = [];
+  {
+    console.log("WE ARE IN THE MENTAL HOSPITAL");
+    console.log("languageData123",languageData)
+    languageData &&
+      languageData.length > 0 &&
+      languageData.map((element, index) => {
+        var Id = element.id;
+        var Language = element.language;
+        var LanguageCode = element.language_code;
+        var Writing_script_direction = element.writing_script_direction;
+        var Native_name = element.native_name;
+        var Lang_support_docs = element.lang_support_docs;
+        var Dm_language_regex = element.dm_language_regex;
+        tempArray &&
+          tempArray.push({
+            key: index,
+            id: Id,
+            language: Language,
+            language_code: LanguageCode,
+            writing_script_direction: Writing_script_direction,
+            native_name: Native_name,
+            lang_support_docs: Lang_support_docs,
+            dm_language_regex: Dm_language_regex,
+          });
+      });
+    // setLanguageFilteredData(tempArray);
+    console.log("tempArray", tempArray);
+  }
+  // };
+  // useEffect(() => {
+  //   console.log("we are outside the if useEffect");
+  //   if (languageData && languageData.length > 0) {
+  //     console.log("we are inside the if useEffect");
+  //     tableLanguageData(languageData);
+  //   }
+  // }, [languageData]);
   //delete function
   const deleteLanguage = () => {
     // enabling spinner
@@ -196,33 +243,27 @@ const Language = () => {
         });
       });
   };
-
-  //get function
-  useEffect(() => {
-    getLanguageData();
-    window.scrollTo(0, 0);
-  }, []);
-
-  const getLanguageData = (page, limit) => {
+  const getLanguageData = () => {
     // enabling spinner
     setIsLoading(true);
     axios
       .get(languageAPI, {
         params: {
-          "page-number": page,
-          "page-limit": limit,
+          "page-number": currentPage,
+          "page-limit": 20
         },
       })
       .then(function (response) {
-        console.log("response", response);
         setIsLoading(false);
         setIsNetworkErrorLanguage(false);
         console.log(
           "response status language list-------------------",
           response.data
         );
-        setLanguageData(response.data);
-        setCountForLanguage(response.data.length);
+        // if(response.data.length >0){
+        setLanguageData(response.data.data);
+        // };
+        setCountForLanguage(response.data.count);
         // setIsNetworkErrorLanguage(false);
       })
       .catch((error) => {
@@ -264,7 +305,7 @@ const Language = () => {
   //dynamic table data
   const tablepropsData = {
     table_header: columns,
-    table_content: languageData,
+    table_content: tempArray,
     pagenationSettings: pagination,
     search_settings: {
       is_enabled: true,
@@ -283,7 +324,29 @@ const Language = () => {
     },
   };
 
+  // useEffect(() => {
+  //   // setCurrentCount(
+  //   //   searchParams.get("limit") ? searchParams.get("limit") : pageLimit
+  //   // );
+  //   // setCurrentPage(searchParams.get("page") ? searchParams.get("page") : 1);
+  //   // if (currentPage && currentCount) {
+  //   //   getLanguageData(currentPage, currentCount);
+  //   // } else {
+  //   //   getLanguageData(1, pageLimit);
+  //   // }
+  // }, [currentCount, currentPage]);
+
+  console.log("currentPage", currentPage);
+
+  //get function
+  useEffect(() => {
+    getLanguageData();
+    window.scrollTo(0, 0);
+  }, [currentPage, currentCount]);
+
   const handlePageNumberChange = (page, pageSize) => {
+    console.log("page123", page);
+    console.log("pageSize123", pageSize);
     if (page === 1) {
       if (pageSize != 20) {
         navigate(`/dashboard/language/page=1/count=${pageSize}`);
@@ -291,7 +354,7 @@ const Language = () => {
         navigate("/dashboard/language");
       }
     } else {
-      navigate(`/dashboard/language=${page}/count=${pageSize}`);
+      navigate(`/dashboard/language/page=${page}/count=${pageSize}`);
     }
     navigate(0);
   };
@@ -369,17 +432,18 @@ const Language = () => {
         <Layout>
           <Content>
             <DynamicTable tableComponentData={tablepropsData} />
-            {countForLanguage >= pageLimit ? (
+            {/* {countForLanguage >= pageLimit ? ( */}
               <Content className=" grid justify-items-end">
                 <DmPagination
                   currentPage={currentPage ? currentPage : 1}
                   totalItemsCount={countForLanguage}
-                  defaultPageSize={pageLimit}
+                  // defaultPageSize={pageLimit}
                   pageSize={currentCount ? currentCount : pageLimit}
                   handlePageNumberChange={handlePageNumberChange}
+                  showSizeChanger={true}
                 />
               </Content>
-            ) : null}
+             {/* ) : null} */}
           </Content>
         </Layout>
       )}

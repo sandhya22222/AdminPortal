@@ -35,13 +35,17 @@ const Dashboard = () => {
         ]}
       />
       <Content className="  d-flex  align-items-center my-3">
-        <DashboardOutlined className="text-1xl me-2 d-flex  align-items-center" />
+        {/* <DashboardOutlined className="text-1xl me-2 d-flex  align-items-center" /> */}
         <Title level={3} className="!font-normal mb-0">
           Dashboard
         </Title>
       </Content>
       <Content className="">
-        <img src={WorkInProgress} alt="WorkInProgress" className="mt-3 w-[50%] mx-auto" />
+        <img
+          src={WorkInProgress}
+          alt="WorkInProgress"
+          className="mt-3 w-[50%] mx-auto"
+        />
       </Content>
     </Content>
   );
