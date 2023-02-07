@@ -51,20 +51,13 @@ const Language = () => {
   const [isDeleteLanguageModalOpen, setIsDeleteLanguageModalOpen] =
     useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [currentPage, setCurrentPage] = useState(
-    params.page ? params.page.slice(5, params.page.length) : 1
-  );
-  const [currentCount, setCurrentCount] = useState(
-    params.count ? params.count.slice(6, params.count.length) : 20
-  );
-  const [languageFilteredData, setLanguageFilteredData] = useState([]);
-  const [countForLanguage, setCountForLanguage] = useState();
+  const [currentPage, setCurrentPage] = useState();
+  // params.page ? params.page.slice(5, params.page.length) : null
+  const [currentCount, setCurrentCount] = useState();
+  // params.count ? params.count.slice(6, params.count.length) : null
+  const [totalLanguageCount, setTotalLanguageCount] = useState();
+  const [languageFilteredData, setLanguageFilteredData] = useState();
   const navigate = useNavigate();
-  console.log("first", params.page);
-  console.log("first123", params.count);
-
-  // const page = searchParams.get("page") ? searchParams.get("page") : 1
-  // const limit = searchParams.get("limit") ? searchParams.get("limit") : pageLimit;
 
   // closing the delete popup model
   const closeDeleteModal = () => {
@@ -169,11 +162,9 @@ const Language = () => {
     },
   ];
 
-  // const tableLanguageData = (filteredData) => {
+  //const tableLanguageData = (filteredData) => {
   let tempArray = [];
   {
-    console.log("WE ARE IN THE MENTAL HOSPITAL");
-    console.log("languageData123",languageData)
     languageData &&
       languageData.length > 0 &&
       languageData.map((element, index) => {
@@ -196,17 +187,9 @@ const Language = () => {
             dm_language_regex: Dm_language_regex,
           });
       });
-    // setLanguageFilteredData(tempArray);
     console.log("tempArray", tempArray);
   }
-  // };
-  // useEffect(() => {
-  //   console.log("we are outside the if useEffect");
-  //   if (languageData && languageData.length > 0) {
-  //     console.log("we are inside the if useEffect");
-  //     tableLanguageData(languageData);
-  //   }
-  // }, [languageData]);
+
   //delete function
   const deleteLanguage = () => {
     // enabling spinner
@@ -243,35 +226,60 @@ const Language = () => {
         });
       });
   };
-  const getLanguageData = () => {
+  const getLanguageData = (page, limit) => {
     // enabling spinner
     setIsLoading(true);
     axios
       .get(languageAPI, {
         params: {
-          "page-number": currentPage,
-          "page-limit": 20
+          "page-number": page,
+          "page-limit": limit,
         },
       })
       .then(function (response) {
         setIsLoading(false);
         setIsNetworkErrorLanguage(false);
         console.log(
-          "response status language list-------------------",
-          response.data
+          "server Success response from language API call",
+          response.data.data
         );
-        // if(response.data.length >0){
         setLanguageData(response.data.data);
-        // };
-        setCountForLanguage(response.data.count);
+        // setTotalLanguageCount(response.data.count);
         // setIsNetworkErrorLanguage(false);
       })
       .catch((error) => {
         setIsLoading(false);
         setIsNetworkErrorLanguage(true);
-        console.log("Catch block of ----------------------");
+        console.log("server error response from language API call");
       });
   };
+
+  const getLanguageDataCount = () => {
+    // enabling spinner
+    setIsLoading(true);
+    axios
+      .get(languageAPI, {
+        params: {
+          // "page-number": page,
+          // "page-limit": limit,
+        },
+      })
+      .then(function (response) {
+        setIsLoading(false);
+        setIsNetworkErrorLanguage(false);
+        console.log(
+          "server Success count response from language API call",
+          response.data.length
+        );
+        setTotalLanguageCount(response.data.length);
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        setIsNetworkErrorLanguage(true);
+        console.log("server error response from language API call");
+      });
+  };
+  console.log("totalLanguageCount", totalLanguageCount);
 
   const pagination = [
     {
@@ -305,8 +313,7 @@ const Language = () => {
   //dynamic table data
   const tablepropsData = {
     table_header: columns,
-    table_content: tempArray,
-    pagenationSettings: pagination,
+    table_content: tempArray && tempArray,
     search_settings: {
       is_enabled: true,
       search_title: "Search by language",
@@ -324,40 +331,43 @@ const Language = () => {
     },
   };
 
-  // useEffect(() => {
-  //   // setCurrentCount(
-  //   //   searchParams.get("limit") ? searchParams.get("limit") : pageLimit
-  //   // );
-  //   // setCurrentPage(searchParams.get("page") ? searchParams.get("page") : 1);
-  //   // if (currentPage && currentCount) {
-  //   //   getLanguageData(currentPage, currentCount);
-  //   // } else {
-  //   //   getLanguageData(1, pageLimit);
-  //   // }
-  // }, [currentCount, currentPage]);
+  const handlePageNumberChange = (page, pageSize) => {
+    setCurrentPage(page);
+    setCurrentCount(pageSize);
+    // if (page === 1) {
+    //   if (pageSize != 20) {
+    //     navigate(`/dashboard/language?page=1`);
+    //   } else {
+    //     navigate("/dashboard/language");
+    //   }
+    // } else {
+    //   navigate(`/dashboard/language?page=${page}`);
+    // }
+    // navigate(0);
+    navigate(`/dashboard/language?page=${page}`);
+  };
 
-  console.log("currentPage", currentPage);
-
-  //get function
   useEffect(() => {
-    getLanguageData();
+    if (currentPage === undefined || currentPage === null) {
+      // getLanguageData(
+      //   searchParams.get("page") ? searchParams.get("page") : 1,
+      //   searchParams.get("limit") ? searchParams.get("limit") : pageLimit
+      // );
+      // setSearchParams(searchParams.get("page") ? searchParams.get("page") : 1);
+      setCurrentPage(1);
+    }
+    getLanguageDataCount();
+  }, []);
+
+  useEffect(() => {
+    getLanguageData(
+      searchParams.get("page") ? searchParams.get("page") : 1,
+      currentCount ? currentCount : pageLimit
+    );
     window.scrollTo(0, 0);
   }, [currentPage, currentCount]);
 
-  const handlePageNumberChange = (page, pageSize) => {
-    console.log("page123", page);
-    console.log("pageSize123", pageSize);
-    if (page === 1) {
-      if (pageSize != 20) {
-        navigate(`/dashboard/language/page=1/count=${pageSize}`);
-      } else {
-        navigate("/dashboard/language");
-      }
-    } else {
-      navigate(`/dashboard/language/page=${page}/count=${pageSize}`);
-    }
-    navigate(0);
-  };
+  console.log("currentPage", currentPage);
 
   return (
     <>
@@ -433,17 +443,17 @@ const Language = () => {
           <Content>
             <DynamicTable tableComponentData={tablepropsData} />
             {/* {countForLanguage >= pageLimit ? ( */}
-              <Content className=" grid justify-items-end">
-                <DmPagination
-                  currentPage={currentPage ? currentPage : 1}
-                  totalItemsCount={countForLanguage}
-                  // defaultPageSize={pageLimit}
-                  pageSize={currentCount ? currentCount : pageLimit}
-                  handlePageNumberChange={handlePageNumberChange}
-                  showSizeChanger={true}
-                />
-              </Content>
-             {/* ) : null} */}
+            <Content className=" grid justify-items-end">
+              <DmPagination
+                currentPage={currentPage ? currentPage : 1}
+                totalItemsCount={totalLanguageCount}
+                pageLimit={pageLimit}
+                pageSize={currentCount ? currentCount : pageLimit}
+                handlePageNumberChange={handlePageNumberChange}
+                showSizeChanger={true}
+              />
+            </Content>
+            {/* ) : null} */}
           </Content>
         </Layout>
       )}
