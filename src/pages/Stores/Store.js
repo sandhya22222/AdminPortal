@@ -77,12 +77,8 @@ const Stores = () => {
   const [serverStoreName, setServerStoreName] = useState();
   const [storeEditId, setStoreEditId] = useState();
   const [isPaginationDataLoaded, setIsPaginationDataLoaded] = useState(true);
-  const [currentPage, setCurrentPage] = useState(
-    params.page ? params.page.slice(5, params.page.length) : 1
-  );
-  const [currentCount, setCurrentCount] = useState(
-    params.count ? params.count.slice(6, params.count.length) : 20
-  );
+  const [currentPage, setCurrentPage] = useState();
+  const [currentCount, setCurrentCount] = useState();
   const [countForStore, setCountForStore] = useState();
   //! table columns
   const StoreTableColumn = [
@@ -256,14 +252,14 @@ const Stores = () => {
     setName("");
   };
   //!get call for stores
-  const getStoreApi = () => {
+  const getStoreApi = (page, limit) => {
     // setIsLoading(true);
     axios
       .get(storeAPI, {
         params: {
           // store_id: parseInt(storeId),
-          "page-number": currentPage,
-          "page-limit": currentCount,
+          "page-number": page,
+          "page-limit": limit,
         },
       })
       .then(function (response) {
@@ -275,6 +271,36 @@ const Stores = () => {
         );
         setStoreApiData(response.data.data);
         setIsPaginationDataLoaded(false);
+        // setCountForStore(response.data.count);
+        // console.log("hii",response.data.count)
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        setIsNetworkError(true);
+        console.log("Server error from getStoreApi Function ", error.response);
+      });
+  };
+  // useEffect(() => {
+  //   getStoreApi();
+  //   window.scrollTo(0, 0);
+  // }, []);
+  const getStoreApiCount = () => {
+    // setIsLoading(true);
+    axios
+      .get(storeAPI, {
+        params: {
+          // // store_id: parseInt(storeId),
+          "page-number": 1,
+          "page-limit": 1000,
+        },
+      })
+      .then(function (response) {
+        setIsNetworkError(false);
+        setIsLoading(false);
+        console.log(
+          "Server Count Response from getStoreApi Function: ",
+          response.data.count
+        );
         setCountForStore(response.data.count);
         // console.log("hii",response.data.count)
       })
@@ -284,10 +310,26 @@ const Stores = () => {
         console.log("Server error from getStoreApi Function ", error.response);
       });
   };
+
   useEffect(() => {
-    getStoreApi();
+    if (currentPage === undefined || currentPage === null) {
+      // getLanguageData(
+      //   searchParams.get("page") ? searchParams.get("page") : 1,
+      //   searchParams.get("limit") ? searchParams.get("limit") : pageLimit
+      // );
+      // setSearchParams(searchParams.get("page") ? searchParams.get("page") : 1);
+      setCurrentPage(1);
+    }
+    getStoreApiCount();
+  }, []);
+
+  useEffect(() => {
+    getStoreApi(
+      searchParams.get("page") ? searchParams.get("page") : 1,
+      currentCount ? currentCount : pageLimit
+    );
     window.scrollTo(0, 0);
-  }, [currentCount,currentPage]);
+  }, [currentPage, currentCount]);
 
   //!useEffect for getting the table in table without refreshing
   useEffect(() => {
@@ -414,25 +456,28 @@ const Stores = () => {
     }
   };
 
-  useEffect(() => {
-    if (currentPage && currentCount) {
-      getStoreApi(currentPage, currentCount);
-    } else {
-      getStoreApi(1, pageLimit);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (currentPage && currentCount) {
+  //     getStoreApi(currentPage, currentCount);
+  //   } else {
+  //     getStoreApi(1, pageLimit);
+  //   }
+  // }, []);
 
   const handlePageNumberChange = (page, pageSize) => {
-    if (page === 1) {
-      if (pageSize != 20) {
-        navigate(`/dashboard/store/page=1/count=${pageSize}`);
-      } else {
-        navigate("/dashboard/store");
-      }
-    } else {
-      navigate(`/dashboard/store/page=${page}/count=${pageSize}`);
-    }
-    navigate(0);
+    setCurrentPage(page);
+    setCurrentCount(pageSize);
+    // if (page === 1) {
+    //   if (pageSize != 20) {
+    //     navigate(`/dashboard/store/page=1/count=${pageSize}`);
+    //   } else {
+    //     navigate("/dashboard/store");
+    //   }
+    // } else {
+    //   navigate(`/dashboard/store/page=${page}/count=${pageSize}`);
+    // }
+    // navigate(0);
+    navigate(`/dashboard/store?page=${page}`);
   };
 
   return (
