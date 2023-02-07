@@ -1,9 +1,10 @@
 //! Import libraries & components
 import React, { useEffect, useState } from "react";
 import { Button, Layout, Typography } from "antd";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { removeUrlSearchData } from "../../util/util"
 
 //! Import CSS libraries
 
@@ -16,31 +17,30 @@ import { usePageTitle } from "../../hooks/usePageTitle";
 
 //! Import user defined CSS
 import "./home.css";
-import { keycloakData } from "../../urlPages/keycloak";
-import { backendUrl } from "../../urlPages/backendUrl";
-
-//! Get all required details from .env file
-
 //! Destructure the components
 const { Title } = Typography;
 const { Content } = Layout;
 
-const realmName = process.env.REACT_APP_REALMNAME;
-const clientId = process.env.REACT_APP_CLIENTID;
-const keyUrl = process.env.REACT_APP_KEYCLOAK_URL;
+//! Get all required details from .env file
+const realmName = process.env.REACT_APP_REALMNAME
+const clientId = process.env.REACT_APP_CLIENTID
+const keyUrl = process.env.REACT_APP_KEYCLOAK_URL
 const umsBaseUrl = process.env.REACT_APP_USM_BASE_URL;
 const isLoggedInURL = process.env.REACT_APP_ISLOGGEDIN;
 const getPermissionsUrl = process.env.REACT_APP_PERMISSIONS;
 const getAccessTokenUrl = process.env.REACT_APP_ACCESSTOKEN;
+
+const auth = process.env.REACT_APP_AUTH;
 
 const instance = axios.create();
 delete instance.defaults.headers.common["Authorization"];
 
 const Home = ({ isLoggedIn, setIsLoggedIn }) => {
   const location = useLocation();
-  const [token, setToken] = useState("");
-  const [refreshToken, setrefreshToken] = useState("");
-  const [getPermissionsData, setGetPermissionsData] = useState([]);
+  const navigate = useNavigate();
+  const [token, setToken] = useState('');
+  const [refreshToken, setrefreshToken] = useState('');
+  const [getPermissionsData, setGetPermissionsData] = useState([])
 
   const handleSignIn = () => {
     window.location = `${keyUrl}/realms/${realmName}/protocol/openid-connect/auth?response_type=code&client_id=${clientId}`;
@@ -79,7 +79,18 @@ const Home = ({ isLoggedIn, setIsLoggedIn }) => {
           code: code,
           realmname: realmName,
           client_id: clientId,
-        },
+        }
+      }).then(res => {
+        // console.log('get access token res', res);
+        if (res.data.access_token) {
+          setToken(res.data.access_token);
+          setrefreshToken(res.data.refresh_token)
+          sessionStorage.setItem('access_token', res.data.access_token)
+          sessionStorage.setItem('refresh_token', res.data.refresh_token)
+
+        }
+      }).catch(err => {
+        console.log('get access token err', err)
       })
         .then((res) => {
           // console.log('get access token res', res);
@@ -115,25 +126,39 @@ const Home = ({ isLoggedIn, setIsLoggedIn }) => {
   };
 
   useEffect(() => {
-    if (location.search === "") {
-      handleSignIn();
-    } else if (!sessionStorage.getItem("access_token")) {
-      getAccessToken();
+    if (auth === 'true') {
+      if (location.search === "") {
+        handleSignIn();
+      } else if (!sessionStorage.getItem('access_token')) {
+        getAccessToken();
+        removeUrlSearchData();
+      }
+      else {
+        navigate('/dashboard');
+      }
     }
-  }, [location.search]);
+  }, [location.search])
 
   useEffect(() => {
     if (token) {
       handleisLoggedIn();
-    } else if (sessionStorage.getItem("access_token")) {
+    }
+    else if (sessionStorage.getItem('access_token')) {
       // setToken(sessionStorage.getItem('access_token'));
-      if (sessionStorage.getItem("is_loggedIn")) {
-        setIsLoggedIn(sessionStorage.getItem("is_loggedIn"));
-      } else {
+      if (sessionStorage.getItem('is_loggedIn')) {
+        setIsLoggedIn(sessionStorage.getItem('is_loggedIn'))
+      }
+      else {
         handleisLoggedIn();
       }
     }
   }, [token]);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/dashboard");
+    }
+  }, [isLoggedIn]);
 
   usePageTitle("Admin Portal - Home");
 
@@ -150,11 +175,11 @@ const Home = ({ isLoggedIn, setIsLoggedIn }) => {
       {isLoggedIn && (
         <>
           <Title level={4}>This is Home page</Title>
-          <Link to="dashboard">
+          {/* <Link to="dashboard">
             <Button className="!h-10 !bg-[#393939] text-white !border-[1px] !border-solid !border-[#393939] !box-border !rounded !pl-[15px]">
               Go to Dashboard
             </Button>
-          </Link>
+          </Link> */}
           {/* <Link to="/signin">
             <Button onClick={handleLogout} className="!h-10 !bg-[#393939] text-white !border-[1px] !border-solid !border-[#393939] !box-border !rounded !pl-[15px]">
               Logout
