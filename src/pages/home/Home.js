@@ -4,6 +4,7 @@ import { Button, Layout, Typography } from "antd";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { removeUrlSearchData } from "../../util/util"
 
 //! Import CSS libraries
 
@@ -16,15 +17,11 @@ import { usePageTitle } from "../../hooks/usePageTitle";
 
 //! Import user defined CSS
 import "./home.css";
-import { keycloakData } from "../../urlPages/keycloak";
-import { backendUrl } from "../../urlPages/backendUrl";
-
-//! Get all required details from .env file
-
 //! Destructure the components
 const { Title } = Typography;
 const { Content } = Layout;
 
+//! Get all required details from .env file
 const realmName = process.env.REACT_APP_REALMNAME
 const clientId = process.env.REACT_APP_CLIENTID
 const keyUrl = process.env.REACT_APP_KEYCLOAK_URL
@@ -38,7 +35,7 @@ const auth = process.env.REACT_APP_AUTH;
 const instance = axios.create();
 delete instance.defaults.headers.common['Authorization'];
 
-const Home = ({isLoggedIn, setIsLoggedIn}) => {
+const Home = ({ isLoggedIn, setIsLoggedIn }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [token, setToken] = useState('');
@@ -89,7 +86,7 @@ const Home = ({isLoggedIn, setIsLoggedIn}) => {
           setrefreshToken(res.data.refresh_token)
           sessionStorage.setItem('access_token', res.data.access_token)
           sessionStorage.setItem('refresh_token', res.data.refresh_token)
-          
+
         }
       }).catch(err => {
         console.log('get access token err', err)
@@ -115,32 +112,39 @@ const Home = ({isLoggedIn, setIsLoggedIn}) => {
 
 
   useEffect(() => {
-    if(auth=== 'true') {
-    if (location.search === "") {
-      handleSignIn();
-    } else if(!sessionStorage.getItem('access_token')){
-      getAccessToken();
+    if (auth === 'true') {
+      if (location.search === "") {
+        handleSignIn();
+      } else if (!sessionStorage.getItem('access_token')) {
+        getAccessToken();
+        removeUrlSearchData();
+      }
+      else {
+        navigate('/dashboard');
+      }
     }
-    else{
-      navigate('/dashboard');
-    }
-  }
   }, [location.search])
 
   useEffect(() => {
     if (token) {
       handleisLoggedIn();
     }
-    else if(sessionStorage.getItem('access_token')){
+    else if (sessionStorage.getItem('access_token')) {
       // setToken(sessionStorage.getItem('access_token'));
-      if(sessionStorage.getItem('is_loggedIn')){
+      if (sessionStorage.getItem('is_loggedIn')) {
         setIsLoggedIn(sessionStorage.getItem('is_loggedIn'))
       }
-      else{
+      else {
         handleisLoggedIn();
       }
     }
   }, [token])
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/dashboard");
+    }
+  }, [isLoggedIn]);
 
   usePageTitle("Home");
 
@@ -155,11 +159,11 @@ const Home = ({isLoggedIn, setIsLoggedIn}) => {
       {isLoggedIn &&
         <>
           <Title level={4}>This is Home page</Title>
-          <Link to="dashboard">
+          {/* <Link to="dashboard">
             <Button className="!h-10 !bg-[#393939] text-white !border-[1px] !border-solid !border-[#393939] !box-border !rounded !pl-[15px]">
               Go to Dashboard
             </Button>
-          </Link>
+          </Link> */}
           {/* <Link to="/signin">
             <Button onClick={handleLogout} className="!h-10 !bg-[#393939] text-white !border-[1px] !border-solid !border-[#393939] !box-border !rounded !pl-[15px]">
               Logout

@@ -1,15 +1,17 @@
 import React from "react";
 import { Layout, Typography } from "antd";
-import { keycloakData } from "../../urlPages/keycloak";
 import Home from "../home/Home";
 
 const { Content } = Layout;
 const { Title } = Typography;
-const keycloakUrl = keycloakData.url
 
 const auth = process.env.REACT_APP_AUTH;
+const realmName = process.env.REACT_APP_REALMNAME
+const clientId = process.env.REACT_APP_CLIENTID
+const keyUrl = process.env.REACT_APP_KEYCLOAK_URL
 
 function PageNotFound() {
+  const keycloakUrl = `${keyUrl}/realms/${realmName}/protocol/openid-connect/auth?response_type=code&client_id=${clientId}`;
   return (
     <>
       {(auth === 'true') &&

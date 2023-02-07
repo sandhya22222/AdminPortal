@@ -81,10 +81,12 @@ const Header = () => {
       console.log('logged out res', res);
       if (res.status === 200) {
         sessionStorage.clear()
-        window.location = `${keyUrl}/realms/${realmName}/protocol/openid-connect/auth?response_type=code&client_id=${clientId}`;
+        window.location = 'http://localhost:3002/'
+        // window.location = `${keyUrl}/realms/${realmName}/protocol/openid-connect/auth?response_type=code&client_id=${clientId}`;
       }
     }).catch(err => {
       console.log('logged out err', err)
+      sessionStorage.clear()
     })
   }
 
