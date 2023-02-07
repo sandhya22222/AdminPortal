@@ -13,7 +13,13 @@ import {
 import axios from "axios";
 import { toast } from "react-toastify";
 import { EditOutlined } from "@ant-design/icons";
-import { useLocation, Link, useSearchParams } from "react-router-dom";
+import {
+  useLocation,
+  Link,
+  useSearchParams,
+  useParams,
+  useNavigate,
+} from "react-router-dom";
 
 //! Import user defined components
 import DmTabAntDesign from "../../components/DmTabAntDesign/DmTabAntDesign";
@@ -21,12 +27,14 @@ import DynamicTable from "../../components/DynamicTable/DynamicTable";
 import SkeletonComponent from "../../components/Skeleton/SkeletonComponent";
 import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
 import Status from "./Status";
+import DmPagination from "../../components/DmPagination/DmPagination";
+import { usePageTitle } from "../../hooks/usePageTitle";
 const { Content } = Layout;
 const { Title } = Typography;
 
 //! Get all required details from .env file
 const storeAPI = process.env.REACT_APP_STORE_API;
-const storeUpdateAPI = process.env.REACT_APP_STORE_UPDATE_API;
+const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE);
 
 //! tab data
 const storeTabData = [
@@ -45,7 +53,10 @@ const storeTabData = [
 ];
 
 const Stores = () => {
+  usePageTitle("Admin Portal - Store");
   const search = useLocation().search;
+  const params = useParams();
+  const navigate = useNavigate();
 
   // const store_id = new URLSearchParams(search).get("store_id");
   const tab_id = new URLSearchParams(search).get("tab");
@@ -65,6 +76,10 @@ const Stores = () => {
   const [selectedTabTableContent, setSelectedTabTableContent] = useState([]);
   const [serverStoreName, setServerStoreName] = useState();
   const [storeEditId, setStoreEditId] = useState();
+  const [isPaginationDataLoaded, setIsPaginationDataLoaded] = useState(true);
+  const [currentPage, setCurrentPage] = useState();
+  const [currentCount, setCurrentCount] = useState();
+  const [countForStore, setCountForStore] = useState();
   //! table columns
   const StoreTableColumn = [
     {
@@ -237,13 +252,14 @@ const Stores = () => {
     setName("");
   };
   //!get call for stores
-  const getStoreApi = () => {
+  const getStoreApi = (page, limit) => {
     // setIsLoading(true);
     axios
       .get(storeAPI, {
         params: {
-          "page-limit": 1000,
-          "page-number": 1,
+          // store_id: parseInt(storeId),
+          "page-number": page,
+          "page-limit": limit,
         },
       })
       .then(function (response) {
@@ -254,6 +270,9 @@ const Stores = () => {
           response.data.data
         );
         setStoreApiData(response.data.data);
+        setIsPaginationDataLoaded(false);
+        // setCountForStore(response.data.count);
+        // console.log("hii",response.data.count)
       })
       .catch((error) => {
         setIsLoading(false);
@@ -261,9 +280,56 @@ const Stores = () => {
         console.log("Server error from getStoreApi Function ", error.response);
       });
   };
+  // useEffect(() => {
+  //   getStoreApi();
+  //   window.scrollTo(0, 0);
+  // }, []);
+  const getStoreApiCount = () => {
+    // setIsLoading(true);
+    axios
+      .get(storeAPI, {
+        params: {
+          // // store_id: parseInt(storeId),
+          "page-number": 1,
+          "page-limit": 1000,
+        },
+      })
+      .then(function (response) {
+        setIsNetworkError(false);
+        setIsLoading(false);
+        console.log(
+          "Server Count Response from getStoreApi Function: ",
+          response.data.count
+        );
+        setCountForStore(response.data.count);
+        // console.log("hii",response.data.count)
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        setIsNetworkError(true);
+        console.log("Server error from getStoreApi Function ", error.response);
+      });
+  };
+
   useEffect(() => {
-    getStoreApi();
+    if (currentPage === undefined || currentPage === null) {
+      // getLanguageData(
+      //   searchParams.get("page") ? searchParams.get("page") : 1,
+      //   searchParams.get("limit") ? searchParams.get("limit") : pageLimit
+      // );
+      // setSearchParams(searchParams.get("page") ? searchParams.get("page") : 1);
+      setCurrentPage(1);
+    }
+    getStoreApiCount();
   }, []);
+
+  useEffect(() => {
+    getStoreApi(
+      searchParams.get("page") ? searchParams.get("page") : 1,
+      currentCount ? currentCount : pageLimit
+    );
+    window.scrollTo(0, 0);
+  }, [currentPage, currentCount]);
 
   //!useEffect for getting the table in table without refreshing
   useEffect(() => {
@@ -324,13 +390,14 @@ const Stores = () => {
       name: editName,
     };
     setIsUpLoading(true);
-    console.log(
-      "editStoreData() Endpoint:",
-      storeUpdateAPI.replace("{id}", storeEditId)
-    );
+    console.log("editStoreData() Endpoint:", storeAPI, putObject);
     console.log("editStoreData() putBody:", putObject);
     axios
-      .put(storeUpdateAPI.replace("{id}", storeEditId), putObject)
+      .put(storeAPI, putObject, {
+        params: {
+          store_id: parseInt(storeEditId),
+        },
+      })
       .then((response) => {
         console.log("put response", response.data, storeApiData);
         let copyofStoreAPIData = [...storeApiData];
@@ -388,6 +455,31 @@ const Stores = () => {
       editStoreData();
     }
   };
+
+  // useEffect(() => {
+  //   if (currentPage && currentCount) {
+  //     getStoreApi(currentPage, currentCount);
+  //   } else {
+  //     getStoreApi(1, pageLimit);
+  //   }
+  // }, []);
+
+  const handlePageNumberChange = (page, pageSize) => {
+    setCurrentPage(page);
+    setCurrentCount(pageSize);
+    // if (page === 1) {
+    //   if (pageSize != 20) {
+    //     navigate(`/dashboard/store/page=1/count=${pageSize}`);
+    //   } else {
+    //     navigate("/dashboard/store");
+    //   }
+    // } else {
+    //   navigate(`/dashboard/store/page=${page}/count=${pageSize}`);
+    // }
+    // navigate(0);
+    navigate(`/dashboard/store?page=${page}`);
+  };
+
   return (
     <Layout>
       <Content className="mb-1">
@@ -432,6 +524,7 @@ const Stores = () => {
                     <Input
                       placeholder="Enter store name"
                       value={name}
+                      maxLength={255}
                       className={`${
                         inValidName
                           ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400 mb-4"
@@ -460,6 +553,7 @@ const Stores = () => {
                           ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400 mb-4"
                           : "h-10 px-3 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm mb-4"
                       }`}
+                      maxLength={255}
                       onChange={(e) => {
                         setEditName(e.target.value);
                         setInValidEditName(false);
@@ -514,6 +608,18 @@ const Stores = () => {
           <Content>
             <DynamicTable tableComponentData={tablePropsData} />
           </Content>
+          {countForStore >= pageLimit ? (
+            <Content className=" grid justify-items-end">
+              <DmPagination
+                currentPage={currentPage ? currentPage : 1}
+                totalItemsCount={countForStore}
+                defaultPageSize={pageLimit}
+                pageSize={currentCount ? currentCount : pageLimit}
+                handlePageNumberChange={handlePageNumberChange}
+                showSizeChanger={true}
+              />
+            </Content>
+          ) : null}
         </Content>
       )}
     </Layout>

@@ -10,7 +10,7 @@ import {
   AppstoreOutlined,
 } from "@ant-design/icons";
 import { FaHome } from "react-icons/fa";
-
+import { AiOutlineHome } from "react-icons/ai";
 //! Import CSS libraries
 
 //! Import user defined functions
@@ -37,7 +37,7 @@ const Sidebar = (props) => {
   const myData = [
     {
       key: "-1",
-      icon: <FaHome />,
+      icon: <AiOutlineHome />,
       label: "Home",
       navigate_to: "/",
       item: null,
