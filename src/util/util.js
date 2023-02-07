@@ -485,3 +485,11 @@ export const getParentChildrenData = (
     return [];
   }
 };
+
+// to remove the url search params after login
+export const removeUrlSearchData = () => {
+  const url = new URL(window.location.href);
+  url.search = '';
+  const newUrl = url.toString();
+  window.history.replaceState({}, document.title, newUrl);
+}
