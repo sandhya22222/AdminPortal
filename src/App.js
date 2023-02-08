@@ -56,7 +56,7 @@ const App = () => {
               <Route path="/dashboard" element={<Sidebar color="light" />}>
                 <Route path="" element={<Dashboard />} />
                 <Route path="language" element={<Language />} />
-                <Route path="language/:page/:count" element={<Language />} />
+                {/* <Route path="language/:page/:count" element={<Language />} /> */}
                 <Route path="language/edit_language" element={<EditLanguage />} />
                 <Route path="language/add_language" element={<AddLanguage />} />
                 <Route path="store" element={<Store />} />
