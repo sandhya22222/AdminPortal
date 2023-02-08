@@ -233,7 +233,7 @@ const Language = () => {
       .get(languageAPI, {
         params: {
           "page-number": page,
-          "page-limit": limit,
+          "page-limit": pageLimit,
         },
       })
       .then(function (response) {
@@ -360,14 +360,17 @@ const Language = () => {
   }, []);
 
   useEffect(() => {
+    // if (parseInt(searchParams.get("page"))) {
     getLanguageData(
-      searchParams.get("page") ? searchParams.get("page") : 1,
-      currentCount ? currentCount : pageLimit
+      searchParams.get("page") ? parseInt(searchParams.get("page")) : 1
+      // currentCount ? currentCount : pageLimit
     );
+    // }
+    // else {
+    //   <p>There is no content</p>;
+    // }
     window.scrollTo(0, 0);
-  }, [currentPage, currentCount]);
-
-  console.log("currentPage", currentPage);
+  }, [currentPage]);
 
   return (
     <>
@@ -442,18 +445,18 @@ const Language = () => {
         <Layout>
           <Content>
             <DynamicTable tableComponentData={tablepropsData} />
-            {/* {countForLanguage >= pageLimit ? ( */}
-            <Content className=" grid justify-items-end">
-              <DmPagination
-                currentPage={currentPage ? currentPage : 1}
-                totalItemsCount={totalLanguageCount}
-                pageLimit={pageLimit}
-                pageSize={currentCount ? currentCount : pageLimit}
-                handlePageNumberChange={handlePageNumberChange}
-                showSizeChanger={true}
-              />
-            </Content>
-            {/* ) : null} */}
+            {totalLanguageCount >= pageLimit ? (
+              <Content className=" grid justify-items-end">
+                <DmPagination
+                  currentPage={currentPage ? currentPage : 1}
+                  totalItemsCount={totalLanguageCount}
+                  pageLimit={pageLimit}
+                  pageSize={currentCount ? currentCount : pageLimit}
+                  handlePageNumberChange={handlePageNumberChange}
+                  showSizeChanger={true}
+                />
+              </Content>
+            ) : null}
           </Content>
         </Layout>
       )}
