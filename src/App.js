@@ -60,7 +60,7 @@ const App = () => {
                 <Route path="language/edit_language" element={<EditLanguage />} />
                 <Route path="language/add_language" element={<AddLanguage />} />
                 <Route path="store" element={<Store />} />
-                <Route path="store/:page/:count" element={<Store />} />
+                {/* <Route path="store/:page/:count" element={<Store />} /> */}
                 <Route path="*" element={<PageNotFound />} />
             </Route>
             ) : <Route path="*" element={<PageNotFound />} />}   
