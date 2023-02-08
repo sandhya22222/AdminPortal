@@ -20,7 +20,6 @@ import {
   useParams,
   useNavigate,
 } from "react-router-dom";
-
 //! Import user defined components
 import DmTabAntDesign from "../../components/DmTabAntDesign/DmTabAntDesign";
 import DynamicTable from "../../components/DynamicTable/DynamicTable";
@@ -31,11 +30,9 @@ import DmPagination from "../../components/DmPagination/DmPagination";
 import { usePageTitle } from "../../hooks/usePageTitle";
 const { Content } = Layout;
 const { Title } = Typography;
-
 //! Get all required details from .env file
 const storeAPI = process.env.REACT_APP_STORE_API;
 const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE);
-
 //! tab data
 const storeTabData = [
   {
@@ -51,16 +48,15 @@ const storeTabData = [
     tabTitle: "Inactive",
   },
 ];
-
 const Stores = () => {
   usePageTitle("Admin Portal - Store");
-  const search = useLocation().search;
   const params = useParams();
   const navigate = useNavigate();
-
+  const search = useLocation().search;
+  const currentPage = new URLSearchParams(search).get("page");
+  const currentCount = new URLSearchParams(search).get("count");
   // const store_id = new URLSearchParams(search).get("store_id");
   const tab_id = new URLSearchParams(search).get("tab");
-
   const [searchParams, setSearchParams] = useSearchParams();
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -77,9 +73,14 @@ const Stores = () => {
   const [serverStoreName, setServerStoreName] = useState();
   const [storeEditId, setStoreEditId] = useState();
   const [isPaginationDataLoaded, setIsPaginationDataLoaded] = useState(true);
-  const [currentPage, setCurrentPage] = useState();
-  const [currentCount, setCurrentCount] = useState();
+  // const [currentPage, setCurrentPage] = useState(
+  //   params.page ? params.page.slice(5, params.page.length) : 1
+  // );
+  // const [currentCount, setCurrentCount] = useState(
+  //   params.count ? params.count.slice(6, params.count.length) : 20
+  // );
   const [countForStore, setCountForStore] = useState();
+
   //! table columns
   const StoreTableColumn = [
     {
@@ -151,19 +152,34 @@ const Stores = () => {
   };
   //! handleTabChangeStore to get the data according to the status
   const handleTabChangeStore = (status) => {
-    setSearchParams({
-      tab: status,
-    });
+    // setSearchParams({
+    //   tab: status,
+    // });
+    if(tab_id===status){
+      if (currentPage && currentCount) {
+        navigate(`/dashboard/store?tab=${tab_id}&page=${currentPage}&count=${currentCount}`);
+      }
+      else {
+        navigate(`/dashboard/store?tab=${status}`);
+      }
+
+    }else{
+      navigate(`/dashboard/store?tab=${status}`); 
+    }
+
+
     if (status === "0") {
       tableStoreData(storeApiData);
     } else if (status === "1") {
       tableStoreData(
         storeApiData.filter((element) => element.status == status)
       );
+
     } else if (status === "2") {
       tableStoreData(
         storeApiData.filter((element) => element.status == status)
       );
+
     }
   };
   //!this useEffect for tab(initial rendering)
@@ -211,7 +227,6 @@ const Stores = () => {
     table_header: StoreTableColumn,
     table_content: selectedTabTableContent,
     pagenationSettings: pagination,
-
     search_settings: {
       is_enabled: true,
       search_title: "Search by name",
@@ -228,7 +243,6 @@ const Stores = () => {
       sorting_data: [],
     },
   };
-
   //! add drawer
   const showAddDrawer = () => {
     setOpen(true);
@@ -242,8 +256,8 @@ const Stores = () => {
     setDrawerAction("put");
     setEditName(
       storeApiData &&
-        storeApiData.length > 0 &&
-        storeApiData.filter((element) => element.id === id)[0].name
+      storeApiData.length > 0 &&
+      storeApiData.filter((element) => element.id === id)[0].name
     );
     setInValidEditName(false);
   };
@@ -252,14 +266,14 @@ const Stores = () => {
     setName("");
   };
   //!get call for stores
-  const getStoreApi = (page, limit) => {
+  const getStoreApi = (pageNumber, pageLimit) => {
     // setIsLoading(true);
     axios
       .get(storeAPI, {
         params: {
           // store_id: parseInt(storeId),
-          "page-number": page,
-          "page-limit": limit,
+          "page-number": pageNumber,
+          "page-limit": pageLimit,
         },
       })
       .then(function (response) {
@@ -271,7 +285,7 @@ const Stores = () => {
         );
         setStoreApiData(response.data.data);
         setIsPaginationDataLoaded(false);
-        // setCountForStore(response.data.count);
+        setCountForStore(response.data.count);
         // console.log("hii",response.data.count)
       })
       .catch((error) => {
@@ -283,54 +297,7 @@ const Stores = () => {
   // useEffect(() => {
   //   getStoreApi();
   //   window.scrollTo(0, 0);
-  // }, []);
-  const getStoreApiCount = () => {
-    // setIsLoading(true);
-    axios
-      .get(storeAPI, {
-        params: {
-          // // store_id: parseInt(storeId),
-          "page-number": 1,
-          "page-limit": 1000,
-        },
-      })
-      .then(function (response) {
-        setIsNetworkError(false);
-        setIsLoading(false);
-        console.log(
-          "Server Count Response from getStoreApi Function: ",
-          response.data.count
-        );
-        setCountForStore(response.data.count);
-        // console.log("hii",response.data.count)
-      })
-      .catch((error) => {
-        setIsLoading(false);
-        setIsNetworkError(true);
-        console.log("Server error from getStoreApi Function ", error.response);
-      });
-  };
-
-  useEffect(() => {
-    if (currentPage === undefined || currentPage === null) {
-      // getLanguageData(
-      //   searchParams.get("page") ? searchParams.get("page") : 1,
-      //   searchParams.get("limit") ? searchParams.get("limit") : pageLimit
-      // );
-      // setSearchParams(searchParams.get("page") ? searchParams.get("page") : 1);
-      setCurrentPage(1);
-    }
-    getStoreApiCount();
-  }, []);
-
-  useEffect(() => {
-    getStoreApi(
-      searchParams.get("page") ? searchParams.get("page") : 1,
-      currentCount ? currentCount : pageLimit
-    );
-    window.scrollTo(0, 0);
-  }, [currentPage, currentCount]);
-
+  // }, [currentCount, currentPage]);
   //!useEffect for getting the table in table without refreshing
   useEffect(() => {
     if (postData != null) {
@@ -339,7 +306,6 @@ const Stores = () => {
       setStoreApiData(temp);
     }
   }, [postData]);
-
   //! validation for post call
   const validateStorePostField = () => {
     if (name === "" || name === null || name === undefined) {
@@ -383,7 +349,6 @@ const Stores = () => {
         // onClose();
       });
   };
-
   //!put call for stores
   const editStoreData = () => {
     const putObject = {
@@ -425,7 +390,6 @@ const Stores = () => {
         });
       });
   };
-
   useEffect(() => {
     if (storeEditId) {
       var storeData =
@@ -455,56 +419,65 @@ const Stores = () => {
       editStoreData();
     }
   };
+  useEffect(() => {
+    if (currentPage && currentCount) {
+      getStoreApi(parseInt(currentPage), parseInt(currentCount));
+    } else {
+      getStoreApi(1, pageLimit);
+    }
+    window.scrollTo(0, 0);
+  }, [currentCount, currentPage]);
 
-  // useEffect(() => {
-  //   if (currentPage && currentCount) {
-  //     getStoreApi(currentPage, currentCount);
+  // const handlePageNumberChange = (page, pageSize) => {
+  //   if (page === 1) {
+  //     if (pageSize != 20) {
+  //       navigate(`/dashboard/store?tab=${tab_id}&page=${page}`);
+  //     } else {
+  //       navigate("/dashboard/store");
+  //     }
   //   } else {
-  //     getStoreApi(1, pageLimit);
+  //     navigate(`/dashboard/store?page=${page}`);
   //   }
-  // }, []);
+  //   navigate(0);
+  // };
 
   const handlePageNumberChange = (page, pageSize) => {
-    setCurrentPage(page);
-    setCurrentCount(pageSize);
-    // if (page === 1) {
-    //   if (pageSize != 20) {
-    //     navigate(`/dashboard/store/page=1/count=${pageSize}`);
-    //   } else {
-    //     navigate("/dashboard/store");
-    //   }
-    // } else {
-    //   navigate(`/dashboard/store/page=${page}/count=${pageSize}`);
-    // }
-    // navigate(0);
-    navigate(`/dashboard/store?page=${page}`);
+    navigate(`/dashboard/store?tab=${tab_id}&page=${page}&count=${pageSize}`);
   };
-
   return (
     <Layout>
+      {" "}
       <Content className="mb-1">
+        {" "}
         <AntDesignBreadcrumbs
           data={[
             { title: "Home", navigationPath: "/", displayOrder: 1 },
             { title: "Stores", navigationPath: "", displayOrder: 2 },
           ]}
-        />
+        />{" "}
         <Row justify={"space-between"}>
+          {" "}
           <Col>
+            {" "}
             <Content className="float-left mt-3">
+              {" "}
               <Title level={3} className="!font-normal">
+                {" "}
                 Stores
-              </Title>
-            </Content>
-          </Col>
+              </Title>{" "}
+            </Content>{" "}
+          </Col>{" "}
           <Col>
+            {" "}
             <Content className="text-right mt-3">
+              {" "}
               <Button
                 className="!bg-black text-white rounded-none border border-neutral-500"
                 onClick={showAddDrawer}
               >
+                {" "}
                 Add Stores
-              </Button>
+              </Button>{" "}
               <Drawer
                 title={
                   drawerAction && drawerAction === "post"
@@ -515,101 +488,113 @@ const Stores = () => {
                 onClose={onClose}
                 open={open}
               >
+                {" "}
                 <Title level={5}>
+                  {" "}
                   Name
-                  <sup className="text-red-600 text-sm pl-1">*</sup>
-                </Title>
+                  <sup className="text-red-600 text-sm pl-1">*</sup>{" "}
+                </Title>{" "}
                 {drawerAction && drawerAction === "post" ? (
                   <Spin tip="Please wait!" size="large" spinning={isUpLoading}>
+                    {" "}
                     <Input
                       placeholder="Enter store name"
                       value={name}
                       maxLength={255}
-                      className={`${
-                        inValidName
-                          ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400 mb-4"
-                          : "h-10 px-3 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm mb-4"
-                      }`}
+                      className={`${inValidName
+                        ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400 mb-4"
+                        : "h-10 px-3 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm mb-4"
+                        }`}
                       onChange={(e) => {
                         setName(e.target.value);
                         setInValidName(false);
                       }}
-                    />
+                    />{" "}
                     <Button
                       className="!bg-black text-white border border-neutral-500"
                       onClick={() => {
                         validateStorePostField();
                       }}
                     >
+                      {" "}
                       Save
-                    </Button>
+                    </Button>{" "}
                   </Spin>
                 ) : (
                   <Spin tip="Please wait!" size="large" spinning={isUpLoading}>
+                    {" "}
                     <Input
                       value={editName}
-                      className={`${
-                        inValidEditName
-                          ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400 mb-4"
-                          : "h-10 px-3 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm mb-4"
-                      }`}
+                      className={`${inValidEditName
+                        ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400 mb-4"
+                        : "h-10 px-3 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm mb-4"
+                        }`}
                       maxLength={255}
                       onChange={(e) => {
                         setEditName(e.target.value);
                         setInValidEditName(false);
                       }}
-                    />
+                    />{" "}
                     <Button
                       className="!bg-black text-white border border-neutral-500"
                       onClick={() => {
                         validateStorePutField();
                       }}
                     >
+                      {" "}
                       Update
-                    </Button>
+                    </Button>{" "}
                   </Spin>
                 )}
-              </Drawer>
-            </Content>
-          </Col>
-        </Row>
-      </Content>
+              </Drawer>{" "}
+            </Content>{" "}
+          </Col>{" "}
+        </Row>{" "}
+      </Content>{" "}
       {isLoading ? (
         <Content className="bg-white mb-3">
+          {" "}
           <Skeleton
             active
             paragraph={{
               rows: 6,
             }}
             className="p-3"
-          ></Skeleton>
+          ></Skeleton>{" "}
           {/* <SkeletonComponent Layout="layout1" /> */}
         </Content>
       ) : isNetworkError ? (
         <Layout className="p-0 text-center mb-3 bg-[#F4F4F4]">
+          {" "}
           <h5>
+            {" "}
             Your's back-end server/services seems to be down, please start your
             server/services and try again.
-          </h5>
+          </h5>{" "}
         </Layout>
       ) : (
         <Content>
+          {" "}
           <Content className="px-3">
+            {" "}
             <DmTabAntDesign
               tabData={storeTabData}
               handleTabChangeFunction={handleTabChangeStore}
               activeKey={
-                searchParams.get("tab") ? searchParams.get("tab") : "0"
+                // searchParams.get("tab") ? searchParams.get("tab") : "0"
+                String(tab_id)
               }
               tabType={"line"}
               tabBarPosition={"bottom"}
-            />
-          </Content>
+            />{" "}
+          </Content>{" "}
           <Content>
-            <DynamicTable tableComponentData={tablePropsData} />
-          </Content>
+            {" "}
+            <DynamicTable tableComponentData={tablePropsData} />{" "}
+          </Content>{" "}
           {countForStore >= pageLimit ? (
             <Content className=" grid justify-items-end">
+              {" "}
               <DmPagination
                 currentPage={currentPage ? currentPage : 1}
                 totalItemsCount={countForStore}
@@ -617,7 +602,7 @@ const Stores = () => {
                 pageSize={currentCount ? currentCount : pageLimit}
                 handlePageNumberChange={handlePageNumberChange}
                 showSizeChanger={true}
-              />
+              />{" "}
             </Content>
           ) : null}
         </Content>
@@ -625,5 +610,4 @@ const Stores = () => {
     </Layout>
   );
 };
-
 export default Stores;
