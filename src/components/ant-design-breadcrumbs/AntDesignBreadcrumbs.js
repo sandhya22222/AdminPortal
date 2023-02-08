@@ -22,8 +22,8 @@ const { Item } = Breadcrumb;
 
 const AntDesignBreadcrumbs = ({ data }) => {
   return (
-    <Content>
-      <Breadcrumb>
+    <>
+      {/* <Breadcrumb>
         {data.map((val, index) => {
           return val.navigationPath === "" ? (
             <Item key={index}>{val.title}</Item>
@@ -33,8 +33,8 @@ const AntDesignBreadcrumbs = ({ data }) => {
             </Item>
           );
         })}
-      </Breadcrumb>
-    </Content>
+      </Breadcrumb> */}
+    </>
   );
 };
 
