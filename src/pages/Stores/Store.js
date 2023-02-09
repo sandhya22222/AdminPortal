@@ -111,6 +111,7 @@ const Stores = () => {
           <Status
             storeId={record.id}
             storeStatus={record.status === "Active" ? true : false}
+            tabId={tab_id}
             storeApiData={storeApiData}
             setSelectedTabTableContent={setSelectedTabTableContent}
             selectedTabTableContent={selectedTabTableContent}
