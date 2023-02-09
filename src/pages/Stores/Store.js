@@ -155,18 +155,17 @@ const Stores = () => {
     // setSearchParams({
     //   tab: status,
     // });
-    if(tab_id===status){
+    if (tab_id === status) {
       if (currentPage && currentCount) {
-        navigate(`/dashboard/store?tab=${tab_id}&page=${currentPage}&count=${currentCount}`);
-      }
-      else {
+        navigate(
+          `/dashboard/store?tab=${tab_id}&page=${currentPage}&count=${currentCount}`
+        );
+      } else {
         navigate(`/dashboard/store?tab=${status}`);
       }
-
-    }else{
-      navigate(`/dashboard/store?tab=${status}`); 
+    } else {
+      navigate(`/dashboard/store?tab=${status}`);
     }
-
 
     if (status === "0") {
       tableStoreData(storeApiData);
@@ -174,12 +173,10 @@ const Stores = () => {
       tableStoreData(
         storeApiData.filter((element) => element.status == status)
       );
-
     } else if (status === "2") {
       tableStoreData(
         storeApiData.filter((element) => element.status == status)
       );
-
     }
   };
   //!this useEffect for tab(initial rendering)
@@ -256,8 +253,8 @@ const Stores = () => {
     setDrawerAction("put");
     setEditName(
       storeApiData &&
-      storeApiData.length > 0 &&
-      storeApiData.filter((element) => element.id === id)[0].name
+        storeApiData.length > 0 &&
+        storeApiData.filter((element) => element.id === id)[0].name
     );
     setInValidEditName(false);
   };
@@ -446,38 +443,29 @@ const Stores = () => {
   };
   return (
     <Layout>
-      {" "}
       <Content className="mb-1">
-        {" "}
         <AntDesignBreadcrumbs
           data={[
             { title: "Home", navigationPath: "/", displayOrder: 1 },
             { title: "Stores", navigationPath: "", displayOrder: 2 },
           ]}
-        />{" "}
+        />
         <Row justify={"space-between"}>
-          {" "}
           <Col>
-            {" "}
             <Content className="float-left mt-3">
-              {" "}
               <Title level={3} className="!font-normal">
-                {" "}
                 Stores
-              </Title>{" "}
-            </Content>{" "}
-          </Col>{" "}
+              </Title>
+            </Content>
+          </Col>
           <Col>
-            {" "}
             <Content className="text-right mt-3">
-              {" "}
               <Button
                 className="!bg-black text-white rounded-none border border-neutral-500"
                 onClick={showAddDrawer}
               >
-                {" "}
                 Add Stores
-              </Button>{" "}
+              </Button>
               <Drawer
                 title={
                   drawerAction && drawerAction === "post"
@@ -488,95 +476,86 @@ const Stores = () => {
                 onClose={onClose}
                 open={open}
               >
-                {" "}
                 <Title level={5}>
-                  {" "}
                   Name
-                  <sup className="text-red-600 text-sm pl-1">*</sup>{" "}
-                </Title>{" "}
+                  <sup className="text-red-600 text-sm pl-1">*</sup>
+                </Title>
                 {drawerAction && drawerAction === "post" ? (
                   <Spin tip="Please wait!" size="large" spinning={isUpLoading}>
-                    {" "}
                     <Input
                       placeholder="Enter store name"
                       value={name}
                       maxLength={255}
-                      className={`${inValidName
-                        ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400 mb-4"
-                        : "h-10 px-3 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm mb-4"
-                        }`}
+                      className={`${
+                        inValidName
+                          ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400 mb-4"
+                          : "h-10 px-3 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm mb-4"
+                      }`}
                       onChange={(e) => {
                         setName(e.target.value);
                         setInValidName(false);
                       }}
-                    />{" "}
+                    />
                     <Button
                       className="!bg-black text-white border border-neutral-500"
                       onClick={() => {
                         validateStorePostField();
                       }}
                     >
-                      {" "}
                       Save
-                    </Button>{" "}
+                    </Button>
                   </Spin>
                 ) : (
                   <Spin tip="Please wait!" size="large" spinning={isUpLoading}>
-                    {" "}
                     <Input
                       value={editName}
-                      className={`${inValidEditName
-                        ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400 mb-4"
-                        : "h-10 px-3 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm mb-4"
-                        }`}
+                      className={`${
+                        inValidEditName
+                          ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400 mb-4"
+                          : "h-10 px-3 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm mb-4"
+                      }`}
                       maxLength={255}
                       onChange={(e) => {
                         setEditName(e.target.value);
                         setInValidEditName(false);
                       }}
-                    />{" "}
+                    />
                     <Button
                       className="!bg-black text-white border border-neutral-500"
                       onClick={() => {
                         validateStorePutField();
                       }}
                     >
-                      {" "}
                       Update
-                    </Button>{" "}
+                    </Button>
                   </Spin>
                 )}
-              </Drawer>{" "}
-            </Content>{" "}
-          </Col>{" "}
-        </Row>{" "}
-      </Content>{" "}
+              </Drawer>
+            </Content>
+          </Col>
+        </Row>
+      </Content>
       {isLoading ? (
         <Content className="bg-white mb-3">
-          {" "}
           <Skeleton
             active
             paragraph={{
               rows: 6,
             }}
             className="p-3"
-          ></Skeleton>{" "}
+          ></Skeleton>
           {/* <SkeletonComponent Layout="layout1" /> */}
         </Content>
       ) : isNetworkError ? (
         <Layout className="p-0 text-center mb-3 bg-[#F4F4F4]">
-          {" "}
           <h5>
-            {" "}
             Your's back-end server/services seems to be down, please start your
             server/services and try again.
-          </h5>{" "}
+          </h5>
         </Layout>
       ) : (
         <Content>
-          {" "}
           <Content className="px-3">
-            {" "}
             <DmTabAntDesign
               tabData={storeTabData}
               handleTabChangeFunction={handleTabChangeStore}
@@ -586,15 +565,13 @@ const Stores = () => {
               }
               tabType={"line"}
               tabBarPosition={"bottom"}
-            />{" "}
-          </Content>{" "}
+            />
+          </Content>
           <Content>
-            {" "}
-            <DynamicTable tableComponentData={tablePropsData} />{" "}
-          </Content>{" "}
+            <DynamicTable tableComponentData={tablePropsData} />
+          </Content>
           {countForStore >= pageLimit ? (
             <Content className=" grid justify-items-end">
-              {" "}
               <DmPagination
                 currentPage={currentPage ? currentPage : 1}
                 totalItemsCount={countForStore}
@@ -602,7 +579,7 @@ const Stores = () => {
                 pageSize={currentCount ? currentCount : pageLimit}
                 handlePageNumberChange={handlePageNumberChange}
                 showSizeChanger={true}
-              />{" "}
+              />
             </Content>
           ) : null}
         </Content>
