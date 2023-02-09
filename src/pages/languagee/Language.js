@@ -233,7 +233,7 @@ const Language = () => {
       .get(languageAPI, {
         params: {
           "page-number": page,
-          "page-limit": pageLimit,
+          "page-limit": limit,
         },
       })
       .then(function (response) {
@@ -253,7 +253,7 @@ const Language = () => {
         console.log("server error response from language API call");
       });
   };
-
+  //!TODO
   const getLanguageDataCount = () => {
     // enabling spinner
     setIsLoading(true);
@@ -362,15 +362,15 @@ const Language = () => {
   useEffect(() => {
     // if (parseInt(searchParams.get("page"))) {
     getLanguageData(
-      searchParams.get("page") ? parseInt(searchParams.get("page")) : 1
-      // currentCount ? currentCount : pageLimit
+      searchParams.get("page") ? parseInt(searchParams.get("page")) : 1,
+      currentCount ? currentCount : pageLimit
     );
     // }
     // else {
     //   <p>There is no content</p>;
     // }
     window.scrollTo(0, 0);
-  }, [currentPage]);
+  }, [currentPage, currentCount]);
 
   return (
     <>

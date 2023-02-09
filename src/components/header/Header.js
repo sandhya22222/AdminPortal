@@ -15,7 +15,7 @@ import {
   DropdownItem,
   Dropdown,
 } from "reactstrap";
-import { Typography ,Layout, Button} from "antd";
+import { Typography, Layout, Button } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { useNavigate, Link } from "react-router-dom";
@@ -43,13 +43,11 @@ import axios from "axios";
 const { Text } = Typography;
 const { Content } = Layout;
 
-
-const realmName = process.env.REACT_APP_REALMNAME
-const clientId = process.env.REACT_APP_CLIENTID
-const keyUrl = process.env.REACT_APP_KEYCLOAK_URL
+const realmName = process.env.REACT_APP_REALMNAME;
+const clientId = process.env.REACT_APP_CLIENTID;
+const keyUrl = process.env.REACT_APP_KEYCLOAK_URL;
 const umsBaseUrl = process.env.REACT_APP_USM_BASE_URL;
 const logoutUrl = process.env.REACT_APP_LOGOUT;
-
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -57,38 +55,39 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
 
-  const isLoggedIn = sessionStorage.getItem('is_loggedIn');
-  const token = sessionStorage.getItem('access_token');
-  const refreshToken = sessionStorage.getItem('refresh_token');
+  const isLoggedIn = sessionStorage.getItem("is_loggedIn");
+  const token = sessionStorage.getItem("access_token");
+  const refreshToken = sessionStorage.getItem("refresh_token");
 
   const handleSignIn = () => {
     window.location = `${keyUrl}/realms/${realmName}/protocol/openid-connect/auth?response_type=code&client_id=${clientId}`;
-  }
+  };
 
   const handleLogout = () => {
     let baseurl = `${umsBaseUrl}${logoutUrl}`;
     axios({
       url: baseurl,
-      method: 'post',
+      method: "post",
       headers: {
-        Authorization: token
+        Authorization: token,
       },
       data: {
         refresh_token: refreshToken,
       },
-  
-    }).then(res => {
-      console.log('logged out res', res);
-      if (res.status === 200) {
-        sessionStorage.clear()
-        // window.location = 'http://localhost:3002/'
-        window.location = `${keyUrl}/realms/${realmName}/protocol/openid-connect/auth?response_type=code&client_id=${clientId}`;
-      }
-    }).catch(err => {
-      console.log('logged out err', err)
-      sessionStorage.clear()
     })
-  }
+      .then((res) => {
+        console.log("logged out res", res);
+        if (res.status === 200) {
+          sessionStorage.clear();
+          // window.location = 'http://localhost:3002/'
+          window.location = `${keyUrl}/realms/${realmName}/protocol/openid-connect/auth?response_type=code&client_id=${clientId}`;
+        }
+      })
+      .catch((err) => {
+        console.log("logged out err", err);
+        sessionStorage.clear();
+      });
+  };
 
   const persistedUserLoggedInInfo = useSelector(
     (state) => state.reducerUserLoggedInfo.userLoggedInfo
@@ -121,9 +120,9 @@ const Header = () => {
 
   return (
     <Container fluid className="navbar z-20">
-      <Navbar color="white"  expand="md" fixed="top"  className="drop-shadow">
+      <Navbar color="white" expand="md" fixed="top" className="drop-shadow">
         <NavbarBrand to="/" tag={Link} className="me-auto">
-          <img src={BrandLogo} alt="logo"  />
+          <img src={BrandLogo} alt="logo" />
         </NavbarBrand>
         <NavbarToggler
           className="me-2"
@@ -181,11 +180,12 @@ const Header = () => {
                             header
                             // className="!text-black  !font-semibold cursor-pointer hover:bg-gray-200"
                             className={`!text-black  !font-semibold
-              ${element.id === 1
-                                ? "!text-opacity-30"
-                                : " !text-black  !font-semibold cursor-pointer hover:bg-gray-200 "
-                              }
-              `}
+                               ${
+                                 element.id === 1
+                                   ? "!text-opacity-30"
+                                   : " !text-black  !font-semibold cursor-pointer hover:bg-gray-200 "
+                               }
+                             `}
                             key={element.id}
                           >
                             <div onClick={() => onClickProfile(element.id)}>
@@ -199,8 +199,11 @@ const Header = () => {
               </>
             ) : (
               <Content className="">
-                <Button onClick={isLoggedIn ? handleLogout : handleSignIn} className="!h-10 !bg-[#393939] text-white !border-[1px] !border-solid !border-[#393939] !box-border !rounded !pl-[15px]">
-                    {isLoggedIn ? "Logout" : "Signin"}
+                <Button
+                  onClick={isLoggedIn ? handleLogout : handleSignIn}
+                  className="!h-10 !bg-[#393939] text-white !border-[1px] !border-solid !border-[#393939] !box-border !rounded !pl-[15px]"
+                >
+                  {isLoggedIn ? "Logout" : "Signin"}
                 </Button>
                 {/* <Link
                   to={{
