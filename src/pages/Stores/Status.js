@@ -13,12 +13,12 @@ function Status({
   setSelectedTabTableContent,
   storeApiData,
   setStoreApiData,
+  tabId,
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [switchStatus, setSwitchStatus] = useState(storeStatus);
   const [changeSwitchStatus, setChangeSwitchStatus] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
   // closing the delete popup model
   const closeModal = () => {
     setIsModalOpen(false);
@@ -67,11 +67,15 @@ function Status({
           selectedTabTableContent,
           response.config.params["store-id"]
         );
-        setSelectedTabTableContent(
-          selectedTabTableContent.filter(
-            (element) => element.id !== response.config.params["store-id"]
-          )
-        );
+        if (tabId > 0) {
+          setSelectedTabTableContent(
+            selectedTabTableContent.filter(
+              (element) => element.id !== response.config.params["store-id"]
+            )
+          );
+        } else {
+          setSelectedTabTableContent(selectedTabTableContent);
+        }
         toast("Edit Status is done Successfully", {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
@@ -131,7 +135,7 @@ function Status({
             />
           </Space>
         </Col>
-        <div className="pl-1">{storeStatus ? "Active" : "Inactive"}</div>
+        <div className="pl-1">{switchStatus ? "Active" : "Inactive"}</div>
       </Row>
     </div>
   );
