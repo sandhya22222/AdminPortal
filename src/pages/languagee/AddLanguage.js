@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import {makeHttpRequestForRefreshToken} from "../../util/unauthorizedControl"
 import {
   Layout,
   Row,
@@ -158,7 +159,8 @@ const AddLanguage = () => {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
           });
-        } else {
+        }else if(error&&error.response&&error.response.status === 401){
+          makeHttpRequestForRefreshToken();}else {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",

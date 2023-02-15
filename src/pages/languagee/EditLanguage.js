@@ -15,7 +15,7 @@ import {
   Skeleton,
 } from "antd";
 import { Link, Navigate, useNavigate, useLocation } from "react-router-dom";
-
+import {makeHttpRequestForRefreshToken} from "../../util/unauthorizedControl"
 import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
 
 //! Import CSS libraries
@@ -148,6 +148,8 @@ const EditLanguage = () => {
         // disabling skeleton
         setIsDataLoading(false);
         console.log("errorFromLanguageApi====>", error);
+        if(error&&error.response&&error.response.status === 401){
+          makeHttpRequestForRefreshToken();}
       });
   };
 
@@ -272,6 +274,8 @@ const EditLanguage = () => {
           type: "error",
         });
         console.log(error.response);
+        if(error&&error.response&&error.response.status === 401){
+          makeHttpRequestForRefreshToken();}
       });
   };
 

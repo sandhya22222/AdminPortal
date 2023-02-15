@@ -11,6 +11,7 @@ import {
   Skeleton,
 } from "antd";
 import axios from "axios";
+import {makeHttpRequestForRefreshToken} from "../../util/unauthorizedControl"
 import { toast } from "react-toastify";
 import { EditOutlined } from "@ant-design/icons";
 import {
@@ -290,6 +291,8 @@ const Stores = () => {
         setIsLoading(false);
         setIsNetworkError(true);
         console.log("Server error from getStoreApi Function ", error.response);
+        if(error&&error.response&&error.response.status === 401){
+          makeHttpRequestForRefreshToken();}
       });
   };
   // useEffect(() => {
@@ -345,6 +348,8 @@ const Stores = () => {
         setIsUpLoading(false);
         // setInValidName(true)
         // onClose();
+        if(error&&error.response&&error.response.status === 401){
+          makeHttpRequestForRefreshToken();}
       });
   };
   //!put call for stores
@@ -386,6 +391,8 @@ const Stores = () => {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
         });
+        if(error&&error.response&&error.response.status === 401){
+          makeHttpRequestForRefreshToken();}
       });
   };
   useEffect(() => {
