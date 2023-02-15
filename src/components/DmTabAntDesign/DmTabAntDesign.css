@@ -18,17 +18,17 @@
 .ant-tabs-tab.ant-tabs-tab-active {
   background-color: white;
   height: 40px;
-  border-top: 2px solid #dc3e3e !important ;
-  color: #dc3e3e !important;
+  /* border-top: 2px solid #dc3e3e !important ;
+  color: #dc3e3e !important; */
 }
-.ant-tabs-ink-bar {
+/* .ant-tabs-ink-bar {
   background: #dc3e3e !important;
-}
+} */
 
 /* text inside selected Tab */
-.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+/* .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
   color: #dc3e3e !important;
-}
+} */
 
 /*######## for cards types tabBar ########## */
 
