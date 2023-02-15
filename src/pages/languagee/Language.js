@@ -83,6 +83,7 @@ const Language = () => {
       title: "Language",
       dataIndex: "language",
       key: "language",
+      sorter: (name1, name2) => name1.language.localeCompare(name2.language),
       render: (text, record) => {
         return <>{record.language}</>;
       },
@@ -139,7 +140,7 @@ const Language = () => {
                 pathname: "edit_language",
                 search: `?_id=${record.id}`,
               }}
-              className=" pl-[8px] font-semibold app-table-data-title"
+              className=" pl-[10px] font-semibold app-table-data-title"
             >
               <EditOutlined
                 style={{
@@ -337,15 +338,15 @@ const Language = () => {
   };
 
   const handlePageNumberChange = (page, pageSize) => {
-    setSearchParams({
-      // tab: parseInt(searchParams.get("tab"))
-      //   ? parseInt(searchParams.get("tab"))
-      //   : 1,
-      page: page,
-      limit: pageSize,
-    });
-    // setCurrentPage(page);
-    // setCurrentCount(pageSize);
+    // setSearchParams({
+    //   // tab: parseInt(searchParams.get("tab"))
+    //   //   ? parseInt(searchParams.get("tab"))
+    //   //   : 1,
+    //   page: page,
+    //   limit: pageSize,
+    // });
+    setCurrentPage(page);
+    setCurrentCount(pageSize);
     // if (page === 1) {
     //   if (pageSize != 20) {
     //     navigate(`/dashboard/language?page=1`);
@@ -356,7 +357,7 @@ const Language = () => {
     //   navigate(`/dashboard/language?page=${page}`);
     // }
     // navigate(0);
-    // navigate(`/dashboard/language?page=${page}&limit=${pageSize}`);
+    navigate(`/dashboard/language?page=${page}&limit=${pageSize}`);
   };
 
   // useEffect(() => {
@@ -375,9 +376,7 @@ const Language = () => {
     // if (parseInt(searchParams.get("page"))) {
     getLanguageData(
       searchParams.get("page") ? parseInt(searchParams.get("page")) : 1,
-      searchParams.get("limit")
-        ? parseInt(searchParams.get("limit"))
-        : pageLimit
+      currentCount ? currentCount : pageLimit
     );
     window.scrollTo(0, 0);
   }, [searchParams]);
@@ -394,9 +393,10 @@ const Language = () => {
           cancelCallback={() => closeDeleteModal()}
           isSpin={islanguageDeleting}
         >
+          
           {
-            <div className="my-4">
-              {"Are you sure you want to delete the language ?"}
+            <div>
+              {"Are you sure you want to delete the language?"}
             </div>
           }
         </StoreModal>
@@ -419,7 +419,7 @@ const Language = () => {
             <Col>
               <Content className="text-right mt-3">
                 <Button
-                  className=" app-btn-primary rounded-none"
+                  className=" app-btn-primary "
                   onClick={() => navigate("add_language")}
                   // type="primary"
                   // style={{
@@ -458,18 +458,10 @@ const Language = () => {
             {totalLanguageCount >= pageLimit ? (
               <Content className=" grid justify-items-end">
                 <DmPagination
-                  currentPage={
-                    parseInt(searchParams.get("page"))
-                      ? parseInt(searchParams.get("page"))
-                      : 1
-                  }
+                  currentPage={currentPage ? currentPage : 1}
                   totalItemsCount={totalLanguageCount}
                   pageLimit={pageLimit}
-                  pageSize={
-                    parseInt(searchParams.get("limit"))
-                      ? parseInt(searchParams.get("limit"))
-                      : pageLimit
-                  }
+                  pageSize={currentCount ? currentCount : pageLimit}
                   handlePageNumberChange={handlePageNumberChange}
                   showSizeChanger={true}
                 />

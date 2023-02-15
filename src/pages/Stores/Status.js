@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Switch, Space, Row, Col, Button, Spin } from "antd";
+import { Switch, Space, Row, Col, Button, Spin, Layout } from "antd";
 import { toast } from "react-toastify";
 import StoreModal from "../../components/storeModal/StoreModal";
 import axios from "axios";
 
+const { Content } = Layout;
 const storeEditStatusAPI = process.env.REACT_APP_STORE_STATUS_API;
 
 function Status({
@@ -111,6 +112,7 @@ function Status({
         cancelCallback={() => closeModal()}
         isSpin={isLoading}
       >
+        {/* <Content className="!w-3/5"> */}
         {changeSwitchStatus ? (
           <div>
             <p>{`Awesome!`}</p>
@@ -121,6 +123,7 @@ function Status({
             <p>{`You are about the deactivate from your store. Would you like to proceed?`}</p>
           </div>
         )}
+        {/* </Content> */}
       </StoreModal>
       <Row>
         <Col>
