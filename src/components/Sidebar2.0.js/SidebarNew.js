@@ -16,7 +16,7 @@ import { AiOutlineHome } from "react-icons/ai";
 //! Import user defined functions
 
 //! Import user defined CSS
-import "./sidebar.css";
+// import "./sidebar.css";
 
 //! Destructure the components
 const { Sider, Content } = Layout;
@@ -25,7 +25,8 @@ const antIcon = <LoadingOutlined className="text-[10px] hidden" spin />;
 
 //! Global Variables
 
-const Sidebar = (props) => {
+const SidebarNew = (props) => {
+
   const [collapsed, setCollapsed] = useState(false);
   const [selectedItem, setSelectedItem] = useState([]);
   const [openedItem, setOpenedItem] = useState([]);
@@ -86,11 +87,8 @@ const Sidebar = (props) => {
       >
         <Affix offsetTop={65}>
           <Sider
+            className="!pt-0 !bg-[#fff] min-h-screen"
             width={245}
-            className="site-layout-background !pt-0 forscroll !bg-[#fff] min-h-screen"
-            collapsible
-            collapsed={collapsed}
-            onCollapse={(value) => setCollapsed(value)}
           >
             <Spin
               spinning={loadingEffect}
@@ -98,9 +96,8 @@ const Sidebar = (props) => {
               tip="Please Wait..."
             >
               <Menu
-                theme={props.color}
                 mode="inline"
-                className="h-full !text-base"
+                className="h-full"
                 selectedKeys={selectedItem}
                 openKeys={openedItem}
               >
@@ -108,7 +105,6 @@ const Sidebar = (props) => {
                   <Menu.Item
                     icon={item.icon}
                     key={item.key}
-                    // style={{ color: "black" }}
                     onClick={() => {
                       navigate(item.navigate_to);
                     }}
@@ -133,4 +129,4 @@ const Sidebar = (props) => {
     </Layout>
   );
 };
-export default Sidebar;
+export default SidebarNew;

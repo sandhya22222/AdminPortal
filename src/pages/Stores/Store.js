@@ -98,6 +98,8 @@ const Stores = () => {
       dataIndex: "name",
       key: "name",
       width: "30%",
+      sorter: (name1, name2) => name1.name.localeCompare(name2.name),
+      sortDirections: ["descend", "ascend"],
       render: (text, record) => {
         return <>{record.name}</>;
       },
@@ -465,10 +467,7 @@ const Stores = () => {
           </Col>
           <Col>
             <Content className="text-right mt-3">
-              <Button
-                className="app-btn-primary rounded-none"
-                onClick={showAddDrawer}
-              >
+              <Button className="app-btn-primary" onClick={showAddDrawer}>
                 Add Stores
               </Button>
               <Drawer
@@ -570,7 +569,7 @@ const Stores = () => {
                 String(tab_id)
               }
               tabType={"line"}
-              tabBarPosition={"bottom"}
+              tabBarPosition={"top"}
             />
           </Content>
           <Content>

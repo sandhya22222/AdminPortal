@@ -1,36 +1,36 @@
-.btn-secondary {
-  color: #fff !important;
-  outline: none;
-  background-color: white;
-  border-color: #d9d9d9 !important;
-}
-.btn-secondary:hover {
-  background-color: white !important;
+/* .btn-secondary { */
+  /* color: #fff !important; */
+  /* outline: none; */
+  /* background-color: white; */
+  /* border-color: #d9d9d9 !important; */
+/* } */
+/* .btn-secondary:hover { */
+  /* background-color: white !important; */
   /* border:1px solid #1890ff !important; */
-}
+/* } */
 /* search button ant-input */
-.ant-input-search-button{
+/* .ant-input-search-button{
   padding-bottom: 4px !important; 
   border-radius: 0px !important;
-}
+} */
 /* ant input */
-.ant-input{
+/* .ant-input{
   border-radius: 0px !important;
-}
-.ant-table-thead>tr>th {
+} */
+/* .ant-table-thead>tr>th {
   padding: 0 16px 0 18px !important;
-}
-.ant-table-tbody>tr>td {
+} */
+/* .ant-table-tbody>tr>td {
   padding-left: 18px !important;
-}
+} */
 
-.ant-table-wrapper .ant-table-container table>thead>tr:first-child th:first-child {
+/* .ant-table-wrapper .ant-table-container table>thead>tr:first-child th:first-child {
   border-start-start-radius: 0px !important;
-}
+} */
 
-.ant-table-container table>thead>tr:first-child th:last-child {
+/* .ant-table-container table>thead>tr:first-child th:last-child {
   border-start-end-radius: 0px !important;
-}
+} */
 
 /* border-color: #6c757d;
    }
