@@ -73,6 +73,7 @@ const Stores = () => {
   const [serverStoreName, setServerStoreName] = useState();
   const [storeEditId, setStoreEditId] = useState();
   const [isPaginationDataLoaded, setIsPaginationDataLoaded] = useState(true);
+  const [errorMessage, setErrorMessage] = useState();
   // const [currentPage, setCurrentPage] = useState(
   //   params.page ? params.page.slice(5, params.page.length) : 1
   // );
@@ -290,6 +291,9 @@ const Stores = () => {
         setIsLoading(false);
         setIsNetworkError(true);
         console.log("Server error from getStoreApi Function ", error.response);
+        if (error.response) {
+          setErrorMessage(error.response.data.message);
+        }
       });
   };
   // useEffect(() => {
@@ -462,7 +466,7 @@ const Stores = () => {
           <Col>
             <Content className="text-right mt-3">
               <Button
-                className="!bg-black text-white rounded-none border border-neutral-500"
+                className="app-btn-primary rounded-none"
                 onClick={showAddDrawer}
               >
                 Add Stores
@@ -498,7 +502,7 @@ const Stores = () => {
                       }}
                     />
                     <Button
-                      className="!bg-black text-white border border-neutral-500"
+                      className="app-btn-primary"
                       onClick={() => {
                         validateStorePostField();
                       }}
@@ -522,7 +526,7 @@ const Stores = () => {
                       }}
                     />
                     <Button
-                      className="!bg-black text-white border border-neutral-500"
+                      className="app-btn-primary"
                       onClick={() => {
                         validateStorePutField();
                       }}
@@ -550,8 +554,9 @@ const Stores = () => {
       ) : isNetworkError ? (
         <Layout className="p-0 text-center mb-3 bg-[#F4F4F4]">
           <h5>
-            Your's back-end server/services seems to be down, please start your
-            server/services and try again.
+            {errorMessage
+              ? errorMessage
+              : "Your's back-end server/services seems to be down, please start your server/services and try again."}
           </h5>
         </Layout>
       ) : (

@@ -108,7 +108,7 @@ const Sidebar = (props) => {
                   <Menu.Item
                     icon={item.icon}
                     key={item.key}
-                    style={{ color: "black" }}
+                    // style={{ color: "black" }}
                     onClick={() => {
                       navigate(item.navigate_to);
                     }}

@@ -17,7 +17,8 @@
 
 .ant-layout-sider-trigger {
   color: black !important;
-  background-color: rgba(211, 211, 211, 0.998) !important;
+  /* background-color: rgba(211, 211, 211, 0.998) !important; */
+  background-color:#ffffff!important;
 }
 
 .forscroll {
@@ -50,10 +51,10 @@ ant-layout-sider {
 }
 
 .ant-menu-inline .ant-menu-item::after {
-  border-right: 3px solid red !important;
+  border-right: 3px solid #1890ff !important;
   border-right-width: 3px;
   border-right-style: solid !important;
-  border-right-color: red;
+  border-right-color: #1890ff;
 }
 
 .ant-menu-item .ant-menu-item-icon {
@@ -64,25 +65,25 @@ ant-layout-sider {
   color: rgb(0 0 0);
 }
 
-.ant-menu-item-selected a {
+/* .ant-menu-item-selected a {
   color: red !important;
   font-weight: 600;
   font-size: medium;
-}
+} */
 
-.ant-menu-item-selected {
+/* .ant-menu-item-selected {
   background-color: #f4f4f4 !important;
-}
+} */
 
 .ant-menu-item-selected {
-  color: red !important;
+  color: #1890ff !important;
 }
 
 .ant-menu-inline > .ant-menu-item {
   height: 50px !important;
 }
 
-.ant-menu-item a:hover {
+/* .ant-menu-item a:hover {
   color: red;
   font-weight: 600 !important;
 }
@@ -95,7 +96,7 @@ ant-layout-sider {
 .ant-menu-submenu:hover > .ant-menu-submenu-title > .ant-menu-submenu-arrow {
   color: red;
   font-weight: 600 !important;
-}
+} */
 
 .ant-menu-title-content {
   margin-left: 12px !important;
@@ -112,7 +113,7 @@ ant-layout-sider {
 }
 
 .ant-menu :hover {
-  color: red !important;
+  color: #1890ff !important;
 }
 .ant-menu-sub.ant-menu-inline,
 .ant-menu-item {
@@ -125,24 +126,32 @@ ant-layout-sider {
   font-weight: 600 !important;
 }
 .ant-menu-item-icon:hover {
-  color: red !important;
+  color: #1890ff !important;
   font-weight: 600 !important;
 }
 
 .ant-menu-item {
   border-radius: 0 !important;
 }
-.ant-menu-item-active {
+/* .ant-menu-item-active {
   background-color: white !important;
-}
+} */
 .ant-menu-item-selected {
-  background-color: #f4f4f4 !important;
+  background-color:#e6f7ff !important;
 }
-.ant-menu-inline .ant-menu-item,
+/* .ant-menu-inline .ant-menu-item,
 .ant-menu-inline .ant-menu-submenu-title {
-}
+} */
 
 .ant-menu-inline .ant-menu-item {
   margin-inline: 0px;
   width: calc(100% - 0px);
+}
+
+/* .ant-menu-item .ant-menu-item-active{
+  background-color: none !important;
+} */
+
+.ant-menu-item:hover{
+  background-color: white !important;
 }
