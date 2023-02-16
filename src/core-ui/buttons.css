@@ -1,11 +1,13 @@
 .app-btn-primary {
   background-color: #1677ff !important;
   color: #ffffff !important;
+  border-color: #1677ff !important;
   /* border:1px solid #1677ff!important; */
   height: unset !important;
 }
 .app-btn-primary:hover {
   background-color: #4096ff !important;
+  border-color: #4096ff !important ;
 }
 .app-btn-secondary {
   background-color: #f4f4f4 !important;

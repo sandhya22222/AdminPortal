@@ -468,7 +468,7 @@ const Stores = () => {
           <Col>
             <Content className="text-right mt-3">
               <Button className="app-btn-primary" onClick={showAddDrawer}>
-                Add Stores
+                Add Store
               </Button>
               <Drawer
                 title={
@@ -492,8 +492,8 @@ const Stores = () => {
                       maxLength={255}
                       className={`${
                         inValidName
-                          ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400 mb-4"
-                          : "h-10 px-3 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm mb-4"
+                          ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-4"
+                          : "mb-4"
                       }`}
                       onChange={(e) => {
                         setName(e.target.value);
@@ -515,8 +515,8 @@ const Stores = () => {
                       value={editName}
                       className={`${
                         inValidEditName
-                          ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400 mb-4"
-                          : "h-10 px-3 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm mb-4"
+                          ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 mb-4"
+                          : "mb-4"
                       }`}
                       maxLength={255}
                       onChange={(e) => {

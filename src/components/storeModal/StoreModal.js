@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import { Modal, Button, Spin,Layout } from "antd";
+import { Modal, Button, Spin, Layout } from "antd";
 import "./StoreModal.css";
-const { Content } =Layout;
+const { Content } = Layout;
 const StoreModal = ({
   okCallback,
   cancelCallback,
@@ -58,9 +58,7 @@ const StoreModal = ({
       }
     >
       <Spin tip="Please wait" spinning={isSpin}>
-        <Content className="!w-3/5">
-        {children}
-        </Content>
+        <Content className="!w-2/3">{children}</Content>
       </Spin>
     </Modal>
   );
