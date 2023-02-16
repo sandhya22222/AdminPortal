@@ -38,7 +38,7 @@ import { keycloakData } from "../../urlPages/keycloak";
 import axios from "axios";
 
 //! Get all required details from .env file
-
+import {makeHttpRequestForRefreshToken} from "../../util/unauthorizedControl"
 //! Destructure the components
 const { Text } = Typography;
 const { Content } = Layout;
@@ -86,6 +86,8 @@ const Header = () => {
       .catch((err) => {
         console.log("logged out err", err);
         sessionStorage.clear();
+        if(err&&err.response&&err.response.status === 401){
+           makeHttpRequestForRefreshToken();}
       });
   };
 

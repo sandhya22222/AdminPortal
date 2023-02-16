@@ -3,7 +3,7 @@ import { Switch, Space, Row, Col, Button, Spin } from "antd";
 import { toast } from "react-toastify";
 import StoreModal from "../../components/storeModal/StoreModal";
 import axios from "axios";
-
+import {makeHttpRequestForRefreshToken} from "../../util/unauthorizedControl"
 const storeEditStatusAPI = process.env.REACT_APP_STORE_STATUS_API;
 
 function Status({
@@ -90,6 +90,8 @@ function Status({
         console.log("Error from the status response ===>", error.response);
         setIsLoading(false);
         closeModal();
+        if(error&&error.response&&error.response.status === 401){
+          makeHttpRequestForRefreshToken();}
       });
 
     console.log("post body for ---", storeEditStatusAPI, " is:", reqbody);
