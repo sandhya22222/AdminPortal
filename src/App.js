@@ -21,11 +21,11 @@ import { useFavicon } from "./hooks/useFavicon";
 import axios from "axios";
 // import Language from "./pages/Language";
 import Store from "./pages/Stores/Store";
-import Sidebar from "./components/sidebar/Sidebar";
+// import Sidebar from "./components/sidebar/Sidebar";
 import Language from "./pages/languagee/Language";
 import AddLanguage from "./pages/languagee/AddLanguage";
 import EditLanguage from "./pages/languagee/EditLanguage";
-
+import SidebarNew from "./components/Sidebar2.0.js/SidebarNew";
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 
 const auth = process.env.REACT_APP_AUTH;
@@ -53,7 +53,7 @@ const App = () => {
             <Route path="/home" element={<Navigate to={"/"} />} />
             <Route path="/signin" element={<Signin />} />
             {isLoggedInFromSession ? (
-              <Route path="/dashboard" element={<Sidebar color="light" />}>
+              <Route path="/dashboard" element={<SidebarNew />}>
                 <Route path="" element={<Dashboard />} />
                 <Route path="language" element={<Language />} />
                 {/* <Route path="language/:page/:count" element={<Language />} /> */}
@@ -71,7 +71,7 @@ const App = () => {
             <Route path="/" element={<Home isLoggedIn={true} />} />
             <Route path="/home" element={<Navigate to={"/"} />} />
             <Route path="/signin" element={<Signin />} />
-              <Route path="/dashboard" element={<Sidebar color="light" />}>
+              <Route path="/dashboard" element={<SidebarNew />}>
                 <Route path="" element={<Dashboard />} />
                 <Route path="language" element={<Language />} />
                 <Route path="language/edit_language" element={<EditLanguage />} />

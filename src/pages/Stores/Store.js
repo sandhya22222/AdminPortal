@@ -74,6 +74,7 @@ const Stores = () => {
   const [serverStoreName, setServerStoreName] = useState();
   const [storeEditId, setStoreEditId] = useState();
   const [isPaginationDataLoaded, setIsPaginationDataLoaded] = useState(true);
+  const [errorMessage, setErrorMessage] = useState();
   // const [currentPage, setCurrentPage] = useState(
   //   params.page ? params.page.slice(5, params.page.length) : 1
   // );
@@ -98,6 +99,8 @@ const Stores = () => {
       dataIndex: "name",
       key: "name",
       width: "30%",
+      sorter: (name1, name2) => name1.name.localeCompare(name2.name),
+      sortDirections: ["descend", "ascend"],
       render: (text, record) => {
         return <>{record.name}</>;
       },
@@ -468,11 +471,8 @@ const Stores = () => {
           </Col>
           <Col>
             <Content className="text-right mt-3">
-              <Button
-                className="!bg-black text-white rounded-none border border-neutral-500"
-                onClick={showAddDrawer}
-              >
-                Add Stores
+              <Button className="app-btn-primary" onClick={showAddDrawer}>
+                Add Store
               </Button>
               <Drawer
                 title={
@@ -496,8 +496,8 @@ const Stores = () => {
                       maxLength={255}
                       className={`${
                         inValidName
-                          ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400 mb-4"
-                          : "h-10 px-3 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm mb-4"
+                          ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-4"
+                          : "mb-4"
                       }`}
                       onChange={(e) => {
                         setName(e.target.value);
@@ -505,7 +505,7 @@ const Stores = () => {
                       }}
                     />
                     <Button
-                      className="!bg-black text-white border border-neutral-500"
+                      className="app-btn-primary"
                       onClick={() => {
                         validateStorePostField();
                       }}
@@ -519,8 +519,8 @@ const Stores = () => {
                       value={editName}
                       className={`${
                         inValidEditName
-                          ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400 mb-4"
-                          : "h-10 px-3 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm mb-4"
+                          ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 mb-4"
+                          : "mb-4"
                       }`}
                       maxLength={255}
                       onChange={(e) => {
@@ -529,7 +529,7 @@ const Stores = () => {
                       }}
                     />
                     <Button
-                      className="!bg-black text-white border border-neutral-500"
+                      className="app-btn-primary"
                       onClick={() => {
                         validateStorePutField();
                       }}
@@ -557,8 +557,9 @@ const Stores = () => {
       ) : isNetworkError ? (
         <Layout className="p-0 text-center mb-3 bg-[#F4F4F4]">
           <h5>
-            Your's back-end server/services seems to be down, please start your
-            server/services and try again.
+            {errorMessage
+              ? errorMessage
+              : "Your's back-end server/services seems to be down, please start your server/services and try again."}
           </h5>
         </Layout>
       ) : (
@@ -572,7 +573,7 @@ const Stores = () => {
                 String(tab_id)
               }
               tabType={"line"}
-              tabBarPosition={"bottom"}
+              tabBarPosition={"top"}
             />
           </Content>
           <Content>
