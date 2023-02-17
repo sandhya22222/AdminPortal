@@ -18,7 +18,6 @@ const keycloakData = {
   realmName: storename,
   clientId: `${storename}-client`,
 };
-// window.location = `${keyUrl}/realms/${realmName}/protocol/openid-connect/auth?response_type=code&client_id=${clientId}`;
 
 function PageNotFound() {
   const keycloakUrl = `${keyUrl}/realms/${realmName}/protocol/openid-connect/auth?response_type=code&client_id=${clientId}`;
@@ -27,11 +26,6 @@ function PageNotFound() {
       {(auth === 'true') &&
         <Layout className="h-[500px]">
           <Content className="mt-[64px] grid justify-items-center align-items-center h-full">
-            {/* <Title level={4}>
-              The Page you are trying to access is{" "}
-              <span className="text-red-600 underline">Not Available</span>,
-              Please login to access this page <a href={keycloakUrl}>Login </a>
-            </Title> */}
              <Title level={4}>
               The Page you are trying to access is
               <span className="text-red-600 underline">Not Available</span>,

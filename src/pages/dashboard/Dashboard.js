@@ -1,7 +1,7 @@
 //! Import libraries & components
-import React, { useEffect , useState } from "react";
-import { Layout, Typography ,Spin } from "antd";
-import { DashboardOutlined ,LoadingOutlined} from "@ant-design/icons";
+import React, { useEffect, useState } from "react";
+import { Layout, Typography, Spin } from "antd";
+import { DashboardOutlined, LoadingOutlined } from "@ant-design/icons";
 import {
   Outlet,
   Link,
@@ -55,32 +55,30 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
   const [openedItem, setOpenedItem] = useState([]);
   const [token, setToken] = useState("");
   const [refreshToken, setrefreshToken] = useState("");
-  const [isLoading,setIsLoading]=useState(true);
-  const [permissionValue, setGetPermissionsData] = useState(sessionStorage.getItem("permissions_data") || []);
+  const [isLoading, setIsLoading] = useState(true);
+  const [permissionValue, setGetPermissionsData] = useState(
+    sessionStorage.getItem("permissions_data") || []
+  );
   const { pathname } = useLocation();
-  console.log('consoled')
-  useEffect(()=>{
-   
-   
+  console.log("consoled");
+  useEffect(() => {
     if (sessionStorage.getItem("access_token")) {
-      setToken(sessionStorage.getItem("access_token"))
+      setToken(sessionStorage.getItem("access_token"));
       if (sessionStorage.getItem("is_loggedIn")) {
         setIsLoggedIn(sessionStorage.getItem("is_loggedIn"));
-        if(!sessionStorage.getItem("permissions_data")){
+        if (!sessionStorage.getItem("permissions_data")) {
           getPermissions();
-        }
-        else{
+        } else {
           setIsLoading(false);
         }
       } else {
         handleisLoggedIn();
       }
-    }else{
-    
+    } else {
       getAccessToken();
       removeUrlSearchData();
     }
-  },[])
+  }, []);
 
   const getAccessToken = () => {
     let urlparams = new URLSearchParams(location.search);
@@ -95,7 +93,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
         console.log("code", code);
 
         let baseurl = `${umsBaseUrl}${getAccessTokenUrl}`;
-console.log('baseurl' , baseurl)
+        console.log("baseurl", baseurl);
         instance({
           url: baseurl,
           method: "post",
@@ -129,7 +127,7 @@ console.log('baseurl' , baseurl)
       url: baseurl,
       method: "get",
       headers: {
-        Authorization: token||sessionStorage.getItem("access_token"),
+        Authorization: token || sessionStorage.getItem("access_token"),
       },
     })
       .then((res) => {
@@ -141,14 +139,13 @@ console.log('baseurl' , baseurl)
       });
   };
 
-
   const getPermissions = (logginValue) => {
     let baseurl = `${umsBaseUrl}${getPermissionsUrl}`;
     instance({
       url: baseurl,
       method: "get",
       headers: {
-        Authorization: token||sessionStorage.getItem("access_token"),
+        Authorization: token || sessionStorage.getItem("access_token"),
       },
     })
       .then((res) => {
@@ -173,27 +170,27 @@ console.log('baseurl' , baseurl)
   };
   return (
     <Spin spinning={isLoading} indicator={antIcon} tip="Please Wait...">
-    <Content>
-      <AntDesignBreadcrumbs
-        data={[
-          { title: "Home", navigationPath: "/", displayOrder: 1 },
-          { title: "Dashboard", navigationPath: "", displayOrder: 2 },
-        ]}
-      />
-      <Content className="  d-flex  align-items-center my-3">
-        {/* <DashboardOutlined className="text-1xl me-2 d-flex  align-items-center" /> */}
-        <Title level={3} className="!font-normal mb-0">
-          Dashboard
-        </Title>
-      </Content>
-      <Content className="">
-        <img
-          src={WorkInProgress}
-          alt="WorkInProgress"
-          className="mt-3 w-[50%] mx-auto"
+      <Content>
+        <AntDesignBreadcrumbs
+          data={[
+            { title: "Home", navigationPath: "/", displayOrder: 1 },
+            { title: "Dashboard", navigationPath: "", displayOrder: 2 },
+          ]}
         />
+        <Content className="  d-flex  align-items-center my-3">
+          {/* <DashboardOutlined className="text-1xl me-2 d-flex  align-items-center" /> */}
+          <Title level={3} className="!font-normal mb-0">
+            Dashboard
+          </Title>
+        </Content>
+        <Content className="">
+          <img
+            src={WorkInProgress}
+            alt="WorkInProgress"
+            className="mt-3 w-[50%] mx-auto"
+          />
+        </Content>
       </Content>
-    </Content>
     </Spin>
   );
 };

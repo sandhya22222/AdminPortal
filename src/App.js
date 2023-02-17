@@ -65,21 +65,20 @@ const App = () => {
               <Route path="/signin" element={<Signin />} />
               {keycloakData ? (
                 <Route path="/dashboard" element={<Sidebar color="light" />}>
-                  <Route path="" element={<Dashboard setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn}/>} />{" "}
+                  <Route path="" element={<Dashboard setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn}/>} />
                   {isLoggedInFromSession ? (
                     <>
-                      {" "}
-                      <Route path="language" element={<Language />} />{" "}
+                      <Route path="language" element={<Language />} />
                       <Route
                         path="language/edit_language"
                         element={<EditLanguage />}
-                      />{" "}
+                      />
                       <Route
                         path="language/add_language"
                         element={<AddLanguage />}
-                      />{" "}
-                      <Route path="store" element={<Store />} />{" "}
-                      <Route path="*" element={<PageNotFound />} />{" "}
+                      />
+                      <Route path="store" element={<Store />} />
+                      <Route path="*" element={<PageNotFound />} />
                     </>
                   ) : (
                     <Route path="*" element={<PageNotFound />} />
