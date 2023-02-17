@@ -1,7 +1,36 @@
 import React from "react";
+import { Layout, Typography } from "antd";
+import Home from "../home/Home";
 
-const PageNotFound = () => {
-  return <h1>Page not found</h1>;
-};
+const { Content } = Layout;
+const { Title } = Typography;
+
+const auth = process.env.REACT_APP_AUTH;
+const realmName = process.env.REACT_APP_REALMNAME
+const clientId = process.env.REACT_APP_CLIENTID
+const keyUrl = process.env.REACT_APP_KEYCLOAK_URL
+
+function PageNotFound() {
+  const keycloakUrl = `${keyUrl}/realms/${realmName}/protocol/openid-connect/auth?response_type=code&client_id=${clientId}`;
+  return (
+    <>
+      {(auth === 'true') &&
+        <Layout className="h-[500px]">
+          <Content className="mt-[64px] grid justify-items-center align-items-center h-full">
+            <Title level={4}>
+              The Page you are trying to access is{" "}
+              <span className="text-red-600 underline">Not Available</span>,
+              Please login to access this page <a href={keycloakUrl}>Login </a>
+            </Title>
+          </Content>
+        </Layout>}
+      {
+        (auth === 'false') &&
+        <Home isLoggedIn={true} />
+      }
+    </>
+  );
+}
 
 export default PageNotFound;
+

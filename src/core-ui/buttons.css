@@ -1,0 +1,33 @@
+.app-btn-primary{
+    background-color:#000000 !important;
+    color: #ffffff !important;
+    border:1px solid black !important;
+    height:unset !important;
+}
+.app-btn-secondary{
+    background-color: #F4F4F4 !important;
+    color:#1F1F1F !important;
+    border:1px solid #1F1F1F !important;
+    height: unset !important;
+}
+.app-btn-approve{
+    background-color:#00C3B3 !important;
+    color:#F6F6F6 !important;
+    border:1px solid#00C3B3 !important;
+    height: unset !important;
+}
+.app-btn-reject{
+    background-color: #F6F6F6 !important;
+    color: #A00A18;
+    border: 1px solid #A00A18 !important;
+    height: unset !important;
+}
+.app-btn-review{
+    background-color: #F6F6F6 !important;
+    color: #393939 !important;
+    border: 1px solid #393939 !important; 
+    height: unset !important;
+}
+.ant-btn{
+    border-radius:  0.23em !important;
+}
