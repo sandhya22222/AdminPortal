@@ -225,8 +225,8 @@ const AddLanguage = () => {
                       value={language}
                       className={`${
                         isLanguageFieldEmpty
-                          ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400"
-                          : "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
+                          ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
+                          : ""
                       }`}
                       onChange={(e) => {
                         handleLanguageChange(e);
@@ -242,8 +242,8 @@ const AddLanguage = () => {
                       value={languageCode}
                       className={`${
                         isLanguageCodeFieldEmpty
-                          ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400"
-                          : "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
+                          ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
+                          : ""
                       }`}
                       onChange={(e) => {
                         handleLanguageCodeChange(e);
@@ -261,8 +261,8 @@ const AddLanguage = () => {
                       maxLength={124}
                       className={`${
                         isRegexFieldEmpty
-                          ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400"
-                          : "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
+                          ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
+                          : ""
                       }`}
                       onChange={(e) => {
                         handleRegexChange(e);
@@ -277,15 +277,15 @@ const AddLanguage = () => {
                       onChange={(e) => {
                         handleNativeNameChange(e);
                       }}
-                      className={
-                        "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
-                      }
+                      // className={
+                      //   "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
+                      // }
                     />
                   </Content>
                   <Content className="my-2">
                     <label className="text-[13px]">Script Direction</label>
                     <Select
-                      size={"large"}
+                      // size={"large"}
                       style={{ display: "flex" }}
                       value={scriptDirection}
                       onChange={(e) => {
@@ -314,24 +314,20 @@ const AddLanguage = () => {
                   <Col>
                     <Link to="/dashboard/language">
                       <Button
-                        style={{ background: "#FFFFFF" }}
-                        className="w-24 h-10 p-2 app-btn-secondary cursor-pointer"
+                        // style={{ background: "#FFFFFF" }}
+                        className=" app-btn-secondary"
                       >
-                        <label className="h-5 text-[14px]  text-[#393939] cursor-pointer">
-                          Discard
-                        </label>
+                        Discard
                       </Button>
                     </Link>
                   </Col>
                   <Col className="pl-4">
                     <Button
                       style={{ backgroundColor: "#393939" }}
-                      className="w-24 h-10 p-2 cursor-pointer app-btn-primary"
+                      className="app-btn-primary"
                       onClick={validateLanguageFieldEmptyOrNot}
                     >
-                      <label className=" h-5  text-[14px]  text-[#FFFFFF] cursor-pointer">
-                        Save
-                      </label>
+                      Save
                     </Button>
                   </Col>
                 </Row>

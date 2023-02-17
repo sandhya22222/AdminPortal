@@ -324,8 +324,8 @@ const EditLanguage = () => {
                           value={languageDetails.language}
                           className={`${
                             isLanguageFieldEmpty
-                              ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400"
-                              : "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
+                              ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
+                              : ""
                           }`}
                           onChange={(e) => {
                             languageHandler("language", e.target.value);
@@ -342,8 +342,8 @@ const EditLanguage = () => {
                           value={languageDetails.language_code}
                           className={`${
                             isLanguageCodeFieldEmpty
-                              ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400"
-                              : "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
+                              ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
+                              : ""
                           }`}
                           onChange={(e) => {
                             languageHandler("language_code", e.target.value);
@@ -361,8 +361,8 @@ const EditLanguage = () => {
                           maxLength={128}
                           className={`${
                             isRegexFieldEmpty
-                              ? "border-red-400 h-10 border-[1px] border-solid focus:border-red-400 hover:border-red-400"
-                              : "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
+                              ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
+                              : ""
                           }`}
                           onChange={(e) => {
                             languageHandler(
@@ -380,15 +380,15 @@ const EditLanguage = () => {
                           onChange={(e) => {
                             languageHandler("native_name", e.target.value);
                           }}
-                          className={
-                            "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
-                          }
+                          // className={
+                          //   "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
+                          // }
                         />
                       </Content>
                       <Content className="my-2">
                         <label className="text-[13px]">Script Direction</label>
                         <Select
-                          size={"large"}
+                          // size={"large"}
                           style={{ display: "flex" }}
                           defaultValue={
                             languageDetails.writing_script_direction
@@ -438,24 +438,24 @@ const EditLanguage = () => {
                       <Col>
                         <Link to="/dashboard/language">
                           <Button
-                            style={{ background: "#FFFFFF" }}
-                            className="w-24 h-10 p-2 app-btn-secondary cursor-pointer"
+                            // style={{ background: "#FFFFFF" }}
+                            className="app-btn-secondary"
                           >
-                            <label className="h-5 text-[14px]  text-[#393939] cursor-pointer">
-                              Go Back
-                            </label>
+                            {/* <label className="h-5 text-[14px]  text-[#393939] cursor-pointer"> */}
+                            Go Back
+                            {/* </label> */}
                           </Button>
                         </Link>
                       </Col>
                       <Col className="pl-4">
                         <Button
-                          style={{ backgroundColor: "#393939" }}
-                          className="w-24 h-10 p-2 cursor-pointer app-btn-primary"
+                          // style={{ backgroundColor: "#393939" }}
+                          className=" app-btn-primary"
                           onClick={validateLanguageFieldEmptyOrNot}
                         >
-                          <label className=" h-5  text-[14px]  text-[#FFFFFF] cursor-pointer">
-                            Update
-                          </label>
+                          {/* <label className=" h-5  text-[14px]  text-[#FFFFFF] cursor-pointer"> */}
+                          Update
+                          {/* </label> */}
                         </Button>
                       </Col>
                     </Row>
