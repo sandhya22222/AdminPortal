@@ -33,15 +33,16 @@ const Sidebar = (props) => {
   const { pathname } = useLocation();
 
   const navigate = useNavigate();
+  
   // testt
   const myData = [
-    {
-      key: "-1",
-      icon: <AiOutlineHome />,
-      label: "Home",
-      navigate_to: "/",
-      item: null,
-    },
+    // {
+    //   key: "-1",
+    //   icon: <AiOutlineHome />,
+    //   label: "Home",
+    //   navigate_to: "/",
+    //   item: null,
+    // },
     {
       key: "1",
       icon: <DashboardOutlined />,

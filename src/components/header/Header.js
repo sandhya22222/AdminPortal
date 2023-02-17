@@ -61,6 +61,7 @@ const Header = () => {
 
   const handleSignIn = () => {
     window.location = `${keyUrl}/realms/${realmName}/protocol/openid-connect/auth?response_type=code&client_id=${clientId}`;
+    // navigate('/')
   };
 
   const handleLogout = () => {
