@@ -1,12 +1,13 @@
+/*
 .ant-tabs-nav .ant-tabs-tab {
-  /* width: 58px; */
+  /* width: 58px; 
   height: 40px;
   padding: 14px;
   background-color: #e0e0e0;
   border-right: 1px solid rgb(212, 208, 208);
   border-left: 1px solid rgb(212, 208, 208);
   margin: 0;
-  /* padding-left: 18px; */
+  /* padding-left: 18px; 
   text-align: center;
   font-weight: 400;
   font-size: 15px;
@@ -18,35 +19,35 @@
 .ant-tabs-tab.ant-tabs-tab-active {
   background-color: white;
   height: 40px;
-  border-top: 2px solid #dc3e3e !important ;
-  color: #dc3e3e !important;
+  /* border-top: 2px solid #dc3e3e !important ;
+  color: #dc3e3e !important; 
 }
-.ant-tabs-ink-bar {
+/* .ant-tabs-ink-bar {
   background: #dc3e3e !important;
-}
+} 
 
-/* text inside selected Tab */
-.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+/* text inside selected Tab 
+/* .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
   color: #dc3e3e !important;
-}
+} 
 
 /*######## for cards types tabBar ########## */
 
-/* all tabs */
+/* all tabs 
 
 .ant-tabs-card.ant-tabs-bottom > .ant-tabs-nav .ant-tabs-tab,
 .ant-tabs-card.ant-tabs-bottom > div > .ant-tabs-nav .ant-tabs-tab {
   border-radius: 0 0 2px 2px;
-  background-color: white;
+  /* background-color: white; 
   margin-left: -3px !important;
 }
 
-/* selected Card (active) */
+/* selected Card (active) 
 .ant-tabs-card.ant-tabs-bottom > .ant-tabs-nav .ant-tabs-tab-active,
 .ant-tabs-card.ant-tabs-bottom > div > .ant-tabs-nav .ant-tabs-tab-active {
-  color: #dc3e3e !important;
+  /* color: #dc3e3e !important; */
 
-  /* background-color: #e0e0e0 !important; */
+  /* background-color: #e0e0e0 !important; 
 }
 
 .ant-tabs-tab + .ant-tabs-tab {
@@ -54,9 +55,9 @@
 }
 
 .ant-table-thead > tr > th {
-  /* color: black; */
+  /* color: black; 
   height: 40px !important;
-  background: #e0e0e0 !important;
+  /* background: #e0e0e0 !important; 
   padding-top: 0;
   color: #393939;
   padding: 0 16px 0 10px !important;
@@ -70,10 +71,11 @@
   padding-left: 10px !important;
   padding-right: 0 !important;
   border-bottom: 1px solid rgb(207, 198, 198) !important;
-  background-color: #f4f4f4;
+  /* background-color: #f4f4f4; 
 }
 
 :where(.css-dev-only-do-not-override-1hyej8k).ant-tabs>.ant-tabs-nav,
 :where(.css-dev-only-do-not-override-1hyej8k).ant-tabs>div>.ant-tabs-nav {
   position: unset !important;
 }
+*/

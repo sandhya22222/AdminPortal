@@ -57,7 +57,7 @@ const Language = () => {
   const [currentCount, setCurrentCount] = useState();
   // params.count ? params.count.slice(6, params.count.length) : null
   const [totalLanguageCount, setTotalLanguageCount] = useState();
-  const [languageFilteredData, setLanguageFilteredData] = useState();
+  const [errorMessage, setErrorMessage] = useState();
   const navigate = useNavigate();
 
   // closing the delete popup model
@@ -84,6 +84,7 @@ const Language = () => {
       title: "Language",
       dataIndex: "language",
       key: "language",
+      sorter: (name1, name2) => name1.language.localeCompare(name2.language),
       render: (text, record) => {
         return <>{record.language}</>;
       },
@@ -140,7 +141,7 @@ const Language = () => {
                 pathname: "edit_language",
                 search: `?_id=${record.id}`,
               }}
-              className=" pl-[8px] font-semibold app-table-data-title"
+              className=" pl-[10px] font-semibold app-table-data-title"
             >
               <EditOutlined
                 style={{
@@ -175,7 +176,7 @@ const Language = () => {
         var Writing_script_direction = element.writing_script_direction;
         var Native_name = element.native_name;
         var Lang_support_docs = element.lang_support_docs;
-        var Dm_language_regex = element.dm_language_regex;
+        var Dm_language_regex = element.language_regex;
         tempArray &&
           tempArray.push({
             key: index,
@@ -247,7 +248,7 @@ const Language = () => {
           response.data.data
         );
         setLanguageData(response.data.data);
-        // setTotalLanguageCount(response.data.count);
+        setTotalLanguageCount(response.data.count);
         // setIsNetworkErrorLanguage(false);
       })
       .catch((error) => {
@@ -339,6 +340,13 @@ const Language = () => {
   };
 
   const handlePageNumberChange = (page, pageSize) => {
+    // setSearchParams({
+    //   // tab: parseInt(searchParams.get("tab"))
+    //   //   ? parseInt(searchParams.get("tab"))
+    //   //   : 1,
+    //   page: page,
+    //   limit: pageSize,
+    // });
     setCurrentPage(page);
     setCurrentCount(pageSize);
     // if (page === 1) {
@@ -351,20 +359,20 @@ const Language = () => {
     //   navigate(`/dashboard/language?page=${page}`);
     // }
     // navigate(0);
-    navigate(`/dashboard/language?page=${page}`);
+    navigate(`/dashboard/language?page=${page}&limit=${pageSize}`);
   };
 
-  useEffect(() => {
-    if (currentPage === undefined || currentPage === null) {
-      // getLanguageData(
-      //   searchParams.get("page") ? searchParams.get("page") : 1,
-      //   searchParams.get("limit") ? searchParams.get("limit") : pageLimit
-      // );
-      // setSearchParams(searchParams.get("page") ? searchParams.get("page") : 1);
-      setCurrentPage(1);
-    }
-    getLanguageDataCount();
-  }, []);
+  // useEffect(() => {
+  //   if (currentPage === undefined || currentPage === null) {
+  //     // getLanguageData(
+  //     //   searchParams.get("page") ? searchParams.get("page") : 1,
+  //     //   searchParams.get("limit") ? searchParams.get("limit") : pageLimit
+  //     // );
+  //     // setSearchParams(searchParams.get("page") ? searchParams.get("page") : 1);
+  //     setCurrentPage(1);
+  //   }
+  //   // getLanguageDataCount();
+  // }, []);
 
   useEffect(() => {
     // if (parseInt(searchParams.get("page"))) {
@@ -372,12 +380,8 @@ const Language = () => {
       searchParams.get("page") ? parseInt(searchParams.get("page")) : 1,
       currentCount ? currentCount : pageLimit
     );
-    // }
-    // else {
-    //   <p>There is no content</p>;
-    // }
     window.scrollTo(0, 0);
-  }, [currentPage, currentCount]);
+  }, [searchParams]);
 
   return (
     <>
@@ -391,9 +395,10 @@ const Language = () => {
           cancelCallback={() => closeDeleteModal()}
           isSpin={islanguageDeleting}
         >
+          
           {
-            <div className="my-4">
-              {"Are you sure you want to delete the language ?"}
+            <div>
+              {"Are you sure you want to delete the language?"}
             </div>
           }
         </StoreModal>
@@ -401,7 +406,6 @@ const Language = () => {
           <AntDesignBreadcrumbs
             data={[
               { title: "Home", navigationPath: "/", displayOrder: 1 },
-
               { title: "Language", navigationPath: "", displayOrder: 3 },
             ]}
           />
@@ -417,12 +421,12 @@ const Language = () => {
             <Col>
               <Content className="text-right mt-3">
                 <Button
-                  className="rounded-none"
+                  className=" app-btn-primary "
                   onClick={() => navigate("add_language")}
-                  type="primary"
-                  style={{
-                    background: "black",
-                  }}
+                  // type="primary"
+                  // style={{
+                  //   background: "black",
+                  // }}
                 >
                   Add Language
                 </Button>
@@ -444,8 +448,9 @@ const Language = () => {
       ) : isNetworkErrorLanguage ? (
         <Layout className="p-0 text-center mb-3 bg-[#F4F4F4]">
           <h5>
-            Your's back-end server/services seems to be down, please start your
-            server/services and try again.
+            {errorMessage
+              ? errorMessage
+              : "Your's back-end server/services seems to be down, please start your server/services and try again."}
           </h5>
         </Layout>
       ) : (
