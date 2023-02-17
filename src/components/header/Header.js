@@ -204,7 +204,8 @@ const Header = () => {
               <Content className="">
                 <Button
                   onClick={isLoggedIn ? handleLogout : handleSignIn}
-                  className="!h-10 !bg-[#393939] text-white !border-[1px] !border-solid !border-[#393939] !box-border !rounded !pl-[15px]"
+                  className="app-btn-primary"
+                  // className="!h-10 !bg-[#393939] text-white !border-[1px] !border-solid !border-[#393939] !box-border !rounded !pl-[15px]"
                 >
                   {isLoggedIn ? "Logout" : "Signin"}
                 </Button>
