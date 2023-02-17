@@ -60,7 +60,8 @@ const Header = () => {
   const refreshToken = sessionStorage.getItem("refresh_token");
 
   const handleSignIn = () => {
-    window.location = `${keyUrl}/realms/${realmName}/protocol/openid-connect/auth?response_type=code&client_id=${clientId}`;
+    // window.location = `${keyUrl}/realms/${realmName}/protocol/openid-connect/auth?response_type=code&client_id=${clientId}`;
+     navigate('/')
   };
 
   const handleLogout = () => {

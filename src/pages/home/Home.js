@@ -4,8 +4,8 @@ import { Button, Layout, Typography } from "antd";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import { removeUrlSearchData } from "../../util/util"
-import {makeHttpRequestForRefreshToken} from "../../util/unauthorizedControl"
+import { removeUrlSearchData } from "../../util/util";
+import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
 //! Import CSS libraries
 
 //! Import user defined services
@@ -22,9 +22,9 @@ const { Title } = Typography;
 const { Content } = Layout;
 
 //! Get all required details from .env file
-const realmName = process.env.REACT_APP_REALMNAME
-const clientId = process.env.REACT_APP_CLIENTID
-const keyUrl = process.env.REACT_APP_KEYCLOAK_URL
+const realmName = process.env.REACT_APP_REALMNAME;
+const clientId = process.env.REACT_APP_CLIENTID;
+const keyUrl = process.env.REACT_APP_KEYCLOAK_URL;
 const umsBaseUrl = process.env.REACT_APP_USM_BASE_URL;
 const isLoggedInURL = process.env.REACT_APP_ISLOGGEDIN;
 const getPermissionsUrl = process.env.REACT_APP_PERMISSIONS;
@@ -38,127 +38,135 @@ delete instance.defaults.headers.common["Authorization"];
 const Home = ({ isLoggedIn, setIsLoggedIn }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [token, setToken] = useState('');
-  const [refreshToken, setrefreshToken] = useState('');
-  const [getPermissionsData, setGetPermissionsData] = useState([])
-
+  const [token, setToken] = useState("");
+  const [refreshToken, setrefreshToken] = useState("");
+  const [getPermissionsData, setGetPermissionsData] = useState([]);
+ const header = realmName
   const handleSignIn = () => {
-    window.location = `${keyUrl}/realms/${realmName}/protocol/openid-connect/auth?response_type=code&client_id=${clientId}`;
+    const keycloakData = {
+      url: `${keyUrl}/realms/${header}/protocol/openid-connect/auth?response_type=code&client_id=${header}-client`,
+      realmName: header,
+      clientId: `${header}-client`,
+    };
+    sessionStorage.setItem("keycloakData", JSON.stringify(keycloakData));
+    window.location = keycloakData.url;
   };
-  const handleisLoggedIn = () => {
-    let baseurl = `${umsBaseUrl}${isLoggedInURL}`;
-    instance({
-      url: baseurl,
-      method: "get",
-      headers: {
-        Authorization: token,
-      },
-    })
-      .then((res) => {
-        setIsLoggedIn(res.data.is_loggedin);
-        sessionStorage.setItem("is_loggedIn", res.data.is_loggedin);
-        getPermissions();
-      })
-      .catch((err) => {
-        console.log("isLoggedIn err", err);
-      });
-  };
+  // const keycloakData = {          url: `${keyUrl}/realms/${header}/protocol/openid-connect/auth?response_type=code&client_id=${header}-client`,          realmName: header,          clientId: `${header}-client`,        };        sessionStorage.setItem("keycloakData", JSON.stringify(keycloakData));
+  // const handleisLoggedIn = () => {
+  //   let baseurl = `${umsBaseUrl}${isLoggedInURL}`;
+  //   instance({
+  //     url: baseurl,
+  //     method: "get",
+  //     headers: {
+  //       Authorization: token,
+  //     },
+  //   })
+  //     .then((res) => {
+  //       setIsLoggedIn(res.data.is_loggedin);
+  //       sessionStorage.setItem("is_loggedIn", res.data.is_loggedin);
+  //       getPermissions();
+  //     })
+  //     .catch((err) => {
+  //       console.log("isLoggedIn err", err);
+  //     });
+  // };
 
-  const getAccessToken = () => {
-    let urlparams = new URLSearchParams(location.search);
-    if (urlparams.has("code")) {
-      let code = urlparams.get("code");
-      console.log("code", code);
+  // const getAccessToken = () => {
+  //   let urlparams = new URLSearchParams(location.search);
+  //   if (urlparams.has("code")) {
+  //     let code = urlparams.get("code");
+  //     console.log("code", code);
 
-      let baseurl = `${umsBaseUrl}${getAccessTokenUrl}`;
+  //     let baseurl = `${umsBaseUrl}${getAccessTokenUrl}`;
 
-      instance({
-        url: baseurl,
-        method: "post",
-        data: {
-          code: code,
-          realmname: realmName,
-          client_id: clientId,
-        }
-      }).then(res => {
-        // console.log('get access token res', res);
-        if (res.data.access_token) {
-          setToken(res.data.access_token);
-          setrefreshToken(res.data.refresh_token)
-          sessionStorage.setItem('access_token', res.data.access_token)
-          sessionStorage.setItem('refresh_token', res.data.refresh_token)
+  //     instance({
+  //       url: baseurl,
+  //       method: "post",
+  //       data: {
+  //         code: code,
+  //         realmname: realmName,
+  //         client_id: clientId,
+  //       }
+  //     }).then(res => {
+  //       // console.log('get access token res', res);
+  //       if (res.data.access_token) {
+  //         setToken(res.data.access_token);
+  //         setrefreshToken(res.data.refresh_token)
+  //         sessionStorage.setItem('access_token', res.data.access_token)
+  //         sessionStorage.setItem('refresh_token', res.data.refresh_token)
 
-        }
-      }).catch(err => {
-        console.log('get access token err', err)
-      })
-        .then((res) => {
-          // console.log('get access token res', res);
-          if (res.data.access_token) {
-            setToken(res.data.access_token);
-            setrefreshToken(res.data.refresh_token);
-            sessionStorage.setItem("access_token", res.data.access_token);
-            sessionStorage.setItem("refresh_token", res.data.refresh_token);
-          }
-        })
-        .catch((err) => {
-          console.log("get access token err", err);
-        });
-    }
-  };
-  const getPermissions = () => {
-    let baseurl = `${umsBaseUrl}${getPermissionsUrl}`;
-    instance({
-      url: baseurl,
-      method: "get",
-      headers: {
-        Authorization: token,
-      },
-    })
-      .then((res) => {
-        console.log("get access token res", res);
-        setGetPermissionsData(res.data);
-        sessionStorage.setItem("permissions_data", res.data);
-      })
-      .catch((err) => {
-        console.log("get access token err", err);
-      });
-  };
+  //       }
+  //     }).catch(err => {
+  //       console.log('get access token err', err)
+  //     })
+  //       .then((res) => {
+  //         // console.log('get access token res', res);
+  //         if (res.data.access_token) {
+  //           setToken(res.data.access_token);
+  //           setrefreshToken(res.data.refresh_token);
+  //           sessionStorage.setItem("access_token", res.data.access_token);
+  //           sessionStorage.setItem("refresh_token", res.data.refresh_token);
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         console.log("get access token err", err);
+  //       });
+  //   }
+  // };
+  // const getPermissions = () => {
+  //   let baseurl = `${umsBaseUrl}${getPermissionsUrl}`;
+  //   instance({
+  //     url: baseurl,
+  //     method: "get",
+  //     headers: {
+  //       Authorization: token,
+  //     },
+  //   })
+  //     .then((res) => {
+  //       console.log("get access token res", res);
+  //       setGetPermissionsData(res.data);
+  //       sessionStorage.setItem("permissions_data", res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log("get access token err", err);
+  //     });
+  // };
 
   useEffect(() => {
-    if (auth === 'true') {
+    if (auth === "true") {
       if (location.search === "") {
         handleSignIn();
-      } else if (!sessionStorage.getItem('access_token')) {
-        getAccessToken();
-        removeUrlSearchData();
       }
+      // else if (!sessionStorage.getItem('access_token')) {
+      //   getAccessToken();
+      //   removeUrlSearchData();
+      // }
       else {
-        navigate('/dashboard');
+        navigate("/dashboard");
       }
     }
-  }, [location.search])
+  }, [location.search]);
 
-  useEffect(() => {
-    if (token) {
-      handleisLoggedIn();
-    }
-    else if (sessionStorage.getItem('access_token')) {
-      // setToken(sessionStorage.getItem('access_token'));
-      if (sessionStorage.getItem('is_loggedIn')) {
-        setIsLoggedIn(sessionStorage.getItem('is_loggedIn'))
-      }
-      else {
-        handleisLoggedIn();
-      }
-    }
-  }, [token]);
+  // useEffect(() => {
+  //   if (token) {
+  //     handleisLoggedIn();
+  //   }
+  //   else if (sessionStorage.getItem('access_token')) {
+  //     // setToken(sessionStorage.getItem('access_token'));
+  //     if (sessionStorage.getItem('is_loggedIn')) {
+  //       setIsLoggedIn(sessionStorage.getItem('is_loggedIn'))
+  //     }
+  //     else {
+  //       handleisLoggedIn();
+  //     }
+  //   }
+  // }, [token]);
 
-  useEffect(() => {
-    if (isLoggedIn) {
-      navigate("/dashboard");
-    }
-  }, [isLoggedIn]);
+  // useEffect(() => {
+  //   if (isLoggedIn) {
+  //     navigate("/dashboard");
+  //   }
+  // }, [isLoggedIn]);
 
   usePageTitle("Admin Portal - Home");
 
