@@ -13,7 +13,7 @@ import {
   Skeleton,
 } from "antd";
 import axios from "axios";
-import {makeHttpRequestForRefreshToken} from "../../util/unauthorizedControl"
+import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
 import {
   Navigate,
   useNavigate,
@@ -56,7 +56,7 @@ const Language = () => {
   // params.page ? params.page.slice(5, params.page.length) : null
   const [currentCount, setCurrentCount] = useState();
   // params.count ? params.count.slice(6, params.count.length) : null
-  const [totalLanguageCount, setTotalLanguageCount] = useState();
+  // const [totalLanguageCount, setTotalLanguageCount] = useState();
   const [errorMessage, setErrorMessage] = useState();
   const navigate = useNavigate();
 
@@ -167,9 +167,9 @@ const Language = () => {
   //const tableLanguageData = (filteredData) => {
   let tempArray = [];
   {
-    languageData &&
-      languageData.length > 0 &&
-      languageData.map((element, index) => {
+    languageData.data &&
+      languageData.data.length > 0 &&
+      languageData.data.map((element, index) => {
         var Id = element.id;
         var Language = element.language;
         var LanguageCode = element.language_code;
@@ -206,7 +206,7 @@ const Language = () => {
         console.log("response from delete===>", response, deleteLanguageID);
         if (response.status === 200) {
           setIsDeleteLanguageModalOpen(false);
-          let removedData = languageData.filter(
+          let removedData = languageData.data.filter(
             ({ id }) => id !== deleteLanguageID
           );
           setLanguageData(removedData);
@@ -226,8 +226,9 @@ const Language = () => {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
         });
-        if(error&&error.response&&error.response.status === 401){
-          makeHttpRequestForRefreshToken();}
+        if (error && error.response && error.response.status === 401) {
+          makeHttpRequestForRefreshToken();
+        }
       });
   };
   const getLanguageData = (page, limit) => {
@@ -247,47 +248,36 @@ const Language = () => {
           "server Success response from language API call",
           response.data.data
         );
-        setLanguageData(response.data.data);
-        setTotalLanguageCount(response.data.count);
+        //TODO: Remove line 252,253 and setLanguageData(response.data)
+        // let allLanguagesData = response.data;
+        // allLanguagesData = { ...allLanguagesData, count: 21 };
+        setLanguageData(response.data);
+        // console.log("allLanguagesData", allLanguagesData);
+        // setTotalLanguageCount(21);
         // setIsNetworkErrorLanguage(false);
       })
       .catch((error) => {
         setIsLoading(false);
         setIsNetworkErrorLanguage(true);
-        console.log("server error response from language API call");
-        if(error&&error.response&&error.response.status === 401){
-          makeHttpRequestForRefreshToken();}
-      });
-  };
-  //!TODO
-  const getLanguageDataCount = () => {
-    // enabling spinner
-    setIsLoading(true);
-    axios
-      .get(languageAPI, {
-        params: {
-          // "page-number": page,
-          // "page-limit": limit,
-        },
-      })
-      .then(function (response) {
-        setIsLoading(false);
-        setIsNetworkErrorLanguage(false);
         console.log(
-          "server Success count response from language API call",
-          response.data.length
+          "server error response from language API call",
+          error.response
         );
-        setTotalLanguageCount(response.data.length);
-      })
-      .catch((error) => {
-        setIsLoading(false);
-        setIsNetworkErrorLanguage(true);
-        console.log("server error response from language API call");
-        if(error&&error.response&&error.response.status === 401){
-          makeHttpRequestForRefreshToken();}
+        if (error.response) {
+          setErrorMessage(error.response.data.message);
+        }
+        if (error && error.response && error.response.status === 401) {
+          makeHttpRequestForRefreshToken();
+          // setErrorMessage(error.response)
+        }
+        if (error.response.data.message === "That page contains no results") {
+          setSearchParams({
+            page: 1,
+            limit: parseInt(searchParams.get("limit")),
+          });
+        }
       });
   };
-  console.log("totalLanguageCount", totalLanguageCount);
 
   const pagination = [
     {
@@ -347,8 +337,8 @@ const Language = () => {
     //   page: page,
     //   limit: pageSize,
     // });
-    setCurrentPage(page);
-    setCurrentCount(pageSize);
+    // setCurrentPage(page);
+    // setCurrentCount(pageSize);
     // if (page === 1) {
     //   if (pageSize != 20) {
     //     navigate(`/dashboard/language?page=1`);
@@ -359,7 +349,11 @@ const Language = () => {
     //   navigate(`/dashboard/language?page=${page}`);
     // }
     // navigate(0);
-    navigate(`/dashboard/language?page=${page}&limit=${pageSize}`);
+    // navigate(`/dashboard/language?page=${page}&limit=${pageSize}`);
+    setSearchParams({
+      page: parseInt(page) ? parseInt(page) : 1,
+      limit: parseInt(pageSize) ? parseInt(pageSize) : pageLimit,
+    });
   };
 
   // useEffect(() => {
@@ -375,11 +369,17 @@ const Language = () => {
   // }, []);
 
   useEffect(() => {
-    // if (parseInt(searchParams.get("page"))) {
+    // if (searchParams.get("page") && searchParams.get("limit") ) {
     getLanguageData(
       searchParams.get("page") ? parseInt(searchParams.get("page")) : 1,
-      currentCount ? currentCount : pageLimit
+      searchParams.get("limit")
+        ? parseInt(searchParams.get("limit"))
+        : pageLimit
     );
+    // } else {
+    //   getLanguageData(1, pageLimit);
+    //   // navigate("/dashboard/language")
+    // }
     window.scrollTo(0, 0);
   }, [searchParams]);
 
@@ -395,12 +395,7 @@ const Language = () => {
           cancelCallback={() => closeDeleteModal()}
           isSpin={islanguageDeleting}
         >
-          
-          {
-            <div>
-              {"Are you sure you want to delete the language?"}
-            </div>
-          }
+          {<div>{"Are you sure you want to delete the language?"}</div>}
         </StoreModal>
         <Content className="mb-3">
           <AntDesignBreadcrumbs
@@ -457,15 +452,36 @@ const Language = () => {
         <Layout>
           <Content>
             <DynamicTable tableComponentData={tablepropsData} />
-            {totalLanguageCount >= pageLimit ? (
+            {languageData.count >= pageLimit ? (
               <Content className=" grid justify-items-end">
                 <DmPagination
-                  currentPage={currentPage ? currentPage : 1}
-                  totalItemsCount={totalLanguageCount}
+                  currentPage={
+                    searchParams.get("page")
+                      ? parseInt(searchParams.get("page"))
+                      : 1
+                  }
+                  totalItemsCount={languageData.count}
                   pageLimit={pageLimit}
-                  pageSize={currentCount ? currentCount : pageLimit}
+                  pageSize={
+                    searchParams.get("limit")
+                      ? parseInt(searchParams.get("limit"))
+                      : // ? parseInt(searchParams.get("limit")) >= 100
+                        //   ? 100
+                        //   : parseInt(searchParams.get("limit")) >= 50 &&
+                        //     parseInt(searchParams.get("limit")) <= 99
+                        //   ? 50
+                        //   : parseInt(searchParams.get("limit")) >= 20 &&
+                        //     parseInt(searchParams.get("limit")) <= 49
+                        //   ? 20
+                        //   : parseInt(searchParams.get("limit")) >= 0 &&
+                        //     parseInt(searchParams.get("limit")) <= 19
+                        //   ? 10
+                        //   : parseInt(searchParams.get("limit"))
+                        pageLimit
+                  }
                   handlePageNumberChange={handlePageNumberChange}
                   showSizeChanger={true}
+                  showTotal={true}
                 />
               </Content>
             ) : null}
