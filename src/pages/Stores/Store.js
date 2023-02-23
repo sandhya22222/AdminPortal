@@ -11,7 +11,7 @@ import {
   Skeleton,
 } from "antd";
 import axios from "axios";
-import {makeHttpRequestForRefreshToken} from "../../util/unauthorizedControl"
+import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
 import { toast } from "react-toastify";
 import { EditOutlined } from "@ant-design/icons";
 import {
@@ -157,21 +157,30 @@ const Stores = () => {
   };
   //! handleTabChangeStore to get the data according to the status
   const handleTabChangeStore = (status) => {
+    console.log("status", status);
     // setSearchParams({
     //   tab: status,
     // });
-    if (tab_id === status) {
-      if (currentPage && currentCount) {
-        navigate(
-          `/dashboard/store?tab=${tab_id}&page=${currentPage}&count=${currentCount}`
-        );
-      } else {
-        navigate(`/dashboard/store?tab=${status}`);
-      }
-    } else {
-      navigate(`/dashboard/store?tab=${status}`);
-    }
-
+    // if (tab_id === status) {
+    //   if (currentPage && currentCount) {
+    //     navigate(
+    //       `/dashboard/store?tab=${tab_id}&page=${currentPage}&count=${currentCount}`
+    //     );
+    //   } else {
+    //     navigate(`/dashboard/store?tab=${status}`);
+    //   }
+    // } else {
+    //   navigate(`/dashboard/store?tab=${status}`);
+    // }
+    setSearchParams({
+      tab: status,
+      page: parseInt(searchParams.get("page"))
+        ? parseInt(searchParams.get("page"))
+        : 1,
+      limit: parseInt(searchParams.get("limit"))
+        ? parseInt(searchParams.get("limit"))
+        : pageLimit,
+    });
     if (status === "0") {
       tableStoreData(storeApiData);
     } else if (status === "1") {
@@ -224,6 +233,9 @@ const Stores = () => {
       });
     setSelectedTabTableContent(tempArray);
   };
+  // useEffect(() => {
+  //   tableStoreData(storeApiData);
+  // }, [storeApiData]);
   //! tablepropsData to render the table columns,data,pagination
   const tablePropsData = {
     table_header: StoreTableColumn,
@@ -268,7 +280,7 @@ const Stores = () => {
     setName("");
   };
   //!get call for stores
-  const getStoreApi = (pageNumber, pageLimit) => {
+  const getStoreApi = (pageNumber, pageLimit, storeStatus) => {
     // setIsLoading(true);
     axios
       .get(storeAPI, {
@@ -276,6 +288,7 @@ const Stores = () => {
           // store_id: parseInt(storeId),
           "page-number": pageNumber,
           "page-limit": pageLimit,
+          status: storeStatus,
         },
       })
       .then(function (response) {
@@ -285,17 +298,33 @@ const Stores = () => {
           "Server Response from getStoreApi Function: ",
           response.data.data
         );
+        // setStoreApiData(response.data.data);
+        //TODO: Remove line 303,304 and setStoreApiData(response.data)
+        // let allStoresData = response.data;
+        // allStoresData = { ...allStoresData, count: 22 };
         setStoreApiData(response.data.data);
         setIsPaginationDataLoaded(false);
-        setCountForStore(response.data.count);
+        // setCountForStore(response.data.count);
         // console.log("hii",response.data.count)
       })
       .catch((error) => {
         setIsLoading(false);
         setIsNetworkError(true);
         console.log("Server error from getStoreApi Function ", error.response);
-        if(error&&error.response&&error.response.status === 401){
-          makeHttpRequestForRefreshToken();}
+        if (error.response) {
+          setErrorMessage(error.response.data.message);
+        }
+        if (error && error.response && error.response.status === 401) {
+          makeHttpRequestForRefreshToken();
+          // setErrorMessage(error.response)
+        }
+        if (error.response.data.message === "That page contains no results") {
+          setSearchParams({
+            tab: parseInt(searchParams.get("tab")),
+            page: 1,
+            limit: parseInt(searchParams.get("limit")),
+          });
+        }
       });
   };
   // useEffect(() => {
@@ -351,8 +380,9 @@ const Stores = () => {
         setIsUpLoading(false);
         // setInValidName(true)
         // onClose();
-        if(error&&error.response&&error.response.status === 401){
-          makeHttpRequestForRefreshToken();}
+        if (error && error.response && error.response.status === 401) {
+          makeHttpRequestForRefreshToken();
+        }
       });
   };
   //!put call for stores
@@ -390,12 +420,19 @@ const Stores = () => {
       })
       .catch((error) => {
         setIsUpLoading(false);
-        toast(error.response.data.message.name[0], {
-          position: toast.POSITION.TOP_RIGHT,
-          type: "error",
-        });
-        if(error&&error.response&&error.response.status === 401){
-          makeHttpRequestForRefreshToken();}
+        toast(
+          error &&
+            error.response &&
+            error.response.data &&
+            error.response.data.message,
+          {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+          }
+        );
+        if (error && error.response && error.response.status === 401) {
+          makeHttpRequestForRefreshToken();
+        }
       });
   };
   useEffect(() => {
@@ -427,15 +464,28 @@ const Stores = () => {
       editStoreData();
     }
   };
-  useEffect(() => {
-    if (currentPage && currentCount) {
-      getStoreApi(parseInt(currentPage), parseInt(currentCount));
-    } else {
-      getStoreApi(1, pageLimit);
-    }
-    window.scrollTo(0, 0);
-  }, [currentCount, currentPage]);
+  // useEffect(() => {
+  //   if (currentPage && currentCount) {
+  //     getStoreApi(parseInt(currentPage), parseInt(currentCount));
+  //   } else {
+  //     getStoreApi(1, pageLimit);
+  //   }
+  //   window.scrollTo(0, 0);
+  // }, [currentCount, currentPage]);
 
+  useEffect(() => {
+    getStoreApi(
+      searchParams.get("page") ? parseInt(searchParams.get("page")) : 1,
+      searchParams.get("limit")
+        ? parseInt(searchParams.get("limit"))
+        : pageLimit,
+      parseInt(searchParams.get("tab")) &&
+        parseInt(searchParams.get("tab")) <= 2
+        ? parseInt(searchParams.get("tab"))
+        : ""
+    );
+    window.scrollTo(0, 0);
+  }, [searchParams]);
   // const handlePageNumberChange = (page, pageSize) => {
   //   if (page === 1) {
   //     if (pageSize != 20) {
@@ -450,8 +500,14 @@ const Stores = () => {
   // };
 
   const handlePageNumberChange = (page, pageSize) => {
-    navigate(`/dashboard/store?tab=${tab_id}&page=${page}&count=${pageSize}`);
+    setSearchParams({
+      tab: searchParams.get("tab"),
+      page: parseInt(page) ? parseInt(page) : 1,
+      limit: parseInt(pageSize) ? parseInt(pageSize) : pageLimit,
+    });
+    // navigate(`/dashboard/store?tab=${tab_id}&page=${page}&count=${pageSize}`);
   };
+
   return (
     <Layout>
       <Content className="mb-1">
@@ -579,15 +635,24 @@ const Stores = () => {
           <Content>
             <DynamicTable tableComponentData={tablePropsData} />
           </Content>
-          {countForStore >= pageLimit ? (
+          {storeApiData.count >= pageLimit ? (
             <Content className=" grid justify-items-end">
               <DmPagination
-                currentPage={currentPage ? currentPage : 1}
-                totalItemsCount={countForStore}
+                currentPage={
+                  parseInt(searchParams.get("page"))
+                    ? parseInt(searchParams.get("page"))
+                    : 1
+                }
+                totalItemsCount={storeApiData.count}
                 defaultPageSize={pageLimit}
-                pageSize={currentCount ? currentCount : pageLimit}
+                pageSize={
+                  parseInt(searchParams.get("limit"))
+                    ? parseInt(searchParams.get("limit"))
+                    : pageLimit
+                }
                 handlePageNumberChange={handlePageNumberChange}
                 showSizeChanger={true}
+                showTotal={true}
               />
             </Content>
           ) : null}

@@ -11,6 +11,7 @@ export default function DmPagination({
   pageSize,
   showSizeChanger,
   defaultPageSize,
+  showTotal,
 }) {
   const handlePageChange = (page, pageSize) => {
     handlePageNumberChange(page, pageSize);
@@ -23,7 +24,12 @@ export default function DmPagination({
         total={totalItemsCount}
         onChange={handlePageChange}
         pageSize={pageSize}
-        defaultPageSize={pageLimit}
+        defaultPageSize={defaultPageSize}
+        showTotal={
+          showTotal === true
+            ? (total, range) => `${range[0]}-${range[1]} of ${total} items`
+            : false
+        }
       />
     </Content>
   );
