@@ -14,8 +14,14 @@ import {
   Spin,
   Skeleton,
 } from "antd";
-import { Link, Navigate, useNavigate, useLocation } from "react-router-dom";
-import {makeHttpRequestForRefreshToken} from "../../util/unauthorizedControl"
+import {
+  Link,
+  Navigate,
+  useNavigate,
+  useLocation,
+  useSearchParams,
+} from "react-router-dom";
+import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
 import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
 
 //! Import CSS libraries
@@ -26,6 +32,7 @@ const { Title } = Typography;
 const { Option } = Select;
 
 const languageAPI = process.env.REACT_APP_LANGUAGE_API;
+const pageLimit = process.env.REACT_APP_ITEM_PER_PAGE;
 
 toast.configure();
 
@@ -48,6 +55,8 @@ const EditLanguage = () => {
   const [isRegexFieldEmpty, setIsRegexFieldEmpty] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const navigate = useNavigate();
 
   // hanler for language, language_code, native_name, writing_script_direction
@@ -113,19 +122,25 @@ const EditLanguage = () => {
   };
 
   // language API GET call
-  const getLanguageAPI = () => {
+  const getLanguageAPI = (page, limit) => {
     // Enabling skeleton
     setIsDataLoading(true);
     axios
-      .get(languageAPI)
+      .get(languageAPI, {
+        params: {
+          "page-number": page,
+          "page-limit": limit,
+        },
+      })
       .then((response) => {
         console.log(
           "Response from  edit language server-----> ",
           response.data
         );
-        let languageData = response?.data.filter(
+        let languageData = response?.data.data.filter(
           (element) => element.id === parseInt(_id)
         );
+
         if (languageData && languageData.length > 0) {
           let copyofLanguageDetails = { ...languageDetails };
           copyofLanguageDetails.language = languageData[0].language;
@@ -148,14 +163,19 @@ const EditLanguage = () => {
         // disabling skeleton
         setIsDataLoading(false);
         console.log("errorFromLanguageApi====>", error);
-        if(error&&error.response&&error.response.status === 401){
-          makeHttpRequestForRefreshToken();}
+        if (error && error.response && error.response.status === 401) {
+          makeHttpRequestForRefreshToken();
+        }
       });
   };
-
   useEffect(() => {
     window.scrollTo(0, 0);
-    getLanguageAPI();
+    getLanguageAPI(
+      searchParams.get("page") ? parseInt(searchParams.get("page")) : 1,
+      searchParams.get("limit")
+        ? parseInt(searchParams.get("limit"))
+        : pageLimit
+    );
   }, []);
 
   const validateLanguageFieldEmptyOrNot = () => {
@@ -274,8 +294,9 @@ const EditLanguage = () => {
           type: "error",
         });
         console.log(error.response);
-        if(error&&error.response&&error.response.status === 401){
-          makeHttpRequestForRefreshToken();}
+        if (error && error.response && error.response.status === 401) {
+          makeHttpRequestForRefreshToken();
+        }
       });
   };
 
