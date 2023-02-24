@@ -181,17 +181,17 @@ const Stores = () => {
         ? parseInt(searchParams.get("limit"))
         : pageLimit,
     });
-    if (status === "0") {
-      tableStoreData(storeApiData);
-    } else if (status === "1") {
-      tableStoreData(
-        storeApiData.filter((element) => element.status == status)
-      );
-    } else if (status === "2") {
-      tableStoreData(
-        storeApiData.filter((element) => element.status == status)
-      );
-    }
+    // if (status === "0") {
+    //   tableStoreData(storeApiData);
+    // } else if (status === "1") {
+    //   tableStoreData(
+    //     storeApiData.filter((element) => element.status == status)
+    //   );
+    // } else if (status === "2") {
+    //   tableStoreData(
+    //     storeApiData.filter((element) => element.status == status)
+    //   );
+    // }
   };
   //!this useEffect for tab(initial rendering)
   useEffect(() => {
@@ -213,33 +213,31 @@ const Stores = () => {
     },
   ];
   //!storeData to get the table data
-  const tableStoreData = (filteredData) => {
-    const tempArray = [];
-    filteredData &&
-      filteredData.length > 0 &&
-      filteredData.map((element, index) => {
-        var storeId = element.id;
-        var storeName = element.name;
-        var createdOn = element.created_on;
-        var storeStatus = element.status;
-        tempArray &&
-          tempArray.push({
-            key: index,
-            name: storeName,
-            id: storeId,
-            created_on: createdOn,
-            status: statusForStores[storeStatus],
-          });
-      });
-    setSelectedTabTableContent(tempArray);
-  };
-  // useEffect(() => {
-  //   tableStoreData(storeApiData);
-  // }, [storeApiData]);
+  // const tableStoreData = (filteredData) => {
+  const tempArray = [];
+  storeApiData &&
+    storeApiData.length > 0 &&
+    storeApiData.map((element, index) => {
+      var storeId = element.id;
+      var storeName = element.name;
+      var createdOn = element.created_on;
+      var storeStatus = element.status;
+      tempArray &&
+        tempArray.push({
+          key: index,
+          name: storeName,
+          id: storeId,
+          created_on: createdOn,
+          status: statusForStores[storeStatus],
+        });
+    });
+  // setSelectedTabTableContent(tempArray);
+  // };
+
   //! tablepropsData to render the table columns,data,pagination
   const tablePropsData = {
     table_header: StoreTableColumn,
-    table_content: selectedTabTableContent,
+    table_content: tempArray,
     pagenationSettings: pagination,
     search_settings: {
       is_enabled: true,
@@ -304,7 +302,7 @@ const Stores = () => {
         // allStoresData = { ...allStoresData, count: 22 };
         setStoreApiData(response.data.data);
         setIsPaginationDataLoaded(false);
-        // setCountForStore(response.data.count);
+        setCountForStore(response.data.count);
         // console.log("hii",response.data.count)
       })
       .catch((error) => {
@@ -372,10 +370,23 @@ const Stores = () => {
         setPostData(response.data);
       })
       .catch((error) => {
-        toast(error.response.data.message, {
-          position: toast.POSITION.TOP_RIGHT,
-          type: "error",
-        });
+        if (error.response) {
+          toast(
+            error &&
+              error.response &&
+              error.response.data &&
+              error.response.data.message,
+            {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "error",
+            }
+          );
+        } else {
+          toast("Something Went Wrong", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+          });
+        }
         console.log(error.response);
         setIsUpLoading(false);
         // setInValidName(true)
@@ -420,16 +431,23 @@ const Stores = () => {
       })
       .catch((error) => {
         setIsUpLoading(false);
-        toast(
-          error &&
-            error.response &&
-            error.response.data &&
-            error.response.data.message,
-          {
+        if (error.response) {
+          toast(
+            error &&
+              error.response &&
+              error.response.data &&
+              error.response.data.message,
+            {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "error",
+            }
+          );
+        } else {
+          toast("Something Went Wrong", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
-          }
-        );
+          });
+        }
         if (error && error.response && error.response.status === 401) {
           makeHttpRequestForRefreshToken();
         }
@@ -507,7 +525,6 @@ const Stores = () => {
     });
     // navigate(`/dashboard/store?tab=${tab_id}&page=${page}&count=${pageSize}`);
   };
-
   return (
     <Layout>
       <Content className="mb-1">
@@ -635,7 +652,7 @@ const Stores = () => {
           <Content>
             <DynamicTable tableComponentData={tablePropsData} />
           </Content>
-          {storeApiData.count >= pageLimit ? (
+          {countForStore >= pageLimit ? (
             <Content className=" grid justify-items-end">
               <DmPagination
                 currentPage={
@@ -643,7 +660,7 @@ const Stores = () => {
                     ? parseInt(searchParams.get("page"))
                     : 1
                 }
-                totalItemsCount={storeApiData.count}
+                totalItemsCount={countForStore}
                 defaultPageSize={pageLimit}
                 pageSize={
                   parseInt(searchParams.get("limit"))

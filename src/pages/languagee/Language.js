@@ -139,7 +139,13 @@ const Language = () => {
             <Link
               to={{
                 pathname: "edit_language",
-                search: `?_id=${record.id}`,
+                search: `?_id=${record.id}&page=${
+                  searchParams.get("page") ? searchParams.get("page") : 1
+                }&limit=${
+                  searchParams.get("limit")
+                    ? searchParams.get("limit")
+                    : pageLimit
+                }`,
               }}
               className=" pl-[10px] font-semibold app-table-data-title"
             >
