@@ -193,6 +193,35 @@ const Stores = () => {
     //   );
     // }
   };
+  //!pagination
+  const pagination = [
+    {
+      defaultSize: 10,
+      showPageSizeChanger: false,
+      pageSizeOptions: ["5", "10"],
+    },
+  ];
+  //!storeData to get the table data
+  const tableStoreData = (filteredData) => {
+    const tempArray = [];
+    filteredData &&
+      filteredData.length > 0 &&
+      filteredData.map((element, index) => {
+        var storeId = element.id;
+        var storeName = element.name;
+        var createdOn = element.created_on;
+        var storeStatus = element.status;
+        tempArray &&
+          tempArray.push({
+            key: index,
+            name: storeName,
+            id: storeId,
+            created_on: createdOn,
+            status: statusForStores[storeStatus],
+          });
+      });
+    setSelectedTabTableContent(tempArray);
+  };
   //!this useEffect for tab(initial rendering)
   useEffect(() => {
     if (storeApiData && storeApiData.length > 0) {
@@ -203,41 +232,15 @@ const Stores = () => {
         handleTabChangeStore("0");
       }
     }
+    tableStoreData(storeApiData);
   }, [storeApiData]);
-  //!pagination
-  const pagination = [
-    {
-      defaultSize: 10,
-      showPageSizeChanger: false,
-      pageSizeOptions: ["5", "10"],
-    },
-  ];
-  //!storeData to get the table data
-  // const tableStoreData = (filteredData) => {
-  const tempArray = [];
-  storeApiData &&
-    storeApiData.length > 0 &&
-    storeApiData.map((element, index) => {
-      var storeId = element.id;
-      var storeName = element.name;
-      var createdOn = element.created_on;
-      var storeStatus = element.status;
-      tempArray &&
-        tempArray.push({
-          key: index,
-          name: storeName,
-          id: storeId,
-          created_on: createdOn,
-          status: statusForStores[storeStatus],
-        });
-    });
-  // setSelectedTabTableContent(tempArray);
-  // };
-
+  // useEffect(() => {
+  //   tableStoreData(storeApiData);
+  // }, [storeApiData]);
   //! tablepropsData to render the table columns,data,pagination
   const tablePropsData = {
     table_header: StoreTableColumn,
-    table_content: tempArray,
+    table_content: selectedTabTableContent,
     pagenationSettings: pagination,
     search_settings: {
       is_enabled: true,
