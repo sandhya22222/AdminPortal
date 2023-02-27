@@ -56,7 +56,7 @@ const Language = () => {
   // params.page ? params.page.slice(5, params.page.length) : null
   const [currentCount, setCurrentCount] = useState();
   // params.count ? params.count.slice(6, params.count.length) : null
-  // const [totalLanguageCount, setTotalLanguageCount] = useState();
+  const [totalLanguageCount, setTotalLanguageCount] = useState();
   const [errorMessage, setErrorMessage] = useState();
   const navigate = useNavigate();
 
@@ -173,9 +173,9 @@ const Language = () => {
   //const tableLanguageData = (filteredData) => {
   let tempArray = [];
   {
-    languageData.data &&
-      languageData.data.length > 0 &&
-      languageData.data.map((element, index) => {
+    languageData &&
+      languageData.length > 0 &&
+      languageData.map((element, index) => {
         var Id = element.id;
         var Language = element.language;
         var LanguageCode = element.language_code;
@@ -212,7 +212,7 @@ const Language = () => {
         console.log("response from delete===>", response, deleteLanguageID);
         if (response.status === 200) {
           setIsDeleteLanguageModalOpen(false);
-          let removedData = languageData.data.filter(
+          let removedData = languageData.filter(
             ({ id }) => id !== deleteLanguageID
           );
           setLanguageData(removedData);
@@ -252,14 +252,14 @@ const Language = () => {
         setIsNetworkErrorLanguage(false);
         console.log(
           "server Success response from language API call",
-          response.data.data
+          response.data.count
         );
         //TODO: Remove line 252,253 and setLanguageData(response.data)
         // let allLanguagesData = response.data;
         // allLanguagesData = { ...allLanguagesData, count: 21 };
-        setLanguageData(response.data);
+        setLanguageData(response.data.data);
         // console.log("allLanguagesData", allLanguagesData);
-        // setTotalLanguageCount(21);
+        setTotalLanguageCount(response.data.count);
         // setIsNetworkErrorLanguage(false);
       })
       .catch((error) => {
@@ -458,7 +458,7 @@ const Language = () => {
         <Layout>
           <Content>
             <DynamicTable tableComponentData={tablepropsData} />
-            {languageData.count >= pageLimit ? (
+            {totalLanguageCount >= pageLimit ? (
               <Content className=" grid justify-items-end">
                 <DmPagination
                   currentPage={
@@ -466,7 +466,7 @@ const Language = () => {
                       ? parseInt(searchParams.get("page"))
                       : 1
                   }
-                  totalItemsCount={languageData.count}
+                  totalItemsCount={totalLanguageCount}
                   pageLimit={pageLimit}
                   pageSize={
                     searchParams.get("limit")
