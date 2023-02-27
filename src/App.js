@@ -26,6 +26,8 @@ import Language from "./pages/languagee/Language";
 import AddLanguage from "./pages/languagee/AddLanguage";
 import EditLanguage from "./pages/languagee/EditLanguage";
 import SidebarNew from "./components/Sidebar2.0.js/SidebarNew";
+import PaymentType from "./pages/PaymentType/PaymentType";
+import OnlinePaymentConnector from "./pages/OnlinePaymentConnector/OnlinePaymentConnector";
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 
 const auth = process.env.REACT_APP_AUTH;
@@ -86,6 +88,11 @@ const App = () => {
                         element={<AddLanguage />}
                       />
                       <Route path="store" element={<Store />} />
+                      <Route path="paymenttype" element={<PaymentType />} />
+                      <Route
+                        path="onlinepaymentconnector"
+                        element={<OnlinePaymentConnector />}
+                      />
                       <Route path="*" element={<PageNotFound />} />
                     </>
                   ) : (
@@ -112,6 +119,11 @@ const App = () => {
                 />
                 <Route path="language/add_language" element={<AddLanguage />} />
                 <Route path="store" element={<Store />} />
+                <Route path="paymenttype" element={<PaymentType />} />
+                <Route
+                  path="onlinepaymentconnector"
+                  element={<OnlinePaymentConnector />}
+                />
                 <Route path="*" element={<PageNotFound />} />
               </Route>
               <Route path="*" element={<PageNotFound />} />

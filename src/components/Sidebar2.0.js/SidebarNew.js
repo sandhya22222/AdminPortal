@@ -4,10 +4,11 @@ import { Layout, Menu, Affix, Spin } from "antd";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
   DashboardOutlined,
-  HomeOutlined,
+  CopyOutlined,
   LoadingOutlined,
   GlobalOutlined,
   AppstoreOutlined,
+  DollarCircleOutlined,
 } from "@ant-design/icons";
 import { FaHome } from "react-icons/fa";
 import { AiOutlineHome } from "react-icons/ai";
@@ -26,7 +27,6 @@ const antIcon = <LoadingOutlined className="text-[10px] hidden" spin />;
 //! Global Variables
 
 const SidebarNew = (props) => {
-
   const [collapsed, setCollapsed] = useState(false);
   const [selectedItem, setSelectedItem] = useState([]);
   const [openedItem, setOpenedItem] = useState([]);
@@ -62,10 +62,28 @@ const SidebarNew = (props) => {
       label: "Languages",
       navigate_to: "/dashboard/language",
     },
+    {
+      key: "4",
+      icon: <DollarCircleOutlined />,
+      label: "Payment Type",
+      navigate_to: "/dashboard/paymenttype",
+    },
+    {
+      key: "5",
+      icon: <CopyOutlined />,
+      label: "Online Payment Connector",
+      navigate_to: "/dashboard/onlinepaymentconnector",
+    },
   ];
 
   useEffect(() => {
     switch (pathname.split("/")[2]) {
+      case "onlinepaymentconnector":
+        setSelectedItem("5");
+        break;
+      case "paymenttype":
+        setSelectedItem("4");
+        break;
       case "language":
         setSelectedItem("3");
         break;
@@ -86,10 +104,7 @@ const SidebarNew = (props) => {
         }}
       >
         <Affix offsetTop={65}>
-          <Sider
-            className="!pt-0 !bg-[#fff] min-h-screen"
-            width={245}
-          >
+          <Sider className="!pt-0 !bg-[#fff] min-h-screen" width={245}>
             <Spin
               spinning={loadingEffect}
               indicator={antIcon}
