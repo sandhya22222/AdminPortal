@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Layout, Typography } from "antd";
 
 import DynamicTable from "../../components/DynamicTable/DynamicTable";
@@ -32,53 +32,57 @@ const paymentTypesData = [
   },
 ];
 
-const paymentTypeColumns = [
-  {
-    title: "Payment Type",
-    dataIndex: "paymenttype",
-    key: "paymenttype",
-    width: "40%",
-    render: (text, record) => {
-      return <>{record.name}</>;
-    },
-  },
-];
-
-const tempArray = [];
-paymentTypesData[0] &&
-  paymentTypesData[0].data.map((element, index) => {
-    var tempId = element.id;
-    var paymentTypeName = element.payment_type;
-    tempArray.push({
-      key: index,
-      name: paymentTypeName,
-      id: tempId,
-    });
-  });
-console.log("first", tempArray);
-
-const tablePropsData = {
-  table_header: paymentTypeColumns,
-  table_content: tempArray,
-  pagenationSettings: false,
-  search_settings: {
-    is_enabled: false,
-    search_title: "Search by name",
-    search_data: ["name"],
-  },
-  filter_settings: {
-    is_enabled: false,
-    filter_title: "Filter's",
-    filter_data: [],
-  },
-  sorting_settings: {
-    is_enabled: false,
-    sorting_title: "Sorting by",
-    sorting_data: [],
-  },
-};
-
 const PaymentType = () => {
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, []);
+
+  const paymentTypeColumns = [
+    {
+      title: "Payment Type",
+      dataIndex: "paymenttype",
+      key: "paymenttype",
+      width: "40%",
+      render: (text, record) => {
+        return <>{record.name}</>;
+      },
+    },
+  ];
+
+  const tempArray = [];
+  paymentTypesData[0] &&
+    paymentTypesData[0].data.map((element, index) => {
+      var tempId = element.id;
+      var paymentTypeName = element.payment_type;
+      tempArray.push({
+        key: index,
+        name: paymentTypeName,
+        id: tempId,
+      });
+    });
+  console.log("first", tempArray);
+
+  const tablePropsData = {
+    table_header: paymentTypeColumns,
+    table_content: tempArray,
+    pagenationSettings: false,
+    search_settings: {
+      is_enabled: false,
+      search_title: "Search by name",
+      search_data: ["name"],
+    },
+    filter_settings: {
+      is_enabled: false,
+      filter_title: "Filter's",
+      filter_data: [],
+    },
+    sorting_settings: {
+      is_enabled: false,
+      sorting_title: "Sorting by",
+      sorting_data: [],
+    },
+  };
+
   return (
     <Content>
       <Content className="mb-1">
@@ -89,12 +93,12 @@ const PaymentType = () => {
           ]}
         />
       </Content>
-      <Content className="mt-3 mb-3">
+      <Content className="mt-3">
         <Title level={3} className="!font-normal">
           Payment Types
         </Title>
       </Content>
-      <Content>
+      <Content className="pt-3">
         <DynamicTable tableComponentData={tablePropsData} />
       </Content>
     </Content>

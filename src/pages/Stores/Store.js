@@ -655,7 +655,7 @@ const Stores = () => {
           <Content>
             <DynamicTable tableComponentData={tablePropsData} />
           </Content>
-          {countForStore >= pageLimit ? (
+          {countForStore && countForStore >= pageLimit ? (
             <Content className=" grid justify-items-end">
               <DmPagination
                 currentPage={

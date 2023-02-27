@@ -68,12 +68,12 @@ const SidebarNew = (props) => {
       label: "Payment Type",
       navigate_to: "/dashboard/paymenttype",
     },
-    {
-      key: "5",
-      icon: <CopyOutlined />,
-      label: "Online Payment Connector",
-      navigate_to: "/dashboard/onlinepaymentconnector",
-    },
+    // {
+    //   key: "5",
+    //   icon: <CopyOutlined />,
+    //   label: "Online Payment Connector",
+    //   navigate_to: "/dashboard/onlinepaymentconnector",
+    // },
   ];
 
   useEffect(() => {
