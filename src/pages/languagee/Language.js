@@ -219,6 +219,8 @@ const Language = () => {
         setIslanguageDeleting(false);
       })
       .catch((error) => {
+        if(error&&error.response&&error.response.status === 401){
+          makeHttpRequestForRefreshToken();}
         // disabling spinner
         setIslanguageDeleting(false);
         console.log("response from delete===>", error.response);
@@ -226,8 +228,7 @@ const Language = () => {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
         });
-        if(error&&error.response&&error.response.status === 401){
-          makeHttpRequestForRefreshToken();}
+      
       });
   };
   const getLanguageData = (page, limit) => {
@@ -252,11 +253,12 @@ const Language = () => {
         // setIsNetworkErrorLanguage(false);
       })
       .catch((error) => {
+        if(error&&error.response&&error.response.status === 401){
+          makeHttpRequestForRefreshToken();}
         setIsLoading(false);
         setIsNetworkErrorLanguage(true);
         console.log("server error response from language API call");
-        if(error&&error.response&&error.response.status === 401){
-          makeHttpRequestForRefreshToken();}
+        
       });
   };
   //!TODO
@@ -280,11 +282,12 @@ const Language = () => {
         setTotalLanguageCount(response.data.length);
       })
       .catch((error) => {
+        if(error&&error.response&&error.response.status === 401){
+          makeHttpRequestForRefreshToken();}
         setIsLoading(false);
         setIsNetworkErrorLanguage(true);
         console.log("server error response from language API call");
-        if(error&&error.response&&error.response.status === 401){
-          makeHttpRequestForRefreshToken();}
+       
       });
   };
   console.log("totalLanguageCount", totalLanguageCount);

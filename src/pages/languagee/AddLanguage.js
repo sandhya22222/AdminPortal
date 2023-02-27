@@ -152,6 +152,8 @@ const AddLanguage = () => {
         }
       })
       .catch((error) => {
+        if(error&&error.response&&error.response.status === 401){
+          makeHttpRequestForRefreshToken();}
         // disabbling spinner
         setIsLoading(false);
         if (error.response.status === 409) {
@@ -159,8 +161,7 @@ const AddLanguage = () => {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
           });
-        }else if(error&&error.response&&error.response.status === 401){
-          makeHttpRequestForRefreshToken();}else {
+        }else {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",

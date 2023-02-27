@@ -32,6 +32,7 @@ const isLoggedInURL = process.env.REACT_APP_ISLOGGEDIN;
 const getPermissionsUrl = process.env.REACT_APP_PERMISSIONS;
 const getAccessTokenUrl = process.env.REACT_APP_ACCESSTOKEN;
 const auth = getAuth.toLowerCase() === "true";
+import {makeHttpRequestForRefreshToken} from "../../util/unauthorizedControl"
 //! Destructure the components
 const { Title } = Typography;
 const { Content } = Layout;
@@ -115,6 +116,8 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
           })
           .catch((err) => {
             console.log("get access token err", err);
+            if(err&&err.response&&err.response.status === 401){
+              makeHttpRequestForRefreshToken();}
           });
       }
     }
@@ -136,6 +139,8 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
       })
       .catch((err) => {
         console.log("isLoggedIn err", err);
+        if(err&&err.response&&err.response.status === 401){
+          makeHttpRequestForRefreshToken();}
       });
   };
 
@@ -157,6 +162,8 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
       })
       .catch((err) => {
         console.log("get access token err", err);
+        if(err&&err.response&&err.response.status === 401){
+          makeHttpRequestForRefreshToken();}
       })
       .then((res) => {
         console.log("get access token res", res);
@@ -166,6 +173,8 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
       })
       .catch((err) => {
         console.log("get access token err", err);
+        if(err&&err.response&&err.response.status === 401){
+          makeHttpRequestForRefreshToken();}
       });
   };
   return (

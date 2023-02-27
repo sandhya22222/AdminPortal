@@ -84,14 +84,15 @@ function Status({
         closeModal();
       })
       .catch((error) => {
+        if(error&&error.response&&error.response.status === 401){
+          makeHttpRequestForRefreshToken();}
         toast(error.response.data.message, {
           type: "error",
         });
         console.log("Error from the status response ===>", error.response);
         setIsLoading(false);
         closeModal();
-        if(error&&error.response&&error.response.status === 401){
-          makeHttpRequestForRefreshToken();}
+       
       });
 
     console.log("post body for ---", storeEditStatusAPI, " is:", reqbody);

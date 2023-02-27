@@ -145,11 +145,12 @@ const EditLanguage = () => {
         setIsDataLoading(false);
       })
       .catch((error) => {
+        if(error&&error.response&&error.response.status === 401){
+          makeHttpRequestForRefreshToken();}
         // disabling skeleton
         setIsDataLoading(false);
         console.log("errorFromLanguageApi====>", error);
-        if(error&&error.response&&error.response.status === 401){
-          makeHttpRequestForRefreshToken();}
+     
       });
   };
 
@@ -267,6 +268,8 @@ const EditLanguage = () => {
         }
       })
       .catch((error) => {
+        if(error&&error.response&&error.response.status === 401){
+          makeHttpRequestForRefreshToken();}
         // disabling spinner
         setIsLoading(false);
         toast(error.response.data.message + "_field in language edition", {

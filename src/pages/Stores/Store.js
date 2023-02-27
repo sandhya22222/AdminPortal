@@ -291,11 +291,12 @@ const Stores = () => {
         // console.log("hii",response.data.count)
       })
       .catch((error) => {
+        if(error&&error.response&&error.response.status === 401){
+          makeHttpRequestForRefreshToken();}
         setIsLoading(false);
         setIsNetworkError(true);
         console.log("Server error from getStoreApi Function ", error.response);
-        if(error&&error.response&&error.response.status === 401){
-          makeHttpRequestForRefreshToken();}
+      
       });
   };
   // useEffect(() => {
@@ -343,6 +344,8 @@ const Stores = () => {
         setPostData(response.data);
       })
       .catch((error) => {
+        if(error&&error.response&&error.response.status === 401){
+          makeHttpRequestForRefreshToken();}
         toast(error.response.data.message, {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
@@ -351,8 +354,7 @@ const Stores = () => {
         setIsUpLoading(false);
         // setInValidName(true)
         // onClose();
-        if(error&&error.response&&error.response.status === 401){
-          makeHttpRequestForRefreshToken();}
+    
       });
   };
   //!put call for stores
@@ -389,13 +391,14 @@ const Stores = () => {
         }
       })
       .catch((error) => {
+        if(error&&error.response&&error.response.status === 401){
+          makeHttpRequestForRefreshToken();}
         setIsUpLoading(false);
         toast(error.response.data.message.name[0], {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
         });
-        if(error&&error.response&&error.response.status === 401){
-          makeHttpRequestForRefreshToken();}
+        
       });
   };
   useEffect(() => {
