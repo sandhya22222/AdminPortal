@@ -27,9 +27,7 @@ export const makeHttpRequestForRefreshToken=()=>{
           window.location.reload(); 
         }
       }).catch(err => {
-        if(err&&err.response&&err.response.status=== 401){
           logoutUser();
-        }
           console.log('get refresh token err', err)
         }) 
       }}
