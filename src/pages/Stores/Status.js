@@ -3,7 +3,7 @@ import { Switch, Space, Row, Col, Button, Spin, Layout } from "antd";
 import { toast } from "react-toastify";
 import StoreModal from "../../components/storeModal/StoreModal";
 import axios from "axios";
-import {makeHttpRequestForRefreshToken} from "../../util/unauthorizedControl"
+import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
 const storeEditStatusAPI = process.env.REACT_APP_STORE_STATUS_API;
 
 function Status({
@@ -76,13 +76,21 @@ function Status({
         } else {
           setSelectedTabTableContent(selectedTabTableContent);
         }
-        toast("Edit Status is done Successfully", {
-          position: toast.POSITION.TOP_RIGHT,
-          type: "success",
-        });
+        if (switchStatus === false) {
+          toast("Store Activation is Successful", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "success",
+          });
+        } else {
+          toast("Store Deactivation is Successful", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "success",
+          });
+        }
         setIsLoading(false);
         closeModal();
       })
+      console.log("first12344",switchStatus)
       .catch((error) => {
         toast(error.response.data.message, {
           type: "error",
@@ -90,8 +98,9 @@ function Status({
         console.log("Error from the status response ===>", error.response);
         setIsLoading(false);
         closeModal();
-        if(error&&error.response&&error.response.status === 401){
-          makeHttpRequestForRefreshToken();}
+        if (error && error.response && error.response.status === 401) {
+          makeHttpRequestForRefreshToken();
+        }
       });
 
     console.log("post body for ---", storeEditStatusAPI, " is:", reqbody);
