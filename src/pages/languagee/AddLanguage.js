@@ -36,7 +36,7 @@ const AddLanguage = () => {
   const [scriptDirection, setScriptDirection] = useState("LTR");
   const [fileData, setFileData] = useState("");
   const [fileName, setFileName] = useState("");
-  const [fileExtensiom, setFileExtension] = useState("");
+  const [fileExtension, setFileExtension] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -173,6 +173,14 @@ const AddLanguage = () => {
           });
         } else if (error && error.response && error.response.status === 401) {
           makeHttpRequestForRefreshToken();
+        } else if (error.response) {
+        }  else if (fileData) {
+          if (fileExtension !== ".csv") {
+            toast("Invalid Extention , It will support only .csv extention", {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "error",
+            });
+          }
         } else {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
