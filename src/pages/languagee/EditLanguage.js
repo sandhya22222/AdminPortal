@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useImperativeHandle } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Content } from "antd/lib/layout/layout";
@@ -56,7 +56,10 @@ const EditLanguage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [fileValue, setFileValue] = useState();
+  const [fileData, setFileData] = useState();
 
+  const [imageExtention, setImageExtention] = useState("");
   const navigate = useNavigate();
 
   // hanler for language, language_code, native_name, writing_script_direction
@@ -86,8 +89,10 @@ const EditLanguage = () => {
         let file = value[0];
         let fileExtension = file.name.split(".").pop();
         copyofLanguageDetails.lang_support_docs = file;
-        // setFileData(file);
-        // setFileExtension(fileExtension)
+        setFileData(file);
+        setFileValue(fileExtension);
+        // var arr = fileExtension.name.split("."); //! Split the string using dot as separator
+        // var lastExtensionValue = arr.pop();
         console.log("Final File In Function", file, fileExtension);
       } else {
         toast(`Please select File less than four mb`, {
@@ -289,10 +294,18 @@ const EditLanguage = () => {
       .catch((error) => {
         // disabling spinner
         setIsLoading(false);
-        toast(error.response.data.message + "_field in language edition", {
-          position: toast.POSITION.TOP_RIGHT,
-          type: "error",
-        });
+        if (fileData) {
+          if (fileValue !== ".csv")
+            toast("Invalid Extention , It will support only .csv extention", {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "error",
+            });
+        } else {
+          toast(error.response.data.message, {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+          });
+        }
         console.log(error.response);
         if (error && error.response && error.response.status === 401) {
           makeHttpRequestForRefreshToken();

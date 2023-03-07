@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import {makeHttpRequestForRefreshToken} from "../../util/unauthorizedControl"
+import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
 import {
   Layout,
   Row,
@@ -159,9 +159,15 @@ const AddLanguage = () => {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
           });
-        }else if(error&&error.response&&error.response.status === 401){
-          makeHttpRequestForRefreshToken();}else {
+        } else if (error && error.response && error.response.status === 401) {
+          makeHttpRequestForRefreshToken();
+        } else if (error.response) {
           toast(`${error.response.data.message}`, {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+          });
+        } else {
+          toast("Invalid Extention , It will support only .csv extention", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
           });

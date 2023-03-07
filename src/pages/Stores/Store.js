@@ -494,16 +494,10 @@ const Stores = () => {
       })
       .catch((error) => {
         if (error.response) {
-          toast(
-            error &&
-              error.response &&
-              error.response.data &&
-              error.response.data.message,
-            {
-              position: toast.POSITION.TOP_RIGHT,
-              type: "error",
-            }
-          );
+          toast(`${error.response.data.message}`, {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+          });
         } else {
           toast("Something Went Wrong", {
             position: toast.POSITION.TOP_RIGHT,
@@ -555,16 +549,10 @@ const Stores = () => {
       .catch((error) => {
         setIsUpLoading(false);
         if (error.response) {
-          toast(
-            error &&
-              error.response &&
-              error.response.data &&
-              error.response.data.message,
-            {
-              position: toast.POSITION.TOP_RIGHT,
-              type: "error",
-            }
-          );
+          toast(`${error.response.data.message}`, {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+          });
         } else {
           toast("Something Went Wrong", {
             position: toast.POSITION.TOP_RIGHT,
