@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import {makeHttpRequestForRefreshToken} from "../../util/unauthorizedControl"
+import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
 import {
   Layout,
   Row,
@@ -27,6 +27,7 @@ const AddLanguage = () => {
   const [isLanguageFieldEmpty, setIsLanguageFieldEmpty] = useState(false);
   const [isLanguageCodeFieldEmpty, setIsLanguageCodeFieldEmpty] =
     useState(false);
+  const [isSpecialCharacter, setIsSpecialCharacter] = useState("");
   const [isRegexFieldEmpty, setIsRegexFieldEmpty] = useState(false);
   const [language, setLanguage] = useState("");
   const [languageCode, setLanguageCode] = useState("");
@@ -40,20 +41,30 @@ const AddLanguage = () => {
   const navigate = useNavigate();
 
   const handleLanguageChange = (e) => {
-    setLanguage(e.target.value);
-    setNativeName(e.target.value);
+    // setLanguage(e.target.value);
+    // setNativeName(e.target.value);
+    const { value } = e.target;
+    const regex = /^[a-zA-Z0-9]*$/;
     if (e.target.value != "") {
       setIsLanguageFieldEmpty(false);
     }
+    if (regex.test(value)) {
+      setLanguage(value);
+      // setNativeName(value);
+    }
   };
-
   const handleLanguageCodeChange = (e) => {
-    setLanguageCode(e.target.value);
+    // setLanguageCode(e.target.value);
+    const { value } = e.target;
+    const regex = /^[a-zA-Z0-9]*$/;
     if (e.target.value != "") {
       setIsLanguageCodeFieldEmpty(false);
     }
+    if (regex.test(value)) {
+      setLanguageCode(value);
+      // setNativeName(value);
+    }
   };
-
   const handleRegexChange = (e) => {
     setRegex(e.target.value);
     if (e.target.value != "") {
@@ -87,7 +98,8 @@ const AddLanguage = () => {
   };
 
   const validateLanguageFieldEmptyOrNot = () => {
-    // let validValues = 2;
+    // let validValues = 2
+    // var pattern = /^[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~\d]*$/g;
     if (language === "") {
       setIsLanguageFieldEmpty(true);
       // validValues -= 1;
@@ -159,8 +171,9 @@ const AddLanguage = () => {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
           });
-        }else if(error&&error.response&&error.response.status === 401){
-          makeHttpRequestForRefreshToken();}else {
+        } else if (error && error.response && error.response.status === 401) {
+          makeHttpRequestForRefreshToken();
+        } else {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
@@ -233,6 +246,13 @@ const AddLanguage = () => {
                       onChange={(e) => {
                         handleLanguageChange(e);
                       }}
+                      // pattern="^[A-Za-z0-9]+$"
+                      // rules={[
+                      //   {
+                      //    pattern: new RegExp("/^[A-Z@~`!@#$%^&*()_=+\\\\';:\"\\/?>.<,-]*$/i"),
+                      //    message: "field does not accept numbers"
+                      //   }
+                      //  ]}
                     />
                   </Content>
                   <Content className="my-2">
@@ -250,6 +270,7 @@ const AddLanguage = () => {
                       onChange={(e) => {
                         handleLanguageCodeChange(e);
                       }}
+                      // pattern="^[A-Za-z0-9]+$"
                     />
                   </Content>
                   <Content className="my-2">
