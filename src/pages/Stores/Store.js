@@ -10,6 +10,7 @@ import {
   Spin,
   Skeleton,
   Space,
+  Tooltip,
 } from "antd";
 import axios from "axios";
 import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
@@ -85,7 +86,6 @@ const Stores = () => {
   //   params.count ? params.count.slice(6, params.count.length) : 20
   // );
   const [countForStore, setCountForStore] = useState();
-
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
@@ -95,6 +95,7 @@ const Stores = () => {
     setSearchedColumn(dataIndex);
   };
   const handleReset = (clearFilters) => {
+    debugger;
     clearFilters();
     setSearchText("");
   };
@@ -220,6 +221,7 @@ const Stores = () => {
       width: "30%",
       sorter: (name1, name2) => name1.name.localeCompare(name2.name),
       sortDirections: ["descend", "ascend"],
+      showSorterTooltip: false,
       render: (text, record) => {
         return <>{record.name}</>;
       },
@@ -245,7 +247,7 @@ const Stores = () => {
       },
     },
     {
-      title: "Created Date",
+      title: "Created Date And Time",
       dataIndex: "created_on",
       key: "created_on",
       width: "34%",
@@ -254,18 +256,20 @@ const Stores = () => {
       },
     },
     {
-      title: "",
+      title: "Action",
       dataIndex: "",
       key: "",
       width: "8%",
       render: (text, record) => {
         return (
-          <EditOutlined
-            className="app-edit-icon font-bold text-black flex justify-content-end pr-6"
-            onClick={() => {
-              showEditDrawer(record.id);
-            }}
-          />
+          <Tooltip title="Edit Store">
+            <EditOutlined
+              className="app-edit-icon font-bold text-black flex justify-content-end pr-6"
+              onClick={() => {
+                showEditDrawer(record.id);
+              }}
+            />
+          </Tooltip>
         );
       },
     },
@@ -277,7 +281,7 @@ const Stores = () => {
   };
   //! handleTabChangeStore to get the data according to the status
   const handleTabChangeStore = (status) => {
-    console.log("status", status);
+    setSearchText("");
     // setSearchParams({
     //   tab: status,
     // });
@@ -354,9 +358,7 @@ const Stores = () => {
     }
     tableStoreData(storeApiData);
   }, [storeApiData]);
-  // useEffect(() => {
-  //   tableStoreData(storeApiData);
-  // }, [storeApiData]);
+
   //! tablepropsData to render the table columns,data,pagination
   const tablePropsData = {
     table_header: StoreTableColumn,
@@ -684,7 +686,11 @@ const Stores = () => {
                           : "mb-4"
                       }`}
                       onChange={(e) => {
-                        setName(e.target.value);
+                        const { value } = e.target;
+                        const regex = /^[a-zA-Z0-9]*$/; // only allow letters and numbers
+                        if (regex.test(value)) {
+                          setName(e.target.value);
+                        }
                         setInValidName(false);
                       }}
                     />
@@ -708,7 +714,11 @@ const Stores = () => {
                       }`}
                       maxLength={255}
                       onChange={(e) => {
-                        setEditName(e.target.value);
+                        const { value } = e.target;
+                        const regex = /^[a-zA-Z0-9]*$/; // only allow letters and numbers
+                        if (regex.test(value)) {
+                          setEditName(e.target.value);
+                        }
                         setInValidEditName(false);
                       }}
                     />
