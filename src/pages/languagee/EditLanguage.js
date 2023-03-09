@@ -23,7 +23,7 @@ import {
 } from "react-router-dom";
 import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
 import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
-
+import { testValueByRegexPattern } from "../../util/util";
 //! Import CSS libraries
 import { Container } from "reactstrap";
 
@@ -347,12 +347,12 @@ const EditLanguage = () => {
                 <>
                   <Content className="bg-white">
                     <Content className="p-3">
-                      <Typography.Title
+                      {/* <Typography.Title
                         level={3}
                         className="inline-block !font-normal"
                       >
                         Language Details
-                      </Typography.Title>
+                      </Typography.Title> */}
                       <Content className="my-2">
                         <label className="text-[13px]">
                           Language <sup className="text-red-600 text-sm">*</sup>
@@ -366,7 +366,15 @@ const EditLanguage = () => {
                               : ""
                           }`}
                           onChange={(e) => {
-                            languageHandler("language", e.target.value);
+                            const regex = /^[a-zA-Z0-9]*$/;
+                            if (
+                              e.target.value !== "" &&
+                              testValueByRegexPattern(regex, e.target.value)
+                            ) {
+                              languageHandler("language", e.target.value);
+                            } else if (e.target.value === "") {
+                              languageHandler("language", e.target.value);
+                            }
                           }}
                         />
                       </Content>
@@ -384,7 +392,15 @@ const EditLanguage = () => {
                               : ""
                           }`}
                           onChange={(e) => {
-                            languageHandler("language_code", e.target.value);
+                            const regex = /^[a-zA-Z0-9]*$/;
+                            if (
+                              e.target.value !== "" &&
+                              testValueByRegexPattern(regex, e.target.value)
+                            ) {
+                              languageHandler("language_code", e.target.value);
+                            } else if (e.target.value === "") {
+                              languageHandler("language_code", e.target.value);
+                            }
                           }}
                         />
                       </Content>
@@ -403,10 +419,21 @@ const EditLanguage = () => {
                               : ""
                           }`}
                           onChange={(e) => {
-                            languageHandler(
-                              "dm_language_regex",
-                              e.target.value
-                            );
+                            const regex = /^[a-zA-Z0-9]*$/;
+                            if (
+                              e.target.value !== "" &&
+                              testValueByRegexPattern(regex, e.target.value)
+                            ) {
+                              languageHandler(
+                                "dm_language_regex",
+                                e.target.value
+                              );
+                            } else if (e.target.value === "") {
+                              languageHandler(
+                                "dm_language_regex",
+                                e.target.value
+                              );
+                            }
                           }}
                         />
                       </Content>

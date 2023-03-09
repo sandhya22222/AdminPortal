@@ -13,6 +13,7 @@ import {
   Skeleton,
   Space,
   Input,
+  Tooltip,
 } from "antd";
 import axios from "axios";
 import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
@@ -207,6 +208,8 @@ const Language = () => {
       dataIndex: "language",
       key: "language",
       sorter: (name1, name2) => name1.language.localeCompare(name2.language),
+      sortDirections: ["descend", "ascend"],
+      showSorterTooltip: false,
       render: (text, record) => {
         return <>{record.language}</>;
       },
@@ -253,7 +256,7 @@ const Language = () => {
       },
     },
     {
-      title: "",
+      title: "Action",
       dataIndex: "",
       key: "",
       render: (text, record) => {
@@ -272,20 +275,24 @@ const Language = () => {
               }}
               className=" pl-[10px] font-semibold app-table-data-title"
             >
-              <EditOutlined
-                style={{
-                  color: "black",
-                }}
-              />
+              <Tooltip title="Edit Language">
+                <EditOutlined
+                  style={{
+                    color: "black",
+                  }}
+                />
+              </Tooltip>
             </Link>
             <>
-              <DeleteOutlined
-                className="app-delete-icon pr-4"
-                style={{ fontSize: "16px", marginLeft: "20px" }}
-                onClick={() => {
-                  openDeleteModal(record.id);
-                }}
-              />
+              <Tooltip title="Delete Language">
+                <DeleteOutlined
+                  className="app-delete-icon pr-4"
+                  style={{ fontSize: "16px", marginLeft: "20px" }}
+                  onClick={() => {
+                    openDeleteModal(record.id);
+                  }}
+                />
+              </Tooltip>
             </>
           </Col>
         );
@@ -523,6 +530,7 @@ const Language = () => {
           okCallback={() => deleteLanguage()}
           cancelCallback={() => closeDeleteModal()}
           isSpin={islanguageDeleting}
+          hideCloseButton={false}
         >
           {<div>{"Are you sure you want to delete the language?"}</div>}
         </StoreModal>

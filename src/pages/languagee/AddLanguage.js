@@ -62,11 +62,14 @@ const AddLanguage = () => {
     }
     if (regex.test(value)) {
       setLanguageCode(value);
-      // setNativeName(value);
     }
   };
   const handleRegexChange = (e) => {
-    setRegex(e.target.value);
+    const { value } = e.target;
+    const regex = /^[a-zA-Z0-9]*$/;
+    if (regex.test(value)) {
+      setRegex(e.target.value);
+    }
     if (e.target.value != "") {
       setIsRegexFieldEmpty(false);
     }
@@ -153,7 +156,7 @@ const AddLanguage = () => {
         console.log("from--->", res);
         if (res.status === 201) {
           if (res.data) {
-            toast("Language Details created", {
+            toast("Language Details Created", {
               position: toast.POSITION.TOP_RIGHT,
               type: "success",
             });
@@ -173,8 +176,7 @@ const AddLanguage = () => {
           });
         } else if (error && error.response && error.response.status === 401) {
           makeHttpRequestForRefreshToken();
-        } else if (error.response) {
-        }  else if (fileData) {
+        } else if (fileData) {
           if (fileExtension !== ".csv") {
             toast("Invalid Extention , It will support only .csv extention", {
               position: toast.POSITION.TOP_RIGHT,
@@ -233,12 +235,12 @@ const AddLanguage = () => {
             <Col span={14}>
               <Content className="p-3 bg-white mt-0">
                 <Content>
-                  <Typography.Title
+                  {/* <Typography.Title
                     level={3}
                     className="inline-block !font-normal"
                   >
                     Language Details
-                  </Typography.Title>
+                  </Typography.Title> */}
                   <Content className="my-2">
                     <label className="text-[13px]">
                       Language <sup className="text-red-600 text-sm">*</sup>
