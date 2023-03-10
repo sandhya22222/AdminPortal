@@ -94,8 +94,8 @@ const Stores = () => {
     setSearchText(selectedKeys[0]);
     setSearchedColumn(dataIndex);
   };
+
   const handleReset = (clearFilters) => {
-    debugger;
     clearFilters();
     setSearchText("");
   };
@@ -282,6 +282,7 @@ const Stores = () => {
   //! handleTabChangeStore to get the data according to the status
   const handleTabChangeStore = (status) => {
     setSearchText("");
+    // handleReset();
     // setSearchParams({
     //   tab: status,
     // });

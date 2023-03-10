@@ -589,7 +589,7 @@ const Language = () => {
         <Layout>
           <Content>
             <DynamicTable tableComponentData={tablepropsData} />
-            {totalLanguageCount >= pageLimit ? (
+            {totalLanguageCount && totalLanguageCount >= pageLimit ? (
               <Content className=" grid justify-items-end">
                 <DmPagination
                   currentPage={
