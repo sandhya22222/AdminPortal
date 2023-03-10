@@ -50,7 +50,7 @@ const AddLanguage = () => {
     }
     if (regex.test(value)) {
       setLanguage(value);
-      // setNativeName(value);
+      setNativeName(value);
     }
   };
   const handleLanguageCodeChange = (e) => {
@@ -156,7 +156,7 @@ const AddLanguage = () => {
         console.log("from--->", res);
         if (res.status === 201) {
           if (res.data) {
-            toast("Language Details Created", {
+            toast("Language details created", {
               position: toast.POSITION.TOP_RIGHT,
               type: "success",
             });
@@ -248,6 +248,7 @@ const AddLanguage = () => {
                     <Input
                       placeholder="Enter Language Name"
                       value={language}
+                      maxLength={25}
                       className={`${
                         isLanguageFieldEmpty
                           ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
@@ -272,6 +273,7 @@ const AddLanguage = () => {
                     <Input
                       placeholder="Enter Language Code"
                       value={languageCode}
+                      maxLength={25}
                       className={`${
                         isLanguageCodeFieldEmpty
                           ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
@@ -291,7 +293,7 @@ const AddLanguage = () => {
                     <Input
                       placeholder="Enter Language Regex"
                       value={regex}
-                      maxLength={124}
+                      maxLength={128}
                       className={`${
                         isRegexFieldEmpty
                           ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
