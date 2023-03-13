@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Layout,
   Typography,
@@ -9,11 +9,13 @@ import {
   Input,
   Spin,
   Skeleton,
+  Space,
+  Tooltip,
 } from "antd";
 import axios from "axios";
-import {makeHttpRequestForRefreshToken} from "../../util/unauthorizedControl"
+import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
 import { toast } from "react-toastify";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, SearchOutlined } from "@ant-design/icons";
 import {
   useLocation,
   Link,
@@ -29,6 +31,8 @@ import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDes
 import Status from "./Status";
 import DmPagination from "../../components/DmPagination/DmPagination";
 import { usePageTitle } from "../../hooks/usePageTitle";
+import Highlighter from "react-highlight-words";
+
 const { Content } = Layout;
 const { Title } = Typography;
 //! Get all required details from .env file
@@ -82,6 +86,122 @@ const Stores = () => {
   //   params.count ? params.count.slice(6, params.count.length) : 20
   // );
   const [countForStore, setCountForStore] = useState();
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
+  const searchInput = useRef(null);
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
+
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    setSearchText("");
+  };
+
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+      close,
+    }) => (
+      <div
+        style={{
+          padding: 8,
+        }}
+        onKeyDown={(e) => e.stopPropagation()}
+      >
+        <Input
+          ref={searchInput}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{
+            marginBottom: 8,
+            display: "block",
+          }}
+        />
+        <Space>
+          <Button
+            className="app-btn-primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => clearFilters && handleReset(clearFilters)}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Reset
+          </Button>
+          {/* <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({
+                closeDropdown: false,
+              });
+              setSearchText(selectedKeys[0]);
+              setSearchedColumn(dataIndex);
+            }}
+          >
+            Filter
+          </Button> */}
+          {/* <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              close();
+            }}
+          >
+            close
+          </Button> */}
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined
+        style={{
+          color: filtered ? "#1890ff" : undefined,
+        }}
+      />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+    onFilterDropdownOpenChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInput.current?.select(), 100);
+      }
+    },
+    render: (text) =>
+      searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{
+            backgroundColor: "#ffc069",
+            padding: 0,
+          }}
+          searchWords={[searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ""}
+        />
+      ) : (
+        text
+      ),
+  });
 
   //! table columns
   const StoreTableColumn = [
@@ -101,9 +221,11 @@ const Stores = () => {
       width: "30%",
       sorter: (name1, name2) => name1.name.localeCompare(name2.name),
       sortDirections: ["descend", "ascend"],
+      showSorterTooltip: false,
       render: (text, record) => {
         return <>{record.name}</>;
       },
+      ...getColumnSearchProps("name"),
     },
     {
       title: "Status",
@@ -125,7 +247,7 @@ const Stores = () => {
       },
     },
     {
-      title: "Created Date",
+      title: "Created Date And Time",
       dataIndex: "created_on",
       key: "created_on",
       width: "34%",
@@ -134,18 +256,20 @@ const Stores = () => {
       },
     },
     {
-      title: "",
+      title: "Action",
       dataIndex: "",
       key: "",
       width: "8%",
       render: (text, record) => {
         return (
-          <EditOutlined
-            className="app-edit-icon font-bold text-black flex justify-content-end pr-6"
-            onClick={() => {
-              showEditDrawer(record.id);
-            }}
-          />
+          <Tooltip title="Edit Store">
+            <EditOutlined
+              className="app-edit-icon font-bold text-black flex justify-content-end pr-6"
+              onClick={() => {
+                showEditDrawer(record.id);
+              }}
+            />
+          </Tooltip>
         );
       },
     },
@@ -157,44 +281,43 @@ const Stores = () => {
   };
   //! handleTabChangeStore to get the data according to the status
   const handleTabChangeStore = (status) => {
+    setSearchText("");
+    // handleReset();
     // setSearchParams({
     //   tab: status,
     // });
-    if (tab_id === status) {
-      if (currentPage && currentCount) {
-        navigate(
-          `/dashboard/store?tab=${tab_id}&page=${currentPage}&count=${currentCount}`
-        );
-      } else {
-        navigate(`/dashboard/store?tab=${status}`);
-      }
-    } else {
-      navigate(`/dashboard/store?tab=${status}`);
-    }
-
-    if (status === "0") {
-      tableStoreData(storeApiData);
-    } else if (status === "1") {
-      tableStoreData(
-        storeApiData.filter((element) => element.status == status)
-      );
-    } else if (status === "2") {
-      tableStoreData(
-        storeApiData.filter((element) => element.status == status)
-      );
-    }
+    // if (tab_id === status) {
+    //   if (currentPage && currentCount) {
+    //     navigate(
+    //       `/dashboard/store?tab=${tab_id}&page=${currentPage}&count=${currentCount}`
+    //     );
+    //   } else {
+    //     navigate(`/dashboard/store?tab=${status}`);
+    //   }
+    // } else {
+    //   navigate(`/dashboard/store?tab=${status}`);
+    // }
+    setSearchParams({
+      tab: status,
+      page: parseInt(searchParams.get("page"))
+        ? parseInt(searchParams.get("page"))
+        : 1,
+      limit: parseInt(searchParams.get("limit"))
+        ? parseInt(searchParams.get("limit"))
+        : pageLimit,
+    });
+    // if (status === "0") {
+    //   tableStoreData(storeApiData);
+    // } else if (status === "1") {
+    //   tableStoreData(
+    //     storeApiData.filter((element) => element.status == status)
+    //   );
+    // } else if (status === "2") {
+    //   tableStoreData(
+    //     storeApiData.filter((element) => element.status == status)
+    //   );
+    // }
   };
-  //!this useEffect for tab(initial rendering)
-  useEffect(() => {
-    if (storeApiData && storeApiData.length > 0) {
-      setIsLoading(false);
-      if (tab_id === "0" || tab_id === "1" || tab_id === "2") {
-        handleTabChangeStore(tab_id);
-      } else {
-        handleTabChangeStore("0");
-      }
-    }
-  }, [storeApiData]);
   //!pagination
   const pagination = [
     {
@@ -224,13 +347,26 @@ const Stores = () => {
       });
     setSelectedTabTableContent(tempArray);
   };
+  //!this useEffect for tab(initial rendering)
+  useEffect(() => {
+    if (storeApiData && storeApiData.length > 0) {
+      setIsLoading(false);
+      if (tab_id === "0" || tab_id === "1" || tab_id === "2") {
+        handleTabChangeStore(tab_id);
+      } else {
+        handleTabChangeStore("0");
+      }
+    }
+    tableStoreData(storeApiData);
+  }, [storeApiData]);
+
   //! tablepropsData to render the table columns,data,pagination
   const tablePropsData = {
     table_header: StoreTableColumn,
     table_content: selectedTabTableContent,
     pagenationSettings: pagination,
     search_settings: {
-      is_enabled: true,
+      is_enabled: false,
       search_title: "Search by name",
       search_data: ["name"],
     },
@@ -268,7 +404,7 @@ const Stores = () => {
     setName("");
   };
   //!get call for stores
-  const getStoreApi = (pageNumber, pageLimit) => {
+  const getStoreApi = (pageNumber, pageLimit, storeStatus) => {
     // setIsLoading(true);
     axios
       .get(storeAPI, {
@@ -276,6 +412,7 @@ const Stores = () => {
           // store_id: parseInt(storeId),
           "page-number": pageNumber,
           "page-limit": pageLimit,
+          status: storeStatus,
         },
       })
       .then(function (response) {
@@ -285,6 +422,10 @@ const Stores = () => {
           "Server Response from getStoreApi Function: ",
           response.data.data
         );
+        // setStoreApiData(response.data.data);
+        //TODO: Remove line 303,304 and setStoreApiData(response.data)
+        // let allStoresData = response.data;
+        // allStoresData = { ...allStoresData, count: 22 };
         setStoreApiData(response.data.data);
         setIsPaginationDataLoaded(false);
         setCountForStore(response.data.count);
@@ -297,6 +438,17 @@ const Stores = () => {
         setIsNetworkError(true);
         console.log("Server error from getStoreApi Function ", error.response);
       
+        if (error.response) {
+          setErrorMessage(error.response.data.message);
+        }
+      
+        if (error.response.data.message === "That page contains no results") {
+          setSearchParams({
+            tab: parseInt(searchParams.get("tab")),
+            page: 1,
+            limit: parseInt(searchParams.get("limit")),
+          });
+        }
       });
   };
   // useEffect(() => {
@@ -346,10 +498,17 @@ const Stores = () => {
       .catch((error) => {
         if(error&&error.response&&error.response.status === 401){
           makeHttpRequestForRefreshToken();}
-        toast(error.response.data.message, {
-          position: toast.POSITION.TOP_RIGHT,
-          type: "error",
-        });
+        if (error.response) {
+          toast(`${error.response.data.message}`, {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+          });
+        } else {
+          toast("Something Went Wrong", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+          });
+        }
         console.log(error.response);
         setIsUpLoading(false);
         // setInValidName(true)
@@ -394,11 +553,20 @@ const Stores = () => {
         if(error&&error.response&&error.response.status === 401){
           makeHttpRequestForRefreshToken();}
         setIsUpLoading(false);
-        toast(error.response.data.message.name[0], {
-          position: toast.POSITION.TOP_RIGHT,
-          type: "error",
-        });
-        
+        if (error.response) {
+          toast(`${error.response.data.message}`, {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+          });
+        } else {
+          toast("Something Went Wrong", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+          });
+        }
+        if (error && error.response && error.response.status === 401) {
+          makeHttpRequestForRefreshToken();
+        }
       });
   };
   useEffect(() => {
@@ -430,15 +598,28 @@ const Stores = () => {
       editStoreData();
     }
   };
-  useEffect(() => {
-    if (currentPage && currentCount) {
-      getStoreApi(parseInt(currentPage), parseInt(currentCount));
-    } else {
-      getStoreApi(1, pageLimit);
-    }
-    window.scrollTo(0, 0);
-  }, [currentCount, currentPage]);
+  // useEffect(() => {
+  //   if (currentPage && currentCount) {
+  //     getStoreApi(parseInt(currentPage), parseInt(currentCount));
+  //   } else {
+  //     getStoreApi(1, pageLimit);
+  //   }
+  //   window.scrollTo(0, 0);
+  // }, [currentCount, currentPage]);
 
+  useEffect(() => {
+    getStoreApi(
+      searchParams.get("page") ? parseInt(searchParams.get("page")) : 1,
+      searchParams.get("limit")
+        ? parseInt(searchParams.get("limit"))
+        : pageLimit,
+      parseInt(searchParams.get("tab")) &&
+        parseInt(searchParams.get("tab")) <= 2
+        ? parseInt(searchParams.get("tab"))
+        : ""
+    );
+    window.scrollTo(0, 0);
+  }, [searchParams]);
   // const handlePageNumberChange = (page, pageSize) => {
   //   if (page === 1) {
   //     if (pageSize != 20) {
@@ -453,7 +634,12 @@ const Stores = () => {
   // };
 
   const handlePageNumberChange = (page, pageSize) => {
-    navigate(`/dashboard/store?tab=${tab_id}&page=${page}&count=${pageSize}`);
+    setSearchParams({
+      tab: searchParams.get("tab"),
+      page: parseInt(page) ? parseInt(page) : 1,
+      limit: parseInt(pageSize) ? parseInt(pageSize) : pageLimit,
+    });
+    // navigate(`/dashboard/store?tab=${tab_id}&page=${page}&count=${pageSize}`);
   };
   return (
     <Layout>
@@ -503,7 +689,11 @@ const Stores = () => {
                           : "mb-4"
                       }`}
                       onChange={(e) => {
-                        setName(e.target.value);
+                        const { value } = e.target;
+                        const regex = /^[a-zA-Z0-9]*$/; // only allow letters and numbers
+                        if (regex.test(value)) {
+                          setName(e.target.value);
+                        }
                         setInValidName(false);
                       }}
                     />
@@ -527,7 +717,11 @@ const Stores = () => {
                       }`}
                       maxLength={255}
                       onChange={(e) => {
-                        setEditName(e.target.value);
+                        const { value } = e.target;
+                        const regex = /^[a-zA-Z0-9]*$/; // only allow letters and numbers
+                        if (regex.test(value)) {
+                          setEditName(e.target.value);
+                        }
                         setInValidEditName(false);
                       }}
                     />
@@ -582,15 +776,24 @@ const Stores = () => {
           <Content>
             <DynamicTable tableComponentData={tablePropsData} />
           </Content>
-          {countForStore >= pageLimit ? (
+          {countForStore && countForStore >= pageLimit ? (
             <Content className=" grid justify-items-end">
               <DmPagination
-                currentPage={currentPage ? currentPage : 1}
+                currentPage={
+                  parseInt(searchParams.get("page"))
+                    ? parseInt(searchParams.get("page"))
+                    : 1
+                }
                 totalItemsCount={countForStore}
                 defaultPageSize={pageLimit}
-                pageSize={currentCount ? currentCount : pageLimit}
+                pageSize={
+                  parseInt(searchParams.get("limit"))
+                    ? parseInt(searchParams.get("limit"))
+                    : pageLimit
+                }
                 handlePageNumberChange={handlePageNumberChange}
                 showSizeChanger={true}
+                showTotal={true}
               />
             </Content>
           ) : null}

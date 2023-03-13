@@ -1,6 +1,6 @@
 //! Import libraries
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { toast } from "react-toastify";
 import {
   Layout,
@@ -11,9 +11,12 @@ import {
   Button,
   Typography,
   Skeleton,
+  Space,
+  Input,
+  Tooltip,
 } from "antd";
 import axios from "axios";
-import {makeHttpRequestForRefreshToken} from "../../util/unauthorizedControl"
+import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
 import {
   Navigate,
   useNavigate,
@@ -21,7 +24,12 @@ import {
   useSearchParams,
   useParams,
 } from "react-router-dom";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
+import Highlighter from "react-highlight-words";
 
 //! Import user defined components
 import DynamicTable from "../../components/DynamicTable/DynamicTable";
@@ -59,6 +67,121 @@ const Language = () => {
   const [totalLanguageCount, setTotalLanguageCount] = useState();
   const [errorMessage, setErrorMessage] = useState();
   const navigate = useNavigate();
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
+  const searchInput = useRef(null);
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    setSearchText("");
+  };
+
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+      close,
+    }) => (
+      <div
+        style={{
+          padding: 8,
+        }}
+        onKeyDown={(e) => e.stopPropagation()}
+      >
+        <Input
+          ref={searchInput}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{
+            marginBottom: 8,
+            display: "block",
+          }}
+        />
+        <Space>
+          <Button
+            className="app-btn-primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => clearFilters && handleReset(clearFilters)}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Reset
+          </Button>
+          {/* <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({
+                closeDropdown: false,
+              });
+              setSearchText(selectedKeys[0]);
+              setSearchedColumn(dataIndex);
+            }}
+          >
+            Filter
+          </Button> */}
+          {/* <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              close();
+            }}
+          >
+            close
+          </Button> */}
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined
+        style={{
+          color: filtered ? "#1890ff" : undefined,
+        }}
+      />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+    onFilterDropdownOpenChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInput.current?.select(), 100);
+      }
+    },
+    render: (text) =>
+      searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{
+            backgroundColor: "#ffc069",
+            padding: 0,
+          }}
+          searchWords={[searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ""}
+        />
+      ) : (
+        text
+      ),
+  });
 
   // closing the delete popup model
   const closeDeleteModal = () => {
@@ -85,9 +208,12 @@ const Language = () => {
       dataIndex: "language",
       key: "language",
       sorter: (name1, name2) => name1.language.localeCompare(name2.language),
+      sortDirections: ["descend", "ascend"],
+      showSorterTooltip: false,
       render: (text, record) => {
         return <>{record.language}</>;
       },
+      ...getColumnSearchProps("language"),
     },
     {
       title: "Language Code",
@@ -130,7 +256,7 @@ const Language = () => {
       },
     },
     {
-      title: "",
+      title: "Action",
       dataIndex: "",
       key: "",
       render: (text, record) => {
@@ -139,24 +265,34 @@ const Language = () => {
             <Link
               to={{
                 pathname: "edit_language",
-                search: `?_id=${record.id}`,
+                search: `?_id=${record.id}&page=${
+                  searchParams.get("page") ? searchParams.get("page") : 1
+                }&limit=${
+                  searchParams.get("limit")
+                    ? searchParams.get("limit")
+                    : pageLimit
+                }`,
               }}
               className=" pl-[10px] font-semibold app-table-data-title"
             >
-              <EditOutlined
-                style={{
-                  color: "black",
-                }}
-              />
+              <Tooltip title="Edit Language">
+                <EditOutlined
+                  style={{
+                    color: "black",
+                  }}
+                />
+              </Tooltip>
             </Link>
             <>
-              <DeleteOutlined
-                className="app-delete-icon pr-4"
-                style={{ fontSize: "16px", marginLeft: "20px" }}
-                onClick={() => {
-                  openDeleteModal(record.id);
-                }}
-              />
+              <Tooltip title="Delete Language">
+                <DeleteOutlined
+                  className="app-delete-icon pr-4"
+                  style={{ fontSize: "16px", marginLeft: "20px" }}
+                  onClick={() => {
+                    openDeleteModal(record.id);
+                  }}
+                />
+              </Tooltip>
             </>
           </Col>
         );
@@ -246,9 +382,13 @@ const Language = () => {
         setIsNetworkErrorLanguage(false);
         console.log(
           "server Success response from language API call",
-          response.data.data
+          response.data.count
         );
+        //TODO: Remove line 252,253 and setLanguageData(response.data)
+        // let allLanguagesData = response.data;
+        // allLanguagesData = { ...allLanguagesData, count: 21 };
         setLanguageData(response.data.data);
+        // console.log("allLanguagesData", allLanguagesData);
         setTotalLanguageCount(response.data.count);
         // setIsNetworkErrorLanguage(false);
       })
@@ -257,40 +397,21 @@ const Language = () => {
           makeHttpRequestForRefreshToken();}
         setIsLoading(false);
         setIsNetworkErrorLanguage(true);
-        console.log("server error response from language API call");
-        
-      });
-  };
-  //!TODO
-  const getLanguageDataCount = () => {
-    // enabling spinner
-    setIsLoading(true);
-    axios
-      .get(languageAPI, {
-        params: {
-          // "page-number": page,
-          // "page-limit": limit,
-        },
-      })
-      .then(function (response) {
-        setIsLoading(false);
-        setIsNetworkErrorLanguage(false);
         console.log(
-          "server Success count response from language API call",
-          response.data.length
+          "server error response from language API call",
+          error.response
         );
-        setTotalLanguageCount(response.data.length);
-      })
-      .catch((error) => {
-        if(error&&error.response&&error.response.status === 401){
-          makeHttpRequestForRefreshToken();}
-        setIsLoading(false);
-        setIsNetworkErrorLanguage(true);
-        console.log("server error response from language API call");
-       
+        if (error.response) {
+          setErrorMessage(error.response.data.message);
+        }
+        if (error.response.data.message === "That page contains no results") {
+          setSearchParams({
+            page: 1,
+            limit: parseInt(searchParams.get("limit")),
+          });
+        }
       });
   };
-  console.log("totalLanguageCount", totalLanguageCount);
 
   const pagination = [
     {
@@ -326,7 +447,7 @@ const Language = () => {
     table_header: columns,
     table_content: tempArray && tempArray,
     search_settings: {
-      is_enabled: true,
+      is_enabled: false,
       search_title: "Search by language",
       search_data: ["language"],
     },
@@ -350,8 +471,8 @@ const Language = () => {
     //   page: page,
     //   limit: pageSize,
     // });
-    setCurrentPage(page);
-    setCurrentCount(pageSize);
+    // setCurrentPage(page);
+    // setCurrentCount(pageSize);
     // if (page === 1) {
     //   if (pageSize != 20) {
     //     navigate(`/dashboard/language?page=1`);
@@ -362,7 +483,11 @@ const Language = () => {
     //   navigate(`/dashboard/language?page=${page}`);
     // }
     // navigate(0);
-    navigate(`/dashboard/language?page=${page}&limit=${pageSize}`);
+    // navigate(`/dashboard/language?page=${page}&limit=${pageSize}`);
+    setSearchParams({
+      page: parseInt(page) ? parseInt(page) : 1,
+      limit: parseInt(pageSize) ? parseInt(pageSize) : pageLimit,
+    });
   };
 
   // useEffect(() => {
@@ -378,11 +503,17 @@ const Language = () => {
   // }, []);
 
   useEffect(() => {
-    // if (parseInt(searchParams.get("page"))) {
+    // if (searchParams.get("page") && searchParams.get("limit") ) {
     getLanguageData(
       searchParams.get("page") ? parseInt(searchParams.get("page")) : 1,
-      currentCount ? currentCount : pageLimit
+      searchParams.get("limit")
+        ? parseInt(searchParams.get("limit"))
+        : pageLimit
     );
+    // } else {
+    //   getLanguageData(1, pageLimit);
+    //   // navigate("/dashboard/language")
+    // }
     window.scrollTo(0, 0);
   }, [searchParams]);
 
@@ -397,13 +528,9 @@ const Language = () => {
           okCallback={() => deleteLanguage()}
           cancelCallback={() => closeDeleteModal()}
           isSpin={islanguageDeleting}
+          hideCloseButton={false}
         >
-          
-          {
-            <div>
-              {"Are you sure you want to delete the language?"}
-            </div>
-          }
+          {<div>{"Are you sure you want to delete the language?"}</div>}
         </StoreModal>
         <Content className="mb-3">
           <AntDesignBreadcrumbs
@@ -460,15 +587,36 @@ const Language = () => {
         <Layout>
           <Content>
             <DynamicTable tableComponentData={tablepropsData} />
-            {totalLanguageCount >= pageLimit ? (
+            {totalLanguageCount && totalLanguageCount >= pageLimit ? (
               <Content className=" grid justify-items-end">
                 <DmPagination
-                  currentPage={currentPage ? currentPage : 1}
+                  currentPage={
+                    searchParams.get("page")
+                      ? parseInt(searchParams.get("page"))
+                      : 1
+                  }
                   totalItemsCount={totalLanguageCount}
                   pageLimit={pageLimit}
-                  pageSize={currentCount ? currentCount : pageLimit}
+                  pageSize={
+                    searchParams.get("limit")
+                      ? parseInt(searchParams.get("limit"))
+                      : // ? parseInt(searchParams.get("limit")) >= 100
+                        //   ? 100
+                        //   : parseInt(searchParams.get("limit")) >= 50 &&
+                        //     parseInt(searchParams.get("limit")) <= 99
+                        //   ? 50
+                        //   : parseInt(searchParams.get("limit")) >= 20 &&
+                        //     parseInt(searchParams.get("limit")) <= 49
+                        //   ? 20
+                        //   : parseInt(searchParams.get("limit")) >= 0 &&
+                        //     parseInt(searchParams.get("limit")) <= 19
+                        //   ? 10
+                        //   : parseInt(searchParams.get("limit"))
+                        pageLimit
+                  }
                   handlePageNumberChange={handlePageNumberChange}
                   showSizeChanger={true}
+                  showTotal={true}
                 />
               </Content>
             ) : null}

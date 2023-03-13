@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useImperativeHandle } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Content } from "antd/lib/layout/layout";
@@ -14,10 +14,16 @@ import {
   Spin,
   Skeleton,
 } from "antd";
-import { Link, Navigate, useNavigate, useLocation } from "react-router-dom";
-import {makeHttpRequestForRefreshToken} from "../../util/unauthorizedControl"
+import {
+  Link,
+  Navigate,
+  useNavigate,
+  useLocation,
+  useSearchParams,
+} from "react-router-dom";
+import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
 import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
-
+import { testValueByRegexPattern } from "../../util/util";
 //! Import CSS libraries
 import { Container } from "reactstrap";
 
@@ -26,6 +32,7 @@ const { Title } = Typography;
 const { Option } = Select;
 
 const languageAPI = process.env.REACT_APP_LANGUAGE_API;
+const pageLimit = process.env.REACT_APP_ITEM_PER_PAGE;
 
 toast.configure();
 
@@ -48,6 +55,11 @@ const EditLanguage = () => {
   const [isRegexFieldEmpty, setIsRegexFieldEmpty] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [fileValue, setFileValue] = useState();
+  const [fileData, setFileData] = useState();
+
+  const [imageExtention, setImageExtention] = useState("");
   const navigate = useNavigate();
 
   // hanler for language, language_code, native_name, writing_script_direction
@@ -77,8 +89,10 @@ const EditLanguage = () => {
         let file = value[0];
         let fileExtension = file.name.split(".").pop();
         copyofLanguageDetails.lang_support_docs = file;
-        // setFileData(file);
-        // setFileExtension(fileExtension)
+        setFileData(file);
+        setFileValue(fileExtension);
+        // var arr = fileExtension.name.split("."); //! Split the string using dot as separator
+        // var lastExtensionValue = arr.pop();
         console.log("Final File In Function", file, fileExtension);
       } else {
         toast(`Please select File less than four mb`, {
@@ -113,19 +127,25 @@ const EditLanguage = () => {
   };
 
   // language API GET call
-  const getLanguageAPI = () => {
+  const getLanguageAPI = (page, limit) => {
     // Enabling skeleton
     setIsDataLoading(true);
     axios
-      .get(languageAPI)
+      .get(languageAPI, {
+        params: {
+          "page-number": page,
+          "page-limit": limit,
+        },
+      })
       .then((response) => {
         console.log(
           "Response from  edit language server-----> ",
           response.data
         );
-        let languageData = response?.data.filter(
+        let languageData = response?.data.data.filter(
           (element) => element.id === parseInt(_id)
         );
+
         if (languageData && languageData.length > 0) {
           let copyofLanguageDetails = { ...languageDetails };
           copyofLanguageDetails.language = languageData[0].language;
@@ -153,10 +173,14 @@ const EditLanguage = () => {
      
       });
   };
-
   useEffect(() => {
     window.scrollTo(0, 0);
-    getLanguageAPI();
+    getLanguageAPI(
+      searchParams.get("page") ? parseInt(searchParams.get("page")) : 1,
+      searchParams.get("limit")
+        ? parseInt(searchParams.get("limit"))
+        : pageLimit
+    );
   }, []);
 
   const validateLanguageFieldEmptyOrNot = () => {
@@ -272,13 +296,22 @@ const EditLanguage = () => {
           makeHttpRequestForRefreshToken();}
         // disabling spinner
         setIsLoading(false);
-        toast(error.response.data.message + "_field in language edition", {
-          position: toast.POSITION.TOP_RIGHT,
-          type: "error",
-        });
+        if (fileData) {
+          if (fileValue !== ".csv")
+            toast("Invalid Extention , It will support only .csv extention", {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "error",
+            });
+        } else {
+          toast(error.response.data.message, {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+          });
+        }
         console.log(error.response);
-        if(error&&error.response&&error.response.status === 401){
-          makeHttpRequestForRefreshToken();}
+        if (error && error.response && error.response.status === 401) {
+          makeHttpRequestForRefreshToken();
+        }
       });
   };
 
@@ -316,12 +349,12 @@ const EditLanguage = () => {
                 <>
                   <Content className="bg-white">
                     <Content className="p-3">
-                      <Typography.Title
+                      {/* <Typography.Title
                         level={3}
                         className="inline-block !font-normal"
                       >
                         Language Details
-                      </Typography.Title>
+                      </Typography.Title> */}
                       <Content className="my-2">
                         <label className="text-[13px]">
                           Language <sup className="text-red-600 text-sm">*</sup>
@@ -335,7 +368,15 @@ const EditLanguage = () => {
                               : ""
                           }`}
                           onChange={(e) => {
-                            languageHandler("language", e.target.value);
+                            const regex = /^[a-zA-Z0-9]*$/;
+                            if (
+                              e.target.value !== "" &&
+                              testValueByRegexPattern(regex, e.target.value)
+                            ) {
+                              languageHandler("language", e.target.value);
+                            } else if (e.target.value === "") {
+                              languageHandler("language", e.target.value);
+                            }
                           }}
                         />
                       </Content>
@@ -353,7 +394,15 @@ const EditLanguage = () => {
                               : ""
                           }`}
                           onChange={(e) => {
-                            languageHandler("language_code", e.target.value);
+                            const regex = /^[a-zA-Z0-9]*$/;
+                            if (
+                              e.target.value !== "" &&
+                              testValueByRegexPattern(regex, e.target.value)
+                            ) {
+                              languageHandler("language_code", e.target.value);
+                            } else if (e.target.value === "") {
+                              languageHandler("language_code", e.target.value);
+                            }
                           }}
                         />
                       </Content>
@@ -372,10 +421,21 @@ const EditLanguage = () => {
                               : ""
                           }`}
                           onChange={(e) => {
-                            languageHandler(
-                              "dm_language_regex",
-                              e.target.value
-                            );
+                            const regex = /^[a-zA-Z0-9]*$/;
+                            if (
+                              e.target.value !== "" &&
+                              testValueByRegexPattern(regex, e.target.value)
+                            ) {
+                              languageHandler(
+                                "dm_language_regex",
+                                e.target.value
+                              );
+                            } else if (e.target.value === "") {
+                              languageHandler(
+                                "dm_language_regex",
+                                e.target.value
+                              );
+                            }
                           }}
                         />
                       </Content>

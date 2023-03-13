@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import {makeHttpRequestForRefreshToken} from "../../util/unauthorizedControl"
+import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
 import {
   Layout,
   Row,
@@ -27,6 +27,7 @@ const AddLanguage = () => {
   const [isLanguageFieldEmpty, setIsLanguageFieldEmpty] = useState(false);
   const [isLanguageCodeFieldEmpty, setIsLanguageCodeFieldEmpty] =
     useState(false);
+  const [isSpecialCharacter, setIsSpecialCharacter] = useState("");
   const [isRegexFieldEmpty, setIsRegexFieldEmpty] = useState(false);
   const [language, setLanguage] = useState("");
   const [languageCode, setLanguageCode] = useState("");
@@ -35,27 +36,40 @@ const AddLanguage = () => {
   const [scriptDirection, setScriptDirection] = useState("LTR");
   const [fileData, setFileData] = useState("");
   const [fileName, setFileName] = useState("");
-  const [fileExtensiom, setFileExtension] = useState("");
+  const [fileExtension, setFileExtension] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLanguageChange = (e) => {
-    setLanguage(e.target.value);
-    setNativeName(e.target.value);
+    // setLanguage(e.target.value);
+    // setNativeName(e.target.value);
+    const { value } = e.target;
+    const regex = /^[a-zA-Z0-9]*$/;
     if (e.target.value != "") {
       setIsLanguageFieldEmpty(false);
     }
+    if (regex.test(value)) {
+      setLanguage(value);
+      setNativeName(value);
+    }
   };
-
   const handleLanguageCodeChange = (e) => {
-    setLanguageCode(e.target.value);
+    // setLanguageCode(e.target.value);
+    const { value } = e.target;
+    const regex = /^[a-zA-Z0-9]*$/;
     if (e.target.value != "") {
       setIsLanguageCodeFieldEmpty(false);
     }
+    if (regex.test(value)) {
+      setLanguageCode(value);
+    }
   };
-
   const handleRegexChange = (e) => {
-    setRegex(e.target.value);
+    const { value } = e.target;
+    const regex = /^[a-zA-Z0-9]*$/;
+    if (regex.test(value)) {
+      setRegex(e.target.value);
+    }
     if (e.target.value != "") {
       setIsRegexFieldEmpty(false);
     }
@@ -87,7 +101,8 @@ const AddLanguage = () => {
   };
 
   const validateLanguageFieldEmptyOrNot = () => {
-    // let validValues = 2;
+    // let validValues = 2
+    // var pattern = /^[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~\d]*$/g;
     if (language === "") {
       setIsLanguageFieldEmpty(true);
       // validValues -= 1;
@@ -141,7 +156,7 @@ const AddLanguage = () => {
         console.log("from--->", res);
         if (res.status === 201) {
           if (res.data) {
-            toast("Language Details created", {
+            toast("Language details created", {
               position: toast.POSITION.TOP_RIGHT,
               type: "success",
             });
@@ -161,7 +176,15 @@ const AddLanguage = () => {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
           });
-        }else {
+       
+        } else if (fileData) {
+          if (fileExtension !== ".csv") {
+            toast("Invalid Extention , It will support only .csv extention", {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "error",
+            });
+          }
+        } else {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
@@ -213,12 +236,12 @@ const AddLanguage = () => {
             <Col span={14}>
               <Content className="p-3 bg-white mt-0">
                 <Content>
-                  <Typography.Title
+                  {/* <Typography.Title
                     level={3}
                     className="inline-block !font-normal"
                   >
                     Language Details
-                  </Typography.Title>
+                  </Typography.Title> */}
                   <Content className="my-2">
                     <label className="text-[13px]">
                       Language <sup className="text-red-600 text-sm">*</sup>
@@ -226,6 +249,7 @@ const AddLanguage = () => {
                     <Input
                       placeholder="Enter Language Name"
                       value={language}
+                      maxLength={25}
                       className={`${
                         isLanguageFieldEmpty
                           ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
@@ -234,6 +258,13 @@ const AddLanguage = () => {
                       onChange={(e) => {
                         handleLanguageChange(e);
                       }}
+                      // pattern="^[A-Za-z0-9]+$"
+                      // rules={[
+                      //   {
+                      //    pattern: new RegExp("/^[A-Z@~`!@#$%^&*()_=+\\\\';:\"\\/?>.<,-]*$/i"),
+                      //    message: "field does not accept numbers"
+                      //   }
+                      //  ]}
                     />
                   </Content>
                   <Content className="my-2">
@@ -243,6 +274,7 @@ const AddLanguage = () => {
                     <Input
                       placeholder="Enter Language Code"
                       value={languageCode}
+                      maxLength={25}
                       className={`${
                         isLanguageCodeFieldEmpty
                           ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
@@ -251,6 +283,7 @@ const AddLanguage = () => {
                       onChange={(e) => {
                         handleLanguageCodeChange(e);
                       }}
+                      // pattern="^[A-Za-z0-9]+$"
                     />
                   </Content>
                   <Content className="my-2">
@@ -261,7 +294,7 @@ const AddLanguage = () => {
                     <Input
                       placeholder="Enter Language Regex"
                       value={regex}
-                      maxLength={124}
+                      maxLength={128}
                       className={`${
                         isRegexFieldEmpty
                           ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
