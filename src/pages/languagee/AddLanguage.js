@@ -31,7 +31,7 @@ const AddLanguage = () => {
   const [isRegexFieldEmpty, setIsRegexFieldEmpty] = useState(false);
   const [language, setLanguage] = useState("");
   const [languageCode, setLanguageCode] = useState("");
-  const [regex, setRegex] = useState("");
+  const [regex, setRegex] = useState("^[sS]*");
   const [nativeName, setNativeName] = useState("");
   const [scriptDirection, setScriptDirection] = useState("LTR");
   const [fileData, setFileData] = useState("");
@@ -65,11 +65,7 @@ const AddLanguage = () => {
     }
   };
   const handleRegexChange = (e) => {
-    const { value } = e.target;
-    const regex = /^[a-zA-Z0-9]*$/;
-    if (regex.test(value)) {
-      setRegex(e.target.value);
-    }
+    setRegex(e.target.value);
     if (e.target.value != "") {
       setIsRegexFieldEmpty(false);
     }
@@ -140,7 +136,7 @@ const AddLanguage = () => {
     const paramsData = new FormData();
     paramsData.append("language", language);
     paramsData.append("language_code", languageCode);
-    paramsData.append("dm_language_regex", regex);
+    paramsData.append("language_regex", regex);
     paramsData.append("native_name", nativeName);
     paramsData.append("writing_script_direction", scriptDirection);
     if (typeof fileData === "object") {
@@ -241,8 +237,8 @@ const AddLanguage = () => {
                   >
                     Language Details
                   </Typography.Title> */}
-                  <Content className="my-2">
-                    <label className="text-[13px]">
+                  <Content className="my-3">
+                    <label className="text-[13px] mb-1">
                       language
                       <span className="text-red-600 text-sm ml-1">*</span>
                       {/* <sup className="text-red-600 text-sm mt-1">*</sup> */}
@@ -268,8 +264,8 @@ const AddLanguage = () => {
                       //  ]}
                     />
                   </Content>
-                  <Content className="my-2">
-                    <label className="text-[13px]">
+                  <Content className="my-3">
+                    <label className="text-[13px] mb-1">
                       Language Code
                       {/* <sup className="text-red-600 text-sm">*</sup> */}
                       <span className="text-red-600 text-sm ml-1">*</span>
@@ -289,8 +285,8 @@ const AddLanguage = () => {
                       // pattern="^[A-Za-z0-9]+$"
                     />
                   </Content>
-                  <Content className="my-2">
-                    <label className="text-[13px]">
+                  <Content className="my-3">
+                    <label className="text-[13px] mb-1">
                       Language Regex
                       {/* <sup className="text-red-600 text-sm">*</sup> */}
                       <span className="text-red-600 text-sm ml-1">*</span>
@@ -299,6 +295,7 @@ const AddLanguage = () => {
                       placeholder="Enter Language Regex"
                       value={regex}
                       maxLength={128}
+                      defaultValue="^[\s\S]*"
                       className={`${
                         isRegexFieldEmpty
                           ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
@@ -309,8 +306,8 @@ const AddLanguage = () => {
                       }}
                     />
                   </Content>
-                  <Content className="my-2">
-                    <label className="text-[13px]">Native Name</label>
+                  <Content className="my-3">
+                    <label className="text-[13px] mb-1">Native Name</label>
                     <Input
                       placeholder="Enter Native Name"
                       value={nativeName}
@@ -323,7 +320,7 @@ const AddLanguage = () => {
                     />
                   </Content>
                   <Content className="my-2">
-                    <label className="text-[13px]">Script Direction</label>
+                    <label className="text-[13px] mb-1">Script Direction</label>
                     <Select
                       // size={"large"}
                       style={{ display: "flex" }}
@@ -337,7 +334,7 @@ const AddLanguage = () => {
                     </Select>
                   </Content>
                   <Content className="my-2">
-                    <label className="text-[13px] pb-1">
+                    <label className="text-[13px] pb-1 mb-1">
                       Language Supported Document
                     </label>
                     <Input

@@ -46,7 +46,7 @@ const EditLanguage = () => {
     writing_script_direction: "",
     lang_support_docs: null,
     lang_file_name: "",
-    dm_language_regex: "",
+    language_regex: "",
     islanguageDetailsEdited: false,
   });
   const [isLanguageFieldEmpty, setIsLanguageFieldEmpty] = useState(false);
@@ -79,8 +79,8 @@ const EditLanguage = () => {
       copyofLanguageDetails.native_name = value;
     } else if (fieldName === "writing_script_direction") {
       copyofLanguageDetails.writing_script_direction = value;
-    } else if (fieldName === "dm_language_regex") {
-      copyofLanguageDetails.dm_language_regex = value;
+    } else if (fieldName === "language_regex") {
+      copyofLanguageDetails.language_regex = value;
       if (value != "") {
         setIsRegexFieldEmpty(false);
       }
@@ -157,8 +157,7 @@ const EditLanguage = () => {
             languageData[0].lang_support_docs;
           copyofLanguageDetails.lang_file_name =
             languageData[0].lang_support_docs;
-          copyofLanguageDetails.dm_language_regex =
-            languageData[0].dm_language_regex;
+          copyofLanguageDetails.language_regex = languageData[0].language_regex;
           setLanguageDetails(copyofLanguageDetails);
         }
         // disabling skeleton
@@ -204,14 +203,14 @@ const EditLanguage = () => {
     if (
       languageDetails.language !== "" &&
       languageDetails.language_code !== "" &&
-      languageDetails.dm_language_regex !== "" &&
+      languageDetails.language_regex !== "" &&
       languageDetails.islanguageDetailsEdited
     ) {
       editLanguage();
     } else if (
       languageDetails.language === "" ||
       languageDetails.language_code === "" ||
-      languageDetails.dm_language_regex === ""
+      languageDetails.language_regex === ""
     ) {
       if (languageDetails.language === "") {
         setIsLanguageFieldEmpty(true);
@@ -229,7 +228,7 @@ const EditLanguage = () => {
           type: "error",
         });
       }
-      if (languageDetails.dm_language_regex === "") {
+      if (languageDetails.language_regex === "") {
         setIsRegexFieldEmpty(true);
         toast("Please Enter Laguage Regex", {
           autoClose: 5000,
@@ -251,7 +250,7 @@ const EditLanguage = () => {
     const langaugeData = new FormData();
     langaugeData.append("language", languageDetails.language);
     langaugeData.append("language_code", languageDetails.language_code);
-    langaugeData.append("dm_language_regex", languageDetails.dm_language_regex);
+    langaugeData.append("language_regex", languageDetails.language_regex);
     langaugeData.append("native_name", languageDetails.native_name);
     langaugeData.append(
       "writing_script_direction",
@@ -353,8 +352,9 @@ const EditLanguage = () => {
                       >
                         Language Details
                       </Typography.Title> */}
-                      <Content className="my-2">
-                        <label className="text-[13px]">
+                      <Content className="my-3">
+                        Language Details
+                        <label className="text-[13px] mb-1">
                           Language <sup className="text-red-600 text-sm">*</sup>
                         </label>
                         <Input
@@ -378,8 +378,8 @@ const EditLanguage = () => {
                           }}
                         />
                       </Content>
-                      <Content className="my-2">
-                        <label className="text-[13px]">
+                      <Content className="my-3">
+                        <label className="text-[13px] mb-1">
                           Language Code
                           <sup className="text-red-600 text-sm">*</sup>
                         </label>
@@ -404,14 +404,14 @@ const EditLanguage = () => {
                           }}
                         />
                       </Content>
-                      <Content className="my-2">
-                        <label className="text-[13px]">
+                      <Content className="my-3">
+                        <label className="text-[13px] mb-1">
                           Language Regex
                           <sup className="text-red-600 text-sm">*</sup>
                         </label>
                         <Input
                           placeholder="Enter Language Regex"
-                          value={languageDetails.dm_language_regex}
+                          value={languageDetails.language_regex}
                           maxLength={128}
                           className={`${
                             isRegexFieldEmpty
@@ -419,26 +419,12 @@ const EditLanguage = () => {
                               : ""
                           }`}
                           onChange={(e) => {
-                            const regex = /^[a-zA-Z0-9]*$/;
-                            if (
-                              e.target.value !== "" &&
-                              testValueByRegexPattern(regex, e.target.value)
-                            ) {
-                              languageHandler(
-                                "dm_language_regex",
-                                e.target.value
-                              );
-                            } else if (e.target.value === "") {
-                              languageHandler(
-                                "dm_language_regex",
-                                e.target.value
-                              );
-                            }
+                            languageHandler("language_regex", e.target.value);
                           }}
                         />
                       </Content>
-                      <Content className="my-2">
-                        <label className="text-[13px]">Native Name</label>
+                      <Content className="my-3">
+                        <label className="text-[13px] mb-1">Native Name</label>
                         <Input
                           placeholder="Enter Native Name"
                           value={languageDetails.native_name}
@@ -450,8 +436,10 @@ const EditLanguage = () => {
                           // }
                         />
                       </Content>
-                      <Content className="my-2">
-                        <label className="text-[13px]">Script Direction</label>
+                      <Content className="my-3">
+                        <label className="text-[13px] mb-1">
+                          Script Direction
+                        </label>
                         <Select
                           // size={"large"}
                           style={{ display: "flex" }}
@@ -467,8 +455,8 @@ const EditLanguage = () => {
                           <Option value="RTL">RTL</Option>
                         </Select>
                       </Content>
-                      <Content className="my-2">
-                        <label className="text-[13px] pb-1">
+                      <Content className="my-3">
+                        <label className="text-[13px] pb-1 mb-1">
                           Language Supported Document
                         </label>
                         <Input
