@@ -281,7 +281,7 @@ const Stores = () => {
   };
   //! handleTabChangeStore to get the data according to the status
   const handleTabChangeStore = (status) => {
-    setSearchText("");
+    // setSearchText("");
     // handleReset();
     // setSearchParams({
     //   tab: status,
@@ -501,8 +501,13 @@ const Stores = () => {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
           });
+        } else if (error && error.response && error.response.status === 400) {
+          toast(`${error.response.data.message}`, {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+          });
         } else {
-          toast("Something Went Wrong", {
+          toast("Something went wrong", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
           });
@@ -673,7 +678,8 @@ const Stores = () => {
               >
                 <Title level={5}>
                   Name
-                  <sup className="text-red-600 text-sm pl-1">*</sup>
+                  {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
+                  <span className="text-red-600 text-sm ml-1">*</span>
                 </Title>
                 {drawerAction && drawerAction === "post" ? (
                   <Spin tip="Please wait!" size="large" spinning={isUpLoading}>
