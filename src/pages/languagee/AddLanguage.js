@@ -243,7 +243,9 @@ const AddLanguage = () => {
                   </Typography.Title> */}
                   <Content className="my-2">
                     <label className="text-[13px]">
-                      Language <sup className="text-red-600 text-sm">*</sup>
+                      language
+                      <span className="text-red-600 text-sm ml-1">*</span>
+                      {/* <sup className="text-red-600 text-sm mt-1">*</sup> */}
                     </label>
                     <Input
                       placeholder="Enter Language Name"
@@ -268,7 +270,9 @@ const AddLanguage = () => {
                   </Content>
                   <Content className="my-2">
                     <label className="text-[13px]">
-                      Language Code<sup className="text-red-600 text-sm">*</sup>
+                      Language Code
+                      {/* <sup className="text-red-600 text-sm">*</sup> */}
+                      <span className="text-red-600 text-sm ml-1">*</span>
                     </label>
                     <Input
                       placeholder="Enter Language Code"
@@ -288,7 +292,8 @@ const AddLanguage = () => {
                   <Content className="my-2">
                     <label className="text-[13px]">
                       Language Regex
-                      <sup className="text-red-600 text-sm">*</sup>
+                      {/* <sup className="text-red-600 text-sm">*</sup> */}
+                      <span className="text-red-600 text-sm ml-1">*</span>
                     </label>
                     <Input
                       placeholder="Enter Language Regex"
