@@ -78,6 +78,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
       getAccessToken();
       removeUrlSearchData();
     }
+    window.scroll(0,0)
   }, []);
 
   const getAccessToken = () => {
