@@ -6,8 +6,8 @@ import {
   DashboardOutlined,
   CopyOutlined,
   LoadingOutlined,
-  GlobalOutlined,
-  AppstoreOutlined,
+  TranslationOutlined,
+  ShopOutlined,
   DollarCircleOutlined,
 } from "@ant-design/icons";
 import { FaHome } from "react-icons/fa";
@@ -52,13 +52,13 @@ const SidebarNew = (props) => {
     },
     {
       key: "2",
-      icon: <AppstoreOutlined />,
+      icon: <ShopOutlined />,
       label: "Stores",
       navigate_to: "/dashboard/store",
     },
     {
       key: "3",
-      icon: <GlobalOutlined />,
+      icon: <TranslationOutlined />,
       label: "Languages",
       navigate_to: "/dashboard/language",
     },
@@ -136,7 +136,7 @@ const SidebarNew = (props) => {
           </Sider>
         </Affix>
         <Layout>
-          <Content className="site-layout-background !bg-[#f4f4f4] min-h-[280px m-0] p-3">
+          <Content className="site-layout-background !bg-[#f4f4f4] min-h-[280px] m-0">
             <Outlet />
           </Content>
         </Layout>

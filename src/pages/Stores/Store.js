@@ -645,7 +645,7 @@ const Stores = () => {
     // navigate(`/dashboard/store?tab=${tab_id}&page=${page}&count=${pageSize}`);
   };
   return (
-    <Layout>
+    <Layout className="p-3">
       <Content className="mb-1">
         <AntDesignBreadcrumbs
           data={[
