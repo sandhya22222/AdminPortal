@@ -70,14 +70,17 @@ const StoreProductTypeGraph = ({ storeProductTypeData }) => {
     <Content>
       {storeProductTypeColumnGraphData !== undefined ? (
         <>
+          <Title level={3} className="mb-3 text-center !font-normal">
+            Store Product Type
+          </Title>
           <Content>
             <Column {...storeProductTypeColumnGraphData} />
           </Content>
-          <Content>
+          {/* <Content>
             <Title level={3} className="mt-3 !font-normal text-md">
               Store Product Type
             </Title>
-          </Content>
+          </Content> */}
         </>
       ) : null}
     </Content>

@@ -228,86 +228,99 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
     //     </Content>
     //   </Spin>
     // </Content>
-    <Content>
-      {dashboardDataLoading ? (
-        <Content className="bg-white p-3 mt-3">
-          <Content className="flex justify-between">
-            {" "}
-            <Skeleton
-              paragraph={{
-                rows: 1,
-              }}
-            />{" "}
-            <Skeleton
-              paragraph={{
-                rows: 1,
-              }}
-            />{" "}
-            <Skeleton
-              paragraph={{
-                rows: 1,
-              }}
-            />{" "}
-            <Skeleton
-              paragraph={{
-                rows: 1,
-              }}
-            />{" "}
+    <Content className="p-3">
+      <Content>
+        <Title level={3} className="mt-3 !font-normal">
+          Dashboard
+        </Title>
+      </Content>
+      <Content>
+        {dashboardDataLoading ? (
+          <Content className="bg-white p-3">
+            <Content className="flex justify-between">
+              {" "}
+              <Skeleton
+                paragraph={{
+                  rows: 1,
+                }}
+              />{" "}
+              <Skeleton
+                paragraph={{
+                  rows: 1,
+                }}
+              />{" "}
+              <Skeleton
+                paragraph={{
+                  rows: 1,
+                }}
+              />{" "}
+              <Skeleton
+                paragraph={{
+                  rows: 1,
+                }}
+              />{" "}
+            </Content>
+            <Content className="flex justify-between my-16">
+              <Skeleton
+                paragraph={{
+                  rows: 1,
+                }}
+              />
+              <Skeleton
+                paragraph={{
+                  rows: 1,
+                }}
+              />
+              <Skeleton
+                paragraph={{
+                  rows: 1,
+                }}
+              />
+            </Content>
           </Content>
-          <Content className="flex justify-between my-16">
-            <Skeleton
-              paragraph={{
-                rows: 1,
-              }}
-            />
-            <Skeleton
-              paragraph={{
-                rows: 1,
-              }}
-            />
-            <Skeleton
-              paragraph={{
-                rows: 1,
-              }}
-            />
+        ) : dashboardDataNetWorkError ? (
+          <Content className="text-center  !mt-16 !mb-2">
+            <h1 level={5}>
+              Your's back-end server/services seems to be down, please start
+              your server/services and try again.
+            </h1>
           </Content>
-        </Content>
-      ) : dashboardDataNetWorkError ? (
-        <Content>networkError</Content>
-      ) : (
-        <Content className="p-3">
-          <Content className="flex justify-between">
-            <Content className="w-[5%] bg-[#6494f9] p-4 text-center rounded-md">
-              <Title level={2}>
-                {dashboardData &&
-                  dashboardData.store_data &&
-                  dashboardData.store_data.total_count}
-              </Title>
-              <div>
-                <Text>Stores</Text>
-              </div>
-            </Content>
-            <Content className="w-[5%] bg-red-400 mx-2 p-4 text-center rounded-md">
-              <Title level={2}>
-                {dashboardData &&
-                  dashboardData.language_data &&
-                  dashboardData.language_data.total_count}
-              </Title>
-              <div>
-                <Text>Languages</Text>
-              </div>
-            </Content>
-            <Content className="w-[5%] bg-yellow-400 p-4 text-center rounded-md">
-              <Title level={2}>
-                {dashboardData &&
-                  dashboardData.product_type_data &&
-                  dashboardData.product_type_data.total_count}
-              </Title>
-              <div>
-                <Text>Store Product Types</Text>
-              </div>
-            </Content>
-            {/* <Content className="w-[5%] bg-[#62daaa] ml-2 p-4 text-center rounded-md">
+        ) : (
+          <Content className="">
+            <Content className="flex justify-between">
+              <Content className="w-[100%] bg-[#6494f9] p-2 mr-5 text-center rounded-md">
+                <Title level={2} className="!text-slate-200 mb-2">
+                  {dashboardData &&
+                    dashboardData.store_data &&
+                    dashboardData.store_data.total_count}
+                </Title>
+                <div>
+                  <Text className="text-lg !text-slate-200">Stores</Text>
+                </div>
+              </Content>
+              <Content className="w-[100%] bg-yellow-400 p-2 mr-5 text-center rounded-md">
+                <Title level={2} className="!text-slate-200 mb-2">
+                  {dashboardData &&
+                    dashboardData.language_data &&
+                    dashboardData.language_data.total_count}
+                </Title>
+                <div>
+                  <Text className="text-lg !text-slate-200">Languages</Text>
+                </div>
+              </Content>
+              <Content className="w-[100%] bg-[#62daaa] p-2 mr-5 text-center rounded-md">
+                <Title level={2} className="!text-slate-200 mb-2">
+                  {dashboardData &&
+                    dashboardData.product_type_data &&
+                    dashboardData.product_type_data.total_count}
+                </Title>
+                <div>
+                  <Text className="text-lg !text-slate-200">
+                    Store Product Types
+                  </Text>
+                </div>
+              </Content>
+              {/* <Content className="w-[5%] bg-[#62daaa] ml-2 p-4 text-center rounded-md">
               <Title level={2}>
                 {dashboardData &&
                   dashboardData.product_template_data &&
@@ -320,29 +333,30 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                 <Text>Inactive Product templates</Text>
               </div>
             </Content> */}
-          </Content>
-          <Content className="flex justify-between !mt-10">
-            <Content className="w-[60%] p-2">
-              <LanguageGraph languageData={dashboardData.language_data} />
             </Content>
-            <Content className="w-[40%] p-2">
-              <StoreGraph storeData={dashboardData.store_data} />
-            </Content>
-            {/* <Content className="mt-16">
+            <Content className="flex justify-between mt-12">
+              <Content className="w-[60%] p-2 bg-white mr-2">
+                <LanguageGraph languageData={dashboardData.language_data} />
+              </Content>
+              <Content className="w-[40%] p-2 bg-white ml-2">
+                <StoreGraph storeData={dashboardData.store_data} />
+              </Content>
+              {/* <Content className="mt-16">
               {" "}
               <StoreProductTypeGraph
                 storeProductTypeData={dashboardData.product_type_data}
               />
             </Content> */}
+            </Content>
+            <Content className="mt-16 p-2 bg-white">
+              {" "}
+              <StoreProductTypeGraph
+                storeProductTypeData={dashboardData.product_type_data}
+              />
+            </Content>
           </Content>
-          <Content className="mt-16">
-            {" "}
-            <StoreProductTypeGraph
-              storeProductTypeData={dashboardData.product_type_data}
-            />
-          </Content>
-        </Content>
-      )}
+        )}
+      </Content>
     </Content>
   );
 };
