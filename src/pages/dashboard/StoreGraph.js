@@ -54,14 +54,17 @@ const StoreGraph = ({ storeData }) => {
       {" "}
       {pieStoreGraphData !== undefined ? (
         <>
+          <Title level={3} className="mb-3 text-center !font-normal">
+            Stores
+          </Title>
           <Content>
             <Pie {...pieStoreGraphData} />
           </Content>
-          <Content>
+          {/* <Content>
             <Title level={3} className="mt-3 !font-normal text-md text-center">
               Stores
             </Title>
-          </Content>
+          </Content> */}
         </>
       ) : null}
     </Content>

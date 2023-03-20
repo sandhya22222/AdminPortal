@@ -69,14 +69,17 @@ const LanguageGraph = ({ languageData }) => {
     <Content>
       {languageColumnGraphData !== undefined ? (
         <>
+          <Title level={3} className="mb-3 text-center !font-normal">
+            Languages
+          </Title>
           <Content>
             <Column {...languageColumnGraphData} />
           </Content>
-          <Content>
+          {/* <Content>
             <Title level={3} className="mt-3 !font-normal text-md">
               Languages
             </Title>
-          </Content>
+          </Content> */}
         </>
       ) : null}
     </Content>
