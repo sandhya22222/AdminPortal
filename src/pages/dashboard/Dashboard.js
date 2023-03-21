@@ -348,7 +348,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
               />
             </Content> */}
             </Content>
-            <Content className="mt-16 p-2 bg-white">
+            <Content className="mt-12 p-2 bg-white">
               {" "}
               <StoreProductTypeGraph
                 storeProductTypeData={dashboardData.product_type_data}

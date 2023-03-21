@@ -9,6 +9,7 @@ import {
   TranslationOutlined,
   ShopOutlined,
   DollarCircleOutlined,
+  SettingOutlined,
 } from "@ant-design/icons";
 import { FaHome } from "react-icons/fa";
 import { AiOutlineHome } from "react-icons/ai";
@@ -68,6 +69,12 @@ const SidebarNew = (props) => {
       label: "Payment Type",
       navigate_to: "/dashboard/paymenttype",
     },
+    {
+      key: "5",
+      icon: <SettingOutlined />,
+      label: "Store Settings",
+      navigate_to: "/dashboard/storesetting",
+    },
     // {
     //   key: "5",
     //   icon: <CopyOutlined />,
@@ -78,7 +85,7 @@ const SidebarNew = (props) => {
 
   useEffect(() => {
     switch (pathname.split("/")[2]) {
-      case "onlinepaymentconnector":
+      case "storesetting":
         setSelectedItem("5");
         break;
       case "paymenttype":
