@@ -7,9 +7,8 @@ import {
   Select,
   Input,
   Button,
-  Form,
+  Spin,
 } from "antd";
-import { Colorpicker, ColorPickerValue } from "antd-colorpicker";
 import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -68,6 +67,7 @@ const StoreSettings = () => {
   const [headerPositionValue, setHeaderPositionValue] = useState("right");
   const [inValidHeaderPositionValue, SetInValidHeaderPositionValue] =
     useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const getStoreSettingApi = () => {
     axios
@@ -152,7 +152,7 @@ const StoreSettings = () => {
         },
       ],
     };
-    // setIsUpLoading(true);
+    setIsLoading(true);
     axios
       .post(storeSettingAPI, postBody)
       .then((response) => {
@@ -160,9 +160,30 @@ const StoreSettings = () => {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
         });
-        // setIsUpLoading(false);
+        setIsLoading(false);
         console.log("Server Success Response From stores", response.data);
         // setPostData(response.data);
+        setButtonColor("#1677ff");
+        setButtonTextColor("#181819");
+        setBackgroundColor("#f4f4f4");
+        setPrimaryColor("#f4f4f4");
+        setHeaderColor("#f4f4f4");
+        setHeaderBackgroundColor("#f4f4f4");
+        setHeaderTextColor("#181819");
+        setFooterColor("#6F6F6F");
+        setFooterBackgroundColor("#6F6F6F");
+        setFooterTextColor("#C6B69F");
+        setHeaderAction("");
+        setHeaderValue("");
+        setHeaderIcon("");
+        setHeaderType("");
+        setFooterAction("");
+        setFooterValue("");
+        setFooterIcon("");
+        setFooterType("");
+        setstoreId("Choose Store");
+        setHeaderPositionValue("right");
+        setFooterPositionValue("right");
       })
       .catch((error) => {
         if (error.response) {
@@ -182,7 +203,7 @@ const StoreSettings = () => {
           });
         }
         console.log(error.response);
-        // setIsUpLoading(false);
+        setIsLoading(false);
         // setInValidName(true)
         // onClose();
         if (error && error.response && error.response.status === 401) {
@@ -220,9 +241,9 @@ const StoreSettings = () => {
       });
     }
     if (
-      headerPositionValue === "" ||
-      headerPositionValue === undefined ||
-      headerPositionValue === null
+      footerPositionValue === "" ||
+      footerPositionValue === undefined ||
+      footerPositionValue === null
     ) {
       count--;
       SetInValidFooterPositionValue(true);
@@ -454,7 +475,7 @@ const StoreSettings = () => {
 
   const handleHeaderChange = (value) => {
     setHeaderPositionValue(value);
-    setInValidHeaderValue(false);
+    SetInValidHeaderPositionValue(false);
   };
 
   return (
@@ -476,72 +497,76 @@ const StoreSettings = () => {
           </Col>
         </Row>
       </Content>
-      <Content className="bg-white mt-2 p-3">
-        <label className="text-[16px] mb-2 ml-1 font-bold">Store</label>
-        <Content>
-          <Select
-            allowClear
-            placeholder={"Choose Store"}
-            value={storeId}
-            onChange={handleStoreChange}
-            className={`${
-              inValidStoreData
-                ? "!border-red-400 !border-solid !border-[1px] focus:border-red-400 hover:border-red-400 w-[33%]"
-                : "w-[33%]"
-            }`}
-          >
-            {storeData &&
-              storeData.length > 0 &&
-              storeData.map((e) => (
-                <Select.Option value={e.id} id={e.id} key={e.id}>
-                  {e.name}
-                </Select.Option>
-              ))}
-          </Select>
-        </Content>
-        <Content>
-          <label className="text-[20px] mb-2 mt-4 font-bold">Basic</label>
-          <Row className="mt-2">
-            <Col span={8} className="mr-2">
-              <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">Primary Color</label>
-              <Input
-                placeholder="Enter primary color"
-                maxLength={255}
-                minLength={1}
-                className={`${
-                  inValidPrimaryColor
-                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
-                    : ""
-                }`}
-                value={primaryColor}
-                onChange={(e) => {
-                  setPrimaryColor(e.target.value);
-                  setInValidPrimaryColor(false);
-                }}
-                type="color"
-              />
-            </Col>
-            <Col span={8} className="ml-1">
-              <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">Background Color</label>
-              <Input
-                placeholder="Enter backgroud color"
-                maxLength={255}
-                minLength={1}
-                value={backgroundColor}
-                onChange={(e) => {
-                  setBackgroundColor(e.target.value);
-                  setInValidBackgroundColor(false);
-                }}
-                className={`${
-                  inValidBackgroundColor
-                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
-                    : ""
-                }`}
-                type="color"
-              />
-              {/* <Colorpicker
+      <Content>
+        {/* <Spin tip="Please wait!" size="large" spinning={isLoading}> */}
+        <Content className="bg-white mt-2 p-3">
+          <label className="text-[16px] mb-2 ml-1 font-bold">Store</label>
+          <Content>
+            <Select
+              allowClear
+              placeholder={"Choose Store"}
+              value={storeId}
+              onChange={handleStoreChange}
+              className={`${
+                inValidStoreData
+                  ? "!border-red-400 !border-solid !border-[0.5px] focus:border-red-400 hover:border-red-400 w-[33%]"
+                  : "w-[33%]"
+              }`}
+            >
+              {storeData &&
+                storeData.length > 0 &&
+                storeData.map((e) => (
+                  <Select.Option value={e.id} id={e.id} key={e.id}>
+                    {e.name}
+                  </Select.Option>
+                ))}
+            </Select>
+          </Content>
+          <Content>
+            <label className="text-[20px] mb-2 mt-4 font-bold">Basic</label>
+            <Row className="mt-2">
+              <Col span={8} className="mr-2">
+                <span className="text-red-600 text-sm !text-center">*</span>
+                <label className="text-[13px] mb-2 ml-1">Primary Color</label>
+                <Input
+                  placeholder="Enter primary color"
+                  maxLength={255}
+                  minLength={1}
+                  className={`${
+                    inValidPrimaryColor
+                      ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
+                      : ""
+                  }`}
+                  value={primaryColor}
+                  onChange={(e) => {
+                    setPrimaryColor(e.target.value);
+                    setInValidPrimaryColor(false);
+                  }}
+                  type="color"
+                />
+              </Col>
+              <Col span={8} className="ml-1">
+                <span className="text-red-600 text-sm !text-center">*</span>
+                <label className="text-[13px] mb-2 ml-1">
+                  Background Color
+                </label>
+                <Input
+                  placeholder="Enter backgroud color"
+                  maxLength={255}
+                  minLength={1}
+                  value={backgroundColor}
+                  onChange={(e) => {
+                    setBackgroundColor(e.target.value);
+                    setInValidBackgroundColor(false);
+                  }}
+                  className={`${
+                    inValidBackgroundColor
+                      ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
+                      : ""
+                  }`}
+                  type="color"
+                />
+                {/* <Colorpicker
                 popup={true}
                 blockStyles={{
                   width: "30px",
@@ -553,227 +578,438 @@ const StoreSettings = () => {
                 onChange={onChange}  
                 onColorResult={(color) => color.rgb}               
               /> */}
-            </Col>
-          </Row>
-          <Row className="mt-4">
-            <Col span={8} className="mr-2">
-              <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">Button Color</label>
-              <Input
-                placeholder="Enter button color"
-                maxLength={255}
-                minLength={1}
-                value={buttonColor}
-                type="color"
-                onChange={(e) => {
-                  setButtonColor(e.target.value);
-                  setInValidButtonColor(false);
-                }}
-                className={`${
-                  inValidButtonColor
-                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
-                    : ""
-                }`}
-              />
-            </Col>
-            <Col span={8} className="ml-1">
-              {" "}
-              <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">Button text color</label>
-              <Input
-                placeholder="Enter button text color"
-                maxLength={255}
-                minLength={1}
-                value={buttonTextColor}
-                onChange={(e) => {
-                  setButtonTextColor(e.target.value);
-                  setInValidButtonTextColor(false);
-                }}
-                className={`${
-                  inValidButtonTextColor
-                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
-                    : ""
-                }`}
-                type="color"
-              />
-            </Col>
-          </Row>
-        </Content>
-        <Content>
-          <label className="text-[20px] mb-2 mt-4 font-bold">Header</label>
-          <Row className="mt-2">
-            <Col span={8} className="mr-2">
-              <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">Header Color</label>
-              <Input
-                placeholder="Enter header color"
-                maxLength={255}
-                minLength={1}
-                value={headerColor}
-                onChange={(e) => {
-                  setHeaderColor(e.target.value);
-                  setInValidHeaderColor(false);
-                }}
-                className={`${
-                  inValidHeaderColor
-                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 "
-                    : ""
-                }`}
-                type="color"
-              />
-            </Col>
-            <Col span={8} className="ml-1">
-              <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">Header Text Color</label>
-              <Input
-                placeholder="Enter header text color"
-                maxLength={255}
-                minLength={1}
-                value={headerTextColor}
-                onChange={(e) => {
-                  setHeaderTextColor(e.target.value);
-                  setInValidHeaderTextColor(false);
-                }}
-                className={`${
-                  inValidHeaderTextColor
-                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 "
-                    : ""
-                }`}
-                type="color"
-              />
-            </Col>
-          </Row>
-          <Row className="mt-4">
-            <Col span={8} className="mr-2">
-              <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">
-                Header Background Color
-              </label>
-              <Input
-                placeholder="Enter header background color"
-                maxLength={255}
-                minLength={1}
-                value={headerBackgroundColor}
-                onChange={(e) => {
-                  setHeaderBackgroundColor(e.target.value);
-                  setInValidHeaderBackgroundColor(false);
-                }}
-                className={`${
-                  inValidHeaderBackgroundColor
-                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 "
-                    : ""
-                }`}
-                type="color"
-              />
-            </Col>
-            {/* <Col span={8} className="ml-1">
+              </Col>
+            </Row>
+            <Row className="mt-4">
+              <Col span={8} className="mr-2">
+                <span className="text-red-600 text-sm !text-center">*</span>
+                <label className="text-[13px] mb-2 ml-1">Button Color</label>
+                <Input
+                  placeholder="Enter button color"
+                  maxLength={255}
+                  minLength={1}
+                  value={buttonColor}
+                  type="color"
+                  onChange={(e) => {
+                    setButtonColor(e.target.value);
+                    setInValidButtonColor(false);
+                  }}
+                  className={`${
+                    inValidButtonColor
+                      ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
+                      : ""
+                  }`}
+                />
+              </Col>
+              <Col span={8} className="ml-1">
+                {" "}
+                <span className="text-red-600 text-sm !text-center">*</span>
+                <label className="text-[13px] mb-2 ml-1">
+                  Button text color
+                </label>
+                <Input
+                  placeholder="Enter button text color"
+                  maxLength={255}
+                  minLength={1}
+                  value={buttonTextColor}
+                  onChange={(e) => {
+                    setButtonTextColor(e.target.value);
+                    setInValidButtonTextColor(false);
+                  }}
+                  className={`${
+                    inValidButtonTextColor
+                      ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
+                      : ""
+                  }`}
+                  type="color"
+                />
+              </Col>
+            </Row>
+          </Content>
+          <Content>
+            <label className="text-[20px] mb-2 mt-4 font-bold">Header</label>
+            <Row className="mt-2">
+              <Col span={8} className="mr-2">
+                <span className="text-red-600 text-sm !text-center">*</span>
+                <label className="text-[13px] mb-2 ml-1">Header Color</label>
+                <Input
+                  placeholder="Enter header color"
+                  maxLength={255}
+                  minLength={1}
+                  value={headerColor}
+                  onChange={(e) => {
+                    setHeaderColor(e.target.value);
+                    setInValidHeaderColor(false);
+                  }}
+                  className={`${
+                    inValidHeaderColor
+                      ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 "
+                      : ""
+                  }`}
+                  type="color"
+                />
+              </Col>
+              <Col span={8} className="ml-1">
+                <span className="text-red-600 text-sm !text-center">*</span>
+                <label className="text-[13px] mb-2 ml-1">
+                  Header Text Color
+                </label>
+                <Input
+                  placeholder="Enter header text color"
+                  maxLength={255}
+                  minLength={1}
+                  value={headerTextColor}
+                  onChange={(e) => {
+                    setHeaderTextColor(e.target.value);
+                    setInValidHeaderTextColor(false);
+                  }}
+                  className={`${
+                    inValidHeaderTextColor
+                      ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 "
+                      : ""
+                  }`}
+                  type="color"
+                />
+              </Col>
+            </Row>
+            <Row className="mt-4">
+              <Col span={8} className="mr-2">
+                <span className="text-red-600 text-sm !text-center">*</span>
+                <label className="text-[13px] mb-2 ml-1">
+                  Header Background Color
+                </label>
+                <Input
+                  placeholder="Enter header background color"
+                  maxLength={255}
+                  minLength={1}
+                  value={headerBackgroundColor}
+                  onChange={(e) => {
+                    setHeaderBackgroundColor(e.target.value);
+                    setInValidHeaderBackgroundColor(false);
+                  }}
+                  className={`${
+                    inValidHeaderBackgroundColor
+                      ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 "
+                      : ""
+                  }`}
+                  type="color"
+                />
+              </Col>
+              {/* <Col span={8} className="ml-1">
               <span className="text-red-600 text-sm !text-center">*</span>
               <label className="text-[13px] mb-2 ml-1">Header Content</label>
               <Input placeholder="Enter header content" />
             </Col> */}
-          </Row>
-        </Content>
-        <Content>
-          <label className="text-[15px] mb-2 mt-4 font-bold">
-            Header Content
-          </label>
-          <Row className="mt-2">
-            <Col span={8} className="mr-2">
+            </Row>
+          </Content>
+          <Content>
+            <label className="text-[15px] mb-2 mt-4 font-bold">
+              Header Content
+            </label>
+            <Row className="mt-2">
+              <Col span={8} className="mr-2">
+                <span className="text-red-600 text-sm !text-center">*</span>
+                <label className="text-[13px] mb-2 ml-1">Header Type</label>
+                <Input
+                  placeholder="Enter header type"
+                  maxLength={255}
+                  minLength={1}
+                  value={headerType}
+                  onChange={(e) => {
+                    setHeaderType(e.target.value);
+                    setInValidHeaderType(false);
+                  }}
+                  className={`${
+                    inValidHeaderType
+                      ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
+                      : ""
+                  }`}
+                />
+              </Col>
+              <Col span={8} className="ml-1">
+                <span className="text-red-600 text-sm !text-center">*</span>
+                <label className="text-[13px] mb-2 ml-1">Header Action</label>
+                <Input
+                  placeholder="Enter header action"
+                  maxLength={255}
+                  minLength={1}
+                  value={headerAction}
+                  onChange={(e) => {
+                    setHeaderAction(e.target.value);
+                    setInValidHeaderAction(false);
+                  }}
+                  className={`${
+                    inValidHeaderAction
+                      ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 "
+                      : ""
+                  }`}
+                />
+              </Col>
+            </Row>
+            <Row className="mt-4">
+              <Col span={8} className="mr-2">
+                <span className="text-red-600 text-sm !text-center">*</span>
+                <label className="text-[13px] mb-2 ml-1">Header Value</label>
+                <Input
+                  placeholder="Enter header value"
+                  maxLength={255}
+                  minLength={1}
+                  value={headerValue}
+                  onChange={(e) => {
+                    setHeaderValue(e.target.value);
+                    setInValidHeaderValue(false);
+                  }}
+                  className={`${
+                    inValidHeaderValue
+                      ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 "
+                      : ""
+                  }`}
+                />
+              </Col>
+              <Col span={8} className="ml-1">
+                <span className="text-red-600 text-sm !text-center">*</span>
+                <label className="text-[13px] mb-2 ml-1">Header Icon</label>
+                <Input
+                  placeholder="Enter header icon"
+                  maxLength={255}
+                  minLength={1}
+                  value={headerIcon}
+                  onChange={(e) => {
+                    setHeaderIcon(e.target.value);
+                    setInValidHeaderIcon(false);
+                  }}
+                  className={`${
+                    inValidHeaderIcon
+                      ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 "
+                      : ""
+                  }`}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <label className="text-[13px] mb-2 mt-4">Header Position</label>
+            </Row>
+            <Row className="mt-1">
+              <Content>
+                <Select
+                  // value={storeId}
+                  placeholder={"Please select header position"}
+                  onChange={handleHeaderChange}
+                  // className="w-[33%]"
+                  className={`${
+                    inValidHeaderPositionValue
+                      ? "border-red-400  border-solid  !border-[0.5px] focus:border-red-400 hover:border-red-400 w-[33%]"
+                      : "w-[33%]"
+                  }`}
+                  allowClear
+                  value={headerPositionValue}
+                  options={[
+                    {
+                      value: "right",
+                      label: "right",
+                    },
+                    {
+                      value: "left",
+                      label: "left",
+                    },
+                    {
+                      value: "center",
+                      label: "center",
+                    },
+                    {
+                      value: "top",
+                      label: "top",
+                    },
+                    {
+                      value: "bottom",
+                      label: "bottom",
+                    },
+                  ]}
+                  defaultValue={{
+                    value: "right",
+                    label: "right",
+                  }}
+                />
+              </Content>
+            </Row>
+          </Content>
+          <Content>
+            <label className="text-[20px] mb-2 mt-4 font-bold">Footer</label>
+            <Row className="mt-2">
+              <Col span={8} className="mr-2">
+                <span className="text-red-600 text-sm !text-center">*</span>
+                <label className="text-[13px] mb-2 ml-1">Footer Color</label>
+                <Input
+                  placeholder="Enter footer color"
+                  maxLength={255}
+                  minLength={1}
+                  value={footerColor}
+                  onChange={(e) => {
+                    setFooterColor(e.target.value);
+                    setInValidFooterColor(false);
+                  }}
+                  className={`${
+                    inValidFooterColor
+                      ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
+                      : ""
+                  }`}
+                  type="color"
+                />
+              </Col>
+              <Col span={8} className="ml-1">
+                <span className="text-red-600 text-sm !text-center">*</span>
+                <label className="text-[13px] mb-2 ml-1">
+                  Footer Text Color
+                </label>
+                <Input
+                  placeholder="Enter footer text color"
+                  maxLength={255}
+                  minLength={1}
+                  value={footerTextColor}
+                  onChange={(e) => {
+                    setFooterTextColor(e.target.value);
+                    setInValidFooterTextColor(false);
+                  }}
+                  className={`${
+                    inValidFooterTextColor
+                      ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
+                      : ""
+                  }`}
+                  type="color"
+                />
+              </Col>
+            </Row>
+            <Row className="mt-4">
+              <Col span={8} className="mr-2">
+                <span className="text-red-600 text-sm !text-center">*</span>
+                <label className="text-[13px] mb-2 ml-1">
+                  Footer Background Color
+                </label>
+                <Input
+                  placeholder="Enter footer background color"
+                  maxLength={255}
+                  minLength={1}
+                  value={footerBackgroundColor}
+                  onChange={(e) => {
+                    setFooterBackgroundColor(e.target.value);
+                    setInValidFooterBackgrondTextColor(false);
+                  }}
+                  className={`${
+                    inValidFooterBackgroundTextColor
+                      ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 "
+                      : ""
+                  }`}
+                  type="color"
+                />
+              </Col>
+              {/* <Col span={8} className="ml-1">
               <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">Header Type</label>
-              <Input
-                placeholder="Enter header type"
-                maxLength={255}
-                minLength={1}
-                value={headerType}
-                onChange={(e) => {
-                  setHeaderType(e.target.value);
-                  setInValidHeaderType(false);
-                }}
-                className={`${
-                  inValidHeaderType
-                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
-                    : ""
-                }`}
-              />
-            </Col>
-            <Col span={8} className="ml-1">
-              <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">Header Action</label>
-              <Input
-                placeholder="Enter header action"
-                maxLength={255}
-                minLength={1}
-                value={headerAction}
-                onChange={(e) => {
-                  setHeaderAction(e.target.value);
-                  setInValidHeaderAction(false);
-                }}
-                className={`${
-                  inValidHeaderAction
-                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 "
-                    : ""
-                }`}
-              />
-            </Col>
-          </Row>
-          <Row className="mt-4">
-            <Col span={8} className="mr-2">
-              <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">Header Value</label>
-              <Input
-                placeholder="Enter header value"
-                maxLength={255}
-                minLength={1}
-                value={headerValue}
-                onChange={(e) => {
-                  setHeaderValue(e.target.value);
-                  setInValidHeaderValue(false);
-                }}
-                className={`${
-                  inValidHeaderValue
-                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 "
-                    : ""
-                }`}
-              />
-            </Col>
-            <Col span={8} className="ml-1">
-              <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">Header Icon</label>
-              <Input
-                placeholder="Enter header icon"
-                maxLength={255}
-                minLength={1}
-                value={headerIcon}
-                onChange={(e) => {
-                  setHeaderIcon(e.target.value);
-                  setInValidHeaderIcon(false);
-                }}
-                className={`${
-                  inValidHeaderIcon
-                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 "
-                    : ""
-                }`}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <label className="text-[13px] mb-2 mt-4">Header Position</label>
-          </Row>
-          <Row className="mt-1">
-            <Content>
+              <label className="text-[13px] mb-2 ml-1">Footer Content</label>
+              <Input placeholder="Enter footer content" />
+            </Col> */}
+            </Row>
+          </Content>
+          <Content>
+            <label className="text-[15px] mb-2 mt-4 font-bold">
+              Footer Content
+            </label>
+            <Row className="mt-2">
+              <Col span={8} className="mr-2">
+                <span className="text-red-600 text-sm !text-center">*</span>
+                <label className="text-[13px] mb-2 ml-1">Footer Type</label>
+                <Input
+                  placeholder="Enter footer type"
+                  maxLength={255}
+                  minLength={1}
+                  value={footerType}
+                  onChange={(e) => {
+                    setFooterType(e.target.value);
+                    setInValidFooterType(false);
+                  }}
+                  className={`${
+                    inValidFooterType
+                      ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
+                      : ""
+                  }`}
+                />
+              </Col>
+              <Col span={8} className="ml-1">
+                <span className="text-red-600 text-sm !text-center">*</span>
+                <label className="text-[13px] mb-2 ml-1">Footer Action</label>
+                <Input
+                  placeholder="Enter footer action"
+                  maxLength={255}
+                  minLength={1}
+                  value={footerAction}
+                  onChange={(e) => {
+                    setFooterAction(e.target.value);
+                    setInValidFooterAction(false);
+                  }}
+                  className={`${
+                    inValidFooterAction
+                      ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
+                      : ""
+                  }`}
+                />
+              </Col>
+            </Row>
+            <Row className="mt-4">
+              <Col span={8} className="mr-2">
+                <span className="text-red-600 text-sm !text-center">*</span>
+                <label className="text-[13px] mb-2 ml-1">Footer Value</label>
+                <Input
+                  placeholder="Enter footer value"
+                  maxLength={255}
+                  minLength={1}
+                  value={footerValue}
+                  onChange={(e) => {
+                    setFooterValue(e.target.value);
+                    setInValidFooterValue(false);
+                  }}
+                  className={`${
+                    inValidFooterValue
+                      ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
+                      : ""
+                  }`}
+                />
+              </Col>
+              <Col span={8} className="ml-1">
+                <span className="text-red-600 text-sm !text-center">*</span>
+                <label className="text-[13px] mb-2 ml-1">Footer Icon</label>
+                <Input
+                  placeholder="Enter footer icon"
+                  maxLength={255}
+                  minLength={1}
+                  value={footerIcon}
+                  onChange={(e) => {
+                    setFooterIcon(e.target.value);
+                    setInValidFooterIcon(false);
+                  }}
+                  className={`${
+                    inValidFooterIcon
+                      ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
+                      : ""
+                  }`}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <label className="text-[13px] mb-2 mt-4">Header Position</label>
+            </Row>
+            <Row className="mt-1">
+              {/* <label className="text-[13px] mb-2 mt-4">Header Position</label> */}
               <Select
                 // value={storeId}
-                placeholder={"Please select header position"}
-                onChange={handleHeaderChange}
-                // className="w-[33%]"
+                placeholder={"Please select footer position"}
+                onChange={handleFooterChange}
+                // className="w-[40%]"
                 className={`${
-                  inValidHeaderPositionValue
-                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 w-[33%]"
+                  inValidFooterPositionValue
+                    ? "border-red-400  border-solid !border-[0.5px] focus:border-red-400 hover:border-red-400 w-[33%]"
                     : "w-[33%]"
                 }`}
                 allowClear
-                value={headerPositionValue}
+                value={footerPositionValue}
                 options={[
                   {
                     value: "right",
@@ -801,248 +1037,55 @@ const StoreSettings = () => {
                   label: "right",
                 }}
               />
-            </Content>
-          </Row>
+            </Row>
+          </Content>
         </Content>
-        <Content>
-          <label className="text-[20px] mb-2 mt-4 font-bold">Footer</label>
-          <Row className="mt-2">
-            <Col span={8} className="mr-2">
-              <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">Footer Color</label>
-              <Input
-                placeholder="Enter footer color"
-                maxLength={255}
-                minLength={1}
-                value={footerColor}
-                onChange={(e) => {
-                  setFooterColor(e.target.value);
-                  setInValidFooterColor(false);
-                }}
-                className={`${
-                  inValidFooterColor
-                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
-                    : ""
-                }`}
-                type="color"
-              />
-            </Col>
-            <Col span={8} className="ml-1">
-              <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">Footer Text Color</label>
-              <Input
-                placeholder="Enter footer text color"
-                maxLength={255}
-                minLength={1}
-                value={footerTextColor}
-                onChange={(e) => {
-                  setFooterTextColor(e.target.value);
-                  setInValidFooterTextColor(false);
-                }}
-                className={`${
-                  inValidFooterTextColor
-                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
-                    : ""
-                }`}
-                type="color"
-              />
-            </Col>
-          </Row>
-          <Row className="mt-4">
-            <Col span={8} className="mr-2">
-              <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">
-                Footer Background Color
-              </label>
-              <Input
-                placeholder="Enter footer background color"
-                maxLength={255}
-                minLength={1}
-                value={footerBackgroundColor}
-                onChange={(e) => {
-                  setFooterBackgroundColor(e.target.value);
-                  setInValidFooterBackgrondTextColor(false);
-                }}
-                className={`${
-                  inValidFooterBackgroundTextColor
-                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 "
-                    : ""
-                }`}
-                type="color"
-              />
-            </Col>
-            {/* <Col span={8} className="ml-1">
-              <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">Footer Content</label>
-              <Input placeholder="Enter footer content" />
-            </Col> */}
-          </Row>
-        </Content>
-        <Content>
-          <label className="text-[15px] mb-2 mt-4 font-bold">
-            Footer Content
-          </label>
-          <Row className="mt-2">
-            <Col span={8} className="mr-2">
-              <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">Footer Type</label>
-              <Input
-                placeholder="Enter footer type"
-                maxLength={255}
-                minLength={1}
-                value={footerType}
-                onChange={(e) => {
-                  setFooterType(e.target.value);
-                  setInValidFooterType(false);
-                }}
-                className={`${
-                  inValidFooterType
-                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
-                    : ""
-                }`}
-              />
-            </Col>
-            <Col span={8} className="ml-1">
-              <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">Footer Action</label>
-              <Input
-                placeholder="Enter footer action"
-                maxLength={255}
-                minLength={1}
-                value={footerAction}
-                onChange={(e) => {
-                  setFooterAction(e.target.value);
-                  setInValidFooterAction(false);
-                }}
-                className={`${
-                  inValidFooterAction
-                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
-                    : ""
-                }`}
-              />
-            </Col>
-          </Row>
-          <Row className="mt-4">
-            <Col span={8} className="mr-2">
-              <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">Footer Value</label>
-              <Input
-                placeholder="Enter footer value"
-                maxLength={255}
-                minLength={1}
-                value={footerValue}
-                onChange={(e) => {
-                  setFooterValue(e.target.value);
-                  setInValidFooterValue(false);
-                }}
-                className={`${
-                  inValidFooterValue
-                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
-                    : ""
-                }`}
-              />
-            </Col>
-            <Col span={8} className="ml-1">
-              <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">Footer Icon</label>
-              <Input
-                placeholder="Enter footer icon"
-                maxLength={255}
-                minLength={1}
-                value={footerIcon}
-                onChange={(e) => {
-                  setFooterIcon(e.target.value);
-                  setInValidFooterIcon(false);
-                }}
-                className={`${
-                  inValidFooterIcon
-                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
-                    : ""
-                }`}
-              />
-            </Col>
-          </Row>
+        <Content className="mt-3">
           <Row>
-            <label className="text-[13px] mb-2 mt-4">Header Position</label>
-          </Row>
-          <Row className="mt-1">
-            {/* <label className="text-[13px] mb-2 mt-4">Header Position</label> */}
-            <Select
-              // value={storeId}
-              placeholder={"Please select footer position"}
-              onChange={handleFooterChange}
-              // className="w-[40%]"
-              className={`${
-                inValidFooterPositionValue
-                  ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 w-[33%]"
-                  : "w-[33%]"
-              }`}
-              allowClear
-              value={footerPositionValue}
-              options={[
-                {
-                  value: "right",
-                  label: "right",
-                },
-                {
-                  value: "left",
-                  label: "left",
-                },
-                {
-                  value: "center",
-                  label: "center",
-                },
-                {
-                  value: "top",
-                  label: "top",
-                },
-                {
-                  value: "bottom",
-                  label: "bottom",
-                },
-              ]}
-              defaultValue={{
-                value: "right",
-                label: "right",
-              }}
-            />
+            <Col>
+              <Button
+                style={{ backgroundColor: "#393939" }}
+                className="app-btn-primary"
+                onClick={() => validatePostStoreSetting()}
+              >
+                Save
+              </Button>
+            </Col>
+            <Col className="pl-4">
+              {/* <Link to="/dashboard/language"> */}
+              <Button
+                className=" app-btn-secondary"
+                onClick={() => {
+                  setButtonColor("#1677ff");
+                  setButtonTextColor("#181819");
+                  setBackgroundColor("#f4f4f4");
+                  setPrimaryColor("#f4f4f4");
+                  setHeaderColor("#f4f4f4");
+                  setHeaderBackgroundColor("#f4f4f4");
+                  setHeaderTextColor("#181819");
+                  setFooterColor("#6F6F6F");
+                  setFooterBackgroundColor("#6F6F6F");
+                  setFooterTextColor("#C6B69F");
+                  setHeaderAction("");
+                  setHeaderValue("");
+                  setHeaderIcon("");
+                  setHeaderType("");
+                  setFooterAction("");
+                  setFooterValue("");
+                  setFooterIcon("");
+                  setFooterType("");
+                  setstoreId("Choose Store");
+                  setHeaderPositionValue("right");
+                  setFooterPositionValue("right");
+                }}
+              >
+                Discard
+              </Button>
+              {/* </Link> */}
+            </Col>
           </Row>
         </Content>
-      </Content>
-      <Content className="mt-3">
-        <Row>
-          <Col>
-            <Button
-              style={{ backgroundColor: "#393939" }}
-              className="app-btn-primary"
-              onClick={() => validatePostStoreSetting()}
-            >
-              Save
-            </Button>
-          </Col>
-          <Col className="pl-4">
-            {/* <Link to="/dashboard/language"> */}
-            <Button
-              className=" app-btn-secondary"
-              onClick={() => {
-                setButtonColor("");
-                setButtonTextColor("");
-                setBackgroundColor("");
-                setPrimaryColor("");
-                setHeaderColor("");
-                setHeaderBackgroundColor("");
-                setHeaderTextColor("");
-                setFooterColor("");
-                setFooterBackgroundColor("");
-                setFooterTextColor("");
-                setstoreId("Choose Store");
-              }}
-            >
-              Discard
-            </Button>
-            {/* </Link> */}
-          </Col>
-        </Row>
+        {/* </Spin> */}
       </Content>
     </Layout>
   );

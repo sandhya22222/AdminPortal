@@ -71,7 +71,7 @@ const StoreProductTypeGraph = ({ storeProductTypeData }) => {
       {storeProductTypeColumnGraphData !== undefined ? (
         <>
           <Title level={3} className="mb-3 text-center !font-normal">
-            Store Product Type
+            Store Product Types
           </Title>
           <Content>
             <Column {...storeProductTypeColumnGraphData} />
