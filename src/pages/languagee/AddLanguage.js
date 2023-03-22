@@ -34,7 +34,7 @@ const AddLanguage = () => {
   const [isRegexFieldEmpty, setIsRegexFieldEmpty] = useState(false);
   const [language, setLanguage] = useState("");
   const [languageCode, setLanguageCode] = useState("");
-  const [regex, setRegex] = useState("^[sS]*");
+  const [regex, setRegex] = useState("^[s\\S\\]*");
   const [nativeName, setNativeName] = useState("");
   const [scriptDirection, setScriptDirection] = useState("LTR");
   const [fileData, setFileData] = useState("");
