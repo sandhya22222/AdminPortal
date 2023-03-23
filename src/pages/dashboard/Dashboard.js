@@ -29,6 +29,7 @@ import { removeUrlSearchData } from "../../util/util";
 import LanguageGraph from "./LanguageGraph";
 import StoreGraph from "./StoreGraph";
 import StoreProductTypeGraph from "./StoreProductTypeGraph";
+import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
 const getAuth = process.env.REACT_APP_AUTH;
 const umsBaseUrl = process.env.REACT_APP_USM_BASE_URL;
 const isLoggedInURL = process.env.REACT_APP_ISLOGGEDIN;
@@ -37,6 +38,7 @@ const getAccessTokenUrl = process.env.REACT_APP_ACCESSTOKEN;
 const storeAdminDashboardAPI =
   process.env.REACT_APP_STORE_ADMIN_DASHBOARD_DATA_API;
 const auth = getAuth.toLowerCase() === "true";
+
 //! Destructure the components
 const { Title, Text } = Typography;
 const { Content } = Layout;
@@ -133,6 +135,9 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
           })
           .catch((err) => {
             console.log("get access token err", err);
+            if (err && err.response && err.response.status === 401) {
+              makeHttpRequestForRefreshToken();
+            }
           });
       }
     }
@@ -154,6 +159,9 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
       })
       .catch((err) => {
         console.log("isLoggedIn err", err);
+        if (err && err.response && err.response.status === 401) {
+          makeHttpRequestForRefreshToken();
+        }
       });
   };
 
@@ -175,6 +183,9 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
       })
       .catch((err) => {
         console.log("get access token err", err);
+        if (err && err.response && err.response.status === 401) {
+          makeHttpRequestForRefreshToken();
+        }
       })
       .then((res) => {
         console.log("get access token res", res);
@@ -184,6 +195,9 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
       })
       .catch((err) => {
         console.log("get access token err", err);
+        if (err && err.response && err.response.status === 401) {
+          makeHttpRequestForRefreshToken();
+        }
       });
   };
 

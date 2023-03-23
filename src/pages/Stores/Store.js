@@ -432,16 +432,16 @@ const Stores = () => {
         // console.log("hii",response.data.count)
       })
       .catch((error) => {
+        if(error&&error.response&&error.response.status === 401){
+          makeHttpRequestForRefreshToken();}
         setIsLoading(false);
         setIsNetworkError(true);
         console.log("Server error from getStoreApi Function ", error.response);
+      
         if (error.response) {
           setErrorMessage(error.response.data.message);
         }
-        if (error && error.response && error.response.status === 401) {
-          makeHttpRequestForRefreshToken();
-          // setErrorMessage(error.response)
-        }
+      
         if (error.response.data.message === "That page contains no results") {
           setSearchParams({
             tab: parseInt(searchParams.get("tab")),
@@ -496,6 +496,8 @@ const Stores = () => {
         setPostData(response.data);
       })
       .catch((error) => {
+        if(error&&error.response&&error.response.status === 401){
+          makeHttpRequestForRefreshToken();}
         if (error.response) {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
@@ -516,9 +518,7 @@ const Stores = () => {
         setIsUpLoading(false);
         // setInValidName(true)
         // onClose();
-        if (error && error.response && error.response.status === 401) {
-          makeHttpRequestForRefreshToken();
-        }
+    
       });
   };
   //!put call for stores
@@ -555,6 +555,8 @@ const Stores = () => {
         }
       })
       .catch((error) => {
+        if(error&&error.response&&error.response.status === 401){
+          makeHttpRequestForRefreshToken();}
         setIsUpLoading(false);
         if (error.response) {
           toast(`${error.response.data.message}`, {
