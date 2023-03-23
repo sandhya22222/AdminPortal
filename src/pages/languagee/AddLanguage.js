@@ -11,17 +11,20 @@ import {
   Input,
   Select,
   Spin,
+  message,
+  Upload,
 } from "antd";
 import { toast } from "react-toastify";
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined, InboxOutlined } from "@ant-design/icons";
 import { useNavigate, Link } from "react-router-dom";
 import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
 import "./language.css";
 
 const { Title } = Typography;
 const { Option } = Select;
-const languageAPI = process.env.REACT_APP_LANGUAGE_API;
 const { Content } = Layout;
+const { Dragger } = Upload;
+const languageAPI = process.env.REACT_APP_LANGUAGE_API;
 
 const AddLanguage = () => {
   const [isLanguageFieldEmpty, setIsLanguageFieldEmpty] = useState(false);
@@ -31,7 +34,7 @@ const AddLanguage = () => {
   const [isRegexFieldEmpty, setIsRegexFieldEmpty] = useState(false);
   const [language, setLanguage] = useState("");
   const [languageCode, setLanguageCode] = useState("");
-  const [regex, setRegex] = useState("");
+  const [regex, setRegex] = useState("^[s\\S\\]*");
   const [nativeName, setNativeName] = useState("");
   const [scriptDirection, setScriptDirection] = useState("LTR");
   const [fileData, setFileData] = useState("");
@@ -64,15 +67,12 @@ const AddLanguage = () => {
       setLanguageCode(value);
     }
   };
+
   const handleRegexChange = (e) => {
-    const { value } = e.target;
-    const regex = /^[a-zA-Z0-9]*$/;
-    if (regex.test(value)) {
-      setRegex(e.target.value);
-    }
-    if (e.target.value != "") {
-      setIsRegexFieldEmpty(false);
-    }
+    setRegex(e.target.value);
+    // if (e.target.value != "") {
+    //   setIsRegexFieldEmpty(false);
+    // }
   };
 
   const handleNativeNameChange = (e) => {
@@ -83,22 +83,43 @@ const AddLanguage = () => {
     setScriptDirection(value);
   };
 
-  const handleUploadFile = (e) => {
-    if (e.target.files[0].size < 4 * 1000000) {
-      let file = e.target.files[0];
+  const handleUploadFile = (info) => {
+    // if (e.target.files[0].size < 4 * 1000000) {
+    //   let file = e.target.files[0];
+    //   let fileExtension = file.name.split(".").pop();
+    //   let fileName = file.name;
+    //   setFileData(file);
+    //   setFileExtension(fileExtension);
+    //   setFileName(fileName);
+    //   console.log("Final FIle In Function", file, fileExtension, fileName);
+    // } else {
+    //   toast(`Please select File less than four mb`, {
+    //     position: toast.POSITION.TOP_RIGHT,
+    //     type: "warning",
+    //   });
+    // }
+    const { status } = info.file;
+    console.log("status", status);
+    console.log("info", info);
+    if (status !== "uploading") {
+      console.log("fileInfo", info.file, info.fileList);
+      let file = info.file;
       let fileExtension = file.name.split(".").pop();
       let fileName = file.name;
       setFileData(file);
-      setFileExtension(fileExtension);
-      setFileName(fileName);
+      // setFileExtension(fileExtension);
+      // setFileName(fileName);
       console.log("Final FIle In Function", file, fileExtension, fileName);
-    } else {
-      toast(`Please select File less than four mb`, {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "warning",
-      });
+    }
+    if (status === "done") {
+      message.success(`${info.file.name} file uploaded successfully.`);
+    } else if (status === "error") {
+      message.error(`${info.file.name} file upload failed.`);
     }
   };
+  // onDrop(e) {
+  //   console.log("Dropped files", e.dataTransfer.files);
+  // },
 
   const validateLanguageFieldEmptyOrNot = () => {
     // let validValues = 2
@@ -121,18 +142,48 @@ const AddLanguage = () => {
         type: "error",
       });
     }
-    if (regex === "") {
-      setIsRegexFieldEmpty(true);
-      // validValues -= 1;
-      toast("Please Enter Language Regex", {
-        autoClose: 5000,
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-      });
-    }
-    if (language !== "" && languageCode !== "" && regex !== "") {
+    // if (regex === "") {
+    //   setIsRegexFieldEmpty(true);
+    //   // validValues -= 1;
+    //   toast("Please Enter Language Regex", {
+    //     autoClose: 5000,
+    //     position: toast.POSITION.TOP_RIGHT,
+    //     type: "error",
+    //   });
+    // }
+    if (language !== "" && languageCode !== "") {
       PostLanguageAPI();
     }
+  };
+
+  const props = {
+    // name: "file",
+    // multiple: true,
+    // action: { fileData },
+    onChange(info) {
+      const { status } = info.file;
+      console.log("info", info);
+      if (status !== "uploading") {
+        // if (info.fileList.size < 4 * 1000000) {
+        console.log("fileInfo", info.file, info.fileList);
+        let file = info.file;
+        let fileExtension = file.name.split(".").pop();
+        let fileName = file.name;
+        setFileData(file);
+        setFileExtension(fileExtension);
+        setFileName(fileName);
+        console.log("Final FIle In Function", file, fileExtension, fileName);
+      }
+      // }
+      if (status === "done") {
+        message.success(`${info.file.name} file uploaded successfully.`);
+      } else if (status === "error") {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+    onDrop(e) {
+      console.log("Dropped files", e.dataTransfer.files);
+    },
   };
 
   //post function
@@ -140,7 +191,7 @@ const AddLanguage = () => {
     const paramsData = new FormData();
     paramsData.append("language", language);
     paramsData.append("language_code", languageCode);
-    paramsData.append("dm_language_regex", regex);
+    paramsData.append("language_regex", regex);
     paramsData.append("native_name", nativeName);
     paramsData.append("writing_script_direction", scriptDirection);
     if (typeof fileData === "object") {
@@ -167,6 +218,8 @@ const AddLanguage = () => {
         }
       })
       .catch((error) => {
+        if(error&&error.response&&error.response.status === 401){
+          makeHttpRequestForRefreshToken();}
         // disabbling spinner
         setIsLoading(false);
         if (error.response.status === 409) {
@@ -174,10 +227,9 @@ const AddLanguage = () => {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
           });
-        } else if (error && error.response && error.response.status === 401) {
-          makeHttpRequestForRefreshToken();
+       
         } else if (fileData) {
-          if (fileExtension !== ".csv") {
+          if (fileExtension !== "csv") {
             toast("Invalid Extention , It will support only .csv extention", {
               position: toast.POSITION.TOP_RIGHT,
               type: "error",
@@ -195,27 +247,57 @@ const AddLanguage = () => {
   const addLanguageButtonHeader = () => {
     return (
       <>
-        <Content className="w-[50%] float-left flex items-center my-3">
-          <Link to="/dashboard/language">
-            <ArrowLeftOutlined
-              role={"button"}
-              className={
-                "mr-4 text-black  w-12  h-10 border-[1px] border-solid border-[#393939] rounded-md pt-[11px]"
-              }
-            />
-          </Link>
-
-          <Title level={3} className="m-0 inline-block !font-normal">
-            Add Language
-          </Title>
-        </Content>
+        <Row className="!w-full float-left flex items-center my-3 ">
+          <Col>
+            <Link to="/dashboard/language">
+              <ArrowLeftOutlined
+                role={"button"}
+                className={"ml-4 text-black text-lg"}
+              />
+            </Link>
+          </Col>
+          <Col className="ml-4">
+            <Title level={3} className="m-0 inline-block !font-normal">
+              Add Language
+            </Title>
+          </Col>
+        </Row>
       </>
     );
   };
 
+  console.log("fileData", fileData);
+  const handleBeforeUpload = (file) => {
+    // Perform your validation here
+    if (file.type !== "text/csv") {
+      // If the file doesn't meet the criteria, return false to prevent upload
+      message.error("Only csv files are allowed");
+      return false;
+    }
+    // Otherwise, return true to allow the upload
+    return true;
+  };
+
+  const handleDrop = (files) => {
+    // Filter out the files that don't meet your criteria
+    const validFiles = files.filter((file) => file.type === "text/csv");
+    console.log("validFiles", validFiles);
+    if (validFiles.length === 0) {
+      message.error("Only csv files are allowed");
+      return;
+    }
+    // Otherwise, initiate the upload for the valid files
+    const formData = new FormData();
+    validFiles.forEach((file) => {
+      formData.append("files[]", file);
+    });
+    // Make your API call here using the formData
+    console.log("formData", formData);
+  };
+
   return (
     <Layout>
-      <Content className="mt-2">
+      <Content className="">
         <AntDesignBreadcrumbs
           data={[
             { title: "Home", navigationPath: "/", displayOrder: 1 },
@@ -228,149 +310,186 @@ const AddLanguage = () => {
           ]}
         />
       </Content>
-      {addLanguageButtonHeader()}
-      <Spin tip="Please wait!" size="large" spinning={isLoading}>
-        <Content>
-          <Row>
-            <Col span={14}>
-              <Content className="p-3 bg-white mt-0">
-                <Content>
-                  {/* <Typography.Title
+      <Content className="!bg-white !w-full">
+        {addLanguageButtonHeader()}
+      </Content>
+      <Content className="mt-2 !w-full p-3">
+        <Spin tip="Please wait!" size="large" spinning={isLoading}>
+          <Content>
+            <Content className="p-3 bg-white mt-0">
+              <Content>
+                {/* <Typography.Title
                     level={3}
                     className="inline-block !font-normal"
                   >
                     Language Details
                   </Typography.Title> */}
-                  <Content className="my-2">
-                    <label className="text-[13px]">
-                      Language <sup className="text-red-600 text-sm">*</sup>
-                    </label>
-                    <Input
-                      placeholder="Enter Language Name"
-                      value={language}
-                      maxLength={25}
-                      className={`${
-                        isLanguageFieldEmpty
-                          ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
-                          : ""
-                      }`}
-                      onChange={(e) => {
-                        handleLanguageChange(e);
-                      }}
-                      // pattern="^[A-Za-z0-9]+$"
-                      // rules={[
-                      //   {
-                      //    pattern: new RegExp("/^[A-Z@~`!@#$%^&*()_=+\\\\';:\"\\/?>.<,-]*$/i"),
-                      //    message: "field does not accept numbers"
-                      //   }
-                      //  ]}
-                    />
-                  </Content>
-                  <Content className="my-2">
-                    <label className="text-[13px]">
-                      Language Code<sup className="text-red-600 text-sm">*</sup>
-                    </label>
-                    <Input
-                      placeholder="Enter Language Code"
-                      value={languageCode}
-                      maxLength={25}
-                      className={`${
-                        isLanguageCodeFieldEmpty
-                          ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
-                          : ""
-                      }`}
-                      onChange={(e) => {
-                        handleLanguageCodeChange(e);
-                      }}
-                      // pattern="^[A-Za-z0-9]+$"
-                    />
-                  </Content>
-                  <Content className="my-2">
-                    <label className="text-[13px]">
-                      Language Regex
-                      <sup className="text-red-600 text-sm">*</sup>
-                    </label>
-                    <Input
-                      placeholder="Enter Language Regex"
-                      value={regex}
-                      maxLength={128}
-                      className={`${
-                        isRegexFieldEmpty
-                          ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
-                          : ""
-                      }`}
-                      onChange={(e) => {
-                        handleRegexChange(e);
-                      }}
-                    />
-                  </Content>
-                  <Content className="my-2">
-                    <label className="text-[13px]">Native Name</label>
-                    <Input
-                      placeholder="Enter Native Name"
-                      value={nativeName}
-                      onChange={(e) => {
-                        handleNativeNameChange(e);
-                      }}
-                      // className={
-                      //   "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
-                      // }
-                    />
-                  </Content>
-                  <Content className="my-2">
-                    <label className="text-[13px]">Script Direction</label>
-                    <Select
-                      // size={"large"}
-                      style={{ display: "flex" }}
-                      value={scriptDirection}
-                      onChange={(e) => {
-                        handleScriptDirectionChange(e);
-                      }}
-                    >
-                      <Option value="LTR">LTR</Option>
-                      <Option value="RTL">RTL</Option>
-                    </Select>
-                  </Content>
-                  <Content className="my-2">
-                    <label className="text-[13px] pb-1">
-                      Language Supported Document
-                    </label>
-                    <Input
-                      type="file"
-                      name="filename"
-                      onChange={(e) => handleUploadFile(e)}
-                      accept=".csv"
-                    />
-                  </Content>
-                </Content>
-              </Content>
-              <Content className="mt-3">
                 <Row>
-                  <Col>
-                    <Link to="/dashboard/language">
-                      <Button
-                        // style={{ background: "#FFFFFF" }}
-                        className=" app-btn-secondary"
-                      >
-                        Discard
-                      </Button>
-                    </Link>
+                  <Col span={8} className="pr-2">
+                    <Content className="my-3">
+                      <span className="text-red-600 text-sm !text-center">
+                        *
+                      </span>
+                      <label className="text-[13px] mb-2 ml-1">
+                        language
+                        {/* <sup className="text-red-600 text-sm mt-1">*</sup> */}
+                      </label>
+                      <Input
+                        placeholder="Enter Language Name"
+                        value={language}
+                        maxLength={50}
+                        className={`${
+                          isLanguageFieldEmpty
+                            ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
+                            : ""
+                        }`}
+                        onChange={(e) => {
+                          handleLanguageChange(e);
+                        }}
+                        // pattern="^[A-Za-z0-9]+$"
+                        // rules={[
+                        //   {
+                        //    pattern: new RegExp("/^[A-Z@~`!@#$%^&*()_=+\\\\';:\"\\/?>.<,-]*$/i"),
+                        //    message: "field does not accept numbers"
+                        //   }
+                        //  ]}
+                      />
+                    </Content>
                   </Col>
-                  <Col className="pl-4">
-                    <Button
-                      style={{ backgroundColor: "#393939" }}
-                      className="app-btn-primary"
-                      onClick={validateLanguageFieldEmptyOrNot}
-                    >
-                      Save
-                    </Button>
+                  <Col span={8} className="pl-2">
+                    <Content className="my-3">
+                      <span className="text-red-600 text-sm text-center">
+                        *
+                      </span>
+                      <label className="text-[13px] mb-2 ml-1">
+                        Language Code
+                        {/* <sup className="text-red-600 text-sm">*</sup> */}
+                      </label>
+                      <Input
+                        placeholder="Enter Language Code"
+                        value={languageCode}
+                        maxLength={50}
+                        className={`${
+                          isLanguageCodeFieldEmpty
+                            ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
+                            : ""
+                        }`}
+                        onChange={(e) => {
+                          handleLanguageCodeChange(e);
+                        }}
+                        // pattern="^[A-Za-z0-9]+$"
+                      />
+                    </Content>
                   </Col>
                 </Row>
+                <Row>
+                  <Col span={8} className="pr-2">
+                    <Content className="my-3">
+                      {/* <span className="text-red-600 text-sm">*</span> */}
+                      <label className="text-[13px] mb-2 ml-1">
+                        Language Regex
+                        {/* <sup className="text-red-600 text-sm">*</sup> */}
+                      </label>
+                      <Input
+                        placeholder="Enter Language Regex"
+                        value={regex}
+                        maxLength={128}
+                        defaultValue="^[\s\S]*"
+                        // className={`${
+                        //   isRegexFieldEmpty
+                        //     ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
+                        //     : ""
+                        // }`}
+                        onChange={(e) => {
+                          handleRegexChange(e);
+                        }}
+                      />
+                    </Content>
+                  </Col>
+                  <Col span={8} className="pl-2">
+                    <Content className="my-3">
+                      <label className="text-[13px] mb-2">Native Name</label>
+                      <Input
+                        placeholder="Enter Native Name"
+                        value={nativeName}
+                        onChange={(e) => {
+                          handleNativeNameChange(e);
+                        }}
+                        // className={
+                        //   "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
+                        // }
+                      />
+                    </Content>
+                  </Col>
+                </Row>
+                <Content className="my-3 w-[32%]">
+                  <label className="text-[13px] mb-2">Script Direction</label>
+                  <Select
+                    // size={"large"}
+                    style={{ display: "flex" }}
+                    value={scriptDirection}
+                    onChange={(e) => {
+                      handleScriptDirectionChange(e);
+                    }}
+                  >
+                    <Option value="LTR">Left to Right</Option>
+                    <Option value="RTL">Right to Left</Option>
+                  </Select>
+                </Content>
+                <Content className="my-3 mt-4 w-[32%]">
+                  <label className="text-[13px] pb-1 mb-2">
+                    Language Supported Document
+                  </label>
+                  {/* <Input
+                  type="file"
+                  name="filename"
+                  onChange={(e) => handleUploadFile(e)}
+                  accept=".csv"
+                /> */}
+
+                  <Dragger
+                    accept=".csv"
+                    onDrop={handleDrop}
+                    name="file"
+                    // onChange={(e) => handleUploadFile(e)}
+                  >
+                    <p className="ant-upload-drag-icon">
+                      <InboxOutlined />
+                    </p>
+                    <p className="ant-upload-text">
+                      Click or drag file to this area to upload
+                    </p>
+                    <p className="ant-upload-hint">only .csv files</p>
+                  </Dragger>
+                </Content>
               </Content>
-            </Col>
-          </Row>
-        </Content>
-      </Spin>
+            </Content>
+            <Content className="mt-3">
+              <Row>
+                <Col>
+                  <Button
+                    style={{ backgroundColor: "#393939" }}
+                    className="app-btn-primary"
+                    onClick={() => validateLanguageFieldEmptyOrNot}
+                  >
+                    Save
+                  </Button>
+                </Col>
+                <Col className="pl-4">
+                  <Link to="/dashboard/language">
+                    <Button
+                      // style={{ background: "#FFFFFF" }}
+                      className=" app-btn-secondary"
+                    >
+                      Discard
+                    </Button>
+                  </Link>
+                </Col>
+              </Row>
+            </Content>
+          </Content>
+        </Spin>
+      </Content>
     </Layout>
   );
 };

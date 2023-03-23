@@ -281,7 +281,7 @@ const Stores = () => {
   };
   //! handleTabChangeStore to get the data according to the status
   const handleTabChangeStore = (status) => {
-    setSearchText("");
+    // setSearchText("");
     // handleReset();
     // setSearchParams({
     //   tab: status,
@@ -432,16 +432,16 @@ const Stores = () => {
         // console.log("hii",response.data.count)
       })
       .catch((error) => {
+        if(error&&error.response&&error.response.status === 401){
+          makeHttpRequestForRefreshToken();}
         setIsLoading(false);
         setIsNetworkError(true);
         console.log("Server error from getStoreApi Function ", error.response);
+      
         if (error.response) {
           setErrorMessage(error.response.data.message);
         }
-        if (error && error.response && error.response.status === 401) {
-          makeHttpRequestForRefreshToken();
-          // setErrorMessage(error.response)
-        }
+      
         if (error.response.data.message === "That page contains no results") {
           setSearchParams({
             tab: parseInt(searchParams.get("tab")),
@@ -496,13 +496,20 @@ const Stores = () => {
         setPostData(response.data);
       })
       .catch((error) => {
+        if(error&&error.response&&error.response.status === 401){
+          makeHttpRequestForRefreshToken();}
         if (error.response) {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
           });
+        } else if (error && error.response && error.response.status === 400) {
+          toast(`${error.response.data.message}`, {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+          });
         } else {
-          toast("Something Went Wrong", {
+          toast("Something went wrong", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
           });
@@ -511,9 +518,7 @@ const Stores = () => {
         setIsUpLoading(false);
         // setInValidName(true)
         // onClose();
-        if (error && error.response && error.response.status === 401) {
-          makeHttpRequestForRefreshToken();
-        }
+    
       });
   };
   //!put call for stores
@@ -550,6 +555,8 @@ const Stores = () => {
         }
       })
       .catch((error) => {
+        if(error&&error.response&&error.response.status === 401){
+          makeHttpRequestForRefreshToken();}
         setIsUpLoading(false);
         if (error.response) {
           toast(`${error.response.data.message}`, {
@@ -640,7 +647,7 @@ const Stores = () => {
     // navigate(`/dashboard/store?tab=${tab_id}&page=${page}&count=${pageSize}`);
   };
   return (
-    <Layout>
+    <Layout className="p-3">
       <Content className="mb-1">
         <AntDesignBreadcrumbs
           data={[
@@ -673,7 +680,8 @@ const Stores = () => {
               >
                 <Title level={5}>
                   Name
-                  <sup className="text-red-600 text-sm pl-1">*</sup>
+                  {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
+                  <span className="text-red-600 text-sm ml-1">*</span>
                 </Title>
                 {drawerAction && drawerAction === "post" ? (
                   <Spin tip="Please wait!" size="large" spinning={isUpLoading}>
