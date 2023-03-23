@@ -6,9 +6,10 @@ import {
   DashboardOutlined,
   CopyOutlined,
   LoadingOutlined,
-  GlobalOutlined,
-  AppstoreOutlined,
+  TranslationOutlined,
+  ShopOutlined,
   DollarCircleOutlined,
+  SettingOutlined,
 } from "@ant-design/icons";
 import { FaHome } from "react-icons/fa";
 import { AiOutlineHome } from "react-icons/ai";
@@ -52,13 +53,13 @@ const SidebarNew = (props) => {
     },
     {
       key: "2",
-      icon: <AppstoreOutlined />,
+      icon: <ShopOutlined />,
       label: "Stores",
       navigate_to: "/dashboard/store",
     },
     {
       key: "3",
-      icon: <GlobalOutlined />,
+      icon: <TranslationOutlined />,
       label: "Languages",
       navigate_to: "/dashboard/language",
     },
@@ -67,6 +68,12 @@ const SidebarNew = (props) => {
       icon: <DollarCircleOutlined />,
       label: "Payment Type",
       navigate_to: "/dashboard/paymenttype",
+    },
+    {
+      key: "5",
+      icon: <SettingOutlined />,
+      label: "Store Settings",
+      navigate_to: "/dashboard/storesetting",
     },
     // {
     //   key: "5",
@@ -78,7 +85,7 @@ const SidebarNew = (props) => {
 
   useEffect(() => {
     switch (pathname.split("/")[2]) {
-      case "onlinepaymentconnector":
+      case "storesetting":
         setSelectedItem("5");
         break;
       case "paymenttype":
@@ -136,7 +143,7 @@ const SidebarNew = (props) => {
           </Sider>
         </Affix>
         <Layout>
-          <Content className="site-layout-background !bg-[#f4f4f4] min-h-[280px m-0] p-3">
+          <Content className="site-layout-background !bg-[#f4f4f4] min-h-[280px] m-0">
             <Outlet />
           </Content>
         </Layout>

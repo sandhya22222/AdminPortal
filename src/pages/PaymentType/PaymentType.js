@@ -84,7 +84,7 @@ const PaymentType = () => {
   };
 
   return (
-    <Content>
+    <Content className="p-3">
       <Content className="mb-1">
         <AntDesignBreadcrumbs
           data={[

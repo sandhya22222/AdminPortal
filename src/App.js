@@ -28,6 +28,7 @@ import EditLanguage from "./pages/languagee/EditLanguage";
 import SidebarNew from "./components/Sidebar2.0.js/SidebarNew";
 import PaymentType from "./pages/PaymentType/PaymentType";
 import OnlinePaymentConnector from "./pages/OnlinePaymentConnector/OnlinePaymentConnector";
+import StoreSettings from "./pages/StoreSetting/StoreSettings";
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 
 const auth = process.env.REACT_APP_AUTH;
@@ -93,6 +94,7 @@ const App = () => {
                         path="onlinepaymentconnector"
                         element={<OnlinePaymentConnector />}
                       />
+                      <Route path="storesetting" element={<StoreSettings />} />
                       <Route path="*" element={<PageNotFound />} />
                     </>
                   ) : (
@@ -124,6 +126,7 @@ const App = () => {
                   path="onlinepaymentconnector"
                   element={<OnlinePaymentConnector />}
                 />
+                <Route path="storesetting" element={<StoreSettings />} />
                 <Route path="*" element={<PageNotFound />} />
               </Route>
               <Route path="*" element={<PageNotFound />} />

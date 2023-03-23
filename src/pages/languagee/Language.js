@@ -518,8 +518,8 @@ const Language = () => {
   }, [searchParams]);
 
   return (
-    <>
-      <Layout>
+    <Layout className="p-3"> 
+      <Content>
         <StoreModal
           isVisible={isDeleteLanguageModalOpen}
           okButtonText={"Ok"}
@@ -564,7 +564,7 @@ const Language = () => {
             </Col>
           </Row>
         </Content>
-      </Layout>
+      </Content>
       {isLoading ? (
         <Content className=" bg-white mb-3">
           <Skeleton
@@ -623,7 +623,7 @@ const Language = () => {
           </Content>
         </Layout>
       )}
-    </>
+    </Layout>
   );
 };
 
