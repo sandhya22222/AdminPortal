@@ -40,6 +40,7 @@ import DmPagination from "../../components/DmPagination/DmPagination";
 import { usePageTitle } from "../../hooks/usePageTitle";
 import "./language.css";
 import { use } from "i18next";
+import useAuthorization from "../../hooks/useAuthorization";
 
 const { Title } = Typography;
 const { Content } = Layout;
@@ -49,7 +50,7 @@ const pageLimit = process.env.REACT_APP_ITEM_PER_PAGE;
 
 const Language = () => {
   usePageTitle("Admin Portal - Language");
-
+   const authorizationHeader = useAuthorization()
   const params = useParams();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -192,6 +193,7 @@ const Language = () => {
   const openDeleteModal = (id) => {
     setIsDeleteLanguageModalOpen(true);
     setDeleteLanguageID(id);
+    console.log("id",id)
   };
 
   const columns = [
@@ -337,10 +339,10 @@ const Language = () => {
         params: {
           _id: deleteLanguageID,
         },
-      })
+      },authorizationHeader)
       .then((response) => {
         console.log("response from delete===>", response, deleteLanguageID);
-        if (response.status === 200) {
+        if (response.status === 200 || response.status === 201) {
           setIsDeleteLanguageModalOpen(false);
           let removedData = languageData.filter(
             ({ id }) => id !== deleteLanguageID
@@ -382,7 +384,7 @@ const Language = () => {
         setIsNetworkErrorLanguage(false);
         console.log(
           "server Success response from language API call",
-          response.data.count
+          response.data.data
         );
         //TODO: Remove line 252,253 and setLanguageData(response.data)
         // let allLanguagesData = response.data;

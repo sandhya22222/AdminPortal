@@ -25,6 +25,7 @@ import {
 import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
 import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
 import { testValueByRegexPattern } from "../../util/util";
+import useAuthorization from "../../hooks/useAuthorization";
 //! Import CSS libraries
 import { Container } from "reactstrap";
 
@@ -35,10 +36,14 @@ const { Dragger } = Upload;
 
 const languageAPI = process.env.REACT_APP_LANGUAGE_API;
 const pageLimit = process.env.REACT_APP_ITEM_PER_PAGE;
+const languageUpdateAPI = process.env.REACT_APP_LANGUAGE_DOCUMENT_UPDATE_API;
+const languageDocumentAPI = process.env.REACT_APP_LANGUAGE_DOCUMENT_API;
 
 toast.configure();
 
 const EditLanguage = () => {
+  const authorizationHeader = useAuthorization();
+
   const search = useLocation().search;
   const _id = new URLSearchParams(search).get("_id");
   const [languageDetails, setLanguageDetails] = useState({
@@ -61,9 +66,11 @@ const EditLanguage = () => {
   const [fileValue, setFileValue] = useState();
   const [fileData, setFileData] = useState();
   const [regexName, setRegexName] = useState("");
+  const [languageName, setLanguageName] = useState("");
+  const [responseLanguageData, setResponseLanguageData] = useState([]);
   const [fileList, setFileList] = useState([]);
+  const [documentPath, setDocumentPath] = useState("");
   const navigate = useNavigate();
-
   // hanler for language, language_code, native_name, writing_script_direction
   const languageHandler = (fieldName, value) => {
     let copyofLanguageDetails = { ...languageDetails };
@@ -134,7 +141,7 @@ const EditLanguage = () => {
     // Enabling skeleton
     setIsDataLoading(true);
     axios
-      .get(languageAPI, {
+      .get(languageAPI, authorizationHeader, {
         params: {
           "page-number": page,
           "page-limit": limit,
@@ -148,7 +155,7 @@ const EditLanguage = () => {
         let languageData = response?.data.data.filter(
           (element) => element.id === parseInt(_id)
         );
-
+        setResponseLanguageData(languageData);
         if (languageData && languageData.length > 0) {
           let copyofLanguageDetails = { ...languageDetails };
           copyofLanguageDetails.language = languageData[0].language;
@@ -162,6 +169,9 @@ const EditLanguage = () => {
             languageData[0].lang_support_docs;
           copyofLanguageDetails.language_regex = languageData[0].language_regex;
           setRegexName(languageData[0].language_regex);
+          setDocumentPath(languageData[0].lang_support_docs);
+          setLanguageName(languageData[0].language);
+
           setLanguageDetails(copyofLanguageDetails);
         }
         // disabling skeleton
@@ -187,104 +197,121 @@ const EditLanguage = () => {
   }, []);
 
   const validateLanguageFieldEmptyOrNot = () => {
-    // if (languageDetails.language === "") {
-    //   setIsLanguageFieldEmpty(true);
-    //   toast("Please Enter Language Id", {
-    //     autoClose: 5000,
-    //     position: toast.POSITION.TOP_RIGHT,
-    //     type: "error",
-    //   });
-    // }
-    // if (languageDetails.language_code === "") {
-    //   setIsLanguageCodeFieldEmpty(true);
-    //   toast("Please Enter Language Code", {
-    //     autoClose: 5000,
-    //     position: toast.POSITION.TOP_RIGHT,
-    //     type: "error",
-    //   });
-    // }
-
-    if (
-      languageDetails.language !== "" &&
-      languageDetails.language_code !== "" &&
-      languageDetails.language_regex !== "" &&
-      languageDetails.language_regex !== regexName &&
-      languageDetails.islanguageDetailsEdited
-    ) {
-      editLanguage();
+    // if (
+    //   languageDetails.language !== "" &&
+    //   languageDetails.language_code !== "" &&
+    //   languageDetails.writing_script_direction !== "" &&
+    //   languageDetails.lang_support_docs !== null &&
+    //   languageDetails.language_regex !== "" &&
+    //   languageDetails.islanguageDetailsEdited
+    // ) {
+    //   editLanguage();
+    // } else if (
+    //   languageDetails.language === "" ||
+    //   languageDetails.language_code === "" ||
+    //   languageDetails.language_regex === regexName
+    // ) {
+    if (languageDetails.language === "") {
+      setIsLanguageFieldEmpty(true);
+      toast("Please Enter Language Name", {
+        autoClose: 5000,
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+      });
+    }
+    if (languageDetails.language_code === "") {
+      setIsLanguageCodeFieldEmpty(true);
+      toast("Please Enter Language Code", {
+        autoClose: 5000,
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+      });
     } else if (
-      languageDetails.language === "" ||
-      languageDetails.language_code === "" ||
-      languageDetails.language_regex === ""
+      responseLanguageData[0].language === languageDetails.language &&
+      responseLanguageData[0].language_code === languageDetails.language_code &&
+      responseLanguageData[0].lang_support_docs ===
+        languageDetails.lang_support_docs &&
+      responseLanguageData[0].native_name === languageDetails.native_name &&
+      responseLanguageData[0].writing_script_direction ===
+        languageDetails.writing_script_direction &&
+      responseLanguageData[0].language_regex === languageDetails.language_regex
     ) {
-      if (languageDetails.language === "") {
-        setIsLanguageFieldEmpty(true);
-        toast("Please Enter Language Name", {
-          autoClose: 5000,
-          position: toast.POSITION.TOP_RIGHT,
-          type: "error",
-        });
-      }
-      if (languageDetails.language_code === "") {
-        setIsLanguageCodeFieldEmpty(true);
-        toast("Please Enter Language Code", {
-          autoClose: 5000,
-          position: toast.POSITION.TOP_RIGHT,
-          type: "error",
-        });
-      }
-      if (languageDetails.language_regex === "") {
-        setIsRegexFieldEmpty(true);
-        toast("Please Enter Laguage Regex", {
-          autoClose: 5000,
-          position: toast.POSITION.TOP_RIGHT,
-          type: "error",
-        });
-      }
-    } else {
       toast("No Changes Detected !", {
         autoClose: 5000,
         position: toast.POSITION.TOP_RIGHT,
         type: "info",
       });
+    } else {
+      editLanguage();
     }
+    // } else {
+    //   toast("No Changes Detected !", {
+    //     autoClose: 5000,
+    //     position: toast.POSITION.TOP_RIGHT,
+    //     type: "info",
+    //   });
+    // }
   };
 
   // Language PUT API call
   const editLanguage = () => {
-    const langaugeData = new FormData();
-    langaugeData.append("language", languageDetails.language);
-    langaugeData.append("language_code", languageDetails.language_code);
-    langaugeData.append("language_regex", languageDetails.language_regex);
-    langaugeData.append("native_name", languageDetails.native_name);
-    langaugeData.append(
-      "writing_script_direction",
-      languageDetails.writing_script_direction
-    );
+    // const langaugeData = new FormData();
+    // langaugeData.append("language", languageDetails.language);
+    // langaugeData.append("language_code", languageDetails.language_code);
+    // langaugeData.append("language_regex", languageDetails.language_regex);
+    // langaugeData.append("native_name", languageDetails.native_name);
+    // langaugeData.append(
+    //   "writing_script_direction",
+    //   languageDetails.writing_script_direction
+    // );
+    // if (
+    //   languageDetails.lang_support_docs !== null &&
+    //   typeof languageDetails.lang_support_docs === "object"
+    // ) {
+    //   langaugeData.append(
+    //     "lang_support_docs",
+    //     languageDetails.lang_support_docs
+    //   );
+    // }
+
+    const temp = {};
+    temp["language"] = languageDetails.language;
+    temp["language_code"] = languageDetails.language_code;
+    temp["language_regex"] = languageDetails.language_regex;
+    temp["native_name"] = languageDetails.native_name;
+    temp["writing_script_direction"] = languageDetails.writing_script_direction;
     if (
-      languageDetails.lang_support_docs !== null &&
-      typeof languageDetails.lang_support_docs === "object"
+      languageDetails.lang_support_docs !== null
+      // &&
+      // typeof languageDetails.lang_support_docs === "object"
     ) {
-      langaugeData.append(
-        "lang_support_docs",
-        languageDetails.lang_support_docs
-      );
+      temp["lang_support_docs"] = languageDetails.lang_support_docs;
     }
-    console.log("PutObject----->", langaugeData);
+
+    console.log("PutObject----->", temp);
     // enabling spinner
     setIsLoading(true);
     axios
-      .put(languageAPI, langaugeData, {
-        params: {
-          _id: parseInt(_id),
+      .put(
+        languageAPI,
+        temp,
+        {
+          params: {
+            _id: parseInt(_id),
+          },
         },
-      })
+        authorizationHeader
+      )
       .then(function (response) {
         let copyofLanguageDetails = { ...languageDetails };
         copyofLanguageDetails.islanguageDetailsEdited = false;
         setLanguageDetails(copyofLanguageDetails);
-        console.log("response", response.data.language_regex);
+        console.log(
+          "response of language data",
+          response.data[0].lang_support_docs
+        );
         setRegexName(response.data.language_regex);
+        setLanguageName(response.data.language);
         // disabling spinner
         setIsLoading(false);
         console.log(response);
@@ -321,8 +348,153 @@ const EditLanguage = () => {
 
   console.log("language_details", languageDetails);
 
+  const editLanguageDocument = (fileValue, lastExtensionValue) => {
+    const formData = new FormData();
+    formData.append("language_document", fileValue);
+    formData.append("extension", lastExtensionValue);
+    axios
+      .put(
+        languageUpdateAPI,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+          params: {
+            document_path: documentPath,
+          },
+        },
+        authorizationHeader
+      )
+      .then((response) => {
+        console.log("put response", response.data);
+
+        setLanguageDetails({
+          ...languageDetails,
+          lang_support_docs: response.data[0].lang_support_docs,
+        });
+
+        // if (response.status === 200 || response.status === 201) {
+        //   toast("document uploaded successfully! ", {
+        //     position: toast.POSITION.TOP_RIGHT,
+        //     type: "success",
+        //   });
+        // }
+      })
+      .catch((error) => {
+        if (error.response) {
+          toast(`${error.response.data.message}`, {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+          });
+        }
+        if (error && error.response && error.response.status === 401) {
+          makeHttpRequestForRefreshToken();
+        }
+      });
+  };
+
+  const postLanguageDocument = (fileValue, lastExtensionValue) => {
+    const formData = new FormData();
+    if (fileValue) {
+      formData.append("language_document", fileValue);
+      formData.append("extension", lastExtensionValue);
+    }
+    axios
+      .post(languageDocumentAPI, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then((response) => {
+        //   toast("file uploaded successfully.", {
+        //     position: toast.POSITION.TOP_RIGHT,
+        //     type: "success",
+        //   });
+        // setIsUpLoading(false);
+        let temp = { ...languageDetails };
+        temp["lang_support_docs"] = response.data.document_path;
+        setLanguageDetails(temp);
+        console.log("Server Success Response From files", response.data);
+      })
+      .catch((error) => {
+        if (error.response) {
+          toast(`${error.response.data.message}`, {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+          });
+        } else if (error && error.response && error.response.status === 400) {
+          toast(`${error.response.data.message}`, {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+          });
+        } else {
+          toast("Something went wrong", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+          });
+        }
+        console.log(error.response);
+        // setIsUpLoading(false);
+        // setInValidName(true)
+        // onClose();
+        if (error && error.response && error.response.status === 401) {
+          makeHttpRequestForRefreshToken();
+        }
+      });
+    // }
+  };
+
+  //! document delete call
+  const deleteLanguageDocument = () => {
+    axios
+      .delete(
+        languageUpdateAPI,
+        {
+          params: {
+            document_path: documentPath,
+          },
+        },
+        authorizationHeader
+      )
+      .then((response) => {
+        console.log("response from delete===>", response.data);
+        if (response.status === 200 || response.status === 201) {
+          toast("Document Deleted Successfully", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "success",
+          });
+        }
+        setLanguageDetails({ ...languageDetails, lang_support_docs: null });
+
+        // disabling spinner
+      })
+      .catch((error) => {
+        // disabling spinner
+        console.log("response from delete===>", error.response);
+        toast(`${error.response.data.message}`, {
+          position: toast.POSITION.TOP_RIGHT,
+          type: "error",
+        });
+        if (error && error.response && error.response.status === 401) {
+          makeHttpRequestForRefreshToken();
+        }
+      });
+  };
+
   const handleUpload = ({ fileList }) => {
     setFileList(fileList);
+  };
+
+  const handleDropImage = (e) => {
+    console.log("test", e.file);
+    var arr = e.file.name.split("."); //! Split the string using dot as separator
+    var lastExtensionValue = arr.pop(); //! Get last element (value after last dot)
+    if (languageDetails.lang_support_docs === null) {
+      if (e.file.status !== "removed") {
+        postLanguageDocument(e.file, lastExtensionValue);
+      }
+    } else {
+      if (e.file.status !== "removed") {
+        editLanguageDocument(e.file, lastExtensionValue);
+      }
+    }
   };
 
   return (
@@ -512,11 +684,21 @@ const EditLanguage = () => {
                           accept=".csv"
                         /> */}
                         <Dragger
-                          name="filename"
-                          multiple={false}
+                          name="file"
+                          // multiple={false}
+                          beforeUpload={() => {
+                            return false;
+                          }}
                           accept=".csv"
                           // fileList={fileList}
-                          // onChange={handleUpload}
+                          onChange={(e) => {
+                            handleDropImage(e);
+                            languageHandler(
+                              "lang_support_docs",
+                              e.target.files
+                            );
+                          }}
+                          onRemove={(e) => deleteLanguageDocument(e)}
                         >
                           <p className="ant-upload-drag-icon">
                             <InboxOutlined />
@@ -562,7 +744,7 @@ const EditLanguage = () => {
                         <Button
                           // style={{ backgroundColor: "#393939" }}
                           className=" app-btn-primary"
-                          onClick={validateLanguageFieldEmptyOrNot}
+                          onClick={() => validateLanguageFieldEmptyOrNot()}
                         >
                           {/* <label className=" h-5  text-[14px]  text-[#FFFFFF] cursor-pointer"> */}
                           Update

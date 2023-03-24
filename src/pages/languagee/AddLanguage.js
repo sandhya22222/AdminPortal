@@ -19,14 +19,18 @@ import { ArrowLeftOutlined, InboxOutlined } from "@ant-design/icons";
 import { useNavigate, Link } from "react-router-dom";
 import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
 import "./language.css";
-
+import useAuthorization from "../../hooks/useAuthorization";
 const { Title } = Typography;
 const { Option } = Select;
 const { Content } = Layout;
 const { Dragger } = Upload;
-const languageAPI = process.env.REACT_APP_LANGUAGE_API;
 
+const languageAPI = process.env.REACT_APP_LANGUAGE_API;
+const languageDocumentAPI = process.env.REACT_APP_LANGUAGE_DOCUMENT_API;
+const languageDeleteAPI = process.env.REACT_APP_LANGUAGE_DOCUMENT_UPDATE_API;
 const AddLanguage = () => {
+  const authorizationHeader = useAuthorization();
+
   const [isLanguageFieldEmpty, setIsLanguageFieldEmpty] = useState(false);
   const [isLanguageCodeFieldEmpty, setIsLanguageCodeFieldEmpty] =
     useState(false);
@@ -41,6 +45,7 @@ const AddLanguage = () => {
   const [fileName, setFileName] = useState("");
   const [fileExtension, setFileExtension] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [langugaeDocumentPath, setLanguageDocumentPath] = useState(null);
   const navigate = useNavigate();
 
   const handleLanguageChange = (e) => {
@@ -48,7 +53,7 @@ const AddLanguage = () => {
     // setNativeName(e.target.value);
     const { value } = e.target;
     const regex = /^[a-zA-Z0-9]*$/;
-    if (e.target.value != "") {
+    if (e.target.value !== "") {
       setIsLanguageFieldEmpty(false);
     }
     if (regex.test(value)) {
@@ -60,7 +65,7 @@ const AddLanguage = () => {
     // setLanguageCode(e.target.value);
     const { value } = e.target;
     const regex = /^[a-zA-Z0-9]*$/;
-    if (e.target.value != "") {
+    if (e.target.value !== "") {
       setIsLanguageCodeFieldEmpty(false);
     }
     if (regex.test(value)) {
@@ -83,43 +88,80 @@ const AddLanguage = () => {
     setScriptDirection(value);
   };
 
-  const handleUploadFile = (info) => {
-    // if (e.target.files[0].size < 4 * 1000000) {
-    //   let file = e.target.files[0];
-    //   let fileExtension = file.name.split(".").pop();
-    //   let fileName = file.name;
-    //   setFileData(file);
-    //   setFileExtension(fileExtension);
-    //   setFileName(fileName);
-    //   console.log("Final FIle In Function", file, fileExtension, fileName);
-    // } else {
-    //   toast(`Please select File less than four mb`, {
-    //     position: toast.POSITION.TOP_RIGHT,
-    //     type: "warning",
-    //   });
+  //post function
+  const PostLanguageAPI = () => {
+    // const paramsData = new FormData();
+    // paramsData.append("language", language);
+    // paramsData.append("language_code", languageCode);
+    // paramsData.append("language_regex", regex);
+    // paramsData.append("native_name", nativeName);
+    // paramsData.append("writing_script_direction", scriptDirection);
+    // if (typeof fileData === "object") {
+    //   paramsData.append("lang_support_docs", fileData);
     // }
-    const { status } = info.file;
-    console.log("status", status);
-    console.log("info", info);
-    if (status !== "uploading") {
-      console.log("fileInfo", info.file, info.fileList);
-      let file = info.file;
-      let fileExtension = file.name.split(".").pop();
-      let fileName = file.name;
-      setFileData(file);
-      // setFileExtension(fileExtension);
-      // setFileName(fileName);
-      console.log("Final FIle In Function", file, fileExtension, fileName);
-    }
-    if (status === "done") {
-      message.success(`${info.file.name} file uploaded successfully.`);
-    } else if (status === "error") {
-      message.error(`${info.file.name} file upload failed.`);
-    }
+    // console.log("This is from Params Data---->", paramsData);
+    // enabling spinner
+    const temp = {};
+    temp["language"] = language;
+    temp["language_code"] = languageCode;
+    temp["language_regex"] = regex;
+    temp["native_name"] = nativeName;
+    temp["writing_script_direction"] = scriptDirection;
+    // if (typeof fileData === "object") {
+    temp["lang_support_docs"] = langugaeDocumentPath;
+    // }
+
+    setIsLoading(true);
+    axios
+      .post(
+        languageAPI,
+        temp,
+        // {
+        //   headers: { "Content-Type": "application/json" },
+        // },
+        authorizationHeader
+      )
+      .then((res) => {
+        console.log("from response----->", res.data);
+        console.log("from--->", res);
+        if (res.status === 201) {
+          if (res.data) {
+            toast("Language details created", {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "success",
+            });
+            // disabbling spinner
+            setIsLoading(false);
+            navigate(-1);
+          }
+        }
+      })
+      .catch((error) => {
+        // disabbling spinner
+        setIsLoading(false);
+        console.log("error", error.response);
+        if (error.response.status === 409) {
+          toast("Data already exist", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+          });
+        } else if (error && error.response && error.response.status === 401) {
+          makeHttpRequestForRefreshToken();
+        } else if (fileData) {
+          if (fileExtension !== "csv") {
+            toast("Invalid Extention , It will support only .csv extention", {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "error",
+            });
+          }
+        } else {
+          toast(`${error.response.data.message}`, {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+          });
+        }
+      });
   };
-  // onDrop(e) {
-  //   console.log("Dropped files", e.dataTransfer.files);
-  // },
 
   const validateLanguageFieldEmptyOrNot = () => {
     // let validValues = 2
@@ -156,93 +198,6 @@ const AddLanguage = () => {
     }
   };
 
-  const props = {
-    // name: "file",
-    // multiple: true,
-    // action: { fileData },
-    onChange(info) {
-      const { status } = info.file;
-      console.log("info", info);
-      if (status !== "uploading") {
-        // if (info.fileList.size < 4 * 1000000) {
-        console.log("fileInfo", info.file, info.fileList);
-        let file = info.file;
-        let fileExtension = file.name.split(".").pop();
-        let fileName = file.name;
-        setFileData(file);
-        setFileExtension(fileExtension);
-        setFileName(fileName);
-        console.log("Final FIle In Function", file, fileExtension, fileName);
-      }
-      // }
-      if (status === "done") {
-        message.success(`${info.file.name} file uploaded successfully.`);
-      } else if (status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    },
-    onDrop(e) {
-      console.log("Dropped files", e.dataTransfer.files);
-    },
-  };
-
-  //post function
-  const PostLanguageAPI = () => {
-    const paramsData = new FormData();
-    paramsData.append("language", language);
-    paramsData.append("language_code", languageCode);
-    paramsData.append("language_regex", regex);
-    paramsData.append("native_name", nativeName);
-    paramsData.append("writing_script_direction", scriptDirection);
-    if (typeof fileData === "object") {
-      paramsData.append("lang_support_docs", fileData);
-    }
-    console.log("This is from Params Data---->", paramsData);
-    // enabling spinner
-    setIsLoading(true);
-    axios
-      .post(languageAPI, paramsData)
-      .then((res) => {
-        console.log("from response----->", res.data);
-        console.log("from--->", res);
-        if (res.status === 201) {
-          if (res.data) {
-            toast("Language details created", {
-              position: toast.POSITION.TOP_RIGHT,
-              type: "success",
-            });
-            // disabbling spinner
-            setIsLoading(false);
-            navigate(-1);
-          }
-        }
-      })
-      .catch((error) => {
-        // disabbling spinner
-        setIsLoading(false);
-        if (error.response.status === 409) {
-          toast("Data already exist", {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-          });
-        } else if (error && error.response && error.response.status === 401) {
-          makeHttpRequestForRefreshToken();
-        } else if (fileData) {
-          if (fileExtension !== "csv") {
-            toast("Invalid Extention , It will support only .csv extention", {
-              position: toast.POSITION.TOP_RIGHT,
-              type: "error",
-            });
-          }
-        } else {
-          toast(`${error.response.data.message}`, {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-          });
-        }
-      });
-  };
-
   const addLanguageButtonHeader = () => {
     return (
       <>
@@ -265,33 +220,140 @@ const AddLanguage = () => {
     );
   };
 
-  console.log("fileData", fileData);
-  const handleBeforeUpload = (file) => {
-    // Perform your validation here
-    if (file.type !== "text/csv") {
-      // If the file doesn't meet the criteria, return false to prevent upload
-      message.error("Only csv files are allowed");
-      return false;
+  const handleDropImage = (e) => {
+    console.log("test", e.file);
+    var arr = e.file.name.split("."); //! Split the string using dot as separator
+    var lastExtensionValue = arr.pop(); //! Get last element (value after last dot)
+    if (e.file.status !== "removed") {
+      postLanguageDocument(e.file, lastExtensionValue);
     }
-    // Otherwise, return true to allow the upload
-    return true;
   };
 
-  const handleDrop = (files) => {
-    // Filter out the files that don't meet your criteria
-    const validFiles = files.filter((file) => file.type === "text/csv");
-    console.log("validFiles", validFiles);
-    if (validFiles.length === 0) {
-      message.error("Only csv files are allowed");
-      return;
-    }
-    // Otherwise, initiate the upload for the valid files
+  const getLangugaeDocument = () => {
+    axios
+      .get(languageDocumentAPI, authorizationHeader)
+      .then(function (response) {
+        console.log("responseofdashboard--->", response);
+      })
+      .catch((error) => {
+        console.log("errorresponse--->", error);
+      });
+  };
+  //! document post call
+  const postLanguageDocument = (fileValue, lastExtensionValue) => {
     const formData = new FormData();
-    validFiles.forEach((file) => {
-      formData.append("files[]", file);
-    });
-    // Make your API call here using the formData
-    console.log("formData", formData);
+    if (fileValue) {
+      formData.append("language_document", fileValue);
+      formData.append("extension", lastExtensionValue);
+    }
+    axios
+      .post(languageDocumentAPI, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then((response) => {
+        //   toast("file uploaded successfully.", {
+        //     position: toast.POSITION.TOP_RIGHT,
+        //     type: "success",
+        //   });
+        // setIsUpLoading(false);
+        console.log("Server Success Response From files", response.data);
+        setLanguageDocumentPath(response.data.document_path);
+      })
+      .catch((error) => {
+        if (error.response) {
+          toast(`${error.response.data.extension}`, {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+          });
+        } else if (error && error.response && error.response.status === 400) {
+          toast(`${error.response.data.message}`, {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+          });
+        } else {
+          toast("Something went wrong", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+          });
+        }
+        console.log(error.response);
+        // setIsUpLoading(false);
+        // setInValidName(true)
+        // onClose();
+        if (error && error.response && error.response.status === 401) {
+          makeHttpRequestForRefreshToken();
+        }
+      });
+    // }
+  };
+
+  //! document delete call
+  const deleteLanguageDocument = () => {
+    axios
+      .delete(
+        languageDeleteAPI,
+        {
+          params: {
+            document_path: langugaeDocumentPath,
+          },
+        },
+        authorizationHeader
+      )
+      .then((response) => {
+        console.log("response from delete===>", response.data);
+        if (response.status === 200 || response.status === 201) {
+          toast("Document Deleted Successfully", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "success",
+          });
+        }
+        // disabling spinner
+      })
+      .catch((error) => {
+        // disabling spinner
+        console.log("response from delete===>", error.response);
+        toast(`${error.response.data.message}`, {
+          position: toast.POSITION.TOP_RIGHT,
+          type: "error",
+        });
+        if (error && error.response && error.response.status === 401) {
+          makeHttpRequestForRefreshToken();
+        }
+      });
+  };
+
+  const handleUploadFile = (e) => {
+    // if (e.target.files[0].size < 4 * 1000000) {
+    //   let file = e.target.files[0];
+    //   let fileExtension = file.name.split(".").pop();
+    //   let fileName = file.name;
+    //   setFileData(file);
+    //   setFileExtension(fileExtension);
+    //   setFileName(fileName);
+    //   console.log("Final FIle In Function", file, fileExtension, fileName);
+    // } else {
+    //   toast(`Please select File less than four mb`, {
+    //     position: toast.POSITION.TOP_RIGHT,
+    //     type: "warning",
+    //   });
+    // }
+    // const { status } = info.file;
+    // if (status !== "uploading") {
+    //   console.log("fileInfo", info.file, info.fileList);
+    //   let file = info.file;
+    //   let fileExtension = file.name.split(".").pop();
+    //   let fileName = file.name;
+    //   setFileData(file);
+    //   // if (fileData) {
+    //   //   postLanguageDocument();
+    //   // }
+    //   console.log("Final FIle In Function", file, fileExtension, fileName);
+    // }
+    // if (status === "done") {
+    //   message.success(`${info.file.name} file uploaded successfully.`);
+    // } else if (status === "error") {
+    //   message.error(`${info.file.name} file upload failed.`);
+    // }
   };
 
   return (
@@ -339,7 +401,7 @@ const AddLanguage = () => {
                         maxLength={50}
                         className={`${
                           isLanguageFieldEmpty
-                            ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
+                            ? "border-red-400 !border-[0.5px] border-solid focus:border-red-400 hover:border-red-400"
                             : ""
                         }`}
                         onChange={(e) => {
@@ -440,17 +502,26 @@ const AddLanguage = () => {
                     Language Supported Document
                   </label>
                   {/* <Input
-                  type="file"
-                  name="filename"
-                  onChange={(e) => handleUploadFile(e)}
-                  accept=".csv"
-                /> */}
-
-                  <Dragger
+                    type="file"
+                    name="filename"
+                    onChange={(e) => handleUploadFile(e)}
                     accept=".csv"
-                    onDrop={handleDrop}
+                  />
+                  <Button onClick={temp}>Save</Button> */}
+                  <Dragger
+                    // {...props}
+                    beforeUpload={() => {
+                      return false;
+                    }}
+                    afterUpload={() => {
+                      return false;
+                    }}
+                    accept=".csv"
+                    // action="/languages/rest/v2/language"
+                    // onDrop={(e) => handleDrop(e)}
                     name="file"
-                    // onChange={(e) => handleUploadFile(e)}
+                    onChange={(e) => handleDropImage(e)}
+                    onRemove={(e) => deleteLanguageDocument(e)}
                   >
                     <p className="ant-upload-drag-icon">
                       <InboxOutlined />
@@ -469,7 +540,7 @@ const AddLanguage = () => {
                   <Button
                     style={{ backgroundColor: "#393939" }}
                     className="app-btn-primary"
-                    onClick={() => validateLanguageFieldEmptyOrNot}
+                    onClick={() => validateLanguageFieldEmptyOrNot()}
                   >
                     Save
                   </Button>

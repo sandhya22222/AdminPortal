@@ -65,15 +65,15 @@ const SidebarNew = (props) => {
     },
     {
       key: "4",
-      icon: <DollarCircleOutlined />,
-      label: "Payment Type",
-      navigate_to: "/dashboard/paymenttype",
-    },
-    {
-      key: "5",
       icon: <SettingOutlined />,
       label: "Store Settings",
       navigate_to: "/dashboard/storesetting",
+    },
+    {
+      key: "5",
+      icon: <DollarCircleOutlined />,
+      label: "Payment Type",
+      navigate_to: "/dashboard/paymenttype",
     },
     // {
     //   key: "5",
@@ -85,10 +85,10 @@ const SidebarNew = (props) => {
 
   useEffect(() => {
     switch (pathname.split("/")[2]) {
-      case "storesetting":
+      case "paymenttype":
         setSelectedItem("5");
         break;
-      case "paymenttype":
+      case "storesetting":
         setSelectedItem("4");
         break;
       case "language":
