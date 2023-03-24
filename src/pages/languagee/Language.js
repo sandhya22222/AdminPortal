@@ -357,6 +357,8 @@ const Language = () => {
         setIslanguageDeleting(false);
       })
       .catch((error) => {
+        if(error&&error.response&&error.response.status === 401){
+          makeHttpRequestForRefreshToken();}
         // disabling spinner
         setIslanguageDeleting(false);
         console.log("response from delete===>", error.response);
@@ -364,9 +366,7 @@ const Language = () => {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
         });
-        if (error && error.response && error.response.status === 401) {
-          makeHttpRequestForRefreshToken();
-        }
+      
       });
   };
   const getLanguageData = (page, limit) => {
@@ -395,6 +395,8 @@ const Language = () => {
         // setIsNetworkErrorLanguage(false);
       })
       .catch((error) => {
+        if(error&&error.response&&error.response.status === 401){
+          makeHttpRequestForRefreshToken();}
         setIsLoading(false);
         setIsNetworkErrorLanguage(true);
         console.log(
@@ -403,10 +405,6 @@ const Language = () => {
         );
         if (error.response) {
           setErrorMessage(error.response.data.message);
-        }
-        if (error && error.response && error.response.status === 401) {
-          makeHttpRequestForRefreshToken();
-          // setErrorMessage(error.response)
         }
         if (error.response.data.message === "That page contains no results") {
           setSearchParams({

@@ -85,10 +85,11 @@ const Header = () => {
         }
       })
       .catch((err) => {
+        if(err&&err.response&&err.response.status === 401){
+          makeHttpRequestForRefreshToken();}
         console.log("logged out err", err);
         sessionStorage.clear();
-        if(err&&err.response&&err.response.status === 401){
-           makeHttpRequestForRefreshToken();}
+      
       });
   };
 
