@@ -118,31 +118,39 @@ const StoreSettings = () => {
   //! post call for store settings
   const storeSettingsPostCall = () => {
     const postBody = {
-      store: storeId,
-      store_currency: {
-        symbol: currencySymbol,
-        iso_code: currencyIsoCode,
-        fractional_unit: fractionalUnit,
-        number_to_basic: numberToBasic,
-      },
-      store_page_settings: {
-        bg_color: pageBackgroundColor,
-        fg_color: foreGroundColor,
-        btn_primary_bg_color: buttonPrimaryBackgroundColor,
-        btn_secondary_bg_color: buttonSecondaryBackgroundColor,
-        btn_tertiary_bg_color: buttonTeritaryBackgroundColor,
-        btn_primary_fg_color: buttonPrimaryForegroundColor,
-        btn_secondary_fg_color: buttonSecondaryForegroundColor,
-        btn_tertiary_fg_color: buttonTeritaryForegroundColor,
-      },
-      store_header_settings: {
-        bg_color: headerBackgroundColor,
-        fg_color: headerForegroundColor,
-      },
-      store_footer_settings: {
-        bg_color: footerBackgroundColor,
-        fg_color: footerForegroundColor,
-      },
+      store_id: storeId,
+      store_currency: [
+        {
+          symbol: currencySymbol,
+          iso_code: currencyIsoCode,
+          fractional_unit: fractionalUnit,
+          number_to_basic: numberToBasic,
+        },
+      ],
+      store_page_settings: [
+        {
+          bg_color: pageBackgroundColor,
+          fg_color: foreGroundColor,
+          btn_primary_bg_color: buttonPrimaryBackgroundColor,
+          btn_secondary_bg_color: buttonSecondaryBackgroundColor,
+          btn_tertiary_bg_color: buttonTeritaryBackgroundColor,
+          btn_primary_fg_color: buttonPrimaryForegroundColor,
+          btn_secondary_fg_color: buttonSecondaryForegroundColor,
+          btn_tertiary_fg_color: buttonTeritaryForegroundColor,
+        },
+      ],
+      store_header_settings: [
+        {
+          bg_color: headerBackgroundColor,
+          fg_color: headerForegroundColor,
+        },
+      ],
+      store_footer_settings: [
+        {
+          bg_color: footerBackgroundColor,
+          fg_color: footerForegroundColor,
+        },
+      ],
     };
     setIsLoading(true);
     axios
