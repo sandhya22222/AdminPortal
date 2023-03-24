@@ -4,6 +4,8 @@ import { toast } from "react-toastify";
 import StoreModal from "../../components/storeModal/StoreModal";
 import axios from "axios";
 import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
+import useAuthorization from "../../hooks/useAuthorization";
+
 const storeEditStatusAPI = process.env.REACT_APP_STORE_STATUS_API;
 
 function Status({
@@ -15,6 +17,8 @@ function Status({
   setStoreApiData,
   tabId,
 }) {
+  const authorizationHeader = useAuthorization();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [switchStatus, setSwitchStatus] = useState(storeStatus);
   const [changeSwitchStatus, setChangeSwitchStatus] = useState("");
@@ -39,11 +43,16 @@ function Status({
     // Enabling spinner
     setIsLoading(true);
     axios
-      .put(storeEditStatusAPI, reqbody, {
-        params: {
-          "store-id": parseInt(storeId),
+      .put(
+        storeEditStatusAPI,
+        reqbody,
+        {
+          params: {
+            "store-id": parseInt(storeId),
+          },
         },
-      })
+        authorizationHeader
+      )
       .then((response) => {
         setSwitchStatus(changeSwitchStatus);
         if (changeSwitchStatus) {
@@ -89,19 +98,29 @@ function Status({
         }
         setIsLoading(false);
         closeModal();
-      })
-      console.log("first12344",switchStatus)
-      .catch((error) => {
-        if(error&&error.response&&error.response.status === 401){
-          makeHttpRequestForRefreshToken();}
-        toast(error.response.data.message, {
-          type: "error",
-        });
-        console.log("Error from the status response ===>", error.response);
-        setIsLoading(false);
-        closeModal();
-       
       });
+    console.log("first12344", switchStatus).catch((error) => {
+      if (error && error.response && error.response.status === 401) {
+        makeHttpRequestForRefreshToken();
+      }
+      toast(error.response.data.message, {
+        type: "error",
+      });
+      console.log("Error from the status response ===>", error.response);
+      setIsLoading(false);
+      closeModal();
+    });
+    console.log("first12344", switchStatus).catch((error) => {
+      toast(error.response.data.message, {
+        type: "error",
+      });
+      console.log("Error from the status response ===>", error.response);
+      setIsLoading(false);
+      closeModal();
+      if (error && error.response && error.response.status === 401) {
+        makeHttpRequestForRefreshToken();
+      }
+    });
 
     console.log("post body for ---", storeEditStatusAPI, " is:", reqbody);
   };

@@ -32,6 +32,7 @@ import Status from "./Status";
 import DmPagination from "../../components/DmPagination/DmPagination";
 import { usePageTitle } from "../../hooks/usePageTitle";
 import Highlighter from "react-highlight-words";
+import useAuthorization from "../../hooks/useAuthorization";
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -54,6 +55,8 @@ const storeTabData = [
   },
 ];
 const Stores = () => {
+  const authorizationHeader = useAuthorization();
+
   usePageTitle("Admin Portal - Store");
   const params = useParams();
   const navigate = useNavigate();
@@ -407,7 +410,7 @@ const Stores = () => {
   const getStoreApi = (pageNumber, pageLimit, storeStatus) => {
     // setIsLoading(true);
     axios
-      .get(storeAPI, {
+      .get(storeAPI, authorizationHeader, {
         params: {
           // store_id: parseInt(storeId),
           "page-number": pageNumber,
@@ -483,7 +486,7 @@ const Stores = () => {
     };
     setIsUpLoading(true);
     axios
-      .post(storeAPI, postBody)
+      .post(storeAPI, postBody, authorizationHeader)
       .then((response) => {
         toast("Store created successfully.", {
           position: toast.POSITION.TOP_RIGHT,
@@ -530,11 +533,16 @@ const Stores = () => {
     console.log("editStoreData() Endpoint:", storeAPI, putObject);
     console.log("editStoreData() putBody:", putObject);
     axios
-      .put(storeAPI, putObject, {
-        params: {
-          store_id: parseInt(storeEditId),
+      .put(
+        storeAPI,
+        putObject,
+        {
+          params: {
+            store_id: parseInt(storeEditId),
+          },
         },
-      })
+        authorizationHeader
+      )
       .then((response) => {
         console.log("put response", response.data, storeApiData);
         let copyofStoreAPIData = [...storeApiData];
