@@ -215,7 +215,7 @@ const Language = () => {
       render: (text, record) => {
         return <>{record.language}</>;
       },
-      ...getColumnSearchProps("language"),
+      // ...getColumnSearchProps("language"),
     },
     {
       title: "Language Code",
