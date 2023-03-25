@@ -160,28 +160,6 @@ const Stores = () => {
           >
             Reset
           </Button>
-          {/* <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({
-                closeDropdown: false,
-              });
-              setSearchText(selectedKeys[0]);
-              setSearchedColumn(dataIndex);
-            }}
-          >
-            Filter
-          </Button> */}
-          {/* <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              close();
-            }}
-          >
-            close
-          </Button> */}
         </Space>
       </div>
     ),
@@ -237,7 +215,7 @@ const Stores = () => {
       render: (text, record) => {
         return <>{record.name}</>;
       },
-      ...getColumnSearchProps("name"),
+      // ...getColumnSearchProps("name"),
     },
     {
       title: "Status",
@@ -805,6 +783,8 @@ const Stores = () => {
                             ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-4"
                             : "mb-4"
                         }`}
+                        addonAfter=".com"
+                        // addonBefore="@"
                         onChange={(e) => {
                           // handleEmailChange(e);
                           const { value } = e.target;
@@ -813,7 +793,7 @@ const Stores = () => {
                             setStoreEmail(value);
                             setInValidEmail(false);
                           } else {
-                            toast("Invalid email", {
+                            toast("Please provide valid email", {
                               position: toast.POSITION.TOP_RIGHT,
                               type: "warning",
                             });
