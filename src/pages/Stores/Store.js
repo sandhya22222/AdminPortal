@@ -749,137 +749,147 @@ const Stores = () => {
                 open={open}
                 width={"40%"}
               >
-                <Row>
-                  <Col span={1} className="flex items-start">
-                    <MdInfo className="text-blue-400 text-[16px]" />
-                  </Col>
-                  <Col span={23} className="align-center mb-3">
-                    <Text className=" mr-1 font-bold">Note: </Text>
-                    <Text>
-                      The store must be set up with a store administrator.
-                      Please enter your store name along with the administration
-                      details below. The same details can be used when signing
-                      into the store portal
-                    </Text>
-                  </Col>
-                </Row>
-
                 {drawerAction && drawerAction === "post" ? (
+                  <>
+                    <Row>
+                      <Col span={1} className="flex items-start">
+                        <MdInfo className="text-blue-400 text-[16px]" />
+                      </Col>
+                      <Col span={23} className="align-center mb-3">
+                        <Text className=" mr-1 font-bold">Note: </Text>
+                        <Text>
+                          The store must be set up with a store administrator.
+                          Please enter your store name along with the
+                          administration details below. The same details can be
+                          used when signing into the store portal
+                        </Text>
+                      </Col>
+                    </Row>
+                    <Spin
+                      tip="Please wait!"
+                      size="large"
+                      spinning={isUpLoading}
+                    >
+                      <span className="text-red-600 text-sm">*</span>
+                      <label className="text-[13px] mb-2 ml-1">
+                        Store Name
+                        {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
+                      </label>
+                      <Input
+                        placeholder="Enter store name"
+                        value={name}
+                        maxLength={255}
+                        className={`${
+                          inValidName
+                            ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-2"
+                            : "mb-2"
+                        }`}
+                        onChange={(e) => {
+                          var nameTrim = e.target.value;
+                          //  var nameToTrim = nameTrim.trim()
+                          setName(nameTrim.trim());
+                          setInValidName(false);
+                        }}
+                      />
+                      <Divider orientation="left" orientationMargin="0">
+                        Store Administrator Details
+                      </Divider>
+                      <span className="text-red-600 text-sm">*</span>
+                      <label className="text-[13px] mb-2 ml-1">Email</label>
+                      <Input
+                        placeholder="Enter email"
+                        value={storeEmail}
+                        maxLength={30}
+                        className={`${
+                          inValidEmail
+                            ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-4"
+                            : "mb-4"
+                        }`}
+                        onChange={(e) => {
+                          // handleEmailChange(e);
+                          const { value } = e.target;
+                          const regex = /^[a-zA-Z0-9_.-@]*$/;
+                          if (regex.test(value)) {
+                            setStoreEmail(value);
+                            setInValidEmail(false);
+                          } else {
+                            toast("Invalid email", {
+                              position: toast.POSITION.TOP_RIGHT,
+                              type: "warning",
+                            });
+                          }
+                        }}
+                      />
+                      <span className="text-red-600 text-sm">*</span>
+                      <label className="text-[13px] mb-2 ml-1">Username</label>
+                      <Input
+                        placeholder="Enter username"
+                        value={storeUserName}
+                        maxLength={10}
+                        className={`${
+                          inValidUserName
+                            ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-4"
+                            : "mb-4"
+                        }`}
+                        onChange={(e) => {
+                          const { value } = e.target;
+                          const regex = /^[a-zA-Z0-9_-]*$/; // only allow letters and numbers
+                          if (regex.test(value)) {
+                            setStoreUserName(value);
+                            setInValidUserName(false);
+                          } else {
+                            toast(
+                              "Please enter only alphabets, numbers, underscore, and hyphen.",
+                              {
+                                position: toast.POSITION.TOP_RIGHT,
+                                type: "warning",
+                              }
+                            );
+                          }
+                        }}
+                      />
+                      <span className="text-red-600 text-sm">*</span>
+                      <label className="text-[13px] mb-2 ml-1">
+                        Password
+                        {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
+                      </label>
+                      <Input.Password
+                        placeholder="Enter password"
+                        value={storePassword}
+                        maxLength={6}
+                        className={`${
+                          inValidPassword
+                            ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-4"
+                            : "mb-4"
+                        }`}
+                        onChange={(e) => {
+                          // const { value } = e.target;
+                          // const regex = /^[a-zA-Z0-9]*$/; // only allow letters and numbers
+                          // if (regex.test(value)) {
+                          //   setName(e.target.value);
+                          // }
+                          // setInValidName(false);
+                          setStorePassword(e.target.value);
+                          setInValidPassword(false);
+                        }}
+                      />
+                      <Button
+                        className="app-btn-primary"
+                        onClick={() => {
+                          validateStorePostField();
+                        }}
+                      >
+                        Save
+                      </Button>
+                    </Spin>
+                  </>
+                ) : (
                   <Spin tip="Please wait!" size="large" spinning={isUpLoading}>
                     <span className="text-red-600 text-sm">*</span>
                     <label className="text-[13px] mb-2 ml-1">
                       Store Name
                       {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
                     </label>
-                    <Input
-                      placeholder="Enter store name"
-                      value={name}
-                      maxLength={255}
-                      className={`${
-                        inValidName
-                          ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-2"
-                          : "mb-2"
-                      }`}
-                      onChange={(e) => {
-                        var nameTrim = e.target.value;
-                        //  var nameToTrim = nameTrim.trim()
-                        setName(nameTrim.trim());
-                        setInValidName(false);
-                      }}
-                    />
-                    <Divider orientation="left" orientationMargin="0">
-                      Store Administrator Details
-                    </Divider>
-                    <span className="text-red-600 text-sm">*</span>
-                    <label className="text-[13px] mb-2 ml-1">Email</label>
-                    <Input
-                      placeholder="Enter email"
-                      value={storeEmail}
-                      maxLength={30}
-                      className={`${
-                        inValidEmail
-                          ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-4"
-                          : "mb-4"
-                      }`}
-                      onChange={(e) => {
-                        // handleEmailChange(e);
-                        const { value } = e.target;
-                        const regex = /^[a-zA-Z0-9_.-@]*$/;
-                        if (regex.test(value)) {
-                          setStoreEmail(value);
-                          setInValidEmail(false);
-                        } else {
-                          toast("Invalid email", {
-                            position: toast.POSITION.TOP_RIGHT,
-                            type: "warning",
-                          });
-                        }
-                      }}
-                    />
-                    <span className="text-red-600 text-sm">*</span>
-                    <label className="text-[13px] mb-2 ml-1">Username</label>
-                    <Input
-                      placeholder="Enter username"
-                      value={storeUserName}
-                      maxLength={10}
-                      className={`${
-                        inValidUserName
-                          ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-4"
-                          : "mb-4"
-                      }`}
-                      onChange={(e) => {
-                        const { value } = e.target;
-                        const regex = /^[a-zA-Z0-9_-]*$/; // only allow letters and numbers
-                        if (regex.test(value)) {
-                          setStoreUserName(value);
-                          setInValidUserName(false);
-                        } else {
-                          toast(
-                            "Please enter only alphabets, numbers, underscore, and hyphen.",
-                            {
-                              position: toast.POSITION.TOP_RIGHT,
-                              type: "warning",
-                            }
-                          );
-                        }
-                      }}
-                    />
-                    <span className="text-red-600 text-sm">*</span>
-                    <label className="text-[13px] mb-2 ml-1">
-                      Password
-                      {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
-                    </label>
-                    <Input.Password
-                      placeholder="Enter password"
-                      value={storePassword}
-                      maxLength={6}
-                      className={`${
-                        inValidPassword
-                          ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-4"
-                          : "mb-4"
-                      }`}
-                      onChange={(e) => {
-                        // const { value } = e.target;
-                        // const regex = /^[a-zA-Z0-9]*$/; // only allow letters and numbers
-                        // if (regex.test(value)) {
-                        //   setName(e.target.value);
-                        // }
-                        // setInValidName(false);
-                        setStorePassword(e.target.value);
-                        setInValidPassword(false);
-                      }}
-                    />
-                    <Button
-                      className="app-btn-primary"
-                      onClick={() => {
-                        validateStorePostField();
-                      }}
-                    >
-                      Save
-                    </Button>
-                  </Spin>
-                ) : (
-                  <Spin tip="Please wait!" size="large" spinning={isUpLoading}>
                     <Input
                       value={editName}
                       className={`${
