@@ -15,7 +15,7 @@ const LanguageGraph = ({ languageData }) => {
     if (languageData && languageData.length > 0) {
       for (var i = 0; i < languageData.length > 0; i++) {
         let localObject = {};
-        localObject["type"] = languageData[i].store_id;
+        localObject["type"] = languageData[i].store_name;
         localObject["value"] = languageData[i].language_count;
         temp.push(localObject);
       }
