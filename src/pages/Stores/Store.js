@@ -87,10 +87,10 @@ const Stores = () => {
   const [storeEmail, setStoreEmail] = useState("");
   const [storeUserName, setStoreUserName] = useState("");
   const [storePassword, setStorePassword] = useState("");
-  // const [userNameErrorMessage, setUserNameErrorMessage] = useState("");
   const [inValidEmail, setInValidEmail] = useState(false);
   const [inValidUserName, setInValidUserName] = useState(false);
   const [inValidPassword, setInValidPassword] = useState(false);
+
   // const [currentPage, setCurrentPage] = useState(
   //   params.page ? params.page.slice(5, params.page.length) : 1
   // );
@@ -425,14 +425,18 @@ const Stores = () => {
   const getStoreApi = (pageNumber, pageLimit, storeStatus) => {
     // setIsLoading(true);
     axios
-      .get(storeAPI, authorizationHeader, {
-        params: {
-          // store_id: parseInt(storeId),
-          "page-number": pageNumber,
-          "page-limit": pageLimit,
-          status: storeStatus,
+      .get(
+        storeAPI,
+        {
+          params: {
+            // store_id: parseInt(storeId),
+            "page-number": pageNumber,
+            "page-limit": pageLimit,
+            status: storeStatus ? storeStatus : null,
+          },
         },
-      })
+        authorizationHeader
+      )
       .then(function (response) {
         setIsNetworkError(false);
         setIsLoading(false);
@@ -711,6 +715,7 @@ const Stores = () => {
     });
     // navigate(`/dashboard/store?tab=${tab_id}&page=${page}&count=${pageSize}`);
   };
+
   return (
     <Layout className="p-3">
       <Content className="mb-1">
@@ -790,21 +795,25 @@ const Stores = () => {
                     <Input
                       placeholder="Enter email"
                       value={storeEmail}
-                      maxLength={50}
+                      maxLength={30}
                       className={`${
                         inValidEmail
                           ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-4"
                           : "mb-4"
                       }`}
                       onChange={(e) => {
-                        // const { value } = e.target;
-                        // const regex =
-                        //   /^[a-zA-Z0-9_]$/; // define your regex pattern here
-                        // if (regex.test(value)) {
-                        //   setStoreEmail(value);
-                        // }
-                        setStoreEmail(e.target.value);
-                        setInValidEmail(false);
+                        // handleEmailChange(e);
+                        const { value } = e.target;
+                        const regex = /^[a-zA-Z0-9_.-@]*$/;
+                        if (regex.test(value)) {
+                          setStoreEmail(value);
+                          setInValidEmail(false);
+                        } else {
+                          toast("Invalid email", {
+                            position: toast.POSITION.TOP_RIGHT,
+                            type: "warning",
+                          });
+                        }
                       }}
                     />
                     <span className="text-red-600 text-sm">*</span>
@@ -823,16 +832,16 @@ const Stores = () => {
                         const regex = /^[a-zA-Z0-9_-]*$/; // only allow letters and numbers
                         if (regex.test(value)) {
                           setStoreUserName(value);
+                          setInValidUserName(false);
+                        } else {
+                          toast(
+                            "Please enter only alphabets, numbers, underscore, and hyphen.",
+                            {
+                              position: toast.POSITION.TOP_RIGHT,
+                              type: "warning",
+                            }
+                          );
                         }
-                        // setStoreUserName(e.target.value);
-                        setInValidUserName(false);
-
-                        // setUserNameErrorMessage("");
-                        // } else {
-                        //   setUserNameErrorMessage(
-                        //     "Please enter only alphabets, numbers, underscore, and hyphen."
-                        //   );
-                        // }
                       }}
                     />
                     <span className="text-red-600 text-sm">*</span>
