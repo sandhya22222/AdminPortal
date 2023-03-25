@@ -197,14 +197,14 @@ const Language = () => {
   };
 
   const columns = [
-    {
-      title: "Id",
-      dataIndex: "id",
-      key: "id",
-      render: (text, record) => {
-        return <div>{record.id}</div>;
-      },
-    },
+    // {
+    //   title: "Id",
+    //   dataIndex: "id",
+    //   key: "id",
+    //   render: (text, record) => {
+    //     return <div>{record.id}</div>;
+    //   },
+    // },
     {
       title: "Language",
       dataIndex: "language",
@@ -249,14 +249,14 @@ const Language = () => {
         return <>{record.lang_support_docs}</>;
       },
     },
-    {
-      title: "Language Regex",
-      dataIndex: "dm_language_regex",
-      key: "dm_language_regex",
-      render: (text, record) => {
-        return <>{record.dm_language_regex}</>;
-      },
-    },
+    // {
+    //   title: "Language Regex",
+    //   dataIndex: "dm_language_regex",
+    //   key: "dm_language_regex",
+    //   render: (text, record) => {
+    //     return <>{record.dm_language_regex}</>;
+    //   },
+    // },
     {
       title: "Action",
       dataIndex: "",

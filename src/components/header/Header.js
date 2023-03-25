@@ -15,11 +15,11 @@ import {
   DropdownItem,
   Dropdown,
 } from "reactstrap";
-import { Typography, Layout, Button } from "antd";
+import { Typography, Layout, Button, Tooltip } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { useNavigate, Link } from "react-router-dom";
-import { UserOutlined } from "@ant-design/icons";
+import { UserOutlined, LoginOutlined, LogoutOutlined } from "@ant-design/icons";
 
 //! Import CSS libraries
 
@@ -38,7 +38,7 @@ import { keycloakData } from "../../urlPages/keycloak";
 import axios from "axios";
 
 //! Get all required details from .env file
-import {makeHttpRequestForRefreshToken} from "../../util/unauthorizedControl"
+import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
 //! Destructure the components
 const { Text } = Typography;
 const { Content } = Layout;
@@ -61,7 +61,7 @@ const Header = () => {
 
   const handleSignIn = () => {
     // window.location = `${keyUrl}/realms/${realmName}/protocol/openid-connect/auth?response_type=code&client_id=${clientId}`;
-     navigate('/')
+    navigate("/");
   };
 
   const handleLogout = () => {
@@ -85,11 +85,11 @@ const Header = () => {
         }
       })
       .catch((err) => {
-        if(err&&err.response&&err.response.status === 401){
-          makeHttpRequestForRefreshToken();}
+        if (err && err.response && err.response.status === 401) {
+          makeHttpRequestForRefreshToken();
+        }
         console.log("logged out err", err);
         sessionStorage.clear();
-      
       });
   };
 
@@ -208,7 +208,15 @@ const Header = () => {
                   className="app-btn-primary"
                   // className="!h-10 !bg-[#393939] text-white !border-[1px] !border-solid !border-[#393939] !box-border !rounded !pl-[15px]"
                 >
-                  {isLoggedIn ? "Logout" : "Signin"}
+                  {isLoggedIn ? (
+                    <Tooltip title="Logout" placement="bottom">
+                      <LogoutOutlined className="!mb-1" />{" "}
+                    </Tooltip>
+                  ) : (
+                    <Tooltip title="Login" placement="bottom">
+                      <LoginOutlined className="!mb-1" />
+                    </Tooltip>
+                  )}
                 </Button>
                 {/* <Link
                   to={{
