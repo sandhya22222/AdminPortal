@@ -398,7 +398,7 @@ const AddLanguage = () => {
                       <Input
                         placeholder="Enter Language Name"
                         value={language}
-                        maxLength={50}
+                        maxLength={15}
                         className={`${
                           isLanguageFieldEmpty
                             ? "border-red-400 !border-[0.5px] border-solid focus:border-red-400 hover:border-red-400"
@@ -429,7 +429,7 @@ const AddLanguage = () => {
                       <Input
                         placeholder="Enter Language Code"
                         value={languageCode}
-                        maxLength={50}
+                        maxLength={3}
                         className={`${
                           isLanguageCodeFieldEmpty
                             ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"

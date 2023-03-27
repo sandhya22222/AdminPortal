@@ -557,7 +557,7 @@ const EditLanguage = () => {
                                   ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
                                   : ""
                               }`}
-                              maxLength={50}
+                              maxLength={15}
                               onChange={(e) => {
                                 const regex = /^[a-zA-Z0-9]*$/;
                                 if (
@@ -584,7 +584,7 @@ const EditLanguage = () => {
                             <Input
                               placeholder="Enter Language Code"
                               value={languageDetails.language_code}
-                              maxLength={50}
+                              maxLength={3}
                               className={`${
                                 isLanguageCodeFieldEmpty
                                   ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
