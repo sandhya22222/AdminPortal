@@ -16,7 +16,7 @@ import {
 import axios from "axios";
 import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
 import { toast } from "react-toastify";
-import { EditOutlined, SearchOutlined } from "@ant-design/icons";
+import { EditOutlined, SearchOutlined, UserOutlined } from "@ant-design/icons";
 import { MdInfo } from "react-icons/md";
 import {
   useLocation,
@@ -771,10 +771,9 @@ const Stores = () => {
                             ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-4"
                             : "mb-4"
                         }`}
-                        addonAfter=".com"
+                        // addonAfter=".com"
                         // addonBefore="@"
                         onChange={(e) => {
-                          // handleEmailChange(e);
                           const { value } = e.target;
                           const regex = /^[a-zA-Z0-9_.-@]*$/;
                           if (regex.test(value)) {
@@ -794,11 +793,15 @@ const Stores = () => {
                         placeholder="Enter username"
                         value={storeUserName}
                         maxLength={10}
+                        suffix={`${storeUserName.length}/10`}
                         className={`${
                           inValidUserName
                             ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-4"
                             : "mb-4"
                         }`}
+                        prefix={
+                          <UserOutlined className="site-form-item-icon" />
+                        }
                         onChange={(e) => {
                           const { value } = e.target;
                           const regex = /^[a-zA-Z0-9_-]*$/; // only allow letters and numbers
@@ -817,28 +820,29 @@ const Stores = () => {
                         }}
                       />
                       <span className="text-red-600 text-sm">*</span>
-                      <label className="text-[13px] mb-2 ml-1">
-                        Password
-                        {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
-                      </label>
+                      <label className="text-[13px] mb-2 ml-1">Password</label>
                       <Input.Password
                         placeholder="Enter password"
                         value={storePassword}
-                        maxLength={6}
+                        // maxLength={6}
                         className={`${
                           inValidPassword
                             ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-4"
                             : "mb-4"
                         }`}
                         onChange={(e) => {
-                          // const { value } = e.target;
-                          // const regex = /^[a-zA-Z0-9]*$/; // only allow letters and numbers
-                          // if (regex.test(value)) {
-                          //   setName(e.target.value);
-                          // }
-                          // setInValidName(false);
-                          setStorePassword(e.target.value);
-                          setInValidPassword(false);
+                          const value = e.target.value;
+                          if (value && value.length <= 6) {
+                            setStorePassword(e.target.value);
+                            setInValidPassword(false);
+                          } else if (value && value.length > 6) {
+                            toast("Password should allow only 6 characters", {
+                              position: toast.POSITION.TOP_RIGHT,
+                              type: "warning",
+                            });
+                          } else if (e.target.value === "") {
+                            setStorePassword(e.target.value);
+                          }
                         }}
                       />
                       <Button
@@ -927,6 +931,10 @@ const Stores = () => {
                         value={storeEditUserName}
                         maxLength={10}
                         className="mb-4"
+                        prefix={
+                          <UserOutlined className="site-form-item-icon" />
+                        }
+                        suffix={`${storeEditUserName.length}/10`}
                         disabled
                         onChange={(e) => {
                           const { value } = e.target;
