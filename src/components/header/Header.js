@@ -126,7 +126,7 @@ const Header = () => {
     <Container fluid className="navbar z-20">
       <Navbar color="white" expand="md" fixed="top" className="drop-shadow">
         <NavbarBrand to="/dashboard" tag={Link} className="me-auto">
-          <img src={BrandLogo} alt="logo" />
+          <img src={BrandLogo} className="w-[150px]" alt="logo" />
         </NavbarBrand>
         <NavbarToggler
           className="me-2"
