@@ -312,7 +312,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                   <Text className="text-lg !text-slate-200">Stores</Text>
                 </div>
               </Content>
-              <Content className="w-[100%] bg-yellow-400 p-2 mr-5 text-center rounded-md">
+              <Content className="w-[100%] bg-[#b464f9] p-2 mr-5 text-center rounded-md">
                 <Title level={2} className="!text-slate-200 mb-2">
                   {dashboardData &&
                     dashboardData.language_data &&
@@ -322,7 +322,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                   <Text className="text-lg !text-slate-200">Languages</Text>
                 </div>
               </Content>
-              <Content className="w-[100%] bg-[#62daaa] p-2 mr-5 text-center rounded-md">
+              <Content className="w-[100%] bg-bg-red-400 p-2 mr-5 text-center rounded-md">
                 <Title level={2} className="!text-slate-200 mb-2">
                   {dashboardData &&
                     dashboardData.product_type_data &&
