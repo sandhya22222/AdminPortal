@@ -752,8 +752,8 @@ const Stores = () => {
                         }`}
                         onChange={(e) => {
                           var nameTrim = e.target.value;
-                           var nameToTrim = nameTrim.trim()
-                          setName(e.target.value.trim());
+                          //  var nameToTrim = nameTrim.trim()
+                          setName(nameTrim.trim());
                           setInValidName(false);
                         }}
                       />
@@ -776,7 +776,7 @@ const Stores = () => {
                         onChange={(e) => {
                           const { value } = e.target;
                           const regex =
-                            /^[A-Za-z\\_]+[0-9]{0,64}@([A-Za-z\\-]{3,255}\\.)+[A-Za-z]{2,4}$/;
+                          /^[a-zA-Z0-9_.-@]*$/;
                           if (regex.test(value)) {
                             setStoreEmail(value);
                             setInValidEmail(false);
