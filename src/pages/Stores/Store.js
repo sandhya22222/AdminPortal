@@ -752,8 +752,8 @@ const Stores = () => {
                         }`}
                         onChange={(e) => {
                           var nameTrim = e.target.value;
-                          //  var nameToTrim = nameTrim.trim()
-                          setName(nameTrim.trim());
+                           var nameToTrim = nameTrim.trim()
+                          setName(e.target.value.trim());
                           setInValidName(false);
                         }}
                       />
@@ -775,16 +775,18 @@ const Stores = () => {
                         // addonBefore="@"
                         onChange={(e) => {
                           const { value } = e.target;
-                          const regex = /^[a-zA-Z0-9_.-@]*$/;
+                          const regex =
+                            /^[A-Za-z\\_]+[0-9]{0,64}@([A-Za-z\\-]{3,255}\\.)+[A-Za-z]{2,4}$/;
                           if (regex.test(value)) {
                             setStoreEmail(value);
                             setInValidEmail(false);
-                          } else {
-                            toast("Please provide valid email", {
-                              position: toast.POSITION.TOP_RIGHT,
-                              type: "warning",
-                            });
                           }
+                          //  else {
+                          //   toast("Please provide valid email", {
+                          //     position: toast.POSITION.TOP_RIGHT,
+                          //     type: "warning",
+                          //   });
+                          // }
                         }}
                       />
                       <span className="text-red-600 text-sm">*</span>
