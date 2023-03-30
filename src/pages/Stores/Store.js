@@ -478,6 +478,14 @@ const Stores = () => {
         type: "error",
       });
     }
+    const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+    if (storeEmail && regex.test(storeEmail) === false) {
+      setInValidEmail(true);
+      toast("Email must contain @ and .com", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+      });
+    }
     if (storeEmail === "" || storeEmail === null || storeEmail === undefined) {
       setInValidEmail(true);
       toast("Please provide valid email", {
@@ -496,6 +504,13 @@ const Stores = () => {
         type: "error",
       });
     }
+    if (storeUserName && storeUserName.length < 6) {
+      setInValidUserName(true);
+      toast("Username must contain minimum 6 characters", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+      });
+    }
     if (
       storePassword === "" ||
       storePassword === null ||
@@ -507,7 +522,26 @@ const Stores = () => {
         type: "error",
       });
     }
-    if (
+    const pattern =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,15}$/;
+    if (storePassword && pattern.test(storePassword) === false) {
+      setInValidPassword(true);
+      toast(
+        "Password must contain minimum 6 characters and at least one uppercase letter, one lowercase letter, one number, and one special character",
+        {
+          position: toast.POSITION.TOP_RIGHT,
+          type: "error",
+        }
+      );
+    }
+    // if (storePassword && storePassword.length < 6) {
+    //   setInValidPassword(true);
+    //   toast("Password must contain minimum 6 characters", {
+    //     position: toast.POSITION.TOP_RIGHT,
+    //     type: "error",
+    //   });
+    // }
+    else if (
       name !== "" &&
       storeEmail !== "" &&
       storeUserName !== "" &&
@@ -774,19 +808,19 @@ const Stores = () => {
                         // addonAfter=".com"
                         // addonBefore="@"
                         onChange={(e) => {
-                          const { value } = e.target;
-                          const regex =
-                          /^[a-zA-Z0-9_.-@]*$/;
-                          if (regex.test(value)) {
-                            setStoreEmail(value);
-                            setInValidEmail(false);
-                          }
-                          //  else {
+                          // const { value } = e.target;
+                          // const regex = /^[a-zA-Z0-9_.-@]*$/;
+                          // if (regex.test(value)) {
+                          //   setStoreEmail(value);
+                          //   setInValidEmail(false);
+                          // } else {
                           //   toast("Please provide valid email", {
                           //     position: toast.POSITION.TOP_RIGHT,
                           //     type: "warning",
                           //   });
                           // }
+                          setStoreEmail(e.target.value);
+                          setInValidEmail(false);
                         }}
                       />
                       <span className="text-red-600 text-sm">*</span>
@@ -794,8 +828,9 @@ const Stores = () => {
                       <Input
                         placeholder="Enter username"
                         value={storeUserName}
-                        maxLength={10}
-                        suffix={`${storeUserName.length}/10`}
+                        maxLength={15}
+                        minLength={6}
+                        suffix={`${storeUserName.length}/15`}
                         className={`${
                           inValidUserName
                             ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-4"
@@ -826,7 +861,7 @@ const Stores = () => {
                       <Input.Password
                         placeholder="Enter password"
                         value={storePassword}
-                        // maxLength={6}
+                        maxLength={15}
                         className={`${
                           inValidPassword
                             ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-4"
@@ -834,11 +869,11 @@ const Stores = () => {
                         }`}
                         onChange={(e) => {
                           const value = e.target.value;
-                          if (value && value.length <= 6) {
+                          if (value && value.length < 15) {
                             setStorePassword(e.target.value);
                             setInValidPassword(false);
-                          } else if (value && value.length > 6) {
-                            toast("Password should allow only 6 characters", {
+                          } else if (value && value.length >= 15) {
+                            toast("Password should allow only 15 characters", {
                               position: toast.POSITION.TOP_RIGHT,
                               type: "warning",
                             });
