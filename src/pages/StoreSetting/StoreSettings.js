@@ -35,23 +35,35 @@ const StoreSettings = () => {
   const [numberToBasic, setNumberToBasic] = useState("");
   const [inValidNumberToBasic, setInValidNumberToBasic] = useState(false);
   const [pageBackgroundColor, setPageBackgroundColor] = useState("#EBEBEB");
+  const [pageBgColor, setPageBgColor] = useState("#EBEBEB");
   const [foreGroundColor, setForeGroundColor] = useState("#333333");
+  const [pageFgColor, setPageFgColor] = useState("#333333");
   const [buttonPrimaryBackgroundColor, setButtonPrimaryBackgroundColor] =
     useState("");
+  const [btnPrimaryBgColor, setbtnPrimaryBgColor] = useState("");
   const [buttonSecondaryBackgroundColor, setButtonSecondaryBackgroundColor] =
     useState("");
+  const [btnSecondaryBgColor, setbtnSecondaryBgColor] = useState("");
   const [buttonTeritaryBackgroundColor, setButtonTeritaryBackgroundColor] =
     useState("");
+  const [btnTeritaryBgColor, setbtnTeritaryBgColor] = useState("");
   const [buttonPrimaryForegroundColor, setButtonPrimaryForegroundColor] =
     useState("");
+  const [btnPrimaryFgColor, setbtnPrimaryFgColor] = useState("");
   const [buttonSecondaryForegroundColor, setButtonSecondaryForegroundColor] =
     useState("");
+  const [btnSecondaryFgColor, setbtnSecondaryFgColor] = useState("");
   const [buttonTeritaryForegroundColor, setButtonTeritaryForegroundColor] =
     useState("");
+  const [btnTeritaryFgColor, setbtnTeritaryFgColor] = useState("");
   const [footerBackgroundColor, setFooterBackgroundColor] = useState("");
+  const [footerBgColor, setFooterBgColor] = useState("");
   const [footerForegroundColor, setFooterForegroundColor] = useState("");
+  const [footerFgColor, setFooterFgColor] = useState("");
   const [headerBackgroundColor, setHeaderBackgroundColor] = useState("");
+  const [headerBgColor, setHeaderBgColor] = useState("");
   const [headerForegroundColor, setHeaderForegroundColor] = useState("");
+  const [headerFgColor, setHeaderFgColor] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   const storeSettingData = [
@@ -77,18 +89,140 @@ const StoreSettings = () => {
     },
   ];
 
-  const getStoreSettingApi = () => {
+  console.log("buttonPrimaryBackgroundColor", buttonPrimaryBackgroundColor);
+  const getStoreSettingApi = (storeId) => {
     axios
-      .get(storeSettingAPI, authorizationHeader, {
-        params: {
-          "store-id": 1,
+      .get(
+        storeSettingAPI,
+        {
+          params: {
+            "store-id": storeId,
+          },
         },
-      })
+        authorizationHeader
+      )
       .then(function (response) {
-        console.log("responseofdashboard--->", response);
+        console.log(
+          "Get response of Store setting--->",
+          response.data.store_settings_data[0]
+        );
+        setCurrencySymbol(
+          response.data.store_settings_data[0].store_currency[0].symbol
+        );
+        setCurrencyIsoCode(
+          response.data.store_settings_data[0].store_currency[0].iso_code
+        );
+        setFractionalUnit(
+          response.data.store_settings_data[0].store_currency[0].fractional_unit
+        );
+        setNumberToBasic(
+          response.data.store_settings_data[0].store_currency[0].number_to_basic
+        );
+        setPageBackgroundColor(
+          response.data.store_settings_data[0].store_page_settings[0].bg_color
+        );
+        setPageBgColor(
+          response.data.store_settings_data[0].store_page_settings[0].bg_color
+        );
+        setForeGroundColor(
+          response.data.store_settings_data[0].store_page_settings[0].fg_color
+        );
+        setPageFgColor(
+          response.data.store_settings_data[0].store_page_settings[0].fg_color
+        );
+        setButtonPrimaryBackgroundColor(
+          response.data.store_settings_data[0].store_page_settings[0]
+            .btn_primary_bg_color
+        );
+        setbtnPrimaryBgColor(
+          response.data.store_settings_data[0].store_page_settings[0]
+            .btn_primary_bg_color
+        );
+        setButtonPrimaryForegroundColor(
+          response.data.store_settings_data[0].store_page_settings[0]
+            .btn_primary_fg_color
+        );
+        setbtnPrimaryFgColor(
+          response.data.store_settings_data[0].store_page_settings[0]
+            .btn_primary_fg_color
+        );
+        setButtonSecondaryBackgroundColor(
+          response.data.store_settings_data[0].store_page_settings[0]
+            .btn_secondary_bg_color
+        );
+        setbtnSecondaryBgColor(
+          response.data.store_settings_data[0].store_page_settings[0]
+            .btn_secondary_bg_color
+        );
+        setButtonSecondaryForegroundColor(
+          response.data.store_settings_data[0].store_page_settings[0]
+            .btn_secondary_fg_color
+        );
+        setbtnSecondaryFgColor(
+          response.data.store_settings_data[0].store_page_settings[0]
+            .btn_secondary_fg_color
+        );
+        setButtonTeritaryBackgroundColor(
+          response.data.store_settings_data[0].store_page_settings[0]
+            .btn_tertiary_bg_color
+        );
+        setbtnTeritaryBgColor(
+          response.data.store_settings_data[0].store_page_settings[0]
+            .btn_tertiary_bg_color
+        );
+        setButtonTeritaryForegroundColor(
+          response.data.store_settings_data[0].store_page_settings[0]
+            .btn_tertiary_fg_color
+        );
+        setbtnTeritaryFgColor(
+          response.data.store_settings_data[0].store_page_settings[0]
+            .btn_tertiary_fg_color
+        );
+        setHeaderBackgroundColor(
+          response.data.store_settings_data[0].store_header_settings[0].bg_color
+        );
+        setHeaderBgColor(
+          response.data.store_settings_data[0].store_header_settings[0].bg_color
+        );
+        setHeaderForegroundColor(
+          response.data.store_settings_data[0].store_header_settings[0].fg_color
+        );
+        setHeaderFgColor(
+          response.data.store_settings_data[0].store_header_settings[0].fg_color
+        );
+        setFooterBackgroundColor(
+          response.data.store_settings_data[0].store_footer_settings[0].bg_color
+        );
+        setFooterBgColor(
+          response.data.store_settings_data[0].store_footer_settings[0].bg_color
+        );
+        setFooterForegroundColor(
+          response.data.store_settings_data[0].store_footer_settings[0].fg_color
+        );
+        setFooterFgColor(
+          response.data.store_settings_data[0].store_footer_settings[0].fg_color
+        );
       })
       .catch((error) => {
-        console.log("errorresponse--->", error);
+        console.log("errorresponse--->", error.response);
+        if (error.response === undefined) {
+          setCurrencySymbol("");
+          setCurrencyIsoCode("");
+          setFractionalUnit("");
+          setNumberToBasic("");
+          setPageBackgroundColor("#EBEBEB");
+          setButtonPrimaryBackgroundColor("");
+          setButtonSecondaryBackgroundColor("");
+          setButtonTeritaryBackgroundColor("");
+          setButtonPrimaryForegroundColor("");
+          setButtonSecondaryForegroundColor("");
+          setButtonTeritaryForegroundColor("");
+          setForeGroundColor("#333333");
+          setFooterBackgroundColor("");
+          setFooterForegroundColor("");
+          setHeaderForegroundColor("");
+          setHeaderBackgroundColor("");
+        }
       });
   };
 
@@ -278,25 +412,17 @@ const StoreSettings = () => {
   };
 
   useEffect(() => {
-    // getStoreSettingApi();
     getStoreApi();
     window.scroll(0, 0);
   }, []);
 
   const handleStoreChange = (value) => {
+    if (value) {
+      getStoreSettingApi(value);
+    }
     setstoreId(value);
     setInValidStoreData(false);
   };
-
-  // const handleFooterChange = (value) => {
-  //   setFooterPositionValue(value);
-  //   SetInValidFooterPositionValue(false);
-  // };
-
-  // const handleHeaderChange = (value) => {
-  //   setHeaderPositionValue(value);
-  //   SetInValidHeaderPositionValue(false);
-  // };
 
   return (
     <Layout className="p-3">
@@ -436,9 +562,22 @@ const StoreSettings = () => {
             </label>
             <Row className="mt-2">
               <Col span={8} className="mr-2">
-                <label className="text-[13px] mb-2 ml-1">
-                  Background Color
-                </label>
+                <Row>
+                  <Col>
+                    <label className="text-[13px] mb-2 ml-1">
+                      Background Color
+                    </label>
+                  </Col>
+                  <Col span={2} offset={12} className="mb-2">
+                    <Button
+                      onClick={() => {
+                        setPageBackgroundColor(pageBgColor);
+                      }}
+                    >
+                      Reset
+                    </Button>
+                  </Col>
+                </Row>
                 <Input
                   placeholder="Enter header color"
                   maxLength={255}
@@ -451,9 +590,22 @@ const StoreSettings = () => {
                 />
               </Col>
               <Col span={8} className="ml-1">
-                <label className="text-[13px] mb-2 ml-1">
-                  Foreground Color
-                </label>
+                <Row>
+                  <Col>
+                    <label className="text-[13px] mb-2 ml-1">
+                      Foreground Color
+                    </label>
+                  </Col>
+                  <Col span={2} offset={12} className="mb-2">
+                    <Button
+                      onClick={() => {
+                        setForeGroundColor(pageFgColor);
+                      }}
+                    >
+                      Reset
+                    </Button>
+                  </Col>
+                </Row>
                 <Input
                   placeholder="Enter foreground color"
                   maxLength={255}
@@ -468,9 +620,22 @@ const StoreSettings = () => {
             </Row>
             <Row className="mt-4">
               <Col span={8} className="mr-2">
-                <label className="text-[13px] mb-2 ml-1">
-                  Button Primary Background Color
-                </label>
+                <Row>
+                  <Col>
+                    <label className="text-[13px] mb-2 ml-1">
+                      Button Primary Background Color
+                    </label>
+                  </Col>
+                  <Col span={1} offset={6} className="mb-2">
+                    <Button
+                      onClick={() => {
+                        setButtonPrimaryBackgroundColor(btnPrimaryBgColor);
+                      }}
+                    >
+                      Reset
+                    </Button>
+                  </Col>
+                </Row>
                 <Input
                   placeholder="Enter header background color"
                   maxLength={255}
@@ -483,9 +648,22 @@ const StoreSettings = () => {
                 />
               </Col>
               <Col span={8} className="mr-2">
-                <label className="text-[13px] mb-2 ml-1">
-                  Button Secondary Background Color
-                </label>
+                <Row>
+                  <Col>
+                    <label className="text-[13px] mb-2 ml-1">
+                      Button Secondary Background Color
+                    </label>
+                  </Col>
+                  <Col span={1} offset={5} className="mb-2 ">
+                    <Button
+                      onClick={() => {
+                        setButtonSecondaryBackgroundColor(btnSecondaryBgColor);
+                      }}
+                    >
+                      Reset
+                    </Button>
+                  </Col>
+                </Row>
                 <Input
                   placeholder="Enter header background color"
                   maxLength={255}
@@ -500,9 +678,22 @@ const StoreSettings = () => {
             </Row>
             <Row className="mt-4">
               <Col span={8} className="mr-2">
-                <label className="text-[13px] mb-2 ml-1">
-                  Button Teritary Background Color
-                </label>
+                <Row>
+                  <Col>
+                    <label className="text-[13px] mb-2 ml-1">
+                      Button Teritary Background Color
+                    </label>
+                  </Col>
+                  <Col span={1} offset={6} className="mb-2">
+                    <Button
+                      onClick={() => {
+                        setButtonTeritaryBackgroundColor(btnTeritaryBgColor);
+                      }}
+                    >
+                      Reset
+                    </Button>
+                  </Col>
+                </Row>
                 <Input
                   placeholder="Enter header background color"
                   maxLength={255}
@@ -515,9 +706,22 @@ const StoreSettings = () => {
                 />
               </Col>
               <Col span={8} className="mr-2">
-                <label className="text-[13px] mb-2 ml-1">
-                  Button Primary Foreground Color
-                </label>
+                <Row>
+                  <Col>
+                    <label className="text-[13px] mb-2 ml-1">
+                      Button Primary Foreground Color
+                    </label>
+                  </Col>
+                  <Col span={1} offset={6} className="mb-2">
+                    <Button
+                      onClick={() => {
+                        setButtonPrimaryForegroundColor(btnPrimaryFgColor);
+                      }}
+                    >
+                      Reset
+                    </Button>
+                  </Col>
+                </Row>
                 <Input
                   placeholder="Enter header background color"
                   maxLength={255}
@@ -532,9 +736,22 @@ const StoreSettings = () => {
             </Row>
             <Row className="mt-4">
               <Col span={8} className="mr-2">
-                <label className="text-[13px] mb-2 ml-1">
-                  Button Secondary Foreground Color
-                </label>
+                <Row>
+                  <Col>
+                    <label className="text-[13px] mb-2 ml-1">
+                      Button Secondary Foreground Color
+                    </label>
+                  </Col>
+                  <Col span={1} offset={5} className=" mb-2">
+                    <Button
+                      onClick={() => {
+                        setButtonSecondaryForegroundColor(btnSecondaryFgColor);
+                      }}
+                    >
+                      Reset
+                    </Button>
+                  </Col>
+                </Row>
                 <Input
                   placeholder="Enter header background color"
                   maxLength={255}
@@ -547,9 +764,22 @@ const StoreSettings = () => {
                 />
               </Col>
               <Col span={8} className="mr-2">
-                <label className="text-[13px] mb-2 ml-1">
-                  Button Teritary Foreground Color
-                </label>
+                <Row>
+                  <Col>
+                    <label className="text-[13px] mb-2 ml-1">
+                      Button Teritary Foreground Color
+                    </label>
+                  </Col>
+                  <Col span={1} offset={6} className="mb-2">
+                    <Button
+                      onClick={() => {
+                        setButtonTeritaryForegroundColor(btnTeritaryFgColor);
+                      }}
+                    >
+                      Reset
+                    </Button>
+                  </Col>
+                </Row>
                 <Input
                   placeholder="Enter header background color"
                   maxLength={255}
@@ -569,9 +799,22 @@ const StoreSettings = () => {
             </label>
             <Row className="mt-2">
               <Col span={8} className="mr-2">
-                <label className="text-[13px] mb-2 ml-1">
-                  Background Color
-                </label>
+                <Row>
+                  <Col>
+                    <label className="text-[13px] mb-2 ml-1">
+                      Background Color
+                    </label>
+                  </Col>
+                  <Col span={2} offset={12} className="mb-2">
+                    <Button
+                      onClick={() => {
+                        setHeaderBackgroundColor(headerBgColor);
+                      }}
+                    >
+                      Reset
+                    </Button>
+                  </Col>
+                </Row>
                 <Input
                   placeholder="Enter header type"
                   maxLength={255}
@@ -584,9 +827,22 @@ const StoreSettings = () => {
                 />
               </Col>
               <Col span={8} className="ml-1">
-                <label className="text-[13px] mb-2 ml-1">
-                  Foreground Color
-                </label>
+                <Row>
+                  <Col>
+                    <label className="text-[13px] mb-2 ml-1">
+                      Foreground Color
+                    </label>
+                  </Col>
+                  <Col span={2} offset={12} className=" mb-2">
+                    <Button
+                      onClick={() => {
+                        setHeaderForegroundColor(headerFgColor);
+                      }}
+                    >
+                      Reset
+                    </Button>
+                  </Col>
+                </Row>
                 <Input
                   placeholder="Enter header action"
                   maxLength={255}
@@ -606,9 +862,22 @@ const StoreSettings = () => {
             </label>
             <Row className="mt-2">
               <Col span={8} className="mr-2">
-                <label className="text-[13px] mb-2 ml-1">
-                  Background Color
-                </label>
+                <Row>
+                  <Col>
+                    <label className="text-[13px] mb-2 ml-1">
+                      Background Color
+                    </label>
+                  </Col>
+                  <Col span={2} offset={12} className="mb-2">
+                    <Button
+                      onClick={() => {
+                        setFooterBackgroundColor(footerBgColor);
+                      }}
+                    >
+                      Reset
+                    </Button>
+                  </Col>
+                </Row>
                 <Input
                   placeholder="Enter footer backgrond color"
                   maxLength={255}
@@ -621,9 +890,22 @@ const StoreSettings = () => {
                 />
               </Col>
               <Col span={8} className="ml-1">
-                <label className="text-[13px] mb-2 ml-1">
-                  Foreground Color
-                </label>
+                <Row>
+                  <Col>
+                    <label className="text-[13px] mb-2 ml-1">
+                      Foreground Color
+                    </label>
+                  </Col>
+                  <Col span={2} offset={12} className=" mb-2">
+                    <Button
+                      onClick={() => {
+                        setFooterForegroundColor(footerFgColor);
+                      }}
+                    >
+                      Reset
+                    </Button>
+                  </Col>
+                </Row>
                 <Input
                   placeholder="Enter footer foreground color"
                   maxLength={255}
