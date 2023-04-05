@@ -580,12 +580,15 @@ const Stores = () => {
         if (error && error.response && error.response.status === 401) {
           makeHttpRequestForRefreshToken();
         }
-        if (error.response) {
-          toast(`${error.response.data.message}`, {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-          });
-        } else if (error && error.response && error.response.status === 400) {
+        if (error.response.status === 400) {
+          toast(
+            `${error.response.data.name}` || `${error.response.data.message}`,
+            {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "error",
+            }
+          );
+        } else if (error.response) {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
@@ -787,7 +790,8 @@ const Stores = () => {
                         onChange={(e) => {
                           var nameTrim = e.target.value;
                           //  var nameToTrim = nameTrim.trim()
-                          setName(nameTrim.trim());
+                          // setName(nameTrim.trim());
+                          setName(e.target.value);
                           setInValidName(false);
                         }}
                       />
@@ -925,13 +929,13 @@ const Stores = () => {
                         }`}
                         maxLength={255}
                         onChange={(e) => {
-                          const { value } = e.target;
-                          const regex = /^[a-zA-Z0-9]*$/; // only allow letters and numbers
-                          if (regex.test(value)) {
-                            setEditName(e.target.value);
-                          }
+                          // const { value } = e.target;
+                          // const regex = /^[a-zA-Z0-9]*$/; // only allow letters and numbers
+                          // if (regex.test(value)) {
+                          //   setEditName(e.target.value);
+                          // }
+                          setEditName(e.target.value);
                           setInValidEditName(false);
-                          // setInValidEditName(false);
                         }}
                       />
                       <Divider orientation="left" orientationMargin="0">
