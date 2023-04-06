@@ -205,6 +205,9 @@ const StoreSettings = () => {
       })
       .catch((error) => {
         console.log("errorresponse--->", error.response);
+        if (error && error.response && error.response.status === 401) {
+          makeHttpRequestForRefreshToken();
+        }
         if (error.response === undefined) {
           setCurrencySymbol("");
           setCurrencyIsoCode("");
