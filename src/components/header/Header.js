@@ -80,6 +80,14 @@ const Header = () => {
         console.log("logged out res", res);
         if (res.status === 200) {
           sessionStorage.clear();
+
+          const keycloakData = {
+            url: `${keyUrl}/realms/${realmName}/protocol/openid-connect/auth?response_type=code&client_id=${realmName}-client`,
+            realmName: realmName,
+            clientId: `${realmName}-client`,
+          };
+
+          sessionStorage.setItem("keycloakData", JSON.stringify(keycloakData));
           // window.location = 'http://localhost:3002/'
           window.location = `${keyUrl}/realms/${realmName}/protocol/openid-connect/auth?response_type=code&client_id=${clientId}`;
         }
