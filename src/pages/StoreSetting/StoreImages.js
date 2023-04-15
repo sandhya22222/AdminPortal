@@ -22,7 +22,7 @@ const { Image } = Skeleton;
 
 const storeBannerImageAPI = process.env.REACT_APP_STORE_BANNER_IMAGES_API;
 const storeAbsoluteImgesAPI =
-  process.env.REACT_APP_STORE_ABSOLUTE_STORE_IMAGES_API;
+  process.env.REACT_APP_STORE_ABSOLUTE_IMAGES_API;
 
 const StoreImages = ({
   title,
