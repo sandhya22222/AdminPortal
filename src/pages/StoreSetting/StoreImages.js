@@ -21,8 +21,7 @@ const { Content } = Layout;
 const { Image } = Skeleton;
 
 const storeBannerImageAPI = process.env.REACT_APP_STORE_BANNER_IMAGES_API;
-const storeAbsoluteImgesAPI =
-  process.env.REACT_APP_STORE_ABSOLUTE_IMAGES_API;
+const storeAbsoluteImgesAPI = process.env.REACT_APP_STORE_ABSOLUTE_IMAGES_API;
 
 const StoreImages = ({
   title,
@@ -45,6 +44,7 @@ const StoreImages = ({
   const [copyImagePath, setCopyImagePath] = useState();
   const [bannerAbsoluteImage, setBannerAbsoluteImage] = useState([]);
   const [bannerImage, setBannerImage] = useState([]);
+  const [reset, setReset] = useState(false);
   const uploadButton = (
     <div>
       <PlusOutlined />
@@ -262,16 +262,18 @@ const StoreImages = ({
           <span className="text-red-600 text-sm text-center ">*</span>
         ) : null}
         <Title level={5}>{title}</Title>
-        <Content>
-          <Tooltip title="Reset to previous image">
-            <UndoOutlined
-              className="ml-4  !text-lg text-blue-600"
-              onClick={() => {
-                setImagePathShow(copyImagePath);
-              }}
-            />
-          </Tooltip>
-        </Content>
+        {reset === true ? (
+          <Content>
+            <Tooltip title="Reset to previous image">
+              <UndoOutlined
+                className="ml-4  !text-lg text-blue-600"
+                onClick={() => {
+                  setImagePathShow(copyImagePath);
+                }}
+              />
+            </Tooltip>
+          </Content>
+        ) : null}
       </Content>
       {/* <Content>
         <Button
@@ -347,7 +349,9 @@ const StoreImages = ({
             <TiDelete
               className="!absolute !cursor-pointer !right-[-5px] !z-10  !top-[32px] !text-2xl !text-red-600 !shadow-lg  hover:translate-"
               //   twoToneColor= {"#eb2f96"}
-              onClick={() => setImagePathShow()}
+              onClick={() => {
+                setImagePathShow(); setReset(true);
+              }}
             />
           </Content>
         </>
