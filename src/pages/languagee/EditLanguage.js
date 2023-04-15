@@ -373,13 +373,6 @@ const EditLanguage = () => {
           ...languageDetails,
           lang_support_docs: response.data[0].lang_support_docs,
         });
-
-        // if (response.status === 200 || response.status === 201) {
-        //   toast("document uploaded successfully! ", {
-        //     position: toast.POSITION.TOP_RIGHT,
-        //     type: "success",
-        //   });
-        // }
       })
       .catch((error) => {
         if (error.response) {

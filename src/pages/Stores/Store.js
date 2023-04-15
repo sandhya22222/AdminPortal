@@ -471,8 +471,14 @@ const Stores = () => {
   }, [postData]);
   //! validation for post call
   const validateStorePostField = () => {
-    if (name === "" || name === null || name === undefined) {
+    let count = 4;
+    if (
+      name.trim() === "" ||
+      name.trim() === null ||
+      name.trim() === undefined
+    ) {
       setInValidName(true);
+      count--;
       toast("Please provide the store name", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
@@ -480,6 +486,7 @@ const Stores = () => {
     }
     const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
     if (storeEmail && regex.test(storeEmail) === false) {
+      count--;
       setInValidEmail(true);
       toast("Email must contain @ and .com", {
         position: toast.POSITION.TOP_RIGHT,
@@ -487,6 +494,7 @@ const Stores = () => {
       });
     }
     if (storeEmail === "" || storeEmail === null || storeEmail === undefined) {
+      count--;
       setInValidEmail(true);
       toast("Please provide valid email", {
         position: toast.POSITION.TOP_RIGHT,
@@ -499,6 +507,7 @@ const Stores = () => {
       storeUserName === undefined
     ) {
       setInValidUserName(true);
+      count--;
       toast("Please provide username", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
@@ -506,6 +515,7 @@ const Stores = () => {
     }
     if (storeUserName && storeUserName.length < 6) {
       setInValidUserName(true);
+      count--;
       toast("Username must contain minimum 6 characters", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
@@ -517,6 +527,7 @@ const Stores = () => {
       storePassword === undefined
     ) {
       setInValidPassword(true);
+      count--;
       toast("Please provide password", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
@@ -526,6 +537,7 @@ const Stores = () => {
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,15}$/;
     if (storePassword && pattern.test(storePassword) === false) {
       setInValidPassword(true);
+      count--;
       toast(
         "Password must contain minimum 6 characters and at least one uppercase letter, one lowercase letter, one number, and one special character",
         {
@@ -541,11 +553,12 @@ const Stores = () => {
     //     type: "error",
     //   });
     // }
-    else if (
-      name !== "" &&
-      storeEmail !== "" &&
-      storeUserName !== "" &&
-      storePassword !== ""
+    if (
+      count === 4
+      // name !== "" &&
+      // storeEmail !== "" &&
+      // storeUserName !== "" &&
+      // storePassword !== ""
     ) {
       addStoreData();
     }
@@ -553,7 +566,7 @@ const Stores = () => {
   //! post call for stores
   const addStoreData = () => {
     const postBody = {
-      name: name,
+      name: name.trim(),
       username: storeUserName,
       email: storeEmail,
       password: storePassword,
@@ -580,15 +593,16 @@ const Stores = () => {
         if (error && error.response && error.response.status === 401) {
           makeHttpRequestForRefreshToken();
         }
-        if (error.response.status === 400) {
-          toast(
-            `${error.response.data.name}` || `${error.response.data.message}`,
-            {
-              position: toast.POSITION.TOP_RIGHT,
-              type: "error",
-            }
-          );
-        } else if (error.response) {
+        // if (error.response.status === 400) {
+        //   toast(
+        //     `${error.response.data.message}` || `${error.response.data.message}`,
+        //     {
+        //       position: toast.POSITION.TOP_RIGHT,
+        //       type: "error",
+        //     }
+        //   );
+        // }
+        if (error.response) {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",

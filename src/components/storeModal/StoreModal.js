@@ -58,7 +58,7 @@ const StoreModal = ({
       }
     >
       <Spin tip="Please wait" spinning={isSpin}>
-        <Content className="!w-2/3">{children}</Content>
+        <Content>{children}</Content>
       </Spin>
     </Modal>
   );

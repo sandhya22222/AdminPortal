@@ -14,12 +14,16 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
 import useAuthorization from "../../hooks/useAuthorization";
+import StoreModal from "../../components/storeModal/StoreModal";
+import StoreImages from "./StoreImages";
 const { Content } = Layout;
 const { Title } = Typography;
 
 const storeSettingAPI = process.env.REACT_APP_STORE_FRONT_SETTINGS_API;
 const storeAPI = process.env.REACT_APP_STORE_API;
-
+const storeImagesAPI = process.env.REACT_APP_STORE_IMAGES_API;
+const storeAbsoluteImgesAPI =
+  process.env.REACT_APP_STORE_ABSOLUTE_STORE_IMAGES_API;
 const StoreSettings = () => {
   const authorizationHeader = useAuthorization();
 
@@ -65,31 +69,11 @@ const StoreSettings = () => {
   const [headerForegroundColor, setHeaderForegroundColor] = useState("");
   const [headerFgColor, setHeaderFgColor] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-
-  const storeSettingData = [
-    {
-      store_currency: {
-        symbol: "₹",
-        iso_code: "INR",
-        fractional_unit: "Paisa",
-        number_to_basic: 100,
-      },
-      store_page_settings: {
-        bg_color: "#EBEBEB",
-        fg_color: "#333333",
-        btn_primary_bg_color: "",
-        btn_secondary_bg_color: "",
-        btn_tertiary_bg_color: "",
-        btn_primary_fg_color: "",
-        btn_secondary_fg_color: "",
-        btn_tertiary_fg_color: "",
-      },
-      store_header_settings: { bg_color: "", fg_color: "" },
-      store_footer_settings: { bg_color: "", fg_color: "" },
-    },
-  ];
-
-  console.log("buttonPrimaryBackgroundColor", buttonPrimaryBackgroundColor);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [imagesUpload, setImagesUpload] = useState([]);
+  const [getImageData, setGetImageData] = useState([]);
+  const [validStoreLogo, setValiStoreLogo] = useState(false);
+  //! get call of  getStoreSettingApi
   const getStoreSettingApi = (storeId) => {
     axios
       .get(
@@ -229,6 +213,7 @@ const StoreSettings = () => {
       });
   };
 
+  //! get call of store API
   const getStoreApi = () => {
     // setIsLoading(true);
     axios
@@ -252,6 +237,7 @@ const StoreSettings = () => {
         }
       });
   };
+
   //! post call for store settings
   const storeSettingsPostCall = () => {
     const postBody = {
@@ -298,7 +284,10 @@ const StoreSettings = () => {
           type: "success",
         });
         setIsLoading(false);
-        console.log("Server Success Response From stores", response.data);
+        console.log(
+          "Server Success Response From storeSettingPostCall",
+          response.data
+        );
         // setPostData(response.data);
         setFractionalUnit("");
         setNumberToBasic("");
@@ -345,6 +334,7 @@ const StoreSettings = () => {
       });
   };
 
+  //! validations of store settings API
   const validatePostStoreSetting = () => {
     let count = 5;
     // debugger
@@ -414,6 +404,211 @@ const StoreSettings = () => {
     }
   };
 
+  const openModal = () => {
+    setIsModalOpen(true);
+    setValiStoreLogo(false)
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const storeLogoModal = () => {
+    if (
+      storeId === "Choose Store" ||
+      storeId === "" ||
+      storeId === undefined ||
+      storeId === null
+    ) {
+      setInValidStoreData(true);
+      toast("Please select the store", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+      });
+    } else {
+      openModal();
+    }
+  };
+
+  console.log("imagesupload", imagesUpload);
+
+  //! get call of store images
+  const getStoreImagesApi = (storeId) => {
+    axios
+      .get(
+        storeImagesAPI,
+        {
+          params: {
+            "store-id": storeId,
+          },
+        },
+        authorizationHeader
+      )
+      .then(function (response) {
+        console.log("Get response of Store setting Images--->", response);
+        setGetImageData(response.data);
+      })
+      .catch((error) => {
+        console.log("errorresponse from images--->", error);
+        setGetImageData([])
+        if (error && error.response && error.response.status === 401) {
+          makeHttpRequestForRefreshToken();
+        }
+      });
+  };
+
+  //! post call of store images
+  const storeLogoImagePostCall = () => {
+    const formData = new FormData();
+    if (imagesUpload && imagesUpload.length > 0) {
+      for (var i = 0; i < imagesUpload.length; i++) {
+        if (imagesUpload[i].type == "store_logo") {
+          formData.append("store_logo", imagesUpload[i].imageValue);
+        } else if (imagesUpload[i].type == "banner_images") {
+          formData.append("banner_images", imagesUpload[i].imageValue);
+        } else if (imagesUpload[i].type == "search_logo") {
+          formData.append("search_logo", imagesUpload[i].imageValue);
+        } else if (imagesUpload[i].type == "customer_logo") {
+          formData.append("customer_logo", imagesUpload[i].imageValue);
+        } else if (imagesUpload[i].type == "cart_logo") {
+          formData.append("cart_logo", imagesUpload[i].imageValue);
+        } else if (imagesUpload[i].type == "wishlist_logo") {
+          formData.append("wishlist_logo", imagesUpload[i].imageValue);
+        }
+      }
+      formData.append("store_id", parseInt(storeId));
+    }
+    axios
+      .post(
+        storeImagesAPI,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        },
+        authorizationHeader
+      )
+      .then((response) => {
+        toast("Images created successfully.", {
+          position: toast.POSITION.TOP_RIGHT,
+          type: "success",
+        });
+        setIsLoading(false);
+        console.log(
+          "Server Success Response From storeImagePostCall",
+          response.data
+        );
+        // setImagesUpload(response.data);
+      })
+      .catch((error) => {
+        if (error.response) {
+          toast(`${error.response.data.message}`, {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+          });
+        } else if (error && error.response && error.response.status === 400) {
+          toast(`${error.response.data.message}`, {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+          });
+        } else {
+          toast("Something went wrong", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+          });
+        }
+        console.log(error.response);
+        setIsLoading(false);
+        if (error && error.response && error.response.status === 401) {
+          makeHttpRequestForRefreshToken();
+        }
+      });
+  };
+
+  const storeLogoImagePutCall = () => {
+    const formData = new FormData();
+    if (imagesUpload && imagesUpload.length > 0) {
+      for (var i = 0; i < imagesUpload.length; i++) {
+        if (imagesUpload[i].type == "store_logo") {
+          formData.append("store_logo", imagesUpload[i].imageValue);
+        } else if (imagesUpload[i].type == "banner_images") {
+          formData.append("banner_images", imagesUpload[i].imageValue);
+        } else if (imagesUpload[i].type == "search_logo") {
+          formData.append("search_logo", imagesUpload[i].imageValue);
+        } else if (imagesUpload[i].type == "customer_logo") {
+          formData.append("customer_logo", imagesUpload[i].imageValue);
+        } else if (imagesUpload[i].type == "cart_logo") {
+          formData.append("cart_logo", imagesUpload[i].imageValue);
+        } else if (imagesUpload[i].type == "wishlist_logo") {
+          formData.append("wishlist_logo", imagesUpload[i].imageValue);
+        }
+      }
+      formData.append("store_id", parseInt(storeId));
+    }
+    axios
+      .put(
+        storeImagesAPI,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        },
+        authorizationHeader
+      )
+      .then((response) => {
+        toast("Images updated successfully.", {
+          position: toast.POSITION.TOP_RIGHT,
+          type: "success",
+        });
+        setIsLoading(false);
+        console.log(
+          "Server Success Response From storeImagePutCall",
+          response.data
+        );
+        // setImagesUpload(response.data);
+      })
+      .catch((error) => {
+        if (error.response) {
+          toast(`${error.response.data.message}`, {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+          });
+        } else if (error && error.response && error.response.status === 400) {
+          toast(`${error.response.data.message}`, {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+          });
+        } else {
+          toast("Something went wrong", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+          });
+        }
+        console.log(error.response);
+        setIsLoading(false);
+        if (error && error.response && error.response.status === 401) {
+          makeHttpRequestForRefreshToken();
+        }
+      });
+  };
+
+  const postImageOnClickSave = () => {
+    if (getImageData && getImageData.length !== 0) {
+      storeLogoImagePutCall();
+    } else {
+      let count = 1;
+      if (imagesUpload && imagesUpload.length === 0) {
+        count--;
+        setValiStoreLogo(true);
+        toast("Please upload the store logo", {
+          position: toast.POSITION.TOP_RIGHT,
+          type: "error",
+        });
+      }
+      if (count === 1) {
+        storeLogoImagePostCall();
+      }
+    }
+  };
+
   useEffect(() => {
     getStoreApi();
     window.scroll(0, 0);
@@ -422,6 +617,7 @@ const StoreSettings = () => {
   const handleStoreChange = (value) => {
     if (value) {
       getStoreSettingApi(value);
+      getStoreImagesApi(value);
     }
     setstoreId(value);
     setInValidStoreData(false);
@@ -471,6 +667,90 @@ const StoreSettings = () => {
                   </Select.Option>
                 ))}
             </Select>
+            <Button className="float-right" onClick={() => storeLogoModal()}>
+              + Store media
+            </Button>
+            <StoreModal
+              // closeModal="!overflow-y-auto !h-96"
+              isVisible={isModalOpen}
+              okButtonText={"Save"}
+              title={"Store Images"}
+              width={900}
+              cancelButtonText={"Cancel"}
+              okCallback={() => {
+                postImageOnClickSave();
+              }}
+              cancelCallback={() => closeModal()}
+              isSpin={false}
+            >
+              <Row>
+                <Col>
+                  <StoreImages
+                    title={"Store Logo"}
+                    type={"store_logo"}
+                    storeId={storeId}
+                    imagesUpload={imagesUpload}
+                    setImagesUpload={setImagesUpload}
+                    getImageData={getImageData}
+                    isSingleUpload={true}
+                    validStoreLogo={validStoreLogo}
+                    setValiStoreLogo={setValiStoreLogo}
+                  />
+                </Col>
+                <Col>
+                  <StoreImages
+                    title={"Search Logo"}
+                    type={"search_logo"}
+                    storeId={storeId}
+                    imagesUpload={imagesUpload}
+                    getImageData={getImageData}
+                    setImagesUpload={setImagesUpload}
+                    isSingleUpload={true}
+                  />
+                </Col>
+                <Col>
+                  <StoreImages
+                    title={"Customer Logo"}
+                    type={"customer_logo"}
+                    storeId={storeId}
+                    imagesUpload={imagesUpload}
+                    getImageData={getImageData}
+                    setImagesUpload={setImagesUpload}
+                    isSingleUpload={true}
+                  />
+                </Col>
+                <Col>
+                  <StoreImages
+                    title={"Cart Logo"}
+                    type={"cart_logo"}
+                    storeId={storeId}
+                    imagesUpload={imagesUpload}
+                    getImageData={getImageData}
+                    setImagesUpload={setImagesUpload}
+                    isSingleUpload={true}
+                  />
+                </Col>
+                <Col>
+                  <StoreImages
+                    title={"Wishlist Logo"}
+                    type={"wishlist_logo"}
+                    storeId={storeId}
+                    imagesUpload={imagesUpload}
+                    getImageData={getImageData}
+                    setImagesUpload={setImagesUpload}
+                    isSingleUpload={true}
+                  />
+                </Col>
+              </Row>
+              <StoreImages
+                title={"Banner Logo"}
+                type={"banner_images"}
+                storeId={storeId}
+                imagesUpload={imagesUpload}
+                setImagesUpload={setImagesUpload}
+                isSingleUpload={false}
+              />
+            </StoreModal>
           </Content>
           <Content>
             <label className="text-[20px] mb-2 mt-4 font-bold">
@@ -565,22 +845,18 @@ const StoreSettings = () => {
             </label>
             <Row className="mt-2">
               <Col span={8} className="mr-2">
-                <Row>
-                  <Col>
-                    <label className="text-[13px] mb-2 ml-1">
-                      Background Color
-                    </label>
-                  </Col>
-                  <Col span={2} offset={12} className="mb-2">
-                    <Button
-                      onClick={() => {
-                        setPageBackgroundColor(pageBgColor);
-                      }}
-                    >
-                      Reset
-                    </Button>
-                  </Col>
-                </Row>
+                <Button
+                  className="float-right mb-1"
+                  onClick={() => {
+                    setPageBackgroundColor(pageBgColor);
+                  }}
+                >
+                  Reset
+                </Button>
+                <label className="text-[13px] mb-2 ml-1">
+                  Background Color
+                </label>
+
                 <Input
                   placeholder="Enter header color"
                   maxLength={255}
@@ -593,22 +869,17 @@ const StoreSettings = () => {
                 />
               </Col>
               <Col span={8} className="ml-1">
-                <Row>
-                  <Col>
-                    <label className="text-[13px] mb-2 ml-1">
-                      Foreground Color
-                    </label>
-                  </Col>
-                  <Col span={2} offset={12} className="mb-2">
-                    <Button
-                      onClick={() => {
-                        setForeGroundColor(pageFgColor);
-                      }}
-                    >
-                      Reset
-                    </Button>
-                  </Col>
-                </Row>
+                <Button
+                  className="float-right mb-1"
+                  onClick={() => {
+                    setForeGroundColor(pageFgColor);
+                  }}
+                >
+                  Reset
+                </Button>
+                <label className="text-[13px] mb-2 ml-1">
+                  Foreground Color
+                </label>
                 <Input
                   placeholder="Enter foreground color"
                   maxLength={255}
@@ -623,22 +894,19 @@ const StoreSettings = () => {
             </Row>
             <Row className="mt-4">
               <Col span={8} className="mr-2">
-                <Row>
-                  <Col>
-                    <label className="text-[13px] mb-2 ml-1">
-                      Button Primary Background Color
-                    </label>
-                  </Col>
-                  <Col span={1} offset={6} className="mb-2">
-                    <Button
-                      onClick={() => {
-                        setButtonPrimaryBackgroundColor(btnPrimaryBgColor);
-                      }}
-                    >
-                      Reset
-                    </Button>
-                  </Col>
-                </Row>
+                <Button
+                  className="float-right mb-1"
+                  onClick={() => {
+                    setButtonPrimaryBackgroundColor(btnPrimaryBgColor);
+                  }}
+                >
+                  Reset
+                </Button>
+
+                <label className="text-[13px] mb-2 ml-1">
+                  Button Primary Background Color
+                </label>
+
                 <Input
                   placeholder="Enter header background color"
                   maxLength={255}
@@ -651,22 +919,17 @@ const StoreSettings = () => {
                 />
               </Col>
               <Col span={8} className="mr-2">
-                <Row>
-                  <Col>
-                    <label className="text-[13px] mb-2 ml-1">
-                      Button Secondary Background Color
-                    </label>
-                  </Col>
-                  <Col span={1} offset={5} className="mb-2 ">
-                    <Button
-                      onClick={() => {
-                        setButtonSecondaryBackgroundColor(btnSecondaryBgColor);
-                      }}
-                    >
-                      Reset
-                    </Button>
-                  </Col>
-                </Row>
+                <Button
+                  className="float-right mb-1"
+                  onClick={() => {
+                    setButtonSecondaryBackgroundColor(btnSecondaryBgColor);
+                  }}
+                >
+                  Reset
+                </Button>
+                <label className="text-[13px] mb-2 ml-1">
+                  Button Secondary Background Color
+                </label>
                 <Input
                   placeholder="Enter header background color"
                   maxLength={255}
@@ -681,22 +944,18 @@ const StoreSettings = () => {
             </Row>
             <Row className="mt-4">
               <Col span={8} className="mr-2">
-                <Row>
-                  <Col>
-                    <label className="text-[13px] mb-2 ml-1">
-                      Button Teritary Background Color
-                    </label>
-                  </Col>
-                  <Col span={1} offset={6} className="mb-2">
-                    <Button
-                      onClick={() => {
-                        setButtonTeritaryBackgroundColor(btnTeritaryBgColor);
-                      }}
-                    >
-                      Reset
-                    </Button>
-                  </Col>
-                </Row>
+                <Button
+                  className="float-right mb-1"
+                  onClick={() => {
+                    setButtonTeritaryBackgroundColor(btnTeritaryBgColor);
+                  }}
+                >
+                  Reset
+                </Button>
+                <label className="text-[13px] mb-2 ml-1">
+                  Button Teritary Background Color
+                </label>
+
                 <Input
                   placeholder="Enter header background color"
                   maxLength={255}
@@ -709,22 +968,18 @@ const StoreSettings = () => {
                 />
               </Col>
               <Col span={8} className="mr-2">
-                <Row>
-                  <Col>
-                    <label className="text-[13px] mb-2 ml-1">
-                      Button Primary Foreground Color
-                    </label>
-                  </Col>
-                  <Col span={1} offset={6} className="mb-2">
-                    <Button
-                      onClick={() => {
-                        setButtonPrimaryForegroundColor(btnPrimaryFgColor);
-                      }}
-                    >
-                      Reset
-                    </Button>
-                  </Col>
-                </Row>
+                <Button
+                  className="float-right mb-1"
+                  onClick={() => {
+                    setButtonPrimaryForegroundColor(btnPrimaryFgColor);
+                  }}
+                >
+                  Reset
+                </Button>
+                <label className="text-[13px] mb-2 ml-1">
+                  Button Primary Foreground Color
+                </label>
+
                 <Input
                   placeholder="Enter header background color"
                   maxLength={255}
@@ -739,22 +994,18 @@ const StoreSettings = () => {
             </Row>
             <Row className="mt-4">
               <Col span={8} className="mr-2">
-                <Row>
-                  <Col>
-                    <label className="text-[13px] mb-2 ml-1">
-                      Button Secondary Foreground Color
-                    </label>
-                  </Col>
-                  <Col span={1} offset={5} className=" mb-2">
-                    <Button
-                      onClick={() => {
-                        setButtonSecondaryForegroundColor(btnSecondaryFgColor);
-                      }}
-                    >
-                      Reset
-                    </Button>
-                  </Col>
-                </Row>
+                <Button
+                  className="float-right mb-1"
+                  onClick={() => {
+                    setButtonSecondaryForegroundColor(btnSecondaryFgColor);
+                  }}
+                >
+                  Reset
+                </Button>
+                <label className="text-[13px] mb-2 ml-1">
+                  Button Secondary Foreground Color
+                </label>
+
                 <Input
                   placeholder="Enter header background color"
                   maxLength={255}
@@ -767,22 +1018,19 @@ const StoreSettings = () => {
                 />
               </Col>
               <Col span={8} className="mr-2">
-                <Row>
-                  <Col>
-                    <label className="text-[13px] mb-2 ml-1">
-                      Button Teritary Foreground Color
-                    </label>
-                  </Col>
-                  <Col span={1} offset={6} className="mb-2">
-                    <Button
-                      onClick={() => {
-                        setButtonTeritaryForegroundColor(btnTeritaryFgColor);
-                      }}
-                    >
-                      Reset
-                    </Button>
-                  </Col>
-                </Row>
+                <Button
+                  className="float-right mb-1"
+                  onClick={() => {
+                    setButtonTeritaryForegroundColor(btnTeritaryFgColor);
+                  }}
+                >
+                  Reset
+                </Button>
+
+                <label className="text-[13px] mb-2 ml-1">
+                  Button Teritary Foreground Color
+                </label>
+
                 <Input
                   placeholder="Enter header background color"
                   maxLength={255}
@@ -802,22 +1050,18 @@ const StoreSettings = () => {
             </label>
             <Row className="mt-2">
               <Col span={8} className="mr-2">
-                <Row>
-                  <Col>
-                    <label className="text-[13px] mb-2 ml-1">
-                      Background Color
-                    </label>
-                  </Col>
-                  <Col span={2} offset={12} className="mb-2">
-                    <Button
-                      onClick={() => {
-                        setHeaderBackgroundColor(headerBgColor);
-                      }}
-                    >
-                      Reset
-                    </Button>
-                  </Col>
-                </Row>
+                <Button
+                  className="float-right mb-1"
+                  onClick={() => {
+                    setHeaderBackgroundColor(headerBgColor);
+                  }}
+                >
+                  Reset
+                </Button>
+                <label className="text-[13px] mb-2 ml-1">
+                  Background Color
+                </label>
+
                 <Input
                   placeholder="Enter header type"
                   maxLength={255}
@@ -830,22 +1074,18 @@ const StoreSettings = () => {
                 />
               </Col>
               <Col span={8} className="ml-1">
-                <Row>
-                  <Col>
-                    <label className="text-[13px] mb-2 ml-1">
-                      Foreground Color
-                    </label>
-                  </Col>
-                  <Col span={2} offset={12} className=" mb-2">
-                    <Button
-                      onClick={() => {
-                        setHeaderForegroundColor(headerFgColor);
-                      }}
-                    >
-                      Reset
-                    </Button>
-                  </Col>
-                </Row>
+                <Button
+                  className="float-right mb-2"
+                  onClick={() => {
+                    setHeaderForegroundColor(headerFgColor);
+                  }}
+                >
+                  Reset
+                </Button>
+                <label className="text-[13px] mb-2 ml-1">
+                  Foreground Color
+                </label>
+
                 <Input
                   placeholder="Enter header action"
                   maxLength={255}
@@ -865,22 +1105,17 @@ const StoreSettings = () => {
             </label>
             <Row className="mt-2">
               <Col span={8} className="mr-2">
-                <Row>
-                  <Col>
-                    <label className="text-[13px] mb-2 ml-1">
-                      Background Color
-                    </label>
-                  </Col>
-                  <Col span={2} offset={12} className="mb-2">
-                    <Button
-                      onClick={() => {
-                        setFooterBackgroundColor(footerBgColor);
-                      }}
-                    >
-                      Reset
-                    </Button>
-                  </Col>
-                </Row>
+                <Button
+                  className="float-right mb-1"
+                  onClick={() => {
+                    setFooterBackgroundColor(footerBgColor);
+                  }}
+                >
+                  Reset
+                </Button>
+                <label className="text-[13px] mb-2 ml-1">
+                  Background Color
+                </label>
                 <Input
                   placeholder="Enter footer backgrond color"
                   maxLength={255}
@@ -893,22 +1128,19 @@ const StoreSettings = () => {
                 />
               </Col>
               <Col span={8} className="ml-1">
-                <Row>
-                  <Col>
-                    <label className="text-[13px] mb-2 ml-1">
-                      Foreground Color
-                    </label>
-                  </Col>
-                  <Col span={2} offset={12} className=" mb-2">
-                    <Button
-                      onClick={() => {
-                        setFooterForegroundColor(footerFgColor);
-                      }}
-                    >
-                      Reset
-                    </Button>
-                  </Col>
-                </Row>
+                <Button
+                  className="float-right mb-1"
+                  onClick={() => {
+                    setFooterForegroundColor(footerFgColor);
+                  }}
+                >
+                  Reset
+                </Button>
+
+                <label className="text-[13px] mb-2 ml-1">
+                  Foreground Color
+                </label>
+
                 <Input
                   placeholder="Enter footer foreground color"
                   maxLength={255}
