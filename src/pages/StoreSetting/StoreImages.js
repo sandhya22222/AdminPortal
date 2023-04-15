@@ -291,7 +291,7 @@ const StoreImages = ({
             <Upload
               className={`${
                 validStoreLogo
-                  ? "!border-red-400 !border-2 focus:border-red-400 hover:border-red-400 !h-100 !w-100"
+                  ? "!border-red-400 !border-2 focus:border-red-400 hover:border-red-400 !h-[105px] !w-[105px]"
                   : ""
               }`}
               listType="picture-card"
