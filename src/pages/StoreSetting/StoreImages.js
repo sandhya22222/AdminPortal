@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import ImgCrop from "antd-img-crop";
 import {
   Typography,
   Upload,
