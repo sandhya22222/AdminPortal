@@ -1,6 +1,14 @@
 //! Import libraries & components
 import React, { useEffect, useState } from "react";
-import { Layout, Typography, Spin, Skeleton } from "antd";
+import {
+  Layout,
+  Typography,
+  Spin,
+  Skeleton,
+  Divider,
+  Table,
+  Button,
+} from "antd";
 import { DashboardOutlined, LoadingOutlined } from "@ant-design/icons";
 import {
   Outlet,
@@ -9,6 +17,7 @@ import {
   useParams,
   useNavigate,
 } from "react-router-dom";
+import { AdminIcon } from "../../constants/media";
 //! Import CSS libraries
 
 //! Import user defined services
@@ -17,7 +26,7 @@ import {
 import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
 import { usePageTitle } from "../../hooks/usePageTitle";
 import { WorkInProgress } from "../../constants/media";
-
+import DmTabAntDesign from "../../components/DmTabAntDesign/DmTabAntDesign";
 //! Import user defined functions
 
 //! Import user defined CSS
@@ -30,6 +39,8 @@ import LanguageGraph from "./LanguageGraph";
 import StoreGraph from "./StoreGraph";
 import StoreProductTypeGraph from "./StoreProductTypeGraph";
 import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
+import DynamicTable from "../../components/DynamicTable/DynamicTable";
+import SalesReportGraph from "./SalesReportGraph";
 const getAuth = process.env.REACT_APP_AUTH;
 const umsBaseUrl = process.env.REACT_APP_USM_BASE_URL;
 const isLoggedInURL = process.env.REACT_APP_ISLOGGEDIN;
@@ -68,7 +79,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
   const [dashboardDataLoading, setDashboardDataLoading] = useState(true);
   const [dashboardDataNetWorkError, setDashboardDataNetWorkError] =
     useState(false);
-
+  const [storeTabId, setStoreTabId] = useState(1);
   const [permissionValue, setGetPermissionsData] = useState(
     sessionStorage.getItem("permissions_data") || []
   );
@@ -219,6 +230,119 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
       });
   };
 
+  const storeTabData = [
+    {
+      tabId: 1,
+      tabTitle: "Stores",
+    },
+    {
+      tabId: 2,
+      tabTitle: "Products",
+    },
+  ];
+
+  const tabId = (value) => {
+    setStoreTabId(value);
+  };
+
+  const storeTableHeader = [
+    {
+      title: "Rank",
+      dataIndex: "rank",
+      key: "rank",
+      width:"20%",
+      render: (text, record) => {
+        return <>{record.key}</>;
+      },
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      width:"25%",
+      render: (text, record) => {
+        return <>{record.name}</>;
+      },
+    },
+    {
+      title: "Sales",
+      dataIndex: "sales",
+      key: "sales",
+      width:"20%",
+      render: (text, record) => {
+        return <>{record.sales}</>;
+      },
+    },
+    {
+      title: "Market Share",
+      dataIndex: "marketshare",
+      key: "marketshare",
+      width:"35%",
+      render: (text, record) => {
+        return <> {record.marketshare}</>;
+      },
+    },
+  ];
+  const storeTableData = [
+    {
+      key: 1,
+      name: "Store",
+      sales: "$890",
+      marketshare: "25%",
+    },
+    {
+      key: 2,
+      name: "Store2",
+      sales: "$790",
+      marketshare: "30%",
+    },
+    {
+      key: 3,
+      name: "Store3",
+      sales: "$800",
+      marketshare: "40%",
+    },
+    {
+      key: 4,
+      name: "Store4",
+      sales: "$600",
+      marketshare: "30%",
+    },
+    {
+      key: 5,
+      name: "Store4",
+      sales: "$720",
+      marketshare: "15%",
+    },
+    {
+      key: 6,
+      name: "Store5",
+      sales: "$400",
+      marketshare: "20%",
+    },
+  ];
+
+  const tablePropsData = {
+    table_header: storeTableHeader,
+    table_content: storeTableData,
+    pagenationSettings: false,
+    search_settings: {
+      is_enabled: false,
+      search_title: "Search by name",
+      search_data: ["name"],
+    },
+    filter_settings: {
+      is_enabled: false,
+      filter_title: "Filter's",
+      filter_data: [],
+    },
+    sorting_settings: {
+      is_enabled: false,
+      sorting_title: "Sorting by",
+      sorting_data: [],
+    },
+  };
+
   return (
     // <Content className="p-3">
     //   <Spin spinning={isLoading} indicator={antIcon} tip="Please Wait...">
@@ -246,11 +370,11 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
     //   </Spin>
     // </Content>
     <Content className="p-3">
-      <Content>
+      {/* <Content>
         <Title level={3} className="mt-3 !font-normal">
           Dashboard
         </Title>
-      </Content>
+      </Content> */}
       <Content>
         {dashboardDataLoading ? (
           <Content className="bg-white p-3">
@@ -305,37 +429,48 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
         ) : (
           <Content className="">
             <Content className="flex justify-between">
-              <Content className="w-[100%] bg-[#6494f9] p-2 mr-5 text-center rounded-md">
-                <Title level={2} className="!text-slate-200 mb-2">
+              <Content className=" bg-[#ffff] p-3 mr-5 rounded-md justify-center">
+                <Title level={3} className="!font-normal">
+                  Dashboard
+                </Title>
+                <Text level={2} className="!text-black !text-lg flex ">
+                  <img className="mr-2 !w-12" src={AdminIcon} />
+                  {/* {dashboardData &&
+                    dashboardData.store_data &&
+                    dashboardData.store_data.total_count} */}
+                  Hello Loganathan B, have a great day!
+                </Text>
+                {/* <div>
+                  <Text className="text-lg !text-slate-200">Stores</Text>
+                </div> */}
+              </Content>
+              <Content className=" bg-[#ffff] p-3 mr-5 rounded-md">
+                <p className="!text-[#cdcdcd] text-lg ">
+                  Total sales this month
+                </p>
+                {/* <Title level={2} className="!text-black mb-2">
+                   {dashboardData &&
+                    dashboardData.language_data &&
+                    dashboardData.language_data.total_count}                
+                </Title> */}
+                {/* <div>
+                  <Text className="text-lg !text-slate-200">Languages</Text>
+                </div> */}
+                <Text className="text-xl !text-black">$ 126,560</Text>
+                <Divider plain />
+                <Text className="font-semibold"> Daily Sales $12,423</Text>
+              </Content>
+              <Content className=" bg-[#ffff] p-3 mr-5 rounded-md">
+                <div>
+                  <Text className="text-lg !text-[#cdcdcd]">Total Stores</Text>
+                </div>
+                <Text className="text-xl !text-black">
                   {dashboardData &&
                     dashboardData.store_data &&
                     dashboardData.store_data.total_count}
-                </Title>
-                <div>
-                  <Text className="text-lg !text-slate-200">Stores</Text>
-                </div>
-              </Content>
-              <Content className="w-[100%] bg-[#b464f9] p-2 mr-5 text-center rounded-md">
-                <Title level={2} className="!text-slate-200 mb-2">
-                  {dashboardData &&
-                    dashboardData.language_data &&
-                    dashboardData.language_data.total_count}
-                </Title>
-                <div>
-                  <Text className="text-lg !text-slate-200">Languages</Text>
-                </div>
-              </Content>
-              <Content className="w-[100%] bg-red-400 p-2 mr-5 text-center rounded-md">
-                <Title level={2} className="!text-slate-200 mb-2">
-                  {dashboardData &&
-                    dashboardData.product_type_data &&
-                    dashboardData.product_type_data.total_count}
-                </Title>
-                <div>
-                  <Text className="text-lg !text-slate-200">
-                    Store Product Types
-                  </Text>
-                </div>
+                </Text>
+                <Divider plain />
+                <Text className="text-[#7dc1ff]">View Storelist </Text>
               </Content>
               {/* <Content className="w-[5%] bg-[#62daaa] ml-2 p-4 text-center rounded-md">
               <Title level={2}>
@@ -352,24 +487,46 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
             </Content> */}
             </Content>
             <Content className="flex justify-between mt-12">
-              <Content className="w-[60%] p-2 bg-white mr-2">
-                <LanguageGraph languageData={dashboardData.language_data} />
+              <Content className="w-[50%] p-2 bg-white mr-2">
+                <SalesReportGraph />
+                {/* <LanguageGraph languageData={dashboardData.language_data} /> */}
               </Content>
-              <Content className="w-[40%] p-2 bg-white ml-2">
-                <StoreGraph storeData={dashboardData.store_data} />
+              <Content className="w-[50%] p-2 bg-white ml-2">
+                {/* <StoreGraph storeData={dashboardData.store_data} /> */}
+                <Content className=" flex  !mx-3">
+                  <Content className="!bg-white  shadow-sm p-3 !mr-3">
+                    <Text className="!font-bold">Rankings</Text>
+                    <Text className="text-slate-300"> (Previous month)</Text>
+                    <Content className="!mt-6">
+                      <DmTabAntDesign
+                        tabType={"line"}
+                        tabBarPosition={"top"}
+                        tabData={storeTabData}
+                        handleTabChangeFunction={(value) => tabId(value)}
+                      />
+                      <Content>
+                        <DynamicTable tableComponentData={tablePropsData} />
+                      </Content>
+                      <Text className=" text-blue-400">Explore All Stores</Text>
+                    </Content>
+                  </Content>
+                </Content>
               </Content>
-              {/* <Content className="mt-16">
-              {" "}
-              <StoreProductTypeGraph
-                storeProductTypeData={dashboardData.product_type_data}
-              />
-            </Content> */}
             </Content>
-            <Content className="mt-12 p-2 bg-white">
-              {" "}
-              <StoreProductTypeGraph
+            <Content className="mt-12 p-2 bg-white !w-[70%]">
+              <div>
+                <Text className="text-lg !text-[#cdcdcd] p-2">Total Stores</Text>
+              </div>
+              <Text className="text-xl !text-black p-2">
+                {dashboardData &&
+                  dashboardData.store_data &&
+                  dashboardData.store_data.total_count}
+              </Text>{" "}
+              {/* <StoreProductTypeGraph
                 storeProductTypeData={dashboardData.product_type_data}
-              />
+              /> */}
+              <StoreGraph storeData={dashboardData.store_data} />
+            
             </Content>
           </Content>
         )}

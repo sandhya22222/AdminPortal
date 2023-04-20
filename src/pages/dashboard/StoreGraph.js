@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Layout, Typography, Spin } from "antd";
+import { Layout, Typography, Spin, Button } from "antd";
 import { Bar, Pie, Column } from "@ant-design/plots";
 
 const { Title, Text } = Typography;
@@ -26,24 +26,36 @@ const StoreGraph = ({ storeData }) => {
         data,
         angleField: "value",
         colorField: "type",
-        radius: 0.9,
-        legend: {
-          position: "bottom",
-        },
+        radius: 1,
+        innerRadius: 0.5,
         label: {
           type: "inner",
-          offset: "-30%",
-          content: ({ percent }) => `${(percent * 100).toFixed(0)}%`,
+          offset: "-50%",
+          content: "{value}",
           style: {
-            fontSize: 14,
             textAlign: "center",
+            fontSize: 14,
           },
         },
         interactions: [
+          { type: "element-selected" },
           {
             type: "element-active",
           },
         ],
+        statistic: {
+          title: false,
+          content: {
+            style: {
+              whiteSpace: "pre-wrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            },
+            // formatter: function formatter() {
+            //   return `total\n134`;
+            // },
+          },
+        },
       };
 
       setPieStoreGraphData(config);
@@ -54,17 +66,15 @@ const StoreGraph = ({ storeData }) => {
       {" "}
       {pieStoreGraphData !== undefined ? (
         <>
-          <Title level={3} className="mb-3 text-center !font-normal">
+          {/* <Title level={3} className="mb-3 text-center !font-normal">
             Stores
-          </Title>
+          </Title> */}
           <Content>
             <Pie {...pieStoreGraphData} />
+            <Button className="app-btn-primary !float-right !mt-[-30px] ">
+              Create New
+            </Button>
           </Content>
-          {/* <Content>
-            <Title level={3} className="mt-3 !font-normal text-md text-center">
-              Stores
-            </Title>
-          </Content> */}
         </>
       ) : null}
     </Content>
