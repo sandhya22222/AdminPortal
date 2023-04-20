@@ -250,7 +250,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
       title: "Rank",
       dataIndex: "rank",
       key: "rank",
-      width:"20%",
+      width: "20%",
       render: (text, record) => {
         return <>{record.key}</>;
       },
@@ -259,7 +259,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      width:"25%",
+      width: "25%",
       render: (text, record) => {
         return <>{record.name}</>;
       },
@@ -268,7 +268,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
       title: "Sales",
       dataIndex: "sales",
       key: "sales",
-      width:"20%",
+      width: "20%",
       render: (text, record) => {
         return <>{record.sales}</>;
       },
@@ -277,7 +277,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
       title: "Market Share",
       dataIndex: "marketshare",
       key: "marketshare",
-      width:"35%",
+      width: "35%",
       render: (text, record) => {
         return <> {record.marketshare}</>;
       },
@@ -429,22 +429,21 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
         ) : (
           <Content className="">
             <Content className="flex justify-between">
-              <Content className=" bg-[#ffff] p-3 mr-5 rounded-md justify-center">
+              <Content className=" bg-[#ffff] p-3 mr-5 shadow-sm rounded-md justify-center">
                 <Title level={3} className="!font-normal">
                   Dashboard
                 </Title>
-                <Text level={2} className="!text-black !text-lg flex ">
-                  <img className="mr-2 !w-12" src={AdminIcon} />
-                  {/* {dashboardData &&
-                    dashboardData.store_data &&
-                    dashboardData.store_data.total_count} */}
-                  Hello Loganathan B, have a great day!
-                </Text>
+                <Content>
+                  <Text level={2} className="!text-black !text-lg flex ">
+                    <img className="mr-2 !w-12" src={AdminIcon} />
+                    Hello Logonathan B, have a great day!
+                  </Text>
+                </Content>
                 {/* <div>
                   <Text className="text-lg !text-slate-200">Stores</Text>
                 </div> */}
               </Content>
-              <Content className=" bg-[#ffff] p-3 mr-5 rounded-md">
+              <Content className=" bg-[#ffff] p-3 mr-5 shadow-sm rounded-md">
                 <p className="!text-[#cdcdcd] text-lg ">
                   Total sales this month
                 </p>
@@ -460,7 +459,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                 <Divider plain />
                 <Text className="font-semibold"> Daily Sales $12,423</Text>
               </Content>
-              <Content className=" bg-[#ffff] p-3 mr-5 rounded-md">
+              <Content className=" bg-[#ffff] p-3 mr-5 shadow-sm rounded-md">
                 <div>
                   <Text className="text-lg !text-[#cdcdcd]">Total Stores</Text>
                 </div>
@@ -487,11 +486,11 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
             </Content> */}
             </Content>
             <Content className="flex justify-between mt-12">
-              <Content className="w-[50%] p-2 bg-white mr-2">
+              <Content className=" p-2 shadow-sm bg-white mr-2">
                 <SalesReportGraph />
                 {/* <LanguageGraph languageData={dashboardData.language_data} /> */}
               </Content>
-              <Content className="w-[50%] p-2 bg-white ml-2">
+              <Content className=" p-2 shadow-sm bg-white ml-2">
                 {/* <StoreGraph storeData={dashboardData.store_data} /> */}
                 <Content className=" flex  !mx-3">
                   <Content className="!bg-white  shadow-sm p-3 !mr-3">
@@ -513,9 +512,11 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                 </Content>
               </Content>
             </Content>
-            <Content className="mt-12 p-2 bg-white !w-[70%]">
+            <Content className="mt-12 p-2 shadow-sm bg-white !w-[70%]">
               <div>
-                <Text className="text-lg !text-[#cdcdcd] p-2">Total Stores</Text>
+                <Text className="text-lg !text-[#cdcdcd] p-2">
+                  Total Stores
+                </Text>
               </div>
               <Text className="text-xl !text-black p-2">
                 {dashboardData &&
@@ -526,7 +527,6 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                 storeProductTypeData={dashboardData.product_type_data}
               /> */}
               <StoreGraph storeData={dashboardData.store_data} />
-            
             </Content>
           </Content>
         )}
