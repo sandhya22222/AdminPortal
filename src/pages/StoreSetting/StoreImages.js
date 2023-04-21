@@ -9,7 +9,11 @@ import {
   Skeleton,
   Tooltip,
 } from "antd";
-import { PlusOutlined, UndoOutlined } from "@ant-design/icons";
+import {
+  PlusOutlined,
+  UndoOutlined,
+  InfoCircleOutlined,
+} from "@ant-design/icons";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
@@ -261,7 +265,17 @@ const StoreImages = ({
         {title === "Store Logo" ? (
           <span className="text-red-600 text-sm text-center ">*</span>
         ) : null}
-        <Title level={5}>{title}</Title>
+        <Title level={5} className="mr-1">
+          {title}
+        </Title>
+        <Content className=" items-end  ">
+          <InfoCircleOutlined
+            // style={{
+            //   color: "rgba(0,0,0,.45)",
+            // }}
+            className="text-sky-600"
+          />
+        </Content>
         {reset === true ? (
           <Content>
             <Tooltip title="Reset to previous image">
@@ -350,7 +364,8 @@ const StoreImages = ({
               className="!absolute !cursor-pointer !right-[-5px] !z-10  !top-[32px] !text-2xl !text-red-600 !shadow-lg  hover:translate-"
               //   twoToneColor= {"#eb2f96"}
               onClick={() => {
-                setImagePathShow(); setReset(true);
+                setImagePathShow();
+                setReset(true);
               }}
             />
           </Content>

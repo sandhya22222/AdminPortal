@@ -63,12 +63,12 @@ const SidebarNew = (props) => {
       label: "Languages",
       navigate_to: "/dashboard/language",
     },
-    {
-      key: "4",
-      icon: <SettingOutlined />,
-      label: "Store Settings",
-      navigate_to: "/dashboard/storesetting",
-    },
+    // {
+    //   key: "4",
+    //   icon: <SettingOutlined />,
+    //   label: "Store Settings",
+    //   navigate_to: "/dashboard/storesetting",
+    // },
     {
       key: "5",
       icon: <DollarCircleOutlined />,

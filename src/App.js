@@ -89,12 +89,12 @@ const App = () => {
                         element={<AddLanguage />}
                       />
                       <Route path="store" element={<Store />} />
+                      <Route path="store/storesetting" element={<StoreSettings />} />
                       <Route path="paymenttype" element={<PaymentType />} />
                       <Route
                         path="onlinepaymentconnector"
                         element={<OnlinePaymentConnector />}
                       />
-                      <Route path="storesetting" element={<StoreSettings />} />
                       <Route path="*" element={<PageNotFound />} />
                     </>
                   ) : (
@@ -121,12 +121,12 @@ const App = () => {
                 />
                 <Route path="language/add_language" element={<AddLanguage />} />
                 <Route path="store" element={<Store />} />
+                <Route path="store/storesetting" element={<StoreSettings />} />
                 <Route path="paymenttype" element={<PaymentType />} />
                 <Route
                   path="onlinepaymentconnector"
                   element={<OnlinePaymentConnector />}
                 />
-                <Route path="storesetting" element={<StoreSettings />} />
                 <Route path="*" element={<PageNotFound />} />
               </Route>
               <Route path="*" element={<PageNotFound />} />

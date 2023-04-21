@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-import { Layout,Typography } from "antd";
+import { Layout, Typography } from "antd";
 import { Column } from "@ant-design/plots";
 
 const { Content } = Layout;
