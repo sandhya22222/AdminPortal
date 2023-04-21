@@ -16,7 +16,12 @@ import {
 import axios from "axios";
 import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
 import { toast } from "react-toastify";
-import { EditOutlined, SearchOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  EditOutlined,
+  SearchOutlined,
+  UserOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
 import { MdInfo } from "react-icons/md";
 import {
   useLocation,
@@ -243,7 +248,7 @@ const Stores = () => {
       title: "Created Date And Time",
       dataIndex: "created_on",
       key: "created_on",
-      width: "34%",
+      width: "30%",
       render: (text, record) => {
         return <>{new Date(record.created_on).toLocaleString()}</>;
       },
@@ -252,17 +257,39 @@ const Stores = () => {
       title: "Action",
       dataIndex: "",
       key: "",
-      width: "8%",
+      width: "12%",
       render: (text, record) => {
         return (
-          <Tooltip title="Edit Store">
-            <EditOutlined
-              className="app-edit-icon font-bold text-black flex justify-content-end pr-6"
-              onClick={() => {
-                showEditDrawer(record.id);
+          <content className="whitespace-nowrap">
+            <Tooltip title="Edit Store">
+              <EditOutlined
+                className="app-edit-icon font-bold text-black pr-6"
+                onClick={() => {
+                  showEditDrawer(record.id);
+                }}
+              />
+            </Tooltip>
+            {/* <Tooltip title="Delete Language"> */}
+            <Link
+              to={{
+                pathname: "storesetting",
+                search: `?id=${record.id}&page=${
+                  searchParams.get("page") ? searchParams.get("page") : 1
+                }&limit=${
+                  searchParams.get("limit")
+                    ? searchParams.get("limit")
+                    : pageLimit
+                }`,
               }}
+              // className=" pl-[10px] font-semibold app-table-data-title"
+            >
+            <SettingOutlined
+              className="app-delete-icon pr-4  text-black"
+              style={{ fontSize: "16px", marginLeft: "5px" }}
             />
-          </Tooltip>
+            </Link>
+            {/* </Tooltip> */}
+          </content>
         );
       },
     },
