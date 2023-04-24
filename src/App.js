@@ -29,6 +29,7 @@ import SidebarNew from "./components/Sidebar2.0.js/SidebarNew";
 import PaymentType from "./pages/PaymentType/PaymentType";
 import OnlinePaymentConnector from "./pages/OnlinePaymentConnector/OnlinePaymentConnector";
 import StoreSettings from "./pages/StoreSetting/StoreSettings";
+import Preview from "./pages/StoreSetting/Preview";
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 
 const auth = process.env.REACT_APP_AUTH;
@@ -89,7 +90,11 @@ const App = () => {
                         element={<AddLanguage />}
                       />
                       <Route path="store" element={<Store />} />
-                      <Route path="store/storesetting" element={<StoreSettings />} />
+                      <Route
+                        path="store/storesetting"
+                        element={<StoreSettings />}
+                      />
+                      <Route path="preview" element={<Preview />} />
                       <Route path="paymenttype" element={<PaymentType />} />
                       <Route
                         path="onlinepaymentconnector"
@@ -122,6 +127,7 @@ const App = () => {
                 <Route path="language/add_language" element={<AddLanguage />} />
                 <Route path="store" element={<Store />} />
                 <Route path="store/storesetting" element={<StoreSettings />} />
+                <Route path="preview" element={<Preview />} />
                 <Route path="paymenttype" element={<PaymentType />} />
                 <Route
                   path="onlinepaymentconnector"
