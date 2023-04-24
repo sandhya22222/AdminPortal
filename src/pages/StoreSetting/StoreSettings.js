@@ -9,14 +9,15 @@ import {
   Button,
   Upload,
   Spin,
+  Switch,
   Space,
 } from "antd";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
 import { toast } from "react-toastify";
 import {
   ArrowLeftOutlined,
-  UploadOutlined,
+  EyeOutlined,
   UndoOutlined,
 } from "@ant-design/icons";
 import axios from "axios";
@@ -25,6 +26,7 @@ import useAuthorization from "../../hooks/useAuthorization";
 import StoreModal from "../../components/storeModal/StoreModal";
 import StoreImages from "./StoreImages";
 import Status from "../Stores/Status";
+import Preview from "./Preview";
 const { Content } = Layout;
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -34,6 +36,7 @@ const storeImagesAPI = process.env.REACT_APP_STORE_IMAGES_API;
 const storeAbsoluteImgesAPI =
   process.env.REACT_APP_STORE_ABSOLUTE_STORE_IMAGES_API;
 const StoreSettings = () => {
+  const navigate = useNavigate();
   const search = useLocation().search;
   const id = new URLSearchParams(search).get("id");
   const authorizationHeader = useAuthorization();
@@ -55,36 +58,38 @@ const StoreSettings = () => {
   const [foreGroundColor, setForeGroundColor] = useState("#333333");
   const [pageFgColor, setPageFgColor] = useState("#333333");
   const [buttonPrimaryBackgroundColor, setButtonPrimaryBackgroundColor] =
-    useState("");
-  const [btnPrimaryBgColor, setbtnPrimaryBgColor] = useState("");
+    useState("#00000");
+  const [btnPrimaryBgColor, setbtnPrimaryBgColor] = useState("#00000");
   const [buttonSecondaryBackgroundColor, setButtonSecondaryBackgroundColor] =
-    useState("");
-  const [btnSecondaryBgColor, setbtnSecondaryBgColor] = useState("");
+    useState("#00000");
+  const [btnSecondaryBgColor, setbtnSecondaryBgColor] = useState("#00000");
   const [buttonTeritaryBackgroundColor, setButtonTeritaryBackgroundColor] =
-    useState("");
-  const [btnTeritaryBgColor, setbtnTeritaryBgColor] = useState("");
+    useState("#00000");
+  const [btnTeritaryBgColor, setbtnTeritaryBgColor] = useState("#00000");
   const [buttonPrimaryForegroundColor, setButtonPrimaryForegroundColor] =
-    useState("");
-  const [btnPrimaryFgColor, setbtnPrimaryFgColor] = useState("");
+    useState("#00000");
+  const [btnPrimaryFgColor, setbtnPrimaryFgColor] = useState("#00000");
   const [buttonSecondaryForegroundColor, setButtonSecondaryForegroundColor] =
-    useState("");
-  const [btnSecondaryFgColor, setbtnSecondaryFgColor] = useState("");
+    useState("#00000");
+  const [btnSecondaryFgColor, setbtnSecondaryFgColor] = useState("#00000");
   const [buttonTeritaryForegroundColor, setButtonTeritaryForegroundColor] =
-    useState("");
-  const [btnTeritaryFgColor, setbtnTeritaryFgColor] = useState("");
-  const [footerBackgroundColor, setFooterBackgroundColor] = useState("");
-  const [footerBgColor, setFooterBgColor] = useState("");
-  const [footerForegroundColor, setFooterForegroundColor] = useState("");
-  const [footerFgColor, setFooterFgColor] = useState("");
-  const [headerBackgroundColor, setHeaderBackgroundColor] = useState("");
-  const [headerBgColor, setHeaderBgColor] = useState("");
-  const [headerForegroundColor, setHeaderForegroundColor] = useState("");
-  const [headerFgColor, setHeaderFgColor] = useState("");
+    useState("#00000");
+  const [btnTeritaryFgColor, setbtnTeritaryFgColor] = useState("#00000");
+  const [footerBackgroundColor, setFooterBackgroundColor] = useState("#00000");
+  const [footerBgColor, setFooterBgColor] = useState("#00000");
+  const [footerForegroundColor, setFooterForegroundColor] = useState("#00000");
+  const [footerFgColor, setFooterFgColor] = useState("#00000");
+  const [headerBackgroundColor, setHeaderBackgroundColor] = useState("#00000");
+  const [headerBgColor, setHeaderBgColor] = useState("#00000");
+  const [headerForegroundColor, setHeaderForegroundColor] = useState("#00000");
+  const [headerFgColor, setHeaderFgColor] = useState("#00000");
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [imagesUpload, setImagesUpload] = useState([]);
   const [getImageData, setGetImageData] = useState([]);
   const [validStoreLogo, setValiStoreLogo] = useState(false);
+  const [changeSwitchStatus, setChangeSwitchStatus] = useState("");
+
   //! get call of  getStoreSettingApi
   const getStoreSettingApi = (storeId) => {
     axios
@@ -210,17 +215,17 @@ const StoreSettings = () => {
           setFractionalUnit("");
           setNumberToBasic("");
           setPageBackgroundColor("#EBEBEB");
-          setButtonPrimaryBackgroundColor("");
-          setButtonSecondaryBackgroundColor("");
-          setButtonTeritaryBackgroundColor("");
-          setButtonPrimaryForegroundColor("");
-          setButtonSecondaryForegroundColor("");
-          setButtonTeritaryForegroundColor("");
+          setButtonPrimaryBackgroundColor("#00000");
+          setButtonSecondaryBackgroundColor("#00000");
+          setButtonTeritaryBackgroundColor("#00000");
+          setButtonPrimaryForegroundColor("#00000");
+          setButtonSecondaryForegroundColor("#00000");
+          setButtonTeritaryForegroundColor("#00000");
           setForeGroundColor("#333333");
-          setFooterBackgroundColor("");
-          setFooterForegroundColor("");
-          setHeaderForegroundColor("");
-          setHeaderBackgroundColor("");
+          setFooterBackgroundColor("#00000");
+          setFooterForegroundColor("#00000");
+          setHeaderForegroundColor("#00000");
+          setHeaderBackgroundColor("#00000");
         }
       });
   };
@@ -260,6 +265,7 @@ const StoreSettings = () => {
       if (storeData && storeData.length > 0) {
         for (var i = 0; i < storeData.length; i++) {
           setStoreName(storeApiData[0].name);
+          setChangeSwitchStatus(storeApiData[0].status);
         }
       }
     }
@@ -316,23 +322,23 @@ const StoreSettings = () => {
           response.data
         );
         // setPostData(response.data);
-        setFractionalUnit("");
-        setNumberToBasic("");
-        setCurrencyIsoCode("");
-        setCurrencySymbol("");
-        setPageBackgroundColor("#EBEBEB");
-        setButtonPrimaryBackgroundColor("");
-        setButtonSecondaryBackgroundColor("");
-        setButtonTeritaryBackgroundColor("");
-        setButtonPrimaryForegroundColor("");
-        setButtonSecondaryForegroundColor("");
-        setButtonTeritaryForegroundColor("");
-        setForeGroundColor("#333333");
-        setFooterBackgroundColor("");
-        setFooterForegroundColor("");
-        setHeaderForegroundColor("");
-        setHeaderBackgroundColor("");
-        setstoreId("Choose Store");
+        // setFractionalUnit("");
+        // setNumberToBasic("");
+        // setCurrencyIsoCode("");
+        // setCurrencySymbol("");
+        // setPageBackgroundColor("#EBEBEB");
+        // setButtonPrimaryBackgroundColor("");
+        // setButtonSecondaryBackgroundColor("#00000");
+        // setButtonTeritaryBackgroundColor("#00000");
+        // setButtonPrimaryForegroundColor("#00000");
+        // setButtonSecondaryForegroundColor("#00000");
+        // setButtonTeritaryForegroundColor("#00000");
+        // setForeGroundColor("#333333");
+        // setFooterBackgroundColor("#00000");
+        // setFooterForegroundColor("#00000");
+        // setHeaderForegroundColor("#00000");
+        // setHeaderBackgroundColor("#00000");
+        // setstoreId("Choose Store");
       })
       .catch((error) => {
         if (error.response) {
@@ -426,14 +432,14 @@ const StoreSettings = () => {
         type: "error",
       });
     }
-    if (count === 5) {
+    if (count === 4) {
       storeSettingsPostCall();
     }
   };
 
   const openModal = () => {
     setIsModalOpen(true);
-    setValiStoreLogo(false);
+    // setValiStoreLogo(false);
   };
 
   const closeModal = () => {
@@ -456,8 +462,6 @@ const StoreSettings = () => {
       openModal();
     }
   };
-
-  console.log("imagesupload", imagesUpload);
 
   //! get call of store images
   const getStoreImagesApi = (storeId) => {
@@ -654,22 +658,64 @@ const StoreSettings = () => {
     setInValidStoreData(false);
   };
 
+  // const onChange = (checked) => {
+  //   // console.log(`switch to ${checked}`);
+  //   setChangeSwitchStatus (checked)
+  // };
+
   const storeSettingsHeader = () => {
     return (
       <>
-        <Row className="!w-full float-left flex items-center my-3">
-          <Col>
+        {/* <Content
+          className="!w-[80%]  flex items-center my-3"
+          justify={"space-between"}
+        >
+          <div className="flex justify-start">
             <Link to="/dashboard/store">
               <ArrowLeftOutlined
                 role={"button"}
-                className={"ml-4 text-black text-lg"}
+                className={"text-black text-lg"}
               />
             </Link>
-          </Col>
-          <Col className="ml-4">
-            <Title level={3} className="m-0 inline-block !font-normal">
+            <Title level={3} className="m-0 ml-4 inline-block  !font-normal">
               {storeName}
             </Title>
+          </div>
+          <div className="flex justify-end ">
+            <Switch
+              className="bg-gray-400"
+              checked={changeSwitchStatus === 1 ? true : false}
+            />
+            <div className="pl-1">
+              {changeSwitchStatus === 1 ? "Active" : "Inactive"}
+            </div>
+          </div>
+        </Content> */}
+        <Row justify={"space-between"} className="!w-[80%]">
+          <Col>
+            <Content className=" text-right mt-3 flex items-center ">
+              <Link to="/dashboard/store">
+                <ArrowLeftOutlined
+                  role={"button"}
+                  className={"text-black text-lg -translate-y-1 ml-2"}
+                />
+              </Link>
+              <Title level={3} className=" ml-3 inline-block  !font-normal">
+                {storeName}
+              </Title>
+            </Content>
+          </Col>
+
+          <Col>
+            <Content className="text-right mt-3 flex items-center">
+              <Switch
+                className="bg-gray-400"
+                checked={changeSwitchStatus === 1 ? true : false}
+              />
+              <Content className="pl-1 ">
+                {changeSwitchStatus === 1 ? "Active" : "Inactive"}
+              </Content>
+            </Content>
           </Col>
         </Row>
       </>
@@ -818,7 +864,7 @@ const StoreSettings = () => {
                 setValiStoreLogo={setValiStoreLogo}
               />
             </Col>
-            <Col>
+            <Col className="!ml-10">
               <StoreImages
                 title={"Search Logo"}
                 type={"search_logo"}
@@ -829,7 +875,7 @@ const StoreSettings = () => {
                 isSingleUpload={true}
               />
             </Col>
-            <Col>
+            <Col className="!ml-10">
               <StoreImages
                 title={"Customer Logo"}
                 type={"customer_logo"}
@@ -840,7 +886,7 @@ const StoreSettings = () => {
                 isSingleUpload={true}
               />
             </Col>
-            <Col>
+            <Col className="!ml-10">
               <StoreImages
                 title={"Cart Logo"}
                 type={"cart_logo"}
@@ -851,7 +897,7 @@ const StoreSettings = () => {
                 isSingleUpload={true}
               />
             </Col>
-            <Col>
+            <Col className="!ml-10">
               <StoreImages
                 title={"Wishlist Logo"}
                 type={"wishlist_logo"}
@@ -863,24 +909,14 @@ const StoreSettings = () => {
               />
             </Col>
           </Row>
-          {/* <StoreImages
-              title={"Banner Logo"}
-              type={"banner_images"}
-              storeId={storeId}
-              imagesUpload={imagesUpload}
-              setImagesUpload={setImagesUpload}
-              isSingleUpload={false}
-            /> */}
-          <Upload
-            className="w-90"
-            // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-            listType="picture"
-            // defaultFileList={[...fileList]}
-          >
-            <Button icon={<UploadOutlined />} className="font-semibold">
-              Click to Add Banner Image
-            </Button>
-          </Upload>
+          <StoreImages
+            title={"Banner Logo"}
+            type={"banner_images"}
+            storeId={id}
+            imagesUpload={imagesUpload}
+            setImagesUpload={setImagesUpload}
+            isSingleUpload={false}
+          />
         </Content>
         <Content className="bg-white mt-2 p-3">
           <label className="text-[20px] mb-2 mt-4 font-bold">Currency</label>
@@ -989,9 +1025,51 @@ const StoreSettings = () => {
         </Content>
         <Content className="bg-white mt-2 p-3 ">
           <Content>
-            <label className="text-[20px] mb-2 mt-2 font-bold">
-              Page Theme
-            </label>
+            <Row className="!mb-4">
+              <label className="text-[20px]  mt-2 font-bold">Page Theme</label>
+              <Content className="text-right">
+                <Button className="!text-right" onClick={() => openModal()}>
+                  <EyeOutlined className="!text-center -translate-y-0.5" />{" "}
+                  Preview
+                </Button>
+                <StoreModal
+                  // closeModal="!overflow-y-auto !h-96"
+                  isVisible={isModalOpen}
+                  okButtonText={"Save"}
+                  // title={"Preview"}
+                  width={800}
+                  cancelButtonText={"Cancel"}
+                  okCallback={() => {
+                    // postImageOnClickSave();
+                  }}
+                  cancelCallback={() => closeModal()}
+                  isSpin={false}
+                >
+                  <Preview
+                    headerBackgroundColor={headerBackgroundColor}
+                    headerForegroundColor={headerForegroundColor}
+                    footerBackgroundColor={footerBackgroundColor}
+                    footerForegroundColor={footerForegroundColor}
+                    pageBackgroundColor={pageBackgroundColor}
+                    foreGroundColor={foreGroundColor}
+                    buttonPrimaryBackgroundColor={buttonPrimaryBackgroundColor}
+                    buttonSecondaryBackgroundColor={
+                      buttonSecondaryBackgroundColor
+                    }
+                    buttonTeritaryBackgroundColor={
+                      buttonTeritaryBackgroundColor
+                    }
+                    buttonPrimaryForegroundColor={buttonPrimaryForegroundColor}
+                    buttonSecondaryForegroundColor={
+                      buttonSecondaryForegroundColor
+                    }
+                    buttonTeritaryForegroundColor={
+                      buttonTeritaryForegroundColor
+                    }
+                  />
+                </StoreModal>
+              </Content>
+            </Row>
             <Row className="mt-2">
               {/* <Col span={8} className="mr-2">
               <Button
@@ -1052,7 +1130,7 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                   />
                   <Space.Compact className="ml-2">
-                    <Input defaultValue="0571" className="w-28" />
+                    <Input value={pageBackgroundColor} className="w-28" />
                     <Input
                       addonAfter={
                         <UndoOutlined
@@ -1083,7 +1161,7 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                   />
                   <Space.Compact className="ml-2">
-                    <Input defaultValue="0571" className="w-28" />
+                    <Input value={foreGroundColor} className="w-28" />
                     <Input
                       addonAfter={
                         <UndoOutlined
@@ -1164,7 +1242,10 @@ const StoreSettings = () => {
                     }}
                   />
                   <Space.Compact className="ml-2">
-                    <Input defaultValue="0571" className="w-28" />
+                    <Input
+                      value={buttonPrimaryBackgroundColor}
+                      className="w-28"
+                    />
                     <Input
                       addonAfter={
                         <UndoOutlined
@@ -1195,7 +1276,10 @@ const StoreSettings = () => {
                     }}
                   />
                   <Space.Compact className="ml-2">
-                    <Input defaultValue="0571" className="w-28" />
+                    <Input
+                      value={buttonSecondaryBackgroundColor}
+                      className="w-28"
+                    />
                     <Input
                       addonAfter={
                         <UndoOutlined
@@ -1228,7 +1312,10 @@ const StoreSettings = () => {
                     }}
                   />
                   <Space.Compact className="ml-2">
-                    <Input defaultValue="0571" className="w-28" />
+                    <Input
+                      value={buttonTeritaryBackgroundColor}
+                      className="w-28"
+                    />
                     <Input
                       addonAfter={
                         <UndoOutlined
@@ -1311,7 +1398,10 @@ const StoreSettings = () => {
                     }}
                   />
                   <Space.Compact className="ml-2">
-                    <Input defaultValue="0571" className="w-28" />
+                    <Input
+                      value={buttonPrimaryForegroundColor}
+                      className="w-28"
+                    />
                     <Input
                       addonAfter={
                         <UndoOutlined
@@ -1344,7 +1434,10 @@ const StoreSettings = () => {
                     }}
                   />
                   <Space.Compact className="ml-2">
-                    <Input defaultValue="0571" className="w-28" />
+                    <Input
+                      value={buttonSecondaryForegroundColor}
+                      className="w-28"
+                    />
                     <Input
                       addonAfter={
                         <UndoOutlined
@@ -1375,7 +1468,10 @@ const StoreSettings = () => {
                     }}
                   />
                   <Space.Compact className="ml-2">
-                    <Input defaultValue="0571" className="w-28" />
+                    <Input
+                      value={buttonTeritaryForegroundColor}
+                      className="w-28"
+                    />
                     <Input
                       addonAfter={
                         <UndoOutlined
@@ -1466,7 +1562,7 @@ const StoreSettings = () => {
                     }}
                   />
                   <Space.Compact className="ml-2">
-                    <Input defaultValue="0571" className="w-28" />
+                    <Input value={headerBackgroundColor} className="w-28" />
                     <Input
                       addonAfter={
                         <UndoOutlined
@@ -1497,7 +1593,7 @@ const StoreSettings = () => {
                     }}
                   />
                   <Space.Compact className="ml-2">
-                    <Input defaultValue="0571" className="w-28" />
+                    <Input value={headerForegroundColor} className="w-28" />
                     <Input
                       addonAfter={
                         <UndoOutlined
@@ -1535,7 +1631,7 @@ const StoreSettings = () => {
                     }}
                   />
                   <Space.Compact className="ml-2">
-                    <Input defaultValue="0571" className="w-28" />
+                    <Input value={footerBackgroundColor} className="w-28" />
                     <Input
                       addonAfter={
                         <UndoOutlined
@@ -1566,7 +1662,7 @@ const StoreSettings = () => {
                     }}
                   />
                   <Space.Compact className="ml-2">
-                    <Input defaultValue="0571" className="w-28" />
+                    <Input value={footerForegroundColor} className="w-28" />
                     <Input
                       addonAfter={
                         <UndoOutlined
@@ -1607,17 +1703,17 @@ const StoreSettings = () => {
                   setCurrencyIsoCode("");
                   setCurrencySymbol("");
                   setPageBackgroundColor("#EBEBEB");
-                  setButtonPrimaryBackgroundColor("");
-                  setButtonSecondaryBackgroundColor("");
-                  setButtonTeritaryBackgroundColor("");
-                  setButtonPrimaryForegroundColor("");
-                  setButtonSecondaryForegroundColor("");
-                  setButtonTeritaryForegroundColor("");
+                  setButtonPrimaryBackgroundColor("#00000");
+                  setButtonSecondaryBackgroundColor("#00000");
+                  setButtonTeritaryBackgroundColor("#00000");
+                  setButtonPrimaryForegroundColor("#00000");
+                  setButtonSecondaryForegroundColor("#00000");
+                  setButtonTeritaryForegroundColor("#00000");
                   setForeGroundColor("#333333");
-                  setFooterBackgroundColor("");
-                  setFooterForegroundColor("");
-                  setHeaderForegroundColor("");
-                  setHeaderBackgroundColor("");
+                  setFooterBackgroundColor("#00000");
+                  setFooterForegroundColor("#00000");
+                  setHeaderForegroundColor("#00000");
+                  setHeaderBackgroundColor("#00000");
                   setstoreId("Choose Store");
                 }}
               >

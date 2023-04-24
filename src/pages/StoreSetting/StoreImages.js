@@ -13,6 +13,7 @@ import {
   PlusOutlined,
   UndoOutlined,
   InfoCircleOutlined,
+  UploadOutlined,
 } from "@ant-design/icons";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -260,7 +261,7 @@ const StoreImages = ({
   };
 
   return (
-    <Content className="ml-10 mb-2">
+    <Content className=" mb-2">
       <Content className="flex !mb-3">
         {title === "Store Logo" ? (
           <span className="text-red-600 text-sm text-center ">*</span>
@@ -324,21 +325,40 @@ const StoreImages = ({
               {fileList.length >= 1 ? null : uploadButton}
             </Upload>
           ) : (
+            // <Upload
+            //   listType="picture-card"
+            //   fileList={fileList}
+            //   onPreview={handlePreview}
+            //   onChange={(e) => handleChange(e)}
+            //   name="file"
+            //   beforeUpload={() => {
+            //     return false;
+            //   }}
+            //   afterUpload={() => {
+            //     return false;
+            //   }}
+            //   accept=".png, .jpg, .jpeg"
+            // >
+            //   {uploadButton}
+            // </Upload>
             <Upload
-              listType="picture-card"
-              fileList={fileList}
-              onPreview={handlePreview}
-              onChange={(e) => handleChange(e)}
-              name="file"
+              className="w-90"
+              // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+              listType="picture"
               beforeUpload={() => {
                 return false;
               }}
               afterUpload={() => {
                 return false;
               }}
+              fileList={fileList}
               accept=".png, .jpg, .jpeg"
+              onChange={(e) => handleChange(e)}
+              // defaultFileList={[...fileList]}
             >
-              {uploadButton}
+              <Button icon={<UploadOutlined />} className="font-semibold">
+                Click to Add Banner Image
+              </Button>
             </Upload>
           )}
           <Modal
