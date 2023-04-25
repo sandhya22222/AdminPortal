@@ -844,7 +844,7 @@ const Stores = () => {
                       <Input
                         placeholder="Enter email"
                         value={storeEmail}
-                        maxLength={30}
+                        maxLength={50}
                         className={`${
                           inValidEmail
                             ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-4"

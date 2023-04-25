@@ -10,6 +10,7 @@ import {
   Upload,
   Spin,
   Switch,
+  Tag,
   Space,
 } from "antd";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -89,6 +90,8 @@ const StoreSettings = () => {
   const [getImageData, setGetImageData] = useState([]);
   const [validStoreLogo, setValiStoreLogo] = useState(false);
   const [changeSwitchStatus, setChangeSwitchStatus] = useState("");
+  const [addCodes, setAddCodes] = useState([]);
+  const [regionCode, setRegionCode] = useState("");
 
   //! get call of  getStoreSettingApi
   const getStoreSettingApi = (storeId) => {
@@ -722,6 +725,21 @@ const StoreSettings = () => {
     );
   };
 
+  const validateRegionCode = () => {
+    if (regionCode !== undefined && regionCode !== null && regionCode !== "") {
+      let temp = [...addCodes];
+      temp.push(regionCode);
+      setAddCodes(temp);
+      setRegionCode("");
+    } else {
+      setRegionCode("");
+    }
+  };
+
+  const log = (e) => {
+    console.log(e);
+  };
+
   return (
     <Layout>
       <Content className="mb-1">
@@ -1006,22 +1024,44 @@ const StoreSettings = () => {
         <Content className="bg-white mt-2 p-3 ">
           <label className="text-[20px] mb-2 mt-4 font-bold">Region Code</label>
           <Content className="flex">
-            <Input placeholder="Enter region code here" className="w-64 " />
-            <Button className="ml-1 ">+ Add</Button>
+            <Input
+              placeholder="Enter region code here"
+              className="w-64 "
+              onChange={(e) => setRegionCode(e.target.value)}
+            />
+            <Button className="ml-1 " onClick={() => validateRegionCode()}>
+              + Add
+            </Button>
           </Content>
-          <TextArea
-            className="mt-2"
-            showCount={false}
-            maxLength={100}
+          <Content
+            className="border-solid border-2 !max-h-[900px] mt-2 p-1"
             style={{
               height: 120,
-              resize: "none",
             }}
-            onChange={(e) => e.target.value}
-            placeholder="disable resize"
           >
-            Codes
-          </TextArea>
+            <Content>
+              <div className="p-1">Codes</div>
+              <div
+                className="text-sky-500 float-right cursor-pointer text-lg mt-[-29px]"
+                onClick={() => {
+                  setAddCodes([]);
+                }}
+              >
+                clear
+              </div>
+            </Content>
+            <Content className="mt-2 -translate-y-0.4">
+              {addCodes &&
+                addCodes.length > 0 &&
+                addCodes.map((ele) => {
+                  return (
+                    <Tag closable onClose={log}>
+                      {ele}
+                    </Tag>
+                  );
+                })}
+            </Content>
+          </Content>
         </Content>
         <Content className="bg-white mt-2 p-3 ">
           <Content>
@@ -1033,15 +1073,9 @@ const StoreSettings = () => {
                   Preview
                 </Button>
                 <StoreModal
-                  // closeModal="!overflow-y-auto !h-96"
                   isVisible={isModalOpen}
-                  okButtonText={"Save"}
-                  // title={"Preview"}
+                  title={"Sample Preview Page For Store Settings"}
                   width={800}
-                  cancelButtonText={"Cancel"}
-                  okCallback={() => {
-                    // postImageOnClickSave();
-                  }}
                   cancelCallback={() => closeModal()}
                   isSpin={false}
                 >

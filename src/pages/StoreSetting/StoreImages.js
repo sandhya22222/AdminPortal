@@ -49,6 +49,7 @@ const StoreImages = ({
   const [copyImagePath, setCopyImagePath] = useState();
   const [bannerAbsoluteImage, setBannerAbsoluteImage] = useState([]);
   const [bannerImage, setBannerImage] = useState([]);
+  const [allImageUrl, setAllImageUrl] = useState([]);
   const [reset, setReset] = useState(false);
   const uploadButton = (
     <div>
@@ -233,6 +234,9 @@ const StoreImages = ({
         // }
         const url = URL.createObjectURL(response.data);
         console.log("image-url", url);
+        let temp = allImageUrl;
+        temp.push(url);
+        setAllImageUrl(temp);
         setImagePathShow(url);
         setCopyImagePath(url);
       })
@@ -246,7 +250,7 @@ const StoreImages = ({
   };
   console.log("bannerImage", bannerImage);
   console.log("imagepath123", copyImagePath);
-  console.log("imagepath", imagePathShow);
+  console.log("allImageUrl", allImageUrl);
   const handleCancel = () => setPreviewOpen(false);
 
   const handlePreview = async (file) => {
@@ -378,16 +382,24 @@ const StoreImages = ({
         </Content>
       ) : (
         <>
-          <Content>
-            <img src={imagePathShow} className="!h-26 !w-24" />
-            <TiDelete
-              className="!absolute !cursor-pointer !right-[-5px] !z-10  !top-[32px] !text-2xl !text-red-600 !shadow-lg  hover:translate-"
-              //   twoToneColor= {"#eb2f96"}
-              onClick={() => {
-                setImagePathShow();
-                setReset(true);
-              }}
-            />
+          <Content className=" flex !space-x-10">
+            {allImageUrl &&
+              allImageUrl.length > 0 &&
+              allImageUrl.map((ele) => {
+                return (
+                  <>
+                    <img src={ele} className="!w-24 !h-26" />
+                    <TiDelete
+                      className="!absolute !cursor-pointer !right-[-5px] !z-10  !top-[32px] !text-2xl !text-red-600 !shadow-lg  hover:translate-"
+                      //   twoToneColor= {"#eb2f96"}
+                      onClick={() => {
+                        setImagePathShow();
+                        setReset(true);
+                      }}
+                    />
+                  </>
+                );
+              })}
           </Content>
         </>
       )}
