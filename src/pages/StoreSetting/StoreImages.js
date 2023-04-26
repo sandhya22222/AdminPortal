@@ -17,7 +17,9 @@ import {
 } from "@ant-design/icons";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
+import { fnAbsoluteStoreImageInfo } from "../../services/redux/actions/ActionStoreImages";
 import useAuthorization from "../../hooks/useAuthorization";
 import { TiDelete } from "react-icons/ti";
 
@@ -40,6 +42,7 @@ const StoreImages = ({
   setValiStoreLogo,
 }) => {
   const authorizationHeader = useAuthorization();
+  const dispatch = useDispatch();
 
   const [fileList, setFileList] = useState([]);
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -236,6 +239,16 @@ const StoreImages = ({
         console.log("image-url", url);
         let temp = allImageUrl;
         temp.push(url);
+        // const imageData = read from redux
+        // if(imageData !== undefined){
+        //   imageData.push(temp)
+        //   dispatch(fnAbsoluteStoreImageInfo(imageData));
+        // }
+        // else
+        // dispatch(fnAbsoluteStoreImageInfo(temp));
+
+        dispatch(fnAbsoluteStoreImageInfo(temp));
+        console.log("tempoTest#", temp);
         setAllImageUrl(temp);
         setImagePathShow(url);
         setCopyImagePath(url);
@@ -248,6 +261,11 @@ const StoreImages = ({
         setImagePathShow();
       });
   };
+
+  // useEffect(()=>{
+  //   dispatch(fnAbsoluteStoreImageInfo(allImageUrl));
+  // },[allImageUrl])
+
   console.log("bannerImage", bannerImage);
   console.log("imagepath123", copyImagePath);
   console.log("allImageUrl", allImageUrl);

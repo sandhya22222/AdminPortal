@@ -12,6 +12,7 @@ import {
   Switch,
   Tag,
   Space,
+  Tooltip,
 } from "antd";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
@@ -92,7 +93,8 @@ const StoreSettings = () => {
   const [changeSwitchStatus, setChangeSwitchStatus] = useState("");
   const [addCodes, setAddCodes] = useState([]);
   const [regionCode, setRegionCode] = useState("");
-
+  const [storeLogo, setStoreLogo] = useState();
+  const [absoluteStoreImages, setAbsoluteStoreImages] = useState([]);
   //! get call of  getStoreSettingApi
   const getStoreSettingApi = (storeId) => {
     axios
@@ -479,8 +481,12 @@ const StoreSettings = () => {
         authorizationHeader
       )
       .then(function (response) {
-        console.log("Get response of Store setting Images--->", response);
+        console.log(
+          "Get response of Store setting Images--->",
+          response.data.store_logo
+        );
         setGetImageData(response.data);
+        setStoreLogo(response.data.store_logo);
       })
       .catch((error) => {
         console.log("errorresponse from images--->", error);
@@ -1040,7 +1046,7 @@ const StoreSettings = () => {
             }}
           >
             <Content>
-              <div className="p-1">Codes</div>
+              <div className="p-1 ml">Codes</div>
               <div
                 className="text-sky-500 float-right cursor-pointer text-lg mt-[-29px]"
                 onClick={() => {
@@ -1074,10 +1080,11 @@ const StoreSettings = () => {
                 </Button>
                 <StoreModal
                   isVisible={isModalOpen}
-                  title={"Sample Preview Page For Store Settings"}
-                  width={800}
+                  title={"Sample Preview Page For Store Front"}
+                  width={1000}
                   cancelCallback={() => closeModal()}
                   isSpin={false}
+                  className="!h-96"
                 >
                   <Preview
                     headerBackgroundColor={headerBackgroundColor}
@@ -1100,6 +1107,7 @@ const StoreSettings = () => {
                     buttonTeritaryForegroundColor={
                       buttonTeritaryForegroundColor
                     }
+                    storeLogo={storeLogo}
                   />
                 </StoreModal>
               </Content>
@@ -1155,8 +1163,6 @@ const StoreSettings = () => {
                 <Content className="flex">
                   <Input
                     type="color"
-                    maxLength={255}
-                    minLength={1}
                     value={pageBackgroundColor}
                     onChange={(e) => {
                       setPageBackgroundColor(e.target.value);
@@ -1164,18 +1170,35 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                   />
                   <Space.Compact className="ml-2">
-                    <Input value={pageBackgroundColor} className="w-28" />
                     <Input
+                      value={pageBackgroundColor}
+                      className="w-28"
+                      onChange={(e) => {
+                        setPageBackgroundColor(e.target.value);
+                      }}
                       addonAfter={
-                        <UndoOutlined
-                          onClick={() => {
-                            setPageBackgroundColor(pageBgColor);
-                          }}
-                        />
+                        <Tooltip title="Reset the original value">
+                          <UndoOutlined
+                            onClick={() => {
+                              setPageBackgroundColor(pageBgColor);
+                            }}
+                          />
+                        </Tooltip>
+                      }
+                    />
+                    {/* <Input
+                      addonAfter={
+                        <Tooltip title="Reset the original value">
+                          <UndoOutlined
+                            onClick={() => {
+                              setPageBackgroundColor(pageBgColor);
+                            }}
+                          />
+                        </Tooltip>
                       }
                       defaultValue="100%"
                       className="w-24"
-                    />
+                    /> */}
                   </Space.Compact>
                 </Content>
               </Col>
@@ -1195,18 +1218,35 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                   />
                   <Space.Compact className="ml-2">
-                    <Input value={foreGroundColor} className="w-28" />
                     <Input
+                      value={foreGroundColor}
+                      className="w-28"
+                      onChange={(e) => {
+                        setForeGroundColor(e.target.value);
+                      }}
                       addonAfter={
-                        <UndoOutlined
-                          onClick={() => {
-                            setForeGroundColor(pageFgColor);
-                          }}
-                        />
+                        <Tooltip title="Reset the original value">
+                          <UndoOutlined
+                            onClick={() => {
+                              setForeGroundColor(pageFgColor);
+                            }}
+                          />
+                        </Tooltip>
+                      }
+                    />
+                    {/* <Input
+                      addonAfter={
+                        <Tooltip title="Reset the original value">
+                          <UndoOutlined
+                            onClick={() => {
+                              setForeGroundColor(pageFgColor);
+                            }}
+                          />
+                        </Tooltip>
                       }
                       defaultValue="100%"
                       className="w-24"
-                    />
+                    /> */}
                   </Space.Compact>
                 </Content>
               </Col>
@@ -1279,18 +1319,36 @@ const StoreSettings = () => {
                     <Input
                       value={buttonPrimaryBackgroundColor}
                       className="w-28"
-                    />
-                    <Input
+                      onChange={(e) => {
+                        setButtonPrimaryBackgroundColor(e.target.value);
+                      }}
                       addonAfter={
-                        <UndoOutlined
-                          onClick={() => {
-                            setButtonPrimaryBackgroundColor(btnPrimaryBgColor);
-                          }}
-                        />
+                        <Tooltip title="Reset the original value">
+                          <UndoOutlined
+                            onClick={() => {
+                              setButtonPrimaryBackgroundColor(
+                                btnPrimaryBgColor
+                              );
+                            }}
+                          />
+                        </Tooltip>
+                      }
+                    />
+                    {/* <Input
+                      addonAfter={
+                        <Tooltip title="Reset the original value">
+                          <UndoOutlined
+                            onClick={() => {
+                              setButtonPrimaryBackgroundColor(
+                                btnPrimaryBgColor
+                              );
+                            }}
+                          />
+                        </Tooltip>
                       }
                       defaultValue="100%"
                       className="w-24"
-                    />
+                    /> */}
                   </Space.Compact>
                 </Content>
               </Col>
@@ -1302,8 +1360,6 @@ const StoreSettings = () => {
                   <Input
                     type="color"
                     className="w-9 p-0"
-                    maxLength={255}
-                    minLength={1}
                     value={buttonSecondaryBackgroundColor}
                     onChange={(e) => {
                       setButtonSecondaryBackgroundColor(e.target.value);
@@ -1313,20 +1369,36 @@ const StoreSettings = () => {
                     <Input
                       value={buttonSecondaryBackgroundColor}
                       className="w-28"
-                    />
-                    <Input
+                      onChange={(e) => {
+                        setButtonSecondaryBackgroundColor(e.target.value);
+                      }}
                       addonAfter={
-                        <UndoOutlined
-                          onClick={() => {
-                            setButtonSecondaryBackgroundColor(
-                              btnSecondaryBgColor
-                            );
-                          }}
-                        />
+                        <Tooltip title="Reset the original value">
+                          <UndoOutlined
+                            onClick={() => {
+                              setButtonSecondaryBackgroundColor(
+                                btnSecondaryBgColor
+                              );
+                            }}
+                          />
+                        </Tooltip>
+                      }
+                    />
+                    {/* <Input
+                      addonAfter={
+                        <Tooltip title="Reset the original value">
+                          <UndoOutlined
+                            onClick={() => {
+                              setButtonSecondaryBackgroundColor(
+                                btnSecondaryBgColor
+                              );
+                            }}
+                          />
+                        </Tooltip>
                       }
                       defaultValue="100%"
                       className="w-24"
-                    />
+                    /> */}
                   </Space.Compact>
                 </Content>
               </Col>
@@ -1349,20 +1421,36 @@ const StoreSettings = () => {
                     <Input
                       value={buttonTeritaryBackgroundColor}
                       className="w-28"
-                    />
-                    <Input
+                      onChange={(e) => {
+                        setButtonTeritaryBackgroundColor(e.target.value);
+                      }}
                       addonAfter={
-                        <UndoOutlined
-                          onClick={() => {
-                            setButtonTeritaryBackgroundColor(
-                              btnTeritaryBgColor
-                            );
-                          }}
-                        />
+                        <Tooltip title="Reset the original value">
+                          <UndoOutlined
+                            onClick={() => {
+                              setButtonTeritaryBackgroundColor(
+                                btnTeritaryBgColor
+                              );
+                            }}
+                          />
+                        </Tooltip>
+                      }
+                    />
+                    {/* <Input
+                      addonAfter={
+                        <Tooltip title="Reset the original value">
+                          <UndoOutlined
+                            onClick={() => {
+                              setButtonTeritaryBackgroundColor(
+                                btnTeritaryBgColor
+                              );
+                            }}
+                          />
+                        </Tooltip>
                       }
                       defaultValue="100%"
                       className="w-24"
-                    />
+                    /> */}
                   </Space.Compact>
                 </Content>
               </Col>
@@ -1424,8 +1512,6 @@ const StoreSettings = () => {
                   <Input
                     type="color"
                     className="w-9 p-0"
-                    maxLength={255}
-                    minLength={1}
                     value={buttonPrimaryForegroundColor}
                     onChange={(e) => {
                       setButtonPrimaryForegroundColor(e.target.value);
@@ -1435,20 +1521,36 @@ const StoreSettings = () => {
                     <Input
                       value={buttonPrimaryForegroundColor}
                       className="w-28"
-                    />
-                    <Input
+                      onChange={(e) => {
+                        setButtonPrimaryForegroundColor(e.target.value);
+                      }}
                       addonAfter={
-                        <UndoOutlined
-                          onClick={() => {
-                            setButtonTeritaryBackgroundColor(
-                              btnTeritaryBgColor
-                            );
-                          }}
-                        />
+                        <Tooltip title="Reset the original value">
+                          <UndoOutlined
+                            onClick={() => {
+                              setButtonTeritaryBackgroundColor(
+                                btnTeritaryBgColor
+                              );
+                            }}
+                          />
+                        </Tooltip>
+                      }
+                    />
+                    {/* <Input
+                      addonAfter={
+                        <Tooltip title="Reset the original value">
+                          <UndoOutlined
+                            onClick={() => {
+                              setButtonTeritaryBackgroundColor(
+                                btnTeritaryBgColor
+                              );
+                            }}
+                          />
+                        </Tooltip>
                       }
                       defaultValue="100%"
                       className="w-24"
-                    />
+                    /> */}
                   </Space.Compact>
                 </Content>
               </Col>
@@ -1471,18 +1573,36 @@ const StoreSettings = () => {
                     <Input
                       value={buttonSecondaryForegroundColor}
                       className="w-28"
-                    />
-                    <Input
+                      onChange={(e) => {
+                        setButtonSecondaryForegroundColor(e.target.value);
+                      }}
                       addonAfter={
-                        <UndoOutlined
-                          onClick={() => {
-                            setButtonPrimaryForegroundColor(btnPrimaryFgColor);
-                          }}
-                        />
+                        <Tooltip title="Reset the original value">
+                          <UndoOutlined
+                            onClick={() => {
+                              setButtonPrimaryForegroundColor(
+                                btnPrimaryFgColor
+                              );
+                            }}
+                          />
+                        </Tooltip>
+                      }
+                    />
+                    {/* <Input
+                      addonAfter={
+                        <Tooltip title="Reset the original value">
+                          <UndoOutlined
+                            onClick={() => {
+                              setButtonPrimaryForegroundColor(
+                                btnPrimaryFgColor
+                              );
+                            }}
+                          />
+                        </Tooltip>
                       }
                       defaultValue="100%"
                       className="w-24"
-                    />
+                    /> */}
                   </Space.Compact>
                 </Content>
               </Col>
@@ -1494,8 +1614,6 @@ const StoreSettings = () => {
                   <Input
                     type="color"
                     className="w-9 p-0"
-                    maxLength={255}
-                    minLength={1}
                     value={buttonTeritaryForegroundColor}
                     onChange={(e) => {
                       setButtonTeritaryForegroundColor(e.target.value);
@@ -1504,21 +1622,37 @@ const StoreSettings = () => {
                   <Space.Compact className="ml-2">
                     <Input
                       value={buttonTeritaryForegroundColor}
+                      onChange={(e) => {
+                        setButtonTeritaryForegroundColor(e.target.value);
+                      }}
                       className="w-28"
-                    />
-                    <Input
                       addonAfter={
-                        <UndoOutlined
-                          onClick={() => {
-                            setButtonTeritaryForegroundColor(
-                              btnTeritaryFgColor
-                            );
-                          }}
-                        />
+                        <Tooltip title="Reset the original value">
+                          <UndoOutlined
+                            onClick={() => {
+                              setButtonTeritaryForegroundColor(
+                                btnTeritaryFgColor
+                              );
+                            }}
+                          />
+                        </Tooltip>
+                      }
+                    />
+                    {/* <Input
+                      addonAfter={
+                        <Tooltip title="Reset the original value">
+                          <UndoOutlined
+                            onClick={() => {
+                              setButtonTeritaryForegroundColor(
+                                btnTeritaryFgColor
+                              );
+                            }}
+                          />
+                        </Tooltip>
                       }
                       defaultValue="100%"
                       className="w-24"
-                    />
+                    /> */}
                   </Space.Compact>
                 </Content>
               </Col>
@@ -1588,26 +1722,41 @@ const StoreSettings = () => {
                   <Input
                     type="color"
                     className="w-9 p-0"
-                    maxLength={255}
-                    minLength={1}
                     value={headerBackgroundColor}
                     onChange={(e) => {
                       setHeaderBackgroundColor(e.target.value);
                     }}
                   />
                   <Space.Compact className="ml-2">
-                    <Input value={headerBackgroundColor} className="w-28" />
                     <Input
+                      value={headerBackgroundColor}
+                      className="w-28"
+                      onChange={(e) => {
+                        setHeaderBackgroundColor(e.target.value);
+                      }}
                       addonAfter={
-                        <UndoOutlined
-                          onClick={() => {
-                            setHeaderBackgroundColor(headerBgColor);
-                          }}
-                        />
+                        <Tooltip title="Reset the original value">
+                          <UndoOutlined
+                            onClick={() => {
+                              setHeaderBackgroundColor(headerBgColor);
+                            }}
+                          />
+                        </Tooltip>
+                      }
+                    />
+                    {/* <Input
+                      addonAfter={
+                        <Tooltip title="Reset the original value">
+                          <UndoOutlined
+                            onClick={() => {
+                              setHeaderBackgroundColor(headerBgColor);
+                            }}
+                          />
+                        </Tooltip>
                       }
                       defaultValue="100%"
                       className="w-24"
-                    />
+                    /> */}
                   </Space.Compact>
                 </Content>
               </Col>
@@ -1627,18 +1776,35 @@ const StoreSettings = () => {
                     }}
                   />
                   <Space.Compact className="ml-2">
-                    <Input value={headerForegroundColor} className="w-28" />
                     <Input
+                      value={headerForegroundColor}
+                      className="w-28"
+                      onChange={(e) => {
+                        setHeaderForegroundColor(e.target.value);
+                      }}
                       addonAfter={
-                        <UndoOutlined
-                          onClick={() => {
-                            setHeaderForegroundColor(headerFgColor);
-                          }}
-                        />
+                        <Tooltip title="Reset the original value">
+                          <UndoOutlined
+                            onClick={() => {
+                              setHeaderForegroundColor(headerFgColor);
+                            }}
+                          />
+                        </Tooltip>
+                      }
+                    />
+                    {/* <Input
+                      addonAfter={
+                        <Tooltip title="Reset the original value">
+                          <UndoOutlined
+                            onClick={() => {
+                              setHeaderForegroundColor(headerFgColor);
+                            }}
+                          />
+                        </Tooltip>
                       }
                       defaultValue="100%"
                       className="w-24"
-                    />
+                    /> */}
                   </Space.Compact>
                 </Content>
               </Col>
@@ -1657,26 +1823,41 @@ const StoreSettings = () => {
                   <Input
                     type="color"
                     className="w-9 p-0"
-                    maxLength={255}
-                    minLength={1}
                     value={footerBackgroundColor}
                     onChange={(e) => {
                       setFooterBackgroundColor(e.target.value);
                     }}
                   />
                   <Space.Compact className="ml-2">
-                    <Input value={footerBackgroundColor} className="w-28" />
                     <Input
+                      value={footerBackgroundColor}
+                      className="w-28"
+                      onChange={(e) => {
+                        setFooterBackgroundColor(e.target.value);
+                      }}
                       addonAfter={
-                        <UndoOutlined
-                          onClick={() => {
-                            setFooterBackgroundColor(headerFgColor);
-                          }}
-                        />
+                        <Tooltip title="Reset the original value">
+                          <UndoOutlined
+                            onClick={() => {
+                              setFooterBackgroundColor(headerFgColor);
+                            }}
+                          />
+                        </Tooltip>
+                      }
+                    />
+                    {/* <Input
+                      addonAfter={
+                        <Tooltip title="Reset the original value">
+                          <UndoOutlined
+                            onClick={() => {
+                              setFooterBackgroundColor(headerFgColor);
+                            }}
+                          />
+                        </Tooltip>
                       }
                       defaultValue="100%"
                       className="w-24"
-                    />
+                    /> */}
                   </Space.Compact>
                 </Content>
               </Col>
@@ -1688,26 +1869,41 @@ const StoreSettings = () => {
                   <Input
                     type="color"
                     className="w-9 p-0"
-                    maxLength={255}
-                    minLength={1}
                     value={footerForegroundColor}
                     onChange={(e) => {
                       setFooterForegroundColor(e.target.value);
                     }}
                   />
                   <Space.Compact className="ml-2">
-                    <Input value={footerForegroundColor} className="w-28" />
                     <Input
+                      value={footerForegroundColor}
+                      className="w-28"
+                      onChange={(e) => {
+                        setFooterForegroundColor(e.target.value);
+                      }}
                       addonAfter={
-                        <UndoOutlined
-                          onClick={() => {
-                            setFooterForegroundColor(footerFgColor);
-                          }}
-                        />
+                        <Tooltip title="Reset the original value">
+                          <UndoOutlined
+                            onClick={() => {
+                              setFooterForegroundColor(footerFgColor);
+                            }}
+                          />
+                        </Tooltip>
+                      }
+                    />
+                    {/* <Input
+                      addonAfter={
+                        <Tooltip title="Reset the original value">
+                          <UndoOutlined
+                            onClick={() => {
+                              setFooterForegroundColor(footerFgColor);
+                            }}
+                          />
+                        </Tooltip>
                       }
                       defaultValue="100%"
                       className="w-24"
-                    />
+                    /> */}
                   </Space.Compact>
                 </Content>
               </Col>
