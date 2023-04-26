@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Nav, Collapse, NavbarBrand, Navbar } from "reactstrap";
 import { Button, Layout, Menu } from "antd";
+import { BrandLogo } from "../../constants/media";
+import { useDispatch, useSelector } from "react-redux";
 const { Header, Content, Sider } = Layout;
 
 const Preview = ({
@@ -16,39 +18,21 @@ const Preview = ({
   buttonPrimaryForegroundColor,
   buttonSecondaryForegroundColor,
   buttonTeritaryForegroundColor,
+  storeLogo,
 }) => {
-  const [storeHeaderBgColor, setStoreHeaderBgColor] = useState();
 
-  const items1 = ["1"].map((key) => ({
-    key,
-    label: (
-      <div
-        style={{ color: headerForegroundColor }}
-        className="text-center text-lg"
-      >
-        {" "}
-        Header content of the page
-      </div>
-    ),
-  }));
-
-  console.log(
-    "foreGroundColor",
-    buttonPrimaryForegroundColor,
-    buttonSecondaryForegroundColor,
-    buttonTeritaryForegroundColor
+  const absoluteStoreImageInfo = useSelector(
+    (state) => state.reducerAbsoluteStoreImageInfo.absoluteStoreImageInfo
   );
 
-  useEffect(() => {
-    setStoreHeaderBgColor(headerBackgroundColor);
-  }, [headerBackgroundColor]);
+console.log("absoluteStoreImageInfo",absoluteStoreImageInfo)
 
   return (
     <Content>
       <Header className="header">
         <div className="logo " />
         <Menu
-          className="!items-center justify-center text-lg !h-10 "
+          className="!h-16 "
           style={{
             backgroundColor: headerBackgroundColor,
             color: headerForegroundColor,
@@ -56,20 +40,25 @@ const Preview = ({
           mode="horizontal"
           defaultSelectedKeys={["2"]}
         >
-          Header content of the page
+          <div className="!text-start p-3">
+            <img className="w-[150px]" src={absoluteStoreImageInfo} />
+          </div>
+          <div className="!text-center text-lg ml-48 mt-3">
+            Header content of the page
+          </div>
         </Menu>
       </Header>
       <Content
-        className={`min-h-[200px]`}
+        className={`min-h-[300px] text-center `}
         style={{ backgroundColor: pageBackgroundColor }}
       >
-        <p
-          className={`text-center text-lg text-bold mb-10 `}
-          style={{ color: foreGroundColor }}
-        >
-          Main content of the page
-        </p>
-        <Content className="text-center">
+        <Content className="text-center p-24">
+          <p
+            className={`text-center text-lg text-bold `}
+            style={{ color: foreGroundColor }}
+          >
+            Main content of the page
+          </p>
           <Button
             // className={`bg-[${buttonPrimaryBackgroundColor}] text-[${buttonPrimaryForegroundColor}]`}
             style={{
@@ -105,7 +94,7 @@ const Preview = ({
         </Content>
       </Content>
       <Content
-        className={`!h-10 flex items-center justify-center`}
+        className={`!h-24 flex items-center justify-center`}
         style={{ backgroundColor: footerBackgroundColor }}
       >
         <p style={{ color: footerForegroundColor }} className="text-lg">
