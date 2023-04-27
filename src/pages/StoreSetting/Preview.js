@@ -40,15 +40,13 @@ const Preview = ({
           defaultSelectedKeys={["2"]}
         >
           <div className="!text-start p-3">
-            {absoluteStoreImageInfo &&
-            absoluteStoreImageInfo.length > 0 &&
-            absoluteStoreImageInfo.type === "store_logo" ? (
-              <img className="w-[35px]" src={absoluteStoreImageInfo.value} />
+            {absoluteStoreImageInfo.type === "store_logo" ? (
+              <img className="w-[40px]" src={absoluteStoreImageInfo.value} />
             ) : (
               <img className="w-[150px] " src={BrandLogo} />
             )}
           </div>
-          <div className="!text-center text-lg p-3 ml-44">
+          <div className="!text-center text-lg p-3 ">
             Header content of the page
           </div>
         </Menu>

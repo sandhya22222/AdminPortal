@@ -244,7 +244,7 @@ const StoreImages = ({
 
         const url = URL.createObjectURL(response.data);
         console.log("image-url", url);
-        let temp = allImageUrl;
+        let temp =[...allImageUrl];
         temp.push(url);
         if (absoluteStoreImageInfo && absoluteStoreImageInfo.length > 0) {
           let imageData = [...absoluteStoreImageInfo];
