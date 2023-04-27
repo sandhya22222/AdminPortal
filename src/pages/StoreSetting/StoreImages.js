@@ -44,6 +44,12 @@ const StoreImages = ({
   const authorizationHeader = useAuthorization();
   const dispatch = useDispatch();
 
+  const absoluteStoreImageInfo = useSelector(
+    (state) => state.reducerAbsoluteStoreImageInfo.absoluteStoreImageInfo
+  );
+
+  // In Get call response of absolute image
+  // if(absoluteImageData && absoluteImageData.length>0){
   const [fileList, setFileList] = useState([]);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
@@ -235,19 +241,31 @@ const StoreImages = ({
         //   setImagePathShow(url);
         //   setCopyImagePath(url);
         // }
+
         const url = URL.createObjectURL(response.data);
         console.log("image-url", url);
         let temp = allImageUrl;
         temp.push(url);
-        // const imageData = read from redux
-        // if(imageData !== undefined){
-        //   imageData.push(temp)
+        if (absoluteStoreImageInfo && absoluteStoreImageInfo.length > 0) {
+          let imageData = [...absoluteStoreImageInfo];
+          let imageType = { type: type, value: url };
+          imageData.push(imageType);
+          dispatch(fnAbsoluteStoreImageInfo(ImageData));
+        } else {
+          let imageType = { type: type, value: url };
+          dispatch(fnAbsoluteStoreImageInfo(imageType));
+        }
+        // const imageData = absoluteStoreImageInfo;
+        // let image = allImageUrl
+        // image.push(imageData)
+        // console.log("imageData", imageData);
+        // if (imageData !== undefined) {
+        //   imageData.push(temp);
         //   dispatch(fnAbsoluteStoreImageInfo(imageData));
+        // } else {
+        //   dispatch(fnAbsoluteStoreImageInfo(temp));
         // }
-        // else
         // dispatch(fnAbsoluteStoreImageInfo(temp));
-
-        dispatch(fnAbsoluteStoreImageInfo(temp));
         console.log("tempoTest#", temp);
         setAllImageUrl(temp);
         setImagePathShow(url);
