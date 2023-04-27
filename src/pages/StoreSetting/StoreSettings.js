@@ -93,7 +93,6 @@ const StoreSettings = () => {
   const [changeSwitchStatus, setChangeSwitchStatus] = useState("");
   const [addCodes, setAddCodes] = useState([]);
   const [regionCode, setRegionCode] = useState("");
-  const [storeLogo, setStoreLogo] = useState();
   const [absoluteStoreImages, setAbsoluteStoreImages] = useState([]);
   //! get call of  getStoreSettingApi
   const getStoreSettingApi = (storeId) => {
@@ -481,12 +480,8 @@ const StoreSettings = () => {
         authorizationHeader
       )
       .then(function (response) {
-        console.log(
-          "Get response of Store setting Images--->",
-          response.data.store_logo
-        );
+        console.log("Get response of Store setting Images--->", response.data);
         setGetImageData(response.data);
-        setStoreLogo(response.data.store_logo);
       })
       .catch((error) => {
         console.log("errorresponse from images--->", error);
@@ -950,8 +945,6 @@ const StoreSettings = () => {
               <label className="text-[13px] mb-2 ml-1">Symbol</label>
               <Input
                 placeholder="Enter currency symbol (eg: ₹, $, £)"
-                maxLength={255}
-                minLength={1}
                 className={`${
                   inValidCurrencySymbol
                     ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
@@ -970,8 +963,6 @@ const StoreSettings = () => {
               <label className="text-[13px] mb-2 ml-1">ISO Code</label>
               <Input
                 placeholder="Enter ISO code (eg: INR, USP ,GBP)"
-                maxLength={255}
-                minLength={1}
                 value={currencyIsoCode}
                 onChange={(e) => {
                   setCurrencyIsoCode(e.target.value);
@@ -991,8 +982,6 @@ const StoreSettings = () => {
               <label className="text-[13px] mb-2 ml-1">Fractional Unit</label>
               <Input
                 placeholder="Enter fractional unit (eg: paisa, cent)"
-                maxLength={255}
-                minLength={1}
                 value={fractionalUnit}
                 onChange={(e) => {
                   setFractionalUnit(e.target.value);
@@ -1011,8 +1000,6 @@ const StoreSettings = () => {
               <label className="text-[13px] mb-2 ml-1">Number to Basic</label>
               <Input
                 placeholder="Enter number to basic (eg: 100)"
-                maxLength={255}
-                minLength={1}
                 value={numberToBasic}
                 onChange={(e) => {
                   setNumberToBasic(e.target.value);
@@ -1107,7 +1094,6 @@ const StoreSettings = () => {
                     buttonTeritaryForegroundColor={
                       buttonTeritaryForegroundColor
                     }
-                    storeLogo={storeLogo}
                   />
                 </StoreModal>
               </Content>
@@ -1172,7 +1158,7 @@ const StoreSettings = () => {
                   <Space.Compact className="ml-2">
                     <Input
                       value={pageBackgroundColor}
-                      className="w-28"
+                      className="w-[150px]"
                       onChange={(e) => {
                         setPageBackgroundColor(e.target.value);
                       }}
@@ -1220,7 +1206,7 @@ const StoreSettings = () => {
                   <Space.Compact className="ml-2">
                     <Input
                       value={foreGroundColor}
-                      className="w-28"
+                      className="w-[150px]"
                       onChange={(e) => {
                         setForeGroundColor(e.target.value);
                       }}
@@ -1318,7 +1304,7 @@ const StoreSettings = () => {
                   <Space.Compact className="ml-2">
                     <Input
                       value={buttonPrimaryBackgroundColor}
-                      className="w-28"
+                      className="w-[150px]"
                       onChange={(e) => {
                         setButtonPrimaryBackgroundColor(e.target.value);
                       }}
@@ -1368,7 +1354,7 @@ const StoreSettings = () => {
                   <Space.Compact className="ml-2">
                     <Input
                       value={buttonSecondaryBackgroundColor}
-                      className="w-28"
+                      className="w-[150px]"
                       onChange={(e) => {
                         setButtonSecondaryBackgroundColor(e.target.value);
                       }}
@@ -1420,7 +1406,7 @@ const StoreSettings = () => {
                   <Space.Compact className="ml-2">
                     <Input
                       value={buttonTeritaryBackgroundColor}
-                      className="w-28"
+                      className="w-[150px]"
                       onChange={(e) => {
                         setButtonTeritaryBackgroundColor(e.target.value);
                       }}
@@ -1520,7 +1506,7 @@ const StoreSettings = () => {
                   <Space.Compact className="ml-2">
                     <Input
                       value={buttonPrimaryForegroundColor}
-                      className="w-28"
+                      className="w-[150px]"
                       onChange={(e) => {
                         setButtonPrimaryForegroundColor(e.target.value);
                       }}
@@ -1572,7 +1558,7 @@ const StoreSettings = () => {
                   <Space.Compact className="ml-2">
                     <Input
                       value={buttonSecondaryForegroundColor}
-                      className="w-28"
+                      className="w-[150px]"
                       onChange={(e) => {
                         setButtonSecondaryForegroundColor(e.target.value);
                       }}
@@ -1625,7 +1611,7 @@ const StoreSettings = () => {
                       onChange={(e) => {
                         setButtonTeritaryForegroundColor(e.target.value);
                       }}
-                      className="w-28"
+                      className="w-[150px]"
                       addonAfter={
                         <Tooltip title="Reset the original value">
                           <UndoOutlined
@@ -1730,7 +1716,7 @@ const StoreSettings = () => {
                   <Space.Compact className="ml-2">
                     <Input
                       value={headerBackgroundColor}
-                      className="w-28"
+                      className="w-[150px]"
                       onChange={(e) => {
                         setHeaderBackgroundColor(e.target.value);
                       }}
@@ -1778,7 +1764,7 @@ const StoreSettings = () => {
                   <Space.Compact className="ml-2">
                     <Input
                       value={headerForegroundColor}
-                      className="w-28"
+                      className="w-[150px]"
                       onChange={(e) => {
                         setHeaderForegroundColor(e.target.value);
                       }}
@@ -1831,7 +1817,7 @@ const StoreSettings = () => {
                   <Space.Compact className="ml-2">
                     <Input
                       value={footerBackgroundColor}
-                      className="w-28"
+                      className="w-[150px]"
                       onChange={(e) => {
                         setFooterBackgroundColor(e.target.value);
                       }}
@@ -1877,7 +1863,7 @@ const StoreSettings = () => {
                   <Space.Compact className="ml-2">
                     <Input
                       value={footerForegroundColor}
-                      className="w-28"
+                      className="w-[150px]"
                       onChange={(e) => {
                         setFooterForegroundColor(e.target.value);
                       }}

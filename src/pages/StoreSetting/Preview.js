@@ -20,12 +20,11 @@ const Preview = ({
   buttonTeritaryForegroundColor,
   storeLogo,
 }) => {
-
   const absoluteStoreImageInfo = useSelector(
     (state) => state.reducerAbsoluteStoreImageInfo.absoluteStoreImageInfo
   );
 
-console.log("absoluteStoreImageInfo",absoluteStoreImageInfo)
+  console.log("absoluteStoreImageInfo", absoluteStoreImageInfo.value);
 
   return (
     <Content>
@@ -41,9 +40,13 @@ console.log("absoluteStoreImageInfo",absoluteStoreImageInfo)
           defaultSelectedKeys={["2"]}
         >
           <div className="!text-start p-3">
-            <img className="w-[150px]" src={absoluteStoreImageInfo} />
+            {absoluteStoreImageInfo.type === "store_logo" ? (
+              <img className="w-[40px]" src={absoluteStoreImageInfo.value} />
+            ) : (
+              <img className="w-[150px] " src={BrandLogo} />
+            )}
           </div>
-          <div className="!text-center text-lg ml-48 mt-3">
+          <div className="!text-center text-lg p-3 ">
             Header content of the page
           </div>
         </Menu>
