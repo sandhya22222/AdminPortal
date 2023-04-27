@@ -93,7 +93,12 @@ const StoreSettings = () => {
   const [changeSwitchStatus, setChangeSwitchStatus] = useState("");
   const [addCodes, setAddCodes] = useState([]);
   const [regionCode, setRegionCode] = useState("");
-  const [absoluteStoreImages, setAbsoluteStoreImages] = useState([]);
+  const [
+    copyImageOfStoreSettingsCurrency,
+    setCopyImageOfStoreSettingsCurrency,
+  ] = useState();
+  const [imageOfStoreSettingsCurrency, setImageOfStoreSettingsCurrency] =
+    useState();
   //! get call of  getStoreSettingApi
   const getStoreSettingApi = (storeId) => {
     axios
@@ -110,6 +115,12 @@ const StoreSettings = () => {
         console.log(
           "Get response of Store setting--->",
           response.data.store_settings_data[0]
+        );
+        setCopyImageOfStoreSettingsCurrency(
+          response.data.store_settings_data[0].store_currency[0]
+        );
+        setImageOfStoreSettingsCurrency(
+          response.data.store_settings_data[0].store_currency[0]
         );
         setCurrencySymbol(
           response.data.store_settings_data[0].store_currency[0].symbol
@@ -233,7 +244,10 @@ const StoreSettings = () => {
         }
       });
   };
-
+  console.log(
+    "copyImageOfStoreSettingsCurrency",
+    copyImageOfStoreSettingsCurrency
+  );
   //! get call of store API
   const getStoreApi = () => {
     // setIsLoading(true);
@@ -388,6 +402,41 @@ const StoreSettings = () => {
     //     type: "error",
     //   });
     // }
+    // if (
+    //   (imageOfStoreSettingsCurrency && imageOfStoreSettingsCurrency.symbol) ===
+    //     (copyImageOfStoreSettingsCurrency &&
+    //       copyImageOfStoreSettingsCurrency.symbol) &&
+    //   (imageOfStoreSettingsCurrency &&
+    //     imageOfStoreSettingsCurrency.iso_code) ===
+    //     (copyImageOfStoreSettingsCurrency &&
+    //       copyImageOfStoreSettingsCurrency.iso_code) &&
+    //   (imageOfStoreSettingsCurrency &&
+    //     imageOfStoreSettingsCurrency.fractional_unit) ===
+    //     (copyImageOfStoreSettingsCurrency &&
+    //       copyImageOfStoreSettingsCurrency.fractional_unit) &&
+    //   (imageOfStoreSettingsCurrency &&
+    //     imageOfStoreSettingsCurrency.number_to_basic) ===
+    //     (copyImageOfStoreSettingsCurrency &&
+    //       copyImageOfStoreSettingsCurrency.number_to_basic)
+    // ) {
+    //   count--;
+    //   toast("No Changes are detected", {
+    //     position: toast.POSITION.TOP_RIGHT,
+    //     type: "info",
+    //   });
+    // }
+    if (
+      currencySymbol !== "" &&
+      currencyIsoCode !== "" &&
+      fractionalUnit !== "" &&
+      numberToBasic !== ""
+    ) {
+      count--;
+      toast("No Changes are detected", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "info",
+      });
+    }
     if (
       currencySymbol === "" ||
       currencySymbol === undefined ||
@@ -740,7 +789,7 @@ const StoreSettings = () => {
   const log = (e) => {
     console.log(e);
   };
-
+  console.log("imagesUpload1234", imagesUpload);
   return (
     <Layout>
       <Content className="mb-1">
@@ -955,6 +1004,9 @@ const StoreSettings = () => {
                 onChange={(e) => {
                   setCurrencySymbol(e.target.value);
                   setInValidCurrencySymbol(false);
+                  let temp = { ...copyImageOfStoreSettingsCurrency };
+                  temp["symbol"] = e.target.value;
+                  setCopyImageOfStoreSettingsCurrency(temp);
                 }}
               />
             </Col>
@@ -967,6 +1019,9 @@ const StoreSettings = () => {
                 onChange={(e) => {
                   setCurrencyIsoCode(e.target.value);
                   setInValidCurrencyIsoCode(false);
+                  let temp = { ...copyImageOfStoreSettingsCurrency };
+                  temp["iso_code"] = e.target.value;
+                  setCopyImageOfStoreSettingsCurrency(temp);
                 }}
                 className={`${
                   inValidCurrencyIsoCode
@@ -986,6 +1041,9 @@ const StoreSettings = () => {
                 onChange={(e) => {
                   setFractionalUnit(e.target.value);
                   setInValidFractionalUnit(false);
+                  let temp = { ...copyImageOfStoreSettingsCurrency };
+                  temp["fractional_unit"] = e.target.value;
+                  setCopyImageOfStoreSettingsCurrency(temp);
                 }}
                 className={`${
                   inValidFractionalUnit
@@ -1004,6 +1062,9 @@ const StoreSettings = () => {
                 onChange={(e) => {
                   setNumberToBasic(e.target.value);
                   setInValidNumberToBasic(false);
+                  let temp = { ...copyImageOfStoreSettingsCurrency };
+                  temp["number_to_basic"] = e.target.value;
+                  setCopyImageOfStoreSettingsCurrency(temp);
                 }}
                 className={`${
                   inValidNumberToBasic
@@ -1904,7 +1965,9 @@ const StoreSettings = () => {
                 className="app-btn-primary"
                 onClick={() => {
                   validatePostStoreSetting();
-                  postImageOnClickSave();
+                  if (imagesUpload && imagesUpload.length > 0) {
+                    postImageOnClickSave();
+                  }
                 }}
               >
                 Save
