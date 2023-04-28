@@ -425,18 +425,18 @@ const StoreSettings = () => {
     //     type: "info",
     //   });
     // }
-    if (
-      currencySymbol !== "" &&
-      currencyIsoCode !== "" &&
-      fractionalUnit !== "" &&
-      numberToBasic !== ""
-    ) {
-      count--;
-      toast("No Changes are detected", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "info",
-      });
-    }
+    // if (
+    //   currencySymbol !== "" &&
+    //   currencyIsoCode !== "" &&
+    //   fractionalUnit !== "" &&
+    //   numberToBasic !== ""
+    // ) {
+    //   count--;
+    //   toast("No Changes are detected", {
+    //     position: toast.POSITION.TOP_RIGHT,
+    //     type: "info",
+    //   });
+    // }
     if (
       currencySymbol === "" ||
       currencySymbol === undefined ||
@@ -916,7 +916,7 @@ const StoreSettings = () => {
               />
             </StoreModal>
           </Content> */}
-        <Content className="bg-white mt-2 p-3">
+        <Content className="bg-white p-3">
           <label className="text-[20px] mb-2 mt-4 font-bold">Media</label>
           <Row class="flex space-x-4">
             <Col>
@@ -986,7 +986,7 @@ const StoreSettings = () => {
             isSingleUpload={false}
           />
         </Content>
-        <Content className="bg-white mt-2 p-3">
+        <Content className="bg-white mt-3 p-3">
           <label className="text-[20px] mb-2 mt-4 font-bold">Currency</label>
           <Row className="mt-2">
             <Col span={8} className="mr-2">
@@ -1075,7 +1075,7 @@ const StoreSettings = () => {
             </Col>
           </Row>
         </Content>
-        <Content className="bg-white mt-2 p-3 ">
+        {/* <Content className="bg-white mt-2 p-3 ">
           <label className="text-[20px] mb-2 mt-4 font-bold">Region Code</label>
           <Content className="flex">
             <Input
@@ -1116,8 +1116,8 @@ const StoreSettings = () => {
                 })}
             </Content>
           </Content>
-        </Content>
-        <Content className="bg-white mt-2 p-3 ">
+        </Content> */}
+        <Content className="bg-white mt-3 p-3 ">
           <Content>
             <Row className="!mb-4">
               <label className="text-[20px]  mt-2 font-bold">Page Theme</label>
@@ -1250,9 +1250,7 @@ const StoreSettings = () => {
                 </Content>
               </Col>
               <Col span={8} className="ml-1">
-                <label className="text-[13px] mb-2 ml-1">
-                  Foreground Color
-                </label>
+                <label className="text-[13px] mb-2 ml-1">Text Color</label>
                 <Content className="flex">
                   <Input
                     type="color"
@@ -1349,7 +1347,7 @@ const StoreSettings = () => {
               </Col> */}
               <Col span={8} className="mr-2 ">
                 <label className="text-[13px] mb-2 ml-1">
-                  Button Primary Background Color
+                  Primary Button Background Color
                 </label>
                 <Content className="flex">
                   <Input
@@ -1401,7 +1399,7 @@ const StoreSettings = () => {
               </Col>
               <Col span={8} className="ml-1">
                 <label className="text-[13px] mb-2 ml-1">
-                  Button Secondary Background Color
+                  Secondary Button Background Color
                 </label>
                 <Content className="flex">
                   <Input
@@ -1451,7 +1449,7 @@ const StoreSettings = () => {
               </Col>
               <Col span={7} className="ml-2">
                 <label className="text-[13px] mb-2 ml-1">
-                  Button Teritary Background Color
+                  Teritary Button Background Color
                 </label>
                 <Content className="flex">
                   <Input
@@ -1553,7 +1551,7 @@ const StoreSettings = () => {
               </Col> */}
               <Col span={8} className="mr-2 ">
                 <label className="text-[13px] mb-2 ml-1">
-                  Button Primary Foreground Color
+                  Primary Button Text Color
                 </label>
                 <Content className="flex">
                   <Input
@@ -1603,7 +1601,7 @@ const StoreSettings = () => {
               </Col>
               <Col span={8} className="ml-1">
                 <label className="text-[13px] mb-2 ml-1">
-                  Button Secondary Foreground Color
+                  Secondary Button Text Color
                 </label>
                 <Content className="flex">
                   <Input
@@ -1655,7 +1653,7 @@ const StoreSettings = () => {
               </Col>
               <Col span={7} className="ml-2">
                 <label className="text-[13px] mb-2 ml-1">
-                  Button Teritary Foreground Color
+                  Teritary Button Text Color
                 </label>
                 <Content className="flex">
                   <Input
@@ -1808,9 +1806,7 @@ const StoreSettings = () => {
                 </Content>
               </Col>
               <Col span={8} className="ml-1">
-                <label className="text-[13px] mb-2 ml-1">
-                  Foreground Color
-                </label>
+                <label className="text-[13px] mb-2 ml-1">Text Color</label>
                 <Content className="flex">
                   <Input
                     type="color"
@@ -1909,9 +1905,7 @@ const StoreSettings = () => {
                 </Content>
               </Col>
               <Col span={8} className="ml-1">
-                <label className="text-[13px] mb-2 ml-1">
-                  Foreground Color
-                </label>
+                <label className="text-[13px] mb-2 ml-1">Text Color</label>
                 <Content className="flex">
                   <Input
                     type="color"
@@ -1957,7 +1951,7 @@ const StoreSettings = () => {
             </Row>
           </Content>
         </Content>
-        <Content className="mt-3">
+        <Content className="mt-3 mb-6">
           <Row>
             <Col>
               <Button

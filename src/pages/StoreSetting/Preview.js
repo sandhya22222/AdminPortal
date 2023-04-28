@@ -41,7 +41,7 @@ const Preview = ({
         >
           <div className="!text-start p-3">
             {absoluteStoreImageInfo.type === "store_logo" ? (
-              <img className="w-[40px]" src={absoluteStoreImageInfo.value} />
+              <img className="w-[38px]" src={absoluteStoreImageInfo.value} />
             ) : (
               <img className="w-[150px] " src={BrandLogo} />
             )}
