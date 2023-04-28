@@ -1,5 +1,6 @@
 // import BrandLogo from "../assets/images/logo/dm-logo.png";
-import BrandLogo from "../assets/images/logo/dm-latest-logo.png";
+// import BrandLogo from "../assets/images/logo/dm-latest-logo.png";
+import BrandLogo from "../assets/images/logo/dm-logo-latest.png";
 import AppStoreLogo from "../assets/images/common/app-on-app-store.png";
 import PlayStoreLogo from "../assets/images/common/app-on-google-play.png";
 import LoginBackground from "../assets/images/common/login_background.png";
