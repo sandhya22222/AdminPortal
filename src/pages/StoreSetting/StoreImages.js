@@ -244,7 +244,7 @@ const StoreImages = ({
 
         const url = URL.createObjectURL(response.data);
         console.log("image-url", url);
-        let temp =[...allImageUrl];
+        let temp = allImageUrl;
         temp.push(url);
         if (absoluteStoreImageInfo && absoluteStoreImageInfo.length > 0) {
           let imageData = [...absoluteStoreImageInfo];
@@ -421,19 +421,38 @@ const StoreImages = ({
           <Content className=" flex !space-x-10">
             {allImageUrl &&
               allImageUrl.length > 0 &&
-              allImageUrl.map((ele) => {
+              allImageUrl.map((ele, index) => {
                 return (
-                  <>
+                  <div className="!relative">
                     <img src={ele} className="!w-24 !h-26" />
                     <TiDelete
-                      className="!absolute !cursor-pointer !right-[-5px] !z-10  !top-[32px] !text-2xl !text-red-600 !shadow-lg  hover:translate-"
+                      className="!absolute !cursor-pointer !right-[-5px] !z-5  !top-[-10px] !text-2xl !text-red-600 !shadow-lg  hover:translate-"
                       //   twoToneColor= {"#eb2f96"}
                       onClick={() => {
-                        setImagePathShow();
-                        setReset(true);
+                        if (type === "banner_images") {
+                          // const index = allImageUrl.indexOf(ele);
+                          // console.log("index",index)
+                          // if (index > -1) {
+                          //   // only splice array when item is found
+                          //   allImageUrl.splice(index, 1); // 2nd parameter means remove one item only
+                          //   setAllImageUrl(allImageUrl);
+                          // }
+                          let temp = allImageUrl.filter((item) => item !== ele);
+                          console.log("allImageUrltemp", temp);
+                          if (temp && temp.length > 0) {
+                            setAllImageUrl(temp);
+                          }else{
+                            setAllImageUrl([])
+                            setImagePathShow();
+                            // setReset(true);
+                          }
+                        } else {
+                          setImagePathShow();
+                          setReset(true);
+                        }
                       }}
                     />
-                  </>
+                  </div>
                 );
               })}
           </Content>

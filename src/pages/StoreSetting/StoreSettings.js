@@ -425,18 +425,18 @@ const StoreSettings = () => {
     //     type: "info",
     //   });
     // }
-    if (
-      currencySymbol !== "" &&
-      currencyIsoCode !== "" &&
-      fractionalUnit !== "" &&
-      numberToBasic !== ""
-    ) {
-      count--;
-      toast("No Changes are detected", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "info",
-      });
-    }
+    // if (
+    //   currencySymbol !== "" &&
+    //   currencyIsoCode !== "" &&
+    //   fractionalUnit !== "" &&
+    //   numberToBasic !== ""
+    // ) {
+    //   count--;
+    //   toast("No Changes are detected", {
+    //     position: toast.POSITION.TOP_RIGHT,
+    //     type: "info",
+    //   });
+    // }
     if (
       currencySymbol === "" ||
       currencySymbol === undefined ||
