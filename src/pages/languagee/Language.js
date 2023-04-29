@@ -50,7 +50,7 @@ const pageLimit = process.env.REACT_APP_ITEM_PER_PAGE;
 
 const Language = () => {
   usePageTitle("Admin Portal - Language");
-   const authorizationHeader = useAuthorization()
+  const authorizationHeader = useAuthorization();
   const params = useParams();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -193,7 +193,7 @@ const Language = () => {
   const openDeleteModal = (id) => {
     setIsDeleteLanguageModalOpen(true);
     setDeleteLanguageID(id);
-    console.log("id",id)
+    console.log("id", id);
   };
 
   const columns = [
@@ -335,11 +335,15 @@ const Language = () => {
     // enabling spinner
     setIslanguageDeleting(true);
     axios
-      .delete(languageAPI, {
-        params: {
-          _id: deleteLanguageID,
+      .delete(
+        languageAPI,
+        {
+          params: {
+            _id: deleteLanguageID,
+          },
         },
-      },authorizationHeader)
+        authorizationHeader
+      )
       .then((response) => {
         console.log("response from delete===>", response, deleteLanguageID);
         if (response.status === 200 || response.status === 201) {
@@ -357,8 +361,9 @@ const Language = () => {
         setIslanguageDeleting(false);
       })
       .catch((error) => {
-        if(error&&error.response&&error.response.status === 401){
-          makeHttpRequestForRefreshToken();}
+        if (error && error.response && error.response.status === 401) {
+          makeHttpRequestForRefreshToken();
+        }
         // disabling spinner
         setIslanguageDeleting(false);
         console.log("response from delete===>", error.response);
@@ -366,7 +371,6 @@ const Language = () => {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
         });
-      
       });
   };
   const getLanguageData = (page, limit) => {
@@ -395,8 +399,9 @@ const Language = () => {
         // setIsNetworkErrorLanguage(false);
       })
       .catch((error) => {
-        if(error&&error.response&&error.response.status === 401){
-          makeHttpRequestForRefreshToken();}
+        if (error && error.response && error.response.status === 401) {
+          makeHttpRequestForRefreshToken();
+        }
         setIsLoading(false);
         setIsNetworkErrorLanguage(true);
         console.log(
@@ -520,7 +525,7 @@ const Language = () => {
   }, [searchParams]);
 
   return (
-    <Layout className="p-3"> 
+    <Layout className="p-3">
       <Content>
         <StoreModal
           isVisible={isDeleteLanguageModalOpen}
@@ -543,7 +548,7 @@ const Language = () => {
           />
           <Row justify={"space-between"}>
             <Col>
-              <Content className=" float-left mt-3 ">
+              <Content className=" float-left">
                 <Title level={3} className="!font-normal">
                   Language
                 </Title>
@@ -551,7 +556,7 @@ const Language = () => {
             </Col>
 
             <Col>
-              <Content className="text-right mt-3">
+              <Content className="text-right">
                 <Button
                   className=" app-btn-primary "
                   onClick={() => navigate("add_language")}

@@ -771,14 +771,14 @@ const Stores = () => {
         />
         <Row justify={"space-between"}>
           <Col>
-            <Content className="float-left mt-3">
+            <Content className="float-left">
               <Title level={3} className="!font-normal">
                 Stores
               </Title>
             </Content>
           </Col>
           <Col>
-            <Content className="text-right mt-3">
+            <Content className="text-right">
               <Button className="app-btn-primary" onClick={showAddDrawer}>
                 Add Store
               </Button>
