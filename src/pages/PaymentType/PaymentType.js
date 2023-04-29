@@ -93,7 +93,7 @@ const PaymentType = () => {
           ]}
         />
       </Content>
-      <Content className="mt-3">
+      <Content className="">
         <Title level={3} className="!font-normal">
           Payment Types
         </Title>

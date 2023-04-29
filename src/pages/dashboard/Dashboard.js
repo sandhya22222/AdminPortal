@@ -9,7 +9,14 @@ import {
   Table,
   Button,
 } from "antd";
-import { DashboardOutlined, LoadingOutlined } from "@ant-design/icons";
+import {
+  DashboardOutlined,
+  LoadingOutlined,
+  ShopOutlined,
+  SyncOutlined,
+  WalletOutlined,
+  TagOutlined,
+} from "@ant-design/icons";
 import {
   Outlet,
   Link,
@@ -84,7 +91,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
     sessionStorage.getItem("permissions_data") || []
   );
   const { pathname } = useLocation();
-  console.log("consoled");
+
   useEffect(() => {
     if (sessionStorage.getItem("access_token")) {
       setToken(sessionStorage.getItem("access_token"));
@@ -428,8 +435,101 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
           </Content>
         ) : (
           <Content className="">
-            <Content className="flex justify-between">
-              <Content className=" bg-[#ffff] p-3 mr-5 shadow-sm rounded-md justify-center">
+            <Content className="!mb-3">
+              <Title level={3} className="!font-normal">
+                Dashboard
+              </Title>
+            </Content>
+            <Content className="flex justify-between !mt-6">
+              <Content
+                className="p-3 mr-5 shadow-sm rounded-md justify-center"
+                style={{
+                  background:
+                    "linear-gradient(74.8deg, rgba(52, 168, 83, 0.6) 0%, rgba(52, 168, 83, 0.4) 98.74%)",
+                }}
+              >
+                <Content className="!text-[#ffffff] text-md mb-2">
+                  Total Stores
+                </Content>
+                <Content className="!text-[#ffffff] mb-4">
+                  <ShopOutlined className="text-xl" />
+                  <span className="float-right text-3xl">
+                    {dashboardData &&
+                      dashboardData.store_data &&
+                      dashboardData.store_data.total_count}
+                  </span>
+                </Content>
+                <Content className="!text-[#ffffff]">
+                  <span className="text-md">Total active stores</span>
+                  <span className="float-right text-md">
+                    {dashboardData &&
+                      dashboardData.store_data &&
+                      dashboardData.store_data.active_stores}
+                  </span>
+                </Content>
+              </Content>
+              <Content
+                className="p-3 mr-5 shadow-sm rounded-md justify-center"
+                style={{
+                  background:
+                    "linear-gradient(74.8deg, rgba(234, 67, 53, 0.6) 0%, rgba(234, 67, 53, 0.4) 98.74%)",
+                }}
+              >
+                <Content className="!text-[#ffffff] text-md mb-2">
+                  Total Revenue
+                </Content>
+                <Content className="!text-[#ffffff] mb-4">
+                  <SyncOutlined rotate={90} className="text-xl" />
+                  <span className="float-right text-3xl">€ 90,400</span>
+                </Content>
+                <Content className="!text-[#ffffff]">
+                  <span className="text-md">Last month revenue</span>
+                  <span className="float-right text-md">€ 5,650</span>
+                </Content>
+              </Content>
+              <Content
+                className="p-3 mr-5 shadow-sm rounded-md justify-center"
+                style={{
+                  background:
+                    "linear-gradient(74.8deg, rgba(251, 188, 5, 0.6) 0%, rgba(251, 188, 5, 0.4) 98.74%)",
+                }}
+              >
+                <Content className="!text-[#ffffff] text-md mb-2">
+                  Total Profit
+                </Content>
+                <Content className="!text-[#ffffff] mb-4">
+                  <WalletOutlined className="text-xl" />
+                  <span className="float-right text-3xl">€ 13,554</span>
+                </Content>
+                <Content className="!text-[#ffffff]">
+                  <span className="text-md">Last month profit</span>
+                  <span className="float-right text-md">€ 2,550</span>
+                </Content>
+              </Content>
+              <Content
+                className="p-3 mr-5 shadow-sm rounded-md justify-center"
+                style={{
+                  background:
+                    "linear-gradient(74.8deg, rgba(66, 133, 244, 0.6) 0%, rgba(66, 133, 244, 0.4) 98.74%)",
+                }}
+              >
+                <Content className="!text-[#ffffff] text-md mb-2">
+                  Total Product Sold
+                </Content>
+                <Content className="!text-[#ffffff] mb-4">
+                  <TagOutlined rotate={270} className="text-xl" />
+                  <span className="float-right text-3xl">5,200</span>
+                </Content>
+                <Content className="!text-[#ffffff]">
+                  <span className="text-md">
+                    No. of products sold last month
+                  </span>
+                  <span className="float-right text-md">1,400</span>
+                </Content>
+              </Content>
+            </Content>
+            {/* <Content className="flex justify-between !mt-6">
+              <Content className="bg-[#ffff] p-3 mr-5 shadow-sm rounded-md justify-center">
                 <Title level={3} className="!font-normal">
                   Dashboard
                 </Title>
@@ -439,22 +539,11 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                     Hello Logonathan B, have a great day!
                   </Text>
                 </Content>
-                {/* <div>
-                  <Text className="text-lg !text-slate-200">Stores</Text>
-                </div> */}
               </Content>
               <Content className=" bg-[#ffff] p-3 mr-5 shadow-sm rounded-md">
                 <p className="!text-[#cdcdcd] text-lg ">
                   Total sales this month
                 </p>
-                {/* <Title level={2} className="!text-black mb-2">
-                   {dashboardData &&
-                    dashboardData.language_data &&
-                    dashboardData.language_data.total_count}                
-                </Title> */}
-                {/* <div>
-                  <Text className="text-lg !text-slate-200">Languages</Text>
-                </div> */}
                 <Text className="text-xl !text-black">$ 126,560</Text>
                 <Divider plain />
                 <Text className="font-semibold"> Daily Sales $12,423</Text>
@@ -471,29 +560,28 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                 <Divider plain />
                 <Text className="text-[#7dc1ff]">View Storelist </Text>
               </Content>
-              {/* <Content className="w-[5%] bg-[#62daaa] ml-2 p-4 text-center rounded-md">
-              <Title level={2}>
-                {dashboardData &&
-                  dashboardData.product_template_data &&
-                  dashboardData.product_template_data.product_templates.length >
-                    0 &&
-                  dashboardData.product_template_data.product_templates[1]
-                    .count}
-              </Title>
-              <div>
-                <Text>Inactive Product templates</Text>
-              </div>
             </Content> */}
-            </Content>
-            <Content className="flex justify-between mt-12">
-              <Content className=" p-2 shadow-sm bg-white mr-2">
-                <SalesReportGraph />
-                {/* <LanguageGraph languageData={dashboardData.language_data} /> */}
+            <Content className="flex justify-between mt-8">
+              <Content className="p-2 shadow-sm bg-white w-[50%]">
+                <div>
+                  <Text className="text-lg !text-[#cdcdcd] p-2">
+                    Total Languages
+                  </Text>
+                </div>
+                <Text className="text-xl !text-black p-2 text-3xl">
+                  {dashboardData &&
+                    dashboardData.language_data &&
+                    dashboardData.language_data.total_count}
+                </Text>{" "}
+                {/* <StoreProductTypeGraph
+                storeProductTypeData={dashboardData.product_type_data}
+              /> */}
+                <StoreGraph languageData={dashboardData.language_data} />
               </Content>
-              <Content className=" p-2 shadow-sm bg-white ml-2">
+              <Content className="p-2 shadow-sm bg-white ml-3">
                 {/* <StoreGraph storeData={dashboardData.store_data} /> */}
-                <Content className=" flex  !mx-3">
-                  <Content className="!bg-white  shadow-sm p-3 !mr-3">
+                <Content className="flex !mx-3">
+                  <Content className="!bg-white shadow-sm p-3 !mr-3">
                     <Text className="!font-bold">Rankings</Text>
                     <Text className="text-slate-300"> (Previous month)</Text>
                     <Content className="!mt-6">
@@ -506,27 +594,17 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                       <Content>
                         <DynamicTable tableComponentData={tablePropsData} />
                       </Content>
-                      <Text className=" text-blue-400">Explore All Stores</Text>
+                      <Text className="cursor-pointer text-blue-400">
+                        Explore All Stores
+                      </Text>
                     </Content>
                   </Content>
                 </Content>
               </Content>
             </Content>
-            <Content className="mt-12 p-2 shadow-sm bg-white !w-[70%]">
-              <div>
-                <Text className="text-lg !text-[#cdcdcd] p-2">
-                  Total Stores
-                </Text>
-              </div>
-              <Text className="text-xl !text-black p-2">
-                {dashboardData &&
-                  dashboardData.store_data &&
-                  dashboardData.store_data.total_count}
-              </Text>{" "}
-              {/* <StoreProductTypeGraph
-                storeProductTypeData={dashboardData.product_type_data}
-              /> */}
-              <StoreGraph storeData={dashboardData.store_data} />
+            <Content className="p-3 shadow-sm bg-white mt-8">
+              <SalesReportGraph />
+              {/* <LanguageGraph languageData={dashboardData.language_data} /> */}
             </Content>
           </Content>
         )}
