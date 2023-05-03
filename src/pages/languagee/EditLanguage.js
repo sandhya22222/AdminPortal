@@ -28,6 +28,7 @@ import { testValueByRegexPattern } from "../../util/util";
 import useAuthorization from "../../hooks/useAuthorization";
 //! Import CSS libraries
 import { Container } from "reactstrap";
+import MarketplaceServices from "../../services/axios/MarketplaceServices";
 
 //! Destructure the components
 const { Title, Text } = Typography;
@@ -140,13 +141,14 @@ const EditLanguage = () => {
   const getLanguageAPI = (page, limit) => {
     // Enabling skeleton
     setIsDataLoading(true);
-    axios
-      .get(languageAPI, authorizationHeader, {
-        params: {
-          "page-number": page,
-          "page-limit": limit,
-        },
-      })
+    // axios
+    //   .get(languageAPI, authorizationHeader, {
+    //     params: {
+    //       "page-number": page,
+    //       "page-limit": limit,
+    //     },
+    //   })
+    MarketplaceServices.findByPage(languageAPI, null, page, limit, false)
       .then((response) => {
         console.log(
           "Response from  edit language server-----> ",
@@ -178,12 +180,9 @@ const EditLanguage = () => {
         setIsDataLoading(false);
       })
       .catch((error) => {
-        if(error&&error.response&&error.response.status === 401){
-          makeHttpRequestForRefreshToken();}
         // disabling skeleton
         setIsDataLoading(false);
         console.log("errorFromLanguageApi====>", error);
-     
       });
   };
   useEffect(() => {
@@ -242,7 +241,7 @@ const EditLanguage = () => {
         type: "info",
       });
     } else {
-      editLanguage();
+      updateEditLanguage();
     }
     // } else {
     //   toast("No Changes Detected !", {
@@ -254,7 +253,7 @@ const EditLanguage = () => {
   };
 
   // Language PUT API call
-  const editLanguage = () => {
+  const updateEditLanguage = () => {
     // const langaugeData = new FormData();
     // langaugeData.append("language", languageDetails.language);
     // langaugeData.append("language_code", languageDetails.language_code);
@@ -291,17 +290,18 @@ const EditLanguage = () => {
     console.log("PutObject----->", temp);
     // enabling spinner
     setIsLoading(true);
-    axios
-      .put(
-        languageAPI,
-        temp,
-        {
-          params: {
-            _id: parseInt(_id),
-          },
-        },
-        authorizationHeader
-      )
+    // axios
+    //   .put(
+    //     languageAPI,
+    //     temp,
+    //     {
+    //       params: {
+    //         _id: parseInt(_id),
+    //       },
+    //     },
+    //     authorizationHeader
+    //   )
+    MarketplaceServices.update(languageAPI, temp, { _id: parseInt(_id) })
       .then(function (response) {
         let copyofLanguageDetails = { ...languageDetails };
         copyofLanguageDetails.islanguageDetailsEdited = false;
@@ -325,8 +325,6 @@ const EditLanguage = () => {
         }
       })
       .catch((error) => {
-        if(error&&error.response&&error.response.status === 401){
-          makeHttpRequestForRefreshToken();}
         // disabling spinner
         setIsLoading(false);
         if (fileData) {
@@ -342,30 +340,31 @@ const EditLanguage = () => {
           });
         }
         console.log(error.response);
-        if (error && error.response && error.response.status === 401) {
-          makeHttpRequestForRefreshToken();
-        }
       });
   };
 
   console.log("language_details", languageDetails);
 
-  const editLanguageDocument = (fileValue, lastExtensionValue) => {
+  const updateLanguageDocument = (fileValue, lastExtensionValue) => {
     const formData = new FormData();
     formData.append("language_document", fileValue);
     formData.append("extension", lastExtensionValue);
-    axios
-      .put(
-        languageUpdateAPI,
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-          params: {
-            document_path: documentPath,
-          },
-        },
-        authorizationHeader
-      )
+    // axios
+    //   .put(
+    //     languageUpdateAPI,
+    //     formData,
+    //     {
+    //       headers: { "Content-Type": "multipart/form-data" },
+    //       params: {
+    //         document_path: documentPath,
+    //       },
+    //     },
+    //     authorizationHeader
+    //   )
+    MarketplaceServices.update(languageUpdateAPI, formData, {
+      document_path: documentPath,
+      headers: { "Content-Type": "multipart/form-data" },
+    })
       .then((response) => {
         console.log("put response", response.data);
 
@@ -381,22 +380,22 @@ const EditLanguage = () => {
             type: "error",
           });
         }
-        if (error && error.response && error.response.status === 401) {
-          makeHttpRequestForRefreshToken();
-        }
       });
   };
 
-  const postLanguageDocument = (fileValue, lastExtensionValue) => {
+  const saveLanguageDocument = (fileValue, lastExtensionValue) => {
     const formData = new FormData();
     if (fileValue) {
       formData.append("language_document", fileValue);
       formData.append("extension", lastExtensionValue);
     }
-    axios
-      .post(languageDocumentAPI, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      })
+    // axios
+    //   .post(languageDocumentAPI, formData, {
+    //     headers: { "Content-Type": "multipart/form-data" },
+    //   })
+    MarketplaceServices.save(languageDocumentAPI, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
       .then((response) => {
         //   toast("file uploaded successfully.", {
         //     position: toast.POSITION.TOP_RIGHT,
@@ -429,25 +428,25 @@ const EditLanguage = () => {
         // setIsUpLoading(false);
         // setInValidName(true)
         // onClose();
-        if (error && error.response && error.response.status === 401) {
-          makeHttpRequestForRefreshToken();
-        }
       });
     // }
   };
 
   //! document delete call
-  const deleteLanguageDocument = () => {
-    axios
-      .delete(
-        languageUpdateAPI,
-        {
-          params: {
-            document_path: documentPath,
-          },
-        },
-        authorizationHeader
-      )
+  const removeLanguageDocument = () => {
+    // axios
+    //   .delete(
+    //     languageUpdateAPI,
+    //     {
+    //       params: {
+    //         document_path: documentPath,
+    //       },
+    //     },
+    //     authorizationHeader
+    //   )
+    MarketplaceServices.remove(languageUpdateAPI, {
+      document_path: documentPath,
+    })
       .then((response) => {
         console.log("response from delete===>", response.data);
         if (response.status === 200 || response.status === 201) {
@@ -467,9 +466,6 @@ const EditLanguage = () => {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
         });
-        if (error && error.response && error.response.status === 401) {
-          makeHttpRequestForRefreshToken();
-        }
       });
   };
 
@@ -483,11 +479,11 @@ const EditLanguage = () => {
     var lastExtensionValue = arr.pop(); //! Get last element (value after last dot)
     if (languageDetails.lang_support_docs === null) {
       if (e.file.status !== "removed") {
-        postLanguageDocument(e.file, lastExtensionValue);
+        saveLanguageDocument(e.file, lastExtensionValue);
       }
     } else {
       if (e.file.status !== "removed") {
-        editLanguageDocument(e.file, lastExtensionValue);
+        updateLanguageDocument(e.file, lastExtensionValue);
       }
     }
   };
@@ -693,7 +689,7 @@ const EditLanguage = () => {
                               e.target.files
                             );
                           }}
-                          onRemove={(e) => deleteLanguageDocument(e)}
+                          onRemove={(e) => removeLanguageDocument(e)}
                         >
                           <p className="ant-upload-drag-icon">
                             <InboxOutlined />

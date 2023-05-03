@@ -40,6 +40,7 @@ import DmPagination from "../../components/DmPagination/DmPagination";
 import { usePageTitle } from "../../hooks/usePageTitle";
 import Highlighter from "react-highlight-words";
 import useAuthorization from "../../hooks/useAuthorization";
+import MarketplaceServices from "../../services/axios/MarketplaceServices";
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
@@ -283,10 +284,10 @@ const Stores = () => {
               }}
               // className=" pl-[10px] font-semibold app-table-data-title"
             >
-            <SettingOutlined
-              className="app-delete-icon pr-4  text-black"
-              style={{ fontSize: "16px", marginLeft: "5px" }}
-            />
+              <SettingOutlined
+                className="app-delete-icon pr-4  text-black"
+                style={{ fontSize: "16px", marginLeft: "5px" }}
+              />
             </Link>
             {/* </Tooltip> */}
           </content>
@@ -430,26 +431,35 @@ const Stores = () => {
     setStoreUserName("");
   };
   //!get call for stores
-  const getStoreApi = (pageNumber, pageLimit, storeStatus) => {
+  const findByPageStoreApi = (pageNumber, pageLimit, storeStatus) => {
     // setIsLoading(true);
-    axios
-      .get(
-        storeAPI,
-        {
-          params: {
-            // store_id: parseInt(storeId),
-            "page-number": pageNumber,
-            "page-limit": pageLimit,
-            status: storeStatus ? storeStatus : null,
-          },
-        },
-        authorizationHeader
-      )
+    // axios
+    //   .get(
+    //     storeAPI,
+    //     {
+    //       params: {
+    //         // store_id: parseInt(storeId),
+    //         "page-number": pageNumber,
+    //         "page-limit": pageLimit,
+    //         status: storeStatus ? storeStatus : null,
+    //       },
+    //     },
+    //     authorizationHeader
+    //   )
+    MarketplaceServices.findByPage(
+      storeAPI,
+      {
+        status: storeStatus ? storeStatus : null,
+      },
+      pageNumber,
+      pageLimit,
+      false
+    )
       .then(function (response) {
         setIsNetworkError(false);
         setIsLoading(false);
         console.log(
-          "Server Response from getStoreApi Function: ",
+          "Server Response from findByPageStoreApi Function: ",
           response.data.data
         );
         // setStoreApiData(response.data.data);
@@ -462,12 +472,12 @@ const Stores = () => {
         // console.log("hii",response.data.count)
       })
       .catch((error) => {
-        if (error && error.response && error.response.status === 401) {
-          makeHttpRequestForRefreshToken();
-        }
         setIsLoading(false);
         setIsNetworkError(true);
-        console.log("Server error from getStoreApi Function ", error.response);
+        console.log(
+          "Server error from findByPageStoreApi Function ",
+          error.response
+        );
 
         if (error.response) {
           setErrorMessage(error.response.data.message);
@@ -482,10 +492,6 @@ const Stores = () => {
         }
       });
   };
-  // useEffect(() => {
-  //   getStoreApi();
-  //   window.scrollTo(0, 0);
-  // }, [currentCount, currentPage]);
   //!useEffect for getting the table in table without refreshing
   useEffect(() => {
     if (postData != null) {
@@ -587,11 +593,11 @@ const Stores = () => {
       // storeUserName !== "" &&
       // storePassword !== ""
     ) {
-      addStoreData();
+      saveStoreData();
     }
   };
   //! post call for stores
-  const addStoreData = () => {
+  const saveStoreData = () => {
     const postBody = {
       name: name.trim(),
       username: storeUserName,
@@ -599,8 +605,9 @@ const Stores = () => {
       password: storePassword,
     };
     setIsUpLoading(true);
-    axios
-      .post(storeAPI, postBody, authorizationHeader)
+    // axios
+    //   .post(storeAPI, postBody, authorizationHeader)
+    MarketplaceServices.save(storeAPI, postBody)
       .then((response) => {
         toast("Store created successfully.", {
           position: toast.POSITION.TOP_RIGHT,
@@ -617,18 +624,6 @@ const Stores = () => {
         setPostData(response.data);
       })
       .catch((error) => {
-        if (error && error.response && error.response.status === 401) {
-          makeHttpRequestForRefreshToken();
-        }
-        // if (error.response.status === 400) {
-        //   toast(
-        //     `${error.response.data.message}` || `${error.response.data.message}`,
-        //     {
-        //       position: toast.POSITION.TOP_RIGHT,
-        //       type: "error",
-        //     }
-        //   );
-        // }
         if (error.response) {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
@@ -647,24 +642,27 @@ const Stores = () => {
       });
   };
   //!put call for stores
-  const editStoreData = () => {
+  const updateStoreData = () => {
     const putObject = {
       name: editName,
     };
     setIsUpLoading(true);
     console.log("editStoreData() Endpoint:", storeAPI, putObject);
     console.log("editStoreData() putBody:", putObject);
-    axios
-      .put(
-        storeAPI,
-        putObject,
-        {
-          params: {
-            store_id: parseInt(storeEditId),
-          },
-        },
-        authorizationHeader
-      )
+    // axios
+    //   .put(
+    //     storeAPI,
+    //     putObject,
+    //     {
+    //       params: {
+    //         store_id: parseInt(storeEditId),
+    //       },
+    //     },
+    //     authorizationHeader
+    //   )
+    MarketplaceServices.update(storeAPI, putObject, {
+      store_id: parseInt(storeEditId),
+    })
       .then((response) => {
         console.log("put response", response.data, storeApiData);
         let copyofStoreAPIData = [...storeApiData];
@@ -685,9 +683,6 @@ const Stores = () => {
         }
       })
       .catch((error) => {
-        if (error && error.response && error.response.status === 401) {
-          makeHttpRequestForRefreshToken();
-        }
         setIsUpLoading(false);
         if (error.response) {
           toast(`${error.response.data.message}`, {
@@ -734,12 +729,12 @@ const Stores = () => {
         type: "info",
       });
     } else {
-      editStoreData();
+      updateStoreData();
     }
   };
 
   useEffect(() => {
-    getStoreApi(
+    findByPageStoreApi(
       searchParams.get("page") ? parseInt(searchParams.get("page")) : 1,
       searchParams.get("limit")
         ? parseInt(searchParams.get("limit"))

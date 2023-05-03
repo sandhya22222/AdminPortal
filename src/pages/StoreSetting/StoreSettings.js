@@ -29,6 +29,7 @@ import StoreModal from "../../components/storeModal/StoreModal";
 import StoreImages from "./StoreImages";
 import Status from "../Stores/Status";
 import Preview from "./Preview";
+import MarketplaceServices from "../../services/axios/MarketplaceServices";
 const { Content } = Layout;
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -100,17 +101,20 @@ const StoreSettings = () => {
   const [imageOfStoreSettingsCurrency, setImageOfStoreSettingsCurrency] =
     useState();
   //! get call of  getStoreSettingApi
-  const getStoreSettingApi = (storeId) => {
-    axios
-      .get(
-        storeSettingAPI,
-        {
-          params: {
-            "store-id": storeId,
-          },
-        },
-        authorizationHeader
-      )
+  const findAllWithoutPageStoreSettingApi = (storeId) => {
+    // axios
+    //   .get(
+    //     storeSettingAPI,
+    //     {
+    //       params: {
+    //         "store-id": storeId,
+    //       },
+    //     },
+    //     authorizationHeader
+    //   )
+    MarketplaceServices.findAllWithoutPage(storeSettingAPI, {
+      "store-id": storeId,
+    })
       .then(function (response) {
         console.log(
           "Get response of Store setting--->",
@@ -221,9 +225,6 @@ const StoreSettings = () => {
       })
       .catch((error) => {
         console.log("errorresponse--->", error.response);
-        if (error && error.response && error.response.status === 401) {
-          makeHttpRequestForRefreshToken();
-        }
         if (error.response === undefined) {
           setCurrencySymbol("");
           setCurrencyIsoCode("");
@@ -249,14 +250,15 @@ const StoreSettings = () => {
     copyImageOfStoreSettingsCurrency
   );
   //! get call of store API
-  const getStoreApi = () => {
+  const findAllStoreApi = () => {
     // setIsLoading(true);
-    axios
-      .get(storeAPI, {
-        params: {
-          "page-number": -1,
-        },
-      })
+    // axios
+    //   .get(storeAPI, {
+    //     params: {
+    //       "page-number": -1,
+    //     },
+    //   })
+    MarketplaceServices.findAll(storeAPI)
       .then(function (response) {
         console.log(
           "Server Response from getStoreApi Function: ",
@@ -266,10 +268,6 @@ const StoreSettings = () => {
       })
       .catch((error) => {
         console.log("Server error from getStoreApi Function ", error.response);
-        if (error && error.response && error.response.status === 401) {
-          makeHttpRequestForRefreshToken();
-          // setErrorMessage(error.response)
-        }
       });
   };
 
@@ -290,7 +288,7 @@ const StoreSettings = () => {
   }, [storeData]);
 
   //! post call for store settings
-  const storeSettingsPostCall = () => {
+  const saveStoreSettingsCall = () => {
     const postBody = {
       store_id: id,
       store_currency: [
@@ -327,8 +325,9 @@ const StoreSettings = () => {
       ],
     };
     setIsLoading(true);
-    axios
-      .post(storeSettingAPI, postBody, authorizationHeader)
+    // axios
+    //   .post(storeSettingAPI, postBody, authorizationHeader)
+    MarketplaceServices.save(storeSettingAPI, postBody)
       .then((response) => {
         toast("Store Setting created successfully.", {
           position: toast.POSITION.TOP_RIGHT,
@@ -379,9 +378,6 @@ const StoreSettings = () => {
         setIsLoading(false);
         // setInValidName(true)
         // onClose();
-        if (error && error.response && error.response.status === 401) {
-          makeHttpRequestForRefreshToken();
-        }
       });
   };
 
@@ -486,7 +482,7 @@ const StoreSettings = () => {
       });
     }
     if (count === 4) {
-      storeSettingsPostCall();
+      saveStoreSettingsCall();
     }
   };
 
@@ -517,17 +513,20 @@ const StoreSettings = () => {
   };
 
   //! get call of store images
-  const getStoreImagesApi = (storeId) => {
-    axios
-      .get(
-        storeImagesAPI,
-        {
-          params: {
-            "store-id": storeId,
-          },
-        },
-        authorizationHeader
-      )
+  const findAllWithoutPageStoreImagesApi = (storeId) => {
+    // axios
+    //   .get(
+    //     storeImagesAPI,
+    //     {
+    //       params: {
+    //         "store-id": storeId,
+    //       },
+    //     },
+    //     authorizationHeader
+    //   )
+    MarketplaceServices.findAllWithoutPage(storeImagesAPI, {
+      "store-id": storeId,
+    })
       .then(function (response) {
         console.log("Get response of Store setting Images--->", response.data);
         setGetImageData(response.data);
@@ -535,14 +534,11 @@ const StoreSettings = () => {
       .catch((error) => {
         console.log("errorresponse from images--->", error);
         setGetImageData([]);
-        if (error && error.response && error.response.status === 401) {
-          makeHttpRequestForRefreshToken();
-        }
       });
   };
 
   //! post call of store images
-  const storeLogoImagePostCall = () => {
+  const saveStoreLogoImageCall = () => {
     const formData = new FormData();
     if (imagesUpload && imagesUpload.length > 0) {
       for (var i = 0; i < imagesUpload.length; i++) {
@@ -562,15 +558,18 @@ const StoreSettings = () => {
       }
       formData.append("store_id", parseInt(id));
     }
-    axios
-      .post(
-        storeImagesAPI,
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        },
-        authorizationHeader
-      )
+    // axios
+    //   .post(
+    //     storeImagesAPI,
+    //     formData,
+    //     {
+    //       headers: { "Content-Type": "multipart/form-data" },
+    //     },
+    //     authorizationHeader
+    //   )
+    MarketplaceServices.save(storeImagesAPI, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
       .then((response) => {
         toast("Images created successfully.", {
           position: toast.POSITION.TOP_RIGHT,
@@ -602,13 +601,10 @@ const StoreSettings = () => {
         }
         console.log(error.response);
         setIsLoading(false);
-        if (error && error.response && error.response.status === 401) {
-          makeHttpRequestForRefreshToken();
-        }
       });
   };
 
-  const storeLogoImagePutCall = () => {
+  const updateStoreLogoImageCall = () => {
     const formData = new FormData();
     if (imagesUpload && imagesUpload.length > 0) {
       for (var i = 0; i < imagesUpload.length; i++) {
@@ -628,15 +624,18 @@ const StoreSettings = () => {
       }
       formData.append("store_id", parseInt(id));
     }
-    axios
-      .put(
-        storeImagesAPI,
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        },
-        authorizationHeader
-      )
+    // axios
+    //   .put(
+    //     storeImagesAPI,
+    //     formData,
+    //     {
+    //       headers: { "Content-Type": "multipart/form-data" },
+    //     },
+    //     authorizationHeader
+    //   )
+    MarketplaceServices.update(storeImagesAPI, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
       .then((response) => {
         toast("Images updated successfully.", {
           position: toast.POSITION.TOP_RIGHT,
@@ -668,15 +667,12 @@ const StoreSettings = () => {
         }
         console.log(error.response);
         setIsLoading(false);
-        if (error && error.response && error.response.status === 401) {
-          makeHttpRequestForRefreshToken();
-        }
       });
   };
 
   const postImageOnClickSave = () => {
     if (getImageData && getImageData.length !== 0) {
-      storeLogoImagePutCall();
+      updateStoreLogoImageCall();
     } else {
       let count = 1;
       if (imagesUpload && imagesUpload.length === 0) {
@@ -688,28 +684,28 @@ const StoreSettings = () => {
         });
       }
       if (count === 1) {
-        storeLogoImagePostCall();
+        saveStoreLogoImageCall();
       }
     }
   };
 
   useEffect(() => {
-    getStoreApi();
+    findAllStoreApi();
     window.scroll(0, 0);
     if (id) {
-      getStoreSettingApi(id);
-      getStoreImagesApi(id);
+      findAllWithoutPageStoreSettingApi(id);
+      findAllWithoutPageStoreImagesApi(id);
     }
   }, []);
 
-  const handleStoreChange = (value) => {
-    if (value) {
-      getStoreSettingApi(value);
-      getStoreImagesApi(value);
-    }
-    setstoreId(value);
-    setInValidStoreData(false);
-  };
+  // const handleStoreChange = (value) => {
+  //   if (value) {
+  //     getStoreSettingApi(value);
+  //     findAllWithoutPageStoreImagesApi(value);
+  //   }
+  //   setstoreId(value);
+  //   setInValidStoreData(false);
+  // };
 
   // const onChange = (checked) => {
   //   // console.log(`switch to ${checked}`);

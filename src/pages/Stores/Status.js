@@ -5,6 +5,7 @@ import StoreModal from "../../components/storeModal/StoreModal";
 import axios from "axios";
 import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
 import useAuthorization from "../../hooks/useAuthorization";
+import MarketplaceServices from "../../services/axios/MarketplaceServices";
 
 const storeEditStatusAPI = process.env.REACT_APP_STORE_STATUS_API;
 
@@ -36,73 +37,72 @@ function Status({
     setIsModalOpen(true);
   };
 
-  const requestServer = async () => {
+  const updateStoreStatus = async () => {
     const reqbody = {
       status: changeSwitchStatus === true ? 1 : 2,
     };
     // Enabling spinner
     setIsLoading(true);
-    axios
-      .put(
-        storeEditStatusAPI,
-        reqbody,
-        {
-          params: {
-            "store-id": parseInt(storeId),
-          },
-        },
-        authorizationHeader
-      )
-      .then((response) => {
-        setSwitchStatus(changeSwitchStatus);
-        if (changeSwitchStatus) {
-          storeApiData.forEach((element) => {
-            if (element.id == response.config.params["store-id"]) {
-              element.status = 1;
-            }
-          });
-          setStoreApiData(storeApiData);
-          console.log("storeapidata==>", storeApiData);
-        } else {
-          storeApiData.forEach((element) => {
-            if (element.id == response.config.params["store-id"]) {
-              element.status = 2;
-            }
-          });
-          setStoreApiData(storeApiData);
-        }
-        console.log(
-          "Selected content",
-          selectedTabTableContent,
-          response.config.params["store-id"]
-        );
-        if (tabId > 0) {
-          setSelectedTabTableContent(
-            selectedTabTableContent.filter(
-              (element) => element.id !== response.config.params["store-id"]
-            )
-          );
-        } else {
-          setSelectedTabTableContent(selectedTabTableContent);
-        }
-        if (switchStatus === false) {
-          toast("Store Activation is Successful", {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "success",
-          });
-        } else {
-          toast("Store Deactivation is Successful", {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "success",
-          });
-        }
-        setIsLoading(false);
-        closeModal();
-      });
-    console.log("first12344", switchStatus).catch((error) => {
-      if (error && error.response && error.response.status === 401) {
-        makeHttpRequestForRefreshToken();
+    // axios
+    //   .put(
+    //     storeEditStatusAPI,
+    //     reqbody,
+    //     {
+    //       params: {
+    //         "store-id": parseInt(storeId),
+    //       },
+    //     },
+    //     authorizationHeader
+    //   )
+    MarketplaceServices.update(storeEditStatusAPI, reqbody, {
+      "store-id": parseInt(storeId),
+    }).then((response) => {
+      setSwitchStatus(changeSwitchStatus);
+      if (changeSwitchStatus) {
+        storeApiData.forEach((element) => {
+          if (element.id == response.config.params["store-id"]) {
+            element.status = 1;
+          }
+        });
+        setStoreApiData(storeApiData);
+        console.log("storeapidata==>", storeApiData);
+      } else {
+        storeApiData.forEach((element) => {
+          if (element.id == response.config.params["store-id"]) {
+            element.status = 2;
+          }
+        });
+        setStoreApiData(storeApiData);
       }
+      console.log(
+        "Selected content",
+        selectedTabTableContent,
+        response.config.params["store-id"]
+      );
+      if (tabId > 0) {
+        setSelectedTabTableContent(
+          selectedTabTableContent.filter(
+            (element) => element.id !== response.config.params["store-id"]
+          )
+        );
+      } else {
+        setSelectedTabTableContent(selectedTabTableContent);
+      }
+      if (switchStatus === false) {
+        toast("Store Activation is Successful", {
+          position: toast.POSITION.TOP_RIGHT,
+          type: "success",
+        });
+      } else {
+        toast("Store Deactivation is Successful", {
+          position: toast.POSITION.TOP_RIGHT,
+          type: "success",
+        });
+      }
+      setIsLoading(false);
+      closeModal();
+    });
+    console.log("first12344", switchStatus).catch((error) => {
       toast(error.response.data.message, {
         type: "error",
       });
@@ -137,7 +137,7 @@ function Status({
         okButtonText={"Yes"}
         title={changeSwitchStatus ? "Store Activation" : "Store Deactivation"}
         cancelButtonText={"Cancel"}
-        okCallback={() => requestServer()}
+        okCallback={() => updateStoreStatus()}
         cancelCallback={() => closeModal()}
         isSpin={isLoading}
       >

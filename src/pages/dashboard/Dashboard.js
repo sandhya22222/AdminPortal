@@ -48,6 +48,8 @@ import StoreProductTypeGraph from "./StoreProductTypeGraph";
 import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
 import DynamicTable from "../../components/DynamicTable/DynamicTable";
 import SalesReportGraph from "./SalesReportGraph";
+import MarketplaceServices from "../../services/axios/MarketplaceServices";
+import util from "../../util/common";
 const getAuth = process.env.REACT_APP_AUTH;
 const umsBaseUrl = process.env.REACT_APP_USM_BASE_URL;
 const isLoggedInURL = process.env.REACT_APP_ISLOGGEDIN;
@@ -164,22 +166,25 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
   const handleisLoggedIn = () => {
     let baseurl = `${umsBaseUrl}${isLoggedInURL}`;
 
-    instance({
-      url: baseurl,
-      method: "get",
-      headers: {
-        Authorization: token || sessionStorage.getItem("access_token"),
-      },
-    })
+    // instance({
+    //   url: baseurl,
+    //   method: "get",
+    //   headers: {
+    //     Authorization: token || sessionStorage.getItem("access_token"),
+    //   },
+    // })
+    MarketplaceServices.findAllWithoutPage(baseurl, null, false)
       .then((res) => {
         sessionStorage.setItem("is_loggedIn", res.data.is_loggedin);
+        util.setIsLoggedIn(res.data.is_loggedin);
         getPermissions(res.data.is_loggedin);
       })
       .catch((err) => {
         console.log("isLoggedIn err", err);
-        if (err && err.response && err.response.status === 401) {
-          makeHttpRequestForRefreshToken();
-        }
+        util.logoutUser();
+        // if (err && err.response && err.response.status === 401) {
+        //   makeHttpRequestForRefreshToken();
+        // }
       });
   };
 
@@ -220,8 +225,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
   };
 
   const getDashBoardData = () => {
-    axios
-      .get(storeAdminDashboardAPI)
+    MarketplaceServices.findAllWithoutPage(storeAdminDashboardAPI, null, true)
       .then(function (response) {
         console.log("responseofdashboard--->", response);
         setDashboardData(response.data);

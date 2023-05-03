@@ -24,8 +24,6 @@ const Preview = ({
     (state) => state.reducerAbsoluteStoreImageInfo.absoluteStoreImageInfo
   );
 
-  console.log("absoluteStoreImageInfo", absoluteStoreImageInfo.value);
-
   return (
     <Content>
       <Header className="header">

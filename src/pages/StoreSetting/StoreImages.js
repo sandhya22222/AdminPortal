@@ -22,7 +22,8 @@ import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
 import { fnAbsoluteStoreImageInfo } from "../../services/redux/actions/ActionStoreImages";
 import useAuthorization from "../../hooks/useAuthorization";
 import { TiDelete } from "react-icons/ti";
-
+import MarketplaceServices from "../../services/axios/MarketplaceServices";
+import util from "../../util/common";
 const { Title } = Typography;
 const { Content } = Layout;
 const { Image } = Skeleton;
@@ -59,6 +60,7 @@ const StoreImages = ({
   const [bannerAbsoluteImage, setBannerAbsoluteImage] = useState([]);
   const [bannerImage, setBannerImage] = useState([]);
   const [allImageUrl, setAllImageUrl] = useState([]);
+  const [bannerAbsoluteImagePath, setBannerAbsoluteImagePath] = useState([]);
   const [reset, setReset] = useState(false);
   const uploadButton = (
     <div>
@@ -111,15 +113,18 @@ const StoreImages = ({
     }
   };
 
-  const getstoreBannerImageApi = () => {
+  const findAllWithoutPageStoreBannerImageApi = () => {
     // setIsLoading(true);
-    axios
-      .get(storeBannerImageAPI, {
-        params: {
-          "store-id": storeId,
-        },
-        authorizationHeader,
-      })
+    // axios
+    //   .get(storeBannerImageAPI, {
+    //     params: {
+    //       "store-id": storeId,
+    //     },
+    //     authorizationHeader,
+    //   })
+    MarketplaceServices.findAllWithoutPage(storeBannerImageAPI, {
+      "store-id": storeId,
+    })
       .then(function (response) {
         console.log(
           "Server Response from getstoreBannerImageApi Function: ",
@@ -130,10 +135,6 @@ const StoreImages = ({
       })
       .catch((error) => {
         console.log("Server error from getStoreApi Function ", error.response);
-        if (error && error.response && error.response.status === 401) {
-          makeHttpRequestForRefreshToken();
-          // setErrorMessage(error.response)
-        }
       });
   };
 
@@ -141,18 +142,18 @@ const StoreImages = ({
     if (type === "store_logo") {
       let temp = getImageData && getImageData.store_logo;
       if (temp !== null) {
-        getStoreAbsoluteImagesApi(temp);
+        findAllWithoutPageStoreAbsoluteImagesApi(temp);
       } else {
         setImagePathShow();
       }
     }
     if (type === "banner_images") {
-      getstoreBannerImageApi();
+      findAllWithoutPageStoreBannerImageApi();
     }
     if (type === "customer_logo") {
       let temp = getImageData && getImageData.customer_logo;
       if (temp !== null) {
-        getStoreAbsoluteImagesApi(temp);
+        findAllWithoutPageStoreAbsoluteImagesApi(temp);
       } else {
         setImagePathShow();
       }
@@ -160,7 +161,7 @@ const StoreImages = ({
     if (type === "cart_logo") {
       let temp = getImageData && getImageData.cart_logo;
       if (temp !== null) {
-        getStoreAbsoluteImagesApi(temp);
+        findAllWithoutPageStoreAbsoluteImagesApi(temp);
       } else {
         setImagePathShow();
       }
@@ -168,7 +169,7 @@ const StoreImages = ({
     if (type === "search_logo") {
       let temp = getImageData && getImageData.search_logo;
       if (temp !== null) {
-        getStoreAbsoluteImagesApi(temp);
+        findAllWithoutPageStoreAbsoluteImagesApi(temp);
       } else {
         setImagePathShow();
       }
@@ -176,7 +177,7 @@ const StoreImages = ({
     if (type === "wishlist_logo") {
       let temp = getImageData && getImageData.wishlist_logo;
       if (temp !== null) {
-        getStoreAbsoluteImagesApi(temp);
+        findAllWithoutPageStoreAbsoluteImagesApi(temp);
       } else {
         setImagePathShow();
       }
@@ -191,7 +192,10 @@ const StoreImages = ({
     if (bannerAbsoluteImage && bannerAbsoluteImage.length > 0) {
       for (var i = 0; i < bannerAbsoluteImage.length; i++) {
         if (type === "banner_images") {
-          getStoreAbsoluteImagesApi(bannerAbsoluteImage[i].path);
+          findAllWithoutPageStoreAbsoluteImagesApi(
+            bannerAbsoluteImage[i].path
+            // util.getImageAbsolutePath(bannerAbsoluteImage[i].image_fullpath)
+          );
         }
       }
     }
@@ -209,21 +213,29 @@ const StoreImages = ({
     });
   };
 
-  const getStoreAbsoluteImagesApi = (imagePath) => {
-    console.log("imagePath", imagePath);
+  const findAllWithoutPageStoreAbsoluteImagesApi = (imagePath) => {
+    console.log("imagePath1234", imagePath);
     axios
       .get(
         storeAbsoluteImgesAPI,
         {
           params: {
             "store-id": storeId,
-            "image-type": type,
             "image-path": imagePath,
+            "image-type": type,
           },
           responseType: "blob",
         },
         authorizationHeader
       )
+      // MarketplaceServices.findMedia(
+      //   storeBannerImageAPI,
+      //   {
+      //     "store-id": storeId,
+      //     "image-path": imagePath,
+      //     "image-type": type,
+      //   }
+      // )
       .then(function (response) {
         console.log(
           "Get response of Store setting absolute Images--->",
@@ -273,9 +285,6 @@ const StoreImages = ({
       })
       .catch((error) => {
         console.log("errorresponse from images--->", error.response);
-        if (error && error.response && error.response.status === 401) {
-          makeHttpRequestForRefreshToken();
-        }
         setImagePathShow();
       });
   };
@@ -427,22 +436,14 @@ const StoreImages = ({
                     <img src={ele} className="!w-24 !h-26" />
                     <TiDelete
                       className="!absolute !cursor-pointer !right-[-5px] !z-5  !top-[-10px] !text-2xl !text-red-600 !shadow-lg  hover:translate-"
-                      //   twoToneColor= {"#eb2f96"}
                       onClick={() => {
                         if (type === "banner_images") {
-                          // const index = allImageUrl.indexOf(ele);
-                          // console.log("index",index)
-                          // if (index > -1) {
-                          //   // only splice array when item is found
-                          //   allImageUrl.splice(index, 1); // 2nd parameter means remove one item only
-                          //   setAllImageUrl(allImageUrl);
-                          // }
                           let temp = allImageUrl.filter((item) => item !== ele);
                           console.log("allImageUrltemp", temp);
                           if (temp && temp.length > 0) {
                             setAllImageUrl(temp);
-                          }else{
-                            setAllImageUrl([])
+                          } else {
+                            setAllImageUrl([]);
                             setImagePathShow();
                             // setReset(true);
                           }

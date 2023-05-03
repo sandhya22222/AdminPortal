@@ -20,6 +20,7 @@ import { useNavigate, Link } from "react-router-dom";
 import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
 import "./language.css";
 import useAuthorization from "../../hooks/useAuthorization";
+import MarketplaceServices from "../../services/axios/MarketplaceServices";
 const { Title } = Typography;
 const { Option } = Select;
 const { Content } = Layout;
@@ -89,7 +90,7 @@ const AddLanguage = () => {
   };
 
   //post function
-  const PostLanguageAPI = () => {
+  const saveLanguageAPI = () => {
     // const paramsData = new FormData();
     // paramsData.append("language", language);
     // paramsData.append("language_code", languageCode);
@@ -112,15 +113,16 @@ const AddLanguage = () => {
     // }
 
     setIsLoading(true);
-    axios
-      .post(
-        languageAPI,
-        temp,
-        // {
-        //   headers: { "Content-Type": "application/json" },
-        // },
-        authorizationHeader
-      )
+    // axios
+    //   .post(
+    //     languageAPI,
+    //     temp,
+    //     // {
+    //     //   headers: { "Content-Type": "application/json" },
+    //     // },
+    //     authorizationHeader
+    //   )
+    MarketplaceServices.save(languageAPI, temp)
       .then((res) => {
         console.log("from response----->", res.data);
         console.log("from--->", res);
@@ -145,8 +147,6 @@ const AddLanguage = () => {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
           });
-        } else if (error && error.response && error.response.status === 401) {
-          makeHttpRequestForRefreshToken();
         } else if (fileData) {
           if (fileExtension !== "csv") {
             toast("Invalid Extention , It will support only .csv extention", {
@@ -194,7 +194,7 @@ const AddLanguage = () => {
     //   });
     // }
     if (language !== "" && languageCode !== "") {
-      PostLanguageAPI();
+      saveLanguageAPI();
     }
   };
 
@@ -225,13 +225,14 @@ const AddLanguage = () => {
     var arr = e.file.name.split("."); //! Split the string using dot as separator
     var lastExtensionValue = arr.pop(); //! Get last element (value after last dot)
     if (e.file.status !== "removed") {
-      postLanguageDocument(e.file, lastExtensionValue);
+      saveLanguageDocument(e.file, lastExtensionValue);
     }
   };
 
   const getLangugaeDocument = () => {
-    axios
-      .get(languageDocumentAPI, authorizationHeader)
+    // axios
+    //   .get(languageDocumentAPI, authorizationHeader)
+    MarketplaceServices.findAll(languageDocumentAPI)
       .then(function (response) {
         console.log("responseofdashboard--->", response);
       })
@@ -240,16 +241,19 @@ const AddLanguage = () => {
       });
   };
   //! document post call
-  const postLanguageDocument = (fileValue, lastExtensionValue) => {
+  const saveLanguageDocument = (fileValue, lastExtensionValue) => {
     const formData = new FormData();
     if (fileValue) {
       formData.append("language_document", fileValue);
       formData.append("extension", lastExtensionValue);
     }
-    axios
-      .post(languageDocumentAPI, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      })
+    // axios
+    //   .post(languageDocumentAPI, formData, {
+    //     headers: { "Content-Type": "multipart/form-data" },
+    //   })
+    MarketplaceServices.save(languageDocumentAPI, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
       .then((response) => {
         //   toast("file uploaded successfully.", {
         //     position: toast.POSITION.TOP_RIGHT,
@@ -280,25 +284,25 @@ const AddLanguage = () => {
         // setIsUpLoading(false);
         // setInValidName(true)
         // onClose();
-        if (error && error.response && error.response.status === 401) {
-          makeHttpRequestForRefreshToken();
-        }
       });
     // }
   };
 
   //! document delete call
-  const deleteLanguageDocument = () => {
-    axios
-      .delete(
-        languageDeleteAPI,
-        {
-          params: {
-            document_path: langugaeDocumentPath,
-          },
-        },
-        authorizationHeader
-      )
+  const removeLanguageDocument = () => {
+    // axios
+    //   .delete(
+    //     languageDeleteAPI,
+    //     {
+    //       params: {
+    //         document_path: langugaeDocumentPath,
+    //       },
+    //     },
+    //     authorizationHeader
+    //   )
+    MarketplaceServices.remove(languageDeleteAPI, {
+      document_path: langugaeDocumentPath,
+    })
       .then((response) => {
         console.log("response from delete===>", response.data);
         if (response.status === 200 || response.status === 201) {
@@ -316,9 +320,6 @@ const AddLanguage = () => {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
         });
-        if (error && error.response && error.response.status === 401) {
-          makeHttpRequestForRefreshToken();
-        }
       });
   };
 
@@ -521,7 +522,7 @@ const AddLanguage = () => {
                     // onDrop={(e) => handleDrop(e)}
                     name="file"
                     onChange={(e) => handleDropImage(e)}
-                    onRemove={(e) => deleteLanguageDocument(e)}
+                    onRemove={(e) => removeLanguageDocument(e)}
                   >
                     <p className="ant-upload-drag-icon">
                       <InboxOutlined />
