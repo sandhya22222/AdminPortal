@@ -41,12 +41,13 @@ import { usePageTitle } from "../../hooks/usePageTitle";
 import "./language.css";
 import { use } from "i18next";
 import useAuthorization from "../../hooks/useAuthorization";
+import MarketplaceServices from "../../services/axios/MarketplaceServices";
 
 const { Title } = Typography;
 const { Content } = Layout;
 
 const languageAPI = process.env.REACT_APP_LANGUAGE_API;
-const pageLimit = process.env.REACT_APP_ITEM_PER_PAGE;
+const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE);
 
 const Language = () => {
   usePageTitle("Admin Portal - Language");
@@ -61,10 +62,6 @@ const Language = () => {
   const [isDeleteLanguageModalOpen, setIsDeleteLanguageModalOpen] =
     useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [currentPage, setCurrentPage] = useState();
-  // params.page ? params.page.slice(5, params.page.length) : null
-  const [currentCount, setCurrentCount] = useState();
-  // params.count ? params.count.slice(6, params.count.length) : null
   const [totalLanguageCount, setTotalLanguageCount] = useState();
   const [errorMessage, setErrorMessage] = useState();
   const navigate = useNavigate();
@@ -193,7 +190,6 @@ const Language = () => {
   const openDeleteModal = (id) => {
     setIsDeleteLanguageModalOpen(true);
     setDeleteLanguageID(id);
-    console.log("id", id);
   };
 
   const columns = [
@@ -302,7 +298,6 @@ const Language = () => {
     },
   ];
 
-  //const tableLanguageData = (filteredData) => {
   let tempArray = [];
   {
     languageData &&
@@ -330,20 +325,20 @@ const Language = () => {
     console.log("tempArray", tempArray);
   }
 
-  //delete function
-  const deleteLanguage = () => {
-    // enabling spinner
+  //!delete function of language
+  const removeLanguage = () => {
     setIslanguageDeleting(true);
-    axios
-      .delete(
-        languageAPI,
-        {
-          params: {
-            _id: deleteLanguageID,
-          },
-        },
-        authorizationHeader
-      )
+    // axios
+    //   .delete(
+    //     languageAPI,
+    //     {
+    //       params: {
+    //         _id: deleteLanguageID,
+    //       },
+    //     },
+    //     authorizationHeader
+    //   )
+    MarketplaceServices.remove(languageAPI, { _id: deleteLanguageID })
       .then((response) => {
         console.log("response from delete===>", response, deleteLanguageID);
         if (response.status === 200 || response.status === 201) {
@@ -361,9 +356,6 @@ const Language = () => {
         setIslanguageDeleting(false);
       })
       .catch((error) => {
-        if (error && error.response && error.response.status === 401) {
-          makeHttpRequestForRefreshToken();
-        }
         // disabling spinner
         setIslanguageDeleting(false);
         console.log("response from delete===>", error.response);
@@ -373,16 +365,19 @@ const Language = () => {
         });
       });
   };
-  const getLanguageData = (page, limit) => {
+
+  //!get call of list language
+  const findByPageLanguageData = (page, limit) => {
     // enabling spinner
     setIsLoading(true);
-    axios
-      .get(languageAPI, {
-        params: {
-          "page-number": page,
-          "page-limit": limit,
-        },
-      })
+    // axios
+    //   .get(languageAPI, {
+    //     params: {
+    //       "page-number": page,
+    //       "page-limit": limit,
+    //     },
+    //   })
+    MarketplaceServices.findByPage(languageAPI, null,page, limit, false)
       .then(function (response) {
         setIsLoading(false);
         setIsNetworkErrorLanguage(false);
@@ -399,9 +394,6 @@ const Language = () => {
         // setIsNetworkErrorLanguage(false);
       })
       .catch((error) => {
-        if (error && error.response && error.response.status === 401) {
-          makeHttpRequestForRefreshToken();
-        }
         setIsLoading(false);
         setIsNetworkErrorLanguage(true);
         console.log(
@@ -420,21 +412,7 @@ const Language = () => {
       });
   };
 
-  const pagination = [
-    {
-      defaultSize: 10,
-      showPageSizeChanger: false,
-      pageSizeOptions: ["5", "10"],
-    },
-  ];
-
   const ProductSortingOption = [
-    // {
-    //   sortType: "",
-    //   sortKey: "",
-    //   title: "Default",
-    //   default: true,
-    // },
     {
       sortType: "asc",
       sortKey: "id",
@@ -449,7 +427,7 @@ const Language = () => {
     },
   ];
 
-  //dynamic table data
+  //!dynamic table data
   const tablepropsData = {
     table_header: columns,
     table_content: tempArray && tempArray,
@@ -471,56 +449,19 @@ const Language = () => {
   };
 
   const handlePageNumberChange = (page, pageSize) => {
-    // setSearchParams({
-    //   // tab: parseInt(searchParams.get("tab"))
-    //   //   ? parseInt(searchParams.get("tab"))
-    //   //   : 1,
-    //   page: page,
-    //   limit: pageSize,
-    // });
-    // setCurrentPage(page);
-    // setCurrentCount(pageSize);
-    // if (page === 1) {
-    //   if (pageSize != 20) {
-    //     navigate(`/dashboard/language?page=1`);
-    //   } else {
-    //     navigate("/dashboard/language");
-    //   }
-    // } else {
-    //   navigate(`/dashboard/language?page=${page}`);
-    // }
-    // navigate(0);
-    // navigate(`/dashboard/language?page=${page}&limit=${pageSize}`);
     setSearchParams({
       page: parseInt(page) ? parseInt(page) : 1,
       limit: parseInt(pageSize) ? parseInt(pageSize) : pageLimit,
     });
   };
 
-  // useEffect(() => {
-  //   if (currentPage === undefined || currentPage === null) {
-  //     // getLanguageData(
-  //     //   searchParams.get("page") ? searchParams.get("page") : 1,
-  //     //   searchParams.get("limit") ? searchParams.get("limit") : pageLimit
-  //     // );
-  //     // setSearchParams(searchParams.get("page") ? searchParams.get("page") : 1);
-  //     setCurrentPage(1);
-  //   }
-  //   // getLanguageDataCount();
-  // }, []);
-
   useEffect(() => {
-    // if (searchParams.get("page") && searchParams.get("limit") ) {
-    getLanguageData(
+    findByPageLanguageData(
       searchParams.get("page") ? parseInt(searchParams.get("page")) : 1,
       searchParams.get("limit")
         ? parseInt(searchParams.get("limit"))
         : pageLimit
     );
-    // } else {
-    //   getLanguageData(1, pageLimit);
-    //   // navigate("/dashboard/language")
-    // }
     window.scrollTo(0, 0);
   }, [searchParams]);
 
@@ -532,7 +473,7 @@ const Language = () => {
           okButtonText={"Ok"}
           cancelButtonText={"Cancel"}
           title={"Confirmation"}
-          okCallback={() => deleteLanguage()}
+          okCallback={() => removeLanguage()}
           cancelCallback={() => closeDeleteModal()}
           isSpin={islanguageDeleting}
           hideCloseButton={false}
@@ -607,19 +548,7 @@ const Language = () => {
                   pageSize={
                     searchParams.get("limit")
                       ? parseInt(searchParams.get("limit"))
-                      : // ? parseInt(searchParams.get("limit")) >= 100
-                        //   ? 100
-                        //   : parseInt(searchParams.get("limit")) >= 50 &&
-                        //     parseInt(searchParams.get("limit")) <= 99
-                        //   ? 50
-                        //   : parseInt(searchParams.get("limit")) >= 20 &&
-                        //     parseInt(searchParams.get("limit")) <= 49
-                        //   ? 20
-                        //   : parseInt(searchParams.get("limit")) >= 0 &&
-                        //     parseInt(searchParams.get("limit")) <= 19
-                        //   ? 10
-                        //   : parseInt(searchParams.get("limit"))
-                        pageLimit
+                      : pageLimit
                   }
                   handlePageNumberChange={handlePageNumberChange}
                   showSizeChanger={true}
