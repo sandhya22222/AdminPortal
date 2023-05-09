@@ -42,6 +42,7 @@ import "./language.css";
 import { use } from "i18next";
 import useAuthorization from "../../hooks/useAuthorization";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
+import HeaderForTitle from "../../components/header/HeaderForTitle";
 
 const { Title } = Typography;
 const { Content } = Layout;
@@ -377,7 +378,7 @@ const Language = () => {
     //       "page-limit": limit,
     //     },
     //   })
-    MarketplaceServices.findByPage(languageAPI, null,page, limit, false)
+    MarketplaceServices.findByPage(languageAPI, null, page, limit, false)
       .then(function (response) {
         setIsLoading(false);
         setIsNetworkErrorLanguage(false);
@@ -466,7 +467,7 @@ const Language = () => {
   }, [searchParams]);
 
   return (
-    <Layout className="p-3">
+    <Layout className="">
       <Content>
         <StoreModal
           isVisible={isDeleteLanguageModalOpen}
@@ -487,78 +488,79 @@ const Language = () => {
               { title: "Language", navigationPath: "", displayOrder: 3 },
             ]}
           />
-          <Row justify={"space-between"}>
-            <Col>
-              <Content className=" float-left">
-                <Title level={3} className="!font-normal">
-                  Language
-                </Title>
+          <HeaderForTitle
+            headerContent={
+              <Content className="flex">
+                <Content className="!inline-block text-left self-center pr-3">
+                  <Title level={3} className="!font-normal">
+                    Language
+                  </Title>
+                </Content>
+                <Content className="!inline-block text-right self-center">
+                  <Button
+                    className=" app-btn-primary "
+                    onClick={() => navigate("add_language")}
+                    // type="primary"
+                    // style={{
+                    //   background: "black",
+                    // }}
+                  >
+                    Add Language
+                  </Button>
+                </Content>
               </Content>
-            </Col>
-
-            <Col>
-              <Content className="text-right">
-                <Button
-                  className=" app-btn-primary "
-                  onClick={() => navigate("add_language")}
-                  // type="primary"
-                  // style={{
-                  //   background: "black",
-                  // }}
-                >
-                  Add Language
-                </Button>
-              </Content>
-            </Col>
-          </Row>
+            }
+          />
         </Content>
       </Content>
-      {isLoading ? (
-        <Content className=" bg-white mb-3">
-          <Skeleton
-            active
-            paragraph={{
-              rows: 6,
-            }}
-            className="p-3"
-          ></Skeleton>
-        </Content>
-      ) : isNetworkErrorLanguage ? (
-        <Layout className="p-0 text-center mb-3 bg-[#F4F4F4]">
-          <h5>
-            {errorMessage
-              ? errorMessage
-              : "Your's back-end server/services seems to be down, please start your server/services and try again."}
-          </h5>
-        </Layout>
-      ) : (
-        <Layout>
-          <Content>
-            <DynamicTable tableComponentData={tablepropsData} />
-            {totalLanguageCount && totalLanguageCount >= pageLimit ? (
-              <Content className=" grid justify-items-end">
-                <DmPagination
-                  currentPage={
-                    searchParams.get("page")
-                      ? parseInt(searchParams.get("page"))
-                      : 1
-                  }
-                  totalItemsCount={totalLanguageCount}
-                  pageLimit={pageLimit}
-                  pageSize={
-                    searchParams.get("limit")
-                      ? parseInt(searchParams.get("limit"))
-                      : pageLimit
-                  }
-                  handlePageNumberChange={handlePageNumberChange}
-                  showSizeChanger={true}
-                  showTotal={true}
-                />
-              </Content>
-            ) : null}
+      <Content className="!p-3">
+        {isLoading ? (
+          <Content className="bg-white">
+            <Skeleton
+              active
+              paragraph={{
+                rows: 6,
+              }}
+              className="p-3"
+            ></Skeleton>
           </Content>
-        </Layout>
-      )}
+        ) : isNetworkErrorLanguage ? (
+          <Layout className="p-0 text-center mb-3 bg-[#F4F4F4]">
+            <h5>
+              {errorMessage
+                ? errorMessage
+                : "Your's back-end server/services seems to be down, please start your server/services and try again."}
+            </h5>
+          </Layout>
+        ) : (
+          <Layout className="!mt-[150px]">
+            <Content>
+              <DynamicTable tableComponentData={tablepropsData} />
+              {totalLanguageCount && totalLanguageCount >= pageLimit ? (
+                <Content className=" grid justify-items-end">
+                  <DmPagination
+                    currentPage={
+                      searchParams.get("page")
+                        ? parseInt(searchParams.get("page"))
+                        : 1
+                    }
+                    totalItemsCount={totalLanguageCount}
+                    pageLimit={pageLimit}
+                    pageSize={
+                      searchParams.get("limit")
+                        ? parseInt(searchParams.get("limit"))
+                        : pageLimit
+                    }
+                    handlePageNumberChange={handlePageNumberChange}
+                    showSizeChanger={true}
+                    showTotal={true}
+                  />
+                </Content>
+              ) : null}
+            </Content>
+          </Layout>
+        )}
+      </Content>
     </Layout>
   );
 };

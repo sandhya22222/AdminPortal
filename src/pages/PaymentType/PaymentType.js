@@ -3,6 +3,7 @@ import { Layout, Typography } from "antd";
 
 import DynamicTable from "../../components/DynamicTable/DynamicTable";
 import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
+import HeaderForTitle from "../../components/header/HeaderForTitle";
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -84,7 +85,7 @@ const PaymentType = () => {
   };
 
   return (
-    <Content className="p-3">
+    <Content className="">
       <Content className="mb-1">
         <AntDesignBreadcrumbs
           data={[
@@ -93,12 +94,16 @@ const PaymentType = () => {
           ]}
         />
       </Content>
-      <Content className="">
-        <Title level={3} className="!font-normal">
-          Payment Types
-        </Title>
-      </Content>
-      <Content className="pt-3">
+      <HeaderForTitle
+        headerContent={
+          <Content>
+            <Title level={3} className="!font-normal">
+              Payment
+            </Title>
+          </Content>
+        }
+      />
+      <Content className="!p-3 !mt-[150px]">
         <DynamicTable tableComponentData={tablePropsData} />
       </Content>
     </Content>

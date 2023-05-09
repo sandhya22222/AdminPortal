@@ -12,6 +12,7 @@ import "./core-ui/app.css";
 import "./core-ui/buttons.css";
 import LoadingMarkup from "./components/loader/LoadingMarkup";
 import Header from "./components/header/Header";
+import Header2 from "./components/header/Header2";
 import Footer from "./components/footer/Footer";
 import Home from "./pages/home/Home";
 import Dashboard from "./pages/dashboard/Dashboard";
@@ -55,7 +56,7 @@ const App = () => {
     <Suspense fallback={<LoadingMarkup />}>
       <Router>
         <ToastContainer />
-        <Header />
+        <Header2 />
         <Container fluid className="p-0 bg-[#F4F4F4] text-[#393939]">
           {auth === "true" && (
             <Routes>

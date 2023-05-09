@@ -50,6 +50,7 @@ import DynamicTable from "../../components/DynamicTable/DynamicTable";
 import SalesReportGraph from "./SalesReportGraph";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import util from "../../util/common";
+import HeaderForTitle from "../../components/header/HeaderForTitle";
 const getAuth = process.env.REACT_APP_AUTH;
 const umsBaseUrl = process.env.REACT_APP_USM_BASE_URL;
 const isLoggedInURL = process.env.REACT_APP_ISLOGGEDIN;
@@ -380,15 +381,21 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
     //     </Content>
     //   </Spin>
     // </Content>
-    <Content className="p-3">
-      {/* <Content>
-        <Title level={3} className="mt-3 !font-normal">
-          Dashboard
-        </Title>
-      </Content> */}
-      <Content>
+    <Content className="">
+      <Content className="mb-2">
+        <HeaderForTitle
+          headerContent={
+            <Content>
+              <Title level={3} className="!font-normal">
+                Dashboard
+              </Title>
+            </Content>
+          }
+        />
+      </Content>
+      <Content className="!p-3 !mt-[140px]">
         {dashboardDataLoading ? (
-          <Content className="bg-white p-3">
+          <Content className="bg-white !p-3">
             <Content className="flex justify-between">
               {" "}
               <Skeleton
@@ -431,20 +438,15 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
             </Content>
           </Content>
         ) : dashboardDataNetWorkError ? (
-          <Content className="text-center  !mt-16 !mb-2">
+          <Content className="text-center !mt-16 !mb-2">
             <h1 level={5}>
               Your's back-end server/services seems to be down, please start
               your server/services and try again.
             </h1>
           </Content>
         ) : (
-          <Content className="">
-            <Content className="!mb-3">
-              <Title level={3} className="!font-normal">
-                Dashboard
-              </Title>
-            </Content>
-            <Content className="flex justify-between !mt-6">
+          <Content>
+            <Content className="flex justify-between ">
               <Content
                 className="p-3 mr-5 shadow-sm rounded-md justify-center"
                 style={{

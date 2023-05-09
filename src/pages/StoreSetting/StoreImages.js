@@ -201,7 +201,7 @@ const StoreImages = ({
     }
   }, [bannerAbsoluteImage]);
 
-  console.log("getImageData", getImageData && getImageData.banner_logo);
+  console.log("getImageData", getImageData);
 
   const getBase64 = (file) => {
     console.log("file", file);

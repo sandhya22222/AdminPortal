@@ -41,6 +41,7 @@ import { usePageTitle } from "../../hooks/usePageTitle";
 import Highlighter from "react-highlight-words";
 import useAuthorization from "../../hooks/useAuthorization";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
+import HeaderForTitle from "../../components/header/HeaderForTitle";
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
@@ -756,7 +757,7 @@ const Stores = () => {
   };
 
   return (
-    <Layout className="p-3">
+    <Layout className="">
       <Content className="mb-1">
         <AntDesignBreadcrumbs
           data={[
@@ -764,361 +765,372 @@ const Stores = () => {
             { title: "Stores", navigationPath: "", displayOrder: 2 },
           ]}
         />
-        <Row justify={"space-between"}>
-          <Col>
-            <Content className="float-left">
-              <Title level={3} className="!font-normal">
-                Stores
-              </Title>
-            </Content>
-          </Col>
-          <Col>
-            <Content className="text-right">
-              <Button className="app-btn-primary" onClick={showAddDrawer}>
-                Add Store
-              </Button>
-              <Drawer
-                title={
-                  drawerAction && drawerAction === "post"
-                    ? "Add Store"
-                    : "Edit Store"
-                }
-                placement="right"
-                onClose={onClose}
-                open={open}
-                width={"40%"}
-              >
-                {drawerAction && drawerAction === "post" ? (
-                  <>
-                    <Row>
-                      <Col span={1} className="flex items-start">
-                        <MdInfo className="text-blue-400 text-[16px]" />
-                      </Col>
-                      <Col span={23} className="align-center mb-3">
-                        <Text className=" mr-1 font-bold">Note: </Text>
-                        <Text>
-                          The store must be set up with a store administrator.
-                          Please enter your store name along with the
-                          administration details below. The same details can be
-                          used when signing into the store portal.
-                        </Text>
-                      </Col>
-                    </Row>
-                    <Spin
-                      tip="Please wait!"
-                      size="large"
-                      spinning={isUpLoading}
-                    >
-                      <span className="text-red-600 text-sm">*</span>
-                      <label className="text-[13px] mb-2 ml-1">
-                        Store Name
-                        {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
-                      </label>
-                      <Input
-                        placeholder="Enter store name"
-                        value={name}
-                        maxLength={255}
-                        className={`${
-                          inValidName
-                            ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-2"
-                            : "mb-2"
-                        }`}
-                        onChange={(e) => {
-                          var nameTrim = e.target.value;
-                          //  var nameToTrim = nameTrim.trim()
-                          // setName(nameTrim.trim());
-                          setName(e.target.value);
-                          setInValidName(false);
-                        }}
-                      />
-                      <Divider orientation="left" orientationMargin="0">
-                        Store Administrator Details
-                      </Divider>
-                      <span className="text-red-600 text-sm">*</span>
-                      <label className="text-[13px] mb-2 ml-1">Email</label>
-                      <Input
-                        placeholder="Enter email"
-                        value={storeEmail}
-                        maxLength={50}
-                        className={`${
-                          inValidEmail
-                            ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-4"
-                            : "mb-4"
-                        }`}
-                        // addonAfter=".com"
-                        // addonBefore="@"
-                        onChange={(e) => {
-                          // const { value } = e.target;
-                          // const regex = /^[a-zA-Z0-9_.-@]*$/;
-                          // if (regex.test(value)) {
-                          //   setStoreEmail(value);
-                          //   setInValidEmail(false);
-                          // } else {
-                          //   toast("Please provide valid email", {
-                          //     position: toast.POSITION.TOP_RIGHT,
-                          //     type: "warning",
-                          //   });
-                          // }
-                          setStoreEmail(e.target.value);
-                          setInValidEmail(false);
-                        }}
-                      />
-                      <span className="text-red-600 text-sm">*</span>
-                      <label className="text-[13px] mb-2 ml-1">Username</label>
-                      <Input
-                        placeholder="Enter username"
-                        value={storeUserName}
-                        maxLength={15}
-                        minLength={6}
-                        suffix={`${storeUserName.length}/15`}
-                        className={`${
-                          inValidUserName
-                            ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-4"
-                            : "mb-4"
-                        }`}
-                        prefix={
-                          <UserOutlined className="site-form-item-icon" />
-                        }
-                        onChange={(e) => {
-                          const { value } = e.target;
-                          const regex = /^[a-zA-Z0-9_-]*$/; // only allow letters and numbers
-                          if (regex.test(value)) {
-                            setStoreUserName(value);
-                            setInValidUserName(false);
-                          } else {
-                            toast(
-                              "Please enter only alphabets, numbers, underscore, and hyphen.",
-                              {
+        <HeaderForTitle
+          headerContent={
+            <Content className="flex">
+              <Content className="!inline-block text-left self-center pr-3">
+                <Title level={3} className="!font-normal">
+                  Stores
+                </Title>
+              </Content>
+              <Content className="!inline-block text-right self-center">
+                <Button className="app-btn-primary" onClick={showAddDrawer}>
+                  Add Store
+                </Button>
+                <Drawer
+                  title={
+                    drawerAction && drawerAction === "post"
+                      ? "Add Store"
+                      : "Edit Store"
+                  }
+                  placement="right"
+                  onClose={onClose}
+                  open={open}
+                  width={"40%"}
+                >
+                  {drawerAction && drawerAction === "post" ? (
+                    <>
+                      <Row>
+                        <Col span={1} className="flex items-start">
+                          <MdInfo className="text-blue-400 text-[16px]" />
+                        </Col>
+                        <Col span={23} className="align-center mb-3">
+                          <Text className=" mr-1 font-bold">Note: </Text>
+                          <Text>
+                            The store must be set up with a store administrator.
+                            Please enter your store name along with the
+                            administration details below. The same details can
+                            be used when signing into the store portal.
+                          </Text>
+                        </Col>
+                      </Row>
+                      <Spin
+                        tip="Please wait!"
+                        size="large"
+                        spinning={isUpLoading}
+                      >
+                        <span className="text-red-600 text-sm">*</span>
+                        <label className="text-[13px] mb-2 ml-1">
+                          Store Name
+                          {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
+                        </label>
+                        <Input
+                          placeholder="Enter store name"
+                          value={name}
+                          maxLength={255}
+                          className={`${
+                            inValidName
+                              ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-2"
+                              : "mb-2"
+                          }`}
+                          onChange={(e) => {
+                            var nameTrim = e.target.value;
+                            //  var nameToTrim = nameTrim.trim()
+                            // setName(nameTrim.trim());
+                            setName(e.target.value);
+                            setInValidName(false);
+                          }}
+                        />
+                        <Divider orientation="left" orientationMargin="0">
+                          Store Administrator Details
+                        </Divider>
+                        <span className="text-red-600 text-sm">*</span>
+                        <label className="text-[13px] mb-2 ml-1">Email</label>
+                        <Input
+                          placeholder="Enter email"
+                          value={storeEmail}
+                          maxLength={50}
+                          className={`${
+                            inValidEmail
+                              ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-4"
+                              : "mb-4"
+                          }`}
+                          // addonAfter=".com"
+                          // addonBefore="@"
+                          onChange={(e) => {
+                            // const { value } = e.target;
+                            // const regex = /^[a-zA-Z0-9_.-@]*$/;
+                            // if (regex.test(value)) {
+                            //   setStoreEmail(value);
+                            //   setInValidEmail(false);
+                            // } else {
+                            //   toast("Please provide valid email", {
+                            //     position: toast.POSITION.TOP_RIGHT,
+                            //     type: "warning",
+                            //   });
+                            // }
+                            setStoreEmail(e.target.value);
+                            setInValidEmail(false);
+                          }}
+                        />
+                        <span className="text-red-600 text-sm">*</span>
+                        <label className="text-[13px] mb-2 ml-1">
+                          Username
+                        </label>
+                        <Input
+                          placeholder="Enter username"
+                          value={storeUserName}
+                          maxLength={15}
+                          minLength={6}
+                          suffix={`${storeUserName.length}/15`}
+                          className={`${
+                            inValidUserName
+                              ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-4"
+                              : "mb-4"
+                          }`}
+                          prefix={
+                            <UserOutlined className="site-form-item-icon" />
+                          }
+                          onChange={(e) => {
+                            const { value } = e.target;
+                            const regex = /^[a-zA-Z0-9_-]*$/; // only allow letters and numbers
+                            if (regex.test(value)) {
+                              setStoreUserName(value);
+                              setInValidUserName(false);
+                            } else {
+                              toast(
+                                "Please enter only alphabets, numbers, underscore, and hyphen.",
+                                {
+                                  position: toast.POSITION.TOP_RIGHT,
+                                  type: "warning",
+                                }
+                              );
+                            }
+                          }}
+                        />
+                        <span className="text-red-600 text-sm">*</span>
+                        <label className="text-[13px] mb-2 ml-1">
+                          Password
+                        </label>
+                        <Input.Password
+                          placeholder="Enter password"
+                          value={storePassword}
+                          maxLength={15}
+                          className={`${
+                            inValidPassword
+                              ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-4"
+                              : "mb-4"
+                          }`}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            if (value && value.length < 15) {
+                              setStorePassword(e.target.value);
+                              setInValidPassword(false);
+                            } else if (value && value.length >= 15) {
+                              toast(
+                                "Password should allow only 15 characters",
+                                {
+                                  position: toast.POSITION.TOP_RIGHT,
+                                  type: "warning",
+                                }
+                              );
+                            } else if (e.target.value === "") {
+                              setStorePassword(e.target.value);
+                            }
+                          }}
+                        />
+                        <Button
+                          className="app-btn-primary"
+                          onClick={() => {
+                            validateStorePostField();
+                          }}
+                        >
+                          Save
+                        </Button>
+                      </Spin>
+                    </>
+                  ) : (
+                    <>
+                      <Row>
+                        <Col span={1} className="flex items-start">
+                          <MdInfo className="text-blue-400 text-[16px]" />
+                        </Col>
+                        <Col span={23} className="align-center mb-3">
+                          <Text className=" mr-1 font-bold">Note: </Text>
+                          <Text>
+                            Store administrator's details cannot be edited. You
+                            are permitted to rename your store.
+                          </Text>
+                        </Col>
+                      </Row>
+                      <Spin
+                        tip="Please wait!"
+                        size="large"
+                        spinning={isUpLoading}
+                      >
+                        <span className="text-red-600 text-sm">*</span>
+                        <label className="text-[13px] mb-2 ml-1">
+                          Store Name
+                          {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
+                        </label>
+                        <Input
+                          value={editName}
+                          className={`${
+                            inValidEditName
+                              ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 mb-4"
+                              : "mb-4"
+                          }`}
+                          maxLength={255}
+                          onChange={(e) => {
+                            // const { value } = e.target;
+                            // const regex = /^[a-zA-Z0-9]*$/; // only allow letters and numbers
+                            // if (regex.test(value)) {
+                            //   setEditName(e.target.value);
+                            // }
+                            setEditName(e.target.value);
+                            setInValidEditName(false);
+                          }}
+                        />
+                        <Divider orientation="left" orientationMargin="0">
+                          Store Administrator Details
+                        </Divider>
+                        <span className="text-red-600 text-sm">*</span>
+                        <label className="text-[13px] mb-2 ml-1">Email</label>
+                        <Input
+                          placeholder="Enter email"
+                          value={storeEditEmail}
+                          maxLength={30}
+                          disabled
+                          className="mb-4"
+                          addonAfter=".com"
+                          // addonBefore="@"
+                          onChange={(e) => {
+                            // handleEmailChange(e);
+                            const { value } = e.target;
+                            const regex = /^[a-zA-Z0-9_.-@]*$/;
+                            if (regex.test(value)) {
+                              setStoreEditEmail(value);
+                            } else {
+                              toast("Please provide valid email", {
                                 position: toast.POSITION.TOP_RIGHT,
                                 type: "warning",
-                              }
-                            );
+                              });
+                            }
+                          }}
+                        />
+                        <span className="text-red-600 text-sm">*</span>
+                        <label className="text-[13px] mb-2 ml-1">
+                          Username
+                        </label>
+                        <Input
+                          placeholder="Enter username"
+                          value={storeEditUserName}
+                          maxLength={10}
+                          className="mb-4"
+                          prefix={
+                            <UserOutlined className="site-form-item-icon" />
                           }
-                        }}
-                      />
-                      <span className="text-red-600 text-sm">*</span>
-                      <label className="text-[13px] mb-2 ml-1">Password</label>
-                      <Input.Password
-                        placeholder="Enter password"
-                        value={storePassword}
-                        maxLength={15}
-                        className={`${
-                          inValidPassword
-                            ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-4"
-                            : "mb-4"
-                        }`}
-                        onChange={(e) => {
-                          const value = e.target.value;
-                          if (value && value.length < 15) {
-                            setStorePassword(e.target.value);
-                            setInValidPassword(false);
-                          } else if (value && value.length >= 15) {
-                            toast("Password should allow only 15 characters", {
-                              position: toast.POSITION.TOP_RIGHT,
-                              type: "warning",
-                            });
-                          } else if (e.target.value === "") {
-                            setStorePassword(e.target.value);
-                          }
-                        }}
-                      />
-                      <Button
-                        className="app-btn-primary"
-                        onClick={() => {
-                          validateStorePostField();
-                        }}
-                      >
-                        Save
-                      </Button>
-                    </Spin>
-                  </>
-                ) : (
-                  <>
-                    <Row>
-                      <Col span={1} className="flex items-start">
-                        <MdInfo className="text-blue-400 text-[16px]" />
-                      </Col>
-                      <Col span={23} className="align-center mb-3">
-                        <Text className=" mr-1 font-bold">Note: </Text>
-                        <Text>
-                          Store administrator's details cannot be edited. You
-                          are permitted to rename your store.
-                        </Text>
-                      </Col>
-                    </Row>
-                    <Spin
-                      tip="Please wait!"
-                      size="large"
-                      spinning={isUpLoading}
-                    >
-                      <span className="text-red-600 text-sm">*</span>
-                      <label className="text-[13px] mb-2 ml-1">
-                        Store Name
-                        {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
-                      </label>
-                      <Input
-                        value={editName}
-                        className={`${
-                          inValidEditName
-                            ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 mb-4"
-                            : "mb-4"
-                        }`}
-                        maxLength={255}
-                        onChange={(e) => {
-                          // const { value } = e.target;
-                          // const regex = /^[a-zA-Z0-9]*$/; // only allow letters and numbers
-                          // if (regex.test(value)) {
-                          //   setEditName(e.target.value);
-                          // }
-                          setEditName(e.target.value);
-                          setInValidEditName(false);
-                        }}
-                      />
-                      <Divider orientation="left" orientationMargin="0">
-                        Store Administrator Details
-                      </Divider>
-                      <span className="text-red-600 text-sm">*</span>
-                      <label className="text-[13px] mb-2 ml-1">Email</label>
-                      <Input
-                        placeholder="Enter email"
-                        value={storeEditEmail}
-                        maxLength={30}
-                        disabled
-                        className="mb-4"
-                        addonAfter=".com"
-                        // addonBefore="@"
-                        onChange={(e) => {
-                          // handleEmailChange(e);
-                          const { value } = e.target;
-                          const regex = /^[a-zA-Z0-9_.-@]*$/;
-                          if (regex.test(value)) {
-                            setStoreEditEmail(value);
-                          } else {
-                            toast("Please provide valid email", {
-                              position: toast.POSITION.TOP_RIGHT,
-                              type: "warning",
-                            });
-                          }
-                        }}
-                      />
-                      <span className="text-red-600 text-sm">*</span>
-                      <label className="text-[13px] mb-2 ml-1">Username</label>
-                      <Input
-                        placeholder="Enter username"
-                        value={storeEditUserName}
-                        maxLength={10}
-                        className="mb-4"
-                        prefix={
-                          <UserOutlined className="site-form-item-icon" />
-                        }
-                        suffix={`${storeEditUserName.length}/10`}
-                        disabled
-                        onChange={(e) => {
-                          const { value } = e.target;
-                          const regex = /^[a-zA-Z0-9_-]*$/; // only allow letters and numbers
-                          if (regex.test(value)) {
-                            setStoreEditUserName(value);
-                          } else {
-                            toast(
-                              "Please enter only alphabets, numbers, underscore, and hyphen.",
-                              {
-                                position: toast.POSITION.TOP_RIGHT,
-                                type: "warning",
-                              }
-                            );
-                          }
-                        }}
-                      />
-                      <span className="text-red-600 text-sm">*</span>
-                      <label className="text-[13px] mb-2 ml-1">
-                        Password
-                        {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
-                      </label>
-                      <Input.Password
-                        placeholder="Enter password"
-                        value={storeEditPassword}
-                        maxLength={6}
-                        disabled
-                        className="mb-4"
-                        onChange={(e) => {
-                          setStoreEditPassword(e.target.value);
-                        }}
-                      />
-                      <Button
-                        className="app-btn-primary"
-                        onClick={() => {
-                          validateStorePutField();
-                        }}
-                      >
-                        Update
-                      </Button>
-                    </Spin>
-                  </>
-                )}
-              </Drawer>
+                          suffix={`${storeEditUserName.length}/10`}
+                          disabled
+                          onChange={(e) => {
+                            const { value } = e.target;
+                            const regex = /^[a-zA-Z0-9_-]*$/; // only allow letters and numbers
+                            if (regex.test(value)) {
+                              setStoreEditUserName(value);
+                            } else {
+                              toast(
+                                "Please enter only alphabets, numbers, underscore, and hyphen.",
+                                {
+                                  position: toast.POSITION.TOP_RIGHT,
+                                  type: "warning",
+                                }
+                              );
+                            }
+                          }}
+                        />
+                        <span className="text-red-600 text-sm">*</span>
+                        <label className="text-[13px] mb-2 ml-1">
+                          Password
+                          {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
+                        </label>
+                        <Input.Password
+                          placeholder="Enter password"
+                          value={storeEditPassword}
+                          maxLength={6}
+                          disabled
+                          className="mb-4"
+                          onChange={(e) => {
+                            setStoreEditPassword(e.target.value);
+                          }}
+                        />
+                        <Button
+                          className="app-btn-primary"
+                          onClick={() => {
+                            validateStorePutField();
+                          }}
+                        >
+                          Update
+                        </Button>
+                      </Spin>
+                    </>
+                  )}
+                </Drawer>
+              </Content>
             </Content>
-          </Col>
-        </Row>
+          }
+        />
       </Content>
-      {isLoading ? (
-        <Content className="bg-white mb-3">
-          <Skeleton
-            active
-            paragraph={{
-              rows: 6,
-            }}
-            className="p-3"
-          ></Skeleton>
-          {/* <SkeletonComponent Layout="layout1" /> */}
-        </Content>
-      ) : isNetworkError ? (
-        <Layout className="p-0 text-center mb-3 bg-[#F4F4F4]">
-          <h5>
-            {errorMessage
-              ? errorMessage
-              : "Your's back-end server/services seems to be down, please start your server/services and try again."}
-          </h5>
-        </Layout>
-      ) : (
-        <Content>
-          <Content className="px-3">
-            <DmTabAntDesign
-              tabData={storeTabData}
-              handleTabChangeFunction={handleTabChangeStore}
-              activeKey={
-                // searchParams.get("tab") ? searchParams.get("tab") : "0"
-                String(tab_id)
-              }
-              tabType={"line"}
-              tabBarPosition={"top"}
-            />
+      <Content className="!p-3">
+        {isLoading ? (
+          <Content className="bg-white">
+            <Skeleton
+              active
+              paragraph={{
+                rows: 6,
+              }}
+              className="p-3"
+            ></Skeleton>
+            {/* <SkeletonComponent Layout="layout1" /> */}
           </Content>
-          <Content>
-            <DynamicTable tableComponentData={tablePropsData} />
-          </Content>
-          {countForStore && countForStore >= pageLimit ? (
-            <Content className=" grid justify-items-end">
-              <DmPagination
-                currentPage={
-                  parseInt(searchParams.get("page"))
-                    ? parseInt(searchParams.get("page"))
-                    : 1
+        ) : isNetworkError ? (
+          <Layout className="p-0 text-center mb-3 bg-[#F4F4F4]">
+            <h5>
+              {errorMessage
+                ? errorMessage
+                : "Your's back-end server/services seems to be down, please start your server/services and try again."}
+            </h5>
+          </Layout>
+        ) : (
+          <Content className="!mt-[150px]">
+            <Content className="px-3">
+              <DmTabAntDesign
+                tabData={storeTabData}
+                handleTabChangeFunction={handleTabChangeStore}
+                activeKey={
+                  // searchParams.get("tab") ? searchParams.get("tab") : "0"
+                  String(tab_id)
                 }
-                totalItemsCount={countForStore}
-                defaultPageSize={pageLimit}
-                pageSize={
-                  parseInt(searchParams.get("limit"))
-                    ? parseInt(searchParams.get("limit"))
-                    : pageLimit
-                }
-                handlePageNumberChange={handlePageNumberChange}
-                showSizeChanger={true}
-                showTotal={true}
+                tabType={"line"}
+                tabBarPosition={"top"}
               />
             </Content>
-          ) : null}
-        </Content>
-      )}
+            <Content>
+              <DynamicTable tableComponentData={tablePropsData} />
+            </Content>
+            {countForStore && countForStore >= pageLimit ? (
+              <Content className=" grid justify-items-end">
+                <DmPagination
+                  currentPage={
+                    parseInt(searchParams.get("page"))
+                      ? parseInt(searchParams.get("page"))
+                      : 1
+                  }
+                  totalItemsCount={countForStore}
+                  defaultPageSize={pageLimit}
+                  pageSize={
+                    parseInt(searchParams.get("limit"))
+                      ? parseInt(searchParams.get("limit"))
+                      : pageLimit
+                  }
+                  handlePageNumberChange={handlePageNumberChange}
+                  showSizeChanger={true}
+                  showTotal={true}
+                />
+              </Content>
+            ) : null}
+          </Content>
+        )}
+      </Content>
     </Layout>
   );
 };

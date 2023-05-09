@@ -104,49 +104,40 @@ const SidebarNew = (props) => {
   }, [pathname]);
 
   return (
-    <Layout>
-      <Layout
-        style={{
-          minHeight: "100vh",
-        }}
-      >
-        <Affix offsetTop={65}>
-          <Sider className="!pt-0 !bg-[#fff] min-h-screen" width={245}>
-            <Spin
-              spinning={loadingEffect}
-              indicator={antIcon}
-              tip="Please Wait..."
-            >
-              <Menu
-                mode="inline"
-                className="h-full"
-                selectedKeys={selectedItem}
-                openKeys={openedItem}
+    <Layout hasSider className="w-full">
+      {/* <Affix offsetTop={80}> */}
+      <Sider className="bg-white !fixed !max-h-screen !w-[20%] !min-w-[20%] !max-w-[20%] !flex-[0_0_20%] !overflow-auto left-0 bottom-0 top-20 border-r-[1px] drop-shadow-[0_0px_2px_rgba(0,0,0,0.15)]">
+        <Spin spinning={loadingEffect} indicator={antIcon} tip="Please Wait...">
+          <Menu
+            mode="inline"
+            className="h-full"
+            selectedKeys={selectedItem}
+            openKeys={openedItem}
+          >
+            {myData.map((item) => (
+              <Menu.Item
+                icon={item.icon}
+                key={item.key}
+                onClick={() => {
+                  navigate(item.navigate_to);
+                }}
               >
-                {myData.map((item) => (
-                  <Menu.Item
-                    icon={item.icon}
-                    key={item.key}
-                    onClick={() => {
-                      navigate(item.navigate_to);
-                    }}
-                  >
-                    {selectedItem === item.key ? (
-                      <span className="font-semibold ">{item.label}</span>
-                    ) : (
-                      item.label
-                    )}
-                  </Menu.Item>
-                ))}
-              </Menu>
-            </Spin>
-          </Sider>
-        </Affix>
-        <Layout>
-          <Content className="site-layout-background !bg-[#f4f4f4] min-h-[280px] m-0">
-            <Outlet />
-          </Content>
-        </Layout>
+                {selectedItem === item.key ? (
+                  <span className="font-semibold ">{item.label}</span>
+                ) : (
+                  item.label
+                )}
+              </Menu.Item>
+            ))}
+          </Menu>
+        </Spin>
+      </Sider>
+      {/* </Affix> */}
+      <Layout className="site-layout !ml-[20%] !w-[80%] !min-h-screen">
+        {" "}
+        {/* <Content className="site-layout-background !bg-[#f4f4f4] min-h-[280px] mt-20"> */}
+        <Outlet />
+        {/* </Content> */}
       </Layout>
     </Layout>
   );
