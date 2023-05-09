@@ -372,13 +372,13 @@ const AddLanguage = () => {
           ]}
         />
       </Content>
-      <Content className="!bg-white !w-full">
+      <Content className="!bg-white !mt-[80px] !w-full fixed z-10">
         {addLanguageButtonHeader()}
       </Content>
-      <Content className="mt-2 !w-full p-3">
+      <Content className="mt-36 !w-full p-3">
         <Spin tip="Please wait!" size="large" spinning={isLoading}>
           <Content>
-            <Content className="p-3 bg-white mt-0">
+            <Content className="p-3 bg-white mt-0 ">
               <Content>
                 {/* <Typography.Title
                     level={3}

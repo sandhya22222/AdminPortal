@@ -40,8 +40,6 @@ const findAllWithoutPage = (baseURL, pathParams, isLngSpecific) => {
 
 const findMedia = (baseURL, pathParams) => {
   //If params is null, don't consider params
-  console.log("pathhh#", pathParams);
-
   let configParams = {};
 
   if (pathParams !== null) {
@@ -50,11 +48,6 @@ const findMedia = (baseURL, pathParams) => {
       ...configParams,
     };
   }
-  console.log("checkParams", baseURL, {
-    params: configParams,
-    responseType: "blob",
-  });
-  // return http.get(baseURL, { params: { configParams }, responseType: "blob" });
   return http.get(baseURL, { params: configParams, responseType: "blob" });
 };
 

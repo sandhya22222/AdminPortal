@@ -715,34 +715,9 @@ const StoreSettings = () => {
   const storeSettingsHeader = () => {
     return (
       <>
-        {/* <Content
-          className="!w-[80%]  flex items-center my-3"
-          justify={"space-between"}
-        >
-          <div className="flex justify-start">
-            <Link to="/dashboard/store">
-              <ArrowLeftOutlined
-                role={"button"}
-                className={"text-black text-lg"}
-              />
-            </Link>
-            <Title level={3} className="m-0 ml-4 inline-block  !font-normal">
-              {storeName}
-            </Title>
-          </div>
-          <div className="flex justify-end ">
-            <Switch
-              className="bg-gray-400"
-              checked={changeSwitchStatus === 1 ? true : false}
-            />
-            <div className="pl-1">
-              {changeSwitchStatus === 1 ? "Active" : "Inactive"}
-            </div>
-          </div>
-        </Content> */}
-        <Row justify={"space-between"} className="!w-[80%]">
+        <Row justify={"space-between"} className="!w-[80%] !mt-[95px]">
           <Col>
-            <Content className=" text-right mt-3 flex items-center ">
+            <Content className=" text-right  flex items-center ">
               <Link to="/dashboard/store">
                 <ArrowLeftOutlined
                   role={"button"}
@@ -756,7 +731,7 @@ const StoreSettings = () => {
           </Col>
 
           <Col>
-            <Content className="text-right mt-3 flex items-center">
+            <Content className="text-right  flex items-center">
               <Switch
                 className="bg-gray-400"
                 checked={changeSwitchStatus === 1 ? true : false}
@@ -802,7 +777,7 @@ const StoreSettings = () => {
           <Status storeId={storeId} storeApiData={storeData} />
         </Content> */}
       </Content>
-      <Content className="p-3 mt-14">
+      <Content className="p-3 mt-36">
         {/* <Spin tip="Please wait!" size="large" spinning={isLoading}> */}
         {/* <Content className="bg-white mt-2 p-3"> */}
         {/* <span className="text-red-600 text-sm !text-center">*</span>
