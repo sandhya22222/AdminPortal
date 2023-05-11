@@ -77,39 +77,66 @@ const StoreImages = ({
 
   const handleChange = (e) => {
     setFileList(e.fileList);
-    console.log("test", e.fileList);
-
     if (type === "store_logo") {
-      let copyimageData = [...imagesUpload];
-      copyimageData.push({ type: "store_logo", imageValue: e.file });
-      console.log("copyimageData", copyimageData);
-      setImagesUpload(copyimageData);
-      setValiStoreLogo(false);
+      if (e.fileList.length === 0) {
+        let temp = imagesUpload.filter((e) => e.type !== "store_logo");
+        setImagesUpload(temp);
+      } else {
+        let copyimageData = [...imagesUpload];
+        copyimageData.push({ type: "store_logo", imageValue: e.file });
+        setImagesUpload(copyimageData);
+        setValiStoreLogo(false);
+      }
     }
     if (type === "banner_images") {
-      let copyimageData = [...imagesUpload];
-      copyimageData.push({ type: "banner_images", imageValue: e.file });
-      setImagesUpload(copyimageData);
+      if (e.fileList.length === 0) {
+        let temp = imagesUpload.filter((e) => e.type !== "banner_images");
+        setImagesUpload(temp);
+      } else {
+        let copyimageData = [...imagesUpload];
+        copyimageData.push({ type: "banner_images", imageValue: e.file });
+        setImagesUpload(copyimageData);
+      }
     }
     if (type === "search_logo") {
-      let copyimageData = [...imagesUpload];
-      copyimageData.push({ type: "search_logo", imageValue: e.file });
-      setImagesUpload(copyimageData);
+      if (e.fileList.length == 0) {
+        let temp = imagesUpload.filter((e) => e.type !== "search_logo");
+        setImagesUpload(temp);
+      } else {
+        let copyimageData = [...imagesUpload];
+        copyimageData.push({ type: "search_logo", imageValue: e.file });
+        setImagesUpload(copyimageData);
+      }
     }
     if (type === "customer_logo") {
-      let copyimageData = [...imagesUpload];
-      copyimageData.push({ type: "customer_logo", imageValue: e.file });
-      setImagesUpload(copyimageData);
+      if (e.fileList.length == 0) {
+        let temp = imagesUpload.filter((e) => e.type !== "customer_logo");
+        setImagesUpload(temp);
+      } else {
+        let copyimageData = [...imagesUpload];
+        copyimageData.push({ type: "customer_logo", imageValue: e.file });
+        setImagesUpload(copyimageData);
+      }
     }
     if (type === "cart_logo") {
-      let copyimageData = [...imagesUpload];
-      copyimageData.push({ type: "cart_logo", imageValue: e.file });
-      setImagesUpload(copyimageData);
+      if (e.fileList.length == 0) {
+        let temp = imagesUpload.filter((e) => e.type !== "cart_logo");
+        setImagesUpload(temp);
+      } else {
+        let copyimageData = [...imagesUpload];
+        copyimageData.push({ type: "cart_logo", imageValue: e.file });
+        setImagesUpload(copyimageData);
+      }
     }
     if (type === "wishlist_logo") {
-      let copyimageData = [...imagesUpload];
-      copyimageData.push({ type: "wishlist_logo", imageValue: e.file });
-      setImagesUpload(copyimageData);
+      if (e.fileList.length == 0) {
+        let temp = imagesUpload.filter((e) => e.type !== "wishlist_logo");
+        setImagesUpload(temp);
+      } else {
+        let copyimageData = [...imagesUpload];
+        copyimageData.push({ type: "wishlist_logo", imageValue: e.file });
+        setImagesUpload(copyimageData);
+      }
     }
   };
 
@@ -204,7 +231,6 @@ const StoreImages = ({
   console.log("getImageData", getImageData);
 
   const getBase64 = (file) => {
-    console.log("file", file);
     new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
@@ -289,16 +315,10 @@ const StoreImages = ({
       });
   };
 
-  // useEffect(()=>{
-  //   dispatch(fnAbsoluteStoreImageInfo(allImageUrl));
-  // },[allImageUrl])
-
-  console.log("bannerImage", bannerImage);
-  console.log("imagepath123", copyImagePath);
-  console.log("allImageUrl", allImageUrl);
   const handleCancel = () => setPreviewOpen(false);
 
   const handlePreview = async (file) => {
+    console.log("first",file)
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
@@ -312,9 +332,9 @@ const StoreImages = ({
   return (
     <Content className=" mb-2">
       <Content className="flex !mb-3">
-        {title === "Store Logo" ? (
+        {/* {title === "Store Logo" ? (
           <span className="text-red-600 text-sm text-center ">*</span>
-        ) : null}
+        ) : null} */}
         <Title level={5} className="mr-1">
           {title}
         </Title>
