@@ -519,15 +519,19 @@ const Stores = () => {
       });
     }
     const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-    if (storeEmail && regex.test(storeEmail) === false) {
+    if (storeEmail && regex.test(storeEmail.trim()) === false) {
       count--;
       setInValidEmail(true);
-      toast("Email must contain @ and .com", {
+      toast("Email must contain @ and (.)", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
     }
-    if (storeEmail === "" || storeEmail === null || storeEmail === undefined) {
+    if (
+      storeEmail.trim() === "" ||
+      storeEmail.trim() === null ||
+      storeEmail.trim() === undefined
+    ) {
       count--;
       setInValidEmail(true);
       toast("Please provide valid email", {
@@ -536,9 +540,9 @@ const Stores = () => {
       });
     }
     if (
-      storeUserName === "" ||
-      storeUserName === null ||
-      storeUserName === undefined
+      storeUserName.trim() === "" ||
+      storeUserName.trim() === null ||
+      storeUserName.trim() === undefined
     ) {
       setInValidUserName(true);
       count--;
@@ -547,18 +551,30 @@ const Stores = () => {
         type: "error",
       });
     }
-    if (storeUserName && storeUserName.length < 6) {
-      setInValidUserName(true);
+    const userRegex = /^[a-zA-Z0-9_ ]{6,15}$/;
+    if (storeUserName && userRegex.test(storeUserName.trim()) === false) {
       count--;
-      toast("Username must contain minimum 6 characters", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-      });
+      setInValidUserName(true);
+      toast(
+        "Username must contain minimum 6 characters and it allow only alphabets, numbers, underscore, and hyphen.",
+        {
+          position: toast.POSITION.TOP_RIGHT,
+          type: "error",
+        }
+      );
     }
+    // if (storeUserName && storeUserName.length < 6) {
+    //   setInValidUserName(true);
+    //   count--;
+    //   toast("Username must contain minimum 6 characters", {
+    //     position: toast.POSITION.TOP_RIGHT,
+    //     type: "error",
+    //   });
+    // }
     if (
-      storePassword === "" ||
-      storePassword === null ||
-      storePassword === undefined
+      storePassword.trim() === "" ||
+      storePassword.trim() === null ||
+      storePassword.trim() === undefined
     ) {
       setInValidPassword(true);
       count--;
@@ -569,7 +585,7 @@ const Stores = () => {
     }
     const pattern =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,15}$/;
-    if (storePassword && pattern.test(storePassword) === false) {
+    if (storePassword && pattern.test(storePassword.trim()) === false) {
       setInValidPassword(true);
       count--;
       toast(
@@ -601,9 +617,9 @@ const Stores = () => {
   const saveStoreData = () => {
     const postBody = {
       name: name.trim(),
-      username: storeUserName,
-      email: storeEmail,
-      password: storePassword,
+      username: storeUserName.trim(),
+      email: storeEmail.trim(),
+      password: storePassword.trim(),
     };
     setIsUpLoading(true);
     // axios
@@ -824,9 +840,6 @@ const Stores = () => {
                               : "mb-2"
                           }`}
                           onChange={(e) => {
-                            var nameTrim = e.target.value;
-                            //  var nameToTrim = nameTrim.trim()
-                            // setName(nameTrim.trim());
                             setName(e.target.value);
                             setInValidName(false);
                           }}
@@ -845,20 +858,7 @@ const Stores = () => {
                               ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-4"
                               : "mb-4"
                           }`}
-                          // addonAfter=".com"
-                          // addonBefore="@"
                           onChange={(e) => {
-                            // const { value } = e.target;
-                            // const regex = /^[a-zA-Z0-9_.-@]*$/;
-                            // if (regex.test(value)) {
-                            //   setStoreEmail(value);
-                            //   setInValidEmail(false);
-                            // } else {
-                            //   toast("Please provide valid email", {
-                            //     position: toast.POSITION.TOP_RIGHT,
-                            //     type: "warning",
-                            //   });
-                            // }
                             setStoreEmail(e.target.value);
                             setInValidEmail(false);
                           }}
@@ -882,20 +882,20 @@ const Stores = () => {
                             <UserOutlined className="site-form-item-icon" />
                           }
                           onChange={(e) => {
-                            const { value } = e.target;
-                            const regex = /^[a-zA-Z0-9_-]*$/; // only allow letters and numbers
-                            if (regex.test(value)) {
-                              setStoreUserName(value);
-                              setInValidUserName(false);
-                            } else {
-                              toast(
-                                "Please enter only alphabets, numbers, underscore, and hyphen.",
-                                {
-                                  position: toast.POSITION.TOP_RIGHT,
-                                  type: "warning",
-                                }
-                              );
-                            }
+                            // const { value } = e.target;
+                            // const regex = /^[a-zA-Z0-9_ ]*$/; // only allow letters and numbers
+                            // if (regex.test(value)) {
+                            setStoreUserName(e.target.value);
+                            setInValidUserName(false);
+                            // } else {
+                            //   toast(
+                            //     "Please enter only alphabets, numbers, underscore, and hyphen.",
+                            //     {
+                            //       position: toast.POSITION.TOP_RIGHT,
+                            //       type: "warning",
+                            //     }
+                            //   );
+                            // }
                           }}
                         />
                         <span className="text-red-600 text-sm">*</span>
@@ -913,18 +913,20 @@ const Stores = () => {
                           }`}
                           onChange={(e) => {
                             const value = e.target.value;
-                            if (value && value.length < 15) {
-                              setStorePassword(e.target.value);
-                              setInValidPassword(false);
-                            } else if (value && value.length >= 15) {
-                              toast(
-                                "Password should allow only 15 characters",
-                                {
-                                  position: toast.POSITION.TOP_RIGHT,
-                                  type: "warning",
-                                }
-                              );
-                            } else if (e.target.value === "") {
+                            // if (value && value.length < 15) {
+                            setStorePassword(e.target.value);
+                            setInValidPassword(false);
+                            // }
+                            // else if (value && value.length >= 15) {
+                            //   toast(
+                            //     "Password should allow only 15 characters",
+                            //     {
+                            //       position: toast.POSITION.TOP_RIGHT,
+                            //       type: "warning",
+                            //     }
+                            //   );
+                            // } else
+                            if (e.target.value === "") {
                               setStorePassword(e.target.value);
                             }
                           }}
@@ -992,8 +994,6 @@ const Stores = () => {
                           maxLength={30}
                           disabled
                           className="mb-4"
-                          addonAfter=".com"
-                          // addonBefore="@"
                           onChange={(e) => {
                             // handleEmailChange(e);
                             const { value } = e.target;

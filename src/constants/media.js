@@ -9,7 +9,7 @@ import Favicon from "../assets/images/logo/dm-favicon.png";
 import StoreLogo from "../assets/images/logo/store-logo.png";
 import WorkInProgress from "../assets/images/common/WorkInProgress.png";
 import AdminIcon from "../assets/images/common/AdminIcon.png";
-
+import DmBrandLogo from "../assets/images/logo/dm-bt-logo.png"
 export {
   BrandLogo,
   AppStoreLogo,
@@ -20,4 +20,5 @@ export {
   StoreLogo,
   WorkInProgress,
   AdminIcon,
+  DmBrandLogo
 };

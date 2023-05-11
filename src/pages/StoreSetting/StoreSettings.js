@@ -98,7 +98,21 @@ const StoreSettings = () => {
     copyImageOfStoreSettingsCurrency,
     setCopyImageOfStoreSettingsCurrency,
   ] = useState();
+  const [
+    copyImageOfStoreSettingsPageTheme,
+    setCopyImageOfStoreSettingsPageTheme,
+  ] = useState();
+  const [copyImageOfStoreHeaderSetting, setCopyImageOfStoreHeaderSetting] =
+    useState();
+  const [copyImageOfStoreFooterSetting, setCopyImageOfStoreFooterSetting] =
+    useState();
   const [imageOfStoreSettingsCurrency, setImageOfStoreSettingsCurrency] =
+    useState();
+  const [imageOfStoreSettingsPageTheme, setImageOfStoreSettingsPageTheme] =
+    useState();
+  const [imageOfStoreHeaderSettings, setImageOfStoreHeaderSettings] =
+    useState();
+  const [imageOfStoreFooterSettings, setImageOfStoreFooterSettings] =
     useState();
   //! get call of  getStoreSettingApi
   const findAllWithoutPageStoreSettingApi = (storeId) => {
@@ -125,6 +139,24 @@ const StoreSettings = () => {
         );
         setImageOfStoreSettingsCurrency(
           response.data.store_settings_data[0].store_currency[0]
+        );
+        setCopyImageOfStoreSettingsPageTheme(
+          response.data.store_settings_data[0].store_page_settings[0]
+        );
+        setImageOfStoreSettingsPageTheme(
+          response.data.store_settings_data[0].store_page_settings[0]
+        );
+        setCopyImageOfStoreHeaderSetting(
+          response.data.store_settings_data[0].store_header_settings[0]
+        );
+        setImageOfStoreHeaderSettings(
+          response.data.store_settings_data[0].store_header_settings[0]
+        );
+        setCopyImageOfStoreFooterSetting(
+          response.data.store_settings_data[0].store_footer_settings[0]
+        );
+        setImageOfStoreFooterSettings(
+          response.data.store_settings_data[0].store_footer_settings[0]
         );
         setCurrencySymbol(
           response.data.store_settings_data[0].store_currency[0].symbol
@@ -245,10 +277,7 @@ const StoreSettings = () => {
         }
       });
   };
-  console.log(
-    "copyImageOfStoreSettingsCurrency",
-    copyImageOfStoreSettingsCurrency
-  );
+
   //! get call of store API
   const findAllStoreApi = () => {
     // setIsLoading(true);
@@ -338,24 +367,20 @@ const StoreSettings = () => {
           "Server Success Response From storeSettingPostCall",
           response.data
         );
-        // setPostData(response.data);
-        // setFractionalUnit("");
-        // setNumberToBasic("");
-        // setCurrencyIsoCode("");
-        // setCurrencySymbol("");
-        // setPageBackgroundColor("#EBEBEB");
-        // setButtonPrimaryBackgroundColor("");
-        // setButtonSecondaryBackgroundColor("#00000");
-        // setButtonTeritaryBackgroundColor("#00000");
-        // setButtonPrimaryForegroundColor("#00000");
-        // setButtonSecondaryForegroundColor("#00000");
-        // setButtonTeritaryForegroundColor("#00000");
-        // setForeGroundColor("#333333");
-        // setFooterBackgroundColor("#00000");
-        // setFooterForegroundColor("#00000");
-        // setHeaderForegroundColor("#00000");
-        // setHeaderBackgroundColor("#00000");
-        // setstoreId("Choose Store");
+        setCopyImageOfStoreSettingsCurrency(response.data.store_currency[0]);
+        setImageOfStoreSettingsCurrency(response.data.store_currency[0]);
+        setCopyImageOfStoreSettingsPageTheme(
+          response.data.store_page_settings[0]
+        );
+        setImageOfStoreSettingsPageTheme(response.data.store_page_settings[0]);
+        setCopyImageOfStoreHeaderSetting(
+          response.data.store_header_settings[0]
+        );
+        setImageOfStoreHeaderSettings(response.data.store_header_settings[0]);
+        setCopyImageOfStoreFooterSetting(
+          response.data.store_footer_settings[0]
+        );
+        setImageOfStoreFooterSettings(response.data.store_footer_settings[0]);
       })
       .catch((error) => {
         if (error.response) {
@@ -398,42 +423,136 @@ const StoreSettings = () => {
     //     type: "error",
     //   });
     // }
-    // if (
-    //   (imageOfStoreSettingsCurrency && imageOfStoreSettingsCurrency.symbol) ===
-    //     (copyImageOfStoreSettingsCurrency &&
-    //       copyImageOfStoreSettingsCurrency.symbol) &&
-    //   (imageOfStoreSettingsCurrency &&
-    //     imageOfStoreSettingsCurrency.iso_code) ===
-    //     (copyImageOfStoreSettingsCurrency &&
-    //       copyImageOfStoreSettingsCurrency.iso_code) &&
-    //   (imageOfStoreSettingsCurrency &&
-    //     imageOfStoreSettingsCurrency.fractional_unit) ===
-    //     (copyImageOfStoreSettingsCurrency &&
-    //       copyImageOfStoreSettingsCurrency.fractional_unit) &&
-    //   (imageOfStoreSettingsCurrency &&
-    //     imageOfStoreSettingsCurrency.number_to_basic) ===
-    //     (copyImageOfStoreSettingsCurrency &&
-    //       copyImageOfStoreSettingsCurrency.number_to_basic)
-    // ) {
-    //   count--;
-    //   toast("No Changes are detected", {
-    //     position: toast.POSITION.TOP_RIGHT,
-    //     type: "info",
-    //   });
-    // }
-    // if (
-    //   currencySymbol !== "" &&
-    //   currencyIsoCode !== "" &&
-    //   fractionalUnit !== "" &&
-    //   numberToBasic !== ""
-    // ) {
-    //   count--;
-    //   toast("No Changes are detected", {
-    //     position: toast.POSITION.TOP_RIGHT,
-    //     type: "info",
-    //   });
-    // }
     if (
+      (imageOfStoreSettingsCurrency && imageOfStoreSettingsCurrency.symbol) ===
+        (copyImageOfStoreSettingsCurrency &&
+          copyImageOfStoreSettingsCurrency.symbol) &&
+      (imageOfStoreSettingsCurrency &&
+        imageOfStoreSettingsCurrency.iso_code) ===
+        (copyImageOfStoreSettingsCurrency &&
+          copyImageOfStoreSettingsCurrency.iso_code) &&
+      (imageOfStoreSettingsCurrency &&
+        imageOfStoreSettingsCurrency.fractional_unit) ===
+        (copyImageOfStoreSettingsCurrency &&
+          copyImageOfStoreSettingsCurrency.fractional_unit) &&
+      (imageOfStoreSettingsCurrency &&
+        imageOfStoreSettingsCurrency.number_to_basic) ===
+        (copyImageOfStoreSettingsCurrency &&
+          copyImageOfStoreSettingsCurrency.number_to_basic) &&
+      (imageOfStoreSettingsPageTheme &&
+        imageOfStoreSettingsPageTheme.bg_color) ===
+        (copyImageOfStoreSettingsPageTheme &&
+          copyImageOfStoreSettingsPageTheme.bg_color) &&
+      (imageOfStoreSettingsPageTheme &&
+        imageOfStoreSettingsPageTheme.btn_primary_bg_color) ===
+        (copyImageOfStoreSettingsPageTheme &&
+          copyImageOfStoreSettingsPageTheme.btn_primary_bg_color) &&
+      (imageOfStoreSettingsPageTheme &&
+        imageOfStoreSettingsPageTheme.btn_primary_fg_color) ===
+        (copyImageOfStoreSettingsPageTheme &&
+          copyImageOfStoreSettingsPageTheme.btn_primary_fg_color) &&
+      (imageOfStoreSettingsPageTheme &&
+        imageOfStoreSettingsPageTheme.btn_secondary_bg_color) ===
+        (copyImageOfStoreSettingsPageTheme &&
+          copyImageOfStoreSettingsPageTheme.btn_secondary_bg_color) &&
+      (imageOfStoreSettingsPageTheme &&
+        imageOfStoreSettingsPageTheme.btn_secondary_fg_color) ===
+        (copyImageOfStoreSettingsPageTheme &&
+          copyImageOfStoreSettingsPageTheme.btn_secondary_fg_color) &&
+      (imageOfStoreSettingsPageTheme &&
+        imageOfStoreSettingsPageTheme.btn_tertiary_bg_color) ===
+        (copyImageOfStoreSettingsPageTheme &&
+          copyImageOfStoreSettingsPageTheme.btn_tertiary_bg_color) &&
+      (imageOfStoreSettingsPageTheme &&
+        imageOfStoreSettingsPageTheme.btn_tertiary_fg_color) ===
+        (copyImageOfStoreSettingsPageTheme &&
+          copyImageOfStoreSettingsPageTheme.btn_tertiary_fg_color) &&
+      (imageOfStoreSettingsPageTheme &&
+        imageOfStoreSettingsPageTheme.fg_color) ===
+        (copyImageOfStoreSettingsPageTheme &&
+          copyImageOfStoreSettingsPageTheme.fg_color) &&
+      (imageOfStoreHeaderSettings && imageOfStoreHeaderSettings.bg_color) ===
+        (copyImageOfStoreHeaderSetting &&
+          copyImageOfStoreHeaderSetting.bg_color) &&
+      (imageOfStoreHeaderSettings && imageOfStoreHeaderSettings.fg_color) ===
+        (copyImageOfStoreHeaderSetting &&
+          copyImageOfStoreHeaderSetting.fg_color) &&
+      (imageOfStoreFooterSettings && imageOfStoreFooterSettings.bg_color) ===
+        (copyImageOfStoreFooterSetting &&
+          copyImageOfStoreFooterSetting.bg_color) &&
+      (imageOfStoreFooterSettings && imageOfStoreFooterSettings.fg_color) ===
+        (copyImageOfStoreFooterSetting &&
+          copyImageOfStoreFooterSetting.fg_color) &&
+      imagesUpload.length === 0
+    ) {
+      count--;
+      toast("No Changes are detected", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "info",
+      });
+    } else if (
+      (imageOfStoreSettingsCurrency && imageOfStoreSettingsCurrency.symbol) ===
+        (copyImageOfStoreSettingsCurrency &&
+          copyImageOfStoreSettingsCurrency.symbol) &&
+      (imageOfStoreSettingsCurrency &&
+        imageOfStoreSettingsCurrency.iso_code) ===
+        (copyImageOfStoreSettingsCurrency &&
+          copyImageOfStoreSettingsCurrency.iso_code) &&
+      (imageOfStoreSettingsCurrency &&
+        imageOfStoreSettingsCurrency.fractional_unit) ===
+        (copyImageOfStoreSettingsCurrency &&
+          copyImageOfStoreSettingsCurrency.fractional_unit) &&
+      (imageOfStoreSettingsCurrency &&
+        imageOfStoreSettingsCurrency.number_to_basic) ===
+        (copyImageOfStoreSettingsCurrency &&
+          copyImageOfStoreSettingsCurrency.number_to_basic) &&
+      (imageOfStoreSettingsPageTheme &&
+        imageOfStoreSettingsPageTheme.bg_color) ===
+        (copyImageOfStoreSettingsPageTheme &&
+          copyImageOfStoreSettingsPageTheme.bg_color) &&
+      (imageOfStoreSettingsPageTheme &&
+        imageOfStoreSettingsPageTheme.btn_primary_bg_color) ===
+        (copyImageOfStoreSettingsPageTheme &&
+          copyImageOfStoreSettingsPageTheme.btn_primary_bg_color) &&
+      (imageOfStoreSettingsPageTheme &&
+        imageOfStoreSettingsPageTheme.btn_primary_fg_color) ===
+        (copyImageOfStoreSettingsPageTheme &&
+          copyImageOfStoreSettingsPageTheme.btn_primary_fg_color) &&
+      (imageOfStoreSettingsPageTheme &&
+        imageOfStoreSettingsPageTheme.btn_secondary_bg_color) ===
+        (copyImageOfStoreSettingsPageTheme &&
+          copyImageOfStoreSettingsPageTheme.btn_secondary_bg_color) &&
+      (imageOfStoreSettingsPageTheme &&
+        imageOfStoreSettingsPageTheme.btn_secondary_fg_color) ===
+        (copyImageOfStoreSettingsPageTheme &&
+          copyImageOfStoreSettingsPageTheme.btn_secondary_fg_color) &&
+      (imageOfStoreSettingsPageTheme &&
+        imageOfStoreSettingsPageTheme.btn_tertiary_bg_color) ===
+        (copyImageOfStoreSettingsPageTheme &&
+          copyImageOfStoreSettingsPageTheme.btn_tertiary_bg_color) &&
+      (imageOfStoreSettingsPageTheme &&
+        imageOfStoreSettingsPageTheme.btn_tertiary_fg_color) ===
+        (copyImageOfStoreSettingsPageTheme &&
+          copyImageOfStoreSettingsPageTheme.btn_tertiary_fg_color) &&
+      (imageOfStoreSettingsPageTheme &&
+        imageOfStoreSettingsPageTheme.fg_color) ===
+        (copyImageOfStoreSettingsPageTheme &&
+          copyImageOfStoreSettingsPageTheme.fg_color) &&
+      (imageOfStoreHeaderSettings && imageOfStoreHeaderSettings.bg_color) ===
+        (copyImageOfStoreHeaderSetting &&
+          copyImageOfStoreHeaderSetting.bg_color) &&
+      (imageOfStoreHeaderSettings && imageOfStoreHeaderSettings.fg_color) ===
+        (copyImageOfStoreHeaderSetting &&
+          copyImageOfStoreHeaderSetting.fg_color) &&
+      (imageOfStoreFooterSettings && imageOfStoreFooterSettings.bg_color) ===
+        (copyImageOfStoreFooterSetting &&
+          copyImageOfStoreFooterSetting.bg_color) &&
+      (imageOfStoreFooterSettings && imageOfStoreFooterSettings.fg_color) ===
+        (copyImageOfStoreFooterSetting &&
+          copyImageOfStoreFooterSetting.fg_color)
+    ) {
+      count--;
+    } else if (
       currencySymbol === "" ||
       currencySymbol === undefined ||
       currencySymbol === null
@@ -444,8 +563,7 @@ const StoreSettings = () => {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
-    }
-    if (
+    } else if (
       currencyIsoCode === "" ||
       currencyIsoCode === undefined ||
       currencyIsoCode === null
@@ -456,8 +574,7 @@ const StoreSettings = () => {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
-    }
-    if (
+    } else if (
       fractionalUnit === "" ||
       fractionalUnit === undefined ||
       fractionalUnit === null
@@ -468,8 +585,7 @@ const StoreSettings = () => {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
-    }
-    if (
+    } else if (
       numberToBasic === "" ||
       numberToBasic === undefined ||
       numberToBasic === null
@@ -529,7 +645,7 @@ const StoreSettings = () => {
     })
       .then(function (response) {
         console.log("Get response of Store setting Images--->", response.data);
-        setGetImageData(response.data);
+        setGetImageData([response.data]);
       })
       .catch((error) => {
         console.log("errorresponse from images--->", error);
@@ -567,9 +683,13 @@ const StoreSettings = () => {
     //     },
     //     authorizationHeader
     //   )
-    MarketplaceServices.save(storeImagesAPI, formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    })
+    MarketplaceServices.save(
+      storeImagesAPI,
+      formData
+      //   {
+      //   headers: { "Content-Type": "multipart/form-data" },
+      // }
+    )
       .then((response) => {
         toast("Images created successfully.", {
           position: toast.POSITION.TOP_RIGHT,
@@ -603,7 +723,7 @@ const StoreSettings = () => {
         setIsLoading(false);
       });
   };
-
+  //!put call of store images
   const updateStoreLogoImageCall = () => {
     const formData = new FormData();
     if (imagesUpload && imagesUpload.length > 0) {
@@ -633,9 +753,13 @@ const StoreSettings = () => {
     //     },
     //     authorizationHeader
     //   )
-    MarketplaceServices.update(storeImagesAPI, formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    })
+    MarketplaceServices.update(
+      storeImagesAPI,
+      formData
+      //   {
+      //   headers: { "Content-Type": "multipart/form-data" },
+      // }
+    )
       .then((response) => {
         toast("Images updated successfully.", {
           position: toast.POSITION.TOP_RIGHT,
@@ -646,7 +770,7 @@ const StoreSettings = () => {
           "Server Success Response From storeImagePutCall",
           response.data
         );
-        // setImagesUpload(response.data);
+        setImagesUpload([]);
       })
       .catch((error) => {
         if (error.response) {
@@ -671,21 +795,21 @@ const StoreSettings = () => {
   };
 
   const postImageOnClickSave = () => {
-    if (getImageData && getImageData.length !== 0) {
+    if (getImageData && getImageData.length > 0) {
       updateStoreLogoImageCall();
     } else {
-      let count = 1;
-      if (imagesUpload && imagesUpload.length === 0) {
-        count--;
-        setValiStoreLogo(true);
-        toast("Please upload the store logo", {
-          position: toast.POSITION.TOP_RIGHT,
-          type: "error",
-        });
-      }
-      if (count === 1) {
-        saveStoreLogoImageCall();
-      }
+      // let count = 1;
+      // if (imagesUpload && imagesUpload.length === 0) {
+      //   count--;
+      //   setValiStoreLogo(true);
+      //   toast("Please upload the store logo", {
+      //     position: toast.POSITION.TOP_RIGHT,
+      //     type: "error",
+      //   });
+      // }
+      // if (count === 1) {
+      saveStoreLogoImageCall();
+      // }
     }
   };
 
@@ -760,7 +884,7 @@ const StoreSettings = () => {
   const log = (e) => {
     console.log(e);
   };
-  console.log("imagesUpload1234", imagesUpload);
+  console.log("getImageData123", imagesUpload);
   return (
     <Layout>
       <Content className="mb-1">
@@ -897,7 +1021,7 @@ const StoreSettings = () => {
                 storeId={id}
                 imagesUpload={imagesUpload}
                 setImagesUpload={setImagesUpload}
-                getImageData={getImageData}
+                getImageData={getImageData && getImageData[0]}
                 isSingleUpload={true}
                 validStoreLogo={validStoreLogo}
                 setValiStoreLogo={setValiStoreLogo}
@@ -909,7 +1033,7 @@ const StoreSettings = () => {
                 type={"search_logo"}
                 storeId={id}
                 imagesUpload={imagesUpload}
-                getImageData={getImageData}
+                getImageData={getImageData && getImageData[0]}
                 setImagesUpload={setImagesUpload}
                 isSingleUpload={true}
               />
@@ -920,7 +1044,7 @@ const StoreSettings = () => {
                 type={"customer_logo"}
                 storeId={id}
                 imagesUpload={imagesUpload}
-                getImageData={getImageData}
+                getImageData={getImageData && getImageData[0]}
                 setImagesUpload={setImagesUpload}
                 isSingleUpload={true}
               />
@@ -931,7 +1055,7 @@ const StoreSettings = () => {
                 type={"cart_logo"}
                 storeId={id}
                 imagesUpload={imagesUpload}
-                getImageData={getImageData}
+                getImageData={getImageData && getImageData[0]}
                 setImagesUpload={setImagesUpload}
                 isSingleUpload={true}
               />
@@ -942,7 +1066,7 @@ const StoreSettings = () => {
                 type={"wishlist_logo"}
                 storeId={id}
                 imagesUpload={imagesUpload}
-                getImageData={getImageData}
+                getImageData={getImageData && getImageData[0]}
                 setImagesUpload={setImagesUpload}
                 isSingleUpload={true}
               />
@@ -1184,6 +1308,9 @@ const StoreSettings = () => {
                     value={pageBackgroundColor}
                     onChange={(e) => {
                       setPageBackgroundColor(e.target.value);
+                      let temp = { ...copyImageOfStoreSettingsPageTheme };
+                      temp["bg_color"] = e.target.value;
+                      setCopyImageOfStoreSettingsPageTheme(temp);
                     }}
                     className="w-9 p-0"
                   />
@@ -1193,6 +1320,9 @@ const StoreSettings = () => {
                       className="w-[150px]"
                       onChange={(e) => {
                         setPageBackgroundColor(e.target.value);
+                        let temp = { ...copyImageOfStoreSettingsPageTheme };
+                        temp["bg_color"] = e.target.value;
+                        setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
                       addonAfter={
                         <Tooltip title="Reset the original value">
@@ -1230,6 +1360,9 @@ const StoreSettings = () => {
                     value={foreGroundColor}
                     onChange={(e) => {
                       setForeGroundColor(e.target.value);
+                      let temp = { ...copyImageOfStoreSettingsPageTheme };
+                      temp["fg_color"] = e.target.value;
+                      setCopyImageOfStoreSettingsPageTheme(temp);
                     }}
                     className="w-9 p-0"
                   />
@@ -1239,6 +1372,9 @@ const StoreSettings = () => {
                       className="w-[150px]"
                       onChange={(e) => {
                         setForeGroundColor(e.target.value);
+                        let temp = { ...copyImageOfStoreSettingsPageTheme };
+                        temp["fg_color"] = e.target.value;
+                        setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
                       addonAfter={
                         <Tooltip title="Reset the original value">
@@ -1329,6 +1465,9 @@ const StoreSettings = () => {
                     value={buttonPrimaryBackgroundColor}
                     onChange={(e) => {
                       setButtonPrimaryBackgroundColor(e.target.value);
+                      let temp = { ...copyImageOfStoreSettingsPageTheme };
+                      temp["btn_primary_bg_color"] = e.target.value;
+                      setCopyImageOfStoreSettingsPageTheme(temp);
                     }}
                   />
                   <Space.Compact className="ml-2">
@@ -1337,6 +1476,9 @@ const StoreSettings = () => {
                       className="w-[150px]"
                       onChange={(e) => {
                         setButtonPrimaryBackgroundColor(e.target.value);
+                        let temp = { ...copyImageOfStoreSettingsPageTheme };
+                        temp["btn_primary_bg_color"] = e.target.value;
+                        setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
                       addonAfter={
                         <Tooltip title="Reset the original value">
@@ -1379,6 +1521,9 @@ const StoreSettings = () => {
                     value={buttonSecondaryBackgroundColor}
                     onChange={(e) => {
                       setButtonSecondaryBackgroundColor(e.target.value);
+                      let temp = { ...copyImageOfStoreSettingsPageTheme };
+                      temp["btn_secondary_bg_color"] = e.target.value;
+                      setCopyImageOfStoreSettingsPageTheme(temp);
                     }}
                   />
                   <Space.Compact className="ml-2">
@@ -1387,6 +1532,9 @@ const StoreSettings = () => {
                       className="w-[150px]"
                       onChange={(e) => {
                         setButtonSecondaryBackgroundColor(e.target.value);
+                        let temp = { ...copyImageOfStoreSettingsPageTheme };
+                        temp["btn_secondary_bg_color"] = e.target.value;
+                        setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
                       addonAfter={
                         <Tooltip title="Reset the original value">
@@ -1431,6 +1579,9 @@ const StoreSettings = () => {
                     value={buttonTeritaryBackgroundColor}
                     onChange={(e) => {
                       setButtonTeritaryBackgroundColor(e.target.value);
+                      let temp = { ...copyImageOfStoreSettingsPageTheme };
+                      temp["btn_tertiary_bg_color"] = e.target.value;
+                      setCopyImageOfStoreSettingsPageTheme(temp);
                     }}
                   />
                   <Space.Compact className="ml-2">
@@ -1439,6 +1590,9 @@ const StoreSettings = () => {
                       className="w-[150px]"
                       onChange={(e) => {
                         setButtonTeritaryBackgroundColor(e.target.value);
+                        let temp = { ...copyImageOfStoreSettingsPageTheme };
+                        temp["btn_tertiary_bg_color"] = e.target.value;
+                        setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
                       addonAfter={
                         <Tooltip title="Reset the original value">
@@ -1531,6 +1685,9 @@ const StoreSettings = () => {
                     value={buttonPrimaryForegroundColor}
                     onChange={(e) => {
                       setButtonPrimaryForegroundColor(e.target.value);
+                      let temp = { ...copyImageOfStoreSettingsPageTheme };
+                      temp["btn_primary_fg_color"] = e.target.value;
+                      setCopyImageOfStoreSettingsPageTheme(temp);
                     }}
                   />
                   <Space.Compact className="ml-2">
@@ -1539,6 +1696,9 @@ const StoreSettings = () => {
                       className="w-[150px]"
                       onChange={(e) => {
                         setButtonPrimaryForegroundColor(e.target.value);
+                        let temp = { ...copyImageOfStoreSettingsPageTheme };
+                        temp["btn_primary_fg_color"] = e.target.value;
+                        setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
                       addonAfter={
                         <Tooltip title="Reset the original value">
@@ -1583,6 +1743,9 @@ const StoreSettings = () => {
                     value={buttonSecondaryForegroundColor}
                     onChange={(e) => {
                       setButtonSecondaryForegroundColor(e.target.value);
+                      let temp = { ...copyImageOfStoreSettingsPageTheme };
+                      temp["btn_secondary_fg_color"] = e.target.value;
+                      setCopyImageOfStoreSettingsPageTheme(temp);
                     }}
                   />
                   <Space.Compact className="ml-2">
@@ -1591,6 +1754,9 @@ const StoreSettings = () => {
                       className="w-[150px]"
                       onChange={(e) => {
                         setButtonSecondaryForegroundColor(e.target.value);
+                        let temp = { ...copyImageOfStoreSettingsPageTheme };
+                        temp["btn_secondary_fg_color"] = e.target.value;
+                        setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
                       addonAfter={
                         <Tooltip title="Reset the original value">
@@ -1633,6 +1799,9 @@ const StoreSettings = () => {
                     value={buttonTeritaryForegroundColor}
                     onChange={(e) => {
                       setButtonTeritaryForegroundColor(e.target.value);
+                      let temp = { ...copyImageOfStoreSettingsPageTheme };
+                      temp["btn_tertiary_fg_color"] = e.target.value;
+                      setCopyImageOfStoreSettingsPageTheme(temp);
                     }}
                   />
                   <Space.Compact className="ml-2">
@@ -1640,6 +1809,9 @@ const StoreSettings = () => {
                       value={buttonTeritaryForegroundColor}
                       onChange={(e) => {
                         setButtonTeritaryForegroundColor(e.target.value);
+                        let temp = { ...copyImageOfStoreSettingsPageTheme };
+                        temp["btn_tertiary_fg_color"] = e.target.value;
+                        setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
                       className="w-[150px]"
                       addonAfter={
@@ -1741,6 +1913,9 @@ const StoreSettings = () => {
                     value={headerBackgroundColor}
                     onChange={(e) => {
                       setHeaderBackgroundColor(e.target.value);
+                      let temp = { ...copyImageOfStoreHeaderSetting };
+                      temp["bg_color"] = e.target.value;
+                      setCopyImageOfStoreHeaderSetting(temp);
                     }}
                   />
                   <Space.Compact className="ml-2">
@@ -1749,6 +1924,9 @@ const StoreSettings = () => {
                       className="w-[150px]"
                       onChange={(e) => {
                         setHeaderBackgroundColor(e.target.value);
+                        let temp = { ...copyImageOfStoreHeaderSetting };
+                        temp["bg_color"] = e.target.value;
+                        setCopyImageOfStoreHeaderSetting(temp);
                       }}
                       addonAfter={
                         <Tooltip title="Reset the original value">
@@ -1787,6 +1965,9 @@ const StoreSettings = () => {
                     value={headerForegroundColor}
                     onChange={(e) => {
                       setHeaderForegroundColor(e.target.value);
+                      let temp = { ...copyImageOfStoreHeaderSetting };
+                      temp["fg_color"] = e.target.value;
+                      setCopyImageOfStoreHeaderSetting(temp);
                     }}
                   />
                   <Space.Compact className="ml-2">
@@ -1795,6 +1976,9 @@ const StoreSettings = () => {
                       className="w-[150px]"
                       onChange={(e) => {
                         setHeaderForegroundColor(e.target.value);
+                        let temp = { ...copyImageOfStoreHeaderSetting };
+                        temp["fg_color"] = e.target.value;
+                        setCopyImageOfStoreHeaderSetting(temp);
                       }}
                       addonAfter={
                         <Tooltip title="Reset the original value">
@@ -1840,6 +2024,9 @@ const StoreSettings = () => {
                     value={footerBackgroundColor}
                     onChange={(e) => {
                       setFooterBackgroundColor(e.target.value);
+                      let temp = { ...copyImageOfStoreFooterSetting };
+                      temp["bg_color"] = e.target.value;
+                      setCopyImageOfStoreFooterSetting(temp);
                     }}
                   />
                   <Space.Compact className="ml-2">
@@ -1848,6 +2035,9 @@ const StoreSettings = () => {
                       className="w-[150px]"
                       onChange={(e) => {
                         setFooterBackgroundColor(e.target.value);
+                        let temp = { ...copyImageOfStoreFooterSetting };
+                        temp["bg_color"] = e.target.value;
+                        setCopyImageOfStoreFooterSetting(temp);
                       }}
                       addonAfter={
                         <Tooltip title="Reset the original value">
@@ -1884,6 +2074,9 @@ const StoreSettings = () => {
                     value={footerForegroundColor}
                     onChange={(e) => {
                       setFooterForegroundColor(e.target.value);
+                      let temp = { ...copyImageOfStoreFooterSetting };
+                      temp["fg_color"] = e.target.value;
+                      setCopyImageOfStoreFooterSetting(temp);
                     }}
                   />
                   <Space.Compact className="ml-2">
@@ -1892,6 +2085,9 @@ const StoreSettings = () => {
                       className="w-[150px]"
                       onChange={(e) => {
                         setFooterForegroundColor(e.target.value);
+                        let temp = { ...copyImageOfStoreFooterSetting };
+                        temp["fg_color"] = e.target.value;
+                        setCopyImageOfStoreFooterSetting(temp);
                       }}
                       addonAfter={
                         <Tooltip title="Reset the original value">

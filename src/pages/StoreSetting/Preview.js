@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Nav, Collapse, NavbarBrand, Navbar } from "reactstrap";
 import { Button, Layout, Menu } from "antd";
-import { BrandLogo } from "../../constants/media";
+import { BrandLogo, DmBrandLogo } from "../../constants/media";
 import { useDispatch, useSelector } from "react-redux";
 const { Header, Content, Sider } = Layout;
 
@@ -41,7 +41,7 @@ const Preview = ({
             {absoluteStoreImageInfo.type === "store_logo" ? (
               <img className="w-[38px]" src={absoluteStoreImageInfo.value} />
             ) : (
-              <img className="w-[150px] " src={BrandLogo} />
+              <img className="w-[170px] !mb-2" src={DmBrandLogo} />
             )}
           </div>
           <div className="!text-center text-lg p-3 ">

@@ -27,7 +27,7 @@ import { UserOutlined, LoginOutlined, LogoutOutlined } from "@ant-design/icons";
 import { fnUserLoggedInInfo } from "../../services/redux/actions/ActionsUser";
 
 //! Import user defined components & hooks
-import { BrandLogo } from "../../constants/media";
+import { BrandLogo ,DmBrandLogo} from "../../constants/media";
 
 //! Import user defined functions
 
@@ -134,7 +134,7 @@ const Header = () => {
     <Container fluid className="navbar z-20">
       <Navbar color="white" expand="md" fixed="top" className="drop-shadow">
         <NavbarBrand to="/dashboard" tag={Link} className="me-auto">
-          <img src={BrandLogo} className="w-[240px]" alt="logo" />
+          <img src={DmBrandLogo} className="w-[240px]" alt="logo" />
         </NavbarBrand>
         <NavbarToggler
           className="me-2"

@@ -17,7 +17,7 @@ import MarketplaceServices from "../../services/axios/MarketplaceServices";
 //! Import user defined services
 import { fnUserLoggedInInfo } from "../../services/redux/actions/ActionsUser";
 
-import { BrandLogo, AdminIcon } from "../../constants/media";
+import { BrandLogo, AdminIcon,DmBrandLogo } from "../../constants/media";
 
 import util from "../../util/common";
 
@@ -96,12 +96,12 @@ const Header2 = () => {
       <Header className="fixed z-20 top-0 p-0 !h-20  w-full bg-white drop-shadow-md">
         <Content className="px-3 flex">
           {/* Left content which displays brand logo and other stuffs */}
-          <Content className="!inline-block text-left self-center p-1 mt-2">
+          <Content className="!inline-block text-left self-center p-1 mt-0">
             <a href="/dashboard">
               <Image
-                width={240}
+                width={260}
                 preview={false}
-                src={BrandLogo}
+                src={DmBrandLogo}
                 className="cursor-pointer"
               />
             </a>
