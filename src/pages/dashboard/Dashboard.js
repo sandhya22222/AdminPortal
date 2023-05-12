@@ -58,6 +58,7 @@ const getPermissionsUrl = process.env.REACT_APP_PERMISSIONS;
 const getAccessTokenUrl = process.env.REACT_APP_ACCESSTOKEN;
 const storeAdminDashboardAPI =
   process.env.REACT_APP_STORE_ADMIN_DASHBOARD_DATA_API;
+const currencySymbol = process.env.REACT_APP_CURRENCY_SYMBOL;
 const auth = getAuth.toLowerCase() === "true";
 
 //! Destructure the components
@@ -486,11 +487,15 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                 </Content>
                 <Content className="!text-[#ffffff] mb-4">
                   <SyncOutlined rotate={90} className="text-xl" />
-                  <span className="float-right text-3xl">€ 90,400</span>
+                  <span className="float-right text-3xl">
+                    {currencySymbol} 90,400
+                  </span>
                 </Content>
                 <Content className="!text-[#ffffff]">
                   <span className="text-md">Last month revenue</span>
-                  <span className="float-right text-md">€ 5,650</span>
+                  <span className="float-right text-md">
+                    {currencySymbol} 5,650
+                  </span>
                 </Content>
               </Content>
               <Content
@@ -505,11 +510,11 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                 </Content>
                 <Content className="!text-[#ffffff] mb-4">
                   <WalletOutlined className="text-xl" />
-                  <span className="float-right text-3xl">€ 13,554</span>
+                  <span className="float-right text-3xl">{currencySymbol} 13,554</span>
                 </Content>
                 <Content className="!text-[#ffffff]">
                   <span className="text-md">Last month profit</span>
-                  <span className="float-right text-md">€ 2,550</span>
+                  <span className="float-right text-md">{currencySymbol} 2,550</span>
                 </Content>
               </Content>
               <Content
