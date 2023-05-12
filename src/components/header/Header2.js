@@ -127,7 +127,7 @@ const Header2 = () => {
                     className="text-lg absolute bottom-[-2px] left-[-30px]"
                   />
                   <Text className="text-lg text-slate-600 ml-2 mr-1">
-                    Dmadmin
+                    Admin
                   </Text>
                   <DownOutlined className="text-xs text-slate-600" />
                 </Paragraph>
