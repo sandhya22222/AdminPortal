@@ -61,6 +61,7 @@ const storeAdminDashboardAPI =
 const currencySymbol = process.env.REACT_APP_CURRENCY_SYMBOL;
 const auth = getAuth.toLowerCase() === "true";
 
+
 //! Destructure the components
 const { Title, Text } = Typography;
 const { Content } = Layout;
@@ -300,37 +301,37 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
     {
       key: 1,
       name: "Store",
-      sales: "$890",
+      sales: `${currencySymbol}890`,
       marketshare: "25%",
     },
     {
       key: 2,
       name: "Store2",
-      sales: "$790",
+      sales: `${currencySymbol}790`,
       marketshare: "30%",
     },
     {
       key: 3,
       name: "Store3",
-      sales: "$800",
+      sales: `${currencySymbol}800`,
       marketshare: "40%",
     },
     {
       key: 4,
       name: "Store4",
-      sales: "$600",
+      sales: `${currencySymbol}600`,
       marketshare: "30%",
     },
     {
       key: 5,
       name: "Store4",
-      sales: "$720",
+      sales: `${currencySymbol}720`,
       marketshare: "15%",
     },
     {
       key: 6,
       name: "Store5",
-      sales: "$400",
+      sales: `${currencySymbol}400`,
       marketshare: "20%",
     },
   ];
