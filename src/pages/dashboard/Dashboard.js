@@ -212,18 +212,18 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
           makeHttpRequestForRefreshToken();
         }
       })
-      .then((res) => {
-        console.log("get access token res", res);
-        setGetPermissionsData(res.data);
-        setIsLoggedIn(logginValue);
-        sessionStorage.setItem("permissions_data", res.data);
-      })
-      .catch((err) => {
-        console.log("get access token err", err);
-        if (err && err.response && err.response.status === 401) {
-          makeHttpRequestForRefreshToken();
-        }
-      });
+      // .then((res) => {
+      //   console.log("get access token res", res);
+      //   setGetPermissionsData(res.data);
+      //   setIsLoggedIn(logginValue);
+      //   sessionStorage.setItem("permissions_data", res.data);
+      // })
+      // .catch((err) => {
+      //   console.log("get access token err", err);
+      //   if (err && err.response && err.response.status === 401) {
+      //     makeHttpRequestForRefreshToken();
+      //   }
+      // });
   };
 
   const getDashBoardData = () => {
@@ -234,9 +234,9 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
         setDashboardDataLoading(false);
       })
       .catch((error) => {
-        if (error && error.response && error.response.status === 401) {
-          makeHttpRequestForRefreshToken();
-        }
+        // if (error && error.response && error.response.status === 401) {
+        //   makeHttpRequestForRefreshToken();
+        // }
         console.log("errorresponse--->", error);
         setDashboardDataLoading(false);
         setDashboardDataNetWorkError(true);
@@ -579,7 +579,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                     Total Languages
                   </Text>
                 </div>
-                <Text className="text-xl !text-black p-2 text-3xl">
+                <Text className="text-xl !text-black p-2">
                   {dashboardData &&
                     dashboardData.language_data &&
                     dashboardData.language_data.total_count}

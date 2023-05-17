@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Bar, Pie, Column } from "@ant-design/plots";
 import { Layout, Typography, Spin } from "antd";
-import Language from "../languagee/Language";
+import Language from "../languages/Language";
 //npm installl     npm i @ant-design/plots
 
 const { Title, Text } = Typography;

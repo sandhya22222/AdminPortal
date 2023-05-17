@@ -513,7 +513,7 @@ const Language = () => {
           />
         </Content>
       </Content>
-      <Content className="!p-3">
+      <Content className="!p-3 mt-[9rem] !min-h-screen">
         {isLoading ? (
           <Content className="bg-white">
             <Skeleton
@@ -533,7 +533,7 @@ const Language = () => {
             </h5>
           </Layout>
         ) : (
-          <Layout className="!mt-[150px]">
+          <Layout className="">
             <Content>
               <DynamicTable tableComponentData={tablepropsData} />
               {totalLanguageCount && totalLanguageCount >= pageLimit ? (
