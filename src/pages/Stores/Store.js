@@ -483,7 +483,13 @@ const Stores = () => {
         if (error.response) {
           setErrorMessage(error.response.data.message);
         }
-
+        if (error && error.response === undefined) {
+          setSearchParams({
+            tab: parseInt(searchParams.get("tab")),
+            page: 1,
+            limit: parseInt(searchParams.get("limit")),
+          });
+        }
         if (error.response.data.message === "That page contains no results") {
           setSearchParams({
             tab: parseInt(searchParams.get("tab")),
@@ -652,7 +658,7 @@ const Stores = () => {
             type: "error",
           });
         }
-        console.log(error.response);
+        console.log("Error respose from the store post call", error.response);
         setIsUpLoading(false);
         // setInValidName(true)
         // onClose();
@@ -774,7 +780,7 @@ const Stores = () => {
 
   return (
     <Layout className="">
-      <Content className="mb-1">
+      <Content className="mb-3">
         <AntDesignBreadcrumbs
           data={[
             { title: "Home", navigationPath: "/", displayOrder: 1 },
@@ -1070,7 +1076,7 @@ const Stores = () => {
           }
         />
       </Content>
-      <Content className="!p-3">
+      <Content className="!p-3 mt-[9rem] !min-h-screen">
         {isLoading ? (
           <Content className="bg-white">
             <Skeleton
@@ -1091,7 +1097,7 @@ const Stores = () => {
             </h5>
           </Layout>
         ) : (
-          <Content className="!mt-[150px]">
+          <Content className="">
             <Content className="px-3">
               <DmTabAntDesign
                 tabData={storeTabData}

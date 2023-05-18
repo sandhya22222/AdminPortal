@@ -1,0 +1,17 @@
+:where(.css-dev-only-do-not-override-1hyej8k).ant-select-single.ant-select-lg
+  .ant-select-selector {
+  border-radius: 0px !important;
+}
+
+.ant-select-clear {
+  margin-top: -10px !important;
+}
+
+:where(.css-dev-only-do-not-override-1hyej8k).ant-table-wrapper
+  .ant-table-container
+  table
+  > thead
+  > tr:first-child
+  th:first-child {
+  border-start-start-radius: 8px;
+}
