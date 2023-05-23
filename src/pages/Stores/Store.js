@@ -21,6 +21,7 @@ import {
   SearchOutlined,
   UserOutlined,
   SettingOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
 import { MdInfo } from "react-icons/md";
 import {
@@ -42,7 +43,7 @@ import Highlighter from "react-highlight-words";
 import useAuthorization from "../../hooks/useAuthorization";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
-
+import StoreModal from "../../components/storeModal/StoreModal";
 const { Content } = Layout;
 const { Title, Text } = Typography;
 //! Get all required details from .env file
@@ -100,6 +101,8 @@ const Stores = () => {
   const [inValidEmail, setInValidEmail] = useState(false);
   const [inValidUserName, setInValidUserName] = useState(false);
   const [inValidPassword, setInValidPassword] = useState(false);
+  const [isDeleteStoreModalOpen, setIsDeleteStoreModalOpen] = useState(false);
+  const [deleteStoreID, setDeleteStoreID] = useState("");
 
   // const [currentPage, setCurrentPage] = useState(
   //   params.page ? params.page.slice(5, params.page.length) : 1
@@ -110,6 +113,8 @@ const Stores = () => {
   const [countForStore, setCountForStore] = useState();
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
+  const [isStoreDeleting, setIsStoreDeleting] = useState(false);
+
   const searchInput = useRef(null);
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -263,7 +268,7 @@ const Stores = () => {
       render: (text, record) => {
         return (
           <content className="whitespace-nowrap">
-            <Tooltip title="Edit Store">
+            <Tooltip title="Edit store">
               <EditOutlined
                 className="app-edit-icon font-bold text-black pr-6"
                 onClick={() => {
@@ -271,7 +276,7 @@ const Stores = () => {
                 }}
               />
             </Tooltip>
-            {/* <Tooltip title="Delete Language"> */}
+
             <Link
               to={{
                 pathname: "storesetting",
@@ -285,12 +290,22 @@ const Stores = () => {
               }}
               // className=" pl-[10px] font-semibold app-table-data-title"
             >
-              <SettingOutlined
-                className="app-delete-icon pr-4  text-black"
-                style={{ fontSize: "16px", marginLeft: "5px" }}
-              />
+              <Tooltip title="Store settings">
+                <SettingOutlined
+                  className="app-delete-icon pr-4  text-black"
+                  style={{ fontSize: "16px", marginLeft: "5px" }}
+                />
+              </Tooltip>
             </Link>
-            {/* </Tooltip> */}
+            <Tooltip title="Delete store">
+              <DeleteOutlined
+                className="app-delete-icon pr-4"
+                style={{ fontSize: "16px", marginLeft: "5px" }}
+                onClick={() => {
+                  openDeleteModal(record.id);
+                }}
+              />
+            </Tooltip>
           </content>
         );
       },
@@ -431,6 +446,18 @@ const Stores = () => {
     setStorePassword("");
     setStoreUserName("");
   };
+
+  //! opening the delete popup model
+  const openDeleteModal = (id) => {
+    setIsDeleteStoreModalOpen(true);
+    setDeleteStoreID(id);
+  };
+
+  //! closing the delete popup model
+  const closeDeleteModal = () => {
+    setIsDeleteStoreModalOpen(false);
+  };
+
   //!get call for stores
   const findByPageStoreApi = (pageNumber, pageLimit, storeStatus) => {
     // setIsLoading(true);
@@ -778,8 +805,51 @@ const Stores = () => {
     });
   };
 
+  //!delete function of language
+  const removeStore = () => {
+    setIsStoreDeleting(true);
+    MarketplaceServices.remove(storeAPI, { store_id: deleteStoreID })
+      .then((response) => {
+        console.log("response from delete===>", response, deleteStoreID);
+        if (response.status === 200 || response.status === 201) {
+          setIsDeleteStoreModalOpen(false);
+          let removedData = storeApiData.filter(
+            ({ id }) => id !== deleteStoreID
+          );
+          setStoreApiData(removedData);
+          toast("Successfully deleted the store", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "success",
+          });
+        }
+        // disabling spinner
+        setIsStoreDeleting(false);
+      })
+      .catch((error) => {
+        // disabling spinner
+        setIsStoreDeleting(false);
+        console.log("response from delete===>", error.response);
+        toast(`${error.response.data[0]}`, {
+          position: toast.POSITION.TOP_RIGHT,
+          type: "error",
+        });
+      });
+  };
+
   return (
     <Layout className="">
+      <StoreModal
+        isVisible={isDeleteStoreModalOpen}
+        okButtonText={"Ok"}
+        cancelButtonText={"Cancel"}
+        title={"Confirmation"}
+        okCallback={() => removeStore()}
+        cancelCallback={() => closeDeleteModal()}
+        isSpin={isStoreDeleting}
+        hideCloseButton={false}
+      >
+        {<div>{"Are you sure you want to delete the store?"}</div>}
+      </StoreModal>
       <Content className="mb-3">
         <AntDesignBreadcrumbs
           data={[

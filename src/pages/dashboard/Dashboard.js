@@ -61,7 +61,6 @@ const storeAdminDashboardAPI =
 const currencySymbol = process.env.REACT_APP_CURRENCY_SYMBOL;
 const auth = getAuth.toLowerCase() === "true";
 
-
 //! Destructure the components
 const { Title, Text } = Typography;
 const { Content } = Layout;
@@ -212,19 +211,19 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
         if (err && err.response && err.response.status === 401) {
           makeHttpRequestForRefreshToken();
         }
-      })
-      // .then((res) => {
-      //   console.log("get access token res", res);
-      //   setGetPermissionsData(res.data);
-      //   setIsLoggedIn(logginValue);
-      //   sessionStorage.setItem("permissions_data", res.data);
-      // })
-      // .catch((err) => {
-      //   console.log("get access token err", err);
-      //   if (err && err.response && err.response.status === 401) {
-      //     makeHttpRequestForRefreshToken();
-      //   }
-      // });
+      });
+    // .then((res) => {
+    //   console.log("get access token res", res);
+    //   setGetPermissionsData(res.data);
+    //   setIsLoggedIn(logginValue);
+    //   sessionStorage.setItem("permissions_data", res.data);
+    // })
+    // .catch((err) => {
+    //   console.log("get access token err", err);
+    //   if (err && err.response && err.response.status === 401) {
+    //     makeHttpRequestForRefreshToken();
+    //   }
+    // });
   };
 
   const getDashBoardData = () => {
@@ -511,11 +510,15 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                 </Content>
                 <Content className="!text-[#ffffff] mb-4">
                   <WalletOutlined className="text-xl" />
-                  <span className="float-right text-3xl">{currencySymbol} 13,554</span>
+                  <span className="float-right text-3xl">
+                    {currencySymbol} 13,554
+                  </span>
                 </Content>
                 <Content className="!text-[#ffffff]">
                   <span className="text-md">Last month profit</span>
-                  <span className="float-right text-md">{currencySymbol} 2,550</span>
+                  <span className="float-right text-md">
+                    {currencySymbol} 2,550
+                  </span>
                 </Content>
               </Content>
               <Content
@@ -606,7 +609,10 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                       <Content>
                         <DynamicTable tableComponentData={tablePropsData} />
                       </Content>
-                      <Text className="cursor-pointer text-blue-400">
+                      <Text
+                        className="cursor-pointer text-blue-400"
+                        // onClick={() => navigate("/dashboard/store")}
+                      >
                         Explore All Stores
                       </Text>
                     </Content>
