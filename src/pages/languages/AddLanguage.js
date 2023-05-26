@@ -102,16 +102,31 @@ const AddLanguage = () => {
     // }
     // console.log("This is from Params Data---->", paramsData);
     // enabling spinner
+    // console.log("lang_support_docs", langugaeDocumentPath + ".csv");
+    // console.log(
+    //   "languageDocumentPath",
+    //   langugaeDocumentPath,
+    //   typeof langugaeDocumentPath
+    // );
     const temp = {};
     temp["language"] = language;
     temp["language_code"] = languageCode;
-    temp["language_regex"] = regex;
-    temp["native_name"] = nativeName;
+    // console.log("regex", regex, typeof regex);
+    if (regex !== null && regex !== "") {
+      temp["language_regex"] = regex;
+    }
+    // console.log("nativename", nativeName, typeof nativeName);
+    if (nativeName !== null && nativeName !== "") {
+      temp["native_name"] = nativeName;
+    }
     temp["writing_script_direction"] = scriptDirection;
     // if (typeof fileData === "object") {
-    temp["lang_support_docs"] = langugaeDocumentPath;
+    if (langugaeDocumentPath !== null && langugaeDocumentPath !== undefined) {
+      temp["lang_support_docs"] = langugaeDocumentPath;
+    }
+    // temp["lang_support_docs"] = langugaeDocumentPath + ".csv";
     // }
-
+    console.log("tempBdy", temp);
     setIsLoading(true);
     // axios
     //   .post(
