@@ -5,6 +5,7 @@ import {
   Typography,
   Spin,
   Skeleton,
+  Image,
   Divider,
   Table,
   Button,
@@ -24,7 +25,11 @@ import {
   useParams,
   useNavigate,
 } from "react-router-dom";
-import { AdminIcon } from "../../constants/media";
+
+import { AdminIcon, Profit, Positive, Payment } from "../../constants/media";
+
+import { MdDomainDisabled, MdBusiness } from "react-icons/md";
+
 //! Import CSS libraries
 
 //! Import user defined services
@@ -447,58 +452,111 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
           </Content>
         ) : (
           <Content>
-            <Content className="flex justify-between ">
+            <Content className="flex justify-between !mt-2">
               <Content
-                className="p-3 mr-5 shadow-sm rounded-md justify-center"
-                style={{
-                  background:
-                    "linear-gradient(74.8deg, rgba(52, 168, 83, 0.6) 0%, rgba(52, 168, 83, 0.4) 98.74%)",
-                }}
+                className="p-3 mr-5 shadow-sm rounded-md justify-center !bg-white !w-[25%]"
+                // style={{
+                //   background:
+                //     "linear-gradient(74.8deg, rgba(52, 168, 83, 0.6) 0%, rgba(52, 168, 83, 0.4) 98.74%)",
+                // }}
               >
-                <Content className="!text-[#ffffff] text-md mb-2">
-                  Total Stores
+                <Content className="!text-black text-md mb-2 flex ">
+                  <Content>
+                    <span className="text-2xl font-semibold text-[#1A5692]">
+                      {dashboardData &&
+                        dashboardData.store_data &&
+                        dashboardData.store_data.total_count}{" "}
+                    </span>
+                    <span className="font-semibold">Stores</span>
+                  </Content>
+                  <Content className="!ml-8 !mt-2 text-[#1A5692] cursor-pointer">
+                    View all
+                  </Content>
                 </Content>
-                <Content className="!text-[#ffffff] mb-4">
-                  <ShopOutlined className="text-xl" />
-                  <span className="float-right text-3xl">
-                    {dashboardData &&
-                      dashboardData.store_data &&
-                      dashboardData.store_data.total_count}
-                  </span>
-                </Content>
-                <Content className="!text-[#ffffff]">
-                  <span className="text-md">Total active stores</span>
-                  <span className="float-right text-md">
-                    {dashboardData &&
-                      dashboardData.store_data &&
-                      dashboardData.store_data.active_stores}
-                  </span>
+                <Content className="!text-[#ffffff] flex !mt-5">
+                  <Content className="flex">
+                    <MdBusiness className="!text-3xl  !text-yellow-400" />
+                    <Content className="!ml-2">
+                      <p className="!text-[#8C8C8C]">Active</p>
+                      <p className="-mt-3 text-black">
+                        {dashboardData &&
+                          dashboardData.store_data &&
+                          dashboardData.store_data.active_stores}
+                      </p>
+                    </Content>
+                  </Content>
+                  <Content className="flex">
+                    <MdDomainDisabled className="!text-3xl !text-[#8C8C8C]" />
+                    <Content className="!ml-2">
+                      <p className="!text-[#8C8C8C]">Inactive</p>
+                      <p className="-mt-3  text-black">
+                        {dashboardData &&
+                          dashboardData.store_data &&
+                          dashboardData.store_data.inactive_store}
+                      </p>
+                    </Content>
+                  </Content>
                 </Content>
               </Content>
               <Content
-                className="p-3 mr-5 shadow-sm rounded-md justify-center"
-                style={{
-                  background:
-                    "linear-gradient(74.8deg, rgba(234, 67, 53, 0.6) 0%, rgba(234, 67, 53, 0.4) 98.74%)",
-                }}
+                className="p-3 mr-5 shadow-sm rounded-md justify-center !w-[42%] flex !bg-white"
+                // style={{
+                //   background:
+                //     "linear-gradient(74.8deg, rgba(234, 67, 53, 0.6) 0%, rgba(234, 67, 53, 0.4) 98.74%)",
+                // }}
               >
-                <Content className="!text-[#ffffff] text-md mb-2">
-                  Total Revenue
+                <Content className="flex">
+                  <Image
+                    width={90}
+                    preview={false}
+                    src={Positive}
+                    className="cursor-pointer"
+                  />
+                  <Content className="!ml-2">
+                    <Content className="!text-[#00000073] text-md mb-2 !font-medium">
+                      Total Revenue
+                    </Content>
+                    <Content className="!text-[#7CB305] mb-2 !font-semibold">
+                      <span className=" text-3xl">{currencySymbol} 90,400</span>
+                    </Content>
+                    <Content className="">
+                      <span className="text-sm text-[#000000D9]">
+                        Monthly revenue
+                      </span>
+                      <span className="text-md !ml-1 !text-[#7CB305]">
+                        {currencySymbol} 5,650
+                      </span>
+                    </Content>
+                  </Content>
                 </Content>
-                <Content className="!text-[#ffffff] mb-4">
-                  <SyncOutlined rotate={90} className="text-xl" />
-                  <span className="float-right text-3xl">
-                    {currencySymbol} 90,400
-                  </span>
-                </Content>
-                <Content className="!text-[#ffffff]">
-                  <span className="text-md">Last month revenue</span>
-                  <span className="float-right text-md">
-                    {currencySymbol} 5,650
-                  </span>
+                <Content className="flex">
+                  <Image
+                    width={85}
+                    preview={false}
+                    src={Profit}
+                    className="cursor-pointer"
+                  />
+                  <Content className="!ml-2">
+                    <Content className="!text-[#00000073] text-md mb-2 !font-medium">
+                      Total Profit
+                    </Content>
+                    <Content className="!text-[#7CB305] mb-2 !font-semibold">
+                      <span className=" text-3xl ">
+                        {currencySymbol} 13,554
+                      </span>
+                    </Content>
+                    <Content className="!text-[#ffffff]">
+                      <span className="text-sm text-[#000000D9]">
+                        Monthly revenue
+                      </span>
+                      <span className="text-base !ml-1 !text-[#7CB305]">
+                        {currencySymbol} 2,550
+                      </span>
+                    </Content>
+                  </Content>
                 </Content>
               </Content>
-              <Content
+              {/* <Content
                 className="p-3 mr-5 shadow-sm rounded-md justify-center"
                 style={{
                   background:
@@ -520,26 +578,39 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                     {currencySymbol} 2,550
                   </span>
                 </Content>
-              </Content>
+              </Content> */}
               <Content
-                className="p-3 mr-5 shadow-sm rounded-md justify-center"
-                style={{
-                  background:
-                    "linear-gradient(74.8deg, rgba(66, 133, 244, 0.6) 0%, rgba(66, 133, 244, 0.4) 98.74%)",
-                }}
+                className="p-3 mr-5 shadow-sm rounded-md justify-center !bg-white"
+                // style={{
+                //   background:
+                //     "linear-gradient(74.8deg, rgba(66, 133, 244, 0.6) 0%, rgba(66, 133, 244, 0.4) 98.74%)",
+                // }}
               >
-                <Content className="!text-[#ffffff] text-md mb-2">
-                  Total Product Sold
-                </Content>
-                <Content className="!text-[#ffffff] mb-4">
-                  <TagOutlined rotate={270} className="text-xl" />
-                  <span className="float-right text-3xl">5,200</span>
-                </Content>
-                <Content className="!text-[#ffffff]">
-                  <span className="text-md">
-                    No. of products sold last month
-                  </span>
-                  <span className="float-right text-md">1,400</span>
+                {/* ### */}
+
+                <Content className="flex">
+                  <Image
+                    width={85}
+                    preview={false}
+                    src={Payment}
+                    className="cursor-pointer"
+                  />
+                  <Content className="!ml-2">
+                    <Content className="!text-[#00000073] text-md mb-2 !font-medium">
+                      Product Sold
+                    </Content>
+                    <Content className="!text-[#1A5692] mb-2 !font-semibold">
+                      <span className=" text-3xl ">5,200 </span>
+                    </Content>
+                    <Content className="!text-[#ffffff]">
+                      <span className="text-sm text-[#000000D9]">
+                        products sold last month
+                      </span>
+                      <span className="text-base !ml-1 !text-[#1A5692]">
+                        1,400
+                      </span>
+                    </Content>
+                  </Content>
                 </Content>
               </Content>
             </Content>
@@ -576,27 +647,11 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                 <Text className="text-[#7dc1ff]">View Storelist </Text>
               </Content>
             </Content> */}
-            <Content className="flex justify-between mt-8">
-              <Content className="p-2 shadow-sm bg-white w-[50%]">
-                <div>
-                  <Text className="text-lg !text-[#cdcdcd] p-2">
-                    Total Languages
-                  </Text>
-                </div>
-                <Text className="text-xl !text-black p-2">
-                  {dashboardData &&
-                    dashboardData.language_data &&
-                    dashboardData.language_data.total_count}
-                </Text>{" "}
-                {/* <StoreProductTypeGraph
-                storeProductTypeData={dashboardData.product_type_data}
-              /> */}
-                <StoreGraph languageData={dashboardData.language_data} />
-              </Content>
-              <Content className="p-2 shadow-sm bg-white ml-3">
+            <Content className="mt-6">
+            <Content className="bg-white">
                 {/* <StoreGraph storeData={dashboardData.store_data} /> */}
-                <Content className="flex !mx-3">
-                  <Content className="!bg-white shadow-sm p-3 !mr-3">
+                <Content className="flex ">
+                  <Content className="!bg-white shadow-sm p-3 ">
                     <Text className="!font-bold">Rankings</Text>
                     <Text className="text-slate-300"> (Previous month)</Text>
                     <Content className="!mt-6">
@@ -619,8 +674,25 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                   </Content>
                 </Content>
               </Content>
+              <Content className="bg-white !mt-6">
+                <div>
+                  <Text className="text-lg !text-[#cdcdcd] p-2">
+                    Total Languages
+                  </Text>
+                </div>
+                <Text className="text-xl !text-black p-2">
+                  {dashboardData &&
+                    dashboardData.language_data &&
+                    dashboardData.language_data.total_count}
+                </Text>{" "}
+                {/* <StoreProductTypeGraph
+                storeProductTypeData={dashboardData.product_type_data}
+              /> */}
+                <StoreGraph languageData={dashboardData.language_data} />
+              </Content>
+              
             </Content>
-            <Content className="p-3 shadow-sm bg-white mt-8">
+            <Content className="p-3 shadow-sm bg-white !mt-6">
               <SalesReportGraph />
               {/* <LanguageGraph languageData={dashboardData.language_data} /> */}
             </Content>
