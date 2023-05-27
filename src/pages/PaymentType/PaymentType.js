@@ -95,7 +95,7 @@ const PaymentType = () => {
         />
       </Content>
       <HeaderForTitle
-        headerContent={
+        title={
           <Content>
             <Title level={3} className="!font-normal">
               Payment
@@ -103,7 +103,7 @@ const PaymentType = () => {
           </Content>
         }
       />
-      <Content className="!p-3 !mt-[150px]">
+      <Content className="!p-3 !mt-[163px] !min-h-screen ">
         <DynamicTable tableComponentData={tablePropsData} />
       </Content>
     </Content>

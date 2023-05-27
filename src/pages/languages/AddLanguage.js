@@ -373,7 +373,7 @@ const AddLanguage = () => {
   };
 
   return (
-    <Layout>
+    <Content>
       <Content className="">
         <AntDesignBreadcrumbs
           data={[
@@ -576,7 +576,7 @@ const AddLanguage = () => {
           </Content>
         </Spin>
       </Content>
-    </Layout>
+    </Content>
   );
 };
 

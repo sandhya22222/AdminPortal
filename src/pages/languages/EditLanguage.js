@@ -489,7 +489,7 @@ const EditLanguage = () => {
   };
 
   return (
-    <Layout>
+    <Content>
       <Content className="">
         <AntDesignBreadcrumbs
           data={[
@@ -752,7 +752,7 @@ const EditLanguage = () => {
           </Row>
         </Content>
       </Spin>
-    </Layout>
+    </Content>
   );
 };
 export default EditLanguage;

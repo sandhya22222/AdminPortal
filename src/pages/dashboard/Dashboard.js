@@ -390,16 +390,19 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
     <Content className="">
       <Content className="mb-2">
         <HeaderForTitle
-          headerContent={
-            <Content>
-              <Title level={3} className="!font-normal">
-                Dashboard
-              </Title>
+          title={
+            <Content className="flex !justify-between">
+              <Content className="!w-[80%]">
+                <Title level={3} className="!font-normal">
+                  Dashboard
+                </Title>
+              </Content>
+              <Content className="!w-[20%] text-right !right-0"></Content>
             </Content>
           }
         />
       </Content>
-      <Content className="!p-3 !mt-[140px]">
+      <Content className="!p-3 !mt-[155px] !min-h-screen">
         {dashboardDataLoading ? (
           <Content className="bg-white !p-3">
             <Content className="flex justify-between">
@@ -469,7 +472,10 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                     </span>
                     <span className="font-semibold">Stores</span>
                   </Content>
-                  <Content className="!ml-8 !mt-2 text-[#1A5692] cursor-pointer">
+                  <Content
+                    className="!ml-8 !mt-2 text-[#1A5692] cursor-pointer"
+                    onClick={() => navigate("/dashboard/store")}
+                  >
                     View all
                   </Content>
                 </Content>
@@ -648,7 +654,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
               </Content>
             </Content> */}
             <Content className="mt-6">
-            <Content className="bg-white">
+              <Content className="bg-white">
                 {/* <StoreGraph storeData={dashboardData.store_data} /> */}
                 <Content className="flex ">
                   <Content className="!bg-white shadow-sm p-3 ">
@@ -690,7 +696,6 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
               /> */}
                 <StoreGraph languageData={dashboardData.language_data} />
               </Content>
-              
             </Content>
             <Content className="p-3 shadow-sm bg-white !mt-6">
               <SalesReportGraph />
