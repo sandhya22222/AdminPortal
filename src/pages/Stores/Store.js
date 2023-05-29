@@ -837,7 +837,7 @@ const Stores = () => {
   };
 
   return (
-    <Layout className="">
+    <Content className="">
       <StoreModal
         isVisible={isDeleteStoreModalOpen}
         okButtonText={"Ok"}
@@ -858,7 +858,7 @@ const Stores = () => {
           ]}
         />
         <HeaderForTitle
-          headerContent={
+          title={
             <Content className="flex">
               <Content className="!inline-block text-left self-center pr-3">
                 <Title level={3} className="!font-normal">
@@ -1146,7 +1146,7 @@ const Stores = () => {
           }
         />
       </Content>
-      <Content className="!p-3 mt-[9rem] !min-h-screen">
+      <Content className="!p-3 mt-[10rem] !min-h-screen">
         {isLoading ? (
           <Content className="bg-white">
             <Skeleton
@@ -1207,7 +1207,7 @@ const Stores = () => {
           </Content>
         )}
       </Content>
-    </Layout>
+    </Content>
   );
 };
 export default Stores;

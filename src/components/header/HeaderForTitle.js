@@ -1,13 +1,46 @@
-import { Layout } from "antd";
+import { Layout, Typography } from "antd";
 import React from "react";
+import {
+  ArrowLeftOutlined,
+  CopyOutlined,
+  TranslationOutlined,
+} from "@ant-design/icons";
+import { useLocation, useNavigate } from "react-router-dom";
+import "./header2.css";
 
-const { Header } = Layout;
+const { Header, Content } = Layout;
+const { Title, Text } = Typography;
 
-function HeaderForTitle({ headerContent }) {
+function HeaderForTitle({
+  title,
+  headerContent,
+  type,
+  saveFunction,
+  cloneFunction,
+  showArrowIcon,
+  action,
+}) {
+  const navigate = useNavigate();
   return (
-    <Header className="fixed top-20 px-4 py-2 !h-auto !w-[80%] bg-white z-10 drop-shadow">
-      {headerContent}
-    </Header>
+    <Content className="fixed !h-auto top-[5.031rem] headerWidth !py-4 !px-6 bg-white z-10 drop-shadow">
+      <Content className="flex justify-between">
+        <Content className={`${showArrowIcon === true ? "flex" : ""}`}>
+          {showArrowIcon === true ? (
+            <ArrowLeftOutlined
+              className="mr-4 mt-2"
+              onClick={() => navigate(-1)}
+            />
+          ) : null}
+
+          <Title level={4} className="!m-0 !p-0 !font-semibold">
+            {title}
+          </Title>
+        </Content>
+      </Content>
+      {headerContent !== null && headerContent !== undefined ? (
+        <Content className="mt-4">{headerContent}</Content>
+      ) : null}
+    </Content>
   );
 }
 

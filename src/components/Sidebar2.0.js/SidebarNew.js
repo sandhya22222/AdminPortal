@@ -1,6 +1,6 @@
 //! Import libraries
 import React, { useState, useEffect } from "react";
-import { Layout, Menu, Affix, Spin } from "antd";
+import { Layout, Menu, Affix, Spin, Button, Divider } from "antd";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
   DashboardOutlined,
@@ -10,6 +10,8 @@ import {
   ShopOutlined,
   DollarCircleOutlined,
   SettingOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
 } from "@ant-design/icons";
 import { FaHome } from "react-icons/fa";
 import { AiOutlineHome } from "react-icons/ai";
@@ -18,7 +20,7 @@ import { AiOutlineHome } from "react-icons/ai";
 //! Import user defined functions
 
 //! Import user defined CSS
-// import "./sidebar.css";
+import "./sidebarnew.css";
 
 //! Destructure the components
 const { Sider, Content } = Layout;
@@ -46,20 +48,20 @@ const SidebarNew = (props) => {
     // },
     {
       key: "1",
-      icon: <DashboardOutlined />,
+      icon: <DashboardOutlined className="!text-[#ffffffde]" />,
       label: "Dashboard",
       navigate_to: "/dashboard",
       // children: [],
     },
     {
       key: "2",
-      icon: <ShopOutlined />,
+      icon: <ShopOutlined className="!text-[#ffffffde]" />,
       label: "Stores",
       navigate_to: "/dashboard/store",
     },
     {
       key: "3",
-      icon: <TranslationOutlined />,
+      icon: <TranslationOutlined className="!text-[#ffffffde]" />,
       label: "Languages",
       navigate_to: "/dashboard/language",
     },
@@ -71,7 +73,7 @@ const SidebarNew = (props) => {
     // },
     {
       key: "5",
-      icon: <DollarCircleOutlined />,
+      icon: <DollarCircleOutlined className="!text-[#ffffffde]" />,
       label: "Payment Type",
       navigate_to: "/dashboard/paymenttype",
     },
@@ -83,6 +85,11 @@ const SidebarNew = (props) => {
     // },
   ];
 
+  const handlePageRefresh = (navigationPath) => {
+    if (pathname !== navigationPath) {
+      // navigate(0);
+    }
+  };
   useEffect(() => {
     switch (pathname.split("/")[2]) {
       case "paymenttype":
@@ -104,40 +111,79 @@ const SidebarNew = (props) => {
   }, [pathname]);
 
   return (
-    <Layout hasSider className="w-full">
-      {/* <Affix offsetTop={80}> */}
-      <Sider className="bg-white !fixed !max-h-screen !w-[20%] !min-w-[20%] !max-w-[20%] !flex-[0_0_20%] !overflow-auto left-0 bottom-0 top-20 border-r-[1px] drop-shadow-[0_0px_2px_rgba(0,0,0,0.15)]">
-        <Spin spinning={loadingEffect} indicator={antIcon} tip="Please Wait...">
-          <Menu
-            mode="inline"
-            className="h-full"
-            selectedKeys={selectedItem}
-            openKeys={openedItem}
+    <Layout>
+      <Affix offsetTop={80}>
+        <Sider
+          trigger={null}
+          collapsible
+          collapsed={collapsed}
+          width={252}
+          style={{
+            overflow: "auto",
+            height: "100vh",
+            left: 0,
+            top: 0,
+            bottom: 0,
+          }}
+          className="!flex-[0_0_20%] min-h-screen border-r-[1px] drop-shadow-[0_0px_2px_rgba(0,0,0,0.15)]"
+        >
+          <Spin
+            spinning={loadingEffect}
+            indicator={antIcon}
+            tip="Please Wait..."
           >
-            {myData.map((item) => (
-              <Menu.Item
-                icon={item.icon}
-                key={item.key}
-                onClick={() => {
-                  navigate(item.navigate_to);
-                }}
-              >
-                {selectedItem === item.key ? (
-                  <span className="font-semibold ">{item.label}</span>
-                ) : (
-                  item.label
-                )}
-              </Menu.Item>
-            ))}
-          </Menu>
-        </Spin>
-      </Sider>
-      {/* </Affix> */}
-      <Layout className="site-layout !ml-[20%] !w-[80%] !min-h-screen">
-        {" "}
-        {/* <Content className="site-layout-background !bg-[#f4f4f4] min-h-[280px] mt-20"> */}
+            <Menu
+              mode="inline"
+              className="h-full !text-base !bg-[#001529]"
+              selectedKeys={selectedItem}
+              openKeys={openedItem}
+              theme={props.color}
+            >
+              {myData.map((item) => (
+                <Menu.Item
+                  icon={item.icon}
+                  key={item.key}
+                  onClick={() => {
+                    navigate(item.navigate_to);
+                  }}
+                >
+                  {selectedItem === item.key ? (
+                    <span className="font-semibold ">{item.label}</span>
+                  ) : (
+                    <span className="text-[#ffffffde]"> {item.label} </span>
+                  )}
+                </Menu.Item>
+              ))}
+            </Menu>
+          </Spin>
+          <Divider
+            style={{
+              background: "#FFFFFF",
+              opacity: "0.55",
+              alignSelf: "stretch",
+              margin: "0px",
+              marginTop: "350px",
+            }}
+          />
+          <Button
+            type="text"
+            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            onClick={() => setCollapsed(!collapsed)}
+            style={{
+              width: "100%",
+              display: "flex",
+              // padding: "8 16 8 16",
+              // marginTop: "0px",
+              color: "white",
+              justifyContent: "center",
+              // alignItems: "center",
+              bottom: "0",
+            }}
+          />
+        </Sider>
+      </Affix>
+      <Layout className="site-layout !w-[80%]">
         <Outlet />
-        {/* </Content> */}
       </Layout>
     </Layout>
   );

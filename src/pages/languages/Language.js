@@ -467,53 +467,54 @@ const Language = () => {
   }, [searchParams]);
 
   return (
-    <Layout className="">
+    <Content className="">
+      <StoreModal
+        isVisible={isDeleteLanguageModalOpen}
+        okButtonText={"Ok"}
+        cancelButtonText={"Cancel"}
+        title={"Confirmation"}
+        okCallback={() => removeLanguage()}
+        cancelCallback={() => closeDeleteModal()}
+        isSpin={islanguageDeleting}
+        hideCloseButton={false}
+      >
+        {<div>{"Are you sure you want to delete the language?"}</div>}
+      </StoreModal>
+      {/* <Content className="mb-3"> */}
+      <AntDesignBreadcrumbs
+        data={[
+          { title: "Home", navigationPath: "/", displayOrder: 1 },
+          { title: "Language", navigationPath: "", displayOrder: 3 },
+        ]}
+      />
       <Content>
-        <StoreModal
-          isVisible={isDeleteLanguageModalOpen}
-          okButtonText={"Ok"}
-          cancelButtonText={"Cancel"}
-          title={"Confirmation"}
-          okCallback={() => removeLanguage()}
-          cancelCallback={() => closeDeleteModal()}
-          isSpin={islanguageDeleting}
-          hideCloseButton={false}
-        >
-          {<div>{"Are you sure you want to delete the language?"}</div>}
-        </StoreModal>
-        <Content className="mb-3">
-          <AntDesignBreadcrumbs
-            data={[
-              { title: "Home", navigationPath: "/", displayOrder: 1 },
-              { title: "Language", navigationPath: "", displayOrder: 3 },
-            ]}
-          />
-          <HeaderForTitle
-            headerContent={
-              <Content className="flex">
-                <Content className="!inline-block text-left self-center pr-3">
-                  <Title level={3} className="!font-normal">
-                    Language
-                  </Title>
-                </Content>
-                <Content className="!inline-block text-right self-center">
-                  <Button
-                    className=" app-btn-primary "
-                    onClick={() => navigate("add_language")}
-                    // type="primary"
-                    // style={{
-                    //   background: "black",
-                    // }}
-                  >
-                    Add Language
-                  </Button>
-                </Content>
+        <HeaderForTitle
+          title={
+            <Content className="flex !justify-between">
+              <Content className="!w-[80%]">
+                <Title level={3} className="!font-normal">
+                  Language
+                </Title>
               </Content>
-            }
-          />
-        </Content>
+              <Content className="!w-[20%] text-right !right-0">
+                <Button
+                  className=" app-btn-primary "
+                  onClick={() => navigate("add_language")}
+                  // type="primary"
+                  // style={{
+                  //   background: "black",
+                  // }}
+                >
+                  Add Language
+                </Button>
+              </Content>
+            </Content>
+          }
+        />
       </Content>
-      <Content className="!p-3 mt-[9rem] !min-h-screen">
+
+     
+      <Content className="!p-3 mt-[10rem] !min-h-screen">
         {isLoading ? (
           <Content className="bg-white">
             <Skeleton
@@ -561,7 +562,7 @@ const Language = () => {
           </Layout>
         )}
       </Content>
-    </Layout>
+    </Content>
   );
 };
 

@@ -1,0 +1,5 @@
+:where(.css-dev-only-do-not-override-diro6f).ant-menu-light .ant-menu-item-selected {
+  background-color: #1677ff !important;
+  color: white !important;
+}
+

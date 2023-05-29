@@ -9,7 +9,11 @@ import Favicon from "../assets/images/logo/dm-favicon.png";
 import StoreLogo from "../assets/images/logo/store-logo.png";
 import WorkInProgress from "../assets/images/common/WorkInProgress.png";
 import AdminIcon from "../assets/images/common/AdminIcon.png";
-import DmBrandLogo from "../assets/images/logo/torrymarketplace.png"
+import DmBrandLogo from "../assets/images/logo/torrymarketplace.png";
+import Profit from "../assets/images/common/profit.png";
+import Positive from "../assets/images/common/positve.png";
+import Payment from "../assets/images/common/payment.png";
+
 export {
   BrandLogo,
   AppStoreLogo,
@@ -20,5 +24,8 @@ export {
   StoreLogo,
   WorkInProgress,
   AdminIcon,
-  DmBrandLogo
+  DmBrandLogo,
+  Profit,
+  Positive,
+  Payment,
 };

@@ -1,3 +1,8 @@
 .headerIcon {
   vertical-align: 0.2em !important;
 }
+
+
+.headerWidth{
+  width: -webkit-fill-available;
+}

@@ -30,6 +30,7 @@ import StoreImages from "./StoreImages";
 import Status from "../Stores/Status";
 import Preview from "./Preview";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
+import HeaderForTitle from "../../components/header/HeaderForTitle";
 const { Content } = Layout;
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -841,7 +842,7 @@ const StoreSettings = () => {
       <>
         <Row justify={"space-between"} className="!w-[80%] !mt-[95px]">
           <Col>
-            <Content className=" text-right  flex items-center ">
+            <Content className=" text-right !ml-2 flex items-center ">
               <Link to="/dashboard/store">
                 <ArrowLeftOutlined
                   role={"button"}
@@ -886,7 +887,7 @@ const StoreSettings = () => {
   };
   console.log("getImageData123", imagesUpload);
   return (
-    <Layout>
+    <Content>
       <Content className="mb-1">
         <AntDesignBreadcrumbs
           data={[
@@ -2164,7 +2165,7 @@ const StoreSettings = () => {
         </Content>
         {/* </Spin> */}
       </Content>
-    </Layout>
+    </Content>
   );
 };
 
