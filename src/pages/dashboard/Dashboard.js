@@ -470,21 +470,27 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                         dashboardData.store_data &&
                         dashboardData.store_data.total_count}{" "}
                     </span>
-                    <span className="font-semibold">Stores</span>
+                    <span className="font-semibold text-lg">Stores</span>
+                    <Text
+                      className="cursor-pointer text-sky-600 float-right font-semibold"
+                      onClick={() => navigate("/dashboard/store")}
+                    >
+                      View all
+                    </Text>
                   </Content>
-                  <Content
-                    className="!ml-8 !mt-2 text-[#1A5692] cursor-pointer"
+                  {/* <Content
+                    className="!ml-28 !mt-2 text-[#1A5692] cursor-pointer "
                     onClick={() => navigate("/dashboard/store")}
                   >
                     View all
-                  </Content>
+                  </Content> */}
                 </Content>
                 <Content className="!text-[#ffffff] flex !mt-5">
                   <Content className="flex">
                     <MdBusiness className="!text-3xl  !text-yellow-400" />
                     <Content className="!ml-2">
                       <p className="!text-[#8C8C8C]">Active</p>
-                      <p className="-mt-3 text-black">
+                      <p className="-mt-3 text-black font-bold">
                         {dashboardData &&
                           dashboardData.store_data &&
                           dashboardData.store_data.active_stores}
@@ -495,7 +501,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                     <MdDomainDisabled className="!text-3xl !text-[#8C8C8C]" />
                     <Content className="!ml-2">
                       <p className="!text-[#8C8C8C]">Inactive</p>
-                      <p className="-mt-3  text-black">
+                      <p className="-mt-3 font-bold text-black">
                         {dashboardData &&
                           dashboardData.store_data &&
                           dashboardData.store_data.inactive_store}
@@ -586,7 +592,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                 </Content>
               </Content> */}
               <Content
-                className="p-3 mr-5 shadow-sm rounded-md justify-center !bg-white"
+                className="p-3 shadow-sm rounded-md justify-center !bg-white"
                 // style={{
                 //   background:
                 //     "linear-gradient(74.8deg, rgba(66, 133, 244, 0.6) 0%, rgba(66, 133, 244, 0.4) 98.74%)",
@@ -658,8 +664,14 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                 {/* <StoreGraph storeData={dashboardData.store_data} /> */}
                 <Content className="flex ">
                   <Content className="!bg-white shadow-sm p-3 ">
-                    <Text className="!font-bold">Rankings</Text>
-                    <Text className="text-slate-300"> (Previous month)</Text>
+                    <Text className="!font-semibold text-lg">Ranking</Text>
+                    <Text className="text-slate-600"> (Previous month)</Text>
+                    <Text
+                      className="cursor-pointer text-sky-600 float-right font-semibold"
+                      onClick={() => navigate("/dashboard/store")}
+                    >
+                      View all
+                    </Text>
                     <Content className="!mt-6">
                       <DmTabAntDesign
                         tabType={"line"}
@@ -670,17 +682,17 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                       <Content>
                         <DynamicTable tableComponentData={tablePropsData} />
                       </Content>
-                      <Text
+                      {/* <Text
                         className="cursor-pointer text-blue-400"
                         // onClick={() => navigate("/dashboard/store")}
                       >
                         Explore All Stores
-                      </Text>
+                      </Text> */}
                     </Content>
                   </Content>
                 </Content>
               </Content>
-              <Content className="bg-white !mt-6">
+              <Content className="bg-white !mt-6 p-2">
                 <div>
                   <Text className="text-lg !text-[#cdcdcd] p-2">
                     Total Languages

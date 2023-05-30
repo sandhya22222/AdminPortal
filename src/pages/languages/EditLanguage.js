@@ -409,7 +409,7 @@ const EditLanguage = () => {
       })
       .catch((error) => {
         if (error.response) {
-          toast(`${error.response.data.message}`, {
+          toast(`${error.response.data.extension[0]}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
           });
