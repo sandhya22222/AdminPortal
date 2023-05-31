@@ -91,7 +91,7 @@ const StoreSettings = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [imagesUpload, setImagesUpload] = useState([]);
   const [getImageData, setGetImageData] = useState([]);
-  const [validStoreLogo, setValiStoreLogo] = useState(false);
+  const [validStoreLogo, setValidStoreLogo] = useState(false);
   const [changeSwitchStatus, setChangeSwitchStatus] = useState("");
   const [addCodes, setAddCodes] = useState([]);
   const [regionCode, setRegionCode] = useState("");
@@ -605,7 +605,7 @@ const StoreSettings = () => {
 
   const openModal = () => {
     setIsModalOpen(true);
-    // setValiStoreLogo(false);
+    // setValidStoreLogo(false);
   };
 
   const closeModal = () => {
@@ -802,7 +802,7 @@ const StoreSettings = () => {
       // let count = 1;
       // if (imagesUpload && imagesUpload.length === 0) {
       //   count--;
-      //   setValiStoreLogo(true);
+      //   setValidStoreLogo(true);
       //   toast("Please upload the store logo", {
       //     position: toast.POSITION.TOP_RIGHT,
       //     type: "error",
@@ -954,7 +954,7 @@ const StoreSettings = () => {
                     getImageData={getImageData}
                     isSingleUpload={true}
                     validStoreLogo={validStoreLogo}
-                    setValiStoreLogo={setValiStoreLogo}
+                    setValidStoreLogo={setValidStoreLogo}
                   />
                 </Col>
                 <Col>
@@ -1025,7 +1025,7 @@ const StoreSettings = () => {
                 getImageData={getImageData && getImageData[0]}
                 isSingleUpload={true}
                 validStoreLogo={validStoreLogo}
-                setValiStoreLogo={setValiStoreLogo}
+                setValidStoreLogo={setValidStoreLogo}
               />
             </Col>
             <Col className="!ml-10">
