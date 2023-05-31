@@ -144,7 +144,7 @@ const SalesReportGraph = () => {
         Monthly Sales Report
       </Title>
       <Content>
-        <Column {...config} />;
+        <Column {...config} />
       </Content>
     </>
   );
