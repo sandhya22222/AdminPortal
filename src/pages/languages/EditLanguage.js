@@ -105,7 +105,7 @@ const EditLanguage = () => {
         // var lastExtensionValue = arr.pop();
         console.log("Final File In Function", file, fileExtension);
       } else {
-        toast(`Please select File less than four mb`, {
+        toast(`Please select file less than four mb`, {
           position: toast.POSITION.TOP_RIGHT,
           type: "warning",
         });
@@ -212,7 +212,7 @@ const EditLanguage = () => {
     // ) {
     if (languageDetails.language === "") {
       setIsLanguageFieldEmpty(true);
-      toast("Please Enter Language Name", {
+      toast("Please enter language name", {
         autoClose: 5000,
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
@@ -220,7 +220,7 @@ const EditLanguage = () => {
     }
     if (languageDetails.language_code === "") {
       setIsLanguageCodeFieldEmpty(true);
-      toast("Please Enter Language Code", {
+      toast("Please enter language code", {
         autoClose: 5000,
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
@@ -235,7 +235,7 @@ const EditLanguage = () => {
         languageDetails.writing_script_direction &&
       responseLanguageData[0].language_regex === languageDetails.language_regex
     ) {
-      toast("No Changes Detected !", {
+      toast("No changes detected !", {
         autoClose: 5000,
         position: toast.POSITION.TOP_RIGHT,
         type: "info",
@@ -329,7 +329,7 @@ const EditLanguage = () => {
         setIsLoading(false);
         if (fileData) {
           if (fileValue !== ".csv")
-            toast("Invalid Extention , It will support only .csv extention", {
+            toast("Invalid extention , it will support only .csv extention", {
               position: toast.POSITION.TOP_RIGHT,
               type: "error",
             });
@@ -450,7 +450,7 @@ const EditLanguage = () => {
       .then((response) => {
         console.log("response from delete===>", response.data);
         if (response.status === 200 || response.status === 201) {
-          toast("Document Deleted Successfully", {
+          toast("Document deleted successfully", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
           });

@@ -44,6 +44,8 @@ import useAuthorization from "../../hooks/useAuthorization";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
 import StoreModal from "../../components/storeModal/StoreModal";
+import { MdDomainDisabled, MdBusiness } from "react-icons/md";
+
 const { Content } = Layout;
 const { Title, Text } = Typography;
 //! Get all required details from .env file
@@ -53,14 +55,17 @@ const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE);
 const storeTabData = [
   {
     tabId: 0,
+    tabIcon: <MdBusiness className="!text-2xl " />,
     tabTitle: "All",
   },
   {
     tabId: 1,
+    tabIcon: <MdBusiness className="!text-2xl " />,
     tabTitle: "Active",
   },
   {
     tabId: 2,
+    tabIcon: <MdDomainDisabled className="!text-2xl " />,
     tabTitle: "Inactive",
   },
 ];
@@ -740,7 +745,7 @@ const Stores = () => {
             type: "error",
           });
         } else {
-          toast("Something Went Wrong", {
+          toast("Something went wrong", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
           });
@@ -774,7 +779,7 @@ const Stores = () => {
         type: "error",
       });
     } else if (editName === serverStoreName) {
-      toast("No Changes Detected !", {
+      toast("No changes detected !", {
         position: toast.POSITION.TOP_RIGHT,
         type: "info",
       });
@@ -1178,6 +1183,7 @@ const Stores = () => {
                 }
                 tabType={"line"}
                 tabBarPosition={"top"}
+                
               />
             </Content>
             <Content>

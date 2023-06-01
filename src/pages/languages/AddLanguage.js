@@ -164,7 +164,7 @@ const AddLanguage = () => {
           });
         } else if (fileData) {
           if (fileExtension !== "csv") {
-            toast("Invalid Extention , It will support only .csv extention", {
+            toast("Invalid extention , it will support only .csv extention", {
               position: toast.POSITION.TOP_RIGHT,
               type: "error",
             });
@@ -184,7 +184,7 @@ const AddLanguage = () => {
     if (language === "") {
       setIsLanguageFieldEmpty(true);
       // validValues -= 1;
-      toast("Please Enter Language Name", {
+      toast("Please enter language name", {
         autoClose: 5000,
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
@@ -193,7 +193,7 @@ const AddLanguage = () => {
     if (languageCode === "") {
       setIsLanguageCodeFieldEmpty(true);
       // validValues -= 1;
-      toast("Please Enter Language Code", {
+      toast("Please enter language code", {
         autoClose: 5000,
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
@@ -321,7 +321,7 @@ const AddLanguage = () => {
       .then((response) => {
         console.log("response from delete===>", response.data);
         if (response.status === 200 || response.status === 201) {
-          toast("Document Deleted Successfully", {
+          toast("Document deleted successfully", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
           });
