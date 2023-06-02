@@ -684,7 +684,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                       </Content>
                       {/* <Text
                         className="cursor-pointer text-blue-400"
-                        // onClick={() => navigate("/dashboard/store")}
+                        onClick={() => navigate("/dashboard/store")}
                       >
                         Explore All Stores
                       </Text> */}
