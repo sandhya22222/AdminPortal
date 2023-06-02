@@ -2141,23 +2141,23 @@ const StoreSettings = () => {
               <Button
                 className=" app-btn-secondary"
                 onClick={() => {
-                  // navigate("/dashboard/store");
-                  setFractionalUnit("");
-                  setNumberToBasic("");
-                  setCurrencyIsoCode("");
-                  setCurrencySymbol("");
-                  setPageBackgroundColor("#EBEBEB");
-                  setButtonPrimaryBackgroundColor("#00000");
-                  setButtonSecondaryBackgroundColor("#00000");
-                  setButtonTeritaryBackgroundColor("#00000");
-                  setButtonPrimaryForegroundColor("#00000");
-                  setButtonSecondaryForegroundColor("#00000");
-                  setButtonTeritaryForegroundColor("#00000");
-                  setForeGroundColor("#333333");
-                  setFooterBackgroundColor("#00000");
-                  setFooterForegroundColor("#00000");
-                  setHeaderForegroundColor("#00000");
-                  setHeaderBackgroundColor("#00000");
+                  navigate("/dashboard/store");
+                  // setFractionalUnit("");
+                  // setNumberToBasic("");
+                  // setCurrencyIsoCode("");
+                  // setCurrencySymbol("");
+                  // setPageBackgroundColor("#EBEBEB");
+                  // setButtonPrimaryBackgroundColor("#00000");
+                  // setButtonSecondaryBackgroundColor("#00000");
+                  // setButtonTeritaryBackgroundColor("#00000");
+                  // setButtonPrimaryForegroundColor("#00000");
+                  // setButtonSecondaryForegroundColor("#00000");
+                  // setButtonTeritaryForegroundColor("#00000");
+                  // setForeGroundColor("#333333");
+                  // setFooterBackgroundColor("#00000");
+                  // setFooterForegroundColor("#00000");
+                  // setHeaderForegroundColor("#00000");
+                  // setHeaderBackgroundColor("#00000");
                   // setImagesUpload([]);
                 }}
               >
