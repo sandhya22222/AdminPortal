@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Nav, Collapse, NavbarBrand, Navbar } from "reactstrap";
-import { Button, Layout, Menu } from "antd";
+import { Button, Layout, Menu, Typography } from "antd";
 import { BrandLogo, DmBrandLogo } from "../../constants/media";
 import { useDispatch, useSelector } from "react-redux";
 const { Header, Content, Sider } = Layout;
-
+const { Text } = Typography;
 const Preview = ({
   headerBackgroundColor,
   headerForegroundColor,
@@ -26,29 +26,33 @@ const Preview = ({
 
   return (
     <Content>
-      <Header className="header">
-        <div className="logo " />
-        <Menu
-          className="!h-16 "
-          style={{
-            backgroundColor: headerBackgroundColor,
-            color: headerForegroundColor,
-          }}
-          mode="horizontal"
-          defaultSelectedKeys={["2"]}
-        >
-          <div className="!text-start p-3">
-            {absoluteStoreImageInfo.type === "store_logo" ? (
-              <img className="w-[38px]" src={absoluteStoreImageInfo.value} />
-            ) : (
-              <img className="w-[170px] !mb-2" src={DmBrandLogo} />
-            )}
-          </div>
-          <div className="!text-center text-lg p-3 ">
-            Header content of the page
-          </div>
-        </Menu>
-      </Header>
+      <Content>
+        <Header className="header">
+          <Menu
+            className="!h-16 flex "
+            style={{
+              backgroundColor: headerBackgroundColor,
+              // color: headerForegroundColor,
+            }}
+            mode="horizontal"
+          >
+            <Content className="!text-start p-3">
+              {absoluteStoreImageInfo &&
+              absoluteStoreImageInfo.type === "store_logo" ? (
+                <img className="w-[38px]" src={absoluteStoreImageInfo.value} />
+              ) : (
+                <img className="w-[170px] !mb-2" src={DmBrandLogo} />
+              )}
+            </Content>
+            <Content
+              className="text-lg grid !items-center !justify-center !pl-40 "
+              style={{ color: headerForegroundColor }}
+            >
+              Header content of the page
+            </Content>
+          </Menu>
+        </Header>
+      </Content>
       <Content
         className={`min-h-[300px] text-center `}
         style={{ backgroundColor: pageBackgroundColor }}

@@ -348,7 +348,7 @@ const Language = () => {
             ({ id }) => id !== deleteLanguageID
           );
           setLanguageData(removedData);
-          toast("Language Deleted Successfully", {
+          toast("Language deleted successfully", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
           });
@@ -493,7 +493,7 @@ const Language = () => {
             <Content className="flex !justify-between">
               <Content className="!w-[80%]">
                 <Title level={3} className="!font-normal">
-                  Language
+                  Languages
                 </Title>
               </Content>
               <Content className="!w-[20%] text-right !right-0">

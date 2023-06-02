@@ -23,6 +23,7 @@ import { fnAbsoluteStoreImageInfo } from "../../services/redux/actions/ActionSto
 import useAuthorization from "../../hooks/useAuthorization";
 import { TiDelete } from "react-icons/ti";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
+import "./StoreImages.css";
 import util from "../../util/common";
 const { Title } = Typography;
 const { Content } = Layout;
@@ -318,7 +319,7 @@ const StoreImages = ({
   const handleCancel = () => setPreviewOpen(false);
 
   const handlePreview = async (file) => {
-    console.log("first",file)
+    console.log("first", file);
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
@@ -328,7 +329,7 @@ const StoreImages = ({
       file.name || file.url.substring(file.url.lastIndexOf("/") + 1)
     );
   };
-
+console.log("copyImagePath",copyImagePath)
   return (
     <Content className=" mb-2">
       <Content className="flex !mb-3">
@@ -339,12 +340,7 @@ const StoreImages = ({
           {title}
         </Title>
         <Content className=" items-end  ">
-          <InfoCircleOutlined
-            // style={{
-            //   color: "rgba(0,0,0,.45)",
-            // }}
-            className="text-sky-600"
-          />
+          <InfoCircleOutlined className="text-sky-600" />
         </Content>
         {reset === true ? (
           <Content>
@@ -359,16 +355,6 @@ const StoreImages = ({
           </Content>
         ) : null}
       </Content>
-      {/* <Content>
-        <Button
-          className="float-right mb-1 ml-2"
-          onClick={() => {
-            setImagePathShow(copyImagePath);
-          }}
-        >
-          Reset
-        </Button>
-      </Content> */}
       {imagePathShow === undefined ? (
         <Content>
           {isSingleUpload && isSingleUpload === true ? (
@@ -394,25 +380,8 @@ const StoreImages = ({
               {fileList.length >= 1 ? null : uploadButton}
             </Upload>
           ) : (
-            // <Upload
-            //   listType="picture-card"
-            //   fileList={fileList}
-            //   onPreview={handlePreview}
-            //   onChange={(e) => handleChange(e)}
-            //   name="file"
-            //   beforeUpload={() => {
-            //     return false;
-            //   }}
-            //   afterUpload={() => {
-            //     return false;
-            //   }}
-            //   accept=".png, .jpg, .jpeg"
-            // >
-            //   {uploadButton}
-            // </Upload>
             <Upload
               className="w-90"
-              // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
               listType="picture"
               beforeUpload={() => {
                 return false;
@@ -423,7 +392,6 @@ const StoreImages = ({
               fileList={fileList}
               accept=".png, .jpg, .jpeg"
               onChange={(e) => handleChange(e)}
-              // defaultFileList={[...fileList]}
             >
               <Button icon={<UploadOutlined />} className="font-semibold">
                 Click to Add Banner Image
@@ -459,13 +427,11 @@ const StoreImages = ({
                       onClick={() => {
                         if (type === "banner_images") {
                           let temp = allImageUrl.filter((item) => item !== ele);
-                          console.log("allImageUrltemp", temp);
                           if (temp && temp.length > 0) {
                             setAllImageUrl(temp);
                           } else {
                             setAllImageUrl([]);
                             setImagePathShow();
-                            // setReset(true);
                           }
                         } else {
                           setImagePathShow();
@@ -476,6 +442,27 @@ const StoreImages = ({
                   </div>
                 );
               })}
+          </Content>
+          <Content className="!mt-4">
+            {type === "banner_images" ? (
+              <Upload
+                className="w-90"
+                listType="picture"
+                beforeUpload={() => {
+                  return false;
+                }}
+                afterUpload={() => {
+                  return false;
+                }}
+                fileList={fileList}
+                accept=".png, .jpg, .jpeg"
+                onChange={(e) => handleChange(e)}
+              >
+                <Button icon={<UploadOutlined />} className="font-semibold">
+                  Click to Add Banner Image
+                </Button>
+              </Upload>
+            ) : null}
           </Content>
         </>
       )}
