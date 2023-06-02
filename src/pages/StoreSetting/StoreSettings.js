@@ -479,7 +479,7 @@ const StoreSettings = () => {
     //     position: toast.POSITION.TOP_RIGHT,
     //     type: "info",
     //   });
-    // } 
+    // }
     // else if (
     //   (imageOfStoreSettingsCurrency && imageOfStoreSettingsCurrency.symbol) ===
     //     (copyImageOfStoreSettingsCurrency &&
@@ -834,7 +834,6 @@ const StoreSettings = () => {
   //   // console.log(`switch to ${checked}`);
   //   setChangeSwitchStatus (checked)
   // };
-
   const storeSettingsHeader = () => {
     return (
       <>
@@ -859,6 +858,11 @@ const StoreSettings = () => {
                 className="bg-gray-400"
                 checked={changeSwitchStatus === 1 ? true : false}
               />
+              {/* <Status
+                storeId={id}
+                storeStatus={changeSwitchStatus === 1 ? true : false}
+                storeApiData={storeData}
+              /> */}
               <Content className="pl-1 ">
                 {changeSwitchStatus === 1 ? "Active" : "Inactive"}
               </Content>
@@ -1567,7 +1571,7 @@ const StoreSettings = () => {
               </Col>
               <Col span={7} className="ml-2">
                 <label className="text-[13px] mb-2 ml-1">
-                  Teritary Button Background Color
+                  Tertiary Button Background Color
                 </label>
                 <Content className="flex">
                   <Input
@@ -1789,7 +1793,7 @@ const StoreSettings = () => {
               </Col>
               <Col span={7} className="ml-2">
                 <label className="text-[13px] mb-2 ml-1">
-                  Teritary Button Text Color
+                  Tertiary Button Text Color
                 </label>
                 <Content className="flex">
                   <Input
@@ -2137,7 +2141,24 @@ const StoreSettings = () => {
               <Button
                 className=" app-btn-secondary"
                 onClick={() => {
-                  navigate("/dashboard/store");
+                  // navigate("/dashboard/store");
+                  setFractionalUnit("");
+                  setNumberToBasic("");
+                  setCurrencyIsoCode("");
+                  setCurrencySymbol("");
+                  setPageBackgroundColor("#EBEBEB");
+                  setButtonPrimaryBackgroundColor("#00000");
+                  setButtonSecondaryBackgroundColor("#00000");
+                  setButtonTeritaryBackgroundColor("#00000");
+                  setButtonPrimaryForegroundColor("#00000");
+                  setButtonSecondaryForegroundColor("#00000");
+                  setButtonTeritaryForegroundColor("#00000");
+                  setForeGroundColor("#333333");
+                  setFooterBackgroundColor("#00000");
+                  setFooterForegroundColor("#00000");
+                  setHeaderForegroundColor("#00000");
+                  setHeaderBackgroundColor("#00000");
+                  // setImagesUpload([]);
                 }}
               >
                 Discard

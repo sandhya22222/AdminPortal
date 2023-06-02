@@ -319,17 +319,18 @@ const StoreImages = ({
   const handleCancel = () => setPreviewOpen(false);
 
   const handlePreview = async (file) => {
-    console.log("first", file);
-    if (!file.url && !file.preview) {
+    console.log("first1245", file.thumbUrl);
+    if (!file.thumbUrl && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
-    setPreviewImage(file.url || file.preview);
+    setPreviewImage(file.thumbUrl || file.preview);
     setPreviewOpen(true);
     setPreviewTitle(
       file.name || file.url.substring(file.url.lastIndexOf("/") + 1)
     );
   };
-console.log("copyImagePath",copyImagePath)
+
+  console.log("copyImagePath", copyImagePath);
   return (
     <Content className=" mb-2">
       <Content className="flex !mb-3">
@@ -358,27 +359,44 @@ console.log("copyImagePath",copyImagePath)
       {imagePathShow === undefined ? (
         <Content>
           {isSingleUpload && isSingleUpload === true ? (
-            <Upload
-              className={`${
-                validStoreLogo
-                  ? "!border-red-400 !border-2 focus:border-red-400 hover:border-red-400 !h-[105px] !w-[105px] rounded-lg"
-                  : ""
-              }`}
-              listType="picture-card"
-              fileList={fileList}
-              name="file"
-              onPreview={handlePreview}
-              onChange={(e) => handleChange(e)}
-              beforeUpload={() => {
-                return false;
-              }}
-              afterUpload={() => {
-                return false;
-              }}
-              accept=".png, .jpg, .jpeg"
-            >
-              {fileList.length >= 1 ? null : uploadButton}
-            </Upload>
+            <>
+              <Upload
+                className={`${
+                  validStoreLogo
+                    ? "!border-red-400 !border-2 focus:border-red-400 hover:border-red-400 !h-[105px] !w-[105px] rounded-lg"
+                    : ""
+                }`}
+                listType="picture-card"
+                fileList={fileList}
+                name="file"
+                onPreview={handlePreview}
+                onChange={(e) => handleChange(e)}
+                beforeUpload={() => {
+                  return false;
+                }}
+                afterUpload={() => {
+                  return false;
+                }}
+                accept=".png, .jpg, .jpeg"
+              >
+                {fileList.length >= 1 ? null : uploadButton}
+              </Upload>
+              {/* <Modal
+                open={previewOpen}
+                // title={previewTitle}
+                visible={previewOpen}
+                footer={null}
+                onCancel={handleCancel}
+              >
+                <img
+                  alt="previewImage"
+                  style={{
+                    width: "100%",
+                  }}
+                  src={previewImage}
+                />
+              </Modal> */}
+            </>
           ) : (
             <Upload
               className="w-90"
@@ -390,6 +408,7 @@ console.log("copyImagePath",copyImagePath)
                 return false;
               }}
               fileList={fileList}
+              onPreview={handlePreview}
               accept=".png, .jpg, .jpeg"
               onChange={(e) => handleChange(e)}
             >
@@ -405,7 +424,7 @@ console.log("copyImagePath",copyImagePath)
             onCancel={handleCancel}
           >
             <img
-              alt={imagePathShow}
+              alt="previewImage"
               style={{
                 width: "100%",
               }}
