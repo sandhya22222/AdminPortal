@@ -89,12 +89,12 @@ function Status({
         setSelectedTabTableContent(selectedTabTableContent);
       }
       if (switchStatus === false) {
-        toast("Store Activation is Successful", {
+        toast("Store activation is successful", {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
         });
       } else {
-        toast("Store Deactivation is Successful", {
+        toast("Store deactivation is successful", {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
         });

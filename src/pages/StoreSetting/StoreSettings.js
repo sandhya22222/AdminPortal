@@ -115,6 +115,7 @@ const StoreSettings = () => {
     useState();
   const [imageOfStoreFooterSettings, setImageOfStoreFooterSettings] =
     useState();
+  const [isEditStoreSetting, setIsEditStoreSetting] = useState(false);
   //! get call of  getStoreSettingApi
   const findAllWithoutPageStoreSettingApi = (storeId) => {
     // axios
@@ -410,189 +411,186 @@ const StoreSettings = () => {
   //! validations of store settings API
   const validatePostStoreSetting = () => {
     let count = 4;
-    // debugger
     // if (
-    //   storeId === "Choose Store" ||
-    //   storeId === "" ||
-    //   storeId === undefined ||
-    //   storeId === null
+    //   (imageOfStoreSettingsCurrency && imageOfStoreSettingsCurrency.symbol) ===
+    //     (copyImageOfStoreSettingsCurrency &&
+    //       copyImageOfStoreSettingsCurrency.symbol) &&
+    //   (imageOfStoreSettingsCurrency &&
+    //     imageOfStoreSettingsCurrency.iso_code) ===
+    //     (copyImageOfStoreSettingsCurrency &&
+    //       copyImageOfStoreSettingsCurrency.iso_code) &&
+    //   (imageOfStoreSettingsCurrency &&
+    //     imageOfStoreSettingsCurrency.fractional_unit) ===
+    //     (copyImageOfStoreSettingsCurrency &&
+    //       copyImageOfStoreSettingsCurrency.fractional_unit) &&
+    //   (imageOfStoreSettingsCurrency &&
+    //     imageOfStoreSettingsCurrency.number_to_basic) ===
+    //     (copyImageOfStoreSettingsCurrency &&
+    //       copyImageOfStoreSettingsCurrency.number_to_basic) &&
+    //   (imageOfStoreSettingsPageTheme &&
+    //     imageOfStoreSettingsPageTheme.bg_color) ===
+    //     (copyImageOfStoreSettingsPageTheme &&
+    //       copyImageOfStoreSettingsPageTheme.bg_color) &&
+    //   (imageOfStoreSettingsPageTheme &&
+    //     imageOfStoreSettingsPageTheme.btn_primary_bg_color) ===
+    //     (copyImageOfStoreSettingsPageTheme &&
+    //       copyImageOfStoreSettingsPageTheme.btn_primary_bg_color) &&
+    //   (imageOfStoreSettingsPageTheme &&
+    //     imageOfStoreSettingsPageTheme.btn_primary_fg_color) ===
+    //     (copyImageOfStoreSettingsPageTheme &&
+    //       copyImageOfStoreSettingsPageTheme.btn_primary_fg_color) &&
+    //   (imageOfStoreSettingsPageTheme &&
+    //     imageOfStoreSettingsPageTheme.btn_secondary_bg_color) ===
+    //     (copyImageOfStoreSettingsPageTheme &&
+    //       copyImageOfStoreSettingsPageTheme.btn_secondary_bg_color) &&
+    //   (imageOfStoreSettingsPageTheme &&
+    //     imageOfStoreSettingsPageTheme.btn_secondary_fg_color) ===
+    //     (copyImageOfStoreSettingsPageTheme &&
+    //       copyImageOfStoreSettingsPageTheme.btn_secondary_fg_color) &&
+    //   (imageOfStoreSettingsPageTheme &&
+    //     imageOfStoreSettingsPageTheme.btn_tertiary_bg_color) ===
+    //     (copyImageOfStoreSettingsPageTheme &&
+    //       copyImageOfStoreSettingsPageTheme.btn_tertiary_bg_color) &&
+    //   (imageOfStoreSettingsPageTheme &&
+    //     imageOfStoreSettingsPageTheme.btn_tertiary_fg_color) ===
+    //     (copyImageOfStoreSettingsPageTheme &&
+    //       copyImageOfStoreSettingsPageTheme.btn_tertiary_fg_color) &&
+    //   (imageOfStoreSettingsPageTheme &&
+    //     imageOfStoreSettingsPageTheme.fg_color) ===
+    //     (copyImageOfStoreSettingsPageTheme &&
+    //       copyImageOfStoreSettingsPageTheme.fg_color) &&
+    //   (imageOfStoreHeaderSettings && imageOfStoreHeaderSettings.bg_color) ===
+    //     (copyImageOfStoreHeaderSetting &&
+    //       copyImageOfStoreHeaderSetting.bg_color) &&
+    //   (imageOfStoreHeaderSettings && imageOfStoreHeaderSettings.fg_color) ===
+    //     (copyImageOfStoreHeaderSetting &&
+    //       copyImageOfStoreHeaderSetting.fg_color) &&
+    //   (imageOfStoreFooterSettings && imageOfStoreFooterSettings.bg_color) ===
+    //     (copyImageOfStoreFooterSetting &&
+    //       copyImageOfStoreFooterSetting.bg_color) &&
+    //   (imageOfStoreFooterSettings && imageOfStoreFooterSettings.fg_color) ===
+    //     (copyImageOfStoreFooterSetting &&
+    //       copyImageOfStoreFooterSetting.fg_color) &&
+    //   imagesUpload.length === 0 &&
+    //   isEditStoreSetting
     // ) {
     //   count--;
-    //   setInValidStoreData(true);
-    //   toast("Please select the store", {
+    //   toast("No changes are detected", {
     //     position: toast.POSITION.TOP_RIGHT,
-    //     type: "error",
+    //     type: "info",
     //   });
+    // } 
+    // else if (
+    //   (imageOfStoreSettingsCurrency && imageOfStoreSettingsCurrency.symbol) ===
+    //     (copyImageOfStoreSettingsCurrency &&
+    //       copyImageOfStoreSettingsCurrency.symbol) &&
+    //   (imageOfStoreSettingsCurrency &&
+    //     imageOfStoreSettingsCurrency.iso_code) ===
+    //     (copyImageOfStoreSettingsCurrency &&
+    //       copyImageOfStoreSettingsCurrency.iso_code) &&
+    //   (imageOfStoreSettingsCurrency &&
+    //     imageOfStoreSettingsCurrency.fractional_unit) ===
+    //     (copyImageOfStoreSettingsCurrency &&
+    //       copyImageOfStoreSettingsCurrency.fractional_unit) &&
+    //   (imageOfStoreSettingsCurrency &&
+    //     imageOfStoreSettingsCurrency.number_to_basic) ===
+    //     (copyImageOfStoreSettingsCurrency &&
+    //       copyImageOfStoreSettingsCurrency.number_to_basic) &&
+    //   (imageOfStoreSettingsPageTheme &&
+    //     imageOfStoreSettingsPageTheme.bg_color) ===
+    //     (copyImageOfStoreSettingsPageTheme &&
+    //       copyImageOfStoreSettingsPageTheme.bg_color) &&
+    //   (imageOfStoreSettingsPageTheme &&
+    //     imageOfStoreSettingsPageTheme.btn_primary_bg_color) ===
+    //     (copyImageOfStoreSettingsPageTheme &&
+    //       copyImageOfStoreSettingsPageTheme.btn_primary_bg_color) &&
+    //   (imageOfStoreSettingsPageTheme &&
+    //     imageOfStoreSettingsPageTheme.btn_primary_fg_color) ===
+    //     (copyImageOfStoreSettingsPageTheme &&
+    //       copyImageOfStoreSettingsPageTheme.btn_primary_fg_color) &&
+    //   (imageOfStoreSettingsPageTheme &&
+    //     imageOfStoreSettingsPageTheme.btn_secondary_bg_color) ===
+    //     (copyImageOfStoreSettingsPageTheme &&
+    //       copyImageOfStoreSettingsPageTheme.btn_secondary_bg_color) &&
+    //   (imageOfStoreSettingsPageTheme &&
+    //     imageOfStoreSettingsPageTheme.btn_secondary_fg_color) ===
+    //     (copyImageOfStoreSettingsPageTheme &&
+    //       copyImageOfStoreSettingsPageTheme.btn_secondary_fg_color) &&
+    //   (imageOfStoreSettingsPageTheme &&
+    //     imageOfStoreSettingsPageTheme.btn_tertiary_bg_color) ===
+    //     (copyImageOfStoreSettingsPageTheme &&
+    //       copyImageOfStoreSettingsPageTheme.btn_tertiary_bg_color) &&
+    //   (imageOfStoreSettingsPageTheme &&
+    //     imageOfStoreSettingsPageTheme.btn_tertiary_fg_color) ===
+    //     (copyImageOfStoreSettingsPageTheme &&
+    //       copyImageOfStoreSettingsPageTheme.btn_tertiary_fg_color) &&
+    //   (imageOfStoreSettingsPageTheme &&
+    //     imageOfStoreSettingsPageTheme.fg_color) ===
+    //     (copyImageOfStoreSettingsPageTheme &&
+    //       copyImageOfStoreSettingsPageTheme.fg_color) &&
+    //   (imageOfStoreHeaderSettings && imageOfStoreHeaderSettings.bg_color) ===
+    //     (copyImageOfStoreHeaderSetting &&
+    //       copyImageOfStoreHeaderSetting.bg_color) &&
+    //   (imageOfStoreHeaderSettings && imageOfStoreHeaderSettings.fg_color) ===
+    //     (copyImageOfStoreHeaderSetting &&
+    //       copyImageOfStoreHeaderSetting.fg_color) &&
+    //   (imageOfStoreFooterSettings && imageOfStoreFooterSettings.bg_color) ===
+    //     (copyImageOfStoreFooterSetting &&
+    //       copyImageOfStoreFooterSetting.bg_color) &&
+    //   (imageOfStoreFooterSettings && imageOfStoreFooterSettings.fg_color) ===
+    //     (copyImageOfStoreFooterSetting &&
+    //       copyImageOfStoreFooterSetting.fg_color) &&
+    //   isEditStoreSetting
+    // ) {
+    //   count--;
     // }
     if (
-      (imageOfStoreSettingsCurrency && imageOfStoreSettingsCurrency.symbol) ===
-        (copyImageOfStoreSettingsCurrency &&
-          copyImageOfStoreSettingsCurrency.symbol) &&
-      (imageOfStoreSettingsCurrency &&
-        imageOfStoreSettingsCurrency.iso_code) ===
-        (copyImageOfStoreSettingsCurrency &&
-          copyImageOfStoreSettingsCurrency.iso_code) &&
-      (imageOfStoreSettingsCurrency &&
-        imageOfStoreSettingsCurrency.fractional_unit) ===
-        (copyImageOfStoreSettingsCurrency &&
-          copyImageOfStoreSettingsCurrency.fractional_unit) &&
-      (imageOfStoreSettingsCurrency &&
-        imageOfStoreSettingsCurrency.number_to_basic) ===
-        (copyImageOfStoreSettingsCurrency &&
-          copyImageOfStoreSettingsCurrency.number_to_basic) &&
-      (imageOfStoreSettingsPageTheme &&
-        imageOfStoreSettingsPageTheme.bg_color) ===
-        (copyImageOfStoreSettingsPageTheme &&
-          copyImageOfStoreSettingsPageTheme.bg_color) &&
-      (imageOfStoreSettingsPageTheme &&
-        imageOfStoreSettingsPageTheme.btn_primary_bg_color) ===
-        (copyImageOfStoreSettingsPageTheme &&
-          copyImageOfStoreSettingsPageTheme.btn_primary_bg_color) &&
-      (imageOfStoreSettingsPageTheme &&
-        imageOfStoreSettingsPageTheme.btn_primary_fg_color) ===
-        (copyImageOfStoreSettingsPageTheme &&
-          copyImageOfStoreSettingsPageTheme.btn_primary_fg_color) &&
-      (imageOfStoreSettingsPageTheme &&
-        imageOfStoreSettingsPageTheme.btn_secondary_bg_color) ===
-        (copyImageOfStoreSettingsPageTheme &&
-          copyImageOfStoreSettingsPageTheme.btn_secondary_bg_color) &&
-      (imageOfStoreSettingsPageTheme &&
-        imageOfStoreSettingsPageTheme.btn_secondary_fg_color) ===
-        (copyImageOfStoreSettingsPageTheme &&
-          copyImageOfStoreSettingsPageTheme.btn_secondary_fg_color) &&
-      (imageOfStoreSettingsPageTheme &&
-        imageOfStoreSettingsPageTheme.btn_tertiary_bg_color) ===
-        (copyImageOfStoreSettingsPageTheme &&
-          copyImageOfStoreSettingsPageTheme.btn_tertiary_bg_color) &&
-      (imageOfStoreSettingsPageTheme &&
-        imageOfStoreSettingsPageTheme.btn_tertiary_fg_color) ===
-        (copyImageOfStoreSettingsPageTheme &&
-          copyImageOfStoreSettingsPageTheme.btn_tertiary_fg_color) &&
-      (imageOfStoreSettingsPageTheme &&
-        imageOfStoreSettingsPageTheme.fg_color) ===
-        (copyImageOfStoreSettingsPageTheme &&
-          copyImageOfStoreSettingsPageTheme.fg_color) &&
-      (imageOfStoreHeaderSettings && imageOfStoreHeaderSettings.bg_color) ===
-        (copyImageOfStoreHeaderSetting &&
-          copyImageOfStoreHeaderSetting.bg_color) &&
-      (imageOfStoreHeaderSettings && imageOfStoreHeaderSettings.fg_color) ===
-        (copyImageOfStoreHeaderSetting &&
-          copyImageOfStoreHeaderSetting.fg_color) &&
-      (imageOfStoreFooterSettings && imageOfStoreFooterSettings.bg_color) ===
-        (copyImageOfStoreFooterSetting &&
-          copyImageOfStoreFooterSetting.bg_color) &&
-      (imageOfStoreFooterSettings && imageOfStoreFooterSettings.fg_color) ===
-        (copyImageOfStoreFooterSetting &&
-          copyImageOfStoreFooterSetting.fg_color) &&
-      imagesUpload.length === 0
-    ) {
-      count--;
-      toast("No Changes are detected", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "info",
-      });
-    } else if (
-      (imageOfStoreSettingsCurrency && imageOfStoreSettingsCurrency.symbol) ===
-        (copyImageOfStoreSettingsCurrency &&
-          copyImageOfStoreSettingsCurrency.symbol) &&
-      (imageOfStoreSettingsCurrency &&
-        imageOfStoreSettingsCurrency.iso_code) ===
-        (copyImageOfStoreSettingsCurrency &&
-          copyImageOfStoreSettingsCurrency.iso_code) &&
-      (imageOfStoreSettingsCurrency &&
-        imageOfStoreSettingsCurrency.fractional_unit) ===
-        (copyImageOfStoreSettingsCurrency &&
-          copyImageOfStoreSettingsCurrency.fractional_unit) &&
-      (imageOfStoreSettingsCurrency &&
-        imageOfStoreSettingsCurrency.number_to_basic) ===
-        (copyImageOfStoreSettingsCurrency &&
-          copyImageOfStoreSettingsCurrency.number_to_basic) &&
-      (imageOfStoreSettingsPageTheme &&
-        imageOfStoreSettingsPageTheme.bg_color) ===
-        (copyImageOfStoreSettingsPageTheme &&
-          copyImageOfStoreSettingsPageTheme.bg_color) &&
-      (imageOfStoreSettingsPageTheme &&
-        imageOfStoreSettingsPageTheme.btn_primary_bg_color) ===
-        (copyImageOfStoreSettingsPageTheme &&
-          copyImageOfStoreSettingsPageTheme.btn_primary_bg_color) &&
-      (imageOfStoreSettingsPageTheme &&
-        imageOfStoreSettingsPageTheme.btn_primary_fg_color) ===
-        (copyImageOfStoreSettingsPageTheme &&
-          copyImageOfStoreSettingsPageTheme.btn_primary_fg_color) &&
-      (imageOfStoreSettingsPageTheme &&
-        imageOfStoreSettingsPageTheme.btn_secondary_bg_color) ===
-        (copyImageOfStoreSettingsPageTheme &&
-          copyImageOfStoreSettingsPageTheme.btn_secondary_bg_color) &&
-      (imageOfStoreSettingsPageTheme &&
-        imageOfStoreSettingsPageTheme.btn_secondary_fg_color) ===
-        (copyImageOfStoreSettingsPageTheme &&
-          copyImageOfStoreSettingsPageTheme.btn_secondary_fg_color) &&
-      (imageOfStoreSettingsPageTheme &&
-        imageOfStoreSettingsPageTheme.btn_tertiary_bg_color) ===
-        (copyImageOfStoreSettingsPageTheme &&
-          copyImageOfStoreSettingsPageTheme.btn_tertiary_bg_color) &&
-      (imageOfStoreSettingsPageTheme &&
-        imageOfStoreSettingsPageTheme.btn_tertiary_fg_color) ===
-        (copyImageOfStoreSettingsPageTheme &&
-          copyImageOfStoreSettingsPageTheme.btn_tertiary_fg_color) &&
-      (imageOfStoreSettingsPageTheme &&
-        imageOfStoreSettingsPageTheme.fg_color) ===
-        (copyImageOfStoreSettingsPageTheme &&
-          copyImageOfStoreSettingsPageTheme.fg_color) &&
-      (imageOfStoreHeaderSettings && imageOfStoreHeaderSettings.bg_color) ===
-        (copyImageOfStoreHeaderSetting &&
-          copyImageOfStoreHeaderSetting.bg_color) &&
-      (imageOfStoreHeaderSettings && imageOfStoreHeaderSettings.fg_color) ===
-        (copyImageOfStoreHeaderSetting &&
-          copyImageOfStoreHeaderSetting.fg_color) &&
-      (imageOfStoreFooterSettings && imageOfStoreFooterSettings.bg_color) ===
-        (copyImageOfStoreFooterSetting &&
-          copyImageOfStoreFooterSetting.bg_color) &&
-      (imageOfStoreFooterSettings && imageOfStoreFooterSettings.fg_color) ===
-        (copyImageOfStoreFooterSetting &&
-          copyImageOfStoreFooterSetting.fg_color)
-    ) {
-      count--;
-    } else if (
       currencySymbol === "" ||
       currencySymbol === undefined ||
       currencySymbol === null
     ) {
       count--;
       setInValidCurrencySymbol(true);
+      setIsEditStoreSetting(true);
       toast("Please provide the currency symbol", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
-    } else if (
+    }
+    if (
       currencyIsoCode === "" ||
       currencyIsoCode === undefined ||
       currencyIsoCode === null
     ) {
       count--;
+      setIsEditStoreSetting(true);
       setInValidCurrencyIsoCode(true);
       toast("Please provide ISO code", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
-    } else if (
+    }
+    if (
       fractionalUnit === "" ||
       fractionalUnit === undefined ||
       fractionalUnit === null
     ) {
       count--;
       setInValidFractionalUnit(true);
-      toast("Please provide the Fractional Unit", {
+      setIsEditStoreSetting(true);
+      toast("Please provide the fractional unit", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
-    } else if (
+    }
+    if (
       numberToBasic === "" ||
       numberToBasic === undefined ||
       numberToBasic === null
     ) {
       count--;
       setInValidNumberToBasic(true);
+      setIsEditStoreSetting(true);
       toast("Please provide the number to basic", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
@@ -2139,23 +2137,7 @@ const StoreSettings = () => {
               <Button
                 className=" app-btn-secondary"
                 onClick={() => {
-                  setFractionalUnit("");
-                  setNumberToBasic("");
-                  setCurrencyIsoCode("");
-                  setCurrencySymbol("");
-                  setPageBackgroundColor("#EBEBEB");
-                  setButtonPrimaryBackgroundColor("#00000");
-                  setButtonSecondaryBackgroundColor("#00000");
-                  setButtonTeritaryBackgroundColor("#00000");
-                  setButtonPrimaryForegroundColor("#00000");
-                  setButtonSecondaryForegroundColor("#00000");
-                  setButtonTeritaryForegroundColor("#00000");
-                  setForeGroundColor("#333333");
-                  setFooterBackgroundColor("#00000");
-                  setFooterForegroundColor("#00000");
-                  setHeaderForegroundColor("#00000");
-                  setHeaderBackgroundColor("#00000");
-                  setstoreId("Choose Store");
+                  navigate("/dashboard/store");
                 }}
               >
                 Discard

@@ -98,7 +98,7 @@ const PaymentType = () => {
         title={
           <Content>
             <Title level={3} className="!font-normal">
-              Payment
+              Payment Type
             </Title>
           </Content>
         }
