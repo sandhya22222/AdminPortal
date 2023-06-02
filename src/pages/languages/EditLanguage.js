@@ -317,7 +317,7 @@ const EditLanguage = () => {
         console.log(response);
         if (response.status === 200 || response.status === 201) {
           // getLanguageAPI();
-          toast("Language edited successfully.", {
+          toast("Language Edited Successfully.", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
           });
