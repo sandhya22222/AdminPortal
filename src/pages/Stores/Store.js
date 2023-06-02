@@ -1,50 +1,48 @@
-import React, { useEffect, useState, useRef } from "react";
 import {
-  Layout,
-  Typography,
-  Row,
-  Col,
-  Button,
-  Drawer,
-  Input,
-  Spin,
-  Skeleton,
-  Space,
-  Tooltip,
-  Divider,
-} from "antd";
-import axios from "axios";
-import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
-import { toast } from "react-toastify";
-import {
+  DeleteOutlined,
   EditOutlined,
   SearchOutlined,
-  UserOutlined,
   SettingOutlined,
-  DeleteOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
+import {
+  Button,
+  Col,
+  Divider,
+  Drawer,
+  Input,
+  Layout,
+  Row,
+  Skeleton,
+  Space,
+  Spin,
+  Tooltip,
+  Typography,
+} from "antd";
+import React, { useEffect, useRef, useState } from "react";
 import { MdInfo } from "react-icons/md";
 import {
-  useLocation,
   Link,
-  useSearchParams,
-  useParams,
+  useLocation,
   useNavigate,
+  useParams,
+  useSearchParams,
 } from "react-router-dom";
+import { toast } from "react-toastify";
+import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
 //! Import user defined components
+import Highlighter from "react-highlight-words";
+import { MdBusiness, MdDomainDisabled } from "react-icons/md";
+import DmPagination from "../../components/DmPagination/DmPagination";
 import DmTabAntDesign from "../../components/DmTabAntDesign/DmTabAntDesign";
 import DynamicTable from "../../components/DynamicTable/DynamicTable";
-import SkeletonComponent from "../../components/Skeleton/SkeletonComponent";
 import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
-import Status from "./Status";
-import DmPagination from "../../components/DmPagination/DmPagination";
-import { usePageTitle } from "../../hooks/usePageTitle";
-import Highlighter from "react-highlight-words";
-import useAuthorization from "../../hooks/useAuthorization";
-import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
 import StoreModal from "../../components/storeModal/StoreModal";
-import { MdDomainDisabled, MdBusiness } from "react-icons/md";
+import useAuthorization from "../../hooks/useAuthorization";
+import { usePageTitle } from "../../hooks/usePageTitle";
+import MarketplaceServices from "../../services/axios/MarketplaceServices";
+import Status from "./Status";
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
@@ -52,23 +50,7 @@ const { Title, Text } = Typography;
 const storeAPI = process.env.REACT_APP_STORE_API;
 const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE);
 //! tab data
-const storeTabData = [
-  {
-    tabId: 0,
-    tabIcon: <MdBusiness className="!text-2xl " />,
-    tabTitle: "All",
-  },
-  {
-    tabId: 1,
-    tabIcon: <MdBusiness className="!text-2xl " />,
-    tabTitle: "Active",
-  },
-  {
-    tabId: 2,
-    tabIcon: <MdDomainDisabled className="!text-2xl " />,
-    tabTitle: "Inactive",
-  },
-];
+
 const Stores = () => {
   const authorizationHeader = useAuthorization();
 
@@ -108,6 +90,9 @@ const Stores = () => {
   const [inValidPassword, setInValidPassword] = useState(false);
   const [isDeleteStoreModalOpen, setIsDeleteStoreModalOpen] = useState(false);
   const [deleteStoreID, setDeleteStoreID] = useState("");
+  const [allCount, setAllCount] = useState("");
+  const [activeCount, setActiveCount] = useState("");
+  const [inactiveCount, setInactiveCount] = useState("");
 
   // const [currentPage, setCurrentPage] = useState(
   //   params.page ? params.page.slice(5, params.page.length) : 1
@@ -126,6 +111,40 @@ const Stores = () => {
     setSearchText(selectedKeys[0]);
     setSearchedColumn(dataIndex);
   };
+  const storeTabData = [
+    {
+      tabId: 0,
+      tabIcon: <MdBusiness className="!text-2xl " />,
+      tabTitle: (
+        <div className="flex flex-row">
+          <Text>All</Text>
+          <div className="rounded-full bg-sky-100 ml-2">{allCount}</div>{" "}
+        </div>
+      ),
+    },
+    {
+      tabId: 1,
+      tabIcon: <MdBusiness className="!text-2xl " />,
+      tabTitle: (
+        <div className="flex flex-row">
+          <Text>Active</Text>
+          <div className="rounded-full bg-sky-100 ml-2">{activeCount}</div>{" "}
+        </div>
+      ),
+    },
+    {
+      tabId: 2,
+      tabIcon: <MdDomainDisabled className="!text-2xl " />,
+      tabTitle: (
+        <div className="flex flex-row">
+          <Text>Inactive</Text>
+          <div className="rounded-full bg-sky-100 ml-2">
+            {inactiveCount}
+          </div>{" "}
+        </div>
+      ),
+    },
+  ];
 
   const handleReset = (clearFilters) => {
     clearFilters();
@@ -489,12 +508,23 @@ const Stores = () => {
       false
     )
       .then(function (response) {
+        if (storeStatus === 1) {
+          setActiveCount(response.data.count);
+        } else if (storeStatus === 2) {
+          setInactiveCount(response.data.count);
+        } else setAllCount(response.data.count);
+
+        console.log("first", allCount);
+        console.log("second", activeCount);
+        console.log("third", inactiveCount);
+
         setIsNetworkError(false);
         setIsLoading(false);
         console.log(
           "Server Response from findByPageStoreApi Function: ",
           response.data.data
         );
+        console.log("storeStatus", storeStatus);
         // setStoreApiData(response.data.data);
         //TODO: Remove line 303,304 and setStoreApiData(response.data)
         // let allStoresData = response.data;
@@ -502,7 +532,7 @@ const Stores = () => {
         setStoreApiData(response.data.data);
         setIsPaginationDataLoaded(false);
         setCountForStore(response.data.count);
-        // console.log("hii",response.data.count)
+        console.log("count", response.data.count);
       })
       .catch((error) => {
         setIsLoading(false);
@@ -801,6 +831,11 @@ const Stores = () => {
     );
     window.scrollTo(0, 0);
   }, [searchParams]);
+  useEffect(() => {
+    findByPageStoreApi(1, 20);
+    findByPageStoreApi(1, 20, 1);
+    findByPageStoreApi(1, 20, 2);
+  }, []);
 
   const handlePageNumberChange = (page, pageSize) => {
     setSearchParams({
@@ -1181,9 +1216,9 @@ const Stores = () => {
                   // searchParams.get("tab") ? searchParams.get("tab") : "0"
                   String(tab_id)
                 }
+                totalItemsCount={countForStore}
                 tabType={"line"}
                 tabBarPosition={"top"}
-                
               />
             </Content>
             <Content>
