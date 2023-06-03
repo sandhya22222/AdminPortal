@@ -342,27 +342,9 @@ const Stores = () => {
   };
   //! handleTabChangeStore to get the data according to the status
   const handleTabChangeStore = (status) => {
-    // setSearchText("");
-    // handleReset();
-    // setSearchParams({
-    //   tab: status,
-    // });
-    // if (tab_id === status) {
-    //   if (currentPage && currentCount) {
-    //     navigate(
-    //       `/dashboard/store?tab=${tab_id}&page=${currentPage}&count=${currentCount}`
-    //     );
-    //   } else {
-    //     navigate(`/dashboard/store?tab=${status}`);
-    //   }
-    // } else {
-    //   navigate(`/dashboard/store?tab=${status}`);
-    // }
     setSearchParams({
       tab: status,
-      page: parseInt(searchParams.get("page"))
-        ? parseInt(searchParams.get("page"))
-        : 1,
+      page: 1,
       limit: parseInt(searchParams.get("limit"))
         ? parseInt(searchParams.get("limit"))
         : pageLimit,
@@ -412,13 +394,13 @@ const Stores = () => {
   useEffect(() => {
     if (storeApiData && storeApiData.length > 0) {
       setIsLoading(false);
-      if (tab_id === "0" || tab_id === "1" || tab_id === "2") {
-        handleTabChangeStore(tab_id);
-      } else {
-        handleTabChangeStore("0");
-      }
+      // if (tab_id === "0" || tab_id === "1" || tab_id === "2") {
+      //   handleTabChangeStore(tab_id);
+      // } else {
+      //   handleTabChangeStore("0");
+      // }
+      tableStoreData(storeApiData);
     }
-    tableStoreData(storeApiData);
   }, [storeApiData]);
 
   //! tablepropsData to render the table columns,data,pagination
@@ -820,8 +802,18 @@ const Stores = () => {
 
   useEffect(() => {
     findByPageStoreApi(
-      searchParams.get("page") ? parseInt(searchParams.get("page")) : 1,
-      searchParams.get("limit")
+      // searchParams.get("page") ? parseInt(searchParams.get("page")) : 1,
+      // searchParams.get("limit")
+      //   ? parseInt(searchParams.get("limit"))
+      //   : pageLimit,
+      // parseInt(searchParams.get("tab")) &&
+      //   parseInt(searchParams.get("tab")) <= 2
+      //   ? parseInt(searchParams.get("tab"))
+      //   : ""
+      parseInt(searchParams.get("page"))
+        ? parseInt(searchParams.get("page"))
+        : 1,
+      parseInt(searchParams.get("limit"))
         ? parseInt(searchParams.get("limit"))
         : pageLimit,
       parseInt(searchParams.get("tab")) &&
@@ -831,6 +823,7 @@ const Stores = () => {
     );
     window.scrollTo(0, 0);
   }, [searchParams]);
+
   useEffect(() => {
     findByPageStoreApi(1, 20);
     findByPageStoreApi(1, 20, 1);
@@ -838,10 +831,15 @@ const Stores = () => {
   }, []);
 
   const handlePageNumberChange = (page, pageSize) => {
+    // setSearchParams({
+    //   tab: searchParams.get("tab"),
+    //   page: parseInt(page) ? parseInt(page) : 1,
+    //   limit: parseInt(pageSize) ? parseInt(pageSize) : pageLimit,
+    // });
     setSearchParams({
       tab: searchParams.get("tab"),
-      page: parseInt(page) ? parseInt(page) : 1,
-      limit: parseInt(pageSize) ? parseInt(pageSize) : pageLimit,
+      page: page,
+      limit: pageSize,
     });
   };
 
@@ -857,7 +855,7 @@ const Stores = () => {
             ({ id }) => id !== deleteStoreID
           );
           setStoreApiData(removedData);
-          toast("Successfully deleted the store", {
+          toast("Successfully Deleted The Store", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
           });

@@ -473,7 +473,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                     <span className="font-semibold text-lg">Stores</span>
                     <Text
                       className="cursor-pointer text-sky-600 float-right font-semibold"
-                      onClick={() => navigate("/dashboard/store")}
+                      // onClick={() => navigate("/dashboard/store")}
                     >
                       View all
                     </Text>
@@ -668,7 +668,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                     <Text className="text-slate-600"> (Previous month)</Text>
                     <Text
                       className="cursor-pointer text-sky-600 float-right font-semibold"
-                      onClick={() => navigate("/dashboard/store")}
+                      // onClick={() => navigate("/dashboard/store")}
                     >
                       View all
                     </Text>

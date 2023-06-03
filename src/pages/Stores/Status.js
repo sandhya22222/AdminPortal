@@ -32,10 +32,15 @@ function Status({
   useEffect(() => {
     setSwitchStatus(storeStatus);
   }, [storeStatus]);
+
   // opening the delete popup model
   const openModal = (e) => {
     setIsModalOpen(true);
   };
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, []);
 
   const updateStoreStatus = async () => {
     const reqbody = {
@@ -58,6 +63,8 @@ function Status({
       "store-id": parseInt(storeId),
     }).then((response) => {
       setSwitchStatus(changeSwitchStatus);
+      closeModal();
+      setIsLoading(false);
       if (changeSwitchStatus) {
         storeApiData.forEach((element) => {
           if (element.id == response.config.params["store-id"]) {
@@ -89,18 +96,17 @@ function Status({
         setSelectedTabTableContent(selectedTabTableContent);
       }
       if (switchStatus === false) {
-        toast("Store activation is successful", {
+        toast("Store Activation Is Successful", {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
         });
       } else {
-        toast("Store deactivation is successful", {
+        toast("Store Deactivation Is Successful", {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
         });
       }
-      setIsLoading(false);
-      closeModal();
+      // setIsLoading(false);
     });
     console.log("first12344", switchStatus).catch((error) => {
       toast(error.response.data.message, {
@@ -116,7 +122,7 @@ function Status({
       });
       console.log("Error from the status response ===>", error.response);
       setIsLoading(false);
-      closeModal();     
+      closeModal();
     });
 
     console.log("post body for ---", storeEditStatusAPI, " is:", reqbody);
@@ -127,6 +133,7 @@ function Status({
     setIsModalOpen(true);
   };
 
+  console.log("isLoading", isLoading);
   return (
     <div>
       <StoreModal

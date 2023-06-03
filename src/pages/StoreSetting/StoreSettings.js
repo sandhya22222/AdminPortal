@@ -360,7 +360,7 @@ const StoreSettings = () => {
     //   .post(storeSettingAPI, postBody, authorizationHeader)
     MarketplaceServices.save(storeSettingAPI, postBody)
       .then((response) => {
-        toast("Store Setting created successfully.", {
+        toast("Store Settings Created Successfully.", {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
         });
@@ -475,7 +475,7 @@ const StoreSettings = () => {
     //   isEditStoreSetting
     // ) {
     //   count--;
-    //   toast("No changes are detected", {
+    //   toast("No Changes Are Detected", {
     //     position: toast.POSITION.TOP_RIGHT,
     //     type: "info",
     //   });
@@ -854,18 +854,18 @@ const StoreSettings = () => {
 
           <Col>
             <Content className="text-right  flex items-center">
-              <Switch
+              {/* <Switch
                 className="bg-gray-400"
                 checked={changeSwitchStatus === 1 ? true : false}
-              />
-              {/* <Status
+              /> */}
+              <Status
                 storeId={id}
                 storeStatus={changeSwitchStatus === 1 ? true : false}
                 storeApiData={storeData}
-              /> */}
-              <Content className="pl-1 ">
+              />
+              {/* <Content className="pl-1 ">
                 {changeSwitchStatus === 1 ? "Active" : "Inactive"}
-              </Content>
+              </Content> */}
             </Content>
           </Col>
         </Row>
