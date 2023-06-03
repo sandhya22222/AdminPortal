@@ -235,7 +235,7 @@ const EditLanguage = () => {
         languageDetails.writing_script_direction &&
       responseLanguageData[0].language_regex === languageDetails.language_regex
     ) {
-      toast("No changes detected !", {
+      toast("No Changes Are Detected", {
         autoClose: 5000,
         position: toast.POSITION.TOP_RIGHT,
         type: "info",
@@ -367,7 +367,10 @@ const EditLanguage = () => {
     })
       .then((response) => {
         console.log("put response", response.data);
-
+        toast("File Uploaded Successfully.", {
+          position: toast.POSITION.TOP_RIGHT,
+          type: "success",
+        });
         setLanguageDetails({
           ...languageDetails,
           lang_support_docs: response.data[0].lang_support_docs,
@@ -397,10 +400,10 @@ const EditLanguage = () => {
       headers: { "Content-Type": "multipart/form-data" },
     })
       .then((response) => {
-        //   toast("file uploaded successfully.", {
-        //     position: toast.POSITION.TOP_RIGHT,
-        //     type: "success",
-        //   });
+          toast("File Uploaded Successfully.", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "success",
+          });
         // setIsUpLoading(false);
         let temp = { ...languageDetails };
         temp["lang_support_docs"] = response.data.document_path;
@@ -419,7 +422,7 @@ const EditLanguage = () => {
             type: "error",
           });
         } else {
-          toast("Something went wrong", {
+          toast("Something Went Wrong", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
           });
@@ -450,7 +453,7 @@ const EditLanguage = () => {
       .then((response) => {
         console.log("response from delete===>", response.data);
         if (response.status === 200 || response.status === 201) {
-          toast("Document deleted successfully", {
+          toast("Document Deleted Successfully", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
           });

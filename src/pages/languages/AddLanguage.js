@@ -143,7 +143,7 @@ const AddLanguage = () => {
         console.log("from--->", res);
         if (res.status === 201) {
           if (res.data) {
-            toast("Language details created", {
+            toast("Language Details Created", {
               position: toast.POSITION.TOP_RIGHT,
               type: "success",
             });
@@ -158,13 +158,13 @@ const AddLanguage = () => {
         setIsLoading(false);
         console.log("error", error.response);
         if (error.response.status === 409) {
-          toast("Data already exist", {
+          toast("Data Already Exist", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
           });
         } else if (fileData) {
           if (fileExtension !== "csv") {
-            toast("Invalid extention , it will support only .csv extention", {
+            toast("Invalid Extention , It Will Support Only .csv Extention", {
               position: toast.POSITION.TOP_RIGHT,
               type: "error",
             });
@@ -184,7 +184,7 @@ const AddLanguage = () => {
     if (language === "") {
       setIsLanguageFieldEmpty(true);
       // validValues -= 1;
-      toast("Please enter language name", {
+      toast("Please Enter Language Name", {
         autoClose: 5000,
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
@@ -193,7 +193,7 @@ const AddLanguage = () => {
     if (languageCode === "") {
       setIsLanguageCodeFieldEmpty(true);
       // validValues -= 1;
-      toast("Please enter language code", {
+      toast("Please Enter Language Code", {
         autoClose: 5000,
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
@@ -270,10 +270,10 @@ const AddLanguage = () => {
       headers: { "Content-Type": "multipart/form-data" },
     })
       .then((response) => {
-        //   toast("file uploaded successfully.", {
-        //     position: toast.POSITION.TOP_RIGHT,
-        //     type: "success",
-        //   });
+          toast("File Uploaded Successfully.", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "success",
+          });
         // setIsUpLoading(false);
         console.log("Server Success Response From files", response.data);
         setLanguageDocumentPath(response.data.document_path);
@@ -290,7 +290,7 @@ const AddLanguage = () => {
             type: "error",
           });
         } else {
-          toast("Something went wrong", {
+          toast("Something Went Wrong", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
           });
@@ -321,7 +321,7 @@ const AddLanguage = () => {
       .then((response) => {
         console.log("response from delete===>", response.data);
         if (response.status === 200 || response.status === 201) {
-          toast("Document deleted successfully", {
+          toast("Document Deleted Successfully", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
           });
