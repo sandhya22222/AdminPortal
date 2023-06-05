@@ -115,7 +115,8 @@ const StoreSettings = () => {
     useState();
   const [imageOfStoreFooterSettings, setImageOfStoreFooterSettings] =
     useState();
-  const [isEditStoreSetting, setIsEditStoreSetting] = useState(false);
+  // const [isEditStoreSetting, setIsEditStoreSetting] = useState([]);
+  let sampleobject = {};
   //! get call of  getStoreSettingApi
   const findAllWithoutPageStoreSettingApi = (storeId) => {
     // axios
@@ -318,6 +319,8 @@ const StoreSettings = () => {
     }
   }, [storeData]);
 
+  console.log("sampleobject", sampleobject);
+
   //! post call for store settings
   const saveStoreSettingsCall = () => {
     const postBody = {
@@ -360,10 +363,25 @@ const StoreSettings = () => {
     //   .post(storeSettingAPI, postBody, authorizationHeader)
     MarketplaceServices.save(storeSettingAPI, postBody)
       .then((response) => {
-        toast("Store Settings Created Successfully.", {
-          position: toast.POSITION.TOP_RIGHT,
-          type: "success",
-        });
+        if (Object.keys(sampleobject).length === 2) {
+          toast("Media And Store Settings Data Created Successfully.", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "success",
+          });
+        } else {
+          if (Object.keys(sampleobject).length > 0) {
+            if (sampleobject["settings"] === "contentSettings") {
+              toast("Store Settings Created Successfully.", {
+                position: toast.POSITION.TOP_RIGHT,
+                type: "success",
+              });
+            }
+          }
+        }
+        // toast("Store Settings Created Successfully.", {
+        //   position: toast.POSITION.TOP_RIGHT,
+        //   type: "success",
+        // });
         setIsLoading(false);
         console.log(
           "Server Success Response From storeSettingPostCall",
@@ -383,6 +401,66 @@ const StoreSettings = () => {
           response.data.store_footer_settings[0]
         );
         setImageOfStoreFooterSettings(response.data.store_footer_settings[0]);
+        setCurrencySymbol(response.data.store_currency[0].symbol);
+        setCurrencyIsoCode(response.data.store_currency[0].iso_code);
+        setFractionalUnit(response.data.store_currency[0].fractional_unit);
+        setNumberToBasic(response.data.store_currency[0].number_to_basic);
+        setPageBackgroundColor(response.data.store_page_settings[0].bg_color);
+        setPageBgColor(response.data.store_page_settings[0].bg_color);
+        setForeGroundColor(response.data.store_page_settings[0].fg_color);
+        setPageFgColor(response.data.store_page_settings[0].fg_color);
+        setButtonPrimaryBackgroundColor(
+          response.data.store_page_settings[0].btn_primary_bg_color
+        );
+        setbtnPrimaryBgColor(
+          response.data.store_page_settings[0].btn_primary_bg_color
+        );
+        setButtonPrimaryForegroundColor(
+          response.data.store_page_settings[0].btn_primary_fg_color
+        );
+        setbtnPrimaryFgColor(
+          response.data.store_page_settings[0].btn_primary_fg_color
+        );
+        setButtonSecondaryBackgroundColor(
+          response.data.store_page_settings[0].btn_secondary_bg_color
+        );
+        setbtnSecondaryBgColor(
+          response.data.store_page_settings[0].btn_secondary_bg_color
+        );
+        setButtonSecondaryForegroundColor(
+          response.data.store_page_settings[0].btn_secondary_fg_color
+        );
+        setbtnSecondaryFgColor(
+          response.data.store_page_settings[0].btn_secondary_fg_color
+        );
+        setButtonTeritaryBackgroundColor(
+          response.data.store_page_settings[0].btn_tertiary_bg_color
+        );
+        setbtnTeritaryBgColor(
+          response.data.store_page_settings[0].btn_tertiary_bg_color
+        );
+        setButtonTeritaryForegroundColor(
+          response.data.store_page_settings[0].btn_tertiary_fg_color
+        );
+        setbtnTeritaryFgColor(
+          response.data.store_page_settings[0].btn_tertiary_fg_color
+        );
+        setHeaderBackgroundColor(
+          response.data.store_header_settings[0].bg_color
+        );
+        setHeaderBgColor(response.data.store_header_settings[0].bg_color);
+        setHeaderForegroundColor(
+          response.data.store_header_settings[0].fg_color
+        );
+        setHeaderFgColor(response.data.store_header_settings[0].fg_color);
+        setFooterBackgroundColor(
+          response.data.store_footer_settings[0].bg_color
+        );
+        setFooterBgColor(response.data.store_footer_settings[0].bg_color);
+        setFooterForegroundColor(
+          response.data.store_footer_settings[0].fg_color
+        );
+        setFooterFgColor(response.data.store_footer_settings[0].fg_color);
       })
       .catch((error) => {
         if (error.response) {
@@ -408,142 +486,11 @@ const StoreSettings = () => {
       });
   };
 
+  console.log("checkking", imagesUpload);
+
   //! validations of store settings API
   const validatePostStoreSetting = () => {
     let count = 4;
-    // if (
-    //   (imageOfStoreSettingsCurrency && imageOfStoreSettingsCurrency.symbol) ===
-    //     (copyImageOfStoreSettingsCurrency &&
-    //       copyImageOfStoreSettingsCurrency.symbol) &&
-    //   (imageOfStoreSettingsCurrency &&
-    //     imageOfStoreSettingsCurrency.iso_code) ===
-    //     (copyImageOfStoreSettingsCurrency &&
-    //       copyImageOfStoreSettingsCurrency.iso_code) &&
-    //   (imageOfStoreSettingsCurrency &&
-    //     imageOfStoreSettingsCurrency.fractional_unit) ===
-    //     (copyImageOfStoreSettingsCurrency &&
-    //       copyImageOfStoreSettingsCurrency.fractional_unit) &&
-    //   (imageOfStoreSettingsCurrency &&
-    //     imageOfStoreSettingsCurrency.number_to_basic) ===
-    //     (copyImageOfStoreSettingsCurrency &&
-    //       copyImageOfStoreSettingsCurrency.number_to_basic) &&
-    //   (imageOfStoreSettingsPageTheme &&
-    //     imageOfStoreSettingsPageTheme.bg_color) ===
-    //     (copyImageOfStoreSettingsPageTheme &&
-    //       copyImageOfStoreSettingsPageTheme.bg_color) &&
-    //   (imageOfStoreSettingsPageTheme &&
-    //     imageOfStoreSettingsPageTheme.btn_primary_bg_color) ===
-    //     (copyImageOfStoreSettingsPageTheme &&
-    //       copyImageOfStoreSettingsPageTheme.btn_primary_bg_color) &&
-    //   (imageOfStoreSettingsPageTheme &&
-    //     imageOfStoreSettingsPageTheme.btn_primary_fg_color) ===
-    //     (copyImageOfStoreSettingsPageTheme &&
-    //       copyImageOfStoreSettingsPageTheme.btn_primary_fg_color) &&
-    //   (imageOfStoreSettingsPageTheme &&
-    //     imageOfStoreSettingsPageTheme.btn_secondary_bg_color) ===
-    //     (copyImageOfStoreSettingsPageTheme &&
-    //       copyImageOfStoreSettingsPageTheme.btn_secondary_bg_color) &&
-    //   (imageOfStoreSettingsPageTheme &&
-    //     imageOfStoreSettingsPageTheme.btn_secondary_fg_color) ===
-    //     (copyImageOfStoreSettingsPageTheme &&
-    //       copyImageOfStoreSettingsPageTheme.btn_secondary_fg_color) &&
-    //   (imageOfStoreSettingsPageTheme &&
-    //     imageOfStoreSettingsPageTheme.btn_tertiary_bg_color) ===
-    //     (copyImageOfStoreSettingsPageTheme &&
-    //       copyImageOfStoreSettingsPageTheme.btn_tertiary_bg_color) &&
-    //   (imageOfStoreSettingsPageTheme &&
-    //     imageOfStoreSettingsPageTheme.btn_tertiary_fg_color) ===
-    //     (copyImageOfStoreSettingsPageTheme &&
-    //       copyImageOfStoreSettingsPageTheme.btn_tertiary_fg_color) &&
-    //   (imageOfStoreSettingsPageTheme &&
-    //     imageOfStoreSettingsPageTheme.fg_color) ===
-    //     (copyImageOfStoreSettingsPageTheme &&
-    //       copyImageOfStoreSettingsPageTheme.fg_color) &&
-    //   (imageOfStoreHeaderSettings && imageOfStoreHeaderSettings.bg_color) ===
-    //     (copyImageOfStoreHeaderSetting &&
-    //       copyImageOfStoreHeaderSetting.bg_color) &&
-    //   (imageOfStoreHeaderSettings && imageOfStoreHeaderSettings.fg_color) ===
-    //     (copyImageOfStoreHeaderSetting &&
-    //       copyImageOfStoreHeaderSetting.fg_color) &&
-    //   (imageOfStoreFooterSettings && imageOfStoreFooterSettings.bg_color) ===
-    //     (copyImageOfStoreFooterSetting &&
-    //       copyImageOfStoreFooterSetting.bg_color) &&
-    //   (imageOfStoreFooterSettings && imageOfStoreFooterSettings.fg_color) ===
-    //     (copyImageOfStoreFooterSetting &&
-    //       copyImageOfStoreFooterSetting.fg_color) &&
-    //   imagesUpload.length === 0 &&
-    //   isEditStoreSetting
-    // ) {
-    //   count--;
-    //   toast("No Changes Are Detected", {
-    //     position: toast.POSITION.TOP_RIGHT,
-    //     type: "info",
-    //   });
-    // }
-    // else if (
-    //   (imageOfStoreSettingsCurrency && imageOfStoreSettingsCurrency.symbol) ===
-    //     (copyImageOfStoreSettingsCurrency &&
-    //       copyImageOfStoreSettingsCurrency.symbol) &&
-    //   (imageOfStoreSettingsCurrency &&
-    //     imageOfStoreSettingsCurrency.iso_code) ===
-    //     (copyImageOfStoreSettingsCurrency &&
-    //       copyImageOfStoreSettingsCurrency.iso_code) &&
-    //   (imageOfStoreSettingsCurrency &&
-    //     imageOfStoreSettingsCurrency.fractional_unit) ===
-    //     (copyImageOfStoreSettingsCurrency &&
-    //       copyImageOfStoreSettingsCurrency.fractional_unit) &&
-    //   (imageOfStoreSettingsCurrency &&
-    //     imageOfStoreSettingsCurrency.number_to_basic) ===
-    //     (copyImageOfStoreSettingsCurrency &&
-    //       copyImageOfStoreSettingsCurrency.number_to_basic) &&
-    //   (imageOfStoreSettingsPageTheme &&
-    //     imageOfStoreSettingsPageTheme.bg_color) ===
-    //     (copyImageOfStoreSettingsPageTheme &&
-    //       copyImageOfStoreSettingsPageTheme.bg_color) &&
-    //   (imageOfStoreSettingsPageTheme &&
-    //     imageOfStoreSettingsPageTheme.btn_primary_bg_color) ===
-    //     (copyImageOfStoreSettingsPageTheme &&
-    //       copyImageOfStoreSettingsPageTheme.btn_primary_bg_color) &&
-    //   (imageOfStoreSettingsPageTheme &&
-    //     imageOfStoreSettingsPageTheme.btn_primary_fg_color) ===
-    //     (copyImageOfStoreSettingsPageTheme &&
-    //       copyImageOfStoreSettingsPageTheme.btn_primary_fg_color) &&
-    //   (imageOfStoreSettingsPageTheme &&
-    //     imageOfStoreSettingsPageTheme.btn_secondary_bg_color) ===
-    //     (copyImageOfStoreSettingsPageTheme &&
-    //       copyImageOfStoreSettingsPageTheme.btn_secondary_bg_color) &&
-    //   (imageOfStoreSettingsPageTheme &&
-    //     imageOfStoreSettingsPageTheme.btn_secondary_fg_color) ===
-    //     (copyImageOfStoreSettingsPageTheme &&
-    //       copyImageOfStoreSettingsPageTheme.btn_secondary_fg_color) &&
-    //   (imageOfStoreSettingsPageTheme &&
-    //     imageOfStoreSettingsPageTheme.btn_tertiary_bg_color) ===
-    //     (copyImageOfStoreSettingsPageTheme &&
-    //       copyImageOfStoreSettingsPageTheme.btn_tertiary_bg_color) &&
-    //   (imageOfStoreSettingsPageTheme &&
-    //     imageOfStoreSettingsPageTheme.btn_tertiary_fg_color) ===
-    //     (copyImageOfStoreSettingsPageTheme &&
-    //       copyImageOfStoreSettingsPageTheme.btn_tertiary_fg_color) &&
-    //   (imageOfStoreSettingsPageTheme &&
-    //     imageOfStoreSettingsPageTheme.fg_color) ===
-    //     (copyImageOfStoreSettingsPageTheme &&
-    //       copyImageOfStoreSettingsPageTheme.fg_color) &&
-    //   (imageOfStoreHeaderSettings && imageOfStoreHeaderSettings.bg_color) ===
-    //     (copyImageOfStoreHeaderSetting &&
-    //       copyImageOfStoreHeaderSetting.bg_color) &&
-    //   (imageOfStoreHeaderSettings && imageOfStoreHeaderSettings.fg_color) ===
-    //     (copyImageOfStoreHeaderSetting &&
-    //       copyImageOfStoreHeaderSetting.fg_color) &&
-    //   (imageOfStoreFooterSettings && imageOfStoreFooterSettings.bg_color) ===
-    //     (copyImageOfStoreFooterSetting &&
-    //       copyImageOfStoreFooterSetting.bg_color) &&
-    //   (imageOfStoreFooterSettings && imageOfStoreFooterSettings.fg_color) ===
-    //     (copyImageOfStoreFooterSetting &&
-    //       copyImageOfStoreFooterSetting.fg_color) &&
-    //   isEditStoreSetting
-    // ) {
-    //   count--;
-    // }
     if (
       currencySymbol === "" ||
       currencySymbol === undefined ||
@@ -551,7 +498,6 @@ const StoreSettings = () => {
     ) {
       count--;
       setInValidCurrencySymbol(true);
-      setIsEditStoreSetting(true);
       toast("Please provide the currency symbol", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
@@ -563,7 +509,6 @@ const StoreSettings = () => {
       currencyIsoCode === null
     ) {
       count--;
-      setIsEditStoreSetting(true);
       setInValidCurrencyIsoCode(true);
       toast("Please provide ISO code", {
         position: toast.POSITION.TOP_RIGHT,
@@ -577,7 +522,6 @@ const StoreSettings = () => {
     ) {
       count--;
       setInValidFractionalUnit(true);
-      setIsEditStoreSetting(true);
       toast("Please provide the fractional unit", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
@@ -590,13 +534,148 @@ const StoreSettings = () => {
     ) {
       count--;
       setInValidNumberToBasic(true);
-      setIsEditStoreSetting(true);
       toast("Please provide the number to basic", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
+    } else if (
+      (imageOfStoreSettingsCurrency && imageOfStoreSettingsCurrency.symbol) ===
+        (copyImageOfStoreSettingsCurrency &&
+          copyImageOfStoreSettingsCurrency.symbol) &&
+      (imageOfStoreSettingsCurrency &&
+        imageOfStoreSettingsCurrency.iso_code) ===
+        (copyImageOfStoreSettingsCurrency &&
+          copyImageOfStoreSettingsCurrency.iso_code) &&
+      (imageOfStoreSettingsCurrency &&
+        imageOfStoreSettingsCurrency.fractional_unit) ===
+        (copyImageOfStoreSettingsCurrency &&
+          copyImageOfStoreSettingsCurrency.fractional_unit) &&
+      (imageOfStoreSettingsCurrency &&
+        imageOfStoreSettingsCurrency.number_to_basic) ===
+        (copyImageOfStoreSettingsCurrency &&
+          copyImageOfStoreSettingsCurrency.number_to_basic) &&
+      (imageOfStoreSettingsPageTheme &&
+        imageOfStoreSettingsPageTheme.bg_color) ===
+        (copyImageOfStoreSettingsPageTheme &&
+          copyImageOfStoreSettingsPageTheme.bg_color) &&
+      (imageOfStoreSettingsPageTheme &&
+        imageOfStoreSettingsPageTheme.btn_primary_bg_color) ===
+        (copyImageOfStoreSettingsPageTheme &&
+          copyImageOfStoreSettingsPageTheme.btn_primary_bg_color) &&
+      (imageOfStoreSettingsPageTheme &&
+        imageOfStoreSettingsPageTheme.btn_primary_fg_color) ===
+        (copyImageOfStoreSettingsPageTheme &&
+          copyImageOfStoreSettingsPageTheme.btn_primary_fg_color) &&
+      (imageOfStoreSettingsPageTheme &&
+        imageOfStoreSettingsPageTheme.btn_secondary_bg_color) ===
+        (copyImageOfStoreSettingsPageTheme &&
+          copyImageOfStoreSettingsPageTheme.btn_secondary_bg_color) &&
+      (imageOfStoreSettingsPageTheme &&
+        imageOfStoreSettingsPageTheme.btn_secondary_fg_color) ===
+        (copyImageOfStoreSettingsPageTheme &&
+          copyImageOfStoreSettingsPageTheme.btn_secondary_fg_color) &&
+      (imageOfStoreSettingsPageTheme &&
+        imageOfStoreSettingsPageTheme.btn_tertiary_bg_color) ===
+        (copyImageOfStoreSettingsPageTheme &&
+          copyImageOfStoreSettingsPageTheme.btn_tertiary_bg_color) &&
+      (imageOfStoreSettingsPageTheme &&
+        imageOfStoreSettingsPageTheme.btn_tertiary_fg_color) ===
+        (copyImageOfStoreSettingsPageTheme &&
+          copyImageOfStoreSettingsPageTheme.btn_tertiary_fg_color) &&
+      (imageOfStoreSettingsPageTheme &&
+        imageOfStoreSettingsPageTheme.fg_color) ===
+        (copyImageOfStoreSettingsPageTheme &&
+          copyImageOfStoreSettingsPageTheme.fg_color) &&
+      (imageOfStoreHeaderSettings && imageOfStoreHeaderSettings.bg_color) ===
+        (copyImageOfStoreHeaderSetting &&
+          copyImageOfStoreHeaderSetting.bg_color) &&
+      (imageOfStoreHeaderSettings && imageOfStoreHeaderSettings.fg_color) ===
+        (copyImageOfStoreHeaderSetting &&
+          copyImageOfStoreHeaderSetting.fg_color) &&
+      (imageOfStoreFooterSettings && imageOfStoreFooterSettings.bg_color) ===
+        (copyImageOfStoreFooterSetting &&
+          copyImageOfStoreFooterSetting.bg_color) &&
+      (imageOfStoreFooterSettings && imageOfStoreFooterSettings.fg_color) ===
+        (copyImageOfStoreFooterSetting &&
+          copyImageOfStoreFooterSetting.fg_color) &&
+      imagesUpload.length === 0
+    ) {
+      toast("No Changes Are Detected", {
+        autoClose: 5000,
+        position: toast.POSITION.TOP_RIGHT,
+        type: "info",
+      });
     }
-    if (count === 4) {
+    //else if (
+    //   (imageOfStoreSettingsCurrency && imageOfStoreSettingsCurrency.symbol) ===
+    //     (copyImageOfStoreSettingsCurrency &&
+    //       copyImageOfStoreSettingsCurrency.symbol) &&
+    //   (imageOfStoreSettingsCurrency &&
+    //     imageOfStoreSettingsCurrency.iso_code) ===
+    //     (copyImageOfStoreSettingsCurrency &&
+    //       copyImageOfStoreSettingsCurrency.iso_code) &&
+    //   (imageOfStoreSettingsCurrency &&
+    //     imageOfStoreSettingsCurrency.fractional_unit) ===
+    //     (copyImageOfStoreSettingsCurrency &&
+    //       copyImageOfStoreSettingsCurrency.fractional_unit) &&
+    //   (imageOfStoreSettingsCurrency &&
+    //     imageOfStoreSettingsCurrency.number_to_basic) ===
+    //     (copyImageOfStoreSettingsCurrency &&
+    //       copyImageOfStoreSettingsCurrency.number_to_basic) &&
+    //   (imageOfStoreSettingsPageTheme &&
+    //     imageOfStoreSettingsPageTheme.bg_color) ===
+    //     (copyImageOfStoreSettingsPageTheme &&
+    //       copyImageOfStoreSettingsPageTheme.bg_color) &&
+    //   (imageOfStoreSettingsPageTheme &&
+    //     imageOfStoreSettingsPageTheme.btn_primary_bg_color) ===
+    //     (copyImageOfStoreSettingsPageTheme &&
+    //       copyImageOfStoreSettingsPageTheme.btn_primary_bg_color) &&
+    //   (imageOfStoreSettingsPageTheme &&
+    //     imageOfStoreSettingsPageTheme.btn_primary_fg_color) ===
+    //     (copyImageOfStoreSettingsPageTheme &&
+    //       copyImageOfStoreSettingsPageTheme.btn_primary_fg_color) &&
+    //   (imageOfStoreSettingsPageTheme &&
+    //     imageOfStoreSettingsPageTheme.btn_secondary_bg_color) ===
+    //     (copyImageOfStoreSettingsPageTheme &&
+    //       copyImageOfStoreSettingsPageTheme.btn_secondary_bg_color) &&
+    //   (imageOfStoreSettingsPageTheme &&
+    //     imageOfStoreSettingsPageTheme.btn_secondary_fg_color) ===
+    //     (copyImageOfStoreSettingsPageTheme &&
+    //       copyImageOfStoreSettingsPageTheme.btn_secondary_fg_color) &&
+    //   (imageOfStoreSettingsPageTheme &&
+    //     imageOfStoreSettingsPageTheme.btn_tertiary_bg_color) ===
+    //     (copyImageOfStoreSettingsPageTheme &&
+    //       copyImageOfStoreSettingsPageTheme.btn_tertiary_bg_color) &&
+    //   (imageOfStoreSettingsPageTheme &&
+    //     imageOfStoreSettingsPageTheme.btn_tertiary_fg_color) ===
+    //     (copyImageOfStoreSettingsPageTheme &&
+    //       copyImageOfStoreSettingsPageTheme.btn_tertiary_fg_color) &&
+    //   (imageOfStoreSettingsPageTheme &&
+    //     imageOfStoreSettingsPageTheme.fg_color) ===
+    //     (copyImageOfStoreSettingsPageTheme &&
+    //       copyImageOfStoreSettingsPageTheme.fg_color) &&
+    //   (imageOfStoreHeaderSettings && imageOfStoreHeaderSettings.bg_color) ===
+    //     (copyImageOfStoreHeaderSetting &&
+    //       copyImageOfStoreHeaderSetting.bg_color) &&
+    //   (imageOfStoreHeaderSettings && imageOfStoreHeaderSettings.fg_color) ===
+    //     (copyImageOfStoreHeaderSetting &&
+    //       copyImageOfStoreHeaderSetting.fg_color) &&
+    //   (imageOfStoreFooterSettings && imageOfStoreFooterSettings.bg_color) ===
+    //     (copyImageOfStoreFooterSetting &&
+    //       copyImageOfStoreFooterSetting.bg_color) &&
+    //   (imageOfStoreFooterSettings && imageOfStoreFooterSettings.fg_color) ===
+    //     (copyImageOfStoreFooterSetting &&
+    //       copyImageOfStoreFooterSetting.fg_color) &&
+    //   isEditStoreSetting
+    // ) {
+    //   count--;
+    // }
+    else if (count === 4) {
+      // let temp = [...isEditStoreSetting];
+      // console.log("isEditStoreSetting456", temp);
+      // temp.push({ id: 2 });
+      // setIsEditStoreSetting(temp);
+      sampleobject["settings"] = "contentSettings";
       saveStoreSettingsCall();
     }
   };
@@ -690,10 +769,18 @@ const StoreSettings = () => {
       // }
     )
       .then((response) => {
-        toast("Images created successfully.", {
-          position: toast.POSITION.TOP_RIGHT,
-          type: "success",
-        });
+        if (
+          Object.keys(sampleobject).length > 0 &&
+          Object.keys(sampleobject).length !== 2
+        ) {
+          if (sampleobject["images"] === "images") {
+            toast("Images Created Successfully.", {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "success",
+            });
+          }
+        }
+
         setIsLoading(false);
         console.log(
           "Server Success Response From storeImagePostCall",
@@ -760,10 +847,18 @@ const StoreSettings = () => {
       // }
     )
       .then((response) => {
-        toast("Images updated successfully.", {
-          position: toast.POSITION.TOP_RIGHT,
-          type: "success",
-        });
+        if (
+          Object.keys(sampleobject).length > 0 &&
+          Object.keys(sampleobject).length !== 2
+        ) {
+          if (sampleobject["images"] === "images") {
+            toast("Images Updated Successfully.", {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "success",
+            });
+          }
+        }
+
         setIsLoading(false);
         console.log(
           "Server Success Response From storeImagePutCall",
@@ -794,6 +889,10 @@ const StoreSettings = () => {
   };
 
   const postImageOnClickSave = () => {
+    // let temp = [...isEditStoreSetting];
+    // temp.push({ id: 1 });
+    // setIsEditStoreSetting(temp);
+    sampleobject["images"] = "images";
     if (getImageData && getImageData.length > 0) {
       updateStoreLogoImageCall();
     } else {

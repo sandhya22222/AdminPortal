@@ -31,7 +31,7 @@ const { Image } = Skeleton;
 
 const storeBannerImageAPI = process.env.REACT_APP_STORE_BANNER_IMAGES_API;
 const storeAbsoluteImgesAPI = process.env.REACT_APP_STORE_ABSOLUTE_IMAGES_API;
-
+const storeDeleteImagesAPI = process.env.REACT_APP_STORE_DELETE_IMAGES_API;
 const StoreImages = ({
   title,
   type,
@@ -63,6 +63,7 @@ const StoreImages = ({
   const [allImageUrl, setAllImageUrl] = useState([]);
   const [bannerAbsoluteImagePath, setBannerAbsoluteImagePath] = useState([]);
   const [reset, setReset] = useState(false);
+  const [deleteStoreImage, setDeleteStoreImage] = useState([]);
   const uploadButton = (
     <div>
       <PlusOutlined />
@@ -169,8 +170,13 @@ const StoreImages = ({
   useEffect(() => {
     if (type === "store_logo") {
       let temp = getImageData && getImageData.store_logo;
+      console.log("templogo", temp);
       if (temp !== null) {
         findAllWithoutPageStoreAbsoluteImagesApi(temp);
+        // let mediaData = [...deleteStoreImage];
+        // console.log("mediaData425", mediaData);
+        // mediaData.push({ type: "store_logo", path: temp });
+        // setDeleteStoreImage(mediaData);
       } else {
         setImagePathShow();
       }
@@ -182,6 +188,9 @@ const StoreImages = ({
       let temp = getImageData && getImageData.customer_logo;
       if (temp !== null) {
         findAllWithoutPageStoreAbsoluteImagesApi(temp);
+        // let mediaData = [...deleteStoreImage];
+        // mediaData.push({ type: "customer_logo", path: temp });
+        // setDeleteStoreImage(mediaData);
       } else {
         setImagePathShow();
       }
@@ -190,6 +199,10 @@ const StoreImages = ({
       let temp = getImageData && getImageData.cart_logo;
       if (temp !== null) {
         findAllWithoutPageStoreAbsoluteImagesApi(temp);
+        // let mediaData = [...deleteStoreImage];
+        // console.log("mediaData123", mediaData);
+        // mediaData.push({ type: "cart_logo", path: temp });
+        // setDeleteStoreImage(mediaData);
       } else {
         setImagePathShow();
       }
@@ -198,6 +211,9 @@ const StoreImages = ({
       let temp = getImageData && getImageData.search_logo;
       if (temp !== null) {
         findAllWithoutPageStoreAbsoluteImagesApi(temp);
+        // let mediaData = [...deleteStoreImage];
+        // mediaData.push({ type: "search_logo", path: temp });
+        // setDeleteStoreImage(mediaData);
       } else {
         setImagePathShow();
       }
@@ -206,6 +222,9 @@ const StoreImages = ({
       let temp = getImageData && getImageData.wishlist_logo;
       if (temp !== null) {
         findAllWithoutPageStoreAbsoluteImagesApi(temp);
+        // let mediaData = [...deleteStoreImage];
+        // mediaData.push({ type: "wishlist_logo", path: temp });
+        // setDeleteStoreImage(mediaData);
       } else {
         setImagePathShow();
       }
@@ -319,7 +338,6 @@ const StoreImages = ({
   const handleCancel = () => setPreviewOpen(false);
 
   const handlePreview = async (file) => {
-    console.log("first1245", file.thumbUrl);
     if (!file.thumbUrl && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
@@ -330,7 +348,47 @@ const StoreImages = ({
     );
   };
 
-  console.log("copyImagePath", copyImagePath);
+  //!delete function of language
+  const removeMedia = (index) => {
+    console.log("index", index);
+    let dataObject = {};
+    dataObject["store-id"] = storeId;
+    dataObject["image-type"] = type;
+    if (type === "banner_images") {
+      let temp = bannerAbsoluteImage[index];
+      console.log("temp", temp);
+      dataObject["image-path"] = temp.path;
+    } else {
+      dataObject["image-path"] = getImageData[type];
+    }
+    MarketplaceServices.remove(storeDeleteImagesAPI, dataObject)
+      .then((response) => {
+        console.log("response from delete===>", response);
+        if (response.status === 200 || response.status === 201) {
+          // setIsDeleteLanguageModalOpen(false);
+          // let removedData = languageData.filter(
+          //   ({ id }) => id !== deleteLanguageID
+          // );
+          // setLanguageData(removedData);
+          toast(`${response.data.message}`, {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "success",
+          });
+        }
+        // disabling spinner
+        // setIslanguageDeleting(false);
+      })
+      .catch((error) => {
+        // disabling spinner
+        // setIslanguageDeleting(false);
+        toast(`${error.response.data.message}`, {
+          position: toast.POSITION.TOP_RIGHT,
+          type: "error",
+        });
+      });
+  };
+
+  console.log("copyImagePath", allImageUrl);
   return (
     <Content className=" mb-2">
       <Content className="flex !mb-3">
@@ -445,6 +503,8 @@ const StoreImages = ({
                       className="!absolute !cursor-pointer !right-[-5px] !z-5  !top-[-10px] !text-2xl !text-red-600 !shadow-lg  hover:translate-"
                       onClick={() => {
                         if (type === "banner_images") {
+                          removeMedia(index);
+
                           let temp = allImageUrl.filter((item) => item !== ele);
                           if (temp && temp.length > 0) {
                             setAllImageUrl(temp);
@@ -455,6 +515,7 @@ const StoreImages = ({
                         } else {
                           setImagePathShow();
                           setReset(true);
+                          removeMedia();
                         }
                       }}
                     />
