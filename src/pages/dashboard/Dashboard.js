@@ -475,7 +475,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                       className="cursor-pointer text-sky-600 float-right font-semibold"
                       // onClick={() => navigate("/dashboard/store")}
                     >
-                      View all
+                      View All
                     </Text>
                   </Content>
                   {/* <Content
@@ -616,7 +616,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                     </Content>
                     <Content className="!text-[#ffffff]">
                       <span className="text-sm text-[#000000D9]">
-                        products sold last month
+                        Products sold last month
                       </span>
                       <span className="text-base !ml-1 !text-[#1A5692]">
                         1,400
@@ -670,7 +670,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                       className="cursor-pointer text-sky-600 float-right font-semibold"
                       // onClick={() => navigate("/dashboard/store")}
                     >
-                      View all
+                      View All
                     </Text>
                     <Content className="!mt-6">
                       <DmTabAntDesign

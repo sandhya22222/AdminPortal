@@ -56,11 +56,13 @@ const AddLanguage = () => {
     const regex = /^[a-zA-Z0-9]*$/;
     if (e.target.value !== "") {
       setIsLanguageFieldEmpty(false);
-    }
-    if (regex.test(value)) {
       setLanguage(value);
       setNativeName(value);
     }
+    // if (regex.test(value)) {
+    //   setLanguage(value);
+    //   setNativeName(value);
+    // }
   };
   const handleLanguageCodeChange = (e) => {
     // setLanguageCode(e.target.value);
@@ -68,10 +70,11 @@ const AddLanguage = () => {
     const regex = /^[a-zA-Z0-9]*$/;
     if (e.target.value !== "") {
       setIsLanguageCodeFieldEmpty(false);
-    }
-    if (regex.test(value)) {
       setLanguageCode(value);
     }
+    // if (regex.test(value)) {
+    //   setLanguageCode(value);
+    // }
   };
 
   const handleRegexChange = (e) => {
@@ -157,44 +160,71 @@ const AddLanguage = () => {
         // disabbling spinner
         setIsLoading(false);
         console.log("error", error.response);
-        if (error.response.status === 409) {
-          toast("Data Already Exist", {
+        if (error && error.response === undefined) {
+          toast("Something Went Wrong", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
           });
-        } else if (fileData) {
-          if (fileExtension !== "csv") {
-            toast("Invalid Extention , It Will Support Only .csv Extention", {
+        } else {
+          if (error.response.status === 409) {
+            toast(`${error.response.data.message}`, {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "error",
+            });
+          } else if (fileData) {
+            if (fileExtension !== "csv") {
+              toast("Invalid Extention , It Will Support Only .csv Extention", {
+                position: toast.POSITION.TOP_RIGHT,
+                type: "error",
+              });
+            }
+          } else {
+            toast(`${error.response.data.message}`, {
               position: toast.POSITION.TOP_RIGHT,
               type: "error",
             });
           }
-        } else {
-          toast(`${error.response.data.message}`, {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-          });
         }
       });
   };
 
   const validateLanguageFieldEmptyOrNot = () => {
-    // let validValues = 2
+    let validValues = 2;
     // var pattern = /^[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~\d]*$/g;
     if (language === "") {
       setIsLanguageFieldEmpty(true);
-      // validValues -= 1;
+      validValues--;
       toast("Please Enter Language Name", {
         autoClose: 5000,
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
     }
+    const languageReg = /^[a-zA-Z0-9]{4,15}$/;
+    if (language && languageReg.test(language.trim()) === false) {
+      validValues--;
+
+      setIsLanguageFieldEmpty(true);
+      toast("Language must contain at least 4 characters.", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+      });
+    }
     if (languageCode === "") {
       setIsLanguageCodeFieldEmpty(true);
-      // validValues -= 1;
+      validValues--;
       toast("Please Enter Language Code", {
         autoClose: 5000,
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+      });
+    }
+    const userRegex = /^[a-zA-Z0-9]{2,3}$/;
+    if (languageCode && userRegex.test(languageCode.trim()) === false) {
+      validValues--;
+
+      setIsLanguageCodeFieldEmpty(true);
+      toast("Language code must contain at least 2 characters.", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
@@ -208,7 +238,7 @@ const AddLanguage = () => {
     //     type: "error",
     //   });
     // }
-    if (language !== "" && languageCode !== "") {
+    if (validValues === 2) {
       saveLanguageAPI();
     }
   };
@@ -270,10 +300,10 @@ const AddLanguage = () => {
       headers: { "Content-Type": "multipart/form-data" },
     })
       .then((response) => {
-          toast("File Uploaded Successfully.", {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "success",
-          });
+        toast("File Uploaded Successfully.", {
+          position: toast.POSITION.TOP_RIGHT,
+          type: "success",
+        });
         // setIsUpLoading(false);
         console.log("Server Success Response From files", response.data);
         setLanguageDocumentPath(response.data.document_path);
