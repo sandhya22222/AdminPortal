@@ -62,6 +62,7 @@ const Stores = () => {
   const currentCount = new URLSearchParams(search).get("count");
   // const store_id = new URLSearchParams(search).get("store_id");
   const tab_id = new URLSearchParams(search).get("tab");
+  const page_number = new URLSearchParams(search).get("page");
   const [searchParams, setSearchParams] = useSearchParams();
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -400,6 +401,7 @@ const Stores = () => {
       //   handleTabChangeStore("0");
       // }
       tableStoreData(storeApiData);
+
     }
   }, [storeApiData]);
 
@@ -802,18 +804,8 @@ const Stores = () => {
 
   useEffect(() => {
     findByPageStoreApi(
-      // searchParams.get("page") ? parseInt(searchParams.get("page")) : 1,
-      // searchParams.get("limit")
-      //   ? parseInt(searchParams.get("limit"))
-      //   : pageLimit,
-      // parseInt(searchParams.get("tab")) &&
-      //   parseInt(searchParams.get("tab")) <= 2
-      //   ? parseInt(searchParams.get("tab"))
-      //   : ""
-      parseInt(searchParams.get("page"))
-        ? parseInt(searchParams.get("page"))
-        : 1,
-      parseInt(searchParams.get("limit"))
+      searchParams.get("page") ? parseInt(searchParams.get("page")) : 1,
+      searchParams.get("limit")
         ? parseInt(searchParams.get("limit"))
         : pageLimit,
       parseInt(searchParams.get("tab")) &&
@@ -824,25 +816,25 @@ const Stores = () => {
     window.scrollTo(0, 0);
   }, [searchParams]);
 
-  useEffect(() => {
-    findByPageStoreApi(1, 20);
-    findByPageStoreApi(1, 20, 1);
-    findByPageStoreApi(1, 20, 2);
-  }, []);
+  // useEffect(() => {
+  //   findByPageStoreApi(1, 20);
+  //   findByPageStoreApi(1, 20, 1);
+  //   findByPageStoreApi(1, 20, 2);
+  // }, []);
 
   const handlePageNumberChange = (page, pageSize) => {
+    setSearchParams({
+      tab: searchParams.get("tab"),
+      page: parseInt(page) ? parseInt(page) : 1,
+      limit: parseInt(pageSize) ? parseInt(pageSize) : pageLimit,
+    });
     // setSearchParams({
-    //   tab: searchParams.get("tab"),
+    //   tab: tab_id === null ? "0" : tab_id,
     //   page: parseInt(page) ? parseInt(page) : 1,
     //   limit: parseInt(pageSize) ? parseInt(pageSize) : pageLimit,
     // });
-    setSearchParams({
-      tab: searchParams.get("tab"),
-      page: page,
-      limit: pageSize,
-    });
   };
-
+  console.log("page_number", page_number);
   //!delete function of language
   const removeStore = () => {
     setIsStoreDeleting(true);
@@ -1212,6 +1204,7 @@ const Stores = () => {
                 handleTabChangeFunction={handleTabChangeStore}
                 activeKey={
                   // searchParams.get("tab") ? searchParams.get("tab") : "0"
+                  // tab_id === null ? "0" : String(tab_id)
                   String(tab_id)
                 }
                 totalItemsCount={countForStore}
