@@ -1127,6 +1127,9 @@ const StoreSettings = () => {
                 isSingleUpload={true}
                 validStoreLogo={validStoreLogo}
                 setValidStoreLogo={setValidStoreLogo}
+                InfoCircleText={
+                  "Store logo, which will be displayed in portals as logo."
+                }
               />
             </Col>
             <Col className="!ml-10">
@@ -1138,6 +1141,9 @@ const StoreSettings = () => {
                 getImageData={getImageData && getImageData[0]}
                 setImagesUpload={setImagesUpload}
                 isSingleUpload={true}
+                InfoCircleText={
+                  "Where search functionality is getting used, the search logo will be visible."
+                }
               />
             </Col>
             <Col className="!ml-10">
@@ -1149,6 +1155,9 @@ const StoreSettings = () => {
                 getImageData={getImageData && getImageData[0]}
                 setImagesUpload={setImagesUpload}
                 isSingleUpload={true}
+                InfoCircleText={
+                  "This will be visible as default customer avatar."
+                }
               />
             </Col>
             <Col className="!ml-10">
@@ -1160,6 +1169,9 @@ const StoreSettings = () => {
                 getImageData={getImageData && getImageData[0]}
                 setImagesUpload={setImagesUpload}
                 isSingleUpload={true}
+                InfoCircleText={
+                  "Where cart functionality is getting used, the cart logo will be visible."
+                }
               />
             </Col>
             <Col className="!ml-10">
@@ -1171,6 +1183,9 @@ const StoreSettings = () => {
                 getImageData={getImageData && getImageData[0]}
                 setImagesUpload={setImagesUpload}
                 isSingleUpload={true}
+                InfoCircleText={
+                  "Where wishlist functionality is getting used, the Wishlist logo will be visible."
+                }
               />
             </Col>
           </Row>
@@ -1181,6 +1196,9 @@ const StoreSettings = () => {
             imagesUpload={imagesUpload}
             setImagesUpload={setImagesUpload}
             isSingleUpload={false}
+            InfoCircleText={
+              "Banner logo is getting used in Store Front portal as sliding banner."
+            }
           />
         </Content>
         <Content className="bg-white mt-3 p-3">

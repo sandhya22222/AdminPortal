@@ -42,6 +42,7 @@ const StoreImages = ({
   getImageData,
   validStoreLogo,
   setValiStoreLogo,
+  InfoCircleText,
 }) => {
   const authorizationHeader = useAuthorization();
   const dispatch = useDispatch();
@@ -399,7 +400,9 @@ const StoreImages = ({
           {title}
         </Title>
         <Content className=" items-end  ">
-          <InfoCircleOutlined className="text-sky-600" />
+          <Tooltip title={InfoCircleText} className="">
+            <InfoCircleOutlined className="text-sky-600" />
+          </Tooltip>
         </Content>
         {reset === true ? (
           <Content>
