@@ -119,7 +119,7 @@ const Stores = () => {
       tabTitle: (
         <div className="flex flex-row">
           <Text>All</Text>
-          <div className="rounded-full bg-sky-100 ml-2">{allCount}</div>{" "}
+          {/* <div className="rounded-full bg-sky-100 ml-2">{allCount}</div>{" "} */}
         </div>
       ),
     },
@@ -129,7 +129,7 @@ const Stores = () => {
       tabTitle: (
         <div className="flex flex-row">
           <Text>Active</Text>
-          <div className="rounded-full bg-sky-100 ml-2">{activeCount}</div>{" "}
+          {/* <div className="rounded-full bg-sky-100 ml-2">{activeCount}</div>{" "} */}
         </div>
       ),
     },
@@ -139,9 +139,9 @@ const Stores = () => {
       tabTitle: (
         <div className="flex flex-row">
           <Text>Inactive</Text>
-          <div className="rounded-full bg-sky-100 ml-2">
+          {/* <div className="rounded-full bg-sky-100 ml-2">
             {inactiveCount}
-          </div>{" "}
+          </div>{" "} */}
         </div>
       ),
     },
@@ -401,7 +401,6 @@ const Stores = () => {
       //   handleTabChangeStore("0");
       // }
       tableStoreData(storeApiData);
-
     }
   }, [storeApiData]);
 
@@ -1204,8 +1203,8 @@ const Stores = () => {
                 handleTabChangeFunction={handleTabChangeStore}
                 activeKey={
                   // searchParams.get("tab") ? searchParams.get("tab") : "0"
-                  // tab_id === null ? "0" : String(tab_id)
-                  String(tab_id)
+                  tab_id === null ? "0" : String(tab_id)
+                  // String(tab_id)
                 }
                 totalItemsCount={countForStore}
                 tabType={"line"}
