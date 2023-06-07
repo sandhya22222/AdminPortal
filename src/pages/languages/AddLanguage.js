@@ -125,7 +125,7 @@ const AddLanguage = () => {
     temp["writing_script_direction"] = scriptDirection;
     // if (typeof fileData === "object") {
     if (langugaeDocumentPath !== null && langugaeDocumentPath !== undefined) {
-      temp["lang_support_docs"] = langugaeDocumentPath;
+      temp["lang_support_docs_path"] = langugaeDocumentPath;
     }
     // temp["lang_support_docs"] = langugaeDocumentPath + ".csv";
     // }

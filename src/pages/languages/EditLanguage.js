@@ -284,7 +284,7 @@ const EditLanguage = () => {
       // &&
       // typeof languageDetails.lang_support_docs === "object"
     ) {
-      temp["lang_support_docs"] = languageDetails.lang_support_docs;
+      temp["lang_support_docs_path"] = languageDetails.lang_support_docs;
     }
 
     console.log("PutObject----->", temp);
@@ -400,10 +400,10 @@ const EditLanguage = () => {
       headers: { "Content-Type": "multipart/form-data" },
     })
       .then((response) => {
-          toast("File Uploaded Successfully.", {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "success",
-          });
+        toast("File Uploaded Successfully.", {
+          position: toast.POSITION.TOP_RIGHT,
+          type: "success",
+        });
         // setIsUpLoading(false);
         let temp = { ...languageDetails };
         temp["lang_support_docs"] = response.data.document_path;
