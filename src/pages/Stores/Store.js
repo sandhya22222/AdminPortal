@@ -564,7 +564,7 @@ const Stores = () => {
     ) {
       setInValidName(true);
       count--;
-      toast("Please provide the store name", {
+      toast("Please Provide Store Name", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
@@ -585,7 +585,7 @@ const Stores = () => {
     ) {
       count--;
       setInValidEmail(true);
-      toast("Please provide valid email", {
+      toast("Please Provide Valid Email", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
@@ -597,7 +597,7 @@ const Stores = () => {
     ) {
       setInValidUserName(true);
       count--;
-      toast("Please provide username", {
+      toast("Please Provide Username", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
@@ -629,7 +629,7 @@ const Stores = () => {
     ) {
       setInValidPassword(true);
       count--;
-      toast("Please provide password", {
+      toast("Please Provide Password", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
@@ -698,7 +698,7 @@ const Stores = () => {
             type: "error",
           });
         } else {
-          toast("Something went wrong", {
+          toast("Something Went Wrong", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
           });
@@ -744,7 +744,7 @@ const Stores = () => {
         setServerStoreName(response.data.name);
         onClose();
         if (response.status === 200 || response.status === 201) {
-          toast("Store updated successfully! ", {
+          toast("Store Updated Successfully! ", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
           });
@@ -758,7 +758,7 @@ const Stores = () => {
             type: "error",
           });
         } else {
-          toast("Something went wrong", {
+          toast("Something Went Wrong", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
           });
@@ -787,12 +787,12 @@ const Stores = () => {
   const validateStorePutField = () => {
     if (editName === "" || editName === null || editName === undefined) {
       setInValidEditName(true);
-      toast("Please provide the Name", {
+      toast("Please Provide Store Name", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
     } else if (editName === serverStoreName) {
-      toast("No changes detected !", {
+      toast("No Changes Detected !", {
         position: toast.POSITION.TOP_RIGHT,
         type: "info",
       });
@@ -822,16 +822,16 @@ const Stores = () => {
   // }, []);
 
   const handlePageNumberChange = (page, pageSize) => {
-    setSearchParams({
-      tab: searchParams.get("tab"),
-      page: parseInt(page) ? parseInt(page) : 1,
-      limit: parseInt(pageSize) ? parseInt(pageSize) : pageLimit,
-    });
     // setSearchParams({
-    //   tab: tab_id === null ? "0" : tab_id,
+    //   tab: searchParams.get("tab"),
     //   page: parseInt(page) ? parseInt(page) : 1,
     //   limit: parseInt(pageSize) ? parseInt(pageSize) : pageLimit,
     // });
+    setSearchParams({
+      tab: tab_id === null ? "0" : tab_id,
+      page: parseInt(page) ? parseInt(page) : 1,
+      limit: parseInt(pageSize) ? parseInt(pageSize) : pageLimit,
+    });
   };
   console.log("page_number", page_number);
   //!delete function of language
@@ -936,7 +936,7 @@ const Stores = () => {
                           {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
                         </label>
                         <Input
-                          placeholder="Enter store name"
+                          placeholder="Enter Store Name"
                           value={name}
                           maxLength={255}
                           className={`${
@@ -955,7 +955,7 @@ const Stores = () => {
                         <span className="text-red-600 text-sm">*</span>
                         <label className="text-[13px] mb-2 ml-1">Email</label>
                         <Input
-                          placeholder="Enter email"
+                          placeholder="Enter Email"
                           value={storeEmail}
                           maxLength={50}
                           className={`${
@@ -973,7 +973,7 @@ const Stores = () => {
                           Username
                         </label>
                         <Input
-                          placeholder="Enter username"
+                          placeholder="Enter Username"
                           value={storeUserName}
                           maxLength={15}
                           minLength={6}
@@ -1008,7 +1008,7 @@ const Stores = () => {
                           Password
                         </label>
                         <Input.Password
-                          placeholder="Enter password"
+                          placeholder="Enter Password"
                           value={storePassword}
                           maxLength={15}
                           className={`${
@@ -1094,7 +1094,7 @@ const Stores = () => {
                         <span className="text-red-600 text-sm">*</span>
                         <label className="text-[13px] mb-2 ml-1">Email</label>
                         <Input
-                          placeholder="Enter email"
+                          placeholder="Enter Email"
                           value={storeEditEmail}
                           maxLength={30}
                           disabled
@@ -1118,7 +1118,7 @@ const Stores = () => {
                           Username
                         </label>
                         <Input
-                          placeholder="Enter username"
+                          placeholder="Enter Username"
                           value={storeEditUserName}
                           maxLength={10}
                           className="mb-4"
@@ -1149,7 +1149,7 @@ const Stores = () => {
                           {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
                         </label>
                         <Input.Password
-                          placeholder="Enter password"
+                          placeholder="Enter Password"
                           value={storeEditPassword}
                           maxLength={6}
                           disabled
