@@ -60,12 +60,20 @@ const App = () => {
           {auth === "true" && (
             <Routes>
               <Route
+                exact
+                path="*"
+                element={keycloakData ?
+                  <Navigate to="/home" /> :
+                  <Navigate to="/user-verification" />}
+              />
+              <Route
                 path="/"
                 element={
                   <Home setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} />
                 }
               />
-              <Route path="/home" element={<Navigate to={"/"} />} />
+              {/* <Route path="/home" element={<Navigate to={"/"} />} /> */}
+              <Route path="/user-verification" element={<PageNotFound />} />
               <Route path="/signin" element={<Signin />} />
               {keycloakData ? (
                 <Route path="/dashboard" element={<SidebarNew color="light" />}>
@@ -107,15 +115,31 @@ const App = () => {
                   )}
                 </Route>
               ) : (
-                <Route path="*" element={<PageNotFound />} />
+                // <Route path="*" element={<PageNotFound />} />
+                ""
               )}
               {/* ) :  <Route path="*" element={<PageNotFound />} />} */}
             </Routes>
           )}
           {auth === "false" && (
             <Routes>
-              <Route path="/" element={<Home isLoggedIn={true} />} />
-              <Route path="/home" element={<Navigate to={"/"} />} />
+               <Route
+                exact
+                path="*"
+                element={keycloakData ?
+                  <Navigate to="/home" /> :
+                  <Navigate to="/user-verification" />}
+              />
+               <Route
+                exact
+                path="/home"
+                element={
+                  <Home setIsLoggedIn={setIsLoggedIn} isLoggedIn={true} />
+                }
+              />
+              {/* <Route path="/" element={<Home isLoggedIn={true} />} /> */}
+              {/* <Route path="/home" element={<Navigate to={"/"} />} /> */}
+              <Route path="/user-verification" element={<PageNotFound />} />
               <Route path="/signin" element={<Signin />} />
               <Route path="/dashboard" element={<SidebarNew color="light" />}>
                 <Route path="" element={<Dashboard />} />
@@ -133,9 +157,9 @@ const App = () => {
                   path="onlinepaymentconnector"
                   element={<OnlinePaymentConnector />}
                 />
-                <Route path="*" element={<PageNotFound />} />
+                {/* <Route path="*" element={<PageNotFound />} /> */}
               </Route>
-              <Route path="*" element={<PageNotFound />} />
+              {/* <Route path="*" element={<PageNotFound />} /> */}
             </Routes>
           )}
         </Container>
