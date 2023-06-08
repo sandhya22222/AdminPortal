@@ -665,7 +665,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                 <Content className="flex ">
                   <Content className="!bg-white shadow-sm p-3 ">
                     <Text className="!font-semibold text-lg">Ranking</Text>
-                    <Text className="text-slate-600"> (Previous month)</Text>
+                    <Text className="text-slate-600"> (Previous Month)</Text>
                     <Text
                       className="cursor-pointer text-sky-600 float-right font-semibold"
                       // onClick={() => navigate("/dashboard/store")}

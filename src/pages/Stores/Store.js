@@ -91,9 +91,7 @@ const Stores = () => {
   const [inValidPassword, setInValidPassword] = useState(false);
   const [isDeleteStoreModalOpen, setIsDeleteStoreModalOpen] = useState(false);
   const [deleteStoreID, setDeleteStoreID] = useState("");
-  const [allCount, setAllCount] = useState("");
   const [activeCount, setActiveCount] = useState("");
-  const [inactiveCount, setInactiveCount] = useState("");
 
   // const [currentPage, setCurrentPage] = useState(
   //   params.page ? params.page.slice(5, params.page.length) : 1
@@ -119,7 +117,9 @@ const Stores = () => {
       tabTitle: (
         <div className="flex flex-row">
           <Text>All</Text>
-          {/* <div className="rounded-full bg-sky-100 ml-2">{allCount}</div>{" "} */}
+          <div className="rounded-full bg-sky-100 ml-2">
+            {activeCount && activeCount.totalStores}
+          </div>{" "}
         </div>
       ),
     },
@@ -129,7 +129,9 @@ const Stores = () => {
       tabTitle: (
         <div className="flex flex-row">
           <Text>Active</Text>
-          {/* <div className="rounded-full bg-sky-100 ml-2">{activeCount}</div>{" "} */}
+          <div className="rounded-full bg-sky-100 ml-2">
+            {activeCount && activeCount.activeStores}
+          </div>{" "}
         </div>
       ),
     },
@@ -139,9 +141,9 @@ const Stores = () => {
       tabTitle: (
         <div className="flex flex-row">
           <Text>Inactive</Text>
-          {/* <div className="rounded-full bg-sky-100 ml-2">
-            {inactiveCount}
-          </div>{" "} */}
+          <div className="rounded-full bg-sky-100 ml-2">
+            {activeCount && activeCount.inactiveStores}
+          </div>{" "}
         </div>
       ),
     },
@@ -272,6 +274,8 @@ const Stores = () => {
             setSelectedTabTableContent={setSelectedTabTableContent}
             selectedTabTableContent={selectedTabTableContent}
             setStoreApiData={setStoreApiData}
+            activeCount={activeCount}
+            setActiveCount={setActiveCount}
           />
         );
       },
@@ -293,7 +297,7 @@ const Stores = () => {
       render: (text, record) => {
         return (
           <content className="whitespace-nowrap">
-            <Tooltip title="Edit store">
+            <Tooltip title="Edit Store">
               <EditOutlined
                 className="app-edit-icon font-bold text-black pr-6"
                 onClick={() => {
@@ -315,14 +319,14 @@ const Stores = () => {
               }}
               // className=" pl-[10px] font-semibold app-table-data-title"
             >
-              <Tooltip title="Store settings">
+              <Tooltip title="Store Settings">
                 <SettingOutlined
                   className="app-delete-icon pr-4  text-black"
                   style={{ fontSize: "16px", marginLeft: "5px" }}
                 />
               </Tooltip>
             </Link>
-            <Tooltip title="Delete store">
+            <Tooltip title="Delete Store">
               <DeleteOutlined
                 className="app-delete-icon pr-4"
                 style={{ fontSize: "16px", marginLeft: "5px" }}
@@ -491,16 +495,13 @@ const Stores = () => {
       false
     )
       .then(function (response) {
-        if (storeStatus === 1) {
-          setActiveCount(response.data.count);
-        } else if (storeStatus === 2) {
-          setInactiveCount(response.data.count);
-        } else setAllCount(response.data.count);
-
-        console.log("first", allCount);
-        console.log("second", activeCount);
-        console.log("third", inactiveCount);
-
+        setActiveCount({
+          totalStores:
+            response.data.active_stores + response.data.inactive_stores,
+          activeStores: response.data.active_stores,
+          inactiveStores: response.data.inactive_stores,
+        });
+        // setInactiveCount(response.data.inactive_stores);
         setIsNetworkError(false);
         setIsLoading(false);
         console.log(
@@ -515,7 +516,6 @@ const Stores = () => {
         setStoreApiData(response.data.data);
         setIsPaginationDataLoaded(false);
         setCountForStore(response.data.count);
-        console.log("count", response.data.count);
       })
       .catch((error) => {
         setIsLoading(false);
@@ -552,6 +552,10 @@ const Stores = () => {
         temp.push(postData);
         setStoreApiData(temp);
       }
+      let totalStoresCount = { ...activeCount };
+      totalStoresCount["totalStores"] = activeCount.totalStores + 1;
+      totalStoresCount["inactiveStores"] = activeCount.inactiveStores + 1;
+      setActiveCount(totalStoresCount);
     }
   }, [postData]);
   //! validation for post call
@@ -763,9 +767,9 @@ const Stores = () => {
             type: "error",
           });
         }
-        if (error && error.response && error.response.status === 401) {
-          makeHttpRequestForRefreshToken();
-        }
+        // if (error && error.response && error.response.status === 401) {
+        //   makeHttpRequestForRefreshToken();
+        // }
       });
   };
   useEffect(() => {
@@ -787,7 +791,7 @@ const Stores = () => {
   const validateStorePutField = () => {
     if (editName === "" || editName === null || editName === undefined) {
       setInValidEditName(true);
-      toast("Please Provide Store Name", {
+      toast("Please provide Store Name", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
@@ -833,7 +837,6 @@ const Stores = () => {
       limit: parseInt(pageSize) ? parseInt(pageSize) : pageLimit,
     });
   };
-  console.log("page_number", page_number);
   //!delete function of language
   const removeStore = () => {
     setIsStoreDeleting(true);
@@ -845,6 +848,21 @@ const Stores = () => {
           let removedData = storeApiData.filter(
             ({ id }) => id !== deleteStoreID
           );
+          let storeStatus = storeApiData.filter(
+            ({ id }) => id === deleteStoreID
+          );
+          if (storeStatus && storeStatus.length > 0) {
+            let totalStoresCounts = { ...activeCount };
+            if (storeStatus && storeStatus.status === 2) {
+              // totalStoresCounts["activeStores"] = activeCount.activeCount - 1;
+              // totalStoresCounts["totalStores"] = activeCount.totalStores - 1;
+              // setActiveCount(totalStoresCounts);
+              totalStoresCounts["inactiveStores"] =
+                activeCount.inactiveStores - 1;
+              totalStoresCounts["totalStores"] = activeCount.totalStores - 1;
+              setActiveCount(totalStoresCounts);
+            }
+          }
           setStoreApiData(removedData);
           toast("Successfully Deleted The Store", {
             position: toast.POSITION.TOP_RIGHT,
@@ -857,11 +875,18 @@ const Stores = () => {
       .catch((error) => {
         // disabling spinner
         setIsStoreDeleting(false);
-        console.log("response from delete===>", error.response);
-        toast(`${error.response.data[0]}`, {
-          position: toast.POSITION.TOP_RIGHT,
-          type: "error",
-        });
+        console.log("response from delete===>", error.response.data);
+        if (error.response) {
+          toast(`${error.response.data}`, {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+          });
+        } else {
+          toast("Something Went Wrong", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+          });
+        }
       });
   };
 
@@ -938,7 +963,7 @@ const Stores = () => {
                         <Input
                           placeholder="Enter Store Name"
                           value={name}
-                          maxLength={255}
+                          maxLength={20}
                           className={`${
                             inValidName
                               ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-2"
@@ -1077,7 +1102,7 @@ const Stores = () => {
                               ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 mb-4"
                               : "mb-4"
                           }`}
-                          maxLength={255}
+                          maxLength={20}
                           onChange={(e) => {
                             // const { value } = e.target;
                             // const regex = /^[a-zA-Z0-9]*$/; // only allow letters and numbers

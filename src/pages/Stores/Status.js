@@ -17,6 +17,8 @@ function Status({
   storeApiData,
   setStoreApiData,
   tabId,
+  activeCount,
+  setActiveCount,
 }) {
   const authorizationHeader = useAuthorization();
 
@@ -65,6 +67,16 @@ function Status({
       setSwitchStatus(changeSwitchStatus);
       closeModal();
       setIsLoading(false);
+      let duplicateActiveCall = { ...activeCount };
+      if (changeSwitchStatus === true) {
+        duplicateActiveCall["activeStores"] = activeCount.activeStores + 1;
+        duplicateActiveCall["inactiveStores"] = activeCount.inactiveStores - 1;
+        setActiveCount(duplicateActiveCall);
+      } else {
+        duplicateActiveCall["activeStores"] = activeCount.activeStores - 1;
+        duplicateActiveCall["inactiveStores"] = activeCount.inactiveStores + 1;
+        setActiveCount(duplicateActiveCall);
+      }
       if (changeSwitchStatus) {
         storeApiData.forEach((element) => {
           if (element.id == response.config.params["store-id"]) {
