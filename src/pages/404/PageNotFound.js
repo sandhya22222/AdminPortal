@@ -1,6 +1,9 @@
 import React from "react";
 import { Layout, Typography } from "antd";
 import Home from "../home/Home";
+import { useEffect } from "react";
+import { LoadingOutlined } from "@ant-design/icons";
+import { Spin } from "antd";
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -20,17 +23,31 @@ const keycloakData = {
 };
 
 function PageNotFound() {
-  const keycloakUrl = `${keyUrl}/realms/${realmName}/protocol/openid-connect/auth?response_type=code&client_id=${clientId}`;
+  const antIcon = (
+    <LoadingOutlined
+      style={{
+        fontSize: 54,
+      }}
+      spin
+    />
+  );
+  useEffect(() => {
+    sessionStorage.setItem('keycloakData', JSON.stringify(keycloakData))
+    window.location = keycloakData.url
+    console.log("use")
+  }, [keycloakData])
+
   return (
     <>
       {(auth === 'true') &&
         <Layout className="h-[500px]">
           <Content className="mt-[64px] grid justify-items-center align-items-center h-full">
-             <Title level={4}>
+          <Spin indicator={antIcon} />
+             {/* <Title level={4}>
               The Page you are trying to access is
               <span className="text-red-600 underline">Not Available</span>,
               Please login to access this page <a href={keycloakData.url} onClick={() => sessionStorage.setItem('keycloakData', JSON.stringify(keycloakData))}>Login </a>
-            </Title>
+            </Title> */}
           </Content>
         </Layout>}
       {
