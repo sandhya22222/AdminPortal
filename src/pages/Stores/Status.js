@@ -69,12 +69,16 @@ function Status({
       setIsLoading(false);
       let duplicateActiveCall = { ...activeCount };
       if (changeSwitchStatus === true) {
-        duplicateActiveCall["activeStores"] = activeCount.activeStores + 1;
-        duplicateActiveCall["inactiveStores"] = activeCount.inactiveStores - 1;
+        duplicateActiveCall["activeStores"] =
+          activeCount && activeCount.activeStores + 1;
+        duplicateActiveCall["inactiveStores"] =
+          activeCount && activeCount.inactiveStores - 1;
         setActiveCount(duplicateActiveCall);
       } else {
-        duplicateActiveCall["activeStores"] = activeCount.activeStores - 1;
-        duplicateActiveCall["inactiveStores"] = activeCount.inactiveStores + 1;
+        duplicateActiveCall["activeStores"] =
+          activeCount && activeCount.activeStores - 1;
+        duplicateActiveCall["inactiveStores"] =
+          activeCount && activeCount.inactiveStores + 1;
         setActiveCount(duplicateActiveCall);
       }
       if (changeSwitchStatus) {

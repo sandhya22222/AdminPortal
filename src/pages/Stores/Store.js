@@ -468,7 +468,7 @@ const Stores = () => {
   const closeDeleteModal = () => {
     setIsDeleteStoreModalOpen(false);
   };
-
+  console.log("activeCount", activeCount);
   //!get call for stores
   const findByPageStoreApi = (pageNumber, pageLimit, storeStatus) => {
     // setIsLoading(true);
@@ -796,7 +796,7 @@ const Stores = () => {
         type: "error",
       });
     } else if (editName === serverStoreName) {
-      toast("No Changes Detected !", {
+      toast("No Changes Detected!", {
         position: toast.POSITION.TOP_RIGHT,
         type: "info",
       });
@@ -853,10 +853,11 @@ const Stores = () => {
           );
           if (storeStatus && storeStatus.length > 0) {
             let totalStoresCounts = { ...activeCount };
-            if (storeStatus && storeStatus.status === 2) {
-              // totalStoresCounts["activeStores"] = activeCount.activeCount - 1;
-              // totalStoresCounts["totalStores"] = activeCount.totalStores - 1;
-              // setActiveCount(totalStoresCounts);
+            if (storeStatus && storeStatus.status === 1) {
+              totalStoresCounts["activeStores"] = activeCount.activeCount - 1;
+              totalStoresCounts["totalStores"] = activeCount.totalStores - 1;
+              setActiveCount(totalStoresCounts);
+            } else {
               totalStoresCounts["inactiveStores"] =
                 activeCount.inactiveStores - 1;
               totalStoresCounts["totalStores"] = activeCount.totalStores - 1;
@@ -1097,6 +1098,7 @@ const Stores = () => {
                         </label>
                         <Input
                           value={editName}
+                          placeholder="Enter Store Name"
                           className={`${
                             inValidEditName
                               ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 mb-4"
