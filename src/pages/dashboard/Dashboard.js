@@ -533,7 +533,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                     </Content>
                     <Content className="">
                       <span className="text-sm text-[#000000D9]">
-                        Monthly revenue
+                        Monthly Revenue
                       </span>
                       <span className="text-md !ml-1 !text-[#7CB305]">
                         {currencySymbol} 5,650
@@ -559,7 +559,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                     </Content>
                     <Content className="!text-[#ffffff]">
                       <span className="text-sm text-[#000000D9]">
-                        Monthly revenue
+                        Monthly Revenue
                       </span>
                       <span className="text-base !ml-1 !text-[#7CB305]">
                         {currencySymbol} 2,550
@@ -616,7 +616,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                     </Content>
                     <Content className="!text-[#ffffff]">
                       <span className="text-sm text-[#000000D9]">
-                        Products sold last month
+                        Products Sold Last Month
                       </span>
                       <span className="text-base !ml-1 !text-[#1A5692]">
                         1,400
@@ -694,7 +694,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
               </Content>
               <Content className="bg-white !mt-6 p-2">
                 <div>
-                  <Text className="text-lg !text-[#cdcdcd] p-2">
+                  <Text className="text-lg font-semibold p-2">
                     Total Languages
                   </Text>
                 </div>
