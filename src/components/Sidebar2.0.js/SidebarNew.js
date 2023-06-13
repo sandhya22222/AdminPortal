@@ -13,6 +13,7 @@ import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
 } from "@ant-design/icons";
+import { MdDashboard, MdStore, MdLanguage, MdOutlinePayment } from "react-icons/md";
 import { FaHome } from "react-icons/fa";
 import { AiOutlineHome } from "react-icons/ai";
 //! Import CSS libraries
@@ -48,20 +49,23 @@ const SidebarNew = (props) => {
     // },
     {
       key: "1",
-      icon: <DashboardOutlined className="!text-[#ffffffde]" />,
+      icon: <MdDashboard className="!text-[#FCC32A]" />,
+      inactive_icon: <MdDashboard className="!text-[#ffffffde]" />,
       label: "Dashboard",
       navigate_to: "/dashboard",
       // children: [],
     },
     {
       key: "2",
-      icon: <ShopOutlined className="!text-[#ffffffde]" />,
+      icon: <MdStore className="!text-[#FCC32A]" />,
+      inactive_icon: <MdStore className="!text-[#ffffffde]" />,
       label: "Stores",
       navigate_to: "/dashboard/store",
     },
     {
       key: "3",
-      icon: <TranslationOutlined className="!text-[#ffffffde]" />,
+      icon: <MdLanguage className="!text-[#FCC32A]" />,
+      inactive_icon: <MdLanguage className="!text-[#ffffffde]" />,
       label: "Languages",
       navigate_to: "/dashboard/language",
     },
@@ -73,7 +77,8 @@ const SidebarNew = (props) => {
     // },
     {
       key: "5",
-      icon: <DollarCircleOutlined className="!text-[#ffffffde]" />,
+      icon: <MdOutlinePayment className="!text-[#FCC32A]" />,
+      inactive_icon:<MdOutlinePayment className="!text-[#ffffffde]" />,
       label: "Payment Type",
       navigate_to: "/dashboard/paymenttype",
     },
@@ -141,7 +146,7 @@ const SidebarNew = (props) => {
             >
               {myData.map((item) => (
                 <Menu.Item
-                  icon={item.icon}
+                  icon={selectedItem === item.key ? item.icon : item.inactive_icon}
                   key={item.key}
                   onClick={() => {
                     navigate(item.navigate_to);
@@ -156,7 +161,8 @@ const SidebarNew = (props) => {
               ))}
             </Menu>
           </Spin>
-          <Divider
+          <Content>
+        <Divider
             style={{
               background: "#FFFFFF",
               opacity: "0.55",
@@ -180,8 +186,39 @@ const SidebarNew = (props) => {
               bottom: "0",
             }}
           />
+        </Content>
         </Sider>
       </Affix>
+         
+        {/* </Sider>
+        </Affix>
+        <Content>
+            <Divider
+              style={{
+                background: "#FFFFFF",
+                opacity: "0.55",
+                alignSelf: "stretch",
+                margin: "0px",
+                marginTop: "350px",
+              }}
+            />
+            <Button
+              type="text"
+              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+              onClick={() => setCollapsed(!collapsed)}
+              style={{
+                width: "100%",
+                display: "flex",
+                // padding: "8 16 8 16",
+                // marginTop: "0px",
+                color: "white",
+                justifyContent: "center",
+                // alignItems: "center",
+                bottom: "0",
+              }}
+            />
+          </Content> */}
+      
       <Layout className="site-layout !w-[80%]">
         <Outlet />
       </Layout>
