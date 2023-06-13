@@ -17,7 +17,7 @@ import MarketplaceServices from "../../services/axios/MarketplaceServices";
 //! Import user defined services
 import { fnUserLoggedInInfo } from "../../services/redux/actions/ActionsUser";
 
-import { BrandLogo, AdminIcon,DmBrandLogo } from "../../constants/media";
+import { BrandLogo, AdminIcon, DmBrandLogo } from "../../constants/media";
 
 import util from "../../util/common";
 
@@ -46,12 +46,13 @@ const Header2 = () => {
   // }
 
   const userItems = [
-    {
-      label: "Profile",
-      key: "profile",
-      icon: <UserOutlined />,
-      disabled: true,
-    },
+    // Todo: Commenting for now, will implement once the details are ready
+    // {
+    //   label: "Profile",
+    //   key: "profile",
+    //   icon: <UserOutlined />,
+    //   disabled: true,
+    // },
     {
       label: "Logout",
       key: "logout",
@@ -72,7 +73,7 @@ const Header2 = () => {
           // sessionStorage.clear();
           // window.location = "/";
         })
-        .catch((error) => {})
+        .catch((error) => { })
         .finally(() => {
           util.logoutUser();
         });
@@ -94,15 +95,15 @@ const Header2 = () => {
   return (
     <Layout>
       <Header className="fixed z-20 top-0 p-0 !h-20  w-full bg-white drop-shadow-md">
-        <Content className="px-3 flex">
+        <Content className="px-3 flex items-center">
           {/* Left content which displays brand logo and other stuffs */}
           <Content className="!inline-block text-left self-center p-1 mt-0">
             <a href="/dashboard">
               <Image
-                width={260}
+                width={180}
                 preview={false}
                 src={DmBrandLogo}
-                className="cursor-pointer"
+                className="antImage"
               />
             </a>
           </Content>
@@ -126,10 +127,12 @@ const Header2 = () => {
                     src={AdminIcon}
                     className="text-lg absolute bottom-[-2px] left-[-30px]"
                   />
-                  <Text className="text-lg text-slate-600 ml-2 mr-1">
-                    Admin
-                  </Text>
-                  <DownOutlined className="text-xs text-slate-600" />
+                  <Content className="ml-2 mr-1 !flex !items-center">
+                    <Text className="text-lg text-slate-600 pr-1">
+                      Admin
+                    </Text>
+                    <DownOutlined className="text-xs text-slate-600" />
+                  </Content>
                 </Paragraph>
               </Dropdown>
             ) : (

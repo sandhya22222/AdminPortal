@@ -28,7 +28,7 @@ import {
 
 import { AdminIcon, Profit, Positive, Payment } from "../../constants/media";
 
-import { MdDomainDisabled, MdBusiness } from "react-icons/md";
+import { MdDomainDisabled, MdBusiness, MdStore } from "react-icons/md";
 
 //! Import CSS libraries
 
@@ -402,7 +402,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
           }
         />
       </Content>
-      <Content className="!p-3 !mt-[155px] !min-h-screen">
+      <Content className="!p-[1.2rem] !mt-[155px] !min-h-screen">
         {dashboardDataLoading ? (
           <Content className="bg-white !p-3">
             <Content className="flex justify-between">
@@ -458,22 +458,24 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
             <Content className="flex justify-between !mt-2">
               <Content
                 className="p-3 mr-5 shadow-sm rounded-md justify-center !bg-white !w-[25%]"
-                // style={{
-                //   background:
-                //     "linear-gradient(74.8deg, rgba(52, 168, 83, 0.6) 0%, rgba(52, 168, 83, 0.4) 98.74%)",
-                // }}
+              // style={{
+              //   background:
+              //     "linear-gradient(74.8deg, rgba(52, 168, 83, 0.6) 0%, rgba(52, 168, 83, 0.4) 98.74%)",
+              // }}
               >
                 <Content className="!text-black text-md mb-2 flex ">
-                  <Content>
-                    <span className="text-2xl font-semibold text-[#1A5692]">
-                      {dashboardData &&
-                        dashboardData.store_data &&
-                        dashboardData.store_data.total_count}{" "}
-                    </span>
-                    <span className="font-semibold text-lg">Stores</span>
+                  <Content className="flex justify-between items-baseline">
+                    <div>
+                      <span className="text-2xl font-semibold text-[#1A5692]">
+                        {dashboardData &&
+                          dashboardData.store_data &&
+                          dashboardData.store_data.total_count}{" "}
+                      </span>
+                      <span className="font-semibold text-lg">Stores</span>
+                    </div>
                     <Text
-                      className="cursor-pointer text-sky-600 float-right font-semibold"
-                      // onClick={() => navigate("/dashboard/store")}
+                      className="cursor-pointer linkColor float-right font-semibold"
+                    // onClick={() => navigate("/dashboard/store")}
                     >
                       View All
                     </Text>
@@ -486,8 +488,8 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                   </Content> */}
                 </Content>
                 <Content className="!text-[#ffffff] flex !mt-5">
-                  <Content className="flex">
-                    <MdBusiness className="!text-3xl  !text-yellow-400" />
+                  <Content className="flex mr-[1.3rem]">
+                    <MdStore className="!text-5xl  !text-[#FCC32A]" />
                     <Content className="!ml-2">
                       <p className="!text-[#8C8C8C]">Active</p>
                       <p className="-mt-3 text-black font-bold">
@@ -498,7 +500,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                     </Content>
                   </Content>
                   <Content className="flex">
-                    <MdDomainDisabled className="!text-3xl !text-[#8C8C8C]" />
+                    <MdStore className="!text-5xl  !text-[#8C8C8C]" />
                     <Content className="!ml-2">
                       <p className="!text-[#8C8C8C]">Inactive</p>
                       <p className="-mt-3 font-bold text-black">
@@ -511,15 +513,15 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                 </Content>
               </Content>
               <Content
-                className="p-3 mr-5 shadow-sm rounded-md justify-center !w-[42%] flex !bg-white"
-                // style={{
-                //   background:
-                //     "linear-gradient(74.8deg, rgba(234, 67, 53, 0.6) 0%, rgba(234, 67, 53, 0.4) 98.74%)",
-                // }}
+                className="p-3 mr-5 shadow-sm rounded-md justify-between !w-auto flex !bg-white"
+              // style={{
+              //   background:
+              //     "linear-gradient(74.8deg, rgba(234, 67, 53, 0.6) 0%, rgba(234, 67, 53, 0.4) 98.74%)",
+              // }}
               >
-                <Content className="flex">
+                <Content className="flex items-center">
                   <Image
-                    width={90}
+                    width={125}
                     preview={false}
                     src={Positive}
                     className="cursor-pointer"
@@ -529,21 +531,21 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                       Total Revenue
                     </Content>
                     <Content className="!text-[#7CB305] mb-2 !font-semibold">
-                      <span className=" text-3xl">{currencySymbol} 90,400</span>
+                      <span className="text-3xl">{currencySymbol} 90,400</span>
                     </Content>
                     <Content className="">
                       <span className="text-sm text-[#000000D9]">
                         Monthly Revenue
                       </span>
-                      <span className="text-md !ml-1 !text-[#7CB305]">
+                      <span className="text-md !ml-1 !text-[#7CB305] whitespace-nowrap">
                         {currencySymbol} 5,650
                       </span>
                     </Content>
                   </Content>
                 </Content>
-                <Content className="flex">
+                <Content className="flex items-center">
                   <Image
-                    width={85}
+                    width={105}
                     preview={false}
                     src={Profit}
                     className="cursor-pointer"
@@ -561,7 +563,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                       <span className="text-sm text-[#000000D9]">
                         Monthly Revenue
                       </span>
-                      <span className="text-base !ml-1 !text-[#7CB305]">
+                      <span className="text-base !ml-1 !text-[#7CB305] whitespace-nowrap">
                         {currencySymbol} 2,550
                       </span>
                     </Content>
@@ -593,16 +595,16 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
               </Content> */}
               <Content
                 className="p-3 shadow-sm rounded-md justify-center !bg-white"
-                // style={{
-                //   background:
-                //     "linear-gradient(74.8deg, rgba(66, 133, 244, 0.6) 0%, rgba(66, 133, 244, 0.4) 98.74%)",
-                // }}
+              // style={{
+              //   background:
+              //     "linear-gradient(74.8deg, rgba(66, 133, 244, 0.6) 0%, rgba(66, 133, 244, 0.4) 98.74%)",
+              // }}
               >
                 {/* ### */}
 
-                <Content className="flex">
+                <Content className="flex items-center">
                   <Image
-                    width={85}
+                    width={118}
                     preview={false}
                     src={Payment}
                     className="cursor-pointer"
@@ -667,12 +669,12 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                     <Text className="!font-semibold text-lg">Ranking</Text>
                     <Text className="text-slate-600"> (Previous Month)</Text>
                     <Text
-                      className="cursor-pointer text-sky-600 float-right font-semibold"
-                      // onClick={() => navigate("/dashboard/store")}
+                      className="cursor-pointer linkColor float-right font-semibold"
+                    // onClick={() => navigate("/dashboard/store")}
                     >
                       View All
                     </Text>
-                    <Content className="!mt-6">
+                    <Content>
                       <DmTabAntDesign
                         tabType={"line"}
                         tabBarPosition={"top"}
@@ -692,22 +694,19 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                   </Content>
                 </Content>
               </Content>
-              <Content className="bg-white !mt-6 p-2">
-                <div>
+              {/* <Content className="bg-white !mt-6 p-2"> */}
+              {/* <div>
                   <Text className="text-lg font-semibold p-2">
                     Total Languages
                   </Text>
-                </div>
-                <Text className="text-xl !text-black p-2">
+                </div> */}
+              {/* <Text className="text-xl !text-black p-2">
                   {dashboardData &&
                     dashboardData.language_data &&
                     dashboardData.language_data.total_count}
-                </Text>{" "}
-                {/* <StoreProductTypeGraph
-                storeProductTypeData={dashboardData.product_type_data}
-              /> */}
-                <StoreGraph languageData={dashboardData.language_data} />
-              </Content>
+                </Text> */}
+              {/* <StoreGraph languageData={dashboardData.language_data} /> */}
+              {/* </Content> */}
             </Content>
             <Content className="p-3 shadow-sm bg-white !mt-6">
               <SalesReportGraph />

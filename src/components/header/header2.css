@@ -6,3 +6,9 @@
 .headerWidth{
   width: -webkit-fill-available;
 }
+
+.ant-image {
+  position: relative !important;
+  display: block !important;
+  cursor: pointer !important;
+}

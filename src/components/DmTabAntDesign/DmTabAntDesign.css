@@ -79,3 +79,7 @@
   position: unset !important;
 }
 */
+
+.ant-tabs-tab-btn{
+  color: #1A5692 !important;
+}
