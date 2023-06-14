@@ -237,15 +237,15 @@ const Stores = () => {
 
   //! table columns
   const StoreTableColumn = [
-    {
-      title: "Id",
-      dataIndex: "id",
-      key: "id",
-      width: "8%",
-      render: (text, record) => {
-        return <>{record.id}</>;
-      },
-    },
+    // {
+    //   title: "Id",
+    //   dataIndex: "id",
+    //   key: "id",
+    //   width: "8%",
+    //   render: (text, record) => {
+    //     return <>{record.id}</>;
+    //   },
+    // },
     {
       title: "Name",
       dataIndex: "name",
@@ -295,6 +295,7 @@ const Stores = () => {
       key: "",
       width: "12%",
       render: (text, record) => {
+        console.log("record", record.id);
         return (
           <content className="whitespace-nowrap">
             <Tooltip title="Edit Store">
@@ -380,7 +381,7 @@ const Stores = () => {
     filteredData &&
       filteredData.length > 0 &&
       filteredData.map((element, index) => {
-        var storeId = element.id;
+        var storeId = element.store_uuid;
         var storeName = element.name;
         var createdOn = element.created_on;
         var storeStatus = element.status;
@@ -440,6 +441,7 @@ const Stores = () => {
   };
   //!edit drawer
   const showEditDrawer = (id) => {
+    console.log("storerecordid", id);
     setStoreEditId(id);
     setOpen(true);
     setDrawerAction("put");
@@ -733,7 +735,7 @@ const Stores = () => {
     //     authorizationHeader
     //   )
     MarketplaceServices.update(storeAPI, putObject, {
-      store_id: parseInt(storeEditId),
+      store_id: storeEditId,
     })
       .then((response) => {
         console.log("put response", response.data, storeApiData);
@@ -772,13 +774,18 @@ const Stores = () => {
         // }
       });
   };
+
+  console.log("storeEditId", storeApiData);
   useEffect(() => {
     if (storeEditId) {
+      console.log("storeEditId", storeEditId);
+
       var storeData =
         storeApiData &&
         storeApiData.length > 0 &&
-        storeApiData.filter((element) => element.id === parseInt(storeEditId));
-      if (storeApiData && storeApiData.length > 0) {
+        storeApiData.filter((element) => element.store_uuid === storeEditId);
+      console.log("storeDta", storeData);
+      if (storeData && storeData.length > 0) {
         setEditName(storeData[0].name);
         // setStoreEditEmail(storeData[0].email);
         // setStoreEditUserName(storeData[0].username);
@@ -846,10 +853,10 @@ const Stores = () => {
         if (response.status === 200 || response.status === 201) {
           setIsDeleteStoreModalOpen(false);
           let removedData = storeApiData.filter(
-            ({ id }) => id !== deleteStoreID
+            ({ store_uuid }) => store_uuid !== deleteStoreID
           );
           let storeStatus = storeApiData.filter(
-            ({ id }) => id === deleteStoreID
+            ({ store_uuid }) => store_uuid === deleteStoreID
           );
           if (storeStatus && storeStatus.length > 0) {
             let totalStoresCounts = { ...activeCount };
