@@ -26,6 +26,7 @@ import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
 import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
 import { testValueByRegexPattern } from "../../util/util";
 import useAuthorization from "../../hooks/useAuthorization";
+import StoreModal from "../../components/storeModal/StoreModal";
 //! Import CSS libraries
 import { Container } from "reactstrap";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
@@ -71,6 +72,8 @@ const EditLanguage = () => {
   const [responseLanguageData, setResponseLanguageData] = useState([]);
   const [fileList, setFileList] = useState([]);
   const [documentPath, setDocumentPath] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const navigate = useNavigate();
   // hanler for language, language_code, native_name, writing_script_direction
   const languageHandler = (fieldName, value) => {
@@ -341,6 +344,10 @@ const EditLanguage = () => {
         }
         console.log(error.response);
       });
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   console.log("language_details", languageDetails);
@@ -723,18 +730,36 @@ const EditLanguage = () => {
                     </Content>
                   </Content>
                   <Content className="mt-3">
+                    <StoreModal
+                      isVisible={isModalOpen}
+                      okButtonText={"Yes"}
+                      title={"Confirmation"}
+                      cancelButtonText={"No"}
+                      okCallback={() => navigate("/dashboard/language")}
+                      cancelCallback={() => closeModal()}
+                      isSpin={false}
+                    >
+                      <div>
+                        The listing page will be displayed, and any changes made
+                        here won't be saved. Are you sure that you want to
+                        discard?
+                      </div>
+                    </StoreModal>
                     <Row>
                       <Col>
-                        <Link to="/dashboard/language">
-                          <Button
-                            // style={{ background: "#FFFFFF" }}
-                            className="app-btn-secondary"
-                          >
-                            {/* <label className="h-5 text-[14px]  text-[#393939] cursor-pointer"> */}
-                            Go Back
-                            {/* </label> */}
-                          </Button>
-                        </Link>
+                        {/* <Link to="/dashboard/language"> */}
+                        <Button
+                          // style={{ background: "#FFFFFF" }}
+                          className="app-btn-secondary"
+                          onClick={() => {
+                            setIsModalOpen(true);
+                          }}
+                        >
+                          {/* <label className="h-5 text-[14px]  text-[#393939] cursor-pointer"> */}
+                          Discard
+                          {/* </label> */}
+                        </Button>
+                        {/* </Link> */}
                       </Col>
                       <Col className="pl-4">
                         <Button
