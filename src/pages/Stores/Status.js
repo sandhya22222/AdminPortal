@@ -62,7 +62,7 @@ function Status({
     //     authorizationHeader
     //   )
     MarketplaceServices.update(storeEditStatusAPI, reqbody, {
-      "store-id": parseInt(storeId),
+      store_id: storeId,
     }).then((response) => {
       setSwitchStatus(changeSwitchStatus);
       closeModal();
