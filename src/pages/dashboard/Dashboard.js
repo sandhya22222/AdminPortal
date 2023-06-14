@@ -449,8 +449,8 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
         ) : dashboardDataNetWorkError ? (
           <Content className="text-center !mt-16 !mb-2">
             <h1 level={5}>
-              Your's back-end server/services seems to be down, please start
-              your server/services and try again.
+              Please wait, we are validating you, if this persists, logout and
+              login.
             </h1>
           </Content>
         ) : (
@@ -458,10 +458,10 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
             <Content className="flex justify-between !mt-2">
               <Content
                 className="p-3 mr-5 shadow-sm rounded-md justify-center !bg-white !w-[25%]"
-              // style={{
-              //   background:
-              //     "linear-gradient(74.8deg, rgba(52, 168, 83, 0.6) 0%, rgba(52, 168, 83, 0.4) 98.74%)",
-              // }}
+                // style={{
+                //   background:
+                //     "linear-gradient(74.8deg, rgba(52, 168, 83, 0.6) 0%, rgba(52, 168, 83, 0.4) 98.74%)",
+                // }}
               >
                 <Content className="!text-black text-md mb-2 flex ">
                   <Content className="flex justify-between items-baseline">
@@ -475,7 +475,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                     </div>
                     <Text
                       className="cursor-pointer linkColor float-right font-semibold"
-                    // onClick={() => navigate("/dashboard/store")}
+                      onClick={() => navigate("/dashboard/store")}
                     >
                       View All
                     </Text>
@@ -514,10 +514,10 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
               </Content>
               <Content
                 className="p-3 mr-5 shadow-sm rounded-md justify-between !w-auto flex !bg-white"
-              // style={{
-              //   background:
-              //     "linear-gradient(74.8deg, rgba(234, 67, 53, 0.6) 0%, rgba(234, 67, 53, 0.4) 98.74%)",
-              // }}
+                // style={{
+                //   background:
+                //     "linear-gradient(74.8deg, rgba(234, 67, 53, 0.6) 0%, rgba(234, 67, 53, 0.4) 98.74%)",
+                // }}
               >
                 <Content className="flex items-center">
                   <Image
@@ -595,10 +595,10 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
               </Content> */}
               <Content
                 className="p-3 shadow-sm rounded-md justify-center !bg-white"
-              // style={{
-              //   background:
-              //     "linear-gradient(74.8deg, rgba(66, 133, 244, 0.6) 0%, rgba(66, 133, 244, 0.4) 98.74%)",
-              // }}
+                // style={{
+                //   background:
+                //     "linear-gradient(74.8deg, rgba(66, 133, 244, 0.6) 0%, rgba(66, 133, 244, 0.4) 98.74%)",
+                // }}
               >
                 {/* ### */}
 
@@ -668,12 +668,12 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
                   <Content className="!bg-white shadow-sm p-3 ">
                     <Text className="!font-semibold text-lg">Ranking</Text>
                     <Text className="text-slate-600"> (Previous Month)</Text>
-                    <Text
+                    {/* <Text
                       className="cursor-pointer linkColor float-right font-semibold"
-                    // onClick={() => navigate("/dashboard/store")}
+                      // onClick={() => navigate("/dashboard/store")}
                     >
                       View All
-                    </Text>
+                    </Text> */}
                     <Content>
                       <DmTabAntDesign
                         tabType={"line"}
