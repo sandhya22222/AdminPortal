@@ -10,10 +10,16 @@ import {
   ShopOutlined,
   DollarCircleOutlined,
   SettingOutlined,
+  UserOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
 } from "@ant-design/icons";
-import { MdDashboard, MdStore, MdLanguage, MdOutlinePayment } from "react-icons/md";
+import {
+  MdDashboard,
+  MdStore,
+  MdLanguage,
+  MdOutlinePayment,
+} from "react-icons/md";
 import { FaHome } from "react-icons/fa";
 import { AiOutlineHome } from "react-icons/ai";
 //! Import CSS libraries
@@ -78,9 +84,16 @@ const SidebarNew = (props) => {
     {
       key: "5",
       icon: <MdOutlinePayment className="!text-[#FCC32A]" />,
-      inactive_icon:<MdOutlinePayment className="!text-[#ffffffde]" />,
+      inactive_icon: <MdOutlinePayment className="!text-[#ffffffde]" />,
       label: "Payment Type",
       navigate_to: "/dashboard/paymenttype",
+    },
+    {
+      key: "6",
+      icon: <UserOutlined className="!text-[#FCC32A]" />,
+      inactive_icon: <UserOutlined className="!text-[#ffffffde]" />,
+      label: "Profile",
+      navigate_to: "/dashboard/userprofile",
     },
     // {
     //   key: "5",
@@ -97,6 +110,9 @@ const SidebarNew = (props) => {
   };
   useEffect(() => {
     switch (pathname.split("/")[2]) {
+      case "userprofile":
+        setSelectedItem("6");
+        break;
       case "paymenttype":
         setSelectedItem("5");
         break;
@@ -146,7 +162,9 @@ const SidebarNew = (props) => {
             >
               {myData.map((item) => (
                 <Menu.Item
-                  icon={selectedItem === item.key ? item.icon : item.inactive_icon}
+                  icon={
+                    selectedItem === item.key ? item.icon : item.inactive_icon
+                  }
                   key={item.key}
                   onClick={() => {
                     navigate(item.navigate_to);
@@ -162,35 +180,35 @@ const SidebarNew = (props) => {
             </Menu>
           </Spin>
           <Content>
-        <Divider
-            style={{
-              background: "#FFFFFF",
-              opacity: "0.55",
-              alignSelf: "stretch",
-              margin: "0px",
-              marginTop: "350px",
-            }}
-          />
-          <Button
-            type="text"
-            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            onClick={() => setCollapsed(!collapsed)}
-            style={{
-              width: "100%",
-              display: "flex",
-              // padding: "8 16 8 16",
-              // marginTop: "0px",
-              color: "white",
-              justifyContent: "center",
-              // alignItems: "center",
-              bottom: "0",
-            }}
-          />
-        </Content>
+            <Divider
+              style={{
+                background: "#FFFFFF",
+                opacity: "0.55",
+                alignSelf: "stretch",
+                margin: "0px",
+                marginTop: "350px",
+              }}
+            />
+            <Button
+              type="text"
+              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+              onClick={() => setCollapsed(!collapsed)}
+              style={{
+                width: "100%",
+                display: "flex",
+                // padding: "8 16 8 16",
+                // marginTop: "0px",
+                color: "white",
+                justifyContent: "center",
+                // alignItems: "center",
+                bottom: "0",
+              }}
+            />
+          </Content>
         </Sider>
       </Affix>
-         
-        {/* </Sider>
+
+      {/* </Sider>
         </Affix>
         <Content>
             <Divider
@@ -218,7 +236,7 @@ const SidebarNew = (props) => {
               }}
             />
           </Content> */}
-      
+
       <Layout className="site-layout !w-[80%]">
         <Outlet />
       </Layout>

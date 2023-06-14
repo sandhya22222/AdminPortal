@@ -34,7 +34,6 @@ const Header2 = () => {
 
   const isUserLoggedIn = sessionStorage.getItem("is_loggedIn");
 
-
   // const languageItems = [];
   // if (storeLanguages && storeLanguages.length > 1) {
   //   storeLanguages.forEach((element) => {
@@ -47,12 +46,12 @@ const Header2 = () => {
 
   const userItems = [
     // Todo: Commenting for now, will implement once the details are ready
-    // {
-    //   label: "Profile",
-    //   key: "profile",
-    //   icon: <UserOutlined />,
-    //   disabled: true,
-    // },
+    {
+      label: "Profile",
+      key: "profile",
+      icon: <UserOutlined />,
+      // disabled: true,
+    },
     {
       label: "Logout",
       key: "logout",
@@ -73,10 +72,13 @@ const Header2 = () => {
           // sessionStorage.clear();
           // window.location = "/";
         })
-        .catch((error) => { })
+        .catch((error) => {})
         .finally(() => {
           util.logoutUser();
         });
+    }
+    if (e.key === "profile") {
+      navigate("dashboard/userprofile");
     }
   };
 
@@ -128,9 +130,7 @@ const Header2 = () => {
                     className="text-lg absolute bottom-[-2px] left-[-30px]"
                   />
                   <Content className="ml-2 mr-1 !flex !items-center">
-                    <Text className="text-lg text-slate-600 pr-1">
-                      Admin
-                    </Text>
+                    <Text className="text-lg text-slate-600 pr-1">Admin</Text>
                     <DownOutlined className="text-xs text-slate-600" />
                   </Content>
                 </Paragraph>
