@@ -1226,7 +1226,7 @@ const Stores = () => {
             <h5>
               {errorMessage
                 ? errorMessage
-                : "Your's back-end server/services seems to be down, please start your server/services and try again."}
+                : "Please wait, we are validating you, if this persists, logout and login."}
             </h5>
           </Layout>
         ) : (
