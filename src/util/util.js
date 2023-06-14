@@ -1,4 +1,5 @@
 import { toast } from "react-toastify";
+import moment from "moment";
 // import CategoryTabData from "../constants/CategoryTabData";
 // to get image URL using image path
 const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -26,6 +27,19 @@ export const sortObjectArray = (prop, objectArray) => {
     }
   });
   return objectArray;
+};
+
+export const getGenerateDateAndTime = (data, format) => {
+  let tempDate = "";
+  if (data !== undefined) {
+    if (format !== undefined && format !== null) {
+      tempDate = moment(data).format(format);
+    } else {
+      tempDate = moment(data).format("D-M-YYYY");
+    }
+  }
+
+  return tempDate;
 };
 
 export const sortObjectArrayByKey = (key, keyType, array, sortType) => {

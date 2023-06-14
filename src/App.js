@@ -30,6 +30,7 @@ import PaymentType from "./pages/PaymentType/PaymentType";
 import OnlinePaymentConnector from "./pages/OnlinePaymentConnector/OnlinePaymentConnector";
 import StoreSettings from "./pages/StoreSetting/StoreSettings";
 import Preview from "./pages/StoreSetting/Preview";
+import UserProfile from "./pages/StoreUsers/UserProfile";
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 
 const auth = process.env.REACT_APP_AUTH;
@@ -62,9 +63,13 @@ const App = () => {
               <Route
                 exact
                 path="*"
-                element={keycloakData ?
-                  <Navigate to="/home" /> :
-                  <Navigate to="/user-verification" />}
+                element={
+                  keycloakData ? (
+                    <Navigate to="/home" />
+                  ) : (
+                    <Navigate to="/user-verification" />
+                  )
+                }
               />
               <Route
                 path="/"
@@ -104,6 +109,7 @@ const App = () => {
                       />
                       <Route path="preview" element={<Preview />} />
                       <Route path="paymenttype" element={<PaymentType />} />
+                      <Route path="userprofile" element={<UserProfile />} />
                       <Route
                         path="onlinepaymentconnector"
                         element={<OnlinePaymentConnector />}
@@ -123,14 +129,18 @@ const App = () => {
           )}
           {auth === "false" && (
             <Routes>
-               <Route
+              <Route
                 exact
                 path="*"
-                element={keycloakData ?
-                  <Navigate to="/home" /> :
-                  <Navigate to="/user-verification" />}
+                element={
+                  keycloakData ? (
+                    <Navigate to="/home" />
+                  ) : (
+                    <Navigate to="/user-verification" />
+                  )
+                }
               />
-               <Route
+              <Route
                 exact
                 path="/home"
                 element={
@@ -153,6 +163,7 @@ const App = () => {
                 <Route path="store/storesetting" element={<StoreSettings />} />
                 <Route path="preview" element={<Preview />} />
                 <Route path="paymenttype" element={<PaymentType />} />
+                <Route path="userprofile" element={<UserProfile />} />
                 <Route
                   path="onlinepaymentconnector"
                   element={<OnlinePaymentConnector />}
