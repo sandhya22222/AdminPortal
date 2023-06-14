@@ -130,7 +130,7 @@ const StoreSettings = () => {
     //     authorizationHeader
     //   )
     MarketplaceServices.findAllWithoutPage(storeSettingAPI, {
-      "store-id": storeId,
+      store_id: storeId,
     })
       .then(function (response) {
         console.log(
@@ -306,15 +306,14 @@ const StoreSettings = () => {
   useEffect(() => {
     if (storeData && storeData.length > 0) {
       // setStoreName(storeData[i].name);
+      console.log("storeData", storeData);
       var storeApiData =
         storeData &&
         storeData.length > 0 &&
-        storeData.filter((element) => element.id === parseInt(id));
-      if (storeData && storeData.length > 0) {
-        for (var i = 0; i < storeData.length; i++) {
-          setStoreName(storeApiData[0].name);
-          setChangeSwitchStatus(storeApiData[0].status);
-        }
+        storeData.filter((element) => element.store_uuid === id);
+      if (storeApiData && storeApiData.length > 0) {
+        setStoreName(storeApiData[0].name);
+        setChangeSwitchStatus(storeApiData[0].status);
       }
     }
   }, [storeData]);
@@ -719,7 +718,7 @@ const StoreSettings = () => {
     //     authorizationHeader
     //   )
     MarketplaceServices.findAllWithoutPage(storeImagesAPI, {
-      "store-id": storeId,
+      store_id: storeId,
     })
       .then(function (response) {
         console.log("Get response of Store setting Images--->", response.data);
@@ -750,7 +749,7 @@ const StoreSettings = () => {
           formData.append("wishlist_logo", imagesUpload[i].imageValue);
         }
       }
-      formData.append("store_id", parseInt(id));
+      formData.append("store_id", id);
     }
     // axios
     //   .post(
@@ -828,7 +827,7 @@ const StoreSettings = () => {
           formData.append("wishlist_logo", imagesUpload[i].imageValue);
         }
       }
-      formData.append("store_id", parseInt(id));
+      formData.append("store_id", id);
     }
     // axios
     //   .put(

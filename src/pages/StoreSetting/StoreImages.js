@@ -153,7 +153,7 @@ const StoreImages = ({
     //     authorizationHeader,
     //   })
     MarketplaceServices.findAllWithoutPage(storeBannerImageAPI, {
-      "store-id": storeId,
+      store_id: storeId,
     })
       .then(function (response) {
         console.log(
@@ -267,7 +267,7 @@ const StoreImages = ({
         storeAbsoluteImgesAPI,
         {
           params: {
-            "store-id": storeId,
+            store_id: storeId,
             "image-path": imagePath,
             "image-type": type,
           },
@@ -353,7 +353,7 @@ const StoreImages = ({
   const removeMedia = (index) => {
     console.log("index", index);
     let dataObject = {};
-    dataObject["store-id"] = storeId;
+    dataObject["store_id"] = storeId;
     dataObject["image-type"] = type;
     if (type === "banner_images") {
       let temp = bannerAbsoluteImage[index];
