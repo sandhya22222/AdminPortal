@@ -17,6 +17,7 @@ import {
 import { toast } from "react-toastify";
 import { ArrowLeftOutlined, InboxOutlined } from "@ant-design/icons";
 import { useNavigate, Link } from "react-router-dom";
+import StoreModal from "../../components/storeModal/StoreModal";
 import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
 import "./language.css";
 import useAuthorization from "../../hooks/useAuthorization";
@@ -47,6 +48,8 @@ const AddLanguage = () => {
   const [fileExtension, setFileExtension] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [langugaeDocumentPath, setLanguageDocumentPath] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const navigate = useNavigate();
 
   const handleLanguageChange = (e) => {
@@ -75,6 +78,10 @@ const AddLanguage = () => {
     // if (regex.test(value)) {
     //   setLanguageCode(value);
     // }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   const handleRegexChange = (e) => {
@@ -581,6 +588,20 @@ const AddLanguage = () => {
               </Content>
             </Content>
             <Content className="mt-3">
+              <StoreModal
+                isVisible={isModalOpen}
+                okButtonText={"Yes"}
+                title={"Confirmation"}
+                cancelButtonText={"No"}
+                okCallback={() => navigate("/dashboard/language")}
+                cancelCallback={() => closeModal()}
+                isSpin={false}
+              >
+                <div>
+                  The listing page will be displayed, and any changes made here
+                  won't be saved. Are you sure that you want to discard?
+                </div>
+              </StoreModal>
               <Row>
                 <Col>
                   <Button
@@ -592,14 +613,17 @@ const AddLanguage = () => {
                   </Button>
                 </Col>
                 <Col className="pl-4">
-                  <Link to="/dashboard/language">
-                    <Button
-                      // style={{ background: "#FFFFFF" }}
-                      className=" app-btn-secondary"
-                    >
-                      Discard
-                    </Button>
-                  </Link>
+                  {/* <Link to="/dashboard/language"> */}
+                  <Button
+                    // style={{ background: "#FFFFFF" }}
+                    onClick={() => {
+                      setIsModalOpen(true);
+                    }}
+                    className=" app-btn-secondary"
+                  >
+                    Discard
+                  </Button>
+                  {/* </Link> */}
                 </Col>
               </Row>
             </Content>
