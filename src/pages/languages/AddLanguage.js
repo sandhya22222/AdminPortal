@@ -438,7 +438,7 @@ const AddLanguage = () => {
                         *
                       </span>
                       <label className="text-[13px] mb-2 ml-1">
-                        language
+                        Language
                         {/* <sup className="text-red-600 text-sm mt-1">*</sup> */}
                       </label>
                       <Input
