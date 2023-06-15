@@ -83,15 +83,14 @@ function Status({
       }
       if (changeSwitchStatus) {
         storeApiData.forEach((element) => {
-          if (element.id == response.config.params["store-id"]) {
+          if (element.id == response.config.params.store_id) {
             element.status = 1;
           }
         });
         setStoreApiData(storeApiData);
-        console.log("storeapidata==>", storeApiData);
       } else {
         storeApiData.forEach((element) => {
-          if (element.id == response.config.params["store-id"]) {
+          if (element.id == response.config.params.store_id) {
             element.status = 2;
           }
         });
@@ -100,16 +99,22 @@ function Status({
       console.log(
         "Selected content",
         selectedTabTableContent,
-        response.config.params["store-id"]
+        response.config.params.store_id
       );
       if (tabId > 0) {
         setSelectedTabTableContent(
           selectedTabTableContent.filter(
-            (element) => element.id !== response.config.params["store-id"]
+            (element) => element.id !== response.config.params.store_id
           )
         );
       } else {
-        setSelectedTabTableContent(selectedTabTableContent);
+        let temp = [...selectedTabTableContent];
+        let index = temp.findIndex(
+          (ele) => ele.id === response.config.params.store_id
+        );
+        temp[index]["status"] =
+          changeSwitchStatus === true ? "Active" : "InActive";
+        setSelectedTabTableContent(temp);
       }
       if (switchStatus === false) {
         toast("Store Activation Is Successful", {

@@ -103,7 +103,7 @@ const Stores = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const [isStoreDeleting, setIsStoreDeleting] = useState(false);
-
+  const [storeApiStatus, setStoreApiStatus] = useState();
   const searchInput = useRef(null);
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -295,7 +295,6 @@ const Stores = () => {
       key: "",
       width: "12%",
       render: (text, record) => {
-        console.log("record", record.id);
         return (
           <content className="whitespace-nowrap">
             <Tooltip title="Edit Store">
@@ -327,20 +326,24 @@ const Stores = () => {
                 />
               </Tooltip>
             </Link>
-            <Tooltip title="Delete Store">
-              <DeleteOutlined
-                className="app-delete-icon pr-4"
-                style={{ fontSize: "16px", marginLeft: "5px" }}
-                onClick={() => {
-                  openDeleteModal(record.id);
-                }}
-              />
-            </Tooltip>
+
+            {record.status === "InActive" ? (
+              <Tooltip title="Delete Store">
+                <DeleteOutlined
+                  className="app-delete-icon pr-4"
+                  style={{ fontSize: "16px", marginLeft: "5px" }}
+                  onClick={() => {
+                    openDeleteModal(record.id);
+                  }}
+                />
+              </Tooltip>
+            ) : null}
           </content>
         );
       },
     },
   ];
+
   //! status of stores like active or inactive
   const statusForStores = {
     1: "Active",
@@ -470,7 +473,6 @@ const Stores = () => {
   const closeDeleteModal = () => {
     setIsDeleteStoreModalOpen(false);
   };
-  console.log("activeCount", activeCount);
   //!get call for stores
   const findByPageStoreApi = (pageNumber, pageLimit, storeStatus) => {
     // setIsLoading(true);
@@ -769,22 +771,15 @@ const Stores = () => {
             type: "error",
           });
         }
-        // if (error && error.response && error.response.status === 401) {
-        //   makeHttpRequestForRefreshToken();
-        // }
       });
   };
 
-  console.log("storeEditId", storeApiData);
   useEffect(() => {
     if (storeEditId) {
-      console.log("storeEditId", storeEditId);
-
       var storeData =
         storeApiData &&
         storeApiData.length > 0 &&
         storeApiData.filter((element) => element.store_uuid === storeEditId);
-      console.log("storeDta", storeData);
       if (storeData && storeData.length > 0) {
         setEditName(storeData[0].name);
         // setStoreEditEmail(storeData[0].email);
@@ -826,12 +821,6 @@ const Stores = () => {
     window.scrollTo(0, 0);
   }, [searchParams]);
 
-  // useEffect(() => {
-  //   findByPageStoreApi(1, 20);
-  //   findByPageStoreApi(1, 20, 1);
-  //   findByPageStoreApi(1, 20, 2);
-  // }, []);
-
   const handlePageNumberChange = (page, pageSize) => {
     // setSearchParams({
     //   tab: searchParams.get("tab"),
@@ -872,6 +861,7 @@ const Stores = () => {
             }
           }
           setStoreApiData(removedData);
+          setCountForStore(countForStore - 1);
           toast("Successfully Deleted The Store", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
@@ -885,7 +875,7 @@ const Stores = () => {
         setIsStoreDeleting(false);
         console.log("response from delete===>", error.response.data);
         if (error.response) {
-          toast(`${error.response.data}`, {
+          toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
           });
@@ -1223,11 +1213,11 @@ const Stores = () => {
           </Content>
         ) : isNetworkError ? (
           <Layout className="p-0 text-center mb-3 bg-[#F4F4F4]">
-            <h5>
+            <p>
               {errorMessage
                 ? errorMessage
                 : "Please wait, we are validating you, if this persists, logout and login."}
-            </h5>
+            </p>
           </Layout>
         ) : (
           <Content className="">
@@ -1240,7 +1230,7 @@ const Stores = () => {
                   tab_id === null ? "0" : String(tab_id)
                   // String(tab_id)
                 }
-                totalItemsCount={countForStore}
+                // totalItemsCount={countForStore}
                 tabType={"line"}
                 tabBarPosition={"top"}
               />

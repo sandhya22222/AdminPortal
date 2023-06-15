@@ -305,8 +305,6 @@ const StoreSettings = () => {
 
   useEffect(() => {
     if (storeData && storeData.length > 0) {
-      // setStoreName(storeData[i].name);
-      console.log("storeData", storeData);
       var storeApiData =
         storeData &&
         storeData.length > 0 &&
@@ -317,8 +315,6 @@ const StoreSettings = () => {
       }
     }
   }, [storeData]);
-
-  console.log("sampleobject", sampleobject);
 
   //! post call for store settings
   const saveStoreSettingsCall = () => {
@@ -484,8 +480,6 @@ const StoreSettings = () => {
         // onClose();
       });
   };
-
-  console.log("checkking", imagesUpload);
 
   //! validations of store settings API
   const validatePostStoreSetting = () => {
