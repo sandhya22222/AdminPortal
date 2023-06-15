@@ -348,6 +348,7 @@ const Language = () => {
             ({ id }) => id !== deleteLanguageID
           );
           setLanguageData(removedData);
+          setTotalLanguageCount(totalLanguageCount - 1);
           toast("Language deleted successfully", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
@@ -513,7 +514,6 @@ const Language = () => {
         />
       </Content>
 
-     
       <Content className="!p-3 mt-[10rem] !min-h-screen">
         {isLoading ? (
           <Content className="bg-white">

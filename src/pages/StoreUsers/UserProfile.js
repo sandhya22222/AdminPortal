@@ -39,6 +39,7 @@ const UserProfile = () => {
 
   useEffect(() => {
     findAllWithoutPageStoreUsers();
+    window.scroll(0, 0);
   }, []);
 
   return (
