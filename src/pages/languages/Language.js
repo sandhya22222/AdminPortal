@@ -361,7 +361,7 @@ const Language = () => {
         // disabling spinner
         setIslanguageDeleting(false);
         console.log("response from delete===>", error.response);
-        toast("Language not deleted", {
+        toast("Unable to delete language", {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
         });

@@ -572,7 +572,7 @@ const Stores = () => {
     ) {
       setInValidName(true);
       count--;
-      toast("Please Provide Store Name", {
+      toast("Please provide store name", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
@@ -593,7 +593,7 @@ const Stores = () => {
     ) {
       count--;
       setInValidEmail(true);
-      toast("Please Provide Valid Email", {
+      toast("Please provide valid email", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
@@ -605,7 +605,7 @@ const Stores = () => {
     ) {
       setInValidUserName(true);
       count--;
-      toast("Please Provide Username", {
+      toast("Please provide username", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
@@ -637,7 +637,7 @@ const Stores = () => {
     ) {
       setInValidPassword(true);
       count--;
-      toast("Please Provide Password", {
+      toast("Please provide password", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
@@ -706,7 +706,7 @@ const Stores = () => {
             type: "error",
           });
         } else {
-          toast("Something Went Wrong", {
+          toast("Something went wrong", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
           });
@@ -752,7 +752,7 @@ const Stores = () => {
         setServerStoreName(response.data.name);
         onClose();
         if (response.status === 200 || response.status === 201) {
-          toast("Store Updated Successfully! ", {
+          toast("Store updated successfully! ", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
           });
@@ -766,7 +766,7 @@ const Stores = () => {
             type: "error",
           });
         } else {
-          toast("Something Went Wrong", {
+          toast("Something went wrong", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
           });
@@ -793,12 +793,12 @@ const Stores = () => {
   const validateStorePutField = () => {
     if (editName === "" || editName === null || editName === undefined) {
       setInValidEditName(true);
-      toast("Please provide Store Name", {
+      toast("Please provide store name", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
     } else if (editName === serverStoreName) {
-      toast("No Changes Detected!", {
+      toast("No change detected!", {
         position: toast.POSITION.TOP_RIGHT,
         type: "info",
       });
@@ -862,7 +862,7 @@ const Stores = () => {
           }
           setStoreApiData(removedData);
           setCountForStore(countForStore - 1);
-          toast("Successfully Deleted The Store", {
+          toast("Store deleted successfully", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
           });
@@ -880,7 +880,7 @@ const Stores = () => {
             type: "error",
           });
         } else {
-          toast("Something Went Wrong", {
+          toast("Something went wrong", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
           });

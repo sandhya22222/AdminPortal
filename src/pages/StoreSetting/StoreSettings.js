@@ -359,14 +359,14 @@ const StoreSettings = () => {
     MarketplaceServices.save(storeSettingAPI, postBody)
       .then((response) => {
         if (Object.keys(sampleobject).length === 2) {
-          toast("Media And Store Settings Data Created Successfully.", {
+          toast("Media and store settings data saved successfully.", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
           });
         } else {
           if (Object.keys(sampleobject).length > 0) {
             if (sampleobject["settings"] === "contentSettings") {
-              toast("Store Settings Created Successfully.", {
+              toast("Store settings saved successfully.", {
                 position: toast.POSITION.TOP_RIGHT,
                 type: "success",
               });
@@ -593,7 +593,7 @@ const StoreSettings = () => {
           copyImageOfStoreFooterSetting.fg_color) &&
       imagesUpload.length === 0
     ) {
-      toast("No Changes Are Detected", {
+      toast("No change detected", {
         autoClose: 5000,
         position: toast.POSITION.TOP_RIGHT,
         type: "info",
@@ -767,7 +767,7 @@ const StoreSettings = () => {
           Object.keys(sampleobject).length !== 2
         ) {
           if (sampleobject["images"] === "images") {
-            toast("Images Created Successfully.", {
+            toast("Images saved successfully.", {
               position: toast.POSITION.TOP_RIGHT,
               type: "success",
             });
@@ -845,7 +845,7 @@ const StoreSettings = () => {
           Object.keys(sampleobject).length !== 2
         ) {
           if (sampleobject["images"] === "images") {
-            toast("Images Updated Successfully.", {
+            toast("Images saved successfully.", {
               position: toast.POSITION.TOP_RIGHT,
               type: "success",
             });

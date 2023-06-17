@@ -108,7 +108,7 @@ const EditLanguage = () => {
         // var lastExtensionValue = arr.pop();
         console.log("Final File In Function", file, fileExtension);
       } else {
-        toast(`Please select file less than four mb`, {
+        toast(`Please select file less than 4 mb`, {
           position: toast.POSITION.TOP_RIGHT,
           type: "warning",
         });
@@ -238,7 +238,7 @@ const EditLanguage = () => {
         languageDetails.writing_script_direction &&
       responseLanguageData[0].language_regex === languageDetails.language_regex
     ) {
-      toast("No Changes Are Detected", {
+      toast("No changes detected", {
         autoClose: 5000,
         position: toast.POSITION.TOP_RIGHT,
         type: "info",
@@ -320,7 +320,7 @@ const EditLanguage = () => {
         console.log(response);
         if (response.status === 200 || response.status === 201) {
           // getLanguageAPI();
-          toast("Language Edited Successfully.", {
+          toast("Language edited successfully.", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
           });
@@ -332,7 +332,7 @@ const EditLanguage = () => {
         setIsLoading(false);
         if (fileData) {
           if (fileValue !== ".csv")
-            toast("Invalid extention , it will support only .csv extention", {
+            toast("Invalid extension, only .csv extension is supported", {
               position: toast.POSITION.TOP_RIGHT,
               type: "error",
             });
@@ -374,7 +374,7 @@ const EditLanguage = () => {
     })
       .then((response) => {
         console.log("put response", response.data);
-        toast("File Uploaded Successfully.", {
+        toast("File uploaded successfully.", {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
         });
@@ -407,7 +407,7 @@ const EditLanguage = () => {
       headers: { "Content-Type": "multipart/form-data" },
     })
       .then((response) => {
-        toast("File Uploaded Successfully.", {
+        toast("File uploaded successfully.", {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
         });
@@ -429,7 +429,7 @@ const EditLanguage = () => {
             type: "error",
           });
         } else {
-          toast("Something Went Wrong", {
+          toast("Something went wrong", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
           });
@@ -460,7 +460,7 @@ const EditLanguage = () => {
       .then((response) => {
         console.log("response from delete===>", response.data);
         if (response.status === 200 || response.status === 201) {
-          toast("Document Deleted Successfully", {
+          toast("Document deleted successfully", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
           });

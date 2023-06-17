@@ -63,90 +63,88 @@ function Status({
     //   )
     MarketplaceServices.update(storeEditStatusAPI, reqbody, {
       store_id: storeId,
-    }).then((response) => {
-      setSwitchStatus(changeSwitchStatus);
-      closeModal();
-      setIsLoading(false);
-      let duplicateActiveCall = { ...activeCount };
-      if (changeSwitchStatus === true) {
-        duplicateActiveCall["activeStores"] =
-          activeCount && activeCount.activeStores + 1;
-        duplicateActiveCall["inactiveStores"] =
-          activeCount && activeCount.inactiveStores - 1;
-        setActiveCount(duplicateActiveCall);
-      } else {
-        duplicateActiveCall["activeStores"] =
-          activeCount && activeCount.activeStores - 1;
-        duplicateActiveCall["inactiveStores"] =
-          activeCount && activeCount.inactiveStores + 1;
-        setActiveCount(duplicateActiveCall);
-      }
-      if (changeSwitchStatus) {
-        storeApiData.forEach((element) => {
-          if (element.id == response.config.params.store_id) {
-            element.status = 1;
-          }
-        });
-        setStoreApiData(storeApiData);
-      } else {
-        storeApiData.forEach((element) => {
-          if (element.id == response.config.params.store_id) {
-            element.status = 2;
-          }
-        });
-        setStoreApiData(storeApiData);
-      }
-      console.log(
-        "Selected content",
-        selectedTabTableContent,
-        response.config.params.store_id
-      );
-      if (tabId > 0) {
-        setSelectedTabTableContent(
-          selectedTabTableContent.filter(
-            (element) => element.id !== response.config.params.store_id
-          )
+    })
+      .then((response) => {
+        setSwitchStatus(changeSwitchStatus);
+        closeModal();
+        setIsLoading(false);
+        let duplicateActiveCall = { ...activeCount };
+        if (changeSwitchStatus === true) {
+          duplicateActiveCall["activeStores"] =
+            activeCount && activeCount.activeStores + 1;
+          duplicateActiveCall["inactiveStores"] =
+            activeCount && activeCount.inactiveStores - 1;
+          setActiveCount(duplicateActiveCall);
+        } else {
+          duplicateActiveCall["activeStores"] =
+            activeCount && activeCount.activeStores - 1;
+          duplicateActiveCall["inactiveStores"] =
+            activeCount && activeCount.inactiveStores + 1;
+          setActiveCount(duplicateActiveCall);
+        }
+        if (changeSwitchStatus) {
+          storeApiData.forEach((element) => {
+            if (element.id == response.config.params.store_id) {
+              element.status = 1;
+            }
+          });
+          setStoreApiData(storeApiData);
+        } else {
+          storeApiData.forEach((element) => {
+            if (element.id == response.config.params.store_id) {
+              element.status = 2;
+            }
+          });
+          setStoreApiData(storeApiData);
+        }
+        console.log(
+          "Selected content",
+          selectedTabTableContent,
+          response.config.params.store_id
         );
-      } else {
-        let temp = [...selectedTabTableContent];
-        let index = temp.findIndex(
-          (ele) => ele.id === response.config.params.store_id
-        );
-        temp[index]["status"] =
-          changeSwitchStatus === true ? "Active" : "InActive";
-        setSelectedTabTableContent(temp);
-      }
-      if (switchStatus === false) {
-        toast("Store Activation Is Successful", {
-          position: toast.POSITION.TOP_RIGHT,
-          type: "success",
-        });
-      } else {
-        toast("Store Deactivation Is Successful", {
-          position: toast.POSITION.TOP_RIGHT,
-          type: "success",
-        });
-      }
-      // setIsLoading(false);
-    });
-    console.log("first12344", switchStatus).catch((error) => {
-      toast(error.response.data.message, {
-        type: "error",
-      });
-      console.log("Error from the status response ===>", error.response);
-      setIsLoading(false);
-      closeModal();
-    });
-    console.log("first12344", switchStatus).catch((error) => {
-      toast(error.response.data.message, {
-        type: "error",
-      });
-      console.log("Error from the status response ===>", error.response);
-      setIsLoading(false);
-      closeModal();
-    });
+        if (tabId > 0) {
+          setSelectedTabTableContent(
+            selectedTabTableContent.filter(
+              (element) => element.id !== response.config.params.store_id
+            )
+          );
+        } else {
+          let temp = [...selectedTabTableContent];
+          let index = temp.findIndex(
+            (ele) => ele.id === response.config.params.store_id
+          );
+          temp[index]["status"] =
+            changeSwitchStatus === true ? "Active" : "InActive";
+          setSelectedTabTableContent(temp);
+        }
+        if (switchStatus === false) {
+          toast("Store status changed successfully", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "success",
+          });
+        } else {
+          toast("Store status changed successfully", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "success",
+          });
+        }
+        // setIsLoading(false);
+      })
+      .catch((error) => {
+        if (error.response && error.response.message) {
+          toast(error.response.data.message, {
+            type: "error",
+          });
+        } else {
+          toast("Unable to change store status", {
+            type: "error",
+          });
+        }
 
-    console.log("post body for ---", storeEditStatusAPI, " is:", reqbody);
+        console.log("Error from the status response ===>", error.response);
+        setIsLoading(false);
+        closeModal();
+      });
   };
 
   const onChange = (checked) => {
