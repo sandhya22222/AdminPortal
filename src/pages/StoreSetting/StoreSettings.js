@@ -485,6 +485,184 @@ const StoreSettings = () => {
   const validatePostStoreSetting = () => {
     let count = 4;
     if (
+      currencySymbol === "" &&
+      currencyIsoCode === "" &&
+      fractionalUnit === "" &&
+      numberToBasic === ""
+    ) {
+      count--;
+      setInValidCurrencySymbol(true);
+      setInValidCurrencyIsoCode(true);
+      setInValidFractionalUnit(true);
+      setInValidNumberToBasic(true);
+      toast("Please fill out the mandatory feilds", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+      });
+    } else if (
+      currencySymbol !== "" &&
+      currencyIsoCode === "" &&
+      fractionalUnit === "" &&
+      numberToBasic === ""
+    ) {
+      count--;
+      setInValidNumberToBasic(true);
+      setInValidCurrencyIsoCode(true);
+      setInValidFractionalUnit(true);
+      toast("Please provide ISO code ,fractinal unit and number to basic", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+      });
+    } else if (
+      currencySymbol === "" &&
+      currencyIsoCode !== "" &&
+      fractionalUnit === "" &&
+      numberToBasic === ""
+    ) {
+      count--;
+      setInValidNumberToBasic(true);
+      setInValidCurrencySymbol(true);
+      setInValidFractionalUnit(true);
+      toast(
+        "Please provide currency symbol ,fractinal unit and number to basic",
+        {
+          position: toast.POSITION.TOP_RIGHT,
+          type: "error",
+        }
+      );
+    } else if (
+      currencySymbol === "" &&
+      currencyIsoCode == "" &&
+      fractionalUnit !== "" &&
+      numberToBasic === ""
+    ) {
+      count--;
+      setInValidNumberToBasic(true);
+      setInValidCurrencySymbol(true);
+      setInValidCurrencyIsoCode(true);
+      toast("Please provide currency symbol ,ISO code and number to basic", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+      });
+    } else if (
+      currencySymbol === "" &&
+      currencyIsoCode == "" &&
+      fractionalUnit === "" &&
+      numberToBasic !== ""
+    ) {
+      count--;
+      setInValidFractionalUnit(true);
+      setInValidCurrencySymbol(true);
+      setInValidCurrencyIsoCode(true);
+      toast("Please provide currency symbol ,ISO code and fractional unit", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+      });
+    } else if (
+      currencySymbol === "" &&
+      currencyIsoCode === "" &&
+      fractionalUnit !== "" &&
+      numberToBasic !== ""
+    ) {
+      count--;
+      setInValidCurrencySymbol(true);
+      setInValidCurrencyIsoCode(true);
+      toast("Please provide the currency symbol and ISO code", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+      });
+    } else if (
+      currencySymbol === "" &&
+      currencyIsoCode !== "" &&
+      fractionalUnit === "" &&
+      numberToBasic !== ""
+    ) {
+      count--;
+      setInValidCurrencySymbol(true);
+      setInValidFractionalUnit(true);
+      toast("Please provide currency symbol and fractinal unit", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+      });
+    } else if (
+      currencySymbol === "" &&
+      currencyIsoCode !== "" &&
+      fractionalUnit !== "" &&
+      numberToBasic === ""
+    ) {
+      count--;
+      setInValidCurrencySymbol(true);
+      setInValidNumberToBasic(true);
+      toast("Please provide currency symbol and number to basic", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+      });
+    } else if (
+      currencySymbol === "" &&
+      currencyIsoCode === "" &&
+      fractionalUnit !== "" &&
+      numberToBasic !== ""
+    ) {
+      count--;
+      setInValidCurrencySymbol(true);
+      setInValidCurrencyIsoCode(true);
+      toast("Please provide the currency symbol and ISO code", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+      });
+    } else if (
+      currencySymbol !== "" &&
+      currencyIsoCode === "" &&
+      fractionalUnit === "" &&
+      numberToBasic !== ""
+    ) {
+      count--;
+      setInValidCurrencyIsoCode(true);
+      setInValidFractionalUnit(true);
+      toast("Please provide Iso code and fractinal unit", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+      });
+    } else if (
+      currencySymbol !== "" &&
+      currencyIsoCode === "" &&
+      fractionalUnit !== "" &&
+      numberToBasic === ""
+    ) {
+      count--;
+      setInValidCurrencyIsoCode(true);
+      setInValidNumberToBasic(true);
+      toast("Please provide Iso code and number to basic", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+      });
+    } else if (
+      currencySymbol === "" &&
+      currencyIsoCode !== "" &&
+      fractionalUnit === "" &&
+      numberToBasic !== ""
+    ) {
+      count--;
+      setInValidCurrencySymbol(true);
+      setInValidFractionalUnit(true);
+      toast("Please provide the currency symbol and fractinal unit", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+      });
+    } else if (
+      currencySymbol !== "" &&
+      currencyIsoCode !== "" &&
+      fractionalUnit === "" &&
+      numberToBasic === ""
+    ) {
+      count--;
+      setInValidFractionalUnit(true);
+      setInValidNumberToBasic(true);
+      toast("Please provide fractinal unit and number to basic", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+      });
+    } else if (
       currencySymbol === "" ||
       currencySymbol === undefined ||
       currencySymbol === null
@@ -495,8 +673,7 @@ const StoreSettings = () => {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
-    }
-    if (
+    } else if (
       currencyIsoCode === "" ||
       currencyIsoCode === undefined ||
       currencyIsoCode === null
@@ -507,8 +684,7 @@ const StoreSettings = () => {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
-    }
-    if (
+    } else if (
       fractionalUnit === "" ||
       fractionalUnit === undefined ||
       fractionalUnit === null
@@ -519,8 +695,7 @@ const StoreSettings = () => {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
-    }
-    if (
+    } else if (
       numberToBasic === "" ||
       numberToBasic === undefined ||
       numberToBasic === null
