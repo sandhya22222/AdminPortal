@@ -106,7 +106,7 @@ const UserProfile = () => {
               </Row>
               <Row className="">
                 <label className="text-md font-medium">
-                  Onboarded On :{" "}
+                  Onboarded on :{" "}
                   {getGenerateDateAndTime(
                     storeUsersData && storeUsersData.createdTimestamp,
                     "D MMMM YYYY"
