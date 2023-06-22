@@ -55,12 +55,10 @@ const AddLanguage = () => {
   const handleLanguageChange = (e) => {
     // setLanguage(e.target.value);
     // setNativeName(e.target.value);
-    const { value } = e.target;
-    const regex = /^[a-zA-Z0-9]*$/;
     if (e.target.value !== "") {
       setIsLanguageFieldEmpty(false);
-      setLanguage(value);
-      setNativeName(value);
+      setLanguage(e.target.value);
+      setNativeName(e.target.value);
     }
     // if (regex.test(value)) {
     //   setLanguage(value);
@@ -119,15 +117,15 @@ const AddLanguage = () => {
     //   typeof langugaeDocumentPath
     // );
     const temp = {};
-    temp["language"] = language;
-    temp["language_code"] = languageCode;
+    temp["language"] = language.trim();
+    temp["language_code"] = languageCode.trim();
     // console.log("regex", regex, typeof regex);
     if (regex !== null && regex !== "") {
-      temp["language_regex"] = regex;
+      temp["language_regex"] = regex.trim();
     }
     // console.log("nativename", nativeName, typeof nativeName);
     if (nativeName !== null && nativeName !== "") {
-      temp["native_name"] = nativeName;
+      temp["native_name"] = nativeName.trim();
     }
     temp["writing_script_direction"] = scriptDirection;
     // if (typeof fileData === "object") {
@@ -198,7 +196,7 @@ const AddLanguage = () => {
   const validateLanguageFieldEmptyOrNot = () => {
     let validValues = 2;
     // var pattern = /^[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~\d]*$/g;
-    if (language === "") {
+    if (language.trim() === "") {
       setIsLanguageFieldEmpty(true);
       validValues--;
       toast("Please enter language name", {
@@ -208,7 +206,7 @@ const AddLanguage = () => {
       });
     }
     const languageReg = /^[a-zA-Z0-9]{4,15}$/;
-    if (language && languageReg.test(language.trim()) === false) {
+    if (language.trim() && languageReg.test(language.trim()) === false) {
       validValues--;
 
       setIsLanguageFieldEmpty(true);
@@ -217,7 +215,7 @@ const AddLanguage = () => {
         type: "error",
       });
     }
-    if (languageCode === "") {
+    if (languageCode.trim() === "") {
       setIsLanguageCodeFieldEmpty(true);
       validValues--;
       toast("Please enter language code", {
@@ -227,7 +225,7 @@ const AddLanguage = () => {
       });
     }
     const userRegex = /^[a-zA-Z0-9]{2,3}$/;
-    if (languageCode && userRegex.test(languageCode.trim()) === false) {
+    if (languageCode.trim() && userRegex.test(languageCode.trim()) === false) {
       validValues--;
 
       setIsLanguageCodeFieldEmpty(true);
@@ -457,8 +455,13 @@ const AddLanguage = () => {
                             ? "border-red-400 !border-[0.5px] border-solid focus:border-red-400 hover:border-red-400"
                             : ""
                         }`}
+                        // onChange={(e) => {
+                        //   handleLanguageChange(e);
+                        // }}
                         onChange={(e) => {
-                          handleLanguageChange(e);
+                          setIsLanguageFieldEmpty(false);
+                          setLanguage(e.target.value);
+                          setNativeName(e.target.value);
                         }}
                         // pattern="^[A-Za-z0-9]+$"
                         // rules={[
@@ -488,8 +491,12 @@ const AddLanguage = () => {
                             ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
                             : ""
                         }`}
+                        // onChange={(e) => {
+                        //   handleLanguageCodeChange(e);
+                        // }}
                         onChange={(e) => {
-                          handleLanguageCodeChange(e);
+                          setIsLanguageCodeFieldEmpty(false);
+                          setLanguageCode(e.target.value);
                         }}
                         // pattern="^[A-Za-z0-9]+$"
                       />

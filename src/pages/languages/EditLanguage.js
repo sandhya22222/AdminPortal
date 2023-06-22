@@ -174,7 +174,7 @@ const EditLanguage = () => {
             languageData[0].lang_support_docs;
           copyofLanguageDetails.language_regex = languageData[0].language_regex;
           setRegexName(languageData[0].language_regex);
-          setDocumentPath(languageData[0].lang_support_docs);
+          setDocumentPath(languageData[0].lang_support_docs_path);
           setLanguageName(languageData[0].language);
 
           setLanguageDetails(copyofLanguageDetails);
@@ -198,6 +198,7 @@ const EditLanguage = () => {
     );
   }, []);
 
+  console.log("documentPath", documentPath);
   const validateLanguageFieldEmptyOrNot = () => {
     // if (
     //   languageDetails.language !== "" &&
