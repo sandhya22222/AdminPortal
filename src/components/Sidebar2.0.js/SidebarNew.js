@@ -186,7 +186,7 @@ const SidebarNew = (props) => {
                 opacity: "0.55",
                 alignSelf: "stretch",
                 margin: "0px",
-                marginTop: "350px",
+                marginTop: "320px",
               }}
             />
             <Button
