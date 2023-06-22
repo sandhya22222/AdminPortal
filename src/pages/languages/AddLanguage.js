@@ -151,10 +151,13 @@ const AddLanguage = () => {
         console.log("from--->", res);
         if (res.status === 201) {
           if (res.data) {
-            toast("Language created", {
-              position: toast.POSITION.TOP_RIGHT,
-              type: "success",
-            });
+            toast(
+              "Congratulations! You have successfully created a new language.",
+              {
+                position: toast.POSITION.TOP_RIGHT,
+                type: "success",
+              }
+            );
             // disabbling spinner
             setIsLoading(false);
             navigate(-1);
@@ -166,9 +169,10 @@ const AddLanguage = () => {
         setIsLoading(false);
         console.log("error", error.response);
         if (error && error.response === undefined) {
-          toast("Something went wrong", {
+          toast("Oops! Something went wrong. Please try again later.", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
+            autoClose: false,
           });
         } else {
           if (error.response.status === 409) {
@@ -178,10 +182,14 @@ const AddLanguage = () => {
             });
           } else if (fileData) {
             if (fileExtension !== "csv") {
-              toast("Invalid extension, only .csv extension is supported", {
-                position: toast.POSITION.TOP_RIGHT,
-                type: "error",
-              });
+              toast(
+                'Only files with the ".csv" extension are supported. Please ensure that you upload a file with the correct extension.',
+                {
+                  position: toast.POSITION.TOP_RIGHT,
+                  type: "error",
+                  autoClose: false,
+                }
+              );
             }
           } else {
             toast(`${error.response.data.message}`, {
@@ -199,8 +207,8 @@ const AddLanguage = () => {
     if (language.trim() === "") {
       setIsLanguageFieldEmpty(true);
       validValues--;
-      toast("Please enter language name", {
-        autoClose: 5000,
+      toast("Please enter the language name", {
+        autoClose: false,
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
@@ -210,16 +218,17 @@ const AddLanguage = () => {
       validValues--;
 
       setIsLanguageFieldEmpty(true);
-      toast("Language must contain at least 4 characters.", {
+      toast("The language name must contain a minimum of 4 characters.", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
+        autoClose: false,
       });
     }
     if (languageCode.trim() === "") {
       setIsLanguageCodeFieldEmpty(true);
       validValues--;
-      toast("Please enter language code", {
-        autoClose: 5000,
+      toast("Please enter the language code.", {
+        autoClose: false,
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
@@ -229,9 +238,10 @@ const AddLanguage = () => {
       validValues--;
 
       setIsLanguageCodeFieldEmpty(true);
-      toast("Language code must contain at least 2 characters.", {
+      toast("The language code must contain a minimum of 2 characters.", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
+        autoClose: false,
       });
     }
     // if (regex === "") {
@@ -305,7 +315,7 @@ const AddLanguage = () => {
       headers: { "Content-Type": "multipart/form-data" },
     })
       .then((response) => {
-        toast("File uploaded successfully.", {
+        toast("Congratulations! The file was uploaded successfully.", {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
         });
@@ -325,9 +335,10 @@ const AddLanguage = () => {
             type: "error",
           });
         } else {
-          toast("Something went wrong", {
+          toast("Oops! Something went wrong. Please try again later.", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
+            autoClose: false,
           });
         }
         console.log(error.response);
@@ -356,7 +367,7 @@ const AddLanguage = () => {
       .then((response) => {
         console.log("response from delete===>", response.data);
         if (response.status === 200 || response.status === 201) {
-          toast("Document deleted successfully", {
+          toast("The document was deleted successfully.", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
           });
@@ -401,7 +412,7 @@ const AddLanguage = () => {
     //   console.log("Final FIle In Function", file, fileExtension, fileName);
     // }
     // if (status === "done") {
-    //   message.success(`${info.file.name} file uploaded successfully.`);
+    //   message.success(`${info.file.name} Congratulations! The file was uploaded successfully.`);
     // } else if (status === "error") {
     //   message.error(`${info.file.name} file upload failed.`);
     // }
@@ -587,7 +598,7 @@ const AddLanguage = () => {
                       <InboxOutlined />
                     </p>
                     <p className="ant-upload-text">
-                      Click or drag file to this area to upload
+                      Upload your file here or drag and drop the file here
                     </p>
                     <p className="ant-upload-hint">only .csv files</p>
                   </Dragger>
@@ -598,15 +609,15 @@ const AddLanguage = () => {
               <StoreModal
                 isVisible={isModalOpen}
                 okButtonText={"Yes"}
-                title={"Confirmation"}
+                title={"Warning"}
                 cancelButtonText={"No"}
                 okCallback={() => navigate("/dashboard/language")}
                 cancelCallback={() => closeModal()}
                 isSpin={false}
               >
                 <div>
-                  The listing page will be displayed, and any changes made here
-                  won't be saved. Are you sure that you want to discard?
+                  <p>{`Discard Changes Confirmation`}</p>
+                  <p>{`This action will take you back to the listing page, and any changes made here will not be saved. Are you sure you would like to proceed?`}</p>
                 </div>
               </StoreModal>
               <Row>

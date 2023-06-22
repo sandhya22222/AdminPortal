@@ -158,7 +158,7 @@ function Status({
       <StoreModal
         isVisible={isModalOpen}
         okButtonText={"Yes"}
-        title={changeSwitchStatus ? "Store Activation" : "Store Deactivation"}
+        title={changeSwitchStatus ? "Success" : "Warning"}
         cancelButtonText={"Cancel"}
         okCallback={() => updateStoreStatus()}
         cancelCallback={() => closeModal()}
@@ -167,12 +167,13 @@ function Status({
         {/* <Content className="!w-3/5"> */}
         {changeSwitchStatus ? (
           <div>
-            <p>{`Awesome!`}</p>
-            <p>{`You are about to activate your store. Would you like to proceed?`}</p>
+            <p>{`Store Activation Confirmation`}</p>
+            <p>{`Great news! You are about to activate your store. Are you sure you would like to proceed?`}</p>
           </div>
         ) : (
           <div>
-            <p>{`You are about to deactivate your store. Would you like to proceed?`}</p>
+            <p>{`Store Deactivation Confirmation`}</p>
+            <p>{`You are about to deactivate your store. Are you sure you would like to proceed?`}</p>
           </div>
         )}
         {/* </Content> */}

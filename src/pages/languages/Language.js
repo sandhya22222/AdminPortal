@@ -361,9 +361,10 @@ const Language = () => {
         // disabling spinner
         setIslanguageDeleting(false);
         console.log("response from delete===>", error.response);
-        toast("Unable to delete language", {
+        toast("Deletion unsuccessful, please try again later", {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
+          autoClose: false,
         });
       });
   };
@@ -473,13 +474,18 @@ const Language = () => {
         isVisible={isDeleteLanguageModalOpen}
         okButtonText={"Ok"}
         cancelButtonText={"Cancel"}
-        title={"Confirmation"}
+        title={"Warning"}
         okCallback={() => removeLanguage()}
         cancelCallback={() => closeDeleteModal()}
         isSpin={islanguageDeleting}
         hideCloseButton={false}
       >
-        {<div>{"Are you sure you want to delete the language?"}</div>}
+        {
+          <div>
+            <p>{`Confirm Language Deletion`}</p>
+            <p>{`Are you absolutely sure you want to delete the language? This action cannot be undone.`}</p>
+          </div>
+        }
       </StoreModal>
       {/* <Content className="mb-3"> */}
       <AntDesignBreadcrumbs
@@ -530,7 +536,7 @@ const Language = () => {
             <h5>
               {errorMessage
                 ? errorMessage
-                : "Please wait, we are validating you, if this persists, logout and login."}
+                : "Please wait while we validate your information. If this process persists, please consider logging out and logging back in"}
             </h5>
           </Layout>
         ) : (

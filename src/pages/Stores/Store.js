@@ -572,18 +572,20 @@ const Stores = () => {
     ) {
       setInValidName(true);
       count--;
-      toast("Please provide store name", {
+      toast("Please enter the store name", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
+        autoClose: false,
       });
     }
     const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
     if (storeEmail && regex.test(storeEmail.trim()) === false) {
       count--;
       setInValidEmail(true);
-      toast("Email must contain @ and (.)", {
+      toast("Please enter the valid email address", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
+        autoClose: false,
       });
     }
     if (
@@ -593,9 +595,10 @@ const Stores = () => {
     ) {
       count--;
       setInValidEmail(true);
-      toast("Please provide valid email", {
+      toast("Please enter the valid email address", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
+        autoClose: false,
       });
     }
     if (
@@ -605,9 +608,10 @@ const Stores = () => {
     ) {
       setInValidUserName(true);
       count--;
-      toast("Please provide username", {
+      toast("Please enter the username", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
+        autoClose: false,
       });
     }
     const userRegex = /^[a-zA-Z0-9_ ]{6,15}$/;
@@ -615,10 +619,11 @@ const Stores = () => {
       count--;
       setInValidUserName(true);
       toast(
-        "Username must contain minimum 6 characters and it allow only alphabets, numbers, underscore, and hyphen.",
+        "Username must contain a minimum of 6 characters and can only consist of alphabets, numbers, underscores, and hyphens",
         {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
+          autoClose: false,
         }
       );
     }
@@ -637,9 +642,10 @@ const Stores = () => {
     ) {
       setInValidPassword(true);
       count--;
-      toast("Please provide password", {
+      toast("Please enter the password", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
+        autoClose: false,
       });
     }
     const pattern =
@@ -648,10 +654,11 @@ const Stores = () => {
       setInValidPassword(true);
       count--;
       toast(
-        "Password must contain minimum 6 characters and at least one uppercase letter, one lowercase letter, one number, and one special character",
+        "Password must contain a minimum of 6 characters and include at least one uppercase letter, one lowercase letter, one number, and one special character",
         {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
+          autoClose: false,
         }
       );
     }
@@ -685,7 +692,7 @@ const Stores = () => {
     //   .post(storeAPI, postBody, authorizationHeader)
     MarketplaceServices.save(storeAPI, postBody)
       .then((response) => {
-        toast("Store created successfully.", {
+        toast("Store created successfully", {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
         });
@@ -706,9 +713,10 @@ const Stores = () => {
             type: "error",
           });
         } else {
-          toast("Something went wrong", {
+          toast("Oops! Something went wrong. Please try again later.", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
+            autoClose: false,
           });
         }
         console.log("Error respose from the store post call", error.response);
@@ -752,7 +760,7 @@ const Stores = () => {
         setServerStoreName(response.data.name);
         onClose();
         if (response.status === 200 || response.status === 201) {
-          toast("Store updated successfully! ", {
+          toast("Store updated successfully ", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
           });
@@ -766,9 +774,10 @@ const Stores = () => {
             type: "error",
           });
         } else {
-          toast("Something went wrong", {
+          toast("Oops! Something went wrong. Please try again later.", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
+            autoClose: false,
           });
         }
       });
@@ -793,12 +802,13 @@ const Stores = () => {
   const validateStorePutField = () => {
     if (editName === "" || editName === null || editName === undefined) {
       setInValidEditName(true);
-      toast("Please provide store name", {
+      toast("Please enter the store name", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
+        autoClose: false,
       });
     } else if (editName === serverStoreName) {
-      toast("No change detected!", {
+      toast("No changes were detected", {
         position: toast.POSITION.TOP_RIGHT,
         type: "info",
       });
@@ -880,9 +890,10 @@ const Stores = () => {
             type: "error",
           });
         } else {
-          toast("Something went wrong", {
+          toast("Oops! Something went wrong. Please try again later.", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
+            autoClose: false,
           });
         }
       });
@@ -894,13 +905,18 @@ const Stores = () => {
         isVisible={isDeleteStoreModalOpen}
         okButtonText={"Ok"}
         cancelButtonText={"Cancel"}
-        title={"Confirmation"}
+        title={"Warning"}
         okCallback={() => removeStore()}
         cancelCallback={() => closeDeleteModal()}
         isSpin={isStoreDeleting}
         hideCloseButton={false}
       >
-        {<div>{"Are you sure you want to delete the store?"}</div>}
+        {
+          <div>
+            <p>{`Confirm Store Deletion`}</p>
+            <p>{`Are you sure you want to delete the store? This action cannot be undone`}</p>
+          </div>
+        }
       </StoreModal>
       <Content className="mb-3">
         <AntDesignBreadcrumbs
@@ -941,10 +957,9 @@ const Stores = () => {
                         <Col span={23} className="align-center mb-3">
                           <Text className=" mr-1 font-bold">Note: </Text>
                           <Text>
-                            The store must be set up with a store administrator.
-                            Please enter your store name along with the
-                            administration details below. The same details can
-                            be used when signing into the store portal.
+                            Please enter the store name and administration
+                            details. These details will be used when signing
+                            into the store portal.
                           </Text>
                         </Col>
                       </Row>
@@ -1079,7 +1094,7 @@ const Stores = () => {
                           <Text className=" mr-1 font-bold">Note: </Text>
                           <Text>
                             Store administrator's details cannot be edited. You
-                            are permitted to rename your store.
+                            are permitted to only rename your store.
                           </Text>
                         </Col>
                       </Row>
@@ -1216,7 +1231,7 @@ const Stores = () => {
             <p>
               {errorMessage
                 ? errorMessage
-                : "Please wait, we are validating you, if this persists, logout and login."}
+                : "Please wait while we validate your information. If this process persists, please consider logging out and logging back in"}
             </p>
           </Layout>
         ) : (
