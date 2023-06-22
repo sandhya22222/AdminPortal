@@ -122,8 +122,8 @@ const Header = () => {
 
   const onClickProfile = (id) => {
     if (id === 2) {
-      toast("Successfully logged out", {
-        type: "success",
+      toast("You have been securely logged out.", {
+        type: "info",
         onClose: navigate("/", { replace: true }),
       });
       dispatch(fnUserLoggedInInfo());

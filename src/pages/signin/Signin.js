@@ -49,26 +49,29 @@ const Signin = () => {
       setInValidUsername(true);
       setInvalidUserPassword(true);
       validValues -= 1;
-      toast("Please enter username & password", {
+      toast("Please enter the username and password", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
+        autoClose:false
       });
     } else if (username === "") {
       setInValidUsername(true);
-      toast("Please enter username", {
+      toast("Please enter the username", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
+        autoClose:false
       });
     } else if (userPassword === "") {
       setInvalidUserPassword(true);
       validValues -= 1;
-      toast("Please enter password", {
+      toast("Please enter the password", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
+        autoClose:false
       });
     } else {
       dispatch(fnUserLoggedInInfo([{ id: 1, name: username }]));
-      toast("Successfully signed in", {
+      toast("Signed in successfully", {
         position: toast.POSITION.TOP_RIGHT,
         type: "success",
         onClose: navigate("/dashboard"),

@@ -69,7 +69,7 @@ const UserProfile = () => {
             <h5>
               {errorMessage
                 ? errorMessage
-                : " Please wait, we are validating you, if this persists, logout and login."}
+                : "Please wait while we validate your information. If this process persists, please consider logging out and logging back in"}
             </h5>
           </Layout>
         ) : (

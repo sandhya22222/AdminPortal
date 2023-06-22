@@ -450,8 +450,8 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
         ) : dashboardDataNetWorkError ? (
           <Content className="text-center !mt-16 !mb-2">
             <p>
-              Please wait, we are validating you, if this persists, logout and
-              login.
+              Please wait while we validate your information. If this process
+              persists, please consider logging out and logging back in
             </p>
           </Content>
         ) : (

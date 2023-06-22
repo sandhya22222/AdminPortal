@@ -579,7 +579,7 @@ const DynamicTable = ({ tableComponentData }) => {
       ) : (
         <div className="h-28 flex items-center justify-center !bg-white">
           <h6 className="!font-medium">
-            Currently no data available to display in table
+          Currently, there is no data to display in the table
           </h6>
         </div>
       )}

@@ -406,7 +406,7 @@ const StoreImages = ({
         </Content>
         {reset === true ? (
           <Content>
-            <Tooltip title="Reset to previous image">
+            <Tooltip title="Reset to the previous image">
               <UndoOutlined
                 className="ml-4  !text-lg text-blue-600"
                 onClick={() => {

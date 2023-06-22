@@ -359,14 +359,14 @@ const StoreSettings = () => {
     MarketplaceServices.save(storeSettingAPI, postBody)
       .then((response) => {
         if (Object.keys(sampleobject).length === 2) {
-          toast("Media and store settings data saved successfully.", {
+          toast("Media and store settings saved successfully", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
           });
         } else {
           if (Object.keys(sampleobject).length > 0) {
             if (sampleobject["settings"] === "contentSettings") {
-              toast("Store settings saved successfully.", {
+              toast("Store settings saved successfully", {
                 position: toast.POSITION.TOP_RIGHT,
                 type: "success",
               });
@@ -469,9 +469,10 @@ const StoreSettings = () => {
             type: "error",
           });
         } else {
-          toast("Something went wrong", {
+          toast("Oops! Something went wrong. Please try again later.", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
+            autoClose:false
           });
         }
         console.log(error.response);
@@ -495,9 +496,10 @@ const StoreSettings = () => {
       setInValidCurrencyIsoCode(true);
       setInValidFractionalUnit(true);
       setInValidNumberToBasic(true);
-      toast("Please fill out the mandatory feilds", {
+      toast("Please enter the values for the mandatory field", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
+        autoClose:false
       });
     } else if (
       currencySymbol !== "" &&
@@ -509,9 +511,10 @@ const StoreSettings = () => {
       setInValidNumberToBasic(true);
       setInValidCurrencyIsoCode(true);
       setInValidFractionalUnit(true);
-      toast("Please provide ISO code ,fractinal unit and number to basic", {
+      toast("Please enter the ISO Code, Fractional Unit, and Number to Basic fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
+        autoClose:false
       });
     } else if (
       currencySymbol === "" &&
@@ -524,10 +527,11 @@ const StoreSettings = () => {
       setInValidCurrencySymbol(true);
       setInValidFractionalUnit(true);
       toast(
-        "Please provide currency symbol ,fractinal unit and number to basic",
+        "Please enter the Symbol, Fractional Unit, and Number to Basic fields",
         {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
+          autoClose:false
         }
       );
     } else if (
@@ -540,9 +544,10 @@ const StoreSettings = () => {
       setInValidNumberToBasic(true);
       setInValidCurrencySymbol(true);
       setInValidCurrencyIsoCode(true);
-      toast("Please provide currency symbol ,ISO code and number to basic", {
+      toast("Please enter the Symbol, ISO Code, and Number to Basic fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
+        autoClose:false
       });
     } else if (
       currencySymbol === "" &&
@@ -554,9 +559,10 @@ const StoreSettings = () => {
       setInValidFractionalUnit(true);
       setInValidCurrencySymbol(true);
       setInValidCurrencyIsoCode(true);
-      toast("Please provide currency symbol ,ISO code and fractional unit", {
+      toast("Please enter the Symbol, ISO Code, and Fractional Unit fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
+        autoClose:false
       });
     } else if (
       currencySymbol === "" &&
@@ -567,9 +573,10 @@ const StoreSettings = () => {
       count--;
       setInValidCurrencySymbol(true);
       setInValidCurrencyIsoCode(true);
-      toast("Please provide the currency symbol and ISO code", {
+      toast("Please enter the Symbol and ISO Code fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
+        autoClose:false
       });
     } else if (
       currencySymbol === "" &&
@@ -580,9 +587,10 @@ const StoreSettings = () => {
       count--;
       setInValidCurrencySymbol(true);
       setInValidFractionalUnit(true);
-      toast("Please provide currency symbol and fractinal unit", {
+      toast("Please enter the Symbol and Fractional Unit fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
+        autoClose:false
       });
     } else if (
       currencySymbol === "" &&
@@ -593,9 +601,10 @@ const StoreSettings = () => {
       count--;
       setInValidCurrencySymbol(true);
       setInValidNumberToBasic(true);
-      toast("Please provide currency symbol and number to basic", {
+      toast("Please enter the Symbol and Number to Basic fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
+        autoClose:false
       });
     } else if (
       currencySymbol === "" &&
@@ -606,9 +615,10 @@ const StoreSettings = () => {
       count--;
       setInValidCurrencySymbol(true);
       setInValidCurrencyIsoCode(true);
-      toast("Please provide the currency symbol and ISO code", {
+      toast("Please enter the Symbol and ISO Code fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
+        autoClose:false
       });
     } else if (
       currencySymbol !== "" &&
@@ -619,9 +629,10 @@ const StoreSettings = () => {
       count--;
       setInValidCurrencyIsoCode(true);
       setInValidFractionalUnit(true);
-      toast("Please provide Iso code and fractinal unit", {
+      toast("Please enter the ISO Code and Fractional Unit fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
+        autoClose:false
       });
     } else if (
       currencySymbol !== "" &&
@@ -632,9 +643,10 @@ const StoreSettings = () => {
       count--;
       setInValidCurrencyIsoCode(true);
       setInValidNumberToBasic(true);
-      toast("Please provide Iso code and number to basic", {
+      toast("Please enter the ISO Code and Number to Basic fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
+        autoClose:false
       });
     } else if (
       currencySymbol === "" &&
@@ -645,9 +657,10 @@ const StoreSettings = () => {
       count--;
       setInValidCurrencySymbol(true);
       setInValidFractionalUnit(true);
-      toast("Please provide the currency symbol and fractinal unit", {
+      toast("Please enter the Symbol and Fractional Unit fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
+        autoClose:false
       });
     } else if (
       currencySymbol !== "" &&
@@ -658,9 +671,10 @@ const StoreSettings = () => {
       count--;
       setInValidFractionalUnit(true);
       setInValidNumberToBasic(true);
-      toast("Please provide fractinal unit and number to basic", {
+      toast("Please enter the Fractional unit and Number to Basic fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
+        autoClose:false
       });
     } else if (
       currencySymbol === "" ||
@@ -669,9 +683,10 @@ const StoreSettings = () => {
     ) {
       count--;
       setInValidCurrencySymbol(true);
-      toast("Please provide the currency symbol", {
+      toast("Please enter the Symbol", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
+        autoClose:false
       });
     } else if (
       currencyIsoCode === "" ||
@@ -680,9 +695,10 @@ const StoreSettings = () => {
     ) {
       count--;
       setInValidCurrencyIsoCode(true);
-      toast("Please provide ISO code", {
+      toast("Please enter the ISO code", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
+        autoClose:false
       });
     } else if (
       fractionalUnit === "" ||
@@ -691,9 +707,10 @@ const StoreSettings = () => {
     ) {
       count--;
       setInValidFractionalUnit(true);
-      toast("Please provide the fractional unit", {
+      toast("Please enter the Fractional Unit", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
+        autoClose:false
       });
     } else if (
       numberToBasic === "" ||
@@ -702,9 +719,10 @@ const StoreSettings = () => {
     ) {
       count--;
       setInValidNumberToBasic(true);
-      toast("Please provide the number to basic", {
+      toast("Please enter the Number to Basic", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
+        autoClose:false
       });
     } else if (
       (imageOfStoreSettingsCurrency && imageOfStoreSettingsCurrency.symbol) ===
@@ -768,8 +786,7 @@ const StoreSettings = () => {
           copyImageOfStoreFooterSetting.fg_color) &&
       imagesUpload.length === 0
     ) {
-      toast("No change detected", {
-        autoClose: 5000,
+      toast("No changes were detected", {
         position: toast.POSITION.TOP_RIGHT,
         type: "info",
       });
@@ -942,7 +959,7 @@ const StoreSettings = () => {
           Object.keys(sampleobject).length !== 2
         ) {
           if (sampleobject["images"] === "images") {
-            toast("Images saved successfully.", {
+            toast("Images saved successfully", {
               position: toast.POSITION.TOP_RIGHT,
               type: "success",
             });
@@ -968,9 +985,10 @@ const StoreSettings = () => {
             type: "error",
           });
         } else {
-          toast("Something went wrong", {
+          toast("Oops! Something went wrong. Please try again later.", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
+            autoClose:false
           });
         }
         console.log(error.response);
@@ -1020,7 +1038,7 @@ const StoreSettings = () => {
           Object.keys(sampleobject).length !== 2
         ) {
           if (sampleobject["images"] === "images") {
-            toast("Images saved successfully.", {
+            toast("Images saved successfully", {
               position: toast.POSITION.TOP_RIGHT,
               type: "success",
             });
@@ -1046,9 +1064,10 @@ const StoreSettings = () => {
             type: "error",
           });
         } else {
-          toast("Something went wrong", {
+          toast("Oops! Something went wrong. Please try again later.", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
+            autoClose:false
           });
         }
         console.log(error.response);
@@ -1296,7 +1315,7 @@ const StoreSettings = () => {
                 validStoreLogo={validStoreLogo}
                 setValidStoreLogo={setValidStoreLogo}
                 InfoCircleText={
-                  "Store logo, which will be displayed in portals as logo."
+                  "This logo will be used as Store's logo"
                 }
               />
             </Col>
@@ -1310,7 +1329,7 @@ const StoreSettings = () => {
                 setImagesUpload={setImagesUpload}
                 isSingleUpload={true}
                 InfoCircleText={
-                  "Where search functionality is getting used, the search logo will be visible."
+                  "The search icon will be visible in areas where the search functionality is implemented"
                 }
               />
             </Col>
@@ -1324,7 +1343,7 @@ const StoreSettings = () => {
                 setImagesUpload={setImagesUpload}
                 isSingleUpload={true}
                 InfoCircleText={
-                  "This will be visible as default customer avatar."
+                  "This image will be displayed as the default avatar for customers"
                 }
               />
             </Col>
@@ -1338,7 +1357,7 @@ const StoreSettings = () => {
                 setImagesUpload={setImagesUpload}
                 isSingleUpload={true}
                 InfoCircleText={
-                  "Where cart functionality is getting used, the cart logo will be visible."
+                  "The cart icon will be visible in areas where the cart functionality is implemented"
                 }
               />
             </Col>
@@ -1352,7 +1371,7 @@ const StoreSettings = () => {
                 setImagesUpload={setImagesUpload}
                 isSingleUpload={true}
                 InfoCircleText={
-                  "Where wishlist functionality is getting used, the Wishlist logo will be visible."
+                  "The wishlist icon will be visible in areas where the wishlist functionality is implemented"
                 }
               />
             </Col>
@@ -1365,7 +1384,7 @@ const StoreSettings = () => {
             setImagesUpload={setImagesUpload}
             isSingleUpload={false}
             InfoCircleText={
-              "Banner logo is getting used in Store Front portal as sliding banner."
+              "These images will be used in the carousel of the store front"
             }
           />
         </Content>
@@ -1613,7 +1632,7 @@ const StoreSettings = () => {
                         setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
                       addonAfter={
-                        <Tooltip title="Reset the original value">
+                        <Tooltip title="Reset to the original value">
                           <UndoOutlined
                             onClick={() => {
                               setPageBackgroundColor(pageBgColor);
@@ -1624,7 +1643,7 @@ const StoreSettings = () => {
                     />
                     {/* <Input
                       addonAfter={
-                        <Tooltip title="Reset the original value">
+                        <Tooltip title="Reset to the original value">
                           <UndoOutlined
                             onClick={() => {
                               setPageBackgroundColor(pageBgColor);
@@ -1665,7 +1684,7 @@ const StoreSettings = () => {
                         setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
                       addonAfter={
-                        <Tooltip title="Reset the original value">
+                        <Tooltip title="Reset to the original value">
                           <UndoOutlined
                             onClick={() => {
                               setForeGroundColor(pageFgColor);
@@ -1676,7 +1695,7 @@ const StoreSettings = () => {
                     />
                     {/* <Input
                       addonAfter={
-                        <Tooltip title="Reset the original value">
+                        <Tooltip title="Reset to the original value">
                           <UndoOutlined
                             onClick={() => {
                               setForeGroundColor(pageFgColor);
@@ -1769,7 +1788,7 @@ const StoreSettings = () => {
                         setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
                       addonAfter={
-                        <Tooltip title="Reset the original value">
+                        <Tooltip title="Reset to the original value">
                           <UndoOutlined
                             onClick={() => {
                               setButtonPrimaryBackgroundColor(
@@ -1782,7 +1801,7 @@ const StoreSettings = () => {
                     />
                     {/* <Input
                       addonAfter={
-                        <Tooltip title="Reset the original value">
+                        <Tooltip title="Reset to the original value">
                           <UndoOutlined
                             onClick={() => {
                               setButtonPrimaryBackgroundColor(
@@ -1825,7 +1844,7 @@ const StoreSettings = () => {
                         setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
                       addonAfter={
-                        <Tooltip title="Reset the original value">
+                        <Tooltip title="Reset to the original value">
                           <UndoOutlined
                             onClick={() => {
                               setButtonSecondaryBackgroundColor(
@@ -1838,7 +1857,7 @@ const StoreSettings = () => {
                     />
                     {/* <Input
                       addonAfter={
-                        <Tooltip title="Reset the original value">
+                        <Tooltip title="Reset to the original value">
                           <UndoOutlined
                             onClick={() => {
                               setButtonSecondaryBackgroundColor(
@@ -1883,7 +1902,7 @@ const StoreSettings = () => {
                         setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
                       addonAfter={
-                        <Tooltip title="Reset the original value">
+                        <Tooltip title="Reset to the original value">
                           <UndoOutlined
                             onClick={() => {
                               setButtonTeritaryBackgroundColor(
@@ -1896,7 +1915,7 @@ const StoreSettings = () => {
                     />
                     {/* <Input
                       addonAfter={
-                        <Tooltip title="Reset the original value">
+                        <Tooltip title="Reset to the original value">
                           <UndoOutlined
                             onClick={() => {
                               setButtonTeritaryBackgroundColor(
@@ -1989,7 +2008,7 @@ const StoreSettings = () => {
                         setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
                       addonAfter={
-                        <Tooltip title="Reset the original value">
+                        <Tooltip title="Reset to the original value">
                           <UndoOutlined
                             onClick={() => {
                               setButtonTeritaryBackgroundColor(
@@ -2002,7 +2021,7 @@ const StoreSettings = () => {
                     />
                     {/* <Input
                       addonAfter={
-                        <Tooltip title="Reset the original value">
+                        <Tooltip title="Reset to the original value">
                           <UndoOutlined
                             onClick={() => {
                               setButtonTeritaryBackgroundColor(
@@ -2047,7 +2066,7 @@ const StoreSettings = () => {
                         setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
                       addonAfter={
-                        <Tooltip title="Reset the original value">
+                        <Tooltip title="Reset to the original value">
                           <UndoOutlined
                             onClick={() => {
                               setButtonPrimaryForegroundColor(
@@ -2060,7 +2079,7 @@ const StoreSettings = () => {
                     />
                     {/* <Input
                       addonAfter={
-                        <Tooltip title="Reset the original value">
+                        <Tooltip title="Reset to the original value">
                           <UndoOutlined
                             onClick={() => {
                               setButtonPrimaryForegroundColor(
@@ -2103,7 +2122,7 @@ const StoreSettings = () => {
                       }}
                       className="w-[150px]"
                       addonAfter={
-                        <Tooltip title="Reset the original value">
+                        <Tooltip title="Reset to the original value">
                           <UndoOutlined
                             onClick={() => {
                               setButtonTeritaryForegroundColor(
@@ -2116,7 +2135,7 @@ const StoreSettings = () => {
                     />
                     {/* <Input
                       addonAfter={
-                        <Tooltip title="Reset the original value">
+                        <Tooltip title="Reset to the original value">
                           <UndoOutlined
                             onClick={() => {
                               setButtonTeritaryForegroundColor(
@@ -2217,7 +2236,7 @@ const StoreSettings = () => {
                         setCopyImageOfStoreHeaderSetting(temp);
                       }}
                       addonAfter={
-                        <Tooltip title="Reset the original value">
+                        <Tooltip title="Reset to the original value">
                           <UndoOutlined
                             onClick={() => {
                               setHeaderBackgroundColor(headerBgColor);
@@ -2228,7 +2247,7 @@ const StoreSettings = () => {
                     />
                     {/* <Input
                       addonAfter={
-                        <Tooltip title="Reset the original value">
+                        <Tooltip title="Reset to the original value">
                           <UndoOutlined
                             onClick={() => {
                               setHeaderBackgroundColor(headerBgColor);
@@ -2269,7 +2288,7 @@ const StoreSettings = () => {
                         setCopyImageOfStoreHeaderSetting(temp);
                       }}
                       addonAfter={
-                        <Tooltip title="Reset the original value">
+                        <Tooltip title="Reset to the original value">
                           <UndoOutlined
                             onClick={() => {
                               setHeaderForegroundColor(headerFgColor);
@@ -2280,7 +2299,7 @@ const StoreSettings = () => {
                     />
                     {/* <Input
                       addonAfter={
-                        <Tooltip title="Reset the original value">
+                        <Tooltip title="Reset to the original value">
                           <UndoOutlined
                             onClick={() => {
                               setHeaderForegroundColor(headerFgColor);
@@ -2328,7 +2347,7 @@ const StoreSettings = () => {
                         setCopyImageOfStoreFooterSetting(temp);
                       }}
                       addonAfter={
-                        <Tooltip title="Reset the original value">
+                        <Tooltip title="Reset to the original value">
                           <UndoOutlined
                             onClick={() => {
                               setFooterBackgroundColor(headerFgColor);
@@ -2339,7 +2358,7 @@ const StoreSettings = () => {
                     />
                     {/* <Input
                       addonAfter={
-                        <Tooltip title="Reset the original value">
+                        <Tooltip title="Reset to the original value">
                           <UndoOutlined
                             onClick={() => {
                               setFooterBackgroundColor(headerFgColor);
@@ -2378,7 +2397,7 @@ const StoreSettings = () => {
                         setCopyImageOfStoreFooterSetting(temp);
                       }}
                       addonAfter={
-                        <Tooltip title="Reset the original value">
+                        <Tooltip title="Reset to the original value">
                           <UndoOutlined
                             onClick={() => {
                               setFooterForegroundColor(footerFgColor);
@@ -2389,7 +2408,7 @@ const StoreSettings = () => {
                     />
                     {/* <Input
                       addonAfter={
-                        <Tooltip title="Reset the original value">
+                        <Tooltip title="Reset to the original value">
                           <UndoOutlined
                             onClick={() => {
                               setFooterForegroundColor(footerFgColor);
