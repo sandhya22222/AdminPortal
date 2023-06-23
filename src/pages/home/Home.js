@@ -22,35 +22,35 @@ const { Title } = Typography;
 const { Content } = Layout;
 
 //! Get all required details from .env file
-const realmName = process.env.REACT_APP_REALMNAME;
-const clientId = process.env.REACT_APP_CLIENTID;
-const keyUrl = process.env.REACT_APP_KEYCLOAK_URL;
-const umsBaseUrl = process.env.REACT_APP_USM_BASE_URL;
-const isLoggedInURL = process.env.REACT_APP_ISLOGGEDIN;
-const getPermissionsUrl = process.env.REACT_APP_PERMISSIONS;
-const getAccessTokenUrl = process.env.REACT_APP_ACCESSTOKEN;
+// const realmName = process.env.REACT_APP_REALMNAME;
+// const clientId = process.env.REACT_APP_CLIENTID;
+// const keyUrl = process.env.REACT_APP_KEYCLOAK_URL;
+// const umsBaseUrl = process.env.REACT_APP_USM_BASE_URL;
+// const isLoggedInURL = process.env.REACT_APP_ISLOGGEDIN;
+// const getPermissionsUrl = process.env.REACT_APP_PERMISSIONS;
+// const getAccessTokenUrl = process.env.REACT_APP_ACCESSTOKEN;
 
-const auth = process.env.REACT_APP_AUTH;
+// const auth = process.env.REACT_APP_AUTH;
 
-const instance = axios.create();
-delete instance.defaults.headers.common["Authorization"];
+// const instance = axios.create();
+// delete instance.defaults.headers.common["Authorization"];
 
-const Home = ({ isLoggedIn, setIsLoggedIn }) => {
+const Home = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [token, setToken] = useState("");
-  const [refreshToken, setrefreshToken] = useState("");
-  const [getPermissionsData, setGetPermissionsData] = useState([]);
- const header = realmName
-  const handleSignIn = () => {
-    const keycloakData = {
-      url: `${keyUrl}/realms/${header}/protocol/openid-connect/auth?response_type=code&client_id=${header}-client`,
-      realmName: header,
-      clientId: `${header}-client`,
-    };
-    sessionStorage.setItem("keycloakData", JSON.stringify(keycloakData));
-    window.location = keycloakData.url;
-  };
+  // const [token, setToken] = useState("");
+  // const [refreshToken, setrefreshToken] = useState("");
+  // const [getPermissionsData, setGetPermissionsData] = useState([]);
+  // const header = realmName;
+  // const handleSignIn = () => {
+  //   const keycloakData = {
+  //     url: `${keyUrl}/realms/${header}/protocol/openid-connect/auth?response_type=code&client_id=${header}-client`,
+  //     realmName: header,
+  //     clientId: `${header}-client`,
+  //   };
+  //   sessionStorage.setItem("keycloakData", JSON.stringify(keycloakData));
+  //   window.location = keycloakData.url;
+  // };
   // const keycloakData = {          url: `${keyUrl}/realms/${header}/protocol/openid-connect/auth?response_type=code&client_id=${header}-client`,          realmName: header,          clientId: `${header}-client`,        };        sessionStorage.setItem("keycloakData", JSON.stringify(keycloakData));
   // const handleisLoggedIn = () => {
   //   let baseurl = `${umsBaseUrl}${isLoggedInURL}`;
@@ -133,18 +133,19 @@ const Home = ({ isLoggedIn, setIsLoggedIn }) => {
   // };
 
   useEffect(() => {
-    if (auth === "true") {
-      if (location.search === "") {
-        handleSignIn();
-      }
-      // else if (!sessionStorage.getItem('access_token')) {
-      //   getAccessToken();
-      //   removeUrlSearchData();
-      // }
-      else {
-        navigate("/dashboard");
-      }
-    }
+    // if (auth === "true") {
+    // if (location.search === "") {
+    //   handleSignIn();
+    // }
+    // else if (!sessionStorage.getItem('access_token')) {
+    //   getAccessToken();
+    //   removeUrlSearchData();
+    // }
+    // else {
+    navigate("/dashboard");
+    // }
+
+    // }
   }, [location.search]);
 
   // useEffect(() => {
@@ -175,7 +176,7 @@ const Home = ({ isLoggedIn, setIsLoggedIn }) => {
   );
   return (
     <Content className=" temppic grid justify-items-center p-3 h-[75vh] bg-bottom ">
-      {!isLoggedIn && (
+      {/* {!isLoggedIn && (
         <>
           <h1>Loading DM-ADMIN-PORTAL</h1>
         </>
@@ -183,18 +184,8 @@ const Home = ({ isLoggedIn, setIsLoggedIn }) => {
       {isLoggedIn && (
         <>
           <Title level={4}>This is Home page</Title>
-          {/* <Link to="dashboard">
-            <Button className="!h-10 !bg-[#393939] text-white !border-[1px] !border-solid !border-[#393939] !box-border !rounded !pl-[15px]">
-              Go to Dashboard
-            </Button>
-          </Link> */}
-          {/* <Link to="/signin">
-            <Button onClick={handleLogout} className="!h-10 !bg-[#393939] text-white !border-[1px] !border-solid !border-[#393939] !box-border !rounded !pl-[15px]">
-              Logout
-            </Button>
-          </Link> */}
         </>
-      )}
+      )} */}
       {/* <Title level={4}>This is Home page</Title> */}
       {/* {typeof persistedUserLoggedInInfo !== "undefined" ? (
         <Link to="dashboard">

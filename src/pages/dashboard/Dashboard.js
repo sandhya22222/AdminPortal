@@ -57,6 +57,7 @@ import SalesReportGraph from "./SalesReportGraph";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import util from "../../util/common";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
+import { useAuth } from "react-oidc-context";
 const getAuth = process.env.REACT_APP_AUTH;
 const umsBaseUrl = process.env.REACT_APP_USM_BASE_URL;
 const isLoggedInURL = process.env.REACT_APP_ISLOGGEDIN;
@@ -65,7 +66,7 @@ const getAccessTokenUrl = process.env.REACT_APP_ACCESSTOKEN;
 const storeAdminDashboardAPI =
   process.env.REACT_APP_STORE_ADMIN_DASHBOARD_DATA_API;
 const currencySymbol = process.env.REACT_APP_CURRENCY_SYMBOL;
-const auth = getAuth.toLowerCase() === "true";
+// const auth = getAuth.toLowerCase() === "true";
 
 //! Destructure the components
 const { Title, Text } = Typography;
@@ -82,7 +83,8 @@ const antIcon = (
 
 const instance = axios.create();
 delete instance.defaults.headers.common["Authorization"];
-const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
+const Dashboard = () => {
+  const auth = useAuth();
   usePageTitle("Admin Portal - Dashboard");
   const location = useLocation();
   const navigate = useNavigate();
@@ -102,31 +104,41 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
   );
   const { pathname } = useLocation();
 
+  // useEffect(() => {
+  //   if (sessionStorage.getItem("access_token")) {
+  //     setToken(sessionStorage.getItem("access_token"));
+  //     if (sessionStorage.getItem("is_loggedIn")) {
+  //       setIsLoggedIn(sessionStorage.getItem("is_loggedIn"));
+  //       if (!sessionStorage.getItem("permissions_data")) {
+  //         getPermissions();
+  //       } else {
+  //         setIsLoading(false);
+  //       }
+  //     } else {
+  //       handleisLoggedIn();
+  //     }
+  //   } else {
+  //     getAccessToken();
+  //     removeUrlSearchData();
+  //   }
+  //   window.scroll(0, 0);
+  // }, []);
   useEffect(() => {
-    if (sessionStorage.getItem("access_token")) {
-      setToken(sessionStorage.getItem("access_token"));
-      if (sessionStorage.getItem("is_loggedIn")) {
-        setIsLoggedIn(sessionStorage.getItem("is_loggedIn"));
-        if (!sessionStorage.getItem("permissions_data")) {
-          getPermissions();
-        } else {
-          setIsLoading(false);
-        }
-      } else {
-        handleisLoggedIn();
-      }
-    } else {
-      getAccessToken();
-      removeUrlSearchData();
+    if (auth && auth.user && auth.user?.access_token) {
+      window.sessionStorage.setItem("access_token", auth.user?.access_token);
+      // if (!window.sessionStorage.getItem("permissions_data")) {
+      //   getPermissions(auth.isAuthenticated);
+      // }
     }
-    window.scroll(0, 0);
-  }, []);
+  }, [auth]);
 
   useEffect(() => {
-    if (isLoading !== true) {
+    console.log("auth", auth);
+    console.log("auth isAuthenticated", auth.isAuthenticated);
+    if (auth.isAuthenticated) {
       getDashBoardData();
     }
-  }, [isLoading]);
+  }, []);
 
   const getAccessToken = () => {
     let urlparams = new URLSearchParams(location.search);
@@ -209,7 +221,7 @@ const Dashboard = ({ isLoggedIn, setIsLoggedIn }) => {
         console.log("get access token res", res);
         setGetPermissionsData(res.data);
         setIsLoading(false);
-        setIsLoggedIn(logginValue);
+        // setIsLoggedIn(logginValue);
         sessionStorage.setItem("permissions_data", res.data);
       })
       .catch((err) => {

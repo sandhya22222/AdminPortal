@@ -20,6 +20,7 @@ import { fnUserLoggedInInfo } from "../../services/redux/actions/ActionsUser";
 import { BrandLogo, AdminIcon, DmBrandLogo } from "../../constants/media";
 
 import util from "../../util/common";
+import { useAuth } from "react-oidc-context";
 
 const { Header, Content } = Layout;
 const { Text, Paragraph } = Typography;
@@ -30,9 +31,10 @@ const logoutAPI = process.env.REACT_APP_LOGOUT;
 const Header2 = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const auth = useAuth();
   const navigate = useNavigate();
 
-  const isUserLoggedIn = sessionStorage.getItem("is_loggedIn");
+  // const isUserLoggedIn = sessionStorage.getItem("is_loggedIn");
 
   // const languageItems = [];
   // if (storeLanguages && storeLanguages.length > 1) {
@@ -61,21 +63,22 @@ const Header2 = () => {
   ];
 
   const handleMenuClick = (e) => {
-    console.log("click", e);
+    // console.log("click", e);
     if (e.key === "logout") {
-      const refreshToken = sessionStorage.getItem("refresh_token");
-      MarketplaceServices.save(umsBaseUrl + logoutAPI, {
-        refresh_token: refreshToken,
-      })
-        .then((response) => {
-          // util.logoutUser();
-          // sessionStorage.clear();
-          // window.location = "/";
-        })
-        .catch((error) => {})
-        .finally(() => {
-          util.logoutUser();
-        });
+      // const refreshToken = sessionStorage.getItem("refresh_token");
+      // MarketplaceServices.save(umsBaseUrl + logoutAPI, {
+      //   refresh_token: refreshToken,
+      // })
+      //   .then((response) => {
+      //     // util.logoutUser();
+      //     // sessionStorage.clear();
+      //     // window.location = "/";
+      //   })
+      //   .catch((error) => {})
+      //   .finally(() => {
+      //     util.logoutUser();
+      //   });
+      void auth.signoutRedirect();
     }
     if (e.key === "profile") {
       navigate("dashboard/userprofile");
@@ -114,7 +117,7 @@ const Header2 = () => {
           {/* Right content to display user menus, login icon, language icon and other stuffs */}
           <Content className="!inline-block text-right self-center">
             {/* Display user dropdown if user is logged in otherwise display login icon */}
-            {isUserLoggedIn ? (
+            {auth.isAuthenticated ? (
               <Dropdown
                 menu={{
                   items: userItems,
