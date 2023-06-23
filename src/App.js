@@ -110,7 +110,7 @@ const App = () => {
               {/* <Route path="/home" element={<Navigate to={"/"} />} /> */}
               {/* <Route path="/user-verification" element={<PageNotFound />} /> */}
               {/* <Route path="/signin" element={<Signin />} /> */}
-              <Route path="/dashboard" element={<SidebarNew color="light" />}>
+              <Route path="/dashboard" element={<SidebarNew />}>
                 <Route path="" element={<Dashboard />} />
                 {/* <Route
                   path=""

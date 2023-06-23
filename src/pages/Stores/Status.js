@@ -136,8 +136,8 @@ function Status({
             type: "error",
           });
         } else {
-          toast("Store status changed successfully", {
-            type: "success",
+          toast("Sorry, failed to update the store status", {
+            type: "error",
           });
         }
 

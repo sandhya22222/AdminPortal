@@ -39,6 +39,8 @@ const storeAPI = process.env.REACT_APP_STORE_API;
 const storeImagesAPI = process.env.REACT_APP_STORE_IMAGES_API;
 const storeAbsoluteImgesAPI =
   process.env.REACT_APP_STORE_ABSOLUTE_STORE_IMAGES_API;
+const storeBannerImageAPI = process.env.REACT_APP_STORE_BANNER_IMAGES_API;
+
 const StoreSettings = () => {
   const navigate = useNavigate();
   const search = useLocation().search;
@@ -115,6 +117,8 @@ const StoreSettings = () => {
     useState();
   const [imageOfStoreFooterSettings, setImageOfStoreFooterSettings] =
     useState();
+  const [bannerAbsoluteImage, setBannerAbsoluteImage] = useState([]);
+  const [updateBannerImage, setUpdateBannerImage] = useState([]);
   // const [isEditStoreSetting, setIsEditStoreSetting] = useState([]);
   let sampleobject = {};
   //! get call of  getStoreSettingApi
@@ -472,7 +476,7 @@ const StoreSettings = () => {
           toast("Oops! Something went wrong. Please try again later.", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
-            autoClose:false
+            autoClose: false,
           });
         }
         console.log(error.response);
@@ -499,7 +503,7 @@ const StoreSettings = () => {
       toast("Please enter the values for the mandatory field", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: false,
       });
     } else if (
       currencySymbol !== "" &&
@@ -511,11 +515,14 @@ const StoreSettings = () => {
       setInValidNumberToBasic(true);
       setInValidCurrencyIsoCode(true);
       setInValidFractionalUnit(true);
-      toast("Please enter the ISO Code, Fractional Unit, and Number to Basic fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose:false
-      });
+      toast(
+        "Please enter the ISO Code, Fractional Unit, and Number to Basic fields",
+        {
+          position: toast.POSITION.TOP_RIGHT,
+          type: "error",
+          autoClose: false,
+        }
+      );
     } else if (
       currencySymbol === "" &&
       currencyIsoCode !== "" &&
@@ -531,7 +538,7 @@ const StoreSettings = () => {
         {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
-          autoClose:false
+          autoClose: false,
         }
       );
     } else if (
@@ -547,7 +554,7 @@ const StoreSettings = () => {
       toast("Please enter the Symbol, ISO Code, and Number to Basic fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: false,
       });
     } else if (
       currencySymbol === "" &&
@@ -562,7 +569,7 @@ const StoreSettings = () => {
       toast("Please enter the Symbol, ISO Code, and Fractional Unit fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: false,
       });
     } else if (
       currencySymbol === "" &&
@@ -576,7 +583,7 @@ const StoreSettings = () => {
       toast("Please enter the Symbol and ISO Code fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: false,
       });
     } else if (
       currencySymbol === "" &&
@@ -590,7 +597,7 @@ const StoreSettings = () => {
       toast("Please enter the Symbol and Fractional Unit fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: false,
       });
     } else if (
       currencySymbol === "" &&
@@ -604,7 +611,7 @@ const StoreSettings = () => {
       toast("Please enter the Symbol and Number to Basic fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: false,
       });
     } else if (
       currencySymbol === "" &&
@@ -618,7 +625,7 @@ const StoreSettings = () => {
       toast("Please enter the Symbol and ISO Code fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: false,
       });
     } else if (
       currencySymbol !== "" &&
@@ -632,7 +639,7 @@ const StoreSettings = () => {
       toast("Please enter the ISO Code and Fractional Unit fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: false,
       });
     } else if (
       currencySymbol !== "" &&
@@ -646,7 +653,7 @@ const StoreSettings = () => {
       toast("Please enter the ISO Code and Number to Basic fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: false,
       });
     } else if (
       currencySymbol === "" &&
@@ -660,7 +667,7 @@ const StoreSettings = () => {
       toast("Please enter the Symbol and Fractional Unit fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: false,
       });
     } else if (
       currencySymbol !== "" &&
@@ -674,7 +681,7 @@ const StoreSettings = () => {
       toast("Please enter the Fractional unit and Number to Basic fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: false,
       });
     } else if (
       currencySymbol === "" ||
@@ -686,7 +693,7 @@ const StoreSettings = () => {
       toast("Please enter the Symbol", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: false,
       });
     } else if (
       currencyIsoCode === "" ||
@@ -698,7 +705,7 @@ const StoreSettings = () => {
       toast("Please enter the ISO code", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: false,
       });
     } else if (
       fractionalUnit === "" ||
@@ -710,7 +717,7 @@ const StoreSettings = () => {
       toast("Please enter the Fractional Unit", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: false,
       });
     } else if (
       numberToBasic === "" ||
@@ -722,7 +729,7 @@ const StoreSettings = () => {
       toast("Please enter the Number to Basic", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: false,
       });
     } else if (
       (imageOfStoreSettingsCurrency && imageOfStoreSettingsCurrency.symbol) ===
@@ -971,7 +978,8 @@ const StoreSettings = () => {
           "Server Success Response From storeImagePostCall",
           response.data
         );
-        // setImagesUpload(response.data);
+        // setGetImageData([response.data]);
+        // findAllWithoutPageStoreImagesApi(id);
       })
       .catch((error) => {
         if (error.response) {
@@ -988,13 +996,19 @@ const StoreSettings = () => {
           toast("Oops! Something went wrong. Please try again later.", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
-            autoClose:false
+            autoClose: false,
           });
         }
         console.log(error.response);
         setIsLoading(false);
       });
   };
+  console.log("imagesUpload", imagesUpload);
+  useEffect(() => {
+    if (getImageData && getImageData.length > 0) {
+      findAllWithoutPageStoreBannerImageApi(id);
+    }
+  }, [getImageData]);
   //!put call of store images
   const updateStoreLogoImageCall = () => {
     const formData = new FormData();
@@ -1003,7 +1017,14 @@ const StoreSettings = () => {
         if (imagesUpload[i].type == "store_logo") {
           formData.append("store_logo", imagesUpload[i].imageValue);
         } else if (imagesUpload[i].type == "banner_images") {
+          // if (updateBannerImage && updateBannerImage.length > 0) {
+          //   updateBannerImage.push(imagesUpload[i].imageValue);
+          //   for (var i = 0; i < updateBannerImage.length; i++) {
+          //     formData.append("banner_images", updateBannerImage[i]);
+          //   }
+          // } else {
           formData.append("banner_images", imagesUpload[i].imageValue);
+          // }
         } else if (imagesUpload[i].type == "search_logo") {
           formData.append("search_logo", imagesUpload[i].imageValue);
         } else if (imagesUpload[i].type == "customer_logo") {
@@ -1044,7 +1065,8 @@ const StoreSettings = () => {
             });
           }
         }
-
+        // setGetImageData([response.data]);
+        // findAllWithoutPageStoreImagesApi(id);
         setIsLoading(false);
         console.log(
           "Server Success Response From storeImagePutCall",
@@ -1067,7 +1089,7 @@ const StoreSettings = () => {
           toast("Oops! Something went wrong. Please try again later.", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
-            autoClose:false
+            autoClose: false,
           });
         }
         console.log(error.response);
@@ -1097,6 +1119,38 @@ const StoreSettings = () => {
       // }
     }
   };
+  console.log("updateBannerImage,", updateBannerImage);
+  const findAllWithoutPageStoreBannerImageApi = (storeId) => {
+    // setIsLoading(true);
+    // axios
+    //   .get(storeBannerImageAPI, {
+    //     params: {
+    //       "store-id": storeId,
+    //     },
+    //     authorizationHeader,
+    //   })
+    MarketplaceServices.findAllWithoutPage(storeBannerImageAPI, {
+      store_id: storeId,
+    })
+      .then(function (response) {
+        console.log(
+          "Server Response from getstoreBannerImageApi Function: ",
+          response.data
+        );
+        // if (response.data.length > 0) {
+        //   let temp = [];
+        //   for (var i = 0; i < response.data.length; i++) {
+        //     temp.push(response.data[i].path);
+        //   }
+        //   setUpdateBannerImage(temp);
+        // }
+        setBannerAbsoluteImage(response.data);
+        // setStoreData(response.data.data);
+      })
+      .catch((error) => {
+        console.log("Server error from getStoreApi Function ", error.response);
+      });
+  };
 
   useEffect(() => {
     findAllStoreApi();
@@ -1120,6 +1174,8 @@ const StoreSettings = () => {
   //   // console.log(`switch to ${checked}`);
   //   setChangeSwitchStatus (checked)
   // };
+
+  console.log("changeSeitchstore", changeSwitchStatus);
   const storeSettingsHeader = () => {
     return (
       <>
@@ -1314,9 +1370,7 @@ const StoreSettings = () => {
                 isSingleUpload={true}
                 validStoreLogo={validStoreLogo}
                 setValidStoreLogo={setValidStoreLogo}
-                InfoCircleText={
-                  "This logo will be used as Store's logo"
-                }
+                InfoCircleText={"This logo will be used as Store's logo"}
               />
             </Col>
             <Col className="!ml-10">
@@ -1381,12 +1435,45 @@ const StoreSettings = () => {
             type={"banner_images"}
             storeId={id}
             imagesUpload={imagesUpload}
+            bannerAbsoluteImage={bannerAbsoluteImage}
             setImagesUpload={setImagesUpload}
             isSingleUpload={false}
             InfoCircleText={
               "These images will be used in the carousel of the store front"
             }
           />
+          <Content className="mt-5 mb-6">
+            <Row>
+              <Col>
+                <Button
+                  style={{ backgroundColor: "#393939" }}
+                  className="app-btn-primary"
+                  onClick={() => {
+                    if (imagesUpload && imagesUpload.length > 0) {
+                      postImageOnClickSave();
+                    } else {
+                      toast("No changes were detected", {
+                        position: toast.POSITION.TOP_RIGHT,
+                        type: "info",
+                      });
+                    }
+                  }}
+                >
+                  Save
+                </Button>
+              </Col>
+              <Col className="pl-4">
+                <Button
+                  className=" app-btn-secondary"
+                  onClick={() => {
+                    navigate("/dashboard/store");
+                  }}
+                >
+                  Discard
+                </Button>
+              </Col>
+            </Row>
+          </Content>
         </Content>
         <Content className="bg-white mt-3 p-3">
           <label className="text-[20px] mb-2 mt-4 font-bold">Currency</label>
@@ -1476,8 +1563,8 @@ const StoreSettings = () => {
               />
             </Col>
           </Row>
-        </Content>
-        {/* <Content className="bg-white mt-2 p-3 ">
+          {/* </Content> */}
+          {/* <Content className="bg-white mt-2 p-3 ">
           <label className="text-[20px] mb-2 mt-4 font-bold">Region Code</label>
           <Content className="flex">
             <Input
@@ -1519,8 +1606,8 @@ const StoreSettings = () => {
             </Content>
           </Content>
         </Content> */}
-        <Content className="bg-white mt-3 p-3 ">
-          <Content>
+          {/* <Content className="bg-white mt-3 p-3 "> */}
+          <Content className="mt-3">
             <Row className="!mb-4">
               <label className="text-[20px]  mt-2 font-bold">Page Theme</label>
               <Content className="text-right">
@@ -2424,51 +2511,51 @@ const StoreSettings = () => {
               </Col>
             </Row>
           </Content>
-        </Content>
-        <Content className="mt-3 mb-6">
-          <Row>
-            <Col>
-              <Button
-                style={{ backgroundColor: "#393939" }}
-                className="app-btn-primary"
-                onClick={() => {
-                  validatePostStoreSetting();
-                  if (imagesUpload && imagesUpload.length > 0) {
-                    postImageOnClickSave();
-                  }
-                }}
-              >
-                Save
-              </Button>
-            </Col>
-            <Col className="pl-4">
-              <Button
-                className=" app-btn-secondary"
-                onClick={() => {
-                  navigate("/dashboard/store");
-                  // setFractionalUnit("");
-                  // setNumberToBasic("");
-                  // setCurrencyIsoCode("");
-                  // setCurrencySymbol("");
-                  // setPageBackgroundColor("#EBEBEB");
-                  // setButtonPrimaryBackgroundColor("#00000");
-                  // setButtonSecondaryBackgroundColor("#00000");
-                  // setButtonTeritaryBackgroundColor("#00000");
-                  // setButtonPrimaryForegroundColor("#00000");
-                  // setButtonSecondaryForegroundColor("#00000");
-                  // setButtonTeritaryForegroundColor("#00000");
-                  // setForeGroundColor("#333333");
-                  // setFooterBackgroundColor("#00000");
-                  // setFooterForegroundColor("#00000");
-                  // setHeaderForegroundColor("#00000");
-                  // setHeaderBackgroundColor("#00000");
-                  // setImagesUpload([]);
-                }}
-              >
-                Discard
-              </Button>
-            </Col>
-          </Row>
+          <Content className="mt-5 mb-6">
+            <Row>
+              <Col>
+                <Button
+                  style={{ backgroundColor: "#393939" }}
+                  className="app-btn-primary"
+                  onClick={() => {
+                    validatePostStoreSetting();
+                    // if (imagesUpload && imagesUpload.length > 0) {
+                    //   postImageOnClickSave();
+                    // }
+                  }}
+                >
+                  Save
+                </Button>
+              </Col>
+              <Col className="pl-4">
+                <Button
+                  className=" app-btn-secondary"
+                  onClick={() => {
+                    navigate("/dashboard/store");
+                    // setFractionalUnit("");
+                    // setNumberToBasic("");
+                    // setCurrencyIsoCode("");
+                    // setCurrencySymbol("");
+                    // setPageBackgroundColor("#EBEBEB");
+                    // setButtonPrimaryBackgroundColor("#00000");
+                    // setButtonSecondaryBackgroundColor("#00000");
+                    // setButtonTeritaryBackgroundColor("#00000");
+                    // setButtonPrimaryForegroundColor("#00000");
+                    // setButtonSecondaryForegroundColor("#00000");
+                    // setButtonTeritaryForegroundColor("#00000");
+                    // setForeGroundColor("#333333");
+                    // setFooterBackgroundColor("#00000");
+                    // setFooterForegroundColor("#00000");
+                    // setHeaderForegroundColor("#00000");
+                    // setHeaderBackgroundColor("#00000");
+                    // setImagesUpload([]);
+                  }}
+                >
+                  Discard
+                </Button>
+              </Col>
+            </Row>
+          </Content>
         </Content>
         {/* </Spin> */}
       </Content>

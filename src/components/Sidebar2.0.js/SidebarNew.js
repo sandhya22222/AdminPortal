@@ -36,7 +36,7 @@ const antIcon = <LoadingOutlined className="text-[10px] hidden" spin />;
 
 //! Global Variables
 
-const SidebarNew = (props) => {
+const SidebarNew = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [selectedItem, setSelectedItem] = useState([]);
   const [openedItem, setOpenedItem] = useState([]);
@@ -88,19 +88,6 @@ const SidebarNew = (props) => {
       label: "Payment Type",
       navigate_to: "/dashboard/paymenttype",
     },
-    {
-      key: "6",
-      icon: <UserOutlined className="!text-[#FCC32A]" />,
-      inactive_icon: <UserOutlined className="!text-[#ffffffde]" />,
-      label: "Profile",
-      navigate_to: "/dashboard/userprofile",
-    },
-    // {
-    //   key: "5",
-    //   icon: <CopyOutlined />,
-    //   label: "Online Payment Connector",
-    //   navigate_to: "/dashboard/onlinepaymentconnector",
-    // },
   ];
 
   const handlePageRefresh = (navigationPath) => {
@@ -135,18 +122,21 @@ const SidebarNew = (props) => {
     <Layout>
       <Affix offsetTop={80}>
         <Sider
-          trigger={null}
           collapsible
           collapsed={collapsed}
+          onCollapse={(value) => setCollapsed(value)}
           width={252}
           style={{
-            overflow: "auto",
+            // overflow: "auto",
             height: "100vh",
-            left: 0,
-            top: 0,
-            bottom: 0,
+            // left: 0,
+
+            // top: 0,
+
+            // bottom: 0,
           }}
-          className="!flex-[0_0_20%] min-h-screen border-r-[1px] drop-shadow-[0_0px_2px_rgba(0,0,0,0.15)]"
+
+          // className="!flex-[0_0_20%] min-h-screen border-r-[1px] drop-shadow-[0_0px_2px_rgba(0,0,0,0.15)]"
         >
           <Spin
             spinning={loadingEffect}
@@ -158,7 +148,8 @@ const SidebarNew = (props) => {
               className="h-full !text-base !bg-[#001529]"
               selectedKeys={selectedItem}
               openKeys={openedItem}
-              theme={props.color}
+              theme={"dark"}
+              style={{ height: "calc(100vh - 145px)", overflow: "auto" }}
             >
               {myData.map((item) => (
                 <Menu.Item

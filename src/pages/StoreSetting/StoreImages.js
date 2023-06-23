@@ -32,6 +32,8 @@ const { Image } = Skeleton;
 const storeBannerImageAPI = process.env.REACT_APP_STORE_BANNER_IMAGES_API;
 const storeAbsoluteImgesAPI = process.env.REACT_APP_STORE_ABSOLUTE_IMAGES_API;
 const storeDeleteImagesAPI = process.env.REACT_APP_STORE_DELETE_IMAGES_API;
+const baseURL = process.env.REACT_APP_BASE_URL;
+
 const StoreImages = ({
   title,
   type,
@@ -43,6 +45,7 @@ const StoreImages = ({
   validStoreLogo,
   setValiStoreLogo,
   InfoCircleText,
+  bannerAbsoluteImage,
 }) => {
   const authorizationHeader = useAuthorization();
   const dispatch = useDispatch();
@@ -59,7 +62,6 @@ const StoreImages = ({
   const [previewTitle, setPreviewTitle] = useState("");
   const [imagePathShow, setImagePathShow] = useState();
   const [copyImagePath, setCopyImagePath] = useState();
-  const [bannerAbsoluteImage, setBannerAbsoluteImage] = useState([]);
   const [bannerImage, setBannerImage] = useState([]);
   const [allImageUrl, setAllImageUrl] = useState([]);
   const [bannerAbsoluteImagePath, setBannerAbsoluteImagePath] = useState([]);
@@ -143,92 +145,94 @@ const StoreImages = ({
     }
   };
 
-  const findAllWithoutPageStoreBannerImageApi = () => {
-    // setIsLoading(true);
-    // axios
-    //   .get(storeBannerImageAPI, {
-    //     params: {
-    //       "store-id": storeId,
-    //     },
-    //     authorizationHeader,
-    //   })
-    MarketplaceServices.findAllWithoutPage(storeBannerImageAPI, {
-      store_id: storeId,
-    })
-      .then(function (response) {
-        console.log(
-          "Server Response from getstoreBannerImageApi Function: ",
-          response.data
-        );
-        setBannerAbsoluteImage(response.data);
-        // setStoreData(response.data.data);
-      })
-      .catch((error) => {
-        console.log("Server error from getStoreApi Function ", error.response);
-      });
-  };
-
+  // const findAllWithoutPageStoreBannerImageApi = () => {
+  //   // setIsLoading(true);
+  //   // axios
+  //   //   .get(storeBannerImageAPI, {
+  //   //     params: {
+  //   //       "store-id": storeId,
+  //   //     },
+  //   //     authorizationHeader,
+  //   //   })
+  //   MarketplaceServices.findAllWithoutPage(storeBannerImageAPI, {
+  //     store_id: storeId,
+  //   })
+  //     .then(function (response) {
+  //       console.log(
+  //         "Server Response from getstoreBannerImageApi Function: ",
+  //         response.data
+  //       );
+  //       setBannerAbsoluteImage(response.data);
+  //       // setStoreData(response.data.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log("Server error from getStoreApi Function ", error.response);
+  //     });
+  // };
   useEffect(() => {
-    if (type === "store_logo") {
-      let temp = getImageData && getImageData.store_logo;
-      console.log("templogo", temp);
-      if (temp !== null) {
-        findAllWithoutPageStoreAbsoluteImagesApi(temp);
-        // let mediaData = [...deleteStoreImage];
-        // console.log("mediaData425", mediaData);
-        // mediaData.push({ type: "store_logo", path: temp });
-        // setDeleteStoreImage(mediaData);
-      } else {
-        setImagePathShow();
+    console.log("getImageData1234", getImageData);
+    if (getImageData && getImageData !== undefined) {
+      if (type === "store_logo") {
+        let temp = getImageData && getImageData.store_logo_path;
+        console.log("templogo", temp);
+        if (temp !== null) {
+          findAllWithoutPageStoreAbsoluteImagesApi(temp);
+          // let mediaData = [...deleteStoreImage];
+          // console.log("mediaData425", mediaData);
+          // mediaData.push({ type: "store_logo", path: temp });
+          // setDeleteStoreImage(mediaData);
+        } else {
+          setImagePathShow();
+        }
+      }
+      if (type === "customer_logo") {
+        let temp = getImageData && getImageData.customer_logo_path;
+        if (temp !== null) {
+          findAllWithoutPageStoreAbsoluteImagesApi(temp);
+          // let mediaData = [...deleteStoreImage];
+          // mediaData.push({ type: "customer_logo", path: temp });
+          // setDeleteStoreImage(mediaData);
+        } else {
+          setImagePathShow();
+        }
+      }
+      if (type === "cart_logo") {
+        let temp = getImageData && getImageData.cart_logo_path;
+        if (temp !== null) {
+          findAllWithoutPageStoreAbsoluteImagesApi(temp);
+          // let mediaData = [...deleteStoreImage];
+          // console.log("mediaData123", mediaData);
+          // mediaData.push({ type: "cart_logo", path: temp });
+          // setDeleteStoreImage(mediaData);
+        } else {
+          setImagePathShow();
+        }
+      }
+      if (type === "search_logo") {
+        let temp = getImageData && getImageData.search_logo_path;
+        if (temp !== null) {
+          findAllWithoutPageStoreAbsoluteImagesApi(temp);
+          // let mediaData = [...deleteStoreImage];
+          // mediaData.push({ type: "search_logo", path: temp });
+          // setDeleteStoreImage(mediaData);
+        } else {
+          setImagePathShow();
+        }
+      }
+      if (type === "wishlist_logo") {
+        let temp = getImageData && getImageData.wishlist_logo_path;
+        if (temp !== null) {
+          findAllWithoutPageStoreAbsoluteImagesApi(temp);
+          // let mediaData = [...deleteStoreImage];
+          // mediaData.push({ type: "wishlist_logo", path: temp });
+          // setDeleteStoreImage(mediaData);
+        } else {
+          setImagePathShow();
+        }
       }
     }
     if (type === "banner_images") {
-      findAllWithoutPageStoreBannerImageApi();
-    }
-    if (type === "customer_logo") {
-      let temp = getImageData && getImageData.customer_logo;
-      if (temp !== null) {
-        findAllWithoutPageStoreAbsoluteImagesApi(temp);
-        // let mediaData = [...deleteStoreImage];
-        // mediaData.push({ type: "customer_logo", path: temp });
-        // setDeleteStoreImage(mediaData);
-      } else {
-        setImagePathShow();
-      }
-    }
-    if (type === "cart_logo") {
-      let temp = getImageData && getImageData.cart_logo;
-      if (temp !== null) {
-        findAllWithoutPageStoreAbsoluteImagesApi(temp);
-        // let mediaData = [...deleteStoreImage];
-        // console.log("mediaData123", mediaData);
-        // mediaData.push({ type: "cart_logo", path: temp });
-        // setDeleteStoreImage(mediaData);
-      } else {
-        setImagePathShow();
-      }
-    }
-    if (type === "search_logo") {
-      let temp = getImageData && getImageData.search_logo;
-      if (temp !== null) {
-        findAllWithoutPageStoreAbsoluteImagesApi(temp);
-        // let mediaData = [...deleteStoreImage];
-        // mediaData.push({ type: "search_logo", path: temp });
-        // setDeleteStoreImage(mediaData);
-      } else {
-        setImagePathShow();
-      }
-    }
-    if (type === "wishlist_logo") {
-      let temp = getImageData && getImageData.wishlist_logo;
-      if (temp !== null) {
-        findAllWithoutPageStoreAbsoluteImagesApi(temp);
-        // let mediaData = [...deleteStoreImage];
-        // mediaData.push({ type: "wishlist_logo", path: temp });
-        // setDeleteStoreImage(mediaData);
-      } else {
-        setImagePathShow();
-      }
+      // findAllWithoutPageStoreBannerImageApi();
     }
   }, [getImageData]);
 
@@ -239,17 +243,16 @@ const StoreImages = ({
   useEffect(() => {
     if (bannerAbsoluteImage && bannerAbsoluteImage.length > 0) {
       for (var i = 0; i < bannerAbsoluteImage.length; i++) {
+        console.log("bannerAbsoluteImagePath", bannerAbsoluteImagePath);
         if (type === "banner_images") {
           findAllWithoutPageStoreAbsoluteImagesApi(
-            bannerAbsoluteImage[i].path
+            bannerAbsoluteImage[i].image_fullpath
             // util.getImageAbsolutePath(bannerAbsoluteImage[i].image_fullpath)
           );
         }
       }
     }
   }, [bannerAbsoluteImage]);
-
-  console.log("getImageData", getImageData);
 
   const getBase64 = (file) => {
     new Promise((resolve, reject) => {
@@ -261,79 +264,95 @@ const StoreImages = ({
   };
 
   const findAllWithoutPageStoreAbsoluteImagesApi = (imagePath) => {
-    console.log("imagePath1234", imagePath);
-    axios
-      .get(
-        storeAbsoluteImgesAPI,
-        {
-          params: {
-            store_id: storeId,
-            "image-path": imagePath,
-            "image-type": type,
-          },
-          responseType: "blob",
-        },
-        authorizationHeader
-      )
-      // MarketplaceServices.findMedia(
-      //   storeBannerImageAPI,
-      //   {
-      //     "store-id": storeId,
-      //     "image-path": imagePath,
-      //     "image-type": type,
-      //   }
-      // )
-      .then(function (response) {
-        console.log(
-          "Get response of Store setting absolute Images--->",
-          response.data
-        );
-        // if (type === "banner_images") {
-        //   console.log("first");
-        //   let temp = [...bannerImage];
-        //   const url = URL.createObjectURL(response.data);
-        //   temp.push(url);
-        //   setBannerImage(temp);
-        // } else {
-        //   const url = URL.createObjectURL(response.data);
-        //   console.log("image-url", url);
-        //   setImagePathShow(url);
-        //   setCopyImagePath(url);
-        // }
+    let url = baseURL + "/" + imagePath;
+    let temp = allImageUrl;
+    temp.push(url);
+    if (absoluteStoreImageInfo && absoluteStoreImageInfo.length > 0) {
+      let imageData = [...absoluteStoreImageInfo];
+      let imageType = { type: type, value: url };
+      imageData.push(imageType);
+      dispatch(fnAbsoluteStoreImageInfo(ImageData));
+    } else {
+      let imageType = { type: type, value: url };
+      dispatch(fnAbsoluteStoreImageInfo(imageType));
+    }
+    console.log("tempoTest#", temp);
+    setAllImageUrl(temp);
+    setImagePathShow(url);
+    setCopyImagePath(url);
+    // console.log("imagePath1234", imagePath);
+    // axios
+    //   .get(
+    //     storeAbsoluteImgesAPI,
+    //     {
+    //       params: {
+    //         store_id: storeId,
+    //         "image-path": imagePath,
+    //         "image-type": type,
+    //       },
+    //       responseType: "blob",
+    //     },
+    //     authorizationHeader
+    //   )
+    //   // MarketplaceServices.findMedia(
+    //   //   storeBannerImageAPI,
+    //   //   {
+    //   //     "store-id": storeId,
+    //   //     "image-path": imagePath,
+    //   //     "image-type": type,
+    //   //   }
+    //   // )
+    //   .then(function (response) {
+    //     console.log(
+    //       "Get response of Store setting absolute Images--->",
+    //       response.data
+    //     );
+    //     // if (type === "banner_images") {
+    //     //   console.log("first");
+    //     //   let temp = [...bannerImage];
+    //     //   const url = URL.createObjectURL(response.data);
+    //     //   temp.push(url);
+    //     //   setBannerImage(temp);
+    //     // } else {
+    //     //   const url = URL.createObjectURL(response.data);
+    //     //   console.log("image-url", url);
+    //     //   setImagePathShow(url);
+    //     //   setCopyImagePath(url);
+    //     // }
 
-        const url = URL.createObjectURL(response.data);
-        console.log("image-url", url);
-        let temp = allImageUrl;
-        temp.push(url);
-        if (absoluteStoreImageInfo && absoluteStoreImageInfo.length > 0) {
-          let imageData = [...absoluteStoreImageInfo];
-          let imageType = { type: type, value: url };
-          imageData.push(imageType);
-          dispatch(fnAbsoluteStoreImageInfo(ImageData));
-        } else {
-          let imageType = { type: type, value: url };
-          dispatch(fnAbsoluteStoreImageInfo(imageType));
-        }
-        // const imageData = absoluteStoreImageInfo;
-        // let image = allImageUrl
-        // image.push(imageData)
-        // console.log("imageData", imageData);
-        // if (imageData !== undefined) {
-        //   imageData.push(temp);
-        //   dispatch(fnAbsoluteStoreImageInfo(imageData));
-        // } else {
-        //   dispatch(fnAbsoluteStoreImageInfo(temp));
-        // }
-        // dispatch(fnAbsoluteStoreImageInfo(temp));
-        console.log("tempoTest#", temp);
-        setAllImageUrl(temp);
-        setImagePathShow(url);
-        setCopyImagePath(url);
-      })
-      .catch((error) => {
-        console.log("errorresponse from images--->", error.response);
-        setImagePathShow();
-      });
+    //     const url = URL.createObjectURL(response.data);
+    //     console.log("image-url", url);
+    //     let temp = allImageUrl;
+    //     temp.push(url);
+    //     if (absoluteStoreImageInfo && absoluteStoreImageInfo.length > 0) {
+    //       let imageData = [...absoluteStoreImageInfo];
+    //       let imageType = { type: type, value: url };
+    //       imageData.push(imageType);
+    //       dispatch(fnAbsoluteStoreImageInfo(ImageData));
+    //     } else {
+    //       let imageType = { type: type, value: url };
+    //       dispatch(fnAbsoluteStoreImageInfo(imageType));
+    //     }
+    //     // const imageData = absoluteStoreImageInfo;
+    //     // let image = allImageUrl
+    //     // image.push(imageData)
+    //     // console.log("imageData", imageData);
+    //     // if (imageData !== undefined) {
+    //     //   imageData.push(temp);
+    //     //   dispatch(fnAbsoluteStoreImageInfo(imageData));
+    //     // } else {
+    //     //   dispatch(fnAbsoluteStoreImageInfo(temp));
+    //     // }
+    //     // dispatch(fnAbsoluteStoreImageInfo(temp));
+    //     console.log("tempoTest#", temp);
+    //     setAllImageUrl(temp);
+    //     setImagePathShow(url);
+    //     setCopyImagePath(url);
+    //   })
+    //   .catch((error) => {
+    //     console.log("errorresponse from images--->", error.response);
+    //     setImagePathShow();
+    //   });
   };
 
   const handleCancel = () => setPreviewOpen(false);
@@ -357,7 +376,7 @@ const StoreImages = ({
     dataObject["image-type"] = type;
     if (type === "banner_images") {
       let temp = bannerAbsoluteImage[index];
-      console.log("temp", temp);
+      console.log("tempbannerAbsoluteImage", temp);
       dataObject["image-path"] = temp.path;
     } else {
       dataObject["image-path"] = getImageData[type];
