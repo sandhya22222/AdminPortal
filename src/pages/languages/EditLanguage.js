@@ -334,7 +334,7 @@ const EditLanguage = () => {
         if (fileData) {
           if (fileValue !== ".csv")
             toast(
-              'Only files with the ".csv" extension are supported. Please ensure that you upload a file with the correct extension.',
+              "Invalid file extension, only '.csv' extension is supported.'",
               {
                 position: toast.POSITION.TOP_RIGHT,
                 type: "error",
@@ -379,7 +379,7 @@ const EditLanguage = () => {
     })
       .then((response) => {
         console.log("put response", response.data);
-        toast("Congratulations! The file was uploaded successfully.", {
+        toast("File uploaded successfully.", {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
         });
@@ -412,7 +412,7 @@ const EditLanguage = () => {
       headers: { "Content-Type": "multipart/form-data" },
     })
       .then((response) => {
-        toast("Congratulations! The file was uploaded successfully.", {
+        toast("File uploaded successfully.", {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
         });
@@ -434,7 +434,7 @@ const EditLanguage = () => {
             type: "error",
           });
         } else {
-          toast("Oops! Something went wrong. Please try again later.", {
+          toast("Something went wrong, please try again later", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
             autoClose: false,
@@ -466,7 +466,7 @@ const EditLanguage = () => {
       .then((response) => {
         console.log("response from delete===>", response.data);
         if (response.status === 200 || response.status === 201) {
-          toast("The document was deleted successfully.", {
+          toast("Document deleted successfully", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
           });
@@ -726,8 +726,7 @@ const EditLanguage = () => {
                             <span className="text-red-600">
                               {languageDetails.language}
                             </span>{" "}
-                            Language. You can update the file by browsing and
-                            selecting a new file above.
+                            Update the file by browsing new file above
                           </p>
                         ) : (
                           ""

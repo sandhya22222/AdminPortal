@@ -469,10 +469,10 @@ const StoreSettings = () => {
             type: "error",
           });
         } else {
-          toast("Oops! Something went wrong. Please try again later.", {
+          toast("Something went wrong, please try again later", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
-            autoClose:false
+            autoClose: false,
           });
         }
         console.log(error.response);
@@ -499,7 +499,7 @@ const StoreSettings = () => {
       toast("Please enter the values for the mandatory field", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: false,
       });
     } else if (
       currencySymbol !== "" &&
@@ -511,11 +511,14 @@ const StoreSettings = () => {
       setInValidNumberToBasic(true);
       setInValidCurrencyIsoCode(true);
       setInValidFractionalUnit(true);
-      toast("Please enter the ISO Code, Fractional Unit, and Number to Basic fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose:false
-      });
+      toast(
+        "Please enter the ISO Code, Fractional Unit, and Number to Basic fields",
+        {
+          position: toast.POSITION.TOP_RIGHT,
+          type: "error",
+          autoClose: false,
+        }
+      );
     } else if (
       currencySymbol === "" &&
       currencyIsoCode !== "" &&
@@ -531,7 +534,7 @@ const StoreSettings = () => {
         {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
-          autoClose:false
+          autoClose: false,
         }
       );
     } else if (
@@ -547,7 +550,7 @@ const StoreSettings = () => {
       toast("Please enter the Symbol, ISO Code, and Number to Basic fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: false,
       });
     } else if (
       currencySymbol === "" &&
@@ -562,7 +565,7 @@ const StoreSettings = () => {
       toast("Please enter the Symbol, ISO Code, and Fractional Unit fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: false,
       });
     } else if (
       currencySymbol === "" &&
@@ -576,7 +579,7 @@ const StoreSettings = () => {
       toast("Please enter the Symbol and ISO Code fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: false,
       });
     } else if (
       currencySymbol === "" &&
@@ -590,7 +593,7 @@ const StoreSettings = () => {
       toast("Please enter the Symbol and Fractional Unit fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: false,
       });
     } else if (
       currencySymbol === "" &&
@@ -604,7 +607,7 @@ const StoreSettings = () => {
       toast("Please enter the Symbol and Number to Basic fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: false,
       });
     } else if (
       currencySymbol === "" &&
@@ -618,7 +621,7 @@ const StoreSettings = () => {
       toast("Please enter the Symbol and ISO Code fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: false,
       });
     } else if (
       currencySymbol !== "" &&
@@ -632,7 +635,7 @@ const StoreSettings = () => {
       toast("Please enter the ISO Code and Fractional Unit fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: false,
       });
     } else if (
       currencySymbol !== "" &&
@@ -646,7 +649,7 @@ const StoreSettings = () => {
       toast("Please enter the ISO Code and Number to Basic fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: false,
       });
     } else if (
       currencySymbol === "" &&
@@ -660,7 +663,7 @@ const StoreSettings = () => {
       toast("Please enter the Symbol and Fractional Unit fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: false,
       });
     } else if (
       currencySymbol !== "" &&
@@ -674,7 +677,7 @@ const StoreSettings = () => {
       toast("Please enter the Fractional unit and Number to Basic fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: false,
       });
     } else if (
       currencySymbol === "" ||
@@ -686,7 +689,7 @@ const StoreSettings = () => {
       toast("Please enter the Symbol", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: false,
       });
     } else if (
       currencyIsoCode === "" ||
@@ -698,7 +701,7 @@ const StoreSettings = () => {
       toast("Please enter the ISO code", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: false,
       });
     } else if (
       fractionalUnit === "" ||
@@ -710,7 +713,7 @@ const StoreSettings = () => {
       toast("Please enter the Fractional Unit", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: false,
       });
     } else if (
       numberToBasic === "" ||
@@ -722,7 +725,7 @@ const StoreSettings = () => {
       toast("Please enter the Number to Basic", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: false,
       });
     } else if (
       (imageOfStoreSettingsCurrency && imageOfStoreSettingsCurrency.symbol) ===
@@ -985,10 +988,10 @@ const StoreSettings = () => {
             type: "error",
           });
         } else {
-          toast("Oops! Something went wrong. Please try again later.", {
+          toast("Something went wrong, please try again later", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
-            autoClose:false
+            autoClose: false,
           });
         }
         console.log(error.response);
@@ -1064,10 +1067,10 @@ const StoreSettings = () => {
             type: "error",
           });
         } else {
-          toast("Oops! Something went wrong. Please try again later.", {
+          toast("Something went wrong, please try again later", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
-            autoClose:false
+            autoClose: false,
           });
         }
         console.log(error.response);
@@ -1314,9 +1317,7 @@ const StoreSettings = () => {
                 isSingleUpload={true}
                 validStoreLogo={validStoreLogo}
                 setValidStoreLogo={setValidStoreLogo}
-                InfoCircleText={
-                  "This logo will be used as Store's logo"
-                }
+                InfoCircleText={"This logo will be used as Store's logo"}
               />
             </Col>
             <Col className="!ml-10">
