@@ -713,7 +713,7 @@ const Stores = () => {
             type: "error",
           });
         } else {
-          toast("Oops! Something went wrong. Please try again later.", {
+          toast("Something went wrong, please try again later", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
             autoClose: false,
@@ -774,7 +774,7 @@ const Stores = () => {
             type: "error",
           });
         } else {
-          toast("Oops! Something went wrong. Please try again later.", {
+          toast("Something went wrong, please try again later", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
             autoClose: false,
@@ -890,7 +890,7 @@ const Stores = () => {
             type: "error",
           });
         } else {
-          toast("Oops! Something went wrong. Please try again later.", {
+          toast("Something went wrong, please try again later", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
             autoClose: false,
@@ -1094,7 +1094,7 @@ const Stores = () => {
                           <Text className=" mr-1 font-bold">Note: </Text>
                           <Text>
                             Store administrator's details cannot be edited. You
-                            are permitted to only rename your store.
+                            are permitted to only rename your store
                           </Text>
                         </Col>
                       </Row>
@@ -1228,6 +1228,7 @@ const Stores = () => {
           </Content>
         ) : isNetworkError ? (
           <Layout className="p-0 text-center mb-3 bg-[#F4F4F4]">
+            <p>Validation in Progress</p>
             <p>
               {errorMessage
                 ? errorMessage
