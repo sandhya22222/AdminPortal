@@ -534,11 +534,11 @@ const Language = () => {
         ) : isNetworkErrorLanguage ? (
           <Layout className="p-0 text-center mb-3 bg-[#F4F4F4]">
             <p>Validation in Progress</p>
-            <h5>
+            <p>
               {errorMessage
                 ? errorMessage
                 : "Please wait while we validate your information. If this process persists, please consider logging out and logging back in"}
-            </h5>
+            </p>
           </Layout>
         ) : (
           <Layout className="">
