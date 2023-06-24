@@ -2,7 +2,11 @@ import React, { useEffect, useState, useImperativeHandle } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Content } from "antd/lib/layout/layout";
-import { ArrowLeftOutlined, InboxOutlined } from "@ant-design/icons";
+import {
+  ArrowLeftOutlined,
+  InboxOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
 import {
   Row,
   Col,
@@ -118,6 +122,7 @@ const EditLanguage = () => {
     copyofLanguageDetails.islanguageDetailsEdited = true;
     setLanguageDetails(copyofLanguageDetails);
   };
+  console.log("Final File In Function", fileData, fileValue);
 
   const editLanguageButtonHeader = () => {
     return (
@@ -504,6 +509,8 @@ const EditLanguage = () => {
     }
   };
 
+  console.log("languageDetails", languageDetails);
+
   return (
     <Content>
       <Content className="">
@@ -717,17 +724,32 @@ const EditLanguage = () => {
                           </p>
                           <p className="ant-upload-hint">only .csv files</p>
                         </Dragger>
-                        {languageDetails.lang_file_name !== null ? (
-                          <p className="mt-2">
-                            <span className="text-red-600">
-                              {languageDetails.lang_file_name}{" "}
-                            </span>{" "}
-                            was uploaded for{" "}
-                            <span className="text-red-600">
-                              {languageDetails.language}
-                            </span>{" "}
-                            Update the file by browsing new file above
-                          </p>
+                        {languageDetails.lang_support_docs !== null ? (
+                          <>
+                            <p className="mt-2 flex justify-between">
+                              <span>{languageDetails.lang_file_name} </span>{" "}
+                              {languageDetails.lang_file_name !== null ? (
+                                <span className="ml-44">
+                                  <DeleteOutlined
+                                    onClick={(e) => removeLanguageDocument(e)}
+                                  />
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                            </p>
+                            <p className="mt-2 ">
+                              <span className="text-red-600">
+                                {languageDetails.lang_file_name}{" "}
+                              </span>{" "}
+                              was uploaded for{" "}
+                              <span className="text-red-600">
+                                {languageDetails.language}
+                              </span>{" "}
+                              Language. You can update the file by browsing and
+                              selecting a new file above.
+                            </p>
+                          </>
                         ) : (
                           ""
                         )}

@@ -585,8 +585,6 @@ const AddLanguage = () => {
                       return false;
                     }}
                     accept=".csv"
-                    // action="/languages/rest/v2/language"
-                    // onDrop={(e) => handleDrop(e)}
                     name="file"
                     onChange={(e) => handleDropImage(e)}
                     onRemove={(e) => removeLanguageDocument(e)}
