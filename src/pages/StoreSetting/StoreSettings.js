@@ -978,7 +978,7 @@ const StoreSettings = () => {
           "Server Success Response From storeImagePostCall",
           response.data
         );
-        // setGetImageData([response.data]);
+        setGetImageData([response.data]);
         // findAllWithoutPageStoreImagesApi(id);
       })
       .catch((error) => {
@@ -1003,7 +1003,7 @@ const StoreSettings = () => {
         setIsLoading(false);
       });
   };
-  console.log("imagesUpload", imagesUpload);
+  console.log("getImageData", getImageData);
   useEffect(() => {
     if (getImageData && getImageData.length > 0) {
       findAllWithoutPageStoreBannerImageApi(id);
@@ -1066,7 +1066,9 @@ const StoreSettings = () => {
           }
         }
         // setGetImageData([response.data]);
+        // !TODO: Update response is not , backend is giving null for previously updated images So we are doing get call here again.
         // findAllWithoutPageStoreImagesApi(id);
+        // window.location.reload();
         setIsLoading(false);
         console.log(
           "Server Success Response From storeImagePutCall",
@@ -1158,6 +1160,7 @@ const StoreSettings = () => {
     if (id) {
       findAllWithoutPageStoreSettingApi(id);
       findAllWithoutPageStoreImagesApi(id);
+      // findAllWithoutPageStoreBannerImageApi(id);
     }
   }, []);
 
