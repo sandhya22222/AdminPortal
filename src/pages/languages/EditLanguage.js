@@ -724,18 +724,32 @@ const EditLanguage = () => {
                           </p>
                           <p className="ant-upload-hint">only .csv files</p>
                         </Dragger>
-                        {languageDetails.lang_file_name !== null ? (
-                          <p className="mt-2">
-                            <span className="text-red-600">
-                              {languageDetails.lang_file_name}{" "}
-                            </span>{" "}
-                            was uploaded for{" "}
-                            <span className="text-red-600">
-                              {languageDetails.language}
-                            </span>{" "}
-                            Language. You can update the file by browsing and
-                            selecting a new file above.
-                          </p>
+                        {languageDetails.lang_support_docs !== null ? (
+                          <>
+                            <p className="mt-2 flex justify-between">
+                              <span>{languageDetails.lang_file_name} </span>{" "}
+                              {languageDetails.lang_file_name !== null ? (
+                                <span className="ml-44">
+                                  <DeleteOutlined
+                                    onClick={(e) => removeLanguageDocument(e)}
+                                  />
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                            </p>
+                            <p className="mt-2 ">
+                              <span className="text-red-600">
+                                {languageDetails.lang_file_name}{" "}
+                              </span>{" "}
+                              was uploaded for{" "}
+                              <span className="text-red-600">
+                                {languageDetails.language}
+                              </span>{" "}
+                              Language. You can update the file by browsing and
+                              selecting a new file above.
+                            </p>
+                          </>
                         ) : (
                           ""
                         )}
