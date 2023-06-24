@@ -473,7 +473,7 @@ const StoreSettings = () => {
             type: "error",
           });
         } else {
-          toast("Oops! Something went wrong. Please try again later.", {
+          toast("Something went wrong, please try again later", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
             autoClose: false,
@@ -993,7 +993,7 @@ const StoreSettings = () => {
             type: "error",
           });
         } else {
-          toast("Oops! Something went wrong. Please try again later.", {
+          toast("Something went wrong, please try again later", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
             autoClose: false,
@@ -1086,7 +1086,7 @@ const StoreSettings = () => {
             type: "error",
           });
         } else {
-          toast("Oops! Something went wrong. Please try again later.", {
+          toast("Something went wrong, please try again later", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
             autoClose: false,

@@ -559,27 +559,36 @@ const DynamicTable = ({ tableComponentData }) => {
               </Row>
             ) : null}
 
-           {tableData ? <Table
-              className="p-3"
-              dataSource={tableData}
-              columns={dataSource.table_header}
-              // pagination={{
-              //   defaultPageSize:tableData && tableData.length,
-              //   showSizeChanger:false,
-              //   pageSizeOptions:false,
+            {tableData ? (
+              <Table
+                className="p-3"
+                dataSource={tableData}
+                columns={dataSource.table_header}
+                // pagination={{
+                //   defaultPageSize:tableData && tableData.length,
+                //   showSizeChanger:false,
+                //   pageSizeOptions:false,
 
-              //   hideOnSinglePage: false,
-              // }}
-              pagination={false}
-            ></Table> : <Skeleton className="p-3" active paragraph={{
-              rows: 6,
-            }}></Skeleton> }
+                //   hideOnSinglePage: false,
+                // }}
+                pagination={false}
+              ></Table>
+            ) : (
+              <Skeleton
+                className="p-3"
+                active
+                paragraph={{
+                  rows: 6,
+                }}
+              ></Skeleton>
+            )}
           </Content>
         </div>
       ) : (
         <div className="h-28 flex items-center justify-center !bg-white">
+          <h6>No Data Available</h6>
           <h6 className="!font-medium">
-          Currently, there is no data to display in the table
+            Currently, there is no data to display in the table
           </h6>
         </div>
       )}

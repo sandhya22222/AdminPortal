@@ -151,13 +151,10 @@ const AddLanguage = () => {
         console.log("from--->", res);
         if (res.status === 201) {
           if (res.data) {
-            toast(
-              "Congratulations! You have successfully created a new language.",
-              {
-                position: toast.POSITION.TOP_RIGHT,
-                type: "success",
-              }
-            );
+            toast("Language created successfully", {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "success",
+            });
             // disabbling spinner
             setIsLoading(false);
             navigate(-1);
@@ -169,7 +166,7 @@ const AddLanguage = () => {
         setIsLoading(false);
         console.log("error", error.response);
         if (error && error.response === undefined) {
-          toast("Oops! Something went wrong. Please try again later.", {
+          toast("Something went wrong, please try again later", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
             autoClose: false,
@@ -183,7 +180,7 @@ const AddLanguage = () => {
           } else if (fileData) {
             if (fileExtension !== "csv") {
               toast(
-                'Only files with the ".csv" extension are supported. Please ensure that you upload a file with the correct extension.',
+                "Invalid file extension, only '.csv' extension is supported.",
                 {
                   position: toast.POSITION.TOP_RIGHT,
                   type: "error",
@@ -218,7 +215,7 @@ const AddLanguage = () => {
       validValues--;
 
       setIsLanguageFieldEmpty(true);
-      toast("The language name must contain a minimum of 4 characters.", {
+      toast("Language name must contain minimum of 4 characters", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: false,
@@ -238,7 +235,7 @@ const AddLanguage = () => {
       validValues--;
 
       setIsLanguageCodeFieldEmpty(true);
-      toast("The language code must contain a minimum of 2 characters.", {
+      toast("Language code must contain minimum of 2 characters", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: false,
@@ -315,7 +312,7 @@ const AddLanguage = () => {
       headers: { "Content-Type": "multipart/form-data" },
     })
       .then((response) => {
-        toast("Congratulations! The file was uploaded successfully.", {
+        toast("File uploaded successfully.", {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
         });
@@ -335,7 +332,7 @@ const AddLanguage = () => {
             type: "error",
           });
         } else {
-          toast("Oops! Something went wrong. Please try again later.", {
+          toast("Something went wrong, please try again later", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
             autoClose: false,
@@ -367,7 +364,7 @@ const AddLanguage = () => {
       .then((response) => {
         console.log("response from delete===>", response.data);
         if (response.status === 200 || response.status === 201) {
-          toast("The document was deleted successfully.", {
+          toast("Document deleted successfully", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
           });
@@ -412,7 +409,7 @@ const AddLanguage = () => {
     //   console.log("Final FIle In Function", file, fileExtension, fileName);
     // }
     // if (status === "done") {
-    //   message.success(`${info.file.name} Congratulations! The file was uploaded successfully.`);
+    //   message.success(`${info.file.name} File uploaded successfully.`);
     // } else if (status === "error") {
     //   message.error(`${info.file.name} file upload failed.`);
     // }
@@ -595,6 +592,7 @@ const AddLanguage = () => {
                     <p className="ant-upload-drag-icon">
                       <InboxOutlined />
                     </p>
+                    <p className="ant-upload-text">Upload File</p>
                     <p className="ant-upload-text">
                       Upload your file here or drag and drop the file here
                     </p>
