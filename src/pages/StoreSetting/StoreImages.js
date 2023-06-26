@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
 import { fnAbsoluteStoreImageInfo } from "../../services/redux/actions/ActionStoreImages";
 import useAuthorization from "../../hooks/useAuthorization";
+import StoreModal from "../../components/storeModal/StoreModal";
 import { TiDelete } from "react-icons/ti";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import "./StoreImages.css";
@@ -66,7 +67,10 @@ const StoreImages = ({
   const [allImageUrl, setAllImageUrl] = useState([]);
   const [bannerAbsoluteImagePath, setBannerAbsoluteImagePath] = useState([]);
   const [reset, setReset] = useState(false);
-  const [deleteStoreImage, setDeleteStoreImage] = useState([]);
+  const [imageIndex, setImageIndex] = useState();
+  const [imageElement, setImageElement] = useState();
+  const [isImageDeleting, setIsImageDeleting] = useState(false);
+  const [isDeleteImageModalOpen, setIsDeleteImageModalOpen] = useState(false);
   const uploadButton = (
     <div>
       <PlusOutlined />
@@ -368,14 +372,27 @@ const StoreImages = ({
     );
   };
 
+  // closing the delete popup model
+  const closeDeleteModal = () => {
+    setIsDeleteImageModalOpen(false);
+  };
+
+  // opening the delete popup model
+  const openDeleteModal = (id) => {
+    setIsDeleteImageModalOpen(true);
+    // setDeleteLanguageID(id);
+  };
+
   //!delete function of language
   const removeMedia = (index) => {
+    setIsImageDeleting(true);
+
     console.log("index", index);
     let dataObject = {};
     dataObject["store_id"] = storeId;
     dataObject["image-type"] = type;
     if (type === "banner_images") {
-      let temp = bannerAbsoluteImage[index];
+      let temp = bannerAbsoluteImage[imageIndex];
       console.log("tempbannerAbsoluteImage", temp);
       dataObject["image-path"] = temp.path;
     } else {
@@ -385,22 +402,30 @@ const StoreImages = ({
       .then((response) => {
         console.log("response from delete===>", response);
         if (response.status === 200 || response.status === 201) {
-          // setIsDeleteLanguageModalOpen(false);
-          // let removedData = languageData.filter(
-          //   ({ id }) => id !== deleteLanguageID
-          // );
-          // setLanguageData(removedData);
           toast(`${response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
           });
         }
+        if (type === "banner_images") {
+          let temp = allImageUrl.filter((item) => item !== imageElement);
+          if (temp && temp.length > 0) {
+            setAllImageUrl(temp);
+          } else {
+            setAllImageUrl([]);
+            setImagePathShow();
+          }
+        } else {
+          setImagePathShow();
+          setReset(true);
+        }
+        setIsDeleteImageModalOpen(false)
         // disabling spinner
-        // setIslanguageDeleting(false);
+        setIsImageDeleting(false);
       })
       .catch((error) => {
         // disabling spinner
-        // setIslanguageDeleting(false);
+        setIsImageDeleting(false);
         toast(`${error.response.data.message}`, {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
@@ -411,6 +436,23 @@ const StoreImages = ({
   console.log("copyImagePath", allImageUrl);
   return (
     <Content className=" mb-2">
+      <StoreModal
+        isVisible={isDeleteImageModalOpen}
+        okButtonText={"Ok"}
+        cancelButtonText={"Cancel"}
+        title={"Warning"}
+        okCallback={() => removeMedia()}
+        cancelCallback={() => closeDeleteModal()}
+        isSpin={isImageDeleting}
+        hideCloseButton={false}
+      >
+        {
+          <div>
+            <p>{`Confirm image Deletion`}</p>
+            <p>{`Are you absolutely sure you want to delete the image? This action cannot be undone.`}</p>
+          </div>
+        }
+      </StoreModal>
       <Content className="flex !mb-3">
         {/* {title === "Store Logo" ? (
           <span className="text-red-600 text-sm text-center ">*</span>
@@ -423,7 +465,7 @@ const StoreImages = ({
             <InfoCircleOutlined className="text-sky-600" />
           </Tooltip>
         </Content>
-        {reset === true ? (
+        {/* {reset === true ? (
           <Content>
             <Tooltip title="Reset to the previous image">
               <UndoOutlined
@@ -434,7 +476,7 @@ const StoreImages = ({
               />
             </Tooltip>
           </Content>
-        ) : null}
+        ) : null} */}
       </Content>
       {imagePathShow === undefined ? (
         <Content>
@@ -524,21 +566,9 @@ const StoreImages = ({
                     <TiDelete
                       className="!absolute !cursor-pointer !right-[-5px] !z-5  !top-[-10px] !text-2xl !text-red-600 !shadow-lg  hover:translate-"
                       onClick={() => {
-                        if (type === "banner_images") {
-                          removeMedia(index);
-
-                          let temp = allImageUrl.filter((item) => item !== ele);
-                          if (temp && temp.length > 0) {
-                            setAllImageUrl(temp);
-                          } else {
-                            setAllImageUrl([]);
-                            setImagePathShow();
-                          }
-                        } else {
-                          setImagePathShow();
-                          setReset(true);
-                          removeMedia();
-                        }
+                        setIsDeleteImageModalOpen(true);
+                        setImageIndex(index);
+                        setImageElement(ele);
                       }}
                     />
                   </div>

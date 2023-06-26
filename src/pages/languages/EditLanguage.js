@@ -77,7 +77,8 @@ const EditLanguage = () => {
   const [fileList, setFileList] = useState([]);
   const [documentPath, setDocumentPath] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [newlyUploadedFile, setNewlyUploadedFile] = useState(0);
+  const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
   const navigate = useNavigate();
   // hanler for language, language_code, native_name, writing_script_direction
   const languageHandler = (fieldName, value) => {
@@ -166,6 +167,7 @@ const EditLanguage = () => {
         let languageData = response?.data.data.filter(
           (element) => element.id === parseInt(_id)
         );
+        console.log("languageData", languageData);
         setResponseLanguageData(languageData);
         if (languageData && languageData.length > 0) {
           let copyofLanguageDetails = { ...languageDetails };
@@ -205,6 +207,7 @@ const EditLanguage = () => {
   }, []);
 
   console.log("documentPath", documentPath);
+  console.log("responseLanguagedata", responseLanguageData);
   const validateLanguageFieldEmptyOrNot = () => {
     // if (
     //   languageDetails.language !== "" &&
@@ -240,6 +243,8 @@ const EditLanguage = () => {
       responseLanguageData[0].language_code === languageDetails.language_code &&
       responseLanguageData[0].lang_support_docs ===
         languageDetails.lang_support_docs &&
+      newlyUploadedFile &&
+      newlyUploadedFile.length < 0 &&
       responseLanguageData[0].native_name === languageDetails.native_name &&
       responseLanguageData[0].writing_script_direction ===
         languageDetails.writing_script_direction &&
@@ -356,11 +361,27 @@ const EditLanguage = () => {
       });
   };
 
+  const updateEditLanguageDocument = () => {
+    const temp = {};
+    temp["language"] = languageDetails.language;
+    temp["language_code"] = languageDetails.language_code;
+    // temp["lang_support_docs_path"] = "";
+
+    MarketplaceServices.update(languageAPI, temp, { _id: parseInt(_id) })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
+  };
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
-  console.log("language_details", languageDetails);
+  const closeDocumentModal = () => {
+    setIsDocumentModalOpen(false);
+  };
 
   const updateLanguageDocument = (fileValue, lastExtensionValue) => {
     const formData = new FormData();
@@ -390,8 +411,9 @@ const EditLanguage = () => {
         });
         setLanguageDetails({
           ...languageDetails,
-          lang_support_docs: response.data[0].lang_support_docs,
+          lang_support_docs: response.data.document_path,
         });
+        setNewlyUploadedFile(+1);
       })
       .catch((error) => {
         if (error.response) {
@@ -477,7 +499,8 @@ const EditLanguage = () => {
           });
         }
         setLanguageDetails({ ...languageDetails, lang_support_docs: null });
-
+        setIsDocumentModalOpen(false);
+        updateEditLanguageDocument();
         // disabling spinner
       })
       .catch((error) => {
@@ -699,9 +722,24 @@ const EditLanguage = () => {
                           }
                           accept=".csv"
                         /> */}
+                        <StoreModal
+                          isVisible={isDocumentModalOpen}
+                          okButtonText={"Yes"}
+                          title={"Warning"}
+                          cancelButtonText={"No"}
+                          okCallback={(e) => removeLanguageDocument(e)}
+                          cancelCallback={() => closeDocumentModal()}
+                          isSpin={false}
+                        >
+                          <div>
+                            <p>{`Confirm Language Document Deletion`}</p>
+                            <p>{`Are you absolutely sure you want to delete the Document? This action cannot be undone.`}</p>
+                          </div>
+                        </StoreModal>
                         <Dragger
                           name="file"
-                          // multiple={false}
+                          multiple={false}
+                          maxCount={1}
                           beforeUpload={() => {
                             return false;
                           }}
@@ -714,7 +752,7 @@ const EditLanguage = () => {
                               e.target.files
                             );
                           }}
-                          onRemove={(e) => removeLanguageDocument(e)}
+                          onRemove={() => setIsDocumentModalOpen(true)}
                         >
                           <p className="ant-upload-drag-icon">
                             <InboxOutlined />
@@ -731,7 +769,7 @@ const EditLanguage = () => {
                               {languageDetails.lang_file_name !== null ? (
                                 <span className="ml-44">
                                   <DeleteOutlined
-                                    onClick={(e) => removeLanguageDocument(e)}
+                                    onClick={() => setIsDocumentModalOpen(true)}
                                   />
                                 </span>
                               ) : (
