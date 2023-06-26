@@ -26,6 +26,12 @@ export const SetupInterceptors = (http) => {
       return response;
     },
     function (error) {
+      if (error.response) {
+        const originalConfig = error.config;
+        if (error.response.status === 401 && !originalConfig._retry) {
+          window.location.replace(window.location.origin);
+        }
+      }
       // debugger;
       // const originalConfig = error.config;
       // if (error.response) {
