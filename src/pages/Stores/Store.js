@@ -708,7 +708,7 @@ const Stores = () => {
       })
       .catch((error) => {
         if (error.response) {
-          toast(`${error.response.data.message}`, {
+          toast(`${error.response.data.name[0]}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
           });
@@ -769,7 +769,7 @@ const Stores = () => {
       .catch((error) => {
         setIsUpLoading(false);
         if (error.response) {
-          toast(`${error.response.data.message}`, {
+          toast(`${error.response.data.message.name[0]}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
           });
