@@ -240,8 +240,11 @@ const StoreImages = ({
     }
   }, [getImageData]);
 
+ 
+
   useEffect(() => {
     setImagePathShow();
+    // setAllImageUrl([]);
   }, []);
 
   useEffect(() => {
@@ -268,8 +271,11 @@ const StoreImages = ({
   };
 
   const findAllWithoutPageStoreAbsoluteImagesApi = (imagePath) => {
-    let url = baseURL + "/" + imagePath;
-    let temp = allImageUrl;
+    console.log('allImageUrl--->',allImageUrl,'type---->',type);
+    let url = baseURL+ imagePath;
+    // let temp = allImageUrl;
+    // temp.push(url);
+    let temp=[];
     temp.push(url);
     if (absoluteStoreImageInfo && absoluteStoreImageInfo.length > 0) {
       let imageData = [...absoluteStoreImageInfo];
@@ -419,7 +425,7 @@ const StoreImages = ({
           setImagePathShow();
           setReset(true);
         }
-        setIsDeleteImageModalOpen(false)
+        setIsDeleteImageModalOpen(false);
         // disabling spinner
         setIsImageDeleting(false);
       })
@@ -433,7 +439,8 @@ const StoreImages = ({
       });
   };
 
-  console.log("copyImagePath", allImageUrl);
+  console.log("allImageUrl123---->", allImageUrl);
+  console.log("getImageDataimage123---->", getImageData);
   return (
     <Content className=" mb-2">
       <StoreModal
