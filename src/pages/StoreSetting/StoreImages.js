@@ -240,8 +240,6 @@ const StoreImages = ({
     }
   }, [getImageData]);
 
- 
-
   useEffect(() => {
     setImagePathShow();
     // setAllImageUrl([]);
@@ -249,15 +247,15 @@ const StoreImages = ({
 
   useEffect(() => {
     if (bannerAbsoluteImage && bannerAbsoluteImage.length > 0) {
+      let temp = [];
       for (var i = 0; i < bannerAbsoluteImage.length; i++) {
-        console.log("bannerAbsoluteImagePath", bannerAbsoluteImagePath);
         if (type === "banner_images") {
-          findAllWithoutPageStoreAbsoluteImagesApi(
-            bannerAbsoluteImage[i].image_fullpath
-            // util.getImageAbsolutePath(bannerAbsoluteImage[i].image_fullpath)
-          );
+          temp.push(baseURL + bannerAbsoluteImage[i].image_fullpath);
         }
       }
+      console.log("temp1234456-->", temp);
+      setAllImageUrl(temp);
+      setImagePathShow(temp);
     }
   }, [bannerAbsoluteImage]);
 
@@ -271,11 +269,11 @@ const StoreImages = ({
   };
 
   const findAllWithoutPageStoreAbsoluteImagesApi = (imagePath) => {
-    console.log('allImageUrl--->',allImageUrl,'type---->',type);
-    let url = baseURL+ imagePath;
+    console.log("allImageUrl--->", allImageUrl, "type---->", type);
+    let url = baseURL + imagePath;
     // let temp = allImageUrl;
     // temp.push(url);
-    let temp=[];
+    let temp = [];
     temp.push(url);
     if (absoluteStoreImageInfo && absoluteStoreImageInfo.length > 0) {
       let imageData = [...absoluteStoreImageInfo];
