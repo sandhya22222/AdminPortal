@@ -589,7 +589,6 @@ const Stores = () => {
     //   });
     // }
 
-
     const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
     if (storeEmail && regex.test(storeEmail.trim()) === false) {
       count--;
@@ -995,7 +994,7 @@ const Stores = () => {
                               : "mb-2"
                           }`}
                           onChange={(e) => {
-                            const patternName =/^[A-Za-z]+$/;
+                            const patternName = /^[A-Za-z]+$/;
                             if (patternName.test(e.target.value) === false) {
                               setInValidName(true);
                               setName(e.target.value);
@@ -1004,14 +1003,10 @@ const Stores = () => {
                                 type: "error",
                                 autoClose: false,
                               });
-
-                            }
-                            else{
+                            } else {
                               setName(e.target.value);
                               setInValidName(false);
                             }
-
-                            
                           }}
                         />
                         <Divider orientation="left" orientationMargin="0">
@@ -1255,7 +1250,7 @@ const Stores = () => {
           </Content>
         ) : isNetworkError ? (
           <Layout className="p-0 text-center mb-3 bg-[#F4F4F4]">
-            <p>Validation in Progress</p>
+            {/* <p>Validation in Progress</p> */}
             <p>
               {errorMessage
                 ? errorMessage

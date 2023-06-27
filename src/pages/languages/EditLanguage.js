@@ -79,6 +79,7 @@ const EditLanguage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newlyUploadedFile, setNewlyUploadedFile] = useState(0);
   const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
+  const [fileName, setFileName] = useState();
   const navigate = useNavigate();
   // hanler for language, language_code, native_name, writing_script_direction
   const languageHandler = (fieldName, value) => {
@@ -177,7 +178,7 @@ const EditLanguage = () => {
           copyofLanguageDetails.writing_script_direction =
             languageData[0].writing_script_direction;
           copyofLanguageDetails.lang_support_docs =
-            languageData[0].lang_support_docs;
+            languageData[0].lang_support_docs_path;
           copyofLanguageDetails.lang_file_name =
             languageData[0].lang_support_docs;
           copyofLanguageDetails.language_regex = languageData[0].language_regex;
@@ -239,12 +240,11 @@ const EditLanguage = () => {
         type: "error",
       });
     } else if (
+      newlyUploadedFile === 0 &&
       responseLanguageData[0].language === languageDetails.language &&
       responseLanguageData[0].language_code === languageDetails.language_code &&
-      responseLanguageData[0].lang_support_docs ===
+      responseLanguageData[0].lang_support_docs_path ===
         languageDetails.lang_support_docs &&
-      newlyUploadedFile &&
-      newlyUploadedFile.length < 0 &&
       responseLanguageData[0].native_name === languageDetails.native_name &&
       responseLanguageData[0].writing_script_direction ===
         languageDetails.writing_script_direction &&
@@ -265,7 +265,7 @@ const EditLanguage = () => {
     //   });
     // }
   };
-
+  console.log("newlyUploadedFile", newlyUploadedFile);
   // Language PUT API call
   const updateEditLanguage = () => {
     // const langaugeData = new FormData();
@@ -405,6 +405,7 @@ const EditLanguage = () => {
     })
       .then((response) => {
         console.log("put response", response.data);
+        setNewlyUploadedFile(+1);
         toast("File uploaded successfully.", {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
@@ -413,7 +414,6 @@ const EditLanguage = () => {
           ...languageDetails,
           lang_support_docs: response.data.document_path,
         });
-        setNewlyUploadedFile(+1);
       })
       .catch((error) => {
         if (error.response) {
@@ -439,6 +439,7 @@ const EditLanguage = () => {
       headers: { "Content-Type": "multipart/form-data" },
     })
       .then((response) => {
+        setNewlyUploadedFile(+1);
         toast("File uploaded successfully.", {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
@@ -447,6 +448,7 @@ const EditLanguage = () => {
         let temp = { ...languageDetails };
         temp["lang_support_docs"] = response.data.document_path;
         setLanguageDetails(temp);
+        setDocumentPath(response.data.document_path);
         console.log("Server Success Response From files", response.data);
       })
       .catch((error) => {
@@ -519,6 +521,7 @@ const EditLanguage = () => {
 
   const handleDropImage = (e) => {
     console.log("test", e.file);
+    setFileName(e.file);
     var arr = e.file.name.split("."); //! Split the string using dot as separator
     var lastExtensionValue = arr.pop(); //! Get last element (value after last dot)
     if (languageDetails.lang_support_docs === null) {
@@ -727,7 +730,7 @@ const EditLanguage = () => {
                           okButtonText={"Yes"}
                           title={"Warning"}
                           cancelButtonText={"No"}
-                          okCallback={(e) => removeLanguageDocument(e)}
+                          okCallback={() => removeLanguageDocument()}
                           cancelCallback={() => closeDocumentModal()}
                           isSpin={false}
                         >
@@ -752,12 +755,12 @@ const EditLanguage = () => {
                               e.target.files
                             );
                           }}
-                          onRemove={() => setIsDocumentModalOpen(true)}
+                          onRemove={true}
                         >
                           <p className="ant-upload-drag-icon">
                             <InboxOutlined />
                           </p>
-                          <p className="ant-upload-text">
+                          <p className="ant-upload-text mx-2">
                             Upload your file here or drag and drop the file here
                           </p>
                           <p className="ant-upload-hint">only .csv files</p>
