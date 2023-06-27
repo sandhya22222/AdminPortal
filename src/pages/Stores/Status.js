@@ -68,55 +68,6 @@ function Status({
         setSwitchStatus(changeSwitchStatus);
         closeModal();
         setIsLoading(false);
-        let duplicateActiveCall = { ...activeCount };
-        if (changeSwitchStatus === true) {
-          duplicateActiveCall["activeStores"] =
-            activeCount && activeCount.activeStores + 1;
-          duplicateActiveCall["inactiveStores"] =
-            activeCount && activeCount.inactiveStores - 1;
-          setActiveCount(duplicateActiveCall);
-        } else {
-          duplicateActiveCall["activeStores"] =
-            activeCount && activeCount.activeStores - 1;
-          duplicateActiveCall["inactiveStores"] =
-            activeCount && activeCount.inactiveStores + 1;
-          setActiveCount(duplicateActiveCall);
-        }
-        if (changeSwitchStatus) {
-          storeApiData.forEach((element) => {
-            if (element.id == response.config.params.store_id) {
-              element.status = 1;
-            }
-          });
-          setStoreApiData(storeApiData);
-        } else {
-          storeApiData.forEach((element) => {
-            if (element.id == response.config.params.store_id) {
-              element.status = 2;
-            }
-          });
-          setStoreApiData(storeApiData);
-        }
-        console.log(
-          "Selected content",
-          selectedTabTableContent,
-          response.config.params.store_id
-        );
-        if (tabId > 0) {
-          setSelectedTabTableContent(
-            selectedTabTableContent.filter(
-              (element) => element.id !== response.config.params.store_id
-            )
-          );
-        } else {
-          let temp = [...selectedTabTableContent];
-          let index = temp.findIndex(
-            (ele) => ele.id === response.config.params.store_id
-          );
-          temp[index]["status"] =
-            changeSwitchStatus === true ? "Active" : "InActive";
-          setSelectedTabTableContent(temp);
-        }
         if (switchStatus === false) {
           toast("Store status changed successfully", {
             position: toast.POSITION.TOP_RIGHT,
@@ -127,6 +78,73 @@ function Status({
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
           });
+        }
+        console.log(
+          "Selected content",
+          selectedTabTableContent,
+          response.config.params.store_id
+        );
+        let duplicateActiveCall = { ...activeCount };
+
+        if (
+          duplicateActiveCall &&
+          duplicateActiveCall.activeStores !== undefined
+        ) {
+          if (changeSwitchStatus === true) {
+            duplicateActiveCall["activeStores"] =
+              activeCount && activeCount.activeStores + 1;
+            duplicateActiveCall["inactiveStores"] =
+              activeCount && activeCount.inactiveStores - 1;
+            setActiveCount(duplicateActiveCall);
+          } else {
+            duplicateActiveCall["activeStores"] =
+              activeCount && activeCount.activeStores - 1;
+            duplicateActiveCall["inactiveStores"] =
+              activeCount && activeCount.inactiveStores + 1;
+            setActiveCount(duplicateActiveCall);
+          }
+        }
+        if (changeSwitchStatus) {
+          storeApiData &&
+            storeApiData.length > 0 &&
+            storeApiData.forEach((element) => {
+              if (element.store_uuid == response.config.params.store_id) {
+                element.status = 1;
+              }
+            });
+          if (setStoreApiData !== undefined) {
+            setStoreApiData(storeApiData);
+          }
+        } else {
+          storeApiData.forEach((element) => {
+            if (element.store_uuid == response.config.params.store_id) {
+              element.status = 2;
+            }
+          });
+          if (setStoreApiData !== undefined) {
+            setStoreApiData(storeApiData);
+          }
+        }
+        if (
+          tabId > 0 &&
+          selectedTabTableContent &&
+          selectedTabTableContent.length > 0
+        ) {
+          setSelectedTabTableContent(
+            selectedTabTableContent.filter(
+              (element) => element.id !== response.config.params.store_id
+            )
+          );
+        } else {
+          if (selectedTabTableContent && selectedTabTableContent.length > 0) {
+            let temp = [...selectedTabTableContent];
+            let index = temp.findIndex(
+              (ele) => ele.id === response.config.params.store_id
+            );
+            temp[index]["status"] =
+              changeSwitchStatus === true ? "Active" : "InActive";
+            setSelectedTabTableContent(temp);
+          }
         }
         // setIsLoading(false);
       })

@@ -587,13 +587,14 @@ const AddLanguage = () => {
                     accept=".csv"
                     name="file"
                     onChange={(e) => handleDropImage(e)}
-                    onRemove={(e) => removeLanguageDocument(e)}
+                    // onRemove={(e) => removeLanguageDocument(e)}
+                    onRemove={true}
                   >
                     <p className="ant-upload-drag-icon">
                       <InboxOutlined />
                     </p>
                     <p className="ant-upload-text">Upload File</p>
-                    <p className="ant-upload-text">
+                    <p className="ant-upload-text mx-2">
                       Upload your file here or drag and drop the file here
                     </p>
                     <p className="ant-upload-hint">only .csv files</p>
