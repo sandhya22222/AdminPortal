@@ -242,19 +242,20 @@ const StoreImages = ({
 
   useEffect(() => {
     setImagePathShow();
+    // setAllImageUrl([]);
   }, []);
 
   useEffect(() => {
     if (bannerAbsoluteImage && bannerAbsoluteImage.length > 0) {
+      let temp = [];
       for (var i = 0; i < bannerAbsoluteImage.length; i++) {
-        console.log("bannerAbsoluteImagePath", bannerAbsoluteImagePath);
         if (type === "banner_images") {
-          findAllWithoutPageStoreAbsoluteImagesApi(
-            bannerAbsoluteImage[i].image_fullpath
-            // util.getImageAbsolutePath(bannerAbsoluteImage[i].image_fullpath)
-          );
+          temp.push(baseURL + bannerAbsoluteImage[i].image_fullpath);
         }
       }
+      console.log("temp1234456-->", temp);
+      setAllImageUrl(temp);
+      setImagePathShow(temp);
     }
   }, [bannerAbsoluteImage]);
 
@@ -268,8 +269,11 @@ const StoreImages = ({
   };
 
   const findAllWithoutPageStoreAbsoluteImagesApi = (imagePath) => {
-    let url = baseURL + "/" + imagePath;
-    let temp = allImageUrl;
+    console.log("allImageUrl--->", allImageUrl, "type---->", type);
+    let url = baseURL + imagePath;
+    // let temp = allImageUrl;
+    // temp.push(url);
+    let temp = [];
     temp.push(url);
     if (absoluteStoreImageInfo && absoluteStoreImageInfo.length > 0) {
       let imageData = [...absoluteStoreImageInfo];
@@ -419,7 +423,7 @@ const StoreImages = ({
           setImagePathShow();
           setReset(true);
         }
-        setIsDeleteImageModalOpen(false)
+        setIsDeleteImageModalOpen(false);
         // disabling spinner
         setIsImageDeleting(false);
       })
@@ -433,7 +437,8 @@ const StoreImages = ({
       });
   };
 
-  console.log("copyImagePath", allImageUrl);
+  console.log("allImageUrl123---->", allImageUrl);
+  console.log("getImageDataimage123---->", getImageData);
   return (
     <Content className=" mb-2">
       <StoreModal
