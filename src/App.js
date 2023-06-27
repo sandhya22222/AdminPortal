@@ -69,9 +69,9 @@ const App = () => {
 
   switch (auth.activeNavigator) {
     case "signinSilent":
-      return <div>Signing you in...</div>;
+      return <div></div>;
     case "signoutRedirect":
-      return <div>Signing you out...</div>;
+      return <div></div>;
   }
 
   if (auth.isLoading) {
@@ -85,7 +85,7 @@ const App = () => {
   }
 
   if (auth.error) {
-    return <div>Oops... {auth.error.message}</div>;
+    return void auth.signoutRedirect();
   }
   if (auth.isAuthenticated) {
     return (
