@@ -437,8 +437,12 @@ const StoreImages = ({
       });
   };
 
-  console.log("allImageUrl123---->", allImageUrl);
-  console.log("getImageDataimage123---->", getImageData);
+  useEffect(() => {
+    if (imagesUpload && imagesUpload.length === 0) {
+      setFileList([]);
+    }
+  }, [imagesUpload]);
+
   return (
     <Content className=" mb-2">
       <StoreModal

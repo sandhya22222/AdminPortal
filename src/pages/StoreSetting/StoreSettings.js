@@ -11,6 +11,7 @@ import {
   Spin,
   Switch,
   Tag,
+  Skeleton,
   Space,
   Tooltip,
 } from "antd";
@@ -97,6 +98,7 @@ const StoreSettings = () => {
   const [changeSwitchStatus, setChangeSwitchStatus] = useState("");
   const [addCodes, setAddCodes] = useState([]);
   const [regionCode, setRegionCode] = useState("");
+  const [isUpLoading, setIsUpLoading] = useState(false);
   const [
     copyImageOfStoreSettingsCurrency,
     setCopyImageOfStoreSettingsCurrency,
@@ -953,6 +955,7 @@ const StoreSettings = () => {
     //     },
     //     authorizationHeader
     //   )
+    setIsUpLoading(true);
     MarketplaceServices.save(
       storeImagesAPI,
       formData
@@ -972,7 +975,7 @@ const StoreSettings = () => {
             });
           }
         }
-
+        setIsUpLoading(false);
         setIsLoading(false);
         console.log(
           "Server Success Response From storeImagePostCall",
@@ -983,6 +986,7 @@ const StoreSettings = () => {
         // findAllWithoutPageStoreImagesApi(id);
       })
       .catch((error) => {
+        setIsUpLoading(false);
         if (error.response) {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
@@ -1047,6 +1051,7 @@ const StoreSettings = () => {
     //     },
     //     authorizationHeader
     //   )
+    setIsUpLoading(true);
     MarketplaceServices.update(
       storeImagesAPI,
       formData
@@ -1066,11 +1071,12 @@ const StoreSettings = () => {
             });
           }
         }
-         setGetImageData([response.data]);
-         setImagesUpload([]);
+        setGetImageData([response.data]);
+        setImagesUpload([]);
         // !TODO: Update response is not , backend is giving null for previously updated images So we are doing get call here again.
         // findAllWithoutPageStoreImagesApi(id);
         //window.location.reload();
+        setIsUpLoading(false);
         setIsLoading(false);
         console.log(
           "Server Success Response From storeImagePutCall",
@@ -1096,6 +1102,7 @@ const StoreSettings = () => {
             autoClose: false,
           });
         }
+        setIsUpLoading(false);
         console.log(error.response);
         setIsLoading(false);
       });
@@ -1361,125 +1368,127 @@ const StoreSettings = () => {
               />
             </StoreModal>
           </Content> */}
-        <Content className="bg-white p-3">
-          <label className="text-[20px] mb-2 mt-4 font-bold">Media</label>
-          <Row class="flex space-x-4">
-            <Col>
-              <StoreImages
-                title={"Store Logo"}
-                type={"store_logo"}
-                storeId={id}
-                imagesUpload={imagesUpload}
-                setImagesUpload={setImagesUpload}
-                getImageData={getImageData && getImageData[0]}
-                isSingleUpload={true}
-                validStoreLogo={validStoreLogo}
-                setValidStoreLogo={setValidStoreLogo}
-                InfoCircleText={"This logo will be used as Store's logo"}
-              />
-            </Col>
-            <Col className="!ml-10">
-              <StoreImages
-                title={"Search Logo"}
-                type={"search_logo"}
-                storeId={id}
-                imagesUpload={imagesUpload}
-                getImageData={getImageData && getImageData[0]}
-                setImagesUpload={setImagesUpload}
-                isSingleUpload={true}
-                InfoCircleText={
-                  "The search icon will be visible in areas where the search functionality is implemented"
-                }
-              />
-            </Col>
-            <Col className="!ml-10">
-              <StoreImages
-                title={"Customer Logo"}
-                type={"customer_logo"}
-                storeId={id}
-                imagesUpload={imagesUpload}
-                getImageData={getImageData && getImageData[0]}
-                setImagesUpload={setImagesUpload}
-                isSingleUpload={true}
-                InfoCircleText={
-                  "This image will be displayed as the default avatar for customers"
-                }
-              />
-            </Col>
-            <Col className="!ml-10">
-              <StoreImages
-                title={"Cart Logo"}
-                type={"cart_logo"}
-                storeId={id}
-                imagesUpload={imagesUpload}
-                getImageData={getImageData && getImageData[0]}
-                setImagesUpload={setImagesUpload}
-                isSingleUpload={true}
-                InfoCircleText={
-                  "The cart icon will be visible in areas where the cart functionality is implemented"
-                }
-              />
-            </Col>
-            <Col className="!ml-10">
-              <StoreImages
-                title={"Wishlist Logo"}
-                type={"wishlist_logo"}
-                storeId={id}
-                imagesUpload={imagesUpload}
-                getImageData={getImageData && getImageData[0]}
-                setImagesUpload={setImagesUpload}
-                isSingleUpload={true}
-                InfoCircleText={
-                  "The wishlist icon will be visible in areas where the wishlist functionality is implemented"
-                }
-              />
-            </Col>
-          </Row>
-          <StoreImages
-            title={"Banner Logo"}
-            type={"banner_images"}
-            storeId={id}
-            imagesUpload={imagesUpload}
-            bannerAbsoluteImage={bannerAbsoluteImage}
-            setImagesUpload={setImagesUpload}
-            isSingleUpload={false}
-            InfoCircleText={
-              "These images will be used in the carousel of the store front"
-            }
-          />
-          <Content className="mt-5 mb-6">
-            <Row>
+        <Spin tip="Please wait!" size="large" spinning={isUpLoading}>
+          <Content className="bg-white p-3">
+            <label className="text-[20px] mb-2 mt-4 font-bold">Media</label>
+            <Row class="flex space-x-4">
               <Col>
-                <Button
-                  style={{ backgroundColor: "#393939" }}
-                  className="app-btn-primary"
-                  onClick={() => {
-                    if (imagesUpload && imagesUpload.length > 0) {
-                      postImageOnClickSave();
-                    } else {
-                      toast("No changes were detected", {
-                        position: toast.POSITION.TOP_RIGHT,
-                        type: "info",
-                      });
-                    }
-                  }}
-                >
-                  Save
-                </Button>
+                <StoreImages
+                  title={"Store Logo"}
+                  type={"store_logo"}
+                  storeId={id}
+                  imagesUpload={imagesUpload}
+                  setImagesUpload={setImagesUpload}
+                  getImageData={getImageData && getImageData[0]}
+                  isSingleUpload={true}
+                  validStoreLogo={validStoreLogo}
+                  setValidStoreLogo={setValidStoreLogo}
+                  InfoCircleText={"This logo will be used as Store's logo"}
+                />
               </Col>
-              <Col className="pl-4">
-                <Button
-                  className=" app-btn-secondary"
-                  onClick={() => {
-                    navigate("/dashboard/store");
-                  }}
-                >
-                  Discard
-                </Button>
+              <Col className="!ml-10">
+                <StoreImages
+                  title={"Search Logo"}
+                  type={"search_logo"}
+                  storeId={id}
+                  imagesUpload={imagesUpload}
+                  getImageData={getImageData && getImageData[0]}
+                  setImagesUpload={setImagesUpload}
+                  isSingleUpload={true}
+                  InfoCircleText={
+                    "The search icon will be visible in areas where the search functionality is implemented"
+                  }
+                />
+              </Col>
+              <Col className="!ml-10">
+                <StoreImages
+                  title={"Customer Logo"}
+                  type={"customer_logo"}
+                  storeId={id}
+                  imagesUpload={imagesUpload}
+                  getImageData={getImageData && getImageData[0]}
+                  setImagesUpload={setImagesUpload}
+                  isSingleUpload={true}
+                  InfoCircleText={
+                    "This image will be displayed as the default avatar for customers"
+                  }
+                />
+              </Col>
+              <Col className="!ml-10">
+                <StoreImages
+                  title={"Cart Logo"}
+                  type={"cart_logo"}
+                  storeId={id}
+                  imagesUpload={imagesUpload}
+                  getImageData={getImageData && getImageData[0]}
+                  setImagesUpload={setImagesUpload}
+                  isSingleUpload={true}
+                  InfoCircleText={
+                    "The cart icon will be visible in areas where the cart functionality is implemented"
+                  }
+                />
+              </Col>
+              <Col className="!ml-10">
+                <StoreImages
+                  title={"Wishlist Logo"}
+                  type={"wishlist_logo"}
+                  storeId={id}
+                  imagesUpload={imagesUpload}
+                  getImageData={getImageData && getImageData[0]}
+                  setImagesUpload={setImagesUpload}
+                  isSingleUpload={true}
+                  InfoCircleText={
+                    "The wishlist icon will be visible in areas where the wishlist functionality is implemented"
+                  }
+                />
               </Col>
             </Row>
+            <StoreImages
+              title={"Banner Logo"}
+              type={"banner_images"}
+              storeId={id}
+              imagesUpload={imagesUpload}
+              bannerAbsoluteImage={bannerAbsoluteImage}
+              setImagesUpload={setImagesUpload}
+              isSingleUpload={false}
+              InfoCircleText={
+                "These images will be used in the carousel of the store front"
+              }
+            />
+            <Content className="mt-5 mb-6">
+              <Row>
+                <Col>
+                  <Button
+                    style={{ backgroundColor: "#393939" }}
+                    className="app-btn-primary"
+                    onClick={() => {
+                      if (imagesUpload && imagesUpload.length > 0) {
+                        postImageOnClickSave();
+                      } else {
+                        toast("No changes were detected", {
+                          position: toast.POSITION.TOP_RIGHT,
+                          type: "info",
+                        });
+                      }
+                    }}
+                  >
+                    Save
+                  </Button>
+                </Col>
+                <Col className="pl-4">
+                  <Button
+                    className=" app-btn-secondary"
+                    onClick={() => {
+                      navigate("/dashboard/store");
+                    }}
+                  >
+                    Discard
+                  </Button>
+                </Col>
+              </Row>
+            </Content>
           </Content>
-        </Content>
+        </Spin>
         <Content className="bg-white mt-3 p-3">
           <label className="text-[20px] mb-2 mt-4 font-bold">Currency</label>
           <Row className="mt-2">
