@@ -579,16 +579,16 @@ const Stores = () => {
         autoClose: false,
       });
     }
-    // const patternName =/^[A-Za-z]+$/;
-    // if (name && patternName.test(name.trim()) === false) {
-    //   setInValidName(true);
-    //   count--;
-    //   toast("Please enter the valid  store name", {
-    //     position: toast.POSITION.TOP_RIGHT,
-    //     type: "error",
-    //     autoClose: false,
-    //   });
-    // }
+    const patternName =/^[A-Za-z]+$/;
+    if (name && patternName.test(name.trim()) === false) {
+      setInValidName(true);
+      count--;
+      toast("Please enter the valid  store name", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+        autoClose: false,
+      });
+    }
 
     const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
     if (storeEmail && regex.test(storeEmail.trim()) === false) {
@@ -1001,9 +1001,10 @@ const Stores = () => {
                               setName(e.target.value);
                             } else {
                               setName(e.target.value);
-                              setInValidName(false);
+                            
                               setShowStoreErrorMessage(false);
                             }
+                            setInValidName(false);
                           }}
                         />
 
