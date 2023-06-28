@@ -314,7 +314,7 @@ const AddLanguage = () => {
       headers: { "Content-Type": "multipart/form-data" },
     })
       .then((response) => {
-        toast("File uploaded successfully.", {
+        toast("File uploaded successfully", {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
         });
