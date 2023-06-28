@@ -88,6 +88,13 @@ const SidebarNew = () => {
       label: "Payment Type",
       navigate_to: "/dashboard/paymenttype",
     },
+    {
+      key: "6",
+      icon: <UserOutlined className="!text-[#FCC32A]" />,
+      inactive_icon: <UserOutlined className="!text-[#ffffffde]" />,
+      label: "Profile",
+      navigate_to: "/dashboard/userprofile",
+    },
   ];
 
   const handlePageRefresh = (navigationPath) => {

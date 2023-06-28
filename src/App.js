@@ -33,6 +33,7 @@ import StoreSettings from "./pages/StoreSetting/StoreSettings";
 import Preview from "./pages/StoreSetting/Preview";
 import UserProfile from "./pages/StoreUsers/UserProfile";
 import { LoadingOutlined } from "@ant-design/icons";
+import LogOut from "./components/LogOut";
 
 import { useAuth } from "react-oidc-context";
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
@@ -87,40 +88,42 @@ const App = () => {
   if (auth.error) {
     return void auth.signoutRedirect();
   }
-  if (auth.isAuthenticated) {
-    return (
-      <Suspense fallback={<LoadingMarkup />}>
-        <Router>
-          <ToastContainer />
-          <Header2 />
-          <Container fluid className="p-0 bg-[#F4F4F4] text-[#393939]">
-            <Routes>
-              {/* <Route
-                exact
-                path="*"
-                element={
-                  keycloakData ? (
-                    <Navigate to="/home" />
-                  ) : (
-                    <Navigate to="/user-verification" />
-                  )
-                }
-              /> */}
-              <Route path="/" element={<Home />} />
-              {/* <Route path="/home" element={<Navigate to={"/"} />} /> */}
-              {/* <Route path="/user-verification" element={<PageNotFound />} /> */}
-              {/* <Route path="/signin" element={<Signin />} /> */}
+  return (
+    <Suspense fallback={<LoadingMarkup />}>
+      <Router>
+        <ToastContainer />
+        <Header2 />
+        <Container fluid className="p-0 bg-[#F4F4F4] text-[#393939]">
+          <Routes>
+            {/* <Route
+          exact
+          path="*"
+          element={
+            keycloakData ? (
+              <Navigate to="/home" />
+            ) : (
+              <Navigate to="/user-verification" />
+            )
+          }
+        /> */}
+            <Route path="/" element={<Home />} />
+            <Route path="/logout" element={<LogOut />} />
+            {/* <Route path="/home" element={<Navigate to={"/"} />} /> */}
+            {/* <Route path="/user-verification" element={<PageNotFound />} /> */}
+            {/* <Route path="/signin" element={<Signin />} /> */}
+
+            {auth.isAuthenticated ? (
               <Route path="/dashboard" element={<SidebarNew />}>
                 <Route path="" element={<Dashboard />} />
                 {/* <Route
-                  path=""
-                  element={
-                    <Dashboard
-                      setIsLoggedIn={setIsLoggedIn}
-                      isLoggedIn={isLoggedIn}
-                    />
-                  }
-                /> */}
+            path=""
+            element={
+              <Dashboard
+                setIsLoggedIn={setIsLoggedIn}
+                isLoggedIn={isLoggedIn}
+              />
+            }
+          /> */}
                 <>
                   <Route path="language" element={<Language />} />
                   <Route
@@ -146,16 +149,16 @@ const App = () => {
                   <Route path="*" element={<PageNotFound />} />
                 </>
               </Route>
-              {/* ) :  <Route path="*" element={<PageNotFound />} />} */}
-            </Routes>
-          </Container>
-          <Footer />
-        </Router>
-      </Suspense>
-    );
-  }
-
-  return <>{void auth.signinRedirect()}</>;
+            ) : (
+              <>{void auth.signinRedirect()}</>
+            )}
+            {/* ) :  <Route path="*" element={<PageNotFound />} />} */}
+          </Routes>
+        </Container>
+        <Footer />
+      </Router>
+    </Suspense>
+  );
   // return (
   //   <Suspense fallback={<LoadingMarkup />}>
   //     <Router>

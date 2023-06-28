@@ -13,6 +13,7 @@ import DmBrandLogo from "../assets/images/logo/torrymarketplace.png";
 import Profit from "../assets/images/common/profit.png";
 import Positive from "../assets/images/common/positve.png";
 import Payment from "../assets/images/common/payment.png";
+import Logout503 from "../assets/images/common/503.png";
 
 export {
   BrandLogo,
@@ -28,4 +29,5 @@ export {
   Profit,
   Positive,
   Payment,
+  Logout503,
 };
