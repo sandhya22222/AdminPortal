@@ -80,6 +80,7 @@ const EditLanguage = () => {
   const [newlyUploadedFile, setNewlyUploadedFile] = useState(0);
   const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
   const [fileName, setFileName] = useState();
+  const [fileExtension, setFileExtension] = useState("");
   const navigate = useNavigate();
   // hanler for language, language_code, native_name, writing_script_direction
   const languageHandler = (fieldName, value) => {
@@ -344,7 +345,7 @@ const EditLanguage = () => {
         if (fileData) {
           if (fileValue !== ".csv")
             toast(
-              "Invalid file extension, only '.csv' extension is supported.'",
+              "Invalid file extension, only '.csv' extension is supported.",
               {
                 position: toast.POSITION.TOP_RIGHT,
                 type: "error",
@@ -421,6 +422,17 @@ const EditLanguage = () => {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
           });
+        } else {
+          if (fileExtension !== "csv") {
+            toast(
+              "Invalid file extension, only '.csv' extension is supported.",
+              {
+                position: toast.POSITION.TOP_RIGHT,
+                type: "error",
+                autoClose: false,
+              }
+            );
+          }
         }
       });
   };
@@ -453,10 +465,20 @@ const EditLanguage = () => {
       })
       .catch((error) => {
         if (error.response) {
-          toast(`${error.response.data.extension[0]}`, {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-          });
+          // toast(`${error.response.data.extension[0]}`, {
+          //   position: toast.POSITION.TOP_RIGHT,
+          //   type: "error",
+          // });
+          if (fileExtension !== "csv") {
+            toast(
+              "Invalid file extension, only '.csv' extension is supported.",
+              {
+                position: toast.POSITION.TOP_RIGHT,
+                type: "error",
+                autoClose: false,
+              }
+            );
+          }
         } else if (error && error.response && error.response.status === 400) {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
@@ -524,6 +546,7 @@ const EditLanguage = () => {
     setFileName(e.file);
     var arr = e.file.name.split("."); //! Split the string using dot as separator
     var lastExtensionValue = arr.pop(); //! Get last element (value after last dot)
+    setFileExtension(lastExtensionValue);
     if (languageDetails.lang_support_docs === null) {
       if (e.file.status !== "removed") {
         saveLanguageDocument(e.file, lastExtensionValue);

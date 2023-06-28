@@ -147,8 +147,6 @@ const AddLanguage = () => {
     //   )
     MarketplaceServices.save(languageAPI, temp)
       .then((res) => {
-        console.log("from response----->", res.data);
-        console.log("from--->", res);
         if (res.status === 201) {
           if (res.data) {
             toast("Language created successfully", {
@@ -177,18 +175,20 @@ const AddLanguage = () => {
               position: toast.POSITION.TOP_RIGHT,
               type: "error",
             });
-          } else if (fileData) {
-            if (fileExtension !== "csv") {
-              toast(
-                "Invalid file extension, only '.csv' extension is supported.",
-                {
-                  position: toast.POSITION.TOP_RIGHT,
-                  type: "error",
-                  autoClose: false,
-                }
-              );
-            }
-          } else {
+          }
+          //  else if (fileData) {
+          //   if (fileExtension !== "csv") {
+          //     toast(
+          //       "Invalid file extension, only '.csv' extension is supported.",
+          //       {
+          //         position: toast.POSITION.TOP_RIGHT,
+          //         type: "error",
+          //         autoClose: false,
+          //       }
+          //     );
+          //   }
+          // }
+          else {
             toast(`${error.response.data.message}`, {
               position: toast.POSITION.TOP_RIGHT,
               type: "error",
@@ -279,8 +279,10 @@ const AddLanguage = () => {
 
   const handleDropImage = (e) => {
     console.log("test", e.file);
+    setFileData(e.file);
     var arr = e.file.name.split("."); //! Split the string using dot as separator
     var lastExtensionValue = arr.pop(); //! Get last element (value after last dot)
+    setFileExtension(lastExtensionValue);
     if (e.file.status !== "removed") {
       saveLanguageDocument(e.file, lastExtensionValue);
     }
@@ -322,10 +324,20 @@ const AddLanguage = () => {
       })
       .catch((error) => {
         if (error.response) {
-          toast(`${error.response.data.extension}`, {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-          });
+          // toast(`${error.response.data.extension}`, {
+          //   position: toast.POSITION.TOP_RIGHT,
+          //   type: "error",
+          // });
+          if (fileExtension !== "csv") {
+            toast(
+              "Invalid file extension, only '.csv' extension is supported.",
+              {
+                position: toast.POSITION.TOP_RIGHT,
+                type: "error",
+                autoClose: false,
+              }
+            );
+          }
         } else if (error && error.response && error.response.status === 400) {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,

@@ -30,7 +30,7 @@ export const SetupInterceptors = (http) => {
         const originalConfig = error.config;
         if (error.response.status === 401 && !originalConfig._retry) {
           originalConfig._retry = true;
-          window.location.replace(window.location.origin);
+          window.location.replace(window.location.origin + "/logout");
         }
       }
       // debugger;
