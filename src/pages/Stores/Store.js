@@ -92,6 +92,7 @@ const Stores = () => {
   const [isDeleteStoreModalOpen, setIsDeleteStoreModalOpen] = useState(false);
   const [deleteStoreID, setDeleteStoreID] = useState("");
   const [activeCount, setActiveCount] = useState("");
+  const [showStoreErrorMessage, setShowStoreErrorMessage] = useState(false);
 
   // const [currentPage, setCurrentPage] = useState(
   //   params.page ? params.page.slice(5, params.page.length) : 1
@@ -996,19 +997,22 @@ const Stores = () => {
                           onChange={(e) => {
                             const patternName = /^[A-Za-z]+$/;
                             if (patternName.test(e.target.value) === false) {
-                              setInValidName(true);
+                              setShowStoreErrorMessage(true);
                               setName(e.target.value);
-                              toast("Please enter alphabets only ", {
-                                position: toast.POSITION.TOP_RIGHT,
-                                type: "error",
-                                autoClose: false,
-                              });
                             } else {
                               setName(e.target.value);
                               setInValidName(false);
+                              setShowStoreErrorMessage(false);
                             }
                           }}
                         />
+
+                        {showStoreErrorMessage === true ? (
+                          <p className="text-red-600 text-sm">
+                            Please enter alphabetic characters only.
+                          </p>
+                        ) : null}
+
                         <Divider orientation="left" orientationMargin="0">
                           Store Administrator Details
                         </Divider>
