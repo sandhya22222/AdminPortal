@@ -407,7 +407,7 @@ const EditLanguage = () => {
       .then((response) => {
         console.log("put response", response.data);
         setNewlyUploadedFile(+1);
-        toast("File uploaded successfully.", {
+        toast("File uploaded successfully", {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
         });
@@ -452,7 +452,7 @@ const EditLanguage = () => {
     })
       .then((response) => {
         setNewlyUploadedFile(+1);
-        toast("File uploaded successfully.", {
+        toast("File uploaded successfully", {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
         });
