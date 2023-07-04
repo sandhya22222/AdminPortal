@@ -575,7 +575,7 @@ const EditLanguage = () => {
           ]}
         />
       </Content>
-      <Content className="bg-white !w-full !mt-[80px] fixed z-10">
+      <Content className="bg-white !w-full top-[3.0rem] fixed z-10">
         {editLanguageButtonHeader()}
       </Content>
       <Spin tip="Please wait!" size="large" spinning={isLoading}>
@@ -594,7 +594,7 @@ const EditLanguage = () => {
                 </div>
               ) : (
                 <Content className="!w-[150%] ">
-                  <Content className="p-3 !bg-white mt-36">
+                  <Content className="p-3 !bg-white mt-[8rem]">
                     <Content className="">
                       {/* <Typography.Title
                         level={3}

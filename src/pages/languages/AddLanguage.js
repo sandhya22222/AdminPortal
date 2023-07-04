@@ -330,7 +330,7 @@ const AddLanguage = () => {
           // });
           if (fileExtension !== "csv") {
             toast(
-              "Invalid file extension, only '.csv' extension is supported.",
+              "Invalid file extension, only '.csv' extension is supported",
               {
                 position: toast.POSITION.TOP_RIGHT,
                 type: "error",
@@ -442,10 +442,10 @@ const AddLanguage = () => {
           ]}
         />
       </Content>
-      <Content className="!bg-white !mt-[80px] !w-full fixed z-10">
+      <Content className="!bg-white top-[3.0rem] !w-full fixed z-10">
         {addLanguageButtonHeader()}
       </Content>
-      <Content className="mt-36 !w-full p-3">
+      <Content className="mt-[8rem] !w-full p-3">
         <Spin tip="Please wait!" size="large" spinning={isLoading}>
           <Content>
             <Content className="p-3 bg-white mt-0 ">

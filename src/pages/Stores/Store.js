@@ -30,6 +30,7 @@ import {
 } from "react-router-dom";
 import { toast } from "react-toastify";
 import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
+import { useTranslation } from "react-i18next";
 //! Import user defined components
 import Highlighter from "react-highlight-words";
 import { MdBusiness, MdDomainDisabled } from "react-icons/md";
@@ -53,7 +54,7 @@ const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE);
 
 const Stores = () => {
   const authorizationHeader = useAuthorization();
-
+  const { t } = useTranslation();
   usePageTitle("Admin Portal - Store");
   const params = useParams();
   const navigate = useNavigate();
@@ -117,7 +118,7 @@ const Stores = () => {
       tabIcon: <MdBusiness className="!text-2xl " />,
       tabTitle: (
         <div className="flex flex-row">
-          <Text>All</Text>
+          <Text>{t("stores:All")}</Text>
           <div className="rounded-full bg-sky-100 ml-2">
             {activeCount && activeCount.totalStores}
           </div>{" "}
@@ -129,7 +130,7 @@ const Stores = () => {
       tabIcon: <MdBusiness className="!text-2xl " />,
       tabTitle: (
         <div className="flex flex-row">
-          <Text>Active</Text>
+          <Text>{t("stores:Active")}</Text>
           <div className="rounded-full bg-sky-100 ml-2">
             {activeCount && activeCount.activeStores}
           </div>{" "}
@@ -141,7 +142,7 @@ const Stores = () => {
       tabIcon: <MdDomainDisabled className="!text-2xl " />,
       tabTitle: (
         <div className="flex flex-row">
-          <Text>Inactive</Text>
+          <Text>{t("stores:Inactive")}</Text>
           <div className="rounded-full bg-sky-100 ml-2">
             {activeCount && activeCount.inactiveStores}
           </div>{" "}
@@ -248,7 +249,7 @@ const Stores = () => {
     //   },
     // },
     {
-      title: "Name",
+      title: `${t("stores:Name")}`,
       dataIndex: "name",
       key: "name",
       width: "30%",
@@ -261,7 +262,7 @@ const Stores = () => {
       // ...getColumnSearchProps("name"),
     },
     {
-      title: "Status",
+      title: `${t("stores:Status")}`,
       dataIndex: "status",
       key: "status",
       width: "20%",
@@ -282,7 +283,7 @@ const Stores = () => {
       },
     },
     {
-      title: "Created Date And Time",
+      title: `${t("stores:Created-Date-And-Time")}`,
       dataIndex: "created_on",
       key: "created_on",
       width: "30%",
@@ -291,14 +292,14 @@ const Stores = () => {
       },
     },
     {
-      title: "Action",
+      title: `${t("stores:Action")}`,
       dataIndex: "",
       key: "",
       width: "12%",
       render: (text, record) => {
         return (
           <content className="whitespace-nowrap">
-            <Tooltip title="Edit Store">
+            <Tooltip title={t("stores:Edit-Store")}>
               <EditOutlined
                 className="app-edit-icon font-bold text-black pr-6"
                 onClick={() => {
@@ -320,7 +321,7 @@ const Stores = () => {
               }}
               // className=" pl-[10px] font-semibold app-table-data-title"
             >
-              <Tooltip title="Store Settings">
+              <Tooltip title={t("stores:Store-Settings")}>
                 <SettingOutlined
                   className="app-delete-icon pr-4  text-black"
                   style={{ fontSize: "16px", marginLeft: "5px" }}
@@ -329,7 +330,7 @@ const Stores = () => {
             </Link>
 
             {record.status === "InActive" ? (
-              <Tooltip title="Delete Store">
+              <Tooltip title={t("stores:Delete-Store")}>
                 <DeleteOutlined
                   className="app-delete-icon pr-4"
                   style={{ fontSize: "16px", marginLeft: "5px" }}
@@ -573,17 +574,17 @@ const Stores = () => {
     ) {
       setInValidName(true);
       count--;
-      toast("Please enter the store name", {
+      toast(`${t("stores:Please-enter-the-store-name")}`, {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: false,
       });
     }
-    const patternName =/^[A-Za-z]+$/;
+    const patternName = /^[A-Za-z]+$/;
     if (name && patternName.test(name.trim()) === false) {
       setInValidName(true);
       count--;
-      toast("Please enter the valid  store name", {
+      toast(`${t("stores:Please-enter-the-valid-store-name")}`, {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: false,
@@ -594,7 +595,7 @@ const Stores = () => {
     if (storeEmail && regex.test(storeEmail.trim()) === false) {
       count--;
       setInValidEmail(true);
-      toast("Please enter the valid email address", {
+      toast(`${t("stores:Please-enter-the-valid-email-address")}`, {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: false,
@@ -607,7 +608,7 @@ const Stores = () => {
     ) {
       count--;
       setInValidEmail(true);
-      toast("Please enter the valid email address", {
+      toast(`${t("stores:Validation-Error-Message1")}`, {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: false,
@@ -620,7 +621,7 @@ const Stores = () => {
     ) {
       setInValidUserName(true);
       count--;
-      toast("Please enter the username", {
+      toast(`${t("stores:Please-enter-the-username")}`, {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: false,
@@ -630,14 +631,11 @@ const Stores = () => {
     if (storeUserName && userRegex.test(storeUserName.trim()) === false) {
       count--;
       setInValidUserName(true);
-      toast(
-        "Username must contain a minimum of 6 characters and can only consist of alphabets, numbers, underscores, and hyphens",
-        {
-          position: toast.POSITION.TOP_RIGHT,
-          type: "error",
-          autoClose: false,
-        }
-      );
+      toast(`${t("stores:Validation-Error-Message2")}`, {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+        autoClose: false,
+      });
     }
     // if (storeUserName && storeUserName.length < 6) {
     //   setInValidUserName(true);
@@ -654,7 +652,7 @@ const Stores = () => {
     ) {
       setInValidPassword(true);
       count--;
-      toast("Please enter the password", {
+      toast(`${t("stores:Please-enter-the-password")}`, {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: false,
@@ -665,14 +663,11 @@ const Stores = () => {
     if (storePassword && pattern.test(storePassword.trim()) === false) {
       setInValidPassword(true);
       count--;
-      toast(
-        "Password must contain a minimum of 6 characters and include at least one uppercase letter, one lowercase letter, one number, and one special character",
-        {
-          position: toast.POSITION.TOP_RIGHT,
-          type: "error",
-          autoClose: false,
-        }
-      );
+      toast(`${t("stores:Validation-Error-Message1")}`, {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+        autoClose: false,
+      });
     }
     // if (storePassword && storePassword.length < 6) {
     //   setInValidPassword(true);
@@ -704,7 +699,7 @@ const Stores = () => {
     //   .post(storeAPI, postBody, authorizationHeader)
     MarketplaceServices.save(storeAPI, postBody)
       .then((response) => {
-        toast("Store created successfully", {
+        toast(`${t("stores:Store-created-successfully")}`, {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
         });
@@ -725,7 +720,7 @@ const Stores = () => {
             type: "error",
           });
         } else {
-          toast("Something went wrong, please try again later", {
+          toast(`${t("common:Something-Went-Wrong")}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
             autoClose: false,
@@ -772,7 +767,7 @@ const Stores = () => {
         setServerStoreName(response.data.name);
         onClose();
         if (response.status === 200 || response.status === 201) {
-          toast("Store updated successfully ", {
+          toast(`${t("stores:Store-updated-successfully")}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
           });
@@ -786,7 +781,7 @@ const Stores = () => {
             type: "error",
           });
         } else {
-          toast("Something went wrong, please try again later", {
+          toast(`${t("common:Something-Went-Wrong")}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
             autoClose: false,
@@ -814,13 +809,13 @@ const Stores = () => {
   const validateStorePutField = () => {
     if (editName === "" || editName === null || editName === undefined) {
       setInValidEditName(true);
-      toast("Please enter the store name", {
+      toast(`${t("stores:Please-enter-the-store-name")}`, {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: false,
       });
     } else if (editName === serverStoreName) {
-      toast("No changes were detected", {
+      toast(`${t("common:No-Changes-Detected")}`, {
         position: toast.POSITION.TOP_RIGHT,
         type: "info",
       });
@@ -884,7 +879,7 @@ const Stores = () => {
           }
           setStoreApiData(removedData);
           setCountForStore(countForStore - 1);
-          toast("Store deleted successfully", {
+          toast(`${t("stores:Store-deleted-successfully")}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
           });
@@ -902,7 +897,7 @@ const Stores = () => {
             type: "error",
           });
         } else {
-          toast("Something went wrong, please try again later", {
+          toast(`${t("common:Something-Went-Wrong")}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
             autoClose: false,
@@ -915,9 +910,9 @@ const Stores = () => {
     <Content className="">
       <StoreModal
         isVisible={isDeleteStoreModalOpen}
-        okButtonText={"Ok"}
-        cancelButtonText={"Cancel"}
-        title={"Warning"}
+        okButtonText={t("common:Ok")}
+        cancelButtonText={t("common:Cancel")}
+        title={t("common:Warning")}
         okCallback={() => removeStore()}
         cancelCallback={() => closeDeleteModal()}
         isSpin={isStoreDeleting}
@@ -925,8 +920,8 @@ const Stores = () => {
       >
         {
           <div>
-            <p>{`Confirm Store Deletion`}</p>
-            <p>{`Are you sure you want to delete the store? This action cannot be undone`}</p>
+            <p>{t("stores:Confirm-Store-Deletion")}</p>
+            <p>{t("stores:Store-Deletion-Confirmation-Message")}</p>
           </div>
         }
       </StoreModal>
@@ -942,12 +937,12 @@ const Stores = () => {
             <Content className="flex">
               <Content className="!inline-block text-left self-center pr-3">
                 <Title level={3} className="!font-normal">
-                  Stores
+                  {t("stores:Stores")}
                 </Title>
               </Content>
               <Content className="!inline-block text-right self-center">
                 <Button className="app-btn-primary" onClick={showAddDrawer}>
-                  Add Store
+                  {t("stores:Add-Store")}
                 </Button>
                 <Drawer
                   title={
@@ -967,26 +962,25 @@ const Stores = () => {
                           <MdInfo className="text-blue-400 text-[16px]" />
                         </Col>
                         <Col span={23} className="align-center mb-3">
-                          <Text className=" mr-1 font-bold">Note: </Text>
-                          <Text>
-                            Please enter the store name and administration
-                            details. These details will be used when signing
-                            into the store portal.
+                          <Text className=" mr-1 font-bold">
+                            {" "}
+                            {t("stores:Note")}:{" "}
                           </Text>
+                          <Text>{t("stores:Add-Store-Description")}</Text>
                         </Col>
                       </Row>
                       <Spin
-                        tip="Please wait!"
+                        tip={t("stores:Please-wait!")}
                         size="large"
                         spinning={isUpLoading}
                       >
                         <span className="text-red-600 text-sm">*</span>
                         <label className="text-[13px] mb-2 ml-1">
-                          Store Name
+                          {t("stores:Store-Name")}
                           {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
                         </label>
                         <Input
-                          placeholder="Enter Store Name"
+                          placeholder={t("stores:Enter-Store-Name")}
                           value={name}
                           maxLength={20}
                           className={`${
@@ -1001,7 +995,7 @@ const Stores = () => {
                               setName(e.target.value);
                             } else {
                               setName(e.target.value);
-                            
+
                               setShowStoreErrorMessage(false);
                             }
                             setInValidName(false);
@@ -1010,17 +1004,21 @@ const Stores = () => {
 
                         {showStoreErrorMessage === true ? (
                           <p className="text-red-600 text-sm">
-                            Please enter alphabetic characters only.
+                            {t(
+                              "stores:Please-enter-alphabetic-characters-only"
+                            )}
                           </p>
                         ) : null}
 
                         <Divider orientation="left" orientationMargin="0">
-                          Store Administrator Details
+                          {t("stores:Store-Administrator-Details")}
                         </Divider>
                         <span className="text-red-600 text-sm">*</span>
-                        <label className="text-[13px] mb-2 ml-1">Email</label>
+                        <label className="text-[13px] mb-2 ml-1">
+                          {t("stores:Email")}
+                        </label>
                         <Input
-                          placeholder="Enter Email"
+                          placeholder={t("stores:Enter-Email")}
                           value={storeEmail}
                           maxLength={50}
                           className={`${
@@ -1035,10 +1033,10 @@ const Stores = () => {
                         />
                         <span className="text-red-600 text-sm">*</span>
                         <label className="text-[13px] mb-2 ml-1">
-                          Username
+                          {t("stores:Username")}
                         </label>
                         <Input
-                          placeholder="Enter Username"
+                          placeholder={t("stores:Enter-Username")}
                           value={storeUserName}
                           maxLength={15}
                           minLength={6}
@@ -1070,10 +1068,10 @@ const Stores = () => {
                         />
                         <span className="text-red-600 text-sm">*</span>
                         <label className="text-[13px] mb-2 ml-1">
-                          Password
+                          {t("stores:Password")}
                         </label>
                         <Input.Password
-                          placeholder="Enter Password"
+                          placeholder={t("stores:Enter-Password")}
                           value={storePassword}
                           maxLength={15}
                           className={`${
@@ -1107,7 +1105,7 @@ const Stores = () => {
                             validateStorePostField();
                           }}
                         >
-                          Save
+                          {t("common:Save")}
                         </Button>
                       </Spin>
                     </>
@@ -1118,26 +1116,26 @@ const Stores = () => {
                           <MdInfo className="text-blue-400 text-[16px]" />
                         </Col>
                         <Col span={23} className="align-center mb-3">
-                          <Text className=" mr-1 font-bold">Note: </Text>
-                          <Text>
-                            Store administrator's details cannot be edited. You
-                            are permitted to only rename your store
+                          <Text className=" mr-1 font-bold">
+                            {" "}
+                            {t("stores:Note")}:
                           </Text>
+                          <Text>{t("stores:Edit-Store-Description")}</Text>
                         </Col>
                       </Row>
                       <Spin
-                        tip="Please wait!"
+                        tip={t("stores:Please-wait!")}
                         size="large"
                         spinning={isUpLoading}
                       >
                         <span className="text-red-600 text-sm">*</span>
                         <label className="text-[13px] mb-2 ml-1">
-                          Store Name
+                          {t("stores:Store-Name")}
                           {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
                         </label>
                         <Input
                           value={editName}
-                          placeholder="Enter Store Name"
+                          placeholder={t("stores:Enter-Store-Name")}
                           className={`${
                             inValidEditName
                               ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 mb-4"
@@ -1155,12 +1153,15 @@ const Stores = () => {
                           }}
                         />
                         <Divider orientation="left" orientationMargin="0">
-                          Store Administrator Details
+                          {t("stores:Store-Administrator-Details")}
                         </Divider>
                         <span className="text-red-600 text-sm">*</span>
-                        <label className="text-[13px] mb-2 ml-1">Email</label>
+                        <label className="text-[13px] mb-2 ml-1">
+                          {" "}
+                          {t("stores:Email")}
+                        </label>
                         <Input
-                          placeholder="Enter Email"
+                          placeholder={t("stores:Enter-Email")}
                           value={storeEditEmail}
                           maxLength={30}
                           disabled
@@ -1172,19 +1173,24 @@ const Stores = () => {
                             if (regex.test(value)) {
                               setStoreEditEmail(value);
                             } else {
-                              toast("Please provide valid email", {
-                                position: toast.POSITION.TOP_RIGHT,
-                                type: "warning",
-                              });
+                              toast(
+                                `${t(
+                                  "stores:Please enter the valid email address"
+                                )}`,
+                                {
+                                  position: toast.POSITION.TOP_RIGHT,
+                                  type: "warning",
+                                }
+                              );
                             }
                           }}
                         />
                         <span className="text-red-600 text-sm">*</span>
                         <label className="text-[13px] mb-2 ml-1">
-                          Username
+                          {t("stores:Username")}
                         </label>
                         <Input
-                          placeholder="Enter Username"
+                          placeholder={t("stores:Enter-Username")}
                           value={storeEditUserName}
                           maxLength={10}
                           className="mb-4"
@@ -1211,11 +1217,11 @@ const Stores = () => {
                         />
                         <span className="text-red-600 text-sm">*</span>
                         <label className="text-[13px] mb-2 ml-1">
-                          Password
+                          {t("stores:Password")}
                           {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
                         </label>
                         <Input.Password
-                          placeholder="Enter Password"
+                          placeholder={t("stores:Enter-Password")}
                           value={storeEditPassword}
                           maxLength={6}
                           disabled
@@ -1230,7 +1236,7 @@ const Stores = () => {
                             validateStorePutField();
                           }}
                         >
-                          Update
+                          {t("common:Update")}
                         </Button>
                       </Spin>
                     </>
@@ -1241,7 +1247,7 @@ const Stores = () => {
           }
         />
       </Content>
-      <Content className="!p-3 mt-[10rem] !min-h-screen">
+      <Content className="!p-3 mt-[8rem] !min-h-screen">
         {isLoading ? (
           <Content className="bg-white">
             <Skeleton
@@ -1257,9 +1263,7 @@ const Stores = () => {
           <Layout className="p-0 text-center mb-3 bg-[#F4F4F4]">
             {/* <p>Validation in Progress</p> */}
             <p>
-              {errorMessage
-                ? errorMessage
-                : "Please wait while we validate your information. If this process persists, please consider logging out and logging back in"}
+              {errorMessage ? errorMessage : `${t("common:Network-Error")}`}
             </p>
           </Layout>
         ) : (

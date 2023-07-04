@@ -25,6 +25,7 @@ import {
 } from "@ant-design/icons";
 import axios from "axios";
 import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
+import { useTranslation } from "react-i18next";
 import useAuthorization from "../../hooks/useAuthorization";
 import StoreModal from "../../components/storeModal/StoreModal";
 import StoreImages from "./StoreImages";
@@ -43,6 +44,7 @@ const storeAbsoluteImgesAPI =
 const storeBannerImageAPI = process.env.REACT_APP_STORE_BANNER_IMAGES_API;
 
 const StoreSettings = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const search = useLocation().search;
   const id = new URLSearchParams(search).get("id");
@@ -364,20 +366,25 @@ const StoreSettings = () => {
     //   .post(storeSettingAPI, postBody, authorizationHeader)
     MarketplaceServices.save(storeSettingAPI, postBody)
       .then((response) => {
-        if (Object.keys(sampleobject).length === 2) {
-          toast("Media and store settings saved successfully", {
+        if (sampleobject["settings"] === "contentSettings") {
+          toast(`${t("stores:Store-settings-saved-successfully")}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
           });
-        } else {
-          if (Object.keys(sampleobject).length > 0) {
-            if (sampleobject["settings"] === "contentSettings") {
-              toast("Store settings saved successfully", {
-                position: toast.POSITION.TOP_RIGHT,
-                type: "success",
-              });
-            }
-          }
+          // if (Object.keys(sampleobject).length === 2) {
+          //   toast("Media and store settings saved successfully", {
+          //     position: toast.POSITION.TOP_RIGHT,
+          //     type: "success",
+          //   });
+          // } else {
+          //   if (Object.keys(sampleobject).length > 0) {
+          //     if (sampleobject["settings"] === "contentSettings") {
+          //       toast("Store settings saved successfully", {
+          //         position: toast.POSITION.TOP_RIGHT,
+          //         type: "success",
+          //       });
+          //     }
+          //   }
         }
         // toast("Store Settings Created Successfully.", {
         //   position: toast.POSITION.TOP_RIGHT,
@@ -864,7 +871,7 @@ const StoreSettings = () => {
     // ) {
     //   count--;
     // }
-    else if (count === 4) {
+  else if (count === 4) {
       // let temp = [...isEditStoreSetting];
       // console.log("isEditStoreSetting456", temp);
       // temp.push({ id: 2 });
@@ -1187,7 +1194,6 @@ const StoreSettings = () => {
   //   setChangeSwitchStatus (checked)
   // };
 
-  console.log("changeSeitchstore", changeSwitchStatus);
   const storeSettingsHeader = () => {
     return (
       <>
@@ -1370,11 +1376,13 @@ const StoreSettings = () => {
           </Content> */}
         <Spin tip="Please wait!" size="large" spinning={isUpLoading}>
           <Content className="bg-white p-3">
-            <label className="text-[20px] mb-2 mt-4 font-bold">Media</label>
+            <label className="text-[20px] mb-2 mt-4 font-bold">
+              {t("stores:Media")}
+            </label>
             <Row class="flex space-x-4">
               <Col>
                 <StoreImages
-                  title={"Store Logo"}
+                  title={`${t("stores:Store-Logo")}`}
                   type={"store_logo"}
                   storeId={id}
                   imagesUpload={imagesUpload}
@@ -1383,77 +1391,67 @@ const StoreSettings = () => {
                   isSingleUpload={true}
                   validStoreLogo={validStoreLogo}
                   setValidStoreLogo={setValidStoreLogo}
-                  InfoCircleText={"This logo will be used as Store's logo"}
+                  InfoCircleText={`${t("stores:Store-Logo-Info")}`}
                 />
               </Col>
               <Col className="!ml-10">
                 <StoreImages
-                  title={"Search Logo"}
+                  title={`${t("stores:Search-Logo")}`}
                   type={"search_logo"}
                   storeId={id}
                   imagesUpload={imagesUpload}
                   getImageData={getImageData && getImageData[0]}
                   setImagesUpload={setImagesUpload}
                   isSingleUpload={true}
-                  InfoCircleText={
-                    "The search icon will be visible in areas where the search functionality is implemented"
-                  }
+                  InfoCircleText={`${t("stores:Search-Logo-Info")}`}
                 />
               </Col>
               <Col className="!ml-10">
                 <StoreImages
-                  title={"Customer Logo"}
+                  title={`${t("stores:Customer-Logo")}`}
                   type={"customer_logo"}
                   storeId={id}
                   imagesUpload={imagesUpload}
                   getImageData={getImageData && getImageData[0]}
                   setImagesUpload={setImagesUpload}
                   isSingleUpload={true}
-                  InfoCircleText={
-                    "This image will be displayed as the default avatar for customers"
-                  }
+                  InfoCircleText={`${t("stores:Customer-Logo-info")}`}
                 />
               </Col>
               <Col className="!ml-10">
                 <StoreImages
-                  title={"Cart Logo"}
+                  title={`${t("stores:Cart-Logo")}`}
                   type={"cart_logo"}
                   storeId={id}
                   imagesUpload={imagesUpload}
                   getImageData={getImageData && getImageData[0]}
                   setImagesUpload={setImagesUpload}
                   isSingleUpload={true}
-                  InfoCircleText={
-                    "The cart icon will be visible in areas where the cart functionality is implemented"
-                  }
+                  InfoCircleText={`${t("stores:Cart-Logo-info")}`}
                 />
               </Col>
               <Col className="!ml-10">
                 <StoreImages
-                  title={"Wishlist Logo"}
+                  title={`${t("stores:Wishlist-Logo")}`}
                   type={"wishlist_logo"}
                   storeId={id}
                   imagesUpload={imagesUpload}
                   getImageData={getImageData && getImageData[0]}
                   setImagesUpload={setImagesUpload}
                   isSingleUpload={true}
-                  InfoCircleText={
-                    "The wishlist icon will be visible in areas where the wishlist functionality is implemented"
-                  }
+                  InfoCircleText={`${t("stores:Wishlist-Logo-Info")}`}
                 />
               </Col>
             </Row>
             <StoreImages
-              title={"Banner Logo"}
+              title={`${t("stores:Banner-Logo")}`}
               type={"banner_images"}
               storeId={id}
               imagesUpload={imagesUpload}
               bannerAbsoluteImage={bannerAbsoluteImage}
               setImagesUpload={setImagesUpload}
               isSingleUpload={false}
-              InfoCircleText={
-                "These images will be used in the carousel of the store front"
-              }
+              InfoCircleText={`${t("stores:Banner-Logo-Info")}`}
             />
             <Content className="mt-5 mb-6">
               <Row>
@@ -1465,14 +1463,14 @@ const StoreSettings = () => {
                       if (imagesUpload && imagesUpload.length > 0) {
                         postImageOnClickSave();
                       } else {
-                        toast("No changes were detected", {
+                        toast(`${t("common:No-Changes-Detected")}`, {
                           position: toast.POSITION.TOP_RIGHT,
                           type: "info",
                         });
                       }
                     }}
                   >
-                    Save
+                    {t("common:Save")}
                   </Button>
                 </Col>
                 <Col className="pl-4">
@@ -1482,7 +1480,7 @@ const StoreSettings = () => {
                       navigate("/dashboard/store");
                     }}
                   >
-                    Discard
+                    {t("common:Discard")}
                   </Button>
                 </Col>
               </Row>
@@ -1490,13 +1488,17 @@ const StoreSettings = () => {
           </Content>
         </Spin>
         <Content className="bg-white mt-3 p-3">
-          <label className="text-[20px] mb-2 mt-4 font-bold">Currency</label>
+          <label className="text-[20px] mb-2 mt-4 font-bold">
+            {t("stores:Currency")}
+          </label>
           <Row className="mt-2">
             <Col span={8} className="mr-2">
               <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">Symbol</label>
+              <label className="text-[13px] mb-2 ml-1">
+                {t("stores:Symbol")}
+              </label>
               <Input
-                placeholder="Enter currency symbol (eg: ₹, $, £)"
+                placeholder={t("stores:Enter-currency-symbol")}
                 className={`${
                   inValidCurrencySymbol
                     ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
@@ -1515,9 +1517,11 @@ const StoreSettings = () => {
             </Col>
             <Col span={8} className="ml-1">
               <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">ISO Code</label>
+              <label className="text-[13px] mb-2 ml-1">
+                {t("stores:ISO-Code")}
+              </label>
               <Input
-                placeholder="Enter ISO code (eg: INR, USP ,GBP)"
+                placeholder={t("stores:Enter-ISO-code")}
                 value={currencyIsoCode}
                 onChange={(e) => {
                   setCurrencyIsoCode(e.target.value);
@@ -1537,9 +1541,11 @@ const StoreSettings = () => {
           <Row className="mt-4">
             <Col span={8} className="mr-2">
               <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">Fractional Unit</label>
+              <label className="text-[13px] mb-2 ml-1">
+                {t("stores:Fractional-Unit")}
+              </label>
               <Input
-                placeholder="Enter fractional unit (eg: paisa, cent)"
+                placeholder={t("stores:Enter-fractional-unit")}
                 value={fractionalUnit}
                 onChange={(e) => {
                   setFractionalUnit(e.target.value);
@@ -1558,9 +1564,11 @@ const StoreSettings = () => {
             <Col span={8} className="ml-1">
               {" "}
               <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">Number to Basic</label>
+              <label className="text-[13px] mb-2 ml-1">
+                {t("stores:Number-to-Basic")}
+              </label>
               <Input
-                placeholder="Enter number to basic (eg: 100)"
+                placeholder={t("stores:Enter-number-to-basic")}
                 value={numberToBasic}
                 onChange={(e) => {
                   setNumberToBasic(e.target.value);
@@ -1623,15 +1631,17 @@ const StoreSettings = () => {
           {/* <Content className="bg-white mt-3 p-3 "> */}
           <Content className="mt-3">
             <Row className="!mb-4">
-              <label className="text-[20px]  mt-2 font-bold">Page Theme</label>
+              <label className="text-[20px]  mt-2 font-bold">
+                {t("stores:Page-Theme")}
+              </label>
               <Content className="text-right">
                 <Button className="!text-right" onClick={() => openModal()}>
                   <EyeOutlined className="!text-center -translate-y-0.5" />{" "}
-                  Preview
+                  {t("stores:Preview")}
                 </Button>
                 <StoreModal
                   isVisible={isModalOpen}
-                  title={"Sample Preview Page For Store Front"}
+                  title={`${t("stores:Sample-Preview-Page-For-Store-Front")}`}
                   width={1000}
                   cancelCallback={() => closeModal()}
                   isSpin={false}
@@ -1708,7 +1718,7 @@ const StoreSettings = () => {
             </Col> */}
               <Col span={8} className="mr-2 ">
                 <label className="text-[13px] mb-2 ml-1">
-                  Background Color
+                  {t("stores:Background-Color")}
                 </label>
                 <Content className="flex">
                   <Input
@@ -1733,7 +1743,9 @@ const StoreSettings = () => {
                         setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
                       addonAfter={
-                        <Tooltip title="Reset to the original value">
+                        <Tooltip
+                          title={t("stores:Reset-to-the-original-value")}
+                        >
                           <UndoOutlined
                             onClick={() => {
                               setPageBackgroundColor(pageBgColor);
@@ -1759,12 +1771,12 @@ const StoreSettings = () => {
                 </Content>
               </Col>
               <Col span={8} className="ml-1">
-                <label className="text-[13px] mb-2 ml-1">Text Color</label>
+                <label className="text-[13px] mb-2 ml-1">
+                  {t("stores:Text-Color")}
+                </label>
                 <Content className="flex">
                   <Input
                     type="color"
-                    maxLength={255}
-                    minLength={1}
                     value={foreGroundColor}
                     onChange={(e) => {
                       setForeGroundColor(e.target.value);
@@ -1778,14 +1790,16 @@ const StoreSettings = () => {
                     <Input
                       value={foreGroundColor}
                       className="w-[150px]"
-                      onChange={(e) => {
+                      onChange={(e) => {                       
                         setForeGroundColor(e.target.value);
                         let temp = { ...copyImageOfStoreSettingsPageTheme };
                         temp["fg_color"] = e.target.value;
                         setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
                       addonAfter={
-                        <Tooltip title="Reset to the original value">
+                        <Tooltip
+                          title={t("stores:Reset-to-the-original-value")}
+                        >
                           <UndoOutlined
                             onClick={() => {
                               setForeGroundColor(pageFgColor);
@@ -1809,6 +1823,7 @@ const StoreSettings = () => {
                     /> */}
                   </Space.Compact>
                 </Content>
+              
               </Col>
             </Row>
             <Row className="mt-4">
@@ -1862,14 +1877,12 @@ const StoreSettings = () => {
               </Col> */}
               <Col span={8} className="mr-2 ">
                 <label className="text-[13px] mb-2 ml-1">
-                  Primary Button Background Color
+                  {t("stores:Primary-Button-Background-Color")}
                 </label>
                 <Content className="flex">
                   <Input
                     type="color"
                     className="w-9 p-0"
-                    maxLength={255}
-                    minLength={1}
                     value={buttonPrimaryBackgroundColor}
                     onChange={(e) => {
                       setButtonPrimaryBackgroundColor(e.target.value);
@@ -1889,7 +1902,9 @@ const StoreSettings = () => {
                         setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
                       addonAfter={
-                        <Tooltip title="Reset to the original value">
+                        <Tooltip
+                          title={t("stores:Reset-to-the-original-value")}
+                        >
                           <UndoOutlined
                             onClick={() => {
                               setButtonPrimaryBackgroundColor(
@@ -1920,7 +1935,7 @@ const StoreSettings = () => {
               </Col>
               <Col span={8} className="ml-1">
                 <label className="text-[13px] mb-2 ml-1">
-                  Secondary Button Background Color
+                  {t("stores:Secondary-Button-Background-Color")}
                 </label>
                 <Content className="flex">
                   <Input
@@ -1936,16 +1951,18 @@ const StoreSettings = () => {
                   />
                   <Space.Compact className="ml-2">
                     <Input
-                      value={buttonSecondaryBackgroundColor}
+                      value={buttonSecondaryBackgroundColor}                  
                       className="w-[150px]"
-                      onChange={(e) => {
+                      onChange={(e) => {                      
                         setButtonSecondaryBackgroundColor(e.target.value);
                         let temp = { ...copyImageOfStoreSettingsPageTheme };
                         temp["btn_secondary_bg_color"] = e.target.value;
                         setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
                       addonAfter={
-                        <Tooltip title="Reset to the original value">
+                        <Tooltip
+                          title={t("stores:Reset-to-the-original-value")}
+                        >
                           <UndoOutlined
                             onClick={() => {
                               setButtonSecondaryBackgroundColor(
@@ -1976,14 +1993,12 @@ const StoreSettings = () => {
               </Col>
               <Col span={7} className="ml-2">
                 <label className="text-[13px] mb-2 ml-1">
-                  Tertiary Button Background Color
+                  {t("stores:Tertiary-Button-Background-Color")}
                 </label>
                 <Content className="flex">
                   <Input
                     type="color"
                     className="w-9 p-0"
-                    maxLength={255}
-                    minLength={1}
                     value={buttonTeritaryBackgroundColor}
                     onChange={(e) => {
                       setButtonTeritaryBackgroundColor(e.target.value);
@@ -1996,14 +2011,16 @@ const StoreSettings = () => {
                     <Input
                       value={buttonTeritaryBackgroundColor}
                       className="w-[150px]"
-                      onChange={(e) => {
+                      onChange={(e) => {                    
                         setButtonTeritaryBackgroundColor(e.target.value);
                         let temp = { ...copyImageOfStoreSettingsPageTheme };
                         temp["btn_tertiary_bg_color"] = e.target.value;
                         setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
                       addonAfter={
-                        <Tooltip title="Reset to the original value">
+                        <Tooltip
+                          title={t("stores:Reset-to-the-original-value")}
+                        >
                           <UndoOutlined
                             onClick={() => {
                               setButtonTeritaryBackgroundColor(
@@ -2084,7 +2101,7 @@ const StoreSettings = () => {
               </Col> */}
               <Col span={8} className="mr-2 ">
                 <label className="text-[13px] mb-2 ml-1">
-                  Primary Button Text Color
+                  {t("stores:Primary-Button-Text-Color")}
                 </label>
                 <Content className="flex">
                   <Input
@@ -2109,7 +2126,9 @@ const StoreSettings = () => {
                         setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
                       addonAfter={
-                        <Tooltip title="Reset to the original value">
+                        <Tooltip
+                          title={t("stores:Reset-to-the-original-value")}
+                        >
                           <UndoOutlined
                             onClick={() => {
                               setButtonTeritaryBackgroundColor(
@@ -2140,14 +2159,12 @@ const StoreSettings = () => {
               </Col>
               <Col span={8} className="ml-1">
                 <label className="text-[13px] mb-2 ml-1">
-                  Secondary Button Text Color
+                  {t("stores:Secondary-Button-Text-Color")}
                 </label>
                 <Content className="flex">
                   <Input
                     type="color"
                     className="w-9 p-0"
-                    maxLength={255}
-                    minLength={1}
                     value={buttonSecondaryForegroundColor}
                     onChange={(e) => {
                       setButtonSecondaryForegroundColor(e.target.value);
@@ -2167,7 +2184,9 @@ const StoreSettings = () => {
                         setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
                       addonAfter={
-                        <Tooltip title="Reset to the original value">
+                        <Tooltip
+                          title={t("stores:Reset-to-the-original-value")}
+                        >
                           <UndoOutlined
                             onClick={() => {
                               setButtonPrimaryForegroundColor(
@@ -2194,11 +2213,11 @@ const StoreSettings = () => {
                       className="w-24"
                     /> */}
                   </Space.Compact>
-                </Content>
+                </Content>             
               </Col>
               <Col span={7} className="ml-2">
                 <label className="text-[13px] mb-2 ml-1">
-                  Tertiary Button Text Color
+                  {t("stores:Tertiary-Button-Text-Color")}
                 </label>
                 <Content className="flex">
                   <Input
@@ -2223,7 +2242,9 @@ const StoreSettings = () => {
                       }}
                       className="w-[150px]"
                       addonAfter={
-                        <Tooltip title="Reset to the original value">
+                        <Tooltip
+                          title={t("stores:Reset-to-the-original-value")}
+                        >
                           <UndoOutlined
                             onClick={() => {
                               setButtonTeritaryForegroundColor(
@@ -2307,12 +2328,12 @@ const StoreSettings = () => {
           </Content>
           <Content>
             <label className="text-[20px] mb-2 mt-4 font-bold">
-              Store Header Setting
+              {t("stores:Store-Header-Setting")}
             </label>
             <Row className="mt-2">
               <Col span={8} className="mr-2 ">
                 <label className="text-[13px] mb-2 ml-1">
-                  Background Color
+                  {t("stores:Background-Color")}
                 </label>
                 <Content className="flex">
                   <Input
@@ -2330,14 +2351,16 @@ const StoreSettings = () => {
                     <Input
                       value={headerBackgroundColor}
                       className="w-[150px]"
-                      onChange={(e) => {
+                      onChange={(e) => {                  
                         setHeaderBackgroundColor(e.target.value);
                         let temp = { ...copyImageOfStoreHeaderSetting };
                         temp["bg_color"] = e.target.value;
                         setCopyImageOfStoreHeaderSetting(temp);
                       }}
                       addonAfter={
-                        <Tooltip title="Reset to the original value">
+                        <Tooltip
+                          title={t("stores:Reset-to-the-original-value")}
+                        >
                           <UndoOutlined
                             onClick={() => {
                               setHeaderBackgroundColor(headerBgColor);
@@ -2363,7 +2386,10 @@ const StoreSettings = () => {
                 </Content>
               </Col>
               <Col span={8} className="ml-1">
-                <label className="text-[13px] mb-2 ml-1">Text Color</label>
+                <label className="text-[13px] mb-2 ml-1">
+                  {" "}
+                  {t("stores:Text-Color")}
+                </label>
                 <Content className="flex">
                   <Input
                     type="color"
@@ -2382,14 +2408,16 @@ const StoreSettings = () => {
                     <Input
                       value={headerForegroundColor}
                       className="w-[150px]"
-                      onChange={(e) => {
+                      onChange={(e) => {           
                         setHeaderForegroundColor(e.target.value);
                         let temp = { ...copyImageOfStoreHeaderSetting };
                         temp["fg_color"] = e.target.value;
                         setCopyImageOfStoreHeaderSetting(temp);
                       }}
                       addonAfter={
-                        <Tooltip title="Reset to the original value">
+                        <Tooltip
+                          title={t("stores:Reset-to-the-original-value")}
+                        >
                           <UndoOutlined
                             onClick={() => {
                               setHeaderForegroundColor(headerFgColor);
@@ -2418,12 +2446,12 @@ const StoreSettings = () => {
           </Content>
           <Content>
             <label className="text-[20px] mb-2 mt-4 font-bold">
-              Store Footer Setting
+              {t("stores:Store-Footer-Setting")}
             </label>
             <Row className="mt-2">
               <Col span={8} className="mr-2 ">
                 <label className="text-[13px] mb-2 ml-1">
-                  Background Color
+                  {t("stores:Background-Color")}
                 </label>
                 <Content className="flex">
                   <Input
@@ -2441,14 +2469,16 @@ const StoreSettings = () => {
                     <Input
                       value={footerBackgroundColor}
                       className="w-[150px]"
-                      onChange={(e) => {
+                      onChange={(e) => {          
                         setFooterBackgroundColor(e.target.value);
                         let temp = { ...copyImageOfStoreFooterSetting };
                         temp["bg_color"] = e.target.value;
                         setCopyImageOfStoreFooterSetting(temp);
                       }}
                       addonAfter={
-                        <Tooltip title="Reset to the original value">
+                        <Tooltip
+                          title={t("stores:Reset-to-the-original-value")}
+                        >
                           <UndoOutlined
                             onClick={() => {
                               setFooterBackgroundColor(headerFgColor);
@@ -2474,7 +2504,9 @@ const StoreSettings = () => {
                 </Content>
               </Col>
               <Col span={8} className="ml-1">
-                <label className="text-[13px] mb-2 ml-1">Text Color</label>
+                <label className="text-[13px] mb-2 ml-1">
+                  {t("stores:Text-Color")}
+                </label>
                 <Content className="flex">
                   <Input
                     type="color"
@@ -2491,14 +2523,16 @@ const StoreSettings = () => {
                     <Input
                       value={footerForegroundColor}
                       className="w-[150px]"
-                      onChange={(e) => {
+                      onChange={(e) => {             
                         setFooterForegroundColor(e.target.value);
                         let temp = { ...copyImageOfStoreFooterSetting };
                         temp["fg_color"] = e.target.value;
                         setCopyImageOfStoreFooterSetting(temp);
                       }}
                       addonAfter={
-                        <Tooltip title="Reset to the original value">
+                        <Tooltip
+                          title={t("stores:Reset-to-the-original-value")}
+                        >
                           <UndoOutlined
                             onClick={() => {
                               setFooterForegroundColor(footerFgColor);
@@ -2538,7 +2572,7 @@ const StoreSettings = () => {
                     // }
                   }}
                 >
-                  Save
+                  {t("common:Save")}
                 </Button>
               </Col>
               <Col className="pl-4">
@@ -2565,7 +2599,7 @@ const StoreSettings = () => {
                     // setImagesUpload([]);
                   }}
                 >
-                  Discard
+                  {t("common:Discard")}
                 </Button>
               </Col>
             </Row>

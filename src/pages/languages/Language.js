@@ -520,7 +520,7 @@ const Language = () => {
         />
       </Content>
 
-      <Content className="!p-3 mt-[10rem] !min-h-screen">
+      <Content className="!p-3 mt-[8rem] !min-h-screen">
         {isLoading ? (
           <Content className="bg-white">
             <Skeleton

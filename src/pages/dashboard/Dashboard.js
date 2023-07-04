@@ -26,7 +26,7 @@ import {
   useParams,
   useNavigate,
 } from "react-router-dom";
-
+import { useSelector, useDispatch } from "react-redux";
 import { AdminIcon, Profit, Positive, Payment } from "../../constants/media";
 
 import { MdDomainDisabled, MdBusiness, MdStore } from "react-icons/md";
@@ -40,6 +40,12 @@ import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDes
 import { usePageTitle } from "../../hooks/usePageTitle";
 import { WorkInProgress } from "../../constants/media";
 import DmTabAntDesign from "../../components/DmTabAntDesign/DmTabAntDesign";
+import Cookies from "js-cookie";
+import {
+  fnSelectedLanguage,
+  fnDefaultLanguage,
+  fnStoreLanguage,
+} from "../../services/redux/actions/ActionStoreLanguage";
 //! Import user defined functions
 
 //! Import user defined CSS
@@ -66,8 +72,8 @@ const getAccessTokenUrl = process.env.REACT_APP_ACCESSTOKEN;
 const storeAdminDashboardAPI =
   process.env.REACT_APP_STORE_ADMIN_DASHBOARD_DATA_API;
 const currencySymbol = process.env.REACT_APP_CURRENCY_SYMBOL;
+const languageData = JSON.parse(process.env.REACT_APP_SUPPORTED_LNGS);
 // const auth = getAuth.toLowerCase() === "true";
-
 //! Destructure the components
 const { Title, Text } = Typography;
 const { Content } = Layout;
@@ -85,6 +91,7 @@ const instance = axios.create();
 delete instance.defaults.headers.common["Authorization"];
 const Dashboard = () => {
   const auth = useAuth();
+  const dispatch = useDispatch();
   usePageTitle("Admin Portal - Dashboard");
   const location = useLocation();
   const navigate = useNavigate();
@@ -138,6 +145,19 @@ const Dashboard = () => {
     if (auth.isAuthenticated) {
       getDashBoardData();
     }
+    // let languageData = [
+    //   {
+    //     id: "1",
+    //     dm_language_id: "1",
+    //     is_default: true,
+    //     language_name: "English",
+    //     dm_language_code: "en",
+    //   },
+    // ];
+    dispatch(fnSelectedLanguage(languageData));
+    dispatch(fnDefaultLanguage(languageData));
+    dispatch(fnStoreLanguage(languageData));
+    Cookies.set("dmaplng", languageData.dm_language_code);
   }, []);
 
   const getAccessToken = () => {
@@ -401,7 +421,7 @@ const Dashboard = () => {
     //   </Spin>
     // </Content>
     <Content className="">
-      <Content className="mb-2">
+      <Content className="">
         <HeaderForTitle
           title={
             <Content className="flex !justify-between">
@@ -415,7 +435,7 @@ const Dashboard = () => {
           }
         />
       </Content>
-      <Content className="!p-[1.2rem] !mt-[155px] !min-h-screen">
+      <Content className="!p-[1.2rem] !mt-[8rem] !min-h-screen">
         {dashboardDataLoading ? (
           <Content className="bg-white !p-3">
             <Content className="flex justify-between">
