@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import Store, { Persistor } from "./services/redux/store";
 import { PersistGate } from "redux-persist/integration/react";
+import "./services/i18next/1i18n";
 
 import { AuthProvider } from "react-oidc-context";
 

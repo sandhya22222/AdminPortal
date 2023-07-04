@@ -16,8 +16,13 @@ import "./header2.css";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 //! Import user defined services
 import { fnUserLoggedInInfo } from "../../services/redux/actions/ActionsUser";
-
-import { BrandLogo, AdminIcon, DmBrandLogo } from "../../constants/media";
+import { fnSelectedLanguage } from "../../services/redux/actions/ActionStoreLanguage";
+import {
+  BrandLogo,
+  AdminIcon,
+  DmBrandLogo,
+  marketPlaceLogo,
+} from "../../constants/media";
 
 import util from "../../util/common";
 import { useAuth } from "react-oidc-context";
@@ -35,16 +40,25 @@ const Header2 = () => {
   const navigate = useNavigate();
 
   // const isUserLoggedIn = sessionStorage.getItem("is_loggedIn");
+  const storeLanguages = useSelector(
+    (state) => state.reducerStoreLanguage.storeLanguage
+  );
+  const selectedLanguage = useSelector(
+    (state) => state.reducerSelectedLanguage.selectedLanguage
+  );
 
-  // const languageItems = [];
-  // if (storeLanguages && storeLanguages.length > 1) {
-  //   storeLanguages.forEach((element) => {
-  //     const languageItem = {};
-  //     languageItem["key"] = element.dm_language_code;
-  //     languageItem["label"] = element.language_name;
-  //     languageItems.push(languageItem);
-  //   });
-  // }
+  const [storeSelectedLngCode, setStoreSelectedLngCode] = useState(
+    selectedLanguage && selectedLanguage.dm_language_code
+  );
+  const languageItems = [];
+  if (storeLanguages && storeLanguages.length > 1) {
+    storeLanguages.forEach((element) => {
+      const languageItem = {};
+      languageItem["key"] = element.dm_language_code;
+      languageItem["label"] = element.language_name;
+      languageItems.push(languageItem);
+    });
+  }
 
   const userItems = [
     // Todo: Commenting for now, will implement once the details are ready
@@ -85,29 +99,30 @@ const Header2 = () => {
     }
   };
 
-  // const handleLanguageClick = (e) => {
-  //   Cookies.set("dmvplng", e.key);
-  //   localStorage.setItem("dmvplng", e.key);
-  //   setStoreSelectedLngCode(e.key);
-  //   dispatch(
-  //     fnSelectedLanguage(
-  //       storeLanguages.find((item) => item.dm_language_code === e.key)
-  //     )
-  //   );
-  //   navigate(0);
-  // };
+  const handleLanguageClick = (e) => {
+    Cookies.set("dmvplng", e.key);
+    localStorage.setItem("dmvplng", e.key);
+    setStoreSelectedLngCode(e.key);
+    dispatch(
+      fnSelectedLanguage(
+        storeLanguages.find((item) => item.dm_language_code === e.key)
+      )
+    );
+    navigate(0);
+  };
 
   return (
-    <Layout>
-      <Header className="fixed z-20 top-0 p-0 !h-20  w-full bg-white drop-shadow-md">
-        <Content className="px-3 flex items-center">
+    <Content>
+      <Header className="fixed z-20 top-0 p-0 !h-12 w-full bg-white drop-shadow-md">
+        <Content className="px-3 !h-12 flex !justify-between ">
           {/* Left content which displays brand logo and other stuffs */}
-          <Content className="!inline-block text-left self-center p-1 mt-0">
+          <Content className="!inline-block text-left self-center">
             <a href="/dashboard">
               <Image
-                width={180}
+                // width={180}
+                height={32}
                 preview={false}
-                src={DmBrandLogo}
+                src={marketPlaceLogo}
                 className="antImage"
               />
             </a>
@@ -127,7 +142,7 @@ const Header2 = () => {
                 arrow
                 className="cursor-pointer"
               >
-                <Paragraph className="inline-block !mb-10 relative">
+                <Paragraph className="inline-block !mb-0 relative">
                   <Avatar
                     src={AdminIcon}
                     className="text-lg absolute bottom-[-2px] left-[-30px]"
@@ -147,7 +162,7 @@ const Header2 = () => {
               // </Tooltip>
             )}
             {/* Display language dropdown only if store has more than 1 language. */}
-            {/* {languageItems.length > 0 ? (
+            {/* {auth.isAuthenticated && languageItems.length > 0 ? (
               <Dropdown
                 menu={{
                   items: languageItems,
@@ -156,10 +171,10 @@ const Header2 = () => {
                   onClick: handleLanguageClick,
                 }}
                 arrow
-                className="cursor-pointer ml-3"
+                className="header-text-color cursor-pointer ml-3"
               >
                 <Paragraph className="inline-block mb-0">
-                  <TranslationOutlined className="text-base text-slate-600 headerIcon" />
+                  <TranslationOutlined className=" header-text-color text-base headerIcon !h-[24px]" />
                 </Paragraph>
               </Dropdown>
             ) : (
@@ -168,7 +183,7 @@ const Header2 = () => {
           </Content>
         </Content>
       </Header>
-    </Layout>
+    </Content>
   );
 };
 

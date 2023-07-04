@@ -11,6 +11,7 @@ import WorkInProgress from "../assets/images/common/WorkInProgress.png";
 import AdminIcon from "../assets/images/common/AdminIcon.png";
 // import DmBrandLogo from "../assets/images/logo/torrymarketplace.png";
 import DmBrandLogo from "../assets/images/logo/primary2.svg";
+import marketPlaceLogo from "../assets/images/logo/marketplace-logo.png"
 import Profit from "../assets/images/common/profit.png";
 import Positive from "../assets/images/common/positve.png";
 import Payment from "../assets/images/common/payment.png";
@@ -31,4 +32,5 @@ export {
   Positive,
   Payment,
   Logout503,
+  marketPlaceLogo
 };

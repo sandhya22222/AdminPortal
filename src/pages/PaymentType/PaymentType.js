@@ -103,7 +103,7 @@ const PaymentType = () => {
           </Content>
         }
       />
-      <Content className="!p-3 !mt-[163px] !min-h-screen ">
+      <Content className="!p-3 !mt-[8rem] !min-h-screen ">
         <DynamicTable tableComponentData={tablePropsData} />
       </Content>
     </Content>
