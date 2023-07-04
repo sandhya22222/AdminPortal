@@ -168,7 +168,7 @@ const Header2 = () => {
               // </Tooltip>
             )}
             {/* Display language dropdown only if store has more than 1 language. */}
-            {auth.isAuthenticated && languageItems.length > 0 ? (
+            {/* {auth.isAuthenticated && languageItems.length > 0 ? (
               <Dropdown
                 menu={{
                   items: languageItems,
@@ -185,7 +185,7 @@ const Header2 = () => {
               </Dropdown>
             ) : (
               <></>
-            )}
+            )} */}
           </Content>
         </Content>
       </Header>
