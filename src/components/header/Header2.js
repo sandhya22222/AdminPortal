@@ -100,8 +100,8 @@ const Header2 = () => {
   };
 
   const handleLanguageClick = (e) => {
-    Cookies.set("dmvplng", e.key);
-    localStorage.setItem("dmvplng", e.key);
+    Cookies.set("dmaplng", e.key);
+    localStorage.setItem("dmaplng", e.key);
     setStoreSelectedLngCode(e.key);
     dispatch(
       fnSelectedLanguage(
@@ -110,6 +110,12 @@ const Header2 = () => {
     );
     navigate(0);
   };
+
+  useEffect(() => {
+    setStoreSelectedLngCode(
+      selectedLanguage && selectedLanguage.dm_language_code
+    );
+  }, [selectedLanguage]);
 
   return (
     <Content>
@@ -162,7 +168,7 @@ const Header2 = () => {
               // </Tooltip>
             )}
             {/* Display language dropdown only if store has more than 1 language. */}
-            {/* {auth.isAuthenticated && languageItems.length > 0 ? (
+            {auth.isAuthenticated && languageItems.length > 0 ? (
               <Dropdown
                 menu={{
                   items: languageItems,
@@ -179,7 +185,7 @@ const Header2 = () => {
               </Dropdown>
             ) : (
               <></>
-            )} */}
+            )}
           </Content>
         </Content>
       </Header>

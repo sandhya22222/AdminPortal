@@ -947,8 +947,8 @@ const Stores = () => {
                 <Drawer
                   title={
                     drawerAction && drawerAction === "post"
-                      ? "Add Store"
-                      : "Edit Store"
+                      ? `${t("stores:Add-Store")}`
+                      : `${t("stores:Edit-Store")}`
                   }
                   placement="right"
                   onClose={onClose}
