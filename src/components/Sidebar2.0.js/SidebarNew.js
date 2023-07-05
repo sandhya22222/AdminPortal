@@ -127,7 +127,7 @@ const SidebarNew = () => {
 
   return (
     <Layout>
-      <Affix offsetTop={50}>
+      <Affix offsetTop={48}>
         <Sider
           collapsible
           collapsed={collapsed}

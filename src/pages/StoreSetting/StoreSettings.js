@@ -1197,7 +1197,7 @@ const StoreSettings = () => {
   const storeSettingsHeader = () => {
     return (
       <>
-        <Row justify={"space-between"} className="!w-[80%] !mt-[95px]">
+        <Row justify={"space-between"} className="!w-[80%] !mt-[60px]">
           <Col>
             <Content className=" text-right !ml-2 flex items-center ">
               <Link to="/dashboard/store">
@@ -1258,13 +1258,13 @@ const StoreSettings = () => {
           ]}
         />
       </Content>
-      <Content className="bg-white !w-full !fixed !z-10">
+      <Content className="bg-white !w-full !fixed !z-10 mt">
         {storeSettingsHeader()}
         {/* <Content className="flex-end">
           <Status storeId={storeId} storeApiData={storeData} />
         </Content> */}
       </Content>
-      <Content className="p-3 mt-36">
+      <Content className="p-3 mt-28">
         {/* <Spin tip="Please wait!" size="large" spinning={isLoading}> */}
         {/* <Content className="bg-white mt-2 p-3"> */}
         {/* <span className="text-red-600 text-sm !text-center">*</span>
