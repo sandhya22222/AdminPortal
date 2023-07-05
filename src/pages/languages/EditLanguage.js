@@ -579,7 +579,7 @@ const EditLanguage = () => {
         {editLanguageButtonHeader()}
       </Content>
       <Spin tip="Please wait!" size="large" spinning={isLoading}>
-        <Content className="p-3">
+        <Content className="p-3 mt-[-15px]">
           <Row>
             <Col span={16}>
               {isDataLoading ? (

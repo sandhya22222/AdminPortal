@@ -447,7 +447,7 @@ const AddLanguage = () => {
       </Content>
       <Content className="mt-[8rem] !w-full p-3">
         <Spin tip="Please wait!" size="large" spinning={isLoading}>
-          <Content>
+          <Content className="mt-[-15px]">
             <Content className="p-3 bg-white mt-0 ">
               <Content>
                 {/* <Typography.Title
