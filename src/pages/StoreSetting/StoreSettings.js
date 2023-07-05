@@ -895,28 +895,30 @@ const StoreSettings = () => {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
-    } else if (
-      pageBackgroundColor.length < 7 ||
-      foreGroundColor.length < 7 ||
-      buttonPrimaryBackgroundColor.length < 7 ||
-      buttonSecondaryBackgroundColor.length < 7 ||
-      buttonTeritaryBackgroundColor.length < 7 ||
-      buttonPrimaryForegroundColor.length < 7 ||
-      buttonSecondaryForegroundColor.length < 7 ||
-      buttonTeritaryForegroundColor.length < 7 ||
-      headerBackgroundColor.length < 7 ||
-      headerForegroundColor.length < 7 ||
-      footerBackgroundColor.length < 7 ||
-      footerForegroundColor.length < 7
-    ) {
-      toast(
-        "Please enter the valid color code, maximum length should be 7 characters",
-        {
-          position: toast.POSITION.TOP_RIGHT,
-          type: "error",
-        }
-      );
-    } else if (count === 4) {
+    }
+    // else if (
+    //   pageBackgroundColor.length < 7 ||
+    //   foreGroundColor.length < 7 ||
+    //   buttonPrimaryBackgroundColor.length < 7 ||
+    //   buttonSecondaryBackgroundColor.length < 7 ||
+    //   buttonTeritaryBackgroundColor.length < 7 ||
+    //   buttonPrimaryForegroundColor.length < 7 ||
+    //   buttonSecondaryForegroundColor.length < 7 ||
+    //   buttonTeritaryForegroundColor.length < 7 ||
+    //   headerBackgroundColor.length < 7 ||
+    //   headerForegroundColor.length < 7 ||
+    //   footerBackgroundColor.length < 7 ||
+    //   footerForegroundColor.length < 7
+    // ) {
+    //   toast(
+    //     "Please enter the valid color code, maximum length should be 7 characters",
+    //     {
+    //       position: toast.POSITION.TOP_RIGHT,
+    //       type: "error",
+    //     }
+    //   );
+    // }
+    else if (count === 4) {
       // let temp = [...isEditStoreSetting];
       // console.log("isEditStoreSetting456", temp);
       // temp.push({ id: 2 });
@@ -1780,7 +1782,7 @@ const StoreSettings = () => {
                       maxLength={7}
                       className="w-[150px]"
                       onChange={(e) => {
-                        const patternName = /^#[a-zA-Z0-9]*$/;
+                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["pageBgColorValidation"] = true;
@@ -1823,9 +1825,11 @@ const StoreSettings = () => {
                   </Space.Compact>
                 </Content>
                 {colorCodeValidation.pageBgColorValidation === true ? (
-                  <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" and has a
-                    maximum length of 7 characters
+                  <p
+                    className="text-red-600 text-sm"
+                  >
+                    Please ensure that the color code starts with "#" <br />
+                    and has a maximum length of 7 characters
                   </p>
                 ) : null}
               </Col>
@@ -1851,7 +1855,7 @@ const StoreSettings = () => {
                       className="w-[150px]"
                       maxLength={7}
                       onChange={(e) => {
-                        const patternName = /^#[a-zA-Z0-9]*$/;
+                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["pageTextColorValidation"] = true;
@@ -1895,7 +1899,7 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.pageTextColorValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" and has a
+                    Please ensure that the color code starts with "#" <br/> and has a
                     maximum length of 7 characters
                   </p>
                 ) : null}
@@ -1974,7 +1978,7 @@ const StoreSettings = () => {
                       maxLength={7}
                       className="w-[150px]"
                       onChange={(e) => {
-                        const patternName = /^#[a-zA-Z0-9]*$/;
+                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["primaryBgValidation"] = true;
@@ -2022,7 +2026,7 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.primaryBgValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" and has a
+                    Please ensure that the color code starts with "#" <br/> and has a
                     maximum length of 7 characters
                   </p>
                 ) : null}
@@ -2049,7 +2053,7 @@ const StoreSettings = () => {
                       className="w-[150px]"
                       maxLength={7}
                       onChange={(e) => {
-                        const patternName = /^#[a-zA-Z0-9]*$/;
+                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["secondaryBgValidation"] = true;
@@ -2098,7 +2102,7 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.secondaryBgValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" and has a
+                    Please ensure that the color code starts with "#" <br />and has a
                     maximum length of 7 characters
                   </p>
                 ) : null}
@@ -2127,7 +2131,7 @@ const StoreSettings = () => {
                       className="w-[150px]"
                       maxLength={7}
                       onChange={(e) => {
-                        const patternName = /^#[a-zA-Z0-9]*$/;
+                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["tertiaryBgValidation"] = true;
@@ -2175,7 +2179,7 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.tertiaryBgValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" and has a
+                    Please ensure that the color code starts with "#" <br />and has a
                     maximum length of 7 characters
                   </p>
                 ) : null}
@@ -2252,7 +2256,7 @@ const StoreSettings = () => {
                       maxLength={7}
                       className="w-[150px]"
                       onChange={(e) => {
-                        const patternName = /^#[a-zA-Z0-9]*$/;
+                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["primaryTextValidation"] = true;
@@ -2300,7 +2304,7 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.primaryTextValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" and has a
+                    Please ensure that the color code starts with "#" <br />and has a
                     maximum length of 7 characters
                   </p>
                 ) : null}
@@ -2329,7 +2333,7 @@ const StoreSettings = () => {
                       maxLength={7}
                       className="w-[150px]"
                       onChange={(e) => {
-                        const patternName = /^#[a-zA-Z0-9]*$/;
+                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["secondaryTextValidation"] = true;
@@ -2377,7 +2381,7 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.secondaryTextValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" and has a
+                    Please ensure that the color code starts with "#" <br />and has a
                     maximum length of 7 characters
                   </p>
                 ) : null}
@@ -2403,7 +2407,7 @@ const StoreSettings = () => {
                     <Input
                       value={buttonTeritaryForegroundColor}
                       onChange={(e) => {
-                        const patternName = /^#[a-zA-Z0-9]*$/;
+                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["tertiaryTextValidation"] = true;
@@ -2452,7 +2456,7 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.tertiaryTextValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" and has a
+                    Please ensure that the color code starts with "#" <br/>and has a
                     maximum length of 7 characters
                   </p>
                 ) : null}
@@ -2537,7 +2541,7 @@ const StoreSettings = () => {
                       maxLength={7}
                       className="w-[150px]"
                       onChange={(e) => {
-                        const patternName = /^#[a-zA-Z0-9]*$/;
+                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["headerBgValidation"] = true;
@@ -2581,7 +2585,7 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.headerBgValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" and has a
+                    Please ensure that the color code starts with "#" <br />and has a
                     maximum length of 7 characters
                   </p>
                 ) : null}
@@ -2608,7 +2612,7 @@ const StoreSettings = () => {
                       className="w-[150px]"
                       maxLength={7}
                       onChange={(e) => {
-                        const patternName = /^#[a-zA-Z0-9]*$/;
+                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["headerTextValidation"] = true;
@@ -2652,7 +2656,7 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.headerTextValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" and has a
+                    Please ensure that the color code starts with "#" <br/>and has a
                     maximum length of 7 characters
                   </p>
                 ) : null}
@@ -2686,7 +2690,7 @@ const StoreSettings = () => {
                       className="w-[150px]"
                       maxLength={7}
                       onChange={(e) => {
-                        const patternName = /^#[a-zA-Z0-9]*$/;
+                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["footerBgValidation"] = true;
@@ -2730,7 +2734,7 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.footerBgValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" and has a
+                    Please ensure that the color code starts with "#" <br/>and has a
                     maximum length of 7 characters
                   </p>
                 ) : null}
@@ -2755,7 +2759,7 @@ const StoreSettings = () => {
                       className="w-[150px]"
                       maxLength={7}
                       onChange={(e) => {
-                        const patternName = /^#[a-zA-Z0-9]*$/;
+                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["footerTextValidation"] = true;
@@ -2799,7 +2803,7 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.footerTextValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" and has a
+                    Please ensure that the color code starts with "#" <br/>and has a
                     maximum length of 7 characters
                   </p>
                 ) : null}
