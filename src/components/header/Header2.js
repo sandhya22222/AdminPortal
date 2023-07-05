@@ -100,8 +100,8 @@ const Header2 = () => {
   };
 
   const handleLanguageClick = (e) => {
-    Cookies.set("dmvplng", e.key);
-    localStorage.setItem("dmvplng", e.key);
+    Cookies.set("dmaplng", e.key);
+    localStorage.setItem("dmaplng", e.key);
     setStoreSelectedLngCode(e.key);
     dispatch(
       fnSelectedLanguage(
@@ -110,6 +110,12 @@ const Header2 = () => {
     );
     navigate(0);
   };
+
+  useEffect(() => {
+    setStoreSelectedLngCode(
+      selectedLanguage && selectedLanguage.dm_language_code
+    );
+  }, [selectedLanguage]);
 
   return (
     <Content>

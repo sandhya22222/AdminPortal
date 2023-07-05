@@ -154,10 +154,10 @@ const Dashboard = () => {
     //     dm_language_code: "en",
     //   },
     // ];
-    dispatch(fnSelectedLanguage(languageData));
-    dispatch(fnDefaultLanguage(languageData));
+    dispatch(fnSelectedLanguage(languageData[0]));
+    dispatch(fnDefaultLanguage(languageData[0]));
     dispatch(fnStoreLanguage(languageData));
-    Cookies.set("dmaplng", languageData.dm_language_code);
+    Cookies.set("dmaplng", languageData[0].dm_language_code);
   }, []);
 
   const getAccessToken = () => {

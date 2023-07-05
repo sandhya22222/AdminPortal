@@ -22,8 +22,8 @@ let defaultLngCode =
 // console.log("defaultLngCode1", defaultLngCode);
 defaultLngCode = defaultLngCode && JSON.parse(defaultLngCode).storeLanguage;
 // console.log("defaultLngCode2", defaultLngCode);
-defaultLngCode = defaultLngCode;
-defaultLngCode.filter((element) => element.is_default);
+defaultLngCode =
+  defaultLngCode && defaultLngCode.filter((element) => element.is_default);
 // console.log("defaultLngCode3", defaultLngCode);
 defaultLngCode =
   defaultLngCode && defaultLngCode[0] && defaultLngCode[0].dm_language_code;
