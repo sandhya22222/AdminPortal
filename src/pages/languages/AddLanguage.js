@@ -167,13 +167,14 @@ const AddLanguage = () => {
           toast("Something went wrong, please try again later", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
-            autoClose: false,
+            autoClose: 10000,
           });
         } else {
           if (error.response.status === 409) {
             toast(`${error.response.data.message}`, {
               position: toast.POSITION.TOP_RIGHT,
               type: "error",
+              autoClose: 10000,
             });
           }
           //  else if (fileData) {
@@ -183,7 +184,7 @@ const AddLanguage = () => {
           //       {
           //         position: toast.POSITION.TOP_RIGHT,
           //         type: "error",
-          //         autoClose: false,
+          //         autoClose: 10000,
           //       }
           //     );
           //   }
@@ -192,6 +193,7 @@ const AddLanguage = () => {
             toast(`${error.response.data.message}`, {
               position: toast.POSITION.TOP_RIGHT,
               type: "error",
+              autoClose: 10000,
             });
           }
         }
@@ -205,7 +207,7 @@ const AddLanguage = () => {
       setIsLanguageFieldEmpty(true);
       validValues--;
       toast("Please enter the language name", {
-        autoClose: false,
+        autoClose: 10000,
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
@@ -218,14 +220,14 @@ const AddLanguage = () => {
       toast("Language name must contain minimum of 4 characters", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     }
     if (languageCode.trim() === "") {
       setIsLanguageCodeFieldEmpty(true);
       validValues--;
       toast("Please enter the language code.", {
-        autoClose: false,
+        autoClose: 10000,
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
@@ -238,7 +240,7 @@ const AddLanguage = () => {
       toast("Language code must contain minimum of 2 characters", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     }
     // if (regex === "") {
@@ -317,6 +319,7 @@ const AddLanguage = () => {
         toast("File uploaded successfully", {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
+          autoClose: 10000,
         });
         // setIsUpLoading(false);
         console.log("Server Success Response From files", response.data);
@@ -334,7 +337,7 @@ const AddLanguage = () => {
               {
                 position: toast.POSITION.TOP_RIGHT,
                 type: "error",
-                autoClose: false,
+                autoClose: 10000,
               }
             );
           }
@@ -342,12 +345,13 @@ const AddLanguage = () => {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
+            autoClose: 10000,
           });
         } else {
           toast("Something went wrong, please try again later", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
-            autoClose: false,
+            autoClose: 10000,
           });
         }
         console.log(error.response);
@@ -379,6 +383,7 @@ const AddLanguage = () => {
           toast("Document deleted successfully", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
+            autoClose: 10000,
           });
         }
         // disabling spinner
@@ -389,6 +394,7 @@ const AddLanguage = () => {
         toast(`${error.response.data.message}`, {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
+          autoClose: 10000,
         });
       });
   };

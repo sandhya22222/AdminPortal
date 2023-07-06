@@ -576,7 +576,7 @@ const Stores = () => {
       toast("Please enter the store name", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     }
     const patternName =/^[A-Za-z]+$/;
@@ -586,7 +586,7 @@ const Stores = () => {
       toast("Please enter the valid  store name", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     }
 
@@ -597,7 +597,7 @@ const Stores = () => {
       toast("Please enter the valid email address", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     }
     if (
@@ -610,7 +610,7 @@ const Stores = () => {
       toast("Please enter the valid email address", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+         autoClose: 10000,
       });
     }
     if (
@@ -623,7 +623,7 @@ const Stores = () => {
       toast("Please enter the username", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+         autoClose: 10000,
       });
     }
     const userRegex = /^[a-zA-Z0-9_ ]{6,15}$/;
@@ -635,7 +635,7 @@ const Stores = () => {
         {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
-          autoClose: false,
+           autoClose: 10000,
         }
       );
     }
@@ -657,7 +657,7 @@ const Stores = () => {
       toast("Please enter the password", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+         autoClose: 10000,
       });
     }
     const pattern =
@@ -670,7 +670,7 @@ const Stores = () => {
         {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
-          autoClose: false,
+           autoClose: 10000,
         }
       );
     }
@@ -707,6 +707,7 @@ const Stores = () => {
         toast("Store created successfully", {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
+          autoClose: 10000,
         });
         setIsUpLoading(false);
         // window.location.reload(true);
@@ -723,12 +724,13 @@ const Stores = () => {
           toast(`${error.response.data.name[0]}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
+            autoClose: 10000,
           });
         } else {
           toast("Something went wrong, please try again later", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
-            autoClose: false,
+             autoClose: 10000,
           });
         }
         console.log("Error respose from the store post call", error.response);
@@ -775,6 +777,7 @@ const Stores = () => {
           toast("Store updated successfully ", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
+            autoClose: 10000,
           });
         }
       })
@@ -784,12 +787,13 @@ const Stores = () => {
           toast(`${error.response.data.message.name[0]}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
+            autoClose: 10000,
           });
         } else {
           toast("Something went wrong, please try again later", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
-            autoClose: false,
+             autoClose: 10000,
           });
         }
       });
@@ -817,12 +821,13 @@ const Stores = () => {
       toast("Please enter the store name", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+         autoClose: 10000,
       });
     } else if (editName === serverStoreName) {
       toast("No changes were detected", {
         position: toast.POSITION.TOP_RIGHT,
         type: "info",
+        autoClose: 10000,
       });
     } else {
       updateStoreData();
@@ -887,6 +892,7 @@ const Stores = () => {
           toast("Store deleted successfully", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
+            autoClose: 10000,
           });
         }
         // disabling spinner
@@ -900,12 +906,13 @@ const Stores = () => {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
+            autoClose: 10000,
           });
         } else {
           toast("Something went wrong, please try again later", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
-            autoClose: false,
+             autoClose: 10000,
           });
         }
       });
