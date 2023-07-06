@@ -382,6 +382,7 @@ const StoreSettings = () => {
           toast("Media and store settings saved successfully", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
+            autoClose: 10000,
           });
         } else {
           if (Object.keys(sampleobject).length > 0) {
@@ -389,6 +390,7 @@ const StoreSettings = () => {
               toast("Store settings saved successfully", {
                 position: toast.POSITION.TOP_RIGHT,
                 type: "success",
+                autoClose: 10000,
               });
             }
           }
@@ -482,17 +484,19 @@ const StoreSettings = () => {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
+            autoClose: 10000,
           });
         } else if (error && error.response && error.response.status === 400) {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
+            autoClose: 10000,
           });
         } else {
           toast("Something went wrong, please try again later", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
-            autoClose: false,
+            autoClose: 10000,
           });
         }
         console.log(error.response);
@@ -518,7 +522,7 @@ const StoreSettings = () => {
       toast("Please enter the values for the mandatory field", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     } else if (
       currencySymbol !== "" &&
@@ -535,7 +539,7 @@ const StoreSettings = () => {
         {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
-          autoClose: false,
+          autoClose: 10000,
         }
       );
     } else if (
@@ -553,7 +557,7 @@ const StoreSettings = () => {
         {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
-          autoClose: false,
+          autoClose: 10000,
         }
       );
     } else if (
@@ -569,7 +573,7 @@ const StoreSettings = () => {
       toast("Please enter the Symbol, ISO Code, and Number to Basic fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     } else if (
       currencySymbol === "" &&
@@ -584,7 +588,7 @@ const StoreSettings = () => {
       toast("Please enter the Symbol, ISO Code, and Fractional Unit fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     } else if (
       currencySymbol === "" &&
@@ -598,7 +602,7 @@ const StoreSettings = () => {
       toast("Please enter the Symbol and ISO Code fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     } else if (
       currencySymbol === "" &&
@@ -612,7 +616,7 @@ const StoreSettings = () => {
       toast("Please enter the Symbol and Fractional Unit fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     } else if (
       currencySymbol === "" &&
@@ -626,7 +630,7 @@ const StoreSettings = () => {
       toast("Please enter the Symbol and Number to Basic fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     } else if (
       currencySymbol === "" &&
@@ -640,7 +644,7 @@ const StoreSettings = () => {
       toast("Please enter the Symbol and ISO Code fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     } else if (
       currencySymbol !== "" &&
@@ -654,7 +658,7 @@ const StoreSettings = () => {
       toast("Please enter the ISO Code and Fractional Unit fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     } else if (
       currencySymbol !== "" &&
@@ -668,7 +672,7 @@ const StoreSettings = () => {
       toast("Please enter the ISO Code and Number to Basic fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     } else if (
       currencySymbol === "" &&
@@ -682,7 +686,7 @@ const StoreSettings = () => {
       toast("Please enter the Symbol and Fractional Unit fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     } else if (
       currencySymbol !== "" &&
@@ -696,7 +700,7 @@ const StoreSettings = () => {
       toast("Please enter the Fractional unit and Number to Basic fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     } else if (
       currencySymbol === "" ||
@@ -708,7 +712,7 @@ const StoreSettings = () => {
       toast("Please enter the Symbol", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     } else if (
       currencyIsoCode === "" ||
@@ -720,7 +724,7 @@ const StoreSettings = () => {
       toast("Please enter the ISO code", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     } else if (
       fractionalUnit === "" ||
@@ -732,7 +736,7 @@ const StoreSettings = () => {
       toast("Please enter the Fractional Unit", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     } else if (
       numberToBasic === "" ||
@@ -744,7 +748,7 @@ const StoreSettings = () => {
       toast("Please enter the Number to Basic", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     } else if (
       (imageOfStoreSettingsCurrency && imageOfStoreSettingsCurrency.symbol) ===
@@ -811,6 +815,7 @@ const StoreSettings = () => {
       toast("No changes were detected", {
         position: toast.POSITION.TOP_RIGHT,
         type: "info",
+        autoClose: 10000,
       });
     }
     //else if (
@@ -894,6 +899,7 @@ const StoreSettings = () => {
       toast("Please provide the valid color value", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
+        autoClose: 10000,
       });
     }
     // else if (
@@ -1026,6 +1032,7 @@ const StoreSettings = () => {
             toast("Images saved successfully", {
               position: toast.POSITION.TOP_RIGHT,
               type: "success",
+              autoClose: 10000,
             });
           }
         }
@@ -1045,17 +1052,19 @@ const StoreSettings = () => {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
+            autoClose: 10000,
           });
         } else if (error && error.response && error.response.status === 400) {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
+            autoClose: 10000,
           });
         } else {
           toast("Something went wrong, please try again later", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
-            autoClose: false,
+            autoClose: 10000,
           });
         }
         console.log(error.response);
@@ -1122,6 +1131,7 @@ const StoreSettings = () => {
             toast("Images saved successfully", {
               position: toast.POSITION.TOP_RIGHT,
               type: "success",
+              autoClose: 10000,
             });
           }
         }
@@ -1143,17 +1153,19 @@ const StoreSettings = () => {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
+            autoClose: 10000,
           });
         } else if (error && error.response && error.response.status === 400) {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
+            autoClose: 10000,
           });
         } else {
           toast("Something went wrong, please try again later", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
-            autoClose: false,
+            autoClose: 10000,
           });
         }
         setIsUpLoading(false);
@@ -1522,6 +1534,7 @@ const StoreSettings = () => {
                         toast("No changes were detected", {
                           position: toast.POSITION.TOP_RIGHT,
                           type: "info",
+                          autoClose: 10000,
                         });
                       }
                     }}

@@ -352,6 +352,7 @@ const Language = () => {
           toast("Language deleted successfully", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
+            autoClose: 10000,
           });
         }
         // disabling spinner
@@ -364,7 +365,7 @@ const Language = () => {
         toast("Deletion unsuccessful, please try again later", {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
-          autoClose: false,
+          autoClose: 10000,
         });
       });
   };

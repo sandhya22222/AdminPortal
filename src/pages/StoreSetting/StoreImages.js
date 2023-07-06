@@ -409,6 +409,7 @@ const StoreImages = ({
           toast(`${response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
+            autoClose: 10000,
           });
         }
         if (type === "banner_images") {
@@ -433,6 +434,7 @@ const StoreImages = ({
         toast(`${error.response.data.message}`, {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
+          autoClose: 10000,
         });
       });
   };
