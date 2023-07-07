@@ -22,6 +22,18 @@ import {
 } from "react-icons/md";
 import { FaHome } from "react-icons/fa";
 import { AiOutlineHome } from "react-icons/ai";
+import {
+  ViewDashboard,
+  Store,
+  TranslateIcon,
+  PaymentTypeIcon,
+  PaymentTypeActiveIcon,
+  ProfileIcon,
+  viewDashboardActive,
+  StoreActive,
+  TranslationActive,
+  ProfileActive,
+} from "../../constants/media";
 //! Import CSS libraries
 
 //! Import user defined functions
@@ -55,23 +67,23 @@ const SidebarNew = () => {
     // },
     {
       key: "1",
-      icon: <MdDashboard className="!text-[#FCC32A]" />,
-      inactive_icon: <MdDashboard className="!text-[#ffffffde]" />,
+      icon: <img src={ViewDashboard} />,
+      inactive_icon: <img src={ViewDashboard} />,
       label: "Dashboard",
       navigate_to: "/dashboard",
       // children: [],
     },
     {
       key: "2",
-      icon: <MdStore className="!text-[#FCC32A]" />,
-      inactive_icon: <MdStore className="!text-[#ffffffde]" />,
+      icon: <img src={Store} />,
+      inactive_icon: <img src={Store} />,
       label: "Stores",
       navigate_to: "/dashboard/store",
     },
     {
       key: "3",
-      icon: <MdLanguage className="!text-[#FCC32A]" />,
-      inactive_icon: <MdLanguage className="!text-[#ffffffde]" />,
+      icon: <img src={TranslateIcon} />,
+      inactive_icon: <img src={TranslateIcon} />,
       label: "Languages",
       navigate_to: "/dashboard/language",
     },
@@ -83,15 +95,15 @@ const SidebarNew = () => {
     // },
     {
       key: "5",
-      icon: <MdOutlinePayment className="!text-[#FCC32A]" />,
-      inactive_icon: <MdOutlinePayment className="!text-[#ffffffde]" />,
+      icon: <img src={PaymentTypeIcon} />,
+      inactive_icon: <img src={PaymentTypeIcon} />,
       label: "Payment Type",
       navigate_to: "/dashboard/paymenttype",
     },
     {
       key: "6",
-      icon: <UserOutlined className="!text-[#FCC32A]" />,
-      inactive_icon: <UserOutlined className="!text-[#ffffffde]" />,
+      icon: <img src={ProfileIcon} />,
+      inactive_icon: <img src={ProfileIcon} />,
       label: "Profile",
       navigate_to: "/dashboard/userprofile",
     },
@@ -136,6 +148,7 @@ const SidebarNew = () => {
           style={{
             // overflow: "auto",
             height: "100vh",
+            backgroundColor: "#4A2D73",
             // left: 0,
 
             // top: 0,
@@ -152,7 +165,7 @@ const SidebarNew = () => {
           >
             <Menu
               mode="inline"
-              className="h-full !text-base !bg-[#001529]"
+              className="h-full !text-base !bg-[#4A2D73]"
               selectedKeys={selectedItem}
               openKeys={openedItem}
               theme={"dark"}

@@ -11,12 +11,21 @@ import WorkInProgress from "../assets/images/common/WorkInProgress.png";
 import AdminIcon from "../assets/images/common/AdminIcon.png";
 // import DmBrandLogo from "../assets/images/logo/torrymarketplace.png";
 import DmBrandLogo from "../assets/images/logo/primary2.svg";
-import marketPlaceLogo from "../assets/images/logo/marketplace-logo.png"
+import marketPlaceLogo from "../assets/images/logo/marketplace-logo.png";
 import Profit from "../assets/images/common/profit.png";
 import Positive from "../assets/images/common/positve.png";
 import Payment from "../assets/images/common/payment.png";
 import Logout503 from "../assets/images/common/503.png";
-
+import ViewDashboard from "../assets/images/sidebar/view-dashboard.png";
+import Store from "../assets/images/sidebar/store.png";
+import TranslateIcon from "../assets/images/sidebar/translate-variant.png";
+import PaymentTypeIcon from "../assets/images/sidebar/credit-card-settings-outline.png";
+import PaymentTypeActiveIcon from "../assets/images/sidebar/credit-card-settings-outline-active.png";
+import ProfileIcon from "../assets/images/sidebar/account.png";
+import viewDashboardActive from "../assets/images/sidebar/view-dashboard-acive.png"
+import StoreActive from "../assets/images/sidebar/store-active.png"
+import TranslationActive from "../assets/images/sidebar/translate-variant-active.png"
+import ProfileActive from "../assets/images/sidebar/account-active.png"
 export {
   BrandLogo,
   AppStoreLogo,
@@ -32,5 +41,15 @@ export {
   Positive,
   Payment,
   Logout503,
-  marketPlaceLogo
+  marketPlaceLogo,
+  ViewDashboard,
+  Store,
+  TranslateIcon,
+  PaymentTypeIcon,
+  PaymentTypeActiveIcon,
+  ProfileIcon,
+  viewDashboardActive,
+  StoreActive,
+  TranslationActive,
+  ProfileActive
 };
