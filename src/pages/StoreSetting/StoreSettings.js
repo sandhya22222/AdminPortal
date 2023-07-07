@@ -1782,7 +1782,19 @@ const StoreSettings = () => {
                     type="color"
                     value={pageBackgroundColor}
                     onChange={(e) => {
-                      setPageBackgroundColor(e.target.value);
+                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      if (patternName.test(e.target.value) === false) {
+                        let temp = { ...colorCodeValidation };
+                        temp["pageBgColorValidation"] = true;
+                        setColorCodeValidation(temp);
+                        setPageBackgroundColor(e.target.value);
+                      } else {
+                        let temp = { ...colorCodeValidation };
+                        temp["pageBgColorValidation"] = false;
+                        setColorCodeValidation(temp);
+                        setPageBackgroundColor(e.target.value);
+                      }
+                      // setPageBackgroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreSettingsPageTheme };
                       temp["bg_color"] = e.target.value;
                       setCopyImageOfStoreSettingsPageTheme(temp);
@@ -1838,9 +1850,7 @@ const StoreSettings = () => {
                   </Space.Compact>
                 </Content>
                 {colorCodeValidation.pageBgColorValidation === true ? (
-                  <p
-                    className="text-red-600 text-sm"
-                  >
+                  <p className="text-red-600 text-sm">
                     Please ensure that the color code starts with "#" <br />
                     and has a maximum length of 7 characters
                   </p>
@@ -1855,7 +1865,19 @@ const StoreSettings = () => {
                     minLength={1}
                     value={foreGroundColor}
                     onChange={(e) => {
-                      setForeGroundColor(e.target.value);
+                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      if (patternName.test(e.target.value) === false) {
+                        let temp = { ...colorCodeValidation };
+                        temp["pageTextColorValidation"] = true;
+                        setColorCodeValidation(temp);
+                        setForeGroundColor(e.target.value);
+                      } else {
+                        let temp = { ...colorCodeValidation };
+                        temp["pageTextColorValidation"] = false;
+                        setColorCodeValidation(temp);
+                        setForeGroundColor(e.target.value);
+                      }
+                      // setForeGroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreSettingsPageTheme };
                       temp["fg_color"] = e.target.value;
                       setCopyImageOfStoreSettingsPageTheme(temp);
@@ -1912,8 +1934,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.pageTextColorValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" <br/> and has a
-                    maximum length of 7 characters
+                    Please ensure that the color code starts with "#" <br /> and
+                    has a maximum length of 7 characters
                   </p>
                 ) : null}
               </Col>
@@ -1979,7 +2001,19 @@ const StoreSettings = () => {
                     minLength={1}
                     value={buttonPrimaryBackgroundColor}
                     onChange={(e) => {
-                      setButtonPrimaryBackgroundColor(e.target.value);
+                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      if (patternName.test(e.target.value) === false) {
+                        let temp = { ...colorCodeValidation };
+                        temp["primaryBgValidation"] = true;
+                        setColorCodeValidation(temp);
+                        setButtonPrimaryBackgroundColor(e.target.value);
+                      } else {
+                        let temp = { ...colorCodeValidation };
+                        temp["primaryBgValidation"] = false;
+                        setColorCodeValidation(temp);
+                        setButtonPrimaryBackgroundColor(e.target.value);
+                      }
+                      // setButtonPrimaryBackgroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreSettingsPageTheme };
                       temp["btn_primary_bg_color"] = e.target.value;
                       setCopyImageOfStoreSettingsPageTheme(temp);
@@ -2039,8 +2073,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.primaryBgValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" <br/> and has a
-                    maximum length of 7 characters
+                    Please ensure that the color code starts with "#" <br /> and
+                    has a maximum length of 7 characters
                   </p>
                 ) : null}
               </Col>
@@ -2054,7 +2088,19 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                     value={buttonSecondaryBackgroundColor}
                     onChange={(e) => {
-                      setButtonSecondaryBackgroundColor(e.target.value);
+                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      if (patternName.test(e.target.value) === false) {
+                        let temp = { ...colorCodeValidation };
+                        temp["secondaryBgValidation"] = true;
+                        setColorCodeValidation(temp);
+                        setButtonSecondaryBackgroundColor(e.target.value);
+                      } else {
+                        let temp = { ...colorCodeValidation };
+                        temp["secondaryBgValidation"] = false;
+                        setColorCodeValidation(temp);
+                        setButtonSecondaryBackgroundColor(e.target.value);
+                      }
+                      // setButtonSecondaryBackgroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreSettingsPageTheme };
                       temp["btn_secondary_bg_color"] = e.target.value;
                       setCopyImageOfStoreSettingsPageTheme(temp);
@@ -2115,8 +2161,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.secondaryBgValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" <br />and has a
-                    maximum length of 7 characters
+                    Please ensure that the color code starts with "#" <br />
+                    and has a maximum length of 7 characters
                   </p>
                 ) : null}
               </Col>
@@ -2132,7 +2178,19 @@ const StoreSettings = () => {
                     minLength={1}
                     value={buttonTeritaryBackgroundColor}
                     onChange={(e) => {
-                      setButtonTeritaryBackgroundColor(e.target.value);
+                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      if (patternName.test(e.target.value) === false) {
+                        let temp = { ...colorCodeValidation };
+                        temp["tertiaryBgValidation"] = true;
+                        setColorCodeValidation(temp);
+                        setButtonTeritaryBackgroundColor(e.target.value);
+                      } else {
+                        let temp = { ...colorCodeValidation };
+                        temp["tertiaryBgValidation"] = false;
+                        setColorCodeValidation(temp);
+                        setButtonTeritaryBackgroundColor(e.target.value);
+                      }
+                      // setButtonTeritaryBackgroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreSettingsPageTheme };
                       temp["btn_tertiary_bg_color"] = e.target.value;
                       setCopyImageOfStoreSettingsPageTheme(temp);
@@ -2192,8 +2250,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.tertiaryBgValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" <br />and has a
-                    maximum length of 7 characters
+                    Please ensure that the color code starts with "#" <br />
+                    and has a maximum length of 7 characters
                   </p>
                 ) : null}
               </Col>
@@ -2257,7 +2315,19 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                     value={buttonPrimaryForegroundColor}
                     onChange={(e) => {
-                      setButtonPrimaryForegroundColor(e.target.value);
+                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      if (patternName.test(e.target.value) === false) {
+                        let temp = { ...colorCodeValidation };
+                        temp["primaryTextValidation"] = true;
+                        setColorCodeValidation(temp);
+                        setButtonPrimaryForegroundColor(e.target.value);
+                      } else {
+                        let temp = { ...colorCodeValidation };
+                        temp["primaryTextValidation"] = false;
+                        setColorCodeValidation(temp);
+                        setButtonPrimaryForegroundColor(e.target.value);
+                      }
+                      // setButtonPrimaryForegroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreSettingsPageTheme };
                       temp["btn_primary_fg_color"] = e.target.value;
                       setCopyImageOfStoreSettingsPageTheme(temp);
@@ -2317,8 +2387,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.primaryTextValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" <br />and has a
-                    maximum length of 7 characters
+                    Please ensure that the color code starts with "#" <br />
+                    and has a maximum length of 7 characters
                   </p>
                 ) : null}
               </Col>
@@ -2334,7 +2404,19 @@ const StoreSettings = () => {
                     minLength={1}
                     value={buttonSecondaryForegroundColor}
                     onChange={(e) => {
-                      setButtonSecondaryForegroundColor(e.target.value);
+                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      if (patternName.test(e.target.value) === false) {
+                        let temp = { ...colorCodeValidation };
+                        temp["secondaryTextValidation"] = true;
+                        setColorCodeValidation(temp);
+                        setButtonSecondaryForegroundColor(e.target.value);
+                      } else {
+                        let temp = { ...colorCodeValidation };
+                        temp["secondaryTextValidation"] = false;
+                        setColorCodeValidation(temp);
+                        setButtonSecondaryForegroundColor(e.target.value);
+                      }
+                      // setButtonSecondaryForegroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreSettingsPageTheme };
                       temp["btn_secondary_fg_color"] = e.target.value;
                       setCopyImageOfStoreSettingsPageTheme(temp);
@@ -2394,8 +2476,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.secondaryTextValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" <br />and has a
-                    maximum length of 7 characters
+                    Please ensure that the color code starts with "#" <br />
+                    and has a maximum length of 7 characters
                   </p>
                 ) : null}
               </Col>
@@ -2410,7 +2492,19 @@ const StoreSettings = () => {
                     maxLength={7}
                     value={buttonTeritaryForegroundColor}
                     onChange={(e) => {
-                      setButtonTeritaryForegroundColor(e.target.value);
+                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      if (patternName.test(e.target.value) === false) {
+                        let temp = { ...colorCodeValidation };
+                        temp["tertiaryTextValidation"] = true;
+                        setColorCodeValidation(temp);
+                        setButtonTeritaryForegroundColor(e.target.value);
+                      } else {
+                        let temp = { ...colorCodeValidation };
+                        temp["tertiaryTextValidation"] = false;
+                        setColorCodeValidation(temp);
+                        setButtonTeritaryForegroundColor(e.target.value);
+                      }
+                      // setButtonTeritaryForegroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreSettingsPageTheme };
                       temp["btn_tertiary_fg_color"] = e.target.value;
                       setCopyImageOfStoreSettingsPageTheme(temp);
@@ -2469,8 +2563,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.tertiaryTextValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" <br/>and has a
-                    maximum length of 7 characters
+                    Please ensure that the color code starts with "#" <br />
+                    and has a maximum length of 7 characters
                   </p>
                 ) : null}
               </Col>
@@ -2542,7 +2636,19 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                     value={headerBackgroundColor}
                     onChange={(e) => {
-                      setHeaderBackgroundColor(e.target.value);
+                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      if (patternName.test(e.target.value) === false) {
+                        let temp = { ...colorCodeValidation };
+                        temp["headerBgValidation"] = true;
+                        setColorCodeValidation(temp);
+                        setHeaderBackgroundColor(e.target.value);
+                      } else {
+                        let temp = { ...colorCodeValidation };
+                        temp["headerBgValidation"] = false;
+                        setColorCodeValidation(temp);
+                        setHeaderBackgroundColor(e.target.value);
+                      }
+                      // setHeaderBackgroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreHeaderSetting };
                       temp["bg_color"] = e.target.value;
                       setCopyImageOfStoreHeaderSetting(temp);
@@ -2598,8 +2704,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.headerBgValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" <br />and has a
-                    maximum length of 7 characters
+                    Please ensure that the color code starts with "#" <br />
+                    and has a maximum length of 7 characters
                   </p>
                 ) : null}
               </Col>
@@ -2613,7 +2719,19 @@ const StoreSettings = () => {
                     minLength={1}
                     value={headerForegroundColor}
                     onChange={(e) => {
-                      setHeaderForegroundColor(e.target.value);
+                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      if (patternName.test(e.target.value) === false) {
+                        let temp = { ...colorCodeValidation };
+                        temp["headerTextValidation"] = true;
+                        setColorCodeValidation(temp);
+                        setHeaderForegroundColor(e.target.value);
+                      } else {
+                        let temp = { ...colorCodeValidation };
+                        temp["headerTextValidation"] = false;
+                        setColorCodeValidation(temp);
+                        setHeaderForegroundColor(e.target.value);
+                      }
+                      // setHeaderForegroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreHeaderSetting };
                       temp["fg_color"] = e.target.value;
                       setCopyImageOfStoreHeaderSetting(temp);
@@ -2669,8 +2787,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.headerTextValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" <br/>and has a
-                    maximum length of 7 characters
+                    Please ensure that the color code starts with "#" <br />
+                    and has a maximum length of 7 characters
                   </p>
                 ) : null}
               </Col>
@@ -2691,7 +2809,19 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                     value={footerBackgroundColor}
                     onChange={(e) => {
-                      setFooterBackgroundColor(e.target.value);
+                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      if (patternName.test(e.target.value) === false) {
+                        let temp = { ...colorCodeValidation };
+                        temp["footerBgValidation"] = true;
+                        setColorCodeValidation(temp);
+                        setFooterBackgroundColor(e.target.value);
+                      } else {
+                        let temp = { ...colorCodeValidation };
+                        temp["footerBgValidation"] = false;
+                        setColorCodeValidation(temp);
+                        setFooterBackgroundColor(e.target.value);
+                      }
+                      // setFooterBackgroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreFooterSetting };
                       temp["bg_color"] = e.target.value;
                       setCopyImageOfStoreFooterSetting(temp);
@@ -2747,8 +2877,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.footerBgValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" <br/>and has a
-                    maximum length of 7 characters
+                    Please ensure that the color code starts with "#" <br />
+                    and has a maximum length of 7 characters
                   </p>
                 ) : null}
               </Col>
@@ -2760,7 +2890,19 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                     value={footerForegroundColor}
                     onChange={(e) => {
-                      setFooterForegroundColor(e.target.value);
+                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      if (patternName.test(e.target.value) === false) {
+                        let temp = { ...colorCodeValidation };
+                        temp["footerTextValidation"] = true;
+                        setColorCodeValidation(temp);
+                        setFooterForegroundColor(e.target.value);
+                      } else {
+                        let temp = { ...colorCodeValidation };
+                        temp["footerTextValidation"] = false;
+                        setColorCodeValidation(temp);
+                        setFooterForegroundColor(e.target.value);
+                      }
+                      // setFooterForegroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreFooterSetting };
                       temp["fg_color"] = e.target.value;
                       setCopyImageOfStoreFooterSetting(temp);
@@ -2816,8 +2958,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.footerTextValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" <br/>and has a
-                    maximum length of 7 characters
+                    Please ensure that the color code starts with "#" <br />
+                    and has a maximum length of 7 characters
                   </p>
                 ) : null}
               </Col>

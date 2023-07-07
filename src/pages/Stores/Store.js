@@ -579,7 +579,7 @@ const Stores = () => {
         autoClose: 10000,
       });
     }
-    const patternName =/^[A-Za-z]+$/;
+    const patternName = /^[A-Za-z]+$/;
     if (name && patternName.test(name.trim()) === false) {
       setInValidName(true);
       count--;
@@ -610,7 +610,7 @@ const Stores = () => {
       toast("Please enter the valid email address", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-         autoClose: 10000,
+        autoClose: 10000,
       });
     }
     if (
@@ -623,7 +623,7 @@ const Stores = () => {
       toast("Please enter the username", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-         autoClose: 10000,
+        autoClose: 10000,
       });
     }
     const userRegex = /^[a-zA-Z0-9_ ]{6,15}$/;
@@ -635,7 +635,7 @@ const Stores = () => {
         {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
-           autoClose: 10000,
+          autoClose: 10000,
         }
       );
     }
@@ -657,7 +657,7 @@ const Stores = () => {
       toast("Please enter the password", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-         autoClose: 10000,
+        autoClose: 10000,
       });
     }
     const pattern =
@@ -670,7 +670,7 @@ const Stores = () => {
         {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
-           autoClose: 10000,
+          autoClose: 10000,
         }
       );
     }
@@ -730,7 +730,7 @@ const Stores = () => {
           toast("Something went wrong, please try again later", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
-             autoClose: 10000,
+            autoClose: 10000,
           });
         }
         console.log("Error respose from the store post call", error.response);
@@ -793,7 +793,7 @@ const Stores = () => {
           toast("Something went wrong, please try again later", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
-             autoClose: 10000,
+            autoClose: 10000,
           });
         }
       });
@@ -821,7 +821,7 @@ const Stores = () => {
       toast("Please enter the store name", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-         autoClose: 10000,
+        autoClose: 10000,
       });
     } else if (editName === serverStoreName) {
       toast("No changes were detected", {
@@ -912,7 +912,7 @@ const Stores = () => {
           toast("Something went wrong, please try again later", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
-             autoClose: 10000,
+            autoClose: 10000,
           });
         }
       });
@@ -1008,7 +1008,7 @@ const Stores = () => {
                               setName(e.target.value);
                             } else {
                               setName(e.target.value);
-                            
+
                               setShowStoreErrorMessage(false);
                             }
                             setInValidName(false);
@@ -1264,9 +1264,11 @@ const Stores = () => {
           <Layout className="p-0 text-center mb-3 bg-[#F4F4F4]">
             {/* <p>Validation in Progress</p> */}
             <p>
-              {errorMessage
-                ? errorMessage
-                : "Please wait while we validate your information. If this process persists, please consider logging out and logging back in"}
+              {/* {errorMessage
+                ? errorMessage :*/}
+              Please wait while we validate your information. If this process
+              persists, please consider logging out and logging back in
+              {/* } */}
             </p>
           </Layout>
         ) : (
