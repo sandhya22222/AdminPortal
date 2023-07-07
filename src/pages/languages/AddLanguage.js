@@ -37,7 +37,7 @@ const AddLanguage = () => {
   const [isLanguageCodeFieldEmpty, setIsLanguageCodeFieldEmpty] =
     useState(false);
   const [isSpecialCharacter, setIsSpecialCharacter] = useState("");
-  const [isRegexFieldEmpty, setIsRegexFieldEmpty] = useState(false);
+  const [isNativeFieldEmpty, setIsNativeFieldEmpty] = useState(false);
   const [language, setLanguage] = useState("");
   const [languageCode, setLanguageCode] = useState("");
   const [regex, setRegex] = useState("^[s\\S\\]*");
@@ -212,10 +212,9 @@ const AddLanguage = () => {
         type: "error",
       });
     }
-    const languageReg = /^[a-zA-Z0-9]{4,15}$/;
+    const languageReg = /^[a-zA-Z]{4,15}$/;
     if (language.trim() && languageReg.test(language.trim()) === false) {
       validValues--;
-
       setIsLanguageFieldEmpty(true);
       toast("Language name must contain minimum of 4 characters", {
         position: toast.POSITION.TOP_RIGHT,
@@ -232,12 +231,20 @@ const AddLanguage = () => {
         type: "error",
       });
     }
-    const userRegex = /^[a-zA-Z0-9]{2,3}$/;
+    const userRegex = /^[a-zA-Z]{2,3}$/;
     if (languageCode.trim() && userRegex.test(languageCode.trim()) === false) {
       validValues--;
 
       setIsLanguageCodeFieldEmpty(true);
       toast("Language code must contain minimum of 2 characters", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+        autoClose: 10000,
+      });
+    }
+    if (nativeName.trim().length < 4) {
+      setIsNativeFieldEmpty(true);
+      toast("Native name must contain minimum of 2 characters", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -256,7 +263,7 @@ const AddLanguage = () => {
       saveLanguageAPI();
     }
   };
-
+  console.log("first", nativeName.trim().length);
   const addLanguageButtonHeader = () => {
     return (
       <>
@@ -561,10 +568,13 @@ const AddLanguage = () => {
                         value={nativeName}
                         onChange={(e) => {
                           handleNativeNameChange(e);
+                          setIsNativeFieldEmpty(false);
                         }}
-                        // className={
-                        //   "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
-                        // }
+                        className={`${
+                          isNativeFieldEmpty
+                            ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
+                            : ""
+                        }`}
                       />
                     </Content>
                   </Col>
@@ -603,6 +613,7 @@ const AddLanguage = () => {
                       return false;
                     }}
                     accept=".csv"
+                    maxCount={1}
                     name="file"
                     onChange={(e) => handleDropImage(e)}
                     // onRemove={(e) => removeLanguageDocument(e)}

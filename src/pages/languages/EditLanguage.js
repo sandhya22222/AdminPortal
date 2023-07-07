@@ -65,6 +65,7 @@ const EditLanguage = () => {
   const [isLanguageFieldEmpty, setIsLanguageFieldEmpty] = useState(false);
   const [isLanguageCodeFieldEmpty, setIsLanguageCodeFieldEmpty] =
     useState(false);
+  const [isNativeFieldEmpty, setIsNativeFieldEmpty] = useState(false);
   const [isRegexFieldEmpty, setIsRegexFieldEmpty] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(false);
@@ -631,7 +632,7 @@ const EditLanguage = () => {
                               }`}
                               maxLength={15}
                               onChange={(e) => {
-                                const regex = /^[a-zA-Z0-9]*$/;
+                                const regex = /^[a-zA-Z]*$/;
                                 if (
                                   e.target.value !== "" &&
                                   testValueByRegexPattern(regex, e.target.value)
@@ -663,7 +664,7 @@ const EditLanguage = () => {
                                   : ""
                               }`}
                               onChange={(e) => {
-                                const regex = /^[a-zA-Z0-9]*$/;
+                                const regex = /^[a-zA-Z]*$/;
                                 if (
                                   e.target.value !== "" &&
                                   testValueByRegexPattern(regex, e.target.value)
@@ -716,8 +717,26 @@ const EditLanguage = () => {
                             <Input
                               placeholder="Enter Native Name"
                               value={languageDetails.native_name}
+                              // className={`${
+                              //   isNativeFieldEmpty
+                              //     ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
+                              //     : ""
+                              // }`}
                               onChange={(e) => {
+                                // if (languageDetails.native_name.length < 4) {
+                                //   setIsNativeFieldEmpty(true);
+                                //   toast(
+                                //     "Native name must contain minimum of 2 characters",
+                                //     {
+                                //       position: toast.POSITION.TOP_RIGHT,
+                                //       type: "error",
+                                //       autoClose: 10000,
+                                //     }
+                                //   );
+                                // } else {
+                                // setIsNativeFieldEmpty(false);
                                 languageHandler("native_name", e.target.value);
+                                // }
                               }}
                               // className={
                               //   "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
