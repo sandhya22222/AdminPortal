@@ -1,6 +1,15 @@
-:where(.css-dev-only-do-not-override-diro6f).ant-menu-light .ant-menu-item-selected {
-  background-color: #1A5692 !important;
+:where(.css-dev-only-do-not-override-diro6f).ant-menu-light
+  .ant-menu-item-selected {
+  background-color: #7d3192 !important;
   color: white !important;
 }
 
+:where(.css-dev-only-do-not-override-diro6f).ant-menu-dark
+  .ant-menu-item-selected {
+  background-color: #7d3192 !important;
+}
 
+:where(.css-dev-only-do-not-override-diro6f).ant-layout
+  .ant-layout-sider-trigger {
+  background-color: #4a2d73 !important;
+}
