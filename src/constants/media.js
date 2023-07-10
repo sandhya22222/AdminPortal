@@ -20,12 +20,9 @@ import ViewDashboard from "../assets/images/sidebar/view-dashboard.png";
 import Store from "../assets/images/sidebar/store.png";
 import TranslateIcon from "../assets/images/sidebar/translate-variant.png";
 import PaymentTypeIcon from "../assets/images/sidebar/credit-card-settings-outline.png";
-import PaymentTypeActiveIcon from "../assets/images/sidebar/credit-card-settings-outline-active.png";
 import ProfileIcon from "../assets/images/sidebar/account.png";
-import viewDashboardActive from "../assets/images/sidebar/view-dashboard-acive.png"
-import StoreActive from "../assets/images/sidebar/store-active.png"
-import TranslationActive from "../assets/images/sidebar/translate-variant-active.png"
-import ProfileActive from "../assets/images/sidebar/account-active.png"
+import BackBurger from "../assets/images/sidebar/backburger.png";
+import menuIcon from "../assets/images/sidebar/menu.png"
 export {
   BrandLogo,
   AppStoreLogo,
@@ -46,10 +43,7 @@ export {
   Store,
   TranslateIcon,
   PaymentTypeIcon,
-  PaymentTypeActiveIcon,
   ProfileIcon,
-  viewDashboardActive,
-  StoreActive,
-  TranslationActive,
-  ProfileActive
+  BackBurger,
+  menuIcon
 };

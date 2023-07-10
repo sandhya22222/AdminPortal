@@ -9,7 +9,17 @@
   background-color: #7d3192 !important;
 }
 
-:where(.css-dev-only-do-not-override-diro6f).ant-layout
+/* :where(.css-dev-only-do-not-override-diro6f).ant-layout
   .ant-layout-sider-trigger {
   background-color: #4a2d73 !important;
+} */
+
+/* .anticon.anticon-right {
+  background-image: url("../../assets/images/sidebar/backburger.png") !important;
+  /* display: none; 
 }
+
+.anticon.anticon-left {
+  background-image: url("../../assets/images/sidebar/backburger.png") !important;
+  /* display: none; 
+} */
