@@ -26,7 +26,7 @@ import {
   useParams,
   useNavigate,
 } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+
 import { AdminIcon, Profit, Positive, Payment } from "../../constants/media";
 
 import { MdDomainDisabled, MdBusiness, MdStore } from "react-icons/md";
@@ -40,12 +40,6 @@ import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDes
 import { usePageTitle } from "../../hooks/usePageTitle";
 import { WorkInProgress } from "../../constants/media";
 import DmTabAntDesign from "../../components/DmTabAntDesign/DmTabAntDesign";
-import Cookies from "js-cookie";
-import {
-  fnSelectedLanguage,
-  fnDefaultLanguage,
-  fnStoreLanguage,
-} from "../../services/redux/actions/ActionStoreLanguage";
 //! Import user defined functions
 
 //! Import user defined CSS
@@ -72,8 +66,8 @@ const getAccessTokenUrl = process.env.REACT_APP_ACCESSTOKEN;
 const storeAdminDashboardAPI =
   process.env.REACT_APP_STORE_ADMIN_DASHBOARD_DATA_API;
 const currencySymbol = process.env.REACT_APP_CURRENCY_SYMBOL;
-const languageData = JSON.parse(process.env.REACT_APP_SUPPORTED_LNGS);
 // const auth = getAuth.toLowerCase() === "true";
+
 //! Destructure the components
 const { Title, Text } = Typography;
 const { Content } = Layout;
@@ -91,7 +85,6 @@ const instance = axios.create();
 delete instance.defaults.headers.common["Authorization"];
 const Dashboard = () => {
   const auth = useAuth();
-  const dispatch = useDispatch();
   usePageTitle("Admin Portal - Dashboard");
   const location = useLocation();
   const navigate = useNavigate();
@@ -145,19 +138,6 @@ const Dashboard = () => {
     if (auth.isAuthenticated) {
       getDashBoardData();
     }
-    // let languageData = [
-    //   {
-    //     id: "1",
-    //     dm_language_id: "1",
-    //     is_default: true,
-    //     language_name: "English",
-    //     dm_language_code: "en",
-    //   },
-    // ];
-    dispatch(fnSelectedLanguage(languageData[0]));
-    dispatch(fnDefaultLanguage(languageData[0]));
-    dispatch(fnStoreLanguage(languageData));
-    Cookies.set("dmaplng", languageData[0].dm_language_code);
   }, []);
 
   const getAccessToken = () => {
@@ -394,6 +374,7 @@ const Dashboard = () => {
     },
   };
 
+  console.log("dashboardData----->", dashboardData);
   return (
     // <Content className="p-3">
     //   <Spin spinning={isLoading} indicator={antIcon} tip="Please Wait...">
@@ -421,7 +402,7 @@ const Dashboard = () => {
     //   </Spin>
     // </Content>
     <Content className="">
-      <Content className="">
+      <Content className="mb-2">
         <HeaderForTitle
           title={
             <Content className="flex !justify-between">
@@ -435,7 +416,7 @@ const Dashboard = () => {
           }
         />
       </Content>
-      <Content className="!p-[1.2rem] !mt-[8rem] !min-h-screen">
+      <Content className="!p-[1.2rem] !mt-[155px] !min-h-screen">
         {dashboardDataLoading ? (
           <Content className="bg-white !p-3">
             <Content className="flex justify-between">
@@ -546,68 +527,86 @@ const Dashboard = () => {
                 </Content>
               </Content>
               <Content
-                className="p-3 mr-5 shadow-sm rounded-md justify-between !w-auto flex !bg-white"
+                className="p-3 mr-5 shadow-sm rounded-md justify-between !w-auto flex just !bg-white"
                 // style={{
                 //   background:
                 //     "linear-gradient(74.8deg, rgba(234, 67, 53, 0.6) 0%, rgba(234, 67, 53, 0.4) 98.74%)",
                 // }}
               >
-                <Watermark content="Sample Data" fontSize={18}>
-                  <Content className="flex items-center">
-                    <Image
-                      width={125}
-                      preview={false}
-                      src={Positive}
-                      className="cursor-pointer"
-                    />
-                    <Content className="!ml-2">
-                      <Content className="!text-[#00000073] text-md mb-2 !font-medium">
-                        Total Revenue
-                      </Content>
-                      <Content className="!text-[#7CB305] mb-2 !font-semibold">
-                        <span className="text-3xl">
-                          {currencySymbol} 90,400
-                        </span>
-                      </Content>
-                      <Content className="">
-                        <span className="text-sm text-[#000000D9]">
-                          Monthly Revenue
-                        </span>
-                        <span className="text-md !ml-1 !text-[#7CB305] whitespace-nowrap">
-                          {currencySymbol} 5,650
-                        </span>
-                      </Content>
+                <Content className="flex items-center">
+                  <Image
+                    width={125}
+                    preview={false}
+                    src={Positive}
+                    className="cursor-pointer"
+                  />
+                  <Content className="!ml-2">
+                    <Content className="!text-[#00000073] text-md mb-2 !font-medium">
+                      Total Revenue
+                    </Content>
+                    <Content className="!text-[#7CB305] mb-2 !font-semibold">
+                      <span className="text-xl">
+                        {currencySymbol}{" "}
+                        {parseInt(
+                          dashboardData &&
+                            dashboardData.store_revenue &&
+                            dashboardData.store_revenue.total_amount
+                        )}
+                      </span>
+                    </Content>
+                    <Content className="">
+                      <span className="text-sm text-[#000000D9]">
+                        Monthly Revenue
+                      </span>
+                      <span className="text-md !ml-1 !text-[#7CB305] whitespace-nowrap">
+                        {currencySymbol}{" "}
+                        {parseInt(
+                          dashboardData &&
+                            dashboardData.store_revenue &&
+                            dashboardData.store_revenue.total_amount_last_month
+                        )}
+                      </span>
                     </Content>
                   </Content>
-                </Watermark>
-                <Watermark content="Sample Data" fontSize={18}>
-                  <Content className="flex items-center">
-                    <Image
-                      width={105}
-                      preview={false}
-                      src={Profit}
-                      className="cursor-pointer"
-                    />
-                    <Content className="!ml-2">
-                      <Content className="!text-[#00000073] text-md mb-2 !font-medium">
-                        Total Profit
-                      </Content>
-                      <Content className="!text-[#7CB305] mb-2 !font-semibold">
-                        <span className=" text-3xl ">
-                          {currencySymbol} 13,554
-                        </span>
-                      </Content>
-                      <Content className="!text-[#ffffff]">
-                        <span className="text-sm text-[#000000D9]">
-                          Monthly Revenue
-                        </span>
-                        <span className="text-base !ml-1 !text-[#7CB305] whitespace-nowrap">
-                          {currencySymbol} 2,550
-                        </span>
-                      </Content>
+                </Content>
+
+                <Content className="flex items-center">
+                  <Image
+                    width={100}
+                    preview={false}
+                    src={Profit}
+                    className="cursor-pointer"
+                  />
+                  <Content className="!ml-2">
+                    <Content className="!text-[#00000073] text-md mb-2 !font-medium">
+                      Total Profit
+                    </Content>
+                    <Content className="!text-[#7CB305] mb-2 !font-semibold">
+                      <span className="text-xl">
+                        {currencySymbol}{" "}
+                        {parseInt(
+                          dashboardData &&
+                            dashboardData.store_revenue &&
+                            dashboardData.store_revenue.store_commision_amount
+                        )}
+                      </span>
+                    </Content>
+                    <Content className="">
+                      <span className="text-sm text-[#000000D9]">
+                        Monthly Revenue
+                      </span>
+                      <span className="text-md !ml-1 !text-[#7CB305] whitespace-nowrap">
+                        {currencySymbol}{" "}
+                        {parseInt(
+                          dashboardData &&
+                            dashboardData.store_revenue &&
+                            dashboardData.store_revenue
+                              .store_commision_last_month
+                        )}
+                      </span>
                     </Content>
                   </Content>
-                </Watermark>
+                </Content>
               </Content>
 
               {/* <Content
@@ -633,41 +632,43 @@ const Dashboard = () => {
                   </span>
                 </Content>
               </Content> */}
-              <Watermark content="Sample Data" fontSize={18}>
-                <Content
-                  className="p-3 shadow-sm rounded-md justify-center !bg-white"
-                  // style={{
-                  //   background:
-                  //     "linear-gradient(74.8deg, rgba(66, 133, 244, 0.6) 0%, rgba(66, 133, 244, 0.4) 98.74%)",
-                  // }}
-                >
-                  {/* ### */}
-                  <Content className="flex items-center">
-                    <Image
-                      width={118}
-                      preview={false}
-                      src={Payment}
-                      className="cursor-pointer"
-                    />
-                    <Content className="!ml-2">
-                      <Content className="!text-[#00000073] text-md mb-2 !font-medium">
-                        Product Sold
-                      </Content>
-                      <Content className="!text-[#1A5692] mb-2 !font-semibold">
-                        <span className=" text-3xl ">5,200 </span>
-                      </Content>
-                      <Content className="!text-[#ffffff]">
-                        <span className="text-sm text-[#000000D9]">
-                          Products Sold Last Month
-                        </span>
-                        <span className="text-base !ml-1 !text-[#1A5692]">
-                          1,400
-                        </span>
-                      </Content>
+
+              <Content
+                className="p-3 shadow-sm rounded-md justify-center !bg-white"
+                // style={{
+                //   background:
+                //     "linear-gradient(74.8deg, rgba(66, 133, 244, 0.6) 0%, rgba(66, 133, 244, 0.4) 98.74%)",
+                // }}
+              >
+                {/* ### */}
+                <Content className="flex items-center">
+                  <Image
+                    width={118}
+                    preview={false}
+                    src={Payment}
+                    className="cursor-pointer"
+                  />
+                  <Content className="!ml-2">
+                    <Content className="!text-[#00000073] text-md mb-2 !font-medium">
+                      Total Products
+                    </Content>
+                    <Content className="!text-[#1A5692] mb-2 !font-semibold">
+                      <span className=" text-xl ">
+                        {dashboardData && dashboardData.total_products}{" "}
+                      </span>
+                    </Content>
+                    <Content className="!text-[#ffffff]">
+                      <span className="text-sm text-[#000000D9]">
+                        Products Created Last Month
+                      </span>
+                      <span className="text-base !ml-1 !text-[#1A5692]">
+                        {dashboardData &&
+                          dashboardData.total_products_last_month}
+                      </span>
                     </Content>
                   </Content>
                 </Content>
-              </Watermark>
+              </Content>
             </Content>
             {/* <Content className="flex justify-between !mt-6">
               <Content className="bg-[#ffff] p-3 mr-5 shadow-sm rounded-md justify-center">
@@ -702,20 +703,20 @@ const Dashboard = () => {
                 <Text className="text-[#7dc1ff]">View Storelist </Text>
               </Content>
             </Content> */}
-            <Watermark content="Sample Data" fontSize={18}>
+            {/* <Watermark content="Sample Data" fontSize={18}>
               <Content className="mt-6">
                 <Content>
-                  {/* <StoreGraph storeData={dashboardData.store_data} /> */}
+                  <StoreGraph storeData={dashboardData.store_data} />
                   <Content className="flex ">
                     <Content className="!bg-white shadow-sm p-3 ">
                       <Text className="!font-semibold text-lg">Ranking</Text>
                       <Text className="text-slate-600"> (Previous Month)</Text>
-                      {/* <Text
+                      <Text
                       className="cursor-pointer linkColor float-right font-semibold"
-                      // onClick={() => navigate("/dashboard/store")}
+                      onClick={() => navigate("/dashboard/store")}
                     >
                       View All
-                    </Text> */}
+                    </Text>
                       <Content>
                         <DmTabAntDesign
                           tabType={"line"}
@@ -726,37 +727,37 @@ const Dashboard = () => {
                         <Content>
                           <DynamicTable tableComponentData={tablePropsData} />
                         </Content>
-                        {/* <Text
+                        <Text
                         className="cursor-pointer text-blue-400"
                         onClick={() => navigate("/dashboard/store")}
                       >
                         Explore All Stores
-                      </Text> */}
+                      </Text>
                       </Content>
                     </Content>
                   </Content>
                 </Content>
-                {/* <Content className="bg-white !mt-6 p-2"> */}
-                {/* <div>
+                <Content className="bg-white !mt-6 p-2">
+                <div>
                   <Text className="text-lg font-semibold p-2">
                     Total Languages
                   </Text>
-                </div> */}
-                {/* <Text className="text-xl !text-black p-2">
+                </div>
+                <Text className="text-xl !text-black p-2">
                   {dashboardData &&
                     dashboardData.language_data &&
                     dashboardData.language_data.total_count}
-                </Text> */}
-                {/* <StoreGraph languageData={dashboardData.language_data} /> */}
-                {/* </Content> */}
+                </Text>
+                <StoreGraph languageData={dashboardData.language_data} />
+                </Content>
               </Content>
-            </Watermark>
-            <Watermark content="Sample Data" fontSize={18}>
+            </Watermark> */}
+            {/* <Watermark content="Sample Data" fontSize={18}>
               <Content className="p-3 shadow-sm bg-white !mt-6">
                 <SalesReportGraph />
-                {/* <LanguageGraph languageData={dashboardData.language_data} /> */}
+                <LanguageGraph languageData={dashboardData.language_data} />
               </Content>
-            </Watermark>
+            </Watermark> */}
           </Content>
         )}
       </Content>
