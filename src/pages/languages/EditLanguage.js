@@ -764,18 +764,11 @@ const EditLanguage = () => {
                           <Option value="RTL">Right to left</Option>
                         </Select>
                       </Content>
-                      <Content className="my-3 mt-4 w-[32%]">
+                      {/* <Content className="my-3 mt-4 w-[32%]">
                         <label className="text-[13px] pb-1 mb-2">
                           Language Supported Document
                         </label>
-                        {/* <Input
-                          type="file"
-                          name="filename"
-                          onChange={(e) =>
-                            languageHandler("lang_support_docs", e.target.files)
-                          }
-                          accept=".csv"
-                        /> */}
+                       
                         <StoreModal
                           isVisible={isDocumentModalOpen}
                           okButtonText={"Yes"}
@@ -798,7 +791,7 @@ const EditLanguage = () => {
                             return false;
                           }}
                           accept=".csv"
-                          // fileList={fileList}
+                        
                           onChange={(e) => {
                             handleDropImage(e);
                             languageHandler(
@@ -845,7 +838,7 @@ const EditLanguage = () => {
                         ) : (
                           ""
                         )}
-                      </Content>
+                      </Content> */}
                     </Content>
                   </Content>
                   <Content className="mt-3">
