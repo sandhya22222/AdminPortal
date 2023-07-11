@@ -72,11 +72,13 @@ function Status({
           toast("Store status changed successfully", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
+            autoClose: 10000,
           });
         } else {
           toast("Store status changed successfully", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
+            autoClose: 10000,
           });
         }
         console.log(
@@ -152,10 +154,12 @@ function Status({
         if (error.response && error.response.message) {
           toast(error.response.data.message, {
             type: "error",
+            autoClose: 10000,
           });
         } else {
           toast("Sorry, failed to update the store status", {
             type: "error",
+            autoClose: 10000,
           });
         }
 

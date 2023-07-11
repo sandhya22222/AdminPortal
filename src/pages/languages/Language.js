@@ -352,6 +352,7 @@ const Language = () => {
           toast("Language deleted successfully", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
+            autoClose: 10000,
           });
         }
         // disabling spinner
@@ -364,7 +365,7 @@ const Language = () => {
         toast("Deletion unsuccessful, please try again later", {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
-          autoClose: false,
+          autoClose: 10000,
         });
       });
   };
@@ -535,9 +536,9 @@ const Language = () => {
           <Layout className="p-0 text-center mb-3 bg-[#F4F4F4]">
             {/* <p>Validation in Progress</p> */}
             <p>
-              {errorMessage
-                ? errorMessage
-                : "Please wait while we validate your information. If this process persists, please consider logging out and logging back in"}
+              {/* {errorMessage
+                ? errorMessage : */}
+                lease wait while we validate your information. If this process persists, please consider logging out and logging back in
             </p>
           </Layout>
         ) : (

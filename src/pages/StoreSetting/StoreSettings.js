@@ -384,6 +384,7 @@ const StoreSettings = () => {
           toast(`${t("stores:Store-settings-saved-successfully")}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
+            autoClose: 10000,
           });
           // if (Object.keys(sampleobject).length === 2) {
           //   toast("Media and store settings saved successfully", {
@@ -399,6 +400,16 @@ const StoreSettings = () => {
           //       });
           //     }
           //   }
+        // } else {
+        //   if (Object.keys(sampleobject).length > 0) {
+        //     if (sampleobject["settings"] === "contentSettings") {
+        //       toast("Store settings saved successfully", {
+        //         position: toast.POSITION.TOP_RIGHT,
+        //         type: "success",
+        //         autoClose: 10000,
+        //       });
+        //     }
+        //   }
         }
         // toast("Store Settings Created Successfully.", {
         //   position: toast.POSITION.TOP_RIGHT,
@@ -489,17 +500,19 @@ const StoreSettings = () => {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
+            autoClose: 10000,
           });
         } else if (error && error.response && error.response.status === 400) {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
+            autoClose: 10000,
           });
         } else {
           toast("Something went wrong, please try again later", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
-            autoClose: false,
+            autoClose: 10000,
           });
         }
         console.log(error.response);
@@ -525,7 +538,7 @@ const StoreSettings = () => {
       toast("Please enter the values for the mandatory field", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     } else if (
       currencySymbol !== "" &&
@@ -542,7 +555,7 @@ const StoreSettings = () => {
         {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
-          autoClose: false,
+          autoClose: 10000,
         }
       );
     } else if (
@@ -560,7 +573,7 @@ const StoreSettings = () => {
         {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
-          autoClose: false,
+          autoClose: 10000,
         }
       );
     } else if (
@@ -576,7 +589,7 @@ const StoreSettings = () => {
       toast("Please enter the Symbol, ISO Code, and Number to Basic fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     } else if (
       currencySymbol === "" &&
@@ -591,7 +604,7 @@ const StoreSettings = () => {
       toast("Please enter the Symbol, ISO Code, and Fractional Unit fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     } else if (
       currencySymbol === "" &&
@@ -605,7 +618,7 @@ const StoreSettings = () => {
       toast("Please enter the Symbol and ISO Code fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     } else if (
       currencySymbol === "" &&
@@ -619,7 +632,7 @@ const StoreSettings = () => {
       toast("Please enter the Symbol and Fractional Unit fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     } else if (
       currencySymbol === "" &&
@@ -633,7 +646,7 @@ const StoreSettings = () => {
       toast("Please enter the Symbol and Number to Basic fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     } else if (
       currencySymbol === "" &&
@@ -647,7 +660,7 @@ const StoreSettings = () => {
       toast("Please enter the Symbol and ISO Code fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     } else if (
       currencySymbol !== "" &&
@@ -661,7 +674,7 @@ const StoreSettings = () => {
       toast("Please enter the ISO Code and Fractional Unit fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     } else if (
       currencySymbol !== "" &&
@@ -675,7 +688,7 @@ const StoreSettings = () => {
       toast("Please enter the ISO Code and Number to Basic fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     } else if (
       currencySymbol === "" &&
@@ -689,7 +702,7 @@ const StoreSettings = () => {
       toast("Please enter the Symbol and Fractional Unit fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     } else if (
       currencySymbol !== "" &&
@@ -703,7 +716,7 @@ const StoreSettings = () => {
       toast("Please enter the Fractional unit and Number to Basic fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     } else if (
       currencySymbol === "" ||
@@ -715,7 +728,7 @@ const StoreSettings = () => {
       toast("Please enter the Symbol", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     } else if (
       currencyIsoCode === "" ||
@@ -727,7 +740,7 @@ const StoreSettings = () => {
       toast("Please enter the ISO code", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     } else if (
       fractionalUnit === "" ||
@@ -739,7 +752,7 @@ const StoreSettings = () => {
       toast("Please enter the Fractional Unit", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     } else if (
       numberToBasic === "" ||
@@ -751,7 +764,7 @@ const StoreSettings = () => {
       toast("Please enter the Number to Basic", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     } else if (
       (imageOfStoreSettingsCurrency && imageOfStoreSettingsCurrency.symbol) ===
@@ -818,6 +831,7 @@ const StoreSettings = () => {
       toast("No changes were detected", {
         position: toast.POSITION.TOP_RIGHT,
         type: "info",
+        autoClose: 10000,
       });
     }
     //else if (
@@ -883,6 +897,48 @@ const StoreSettings = () => {
     //   isEditStoreSetting
     // ) {
     //   count--;
+    // }
+    else if (
+      colorCodeValidation.pageBgColorValidation === true ||
+      colorCodeValidation.pageTextColorValidation === true ||
+      colorCodeValidation.primaryBgValidation === true ||
+      colorCodeValidation.secondaryBgValidation === true ||
+      colorCodeValidation.tertiaryBgValidation === true ||
+      colorCodeValidation.primaryTextValidation === true ||
+      colorCodeValidation.secondaryTextValidation === true ||
+      colorCodeValidation.tertiaryTextValidation === true ||
+      colorCodeValidation.headerBgValidation === true ||
+      colorCodeValidation.headerTextValidation === true ||
+      colorCodeValidation.footerBgValidation === true ||
+      colorCodeValidation.footerTextValidation === true
+    ) {
+      toast("Please provide the valid color value", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+        autoClose: 10000,
+      });
+    }
+    // else if (
+    //   pageBackgroundColor.length < 7 ||
+    //   foreGroundColor.length < 7 ||
+    //   buttonPrimaryBackgroundColor.length < 7 ||
+    //   buttonSecondaryBackgroundColor.length < 7 ||
+    //   buttonTeritaryBackgroundColor.length < 7 ||
+    //   buttonPrimaryForegroundColor.length < 7 ||
+    //   buttonSecondaryForegroundColor.length < 7 ||
+    //   buttonTeritaryForegroundColor.length < 7 ||
+    //   headerBackgroundColor.length < 7 ||
+    //   headerForegroundColor.length < 7 ||
+    //   footerBackgroundColor.length < 7 ||
+    //   footerForegroundColor.length < 7
+    // ) {
+    //   toast(
+    //     "Please enter the valid color code, maximum length should be 7 characters",
+    //     {
+    //       position: toast.POSITION.TOP_RIGHT,
+    //       type: "error",
+    //     }
+    //   );
     // }
     else if (count === 4) {
       // let temp = [...isEditStoreSetting];
@@ -992,6 +1048,7 @@ const StoreSettings = () => {
             toast("Images saved successfully", {
               position: toast.POSITION.TOP_RIGHT,
               type: "success",
+              autoClose: 10000,
             });
           }
         }
@@ -1011,17 +1068,19 @@ const StoreSettings = () => {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
+            autoClose: 10000,
           });
         } else if (error && error.response && error.response.status === 400) {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
+            autoClose: 10000,
           });
         } else {
           toast("Something went wrong, please try again later", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
-            autoClose: false,
+            autoClose: 10000,
           });
         }
         console.log(error.response);
@@ -1088,6 +1147,7 @@ const StoreSettings = () => {
             toast("Images saved successfully", {
               position: toast.POSITION.TOP_RIGHT,
               type: "success",
+              autoClose: 10000,
             });
           }
         }
@@ -1109,17 +1169,19 @@ const StoreSettings = () => {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
+            autoClose: 10000,
           });
         } else if (error && error.response && error.response.status === 400) {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
+            autoClose: 10000,
           });
         } else {
           toast("Something went wrong, please try again later", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
-            autoClose: false,
+            autoClose: 10000,
           });
         }
         setIsUpLoading(false);
@@ -1479,6 +1541,7 @@ const StoreSettings = () => {
                         toast(`${t("common:No-Changes-Detected")}`, {
                           position: toast.POSITION.TOP_RIGHT,
                           type: "info",
+                          autoClose: 10000,
                         });
                       }
                     }}
@@ -1738,7 +1801,19 @@ const StoreSettings = () => {
                     type="color"
                     value={pageBackgroundColor}
                     onChange={(e) => {
-                      setPageBackgroundColor(e.target.value);
+                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      if (patternName.test(e.target.value) === false) {
+                        let temp = { ...colorCodeValidation };
+                        temp["pageBgColorValidation"] = true;
+                        setColorCodeValidation(temp);
+                        setPageBackgroundColor(e.target.value);
+                      } else {
+                        let temp = { ...colorCodeValidation };
+                        temp["pageBgColorValidation"] = false;
+                        setColorCodeValidation(temp);
+                        setPageBackgroundColor(e.target.value);
+                      }
+                      // setPageBackgroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreSettingsPageTheme };
                       temp["bg_color"] = e.target.value;
                       setCopyImageOfStoreSettingsPageTheme(temp);
@@ -1751,7 +1826,7 @@ const StoreSettings = () => {
                       maxLength={7}
                       className="w-[150px]"
                       onChange={(e) => {
-                        const patternName = /^#[a-zA-Z0-9]*$/;
+                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["pageBgColorValidation"] = true;
@@ -1797,8 +1872,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.pageBgColorValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" and has a
-                    maximum length of 7 characters
+                    Please ensure that the color code starts with "#" <br />
+                    and has a maximum length of 7 characters
                   </p>
                 ) : null}
               </Col>
@@ -1811,7 +1886,19 @@ const StoreSettings = () => {
                     type="color"
                     value={foreGroundColor}
                     onChange={(e) => {
-                      setForeGroundColor(e.target.value);
+                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      if (patternName.test(e.target.value) === false) {
+                        let temp = { ...colorCodeValidation };
+                        temp["pageTextColorValidation"] = true;
+                        setColorCodeValidation(temp);
+                        setForeGroundColor(e.target.value);
+                      } else {
+                        let temp = { ...colorCodeValidation };
+                        temp["pageTextColorValidation"] = false;
+                        setColorCodeValidation(temp);
+                        setForeGroundColor(e.target.value);
+                      }
+                      // setForeGroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreSettingsPageTheme };
                       temp["fg_color"] = e.target.value;
                       setCopyImageOfStoreSettingsPageTheme(temp);
@@ -1823,7 +1910,19 @@ const StoreSettings = () => {
                       value={foreGroundColor}
                       className="w-[150px]"
                       onChange={(e) => {
-                        setForeGroundColor(e.target.value);
+                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                        if (patternName.test(e.target.value) === false) {
+                          let temp = { ...colorCodeValidation };
+                          temp["pageTextColorValidation"] = true;
+                          setColorCodeValidation(temp);
+                          setForeGroundColor(e.target.value);
+                        } else {
+                          let temp = { ...colorCodeValidation };
+                          temp["pageTextColorValidation"] = false;
+                          setColorCodeValidation(temp);
+                          setForeGroundColor(e.target.value);
+                        }
+                        // setForeGroundColor(e.target.value);
                         let temp = { ...copyImageOfStoreSettingsPageTheme };
                         temp["fg_color"] = e.target.value;
                         setCopyImageOfStoreSettingsPageTheme(temp);
@@ -1855,6 +1954,12 @@ const StoreSettings = () => {
                     /> */}
                   </Space.Compact>
                 </Content>
+                {colorCodeValidation.pageTextColorValidation === true ? (
+                  <p className="text-red-600 text-sm">
+                    Please ensure that the color code starts with "#" <br /> and
+                    has a maximum length of 7 characters
+                  </p>
+                ) : null}
               </Col>
             </Row>
             <Row className="mt-4">
@@ -1916,7 +2021,19 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                     value={buttonPrimaryBackgroundColor}
                     onChange={(e) => {
-                      setButtonPrimaryBackgroundColor(e.target.value);
+                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      if (patternName.test(e.target.value) === false) {
+                        let temp = { ...colorCodeValidation };
+                        temp["primaryBgValidation"] = true;
+                        setColorCodeValidation(temp);
+                        setButtonPrimaryBackgroundColor(e.target.value);
+                      } else {
+                        let temp = { ...colorCodeValidation };
+                        temp["primaryBgValidation"] = false;
+                        setColorCodeValidation(temp);
+                        setButtonPrimaryBackgroundColor(e.target.value);
+                      }
+                      // setButtonPrimaryBackgroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreSettingsPageTheme };
                       temp["btn_primary_bg_color"] = e.target.value;
                       setCopyImageOfStoreSettingsPageTheme(temp);
@@ -1928,7 +2045,7 @@ const StoreSettings = () => {
                       maxLength={7}
                       className="w-[150px]"
                       onChange={(e) => {
-                        const patternName = /^#[a-zA-Z0-9]*$/;
+                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["primaryBgValidation"] = true;
@@ -1978,8 +2095,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.primaryBgValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" and has a
-                    maximum length of 7 characters
+                    Please ensure that the color code starts with "#" <br /> and
+                    has a maximum length of 7 characters
                   </p>
                 ) : null}
               </Col>
@@ -1993,7 +2110,19 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                     value={buttonSecondaryBackgroundColor}
                     onChange={(e) => {
-                      setButtonSecondaryBackgroundColor(e.target.value);
+                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      if (patternName.test(e.target.value) === false) {
+                        let temp = { ...colorCodeValidation };
+                        temp["secondaryBgValidation"] = true;
+                        setColorCodeValidation(temp);
+                        setButtonSecondaryBackgroundColor(e.target.value);
+                      } else {
+                        let temp = { ...colorCodeValidation };
+                        temp["secondaryBgValidation"] = false;
+                        setColorCodeValidation(temp);
+                        setButtonSecondaryBackgroundColor(e.target.value);
+                      }
+                      // setButtonSecondaryBackgroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreSettingsPageTheme };
                       temp["btn_secondary_bg_color"] = e.target.value;
                       setCopyImageOfStoreSettingsPageTheme(temp);
@@ -2004,7 +2133,20 @@ const StoreSettings = () => {
                       value={buttonSecondaryBackgroundColor}                  
                       className="w-[150px]"
                       onChange={(e) => {
-                        setButtonSecondaryBackgroundColor(e.target.value);
+                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                        if (patternName.test(e.target.value) === false) {
+                          let temp = { ...colorCodeValidation };
+                          temp["secondaryBgValidation"] = true;
+                          setColorCodeValidation(temp);
+                          setButtonSecondaryBackgroundColor(e.target.value);
+                        } else {
+                          let temp = { ...colorCodeValidation };
+                          temp["secondaryBgValidation"] = false;
+                          setColorCodeValidation(temp);
+                          setButtonSecondaryBackgroundColor(e.target.value);
+                        }
+
+                        // setButtonSecondaryBackgroundColor(e.target.value);
                         let temp = { ...copyImageOfStoreSettingsPageTheme };
                         temp["btn_secondary_bg_color"] = e.target.value;
                         setCopyImageOfStoreSettingsPageTheme(temp);
@@ -2042,8 +2184,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.secondaryBgValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" and has a
-                    maximum length of 7 characters
+                    Please ensure that the color code starts with "#" <br />
+                    and has a maximum length of 7 characters
                   </p>
                 ) : null}
               </Col>
@@ -2057,7 +2199,19 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                     value={buttonTeritaryBackgroundColor}
                     onChange={(e) => {
-                      setButtonTeritaryBackgroundColor(e.target.value);
+                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      if (patternName.test(e.target.value) === false) {
+                        let temp = { ...colorCodeValidation };
+                        temp["tertiaryBgValidation"] = true;
+                        setColorCodeValidation(temp);
+                        setButtonTeritaryBackgroundColor(e.target.value);
+                      } else {
+                        let temp = { ...colorCodeValidation };
+                        temp["tertiaryBgValidation"] = false;
+                        setColorCodeValidation(temp);
+                        setButtonTeritaryBackgroundColor(e.target.value);
+                      }
+                      // setButtonTeritaryBackgroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreSettingsPageTheme };
                       temp["btn_tertiary_bg_color"] = e.target.value;
                       setCopyImageOfStoreSettingsPageTheme(temp);
@@ -2068,7 +2222,19 @@ const StoreSettings = () => {
                       value={buttonTeritaryBackgroundColor}
                       className="w-[150px]"
                       onChange={(e) => {
-                        setButtonTeritaryBackgroundColor(e.target.value);
+                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                        if (patternName.test(e.target.value) === false) {
+                          let temp = { ...colorCodeValidation };
+                          temp["tertiaryBgValidation"] = true;
+                          setColorCodeValidation(temp);
+                          setButtonTeritaryBackgroundColor(e.target.value);
+                        } else {
+                          let temp = { ...colorCodeValidation };
+                          temp["tertiaryBgValidation"] = false;
+                          setColorCodeValidation(temp);
+                          setButtonTeritaryBackgroundColor(e.target.value);
+                        }
+                        // setButtonTeritaryBackgroundColor(e.target.value);
                         let temp = { ...copyImageOfStoreSettingsPageTheme };
                         temp["btn_tertiary_bg_color"] = e.target.value;
                         setCopyImageOfStoreSettingsPageTheme(temp);
@@ -2106,8 +2272,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.tertiaryBgValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" and has a
-                    maximum length of 7 characters
+                    Please ensure that the color code starts with "#" <br />
+                    and has a maximum length of 7 characters
                   </p>
                 ) : null}
               </Col>
@@ -2171,7 +2337,19 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                     value={buttonPrimaryForegroundColor}
                     onChange={(e) => {
-                      setButtonPrimaryForegroundColor(e.target.value);
+                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      if (patternName.test(e.target.value) === false) {
+                        let temp = { ...colorCodeValidation };
+                        temp["primaryTextValidation"] = true;
+                        setColorCodeValidation(temp);
+                        setButtonPrimaryForegroundColor(e.target.value);
+                      } else {
+                        let temp = { ...colorCodeValidation };
+                        temp["primaryTextValidation"] = false;
+                        setColorCodeValidation(temp);
+                        setButtonPrimaryForegroundColor(e.target.value);
+                      }
+                      // setButtonPrimaryForegroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreSettingsPageTheme };
                       temp["btn_primary_fg_color"] = e.target.value;
                       setCopyImageOfStoreSettingsPageTheme(temp);
@@ -2183,7 +2361,7 @@ const StoreSettings = () => {
                       maxLength={7}
                       className="w-[150px]"
                       onChange={(e) => {
-                        const patternName = /^#[a-zA-Z0-9]*$/;
+                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["primaryTextValidation"] = true;
@@ -2233,8 +2411,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.primaryTextValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" and has a
-                    maximum length of 7 characters
+                    Please ensure that the color code starts with "#" <br />
+                    and has a maximum length of 7 characters
                   </p>
                 ) : null}
               </Col>
@@ -2248,7 +2426,19 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                     value={buttonSecondaryForegroundColor}
                     onChange={(e) => {
-                      setButtonSecondaryForegroundColor(e.target.value);
+                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      if (patternName.test(e.target.value) === false) {
+                        let temp = { ...colorCodeValidation };
+                        temp["secondaryTextValidation"] = true;
+                        setColorCodeValidation(temp);
+                        setButtonSecondaryForegroundColor(e.target.value);
+                      } else {
+                        let temp = { ...colorCodeValidation };
+                        temp["secondaryTextValidation"] = false;
+                        setColorCodeValidation(temp);
+                        setButtonSecondaryForegroundColor(e.target.value);
+                      }
+                      // setButtonSecondaryForegroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreSettingsPageTheme };
                       temp["btn_secondary_fg_color"] = e.target.value;
                       setCopyImageOfStoreSettingsPageTheme(temp);
@@ -2260,7 +2450,7 @@ const StoreSettings = () => {
                       maxLength={7}
                       className="w-[150px]"
                       onChange={(e) => {
-                        const patternName = /^#[a-zA-Z0-9]*$/;
+                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["secondaryTextValidation"] = true;
@@ -2308,6 +2498,12 @@ const StoreSettings = () => {
                     /> */}
                   </Space.Compact>
                 </Content>
+                {colorCodeValidation.secondaryTextValidation === true ? (
+                  <p className="text-red-600 text-sm">
+                    Please ensure that the color code starts with "#" <br />
+                    and has a maximum length of 7 characters
+                  </p>
+                ) : null}
               </Col>
               <Col span={7} className="ml-2">
                 <label className="text-[13px] mb-2 ml-1">
@@ -2320,7 +2516,19 @@ const StoreSettings = () => {
                     maxLength={7}
                     value={buttonTeritaryForegroundColor}
                     onChange={(e) => {
-                      setButtonTeritaryForegroundColor(e.target.value);
+                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      if (patternName.test(e.target.value) === false) {
+                        let temp = { ...colorCodeValidation };
+                        temp["tertiaryTextValidation"] = true;
+                        setColorCodeValidation(temp);
+                        setButtonTeritaryForegroundColor(e.target.value);
+                      } else {
+                        let temp = { ...colorCodeValidation };
+                        temp["tertiaryTextValidation"] = false;
+                        setColorCodeValidation(temp);
+                        setButtonTeritaryForegroundColor(e.target.value);
+                      }
+                      // setButtonTeritaryForegroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreSettingsPageTheme };
                       temp["btn_tertiary_fg_color"] = e.target.value;
                       setCopyImageOfStoreSettingsPageTheme(temp);
@@ -2330,7 +2538,7 @@ const StoreSettings = () => {
                     <Input
                       value={buttonTeritaryForegroundColor}
                       onChange={(e) => {
-                        const patternName = /^#[a-zA-Z0-9]*$/;
+                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["tertiaryTextValidation"] = true;
@@ -2381,8 +2589,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.tertiaryTextValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" and has a
-                    maximum length of 7 characters
+                    Please ensure that the color code starts with "#" <br />
+                    and has a maximum length of 7 characters
                   </p>
                 ) : null}
               </Col>
@@ -2454,7 +2662,19 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                     value={headerBackgroundColor}
                     onChange={(e) => {
-                      setHeaderBackgroundColor(e.target.value);
+                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      if (patternName.test(e.target.value) === false) {
+                        let temp = { ...colorCodeValidation };
+                        temp["headerBgValidation"] = true;
+                        setColorCodeValidation(temp);
+                        setHeaderBackgroundColor(e.target.value);
+                      } else {
+                        let temp = { ...colorCodeValidation };
+                        temp["headerBgValidation"] = false;
+                        setColorCodeValidation(temp);
+                        setHeaderBackgroundColor(e.target.value);
+                      }
+                      // setHeaderBackgroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreHeaderSetting };
                       temp["bg_color"] = e.target.value;
                       setCopyImageOfStoreHeaderSetting(temp);
@@ -2466,7 +2686,19 @@ const StoreSettings = () => {
                       maxLength={7}
                       className="w-[150px]"
                       onChange={(e) => {
-                        setHeaderBackgroundColor(e.target.value);
+                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                        if (patternName.test(e.target.value) === false) {
+                          let temp = { ...colorCodeValidation };
+                          temp["headerBgValidation"] = true;
+                          setColorCodeValidation(temp);
+                          setHeaderBackgroundColor(e.target.value);
+                        } else {
+                          let temp = { ...colorCodeValidation };
+                          temp["headerBgValidation"] = false;
+                          setColorCodeValidation(temp);
+                          setHeaderBackgroundColor(e.target.value);
+                        }
+                        // setHeaderBackgroundColor(e.target.value);
                         let temp = { ...copyImageOfStoreHeaderSetting };
                         temp["bg_color"] = e.target.value;
                         setCopyImageOfStoreHeaderSetting(temp);
@@ -2500,8 +2732,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.headerBgValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" and has a
-                    maximum length of 7 characters
+                    Please ensure that the color code starts with "#" <br />
+                    and has a maximum length of 7 characters
                   </p>
                 ) : null}
               </Col>
@@ -2518,7 +2750,19 @@ const StoreSettings = () => {
                     minLength={1}
                     value={headerForegroundColor}
                     onChange={(e) => {
-                      setHeaderForegroundColor(e.target.value);
+                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      if (patternName.test(e.target.value) === false) {
+                        let temp = { ...colorCodeValidation };
+                        temp["headerTextValidation"] = true;
+                        setColorCodeValidation(temp);
+                        setHeaderForegroundColor(e.target.value);
+                      } else {
+                        let temp = { ...colorCodeValidation };
+                        temp["headerTextValidation"] = false;
+                        setColorCodeValidation(temp);
+                        setHeaderForegroundColor(e.target.value);
+                      }
+                      // setHeaderForegroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreHeaderSetting };
                       temp["fg_color"] = e.target.value;
                       setCopyImageOfStoreHeaderSetting(temp);
@@ -2529,7 +2773,19 @@ const StoreSettings = () => {
                       value={headerForegroundColor}
                       className="w-[150px]"
                       onChange={(e) => {
-                        setHeaderForegroundColor(e.target.value);
+                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                        if (patternName.test(e.target.value) === false) {
+                          let temp = { ...colorCodeValidation };
+                          temp["headerTextValidation"] = true;
+                          setColorCodeValidation(temp);
+                          setHeaderForegroundColor(e.target.value);
+                        } else {
+                          let temp = { ...colorCodeValidation };
+                          temp["headerTextValidation"] = false;
+                          setColorCodeValidation(temp);
+                          setHeaderForegroundColor(e.target.value);
+                        }
+                        // setHeaderForegroundColor(e.target.value);
                         let temp = { ...copyImageOfStoreHeaderSetting };
                         temp["fg_color"] = e.target.value;
                         setCopyImageOfStoreHeaderSetting(temp);
@@ -2563,8 +2819,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.headerTextValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" and has a
-                    maximum length of 7 characters
+                    Please ensure that the color code starts with "#" <br />
+                    and has a maximum length of 7 characters
                   </p>
                 ) : null}
               </Col>
@@ -2585,7 +2841,19 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                     value={footerBackgroundColor}
                     onChange={(e) => {
-                      setFooterBackgroundColor(e.target.value);
+                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      if (patternName.test(e.target.value) === false) {
+                        let temp = { ...colorCodeValidation };
+                        temp["footerBgValidation"] = true;
+                        setColorCodeValidation(temp);
+                        setFooterBackgroundColor(e.target.value);
+                      } else {
+                        let temp = { ...colorCodeValidation };
+                        temp["footerBgValidation"] = false;
+                        setColorCodeValidation(temp);
+                        setFooterBackgroundColor(e.target.value);
+                      }
+                      // setFooterBackgroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreFooterSetting };
                       temp["bg_color"] = e.target.value;
                       setCopyImageOfStoreFooterSetting(temp);
@@ -2596,7 +2864,19 @@ const StoreSettings = () => {
                       value={footerBackgroundColor}
                       className="w-[150px]"
                       onChange={(e) => {
-                        setFooterBackgroundColor(e.target.value);
+                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                        if (patternName.test(e.target.value) === false) {
+                          let temp = { ...colorCodeValidation };
+                          temp["footerBgValidation"] = true;
+                          setColorCodeValidation(temp);
+                          setFooterBackgroundColor(e.target.value);
+                        } else {
+                          let temp = { ...colorCodeValidation };
+                          temp["footerBgValidation"] = false;
+                          setColorCodeValidation(temp);
+                          setFooterBackgroundColor(e.target.value);
+                        }
+                        // setFooterBackgroundColor(e.target.value);
                         let temp = { ...copyImageOfStoreFooterSetting };
                         temp["bg_color"] = e.target.value;
                         setCopyImageOfStoreFooterSetting(temp);
@@ -2630,8 +2910,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.footerBgValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" and has a
-                    maximum length of 7 characters
+                    Please ensure that the color code starts with "#" <br />
+                    and has a maximum length of 7 characters
                   </p>
                 ) : null}
               </Col>
@@ -2645,7 +2925,19 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                     value={footerForegroundColor}
                     onChange={(e) => {
-                      setFooterForegroundColor(e.target.value);
+                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      if (patternName.test(e.target.value) === false) {
+                        let temp = { ...colorCodeValidation };
+                        temp["footerTextValidation"] = true;
+                        setColorCodeValidation(temp);
+                        setFooterForegroundColor(e.target.value);
+                      } else {
+                        let temp = { ...colorCodeValidation };
+                        temp["footerTextValidation"] = false;
+                        setColorCodeValidation(temp);
+                        setFooterForegroundColor(e.target.value);
+                      }
+                      // setFooterForegroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreFooterSetting };
                       temp["fg_color"] = e.target.value;
                       setCopyImageOfStoreFooterSetting(temp);
@@ -2656,7 +2948,19 @@ const StoreSettings = () => {
                       value={footerForegroundColor}
                       className="w-[150px]"
                       onChange={(e) => {
-                        setFooterForegroundColor(e.target.value);
+                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                        if (patternName.test(e.target.value) === false) {
+                          let temp = { ...colorCodeValidation };
+                          temp["footerTextValidation"] = true;
+                          setColorCodeValidation(temp);
+                          setFooterForegroundColor(e.target.value);
+                        } else {
+                          let temp = { ...colorCodeValidation };
+                          temp["footerTextValidation"] = false;
+                          setColorCodeValidation(temp);
+                          setFooterForegroundColor(e.target.value);
+                        }
+                        // setFooterForegroundColor(e.target.value);
                         let temp = { ...copyImageOfStoreFooterSetting };
                         temp["fg_color"] = e.target.value;
                         setCopyImageOfStoreFooterSetting(temp);
@@ -2690,8 +2994,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.footerTextValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" and has a
-                    maximum length of 7 characters
+                    Please ensure that the color code starts with "#" <br />
+                    and has a maximum length of 7 characters
                   </p>
                 ) : null}
               </Col>
