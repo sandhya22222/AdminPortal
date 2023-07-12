@@ -1563,7 +1563,7 @@ const StoreSettings = () => {
                 value={currencySymbol}
                 onChange={(e) => {
                   setCurrencySymbol(e.target.value);
-                  setInValidCurrencySymbol(true);
+                  setInValidCurrencySymbol(false);
                   let temp = { ...copyImageOfStoreSettingsCurrency };
                   temp["symbol"] = e.target.value;
                   setCopyImageOfStoreSettingsCurrency(temp);
