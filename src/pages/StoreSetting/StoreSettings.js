@@ -14,6 +14,7 @@ import {
   Skeleton,
   Space,
   Tooltip,
+  Divider,
 } from "antd";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
@@ -400,16 +401,16 @@ const StoreSettings = () => {
           //       });
           //     }
           //   }
-        // } else {
-        //   if (Object.keys(sampleobject).length > 0) {
-        //     if (sampleobject["settings"] === "contentSettings") {
-        //       toast("Store settings saved successfully", {
-        //         position: toast.POSITION.TOP_RIGHT,
-        //         type: "success",
-        //         autoClose: 10000,
-        //       });
-        //     }
-        //   }
+          // } else {
+          //   if (Object.keys(sampleobject).length > 0) {
+          //     if (sampleobject["settings"] === "contentSettings") {
+          //       toast("Store settings saved successfully", {
+          //         position: toast.POSITION.TOP_RIGHT,
+          //         type: "success",
+          //         autoClose: 10000,
+          //       });
+          //     }
+          //   }
         }
         // toast("Store Settings Created Successfully.", {
         //   position: toast.POSITION.TOP_RIGHT,
@@ -917,30 +918,7 @@ const StoreSettings = () => {
         type: "error",
         autoClose: 10000,
       });
-    }
-    // else if (
-    //   pageBackgroundColor.length < 7 ||
-    //   foreGroundColor.length < 7 ||
-    //   buttonPrimaryBackgroundColor.length < 7 ||
-    //   buttonSecondaryBackgroundColor.length < 7 ||
-    //   buttonTeritaryBackgroundColor.length < 7 ||
-    //   buttonPrimaryForegroundColor.length < 7 ||
-    //   buttonSecondaryForegroundColor.length < 7 ||
-    //   buttonTeritaryForegroundColor.length < 7 ||
-    //   headerBackgroundColor.length < 7 ||
-    //   headerForegroundColor.length < 7 ||
-    //   footerBackgroundColor.length < 7 ||
-    //   footerForegroundColor.length < 7
-    // ) {
-    //   toast(
-    //     "Please enter the valid color code, maximum length should be 7 characters",
-    //     {
-    //       position: toast.POSITION.TOP_RIGHT,
-    //       type: "error",
-    //     }
-    //   );
-    // }
-    else if (count === 4) {
+    } else if (count === 4) {
       // let temp = [...isEditStoreSetting];
       // console.log("isEditStoreSetting456", temp);
       // temp.push({ id: 2 });
@@ -1564,11 +1542,12 @@ const StoreSettings = () => {
           </Content>
         </Spin>
         <Content className="bg-white mt-3 p-3">
-          <label className="text-[20px] mb-2 mt-4 font-bold">
+          <label className="text-[20px] font-bold !text-center">
             {t("stores:Currency")}
           </label>
+          <Divider className="!my-4" />
           <Row className="mt-2">
-            <Col span={8} className="mr-2">
+            <Col span={4} className="mr-2.5">
               <span className="text-red-600 text-sm !text-center">*</span>
               <label className="text-[13px] mb-2 ml-1">
                 {t("stores:Symbol")}
@@ -1591,7 +1570,7 @@ const StoreSettings = () => {
                 }}
               />
             </Col>
-            <Col span={8} className="ml-1">
+            <Col span={4} className="mx-2.5">
               <span className="text-red-600 text-sm !text-center">*</span>
               <label className="text-[13px] mb-2 ml-1">
                 {t("stores:ISO-Code")}
@@ -1613,9 +1592,9 @@ const StoreSettings = () => {
                 }`}
               />
             </Col>
-          </Row>
-          <Row className="mt-4">
-            <Col span={8} className="mr-2">
+            {/* </Row>
+          <Row className="mt-4"> */}
+            <Col span={4} className="mx-2.5">
               <span className="text-red-600 text-sm !text-center">*</span>
               <label className="text-[13px] mb-2 ml-1">
                 {t("stores:Fractional-Unit")}
@@ -1637,7 +1616,7 @@ const StoreSettings = () => {
                 }`}
               />
             </Col>
-            <Col span={8} className="ml-1">
+            <Col span={4} className="mx-2.5">
               {" "}
               <span className="text-red-600 text-sm !text-center">*</span>
               <label className="text-[13px] mb-2 ml-1">
@@ -2130,7 +2109,7 @@ const StoreSettings = () => {
                   />
                   <Space.Compact className="ml-2">
                     <Input
-                      value={buttonSecondaryBackgroundColor}                  
+                      value={buttonSecondaryBackgroundColor}
                       className="w-[150px]"
                       onChange={(e) => {
                         const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;

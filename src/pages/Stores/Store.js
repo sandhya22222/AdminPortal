@@ -608,7 +608,7 @@ const Stores = () => {
     ) {
       count--;
       setInValidEmail(true);
-      toast(`${t("stores:Validation-Error-Message1")}`, {
+      toast(`${t("stores:Please-enter-the-valid-email-address")}`, {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -715,8 +715,9 @@ const Stores = () => {
         setPostData(response.data);
       })
       .catch((error) => {
+        setIsUpLoading(false);
         if (error.response) {
-          toast(`${error.response.data.name[0]}`, {
+          toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
             autoClose: 10000,
@@ -729,7 +730,6 @@ const Stores = () => {
           });
         }
         console.log("Error respose from the store post call", error.response);
-        setIsUpLoading(false);
         // setInValidName(true)
         // onClose();
       });
@@ -779,7 +779,7 @@ const Stores = () => {
       .catch((error) => {
         setIsUpLoading(false);
         if (error.response) {
-          toast(`${error.response.data.message.name[0]}`, {
+          toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
             autoClose: 10000,
