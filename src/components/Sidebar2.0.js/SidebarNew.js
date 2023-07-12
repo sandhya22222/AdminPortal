@@ -197,20 +197,14 @@ const SidebarNew = () => {
           />
           <Button
             type="text"
-            icon={
-              collapsed ? (
-                <img src={menuIcon} className="mt-[15px]" />
-              ) : (
-                <img src={BackBurger} className="mt-[15px]" />
-              )
-            }
+            icon={collapsed ? <img src={menuIcon} /> : <img src={BackBurger} />}
             onClick={() => setCollapsed(!collapsed)}
             className="!bg-[#4A2D73] hover:bg-[#4A2D73]"
             style={{
               width: "100%",
               display: "flex",
               padding: "8 16 8 16",
-              marginTop: "0px",
+              marginTop: "10px",
               color: "white",
               justifyContent: "center",
               alignItems: "center",
