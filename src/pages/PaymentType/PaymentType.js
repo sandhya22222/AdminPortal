@@ -16,7 +16,7 @@ const paymentTypesData = [
     data: [
       {
         id: 1,
-        payment_type: "COD",
+        payment_type: "Cash on Delivery",
         is_payment_gateway: false,
       },
       {
@@ -24,11 +24,11 @@ const paymentTypesData = [
         payment_type: "Online Payment",
         is_payment_gateway: true,
       },
-      {
-        id: 3,
-        payment_type: "Purchase Order",
-        is_payment_gateway: true,
-      },
+      // {
+      //   id: 3,
+      //   payment_type: "Purchase Order",
+      //   is_payment_gateway: true,
+      // },
     ],
   },
 ];
@@ -40,7 +40,7 @@ const PaymentType = () => {
 
   const paymentTypeColumns = [
     {
-      title: "Payment Type",
+      title: "",
       dataIndex: "paymenttype",
       key: "paymenttype",
       width: "40%",

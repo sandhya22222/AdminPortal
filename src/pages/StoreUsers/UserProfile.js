@@ -53,7 +53,7 @@ const UserProfile = () => {
           </Content>
         }
       />
-      <Content className="mt-[10rem] !min-h-screen !p-6  !mx-[17rem]">
+      <Content className="mt-[10rem] !min-h-screen !p-6">
         {isLoading ? (
           <Content className="bg-white">
             <Skeleton
@@ -75,46 +75,48 @@ const UserProfile = () => {
             </h5>
           </Layout>
         ) : (
-          <Content className=" !text-center">
-            <Content className=" shadow-sm  bg-[#FFFFFF] rounded-2xl flex flex-col items-center px-8 py-10 w-[500px]">
-              <Row className="mb-2">
-                <Avatar size={104} icon={<UserOutlined />} />
-              </Row>
-              <Row className="mb-2">
-                <Text className="font-medium text-lg">
-                  {storeUsersData && storeUsersData.username}
-                </Text>
-              </Row>
-              <Row className=" text-sky-600 underline underline-offset-2 mb-3">
-                <Link to="">{storeUsersData && storeUsersData.email}</Link>
-              </Row>
-              <Row className="mb-2">
-                <label className="text-md font-medium">
-                  First Name :{" "}
-                  {(storeUsersData && storeUsersData.firstName === "") ||
-                  (storeUsersData && storeUsersData.firstName === undefined)
-                    ? "NA"
-                    : storeUsersData && storeUsersData.firstName}
-                </label>
-              </Row>
-              <Row className=" mb-2">
-                <label className="text-md font-medium">
-                  Last Name :{" "}
-                  {(storeUsersData && storeUsersData.lastName === "") ||
-                  (storeUsersData && storeUsersData.lastName === undefined)
-                    ? "NA"
-                    : storeUsersData && storeUsersData.lastName}
-                </label>
-              </Row>
-              <Row className="">
-                <label className="text-md font-medium">
-                  Onboarded on :{" "}
-                  {getGenerateDateAndTime(
-                    storeUsersData && storeUsersData.createdTimestamp,
-                    "D MMMM YYYY"
-                  )}
-                </label>
-              </Row>
+          <Content className="!text-center">
+            <Content className="inline-block">
+              <Content className="shadow-sm  bg-[#FFFFFF] rounded-2xl flex flex-col items-center px-8 py-10 w-[500px]">
+                {/* <Row className="mb-2">
+                  <Avatar size={104} icon={<UserOutlined />} />
+                </Row> */}
+                <Row className="mb-2">
+                  <Text className="font-medium text-lg">
+                    {storeUsersData && storeUsersData.username}
+                  </Text>
+                </Row>
+                <Row className=" text-sky-600 underline underline-offset-2 mb-3">
+                  <Link to="">{storeUsersData && storeUsersData.email}</Link>
+                </Row>
+                <Row className="mb-2">
+                  <label className="text-md font-medium">
+                    First Name :{" "}
+                    {(storeUsersData && storeUsersData.firstName === "") ||
+                    (storeUsersData && storeUsersData.firstName === undefined)
+                      ? "NA"
+                      : storeUsersData && storeUsersData.firstName}
+                  </label>
+                </Row>
+                <Row className=" mb-2">
+                  <label className="text-md font-medium">
+                    Last Name :{" "}
+                    {(storeUsersData && storeUsersData.lastName === "") ||
+                    (storeUsersData && storeUsersData.lastName === undefined)
+                      ? "NA"
+                      : storeUsersData && storeUsersData.lastName}
+                  </label>
+                </Row>
+                <Row className="">
+                  <label className="text-md font-medium">
+                    Onboarded on :{" "}
+                    {getGenerateDateAndTime(
+                      storeUsersData && storeUsersData.createdTimestamp,
+                      "D MMMM YYYY"
+                    )}
+                  </label>
+                </Row>
+              </Content>
             </Content>
           </Content>
         )}
