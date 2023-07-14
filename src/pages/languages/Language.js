@@ -473,7 +473,7 @@ const Language = () => {
     <Content className="">
       <StoreModal
         isVisible={isDeleteLanguageModalOpen}
-        okButtonText={"Ok"}
+        okButtonText={"Yes"}
         cancelButtonText={"Cancel"}
         title={"Warning"}
         okCallback={() => removeLanguage()}

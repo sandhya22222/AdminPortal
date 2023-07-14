@@ -922,7 +922,7 @@ const Stores = () => {
     <Content className="">
       <StoreModal
         isVisible={isDeleteStoreModalOpen}
-        okButtonText={"Ok"}
+        okButtonText={"Yes"}
         cancelButtonText={"Cancel"}
         title={"Warning"}
         okCallback={() => removeStore()}

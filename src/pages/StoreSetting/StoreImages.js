@@ -449,7 +449,7 @@ const StoreImages = ({
     <Content className=" mb-2">
       <StoreModal
         isVisible={isDeleteImageModalOpen}
-        okButtonText={"Ok"}
+        okButtonText={"Yes"}
         cancelButtonText={"Cancel"}
         title={"Warning"}
         okCallback={() => removeMedia()}
