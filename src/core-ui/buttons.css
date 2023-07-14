@@ -2,13 +2,13 @@
   /* background-color: #1677ff !important; */
   background-color: #7d3192 !important;
   color: #ffffff !important;
-  border-color: #7d3192 !important;
+  border-color: #7D3192 !important;
   /* border:1px solid #1677ff!important; */
   height: unset !important;
 }
 .app-btn-primary:hover {
-  border-color: #7d3192 !important;
-  color: #ffffff !important;
+  background-color: #7D3192 !important;
+  border-color: #7D3192 !important ;
 }
 .app-btn-secondary {
   background-color: #f4f4f4 !important;
@@ -17,8 +17,8 @@
   height: unset !important;
 }
 .app-btn-secondary:hover {
-  border-color: #7d3192 !important;
-  color: #7d3192 !important;
+  border-color: #7D3192 !important;
+  color: #7D3192 !important;
 }
 
 .app-btn-approve {

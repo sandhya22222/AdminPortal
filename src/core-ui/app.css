@@ -19,6 +19,10 @@
   color: #7d3192 !important;
 }
 
+  .ant-select-dropdown {
+    z-index: 1 !important;
+  }
+
 /* .ant-switch-checked {
       background: #00C3B3 !important
   } */
