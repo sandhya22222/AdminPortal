@@ -461,14 +461,66 @@ const Dashboard = () => {
             </Content>
           </Content>
         ) : dashboardDataNetWorkError ? (
-          <Content className="text-center !mt-16 !mb-2">
+          <Content className="text-center !mt-10 !mb-2">
             <p>
               Please wait while we validate your information. If this process
               persists, please consider logging out and logging back in
             </p>
           </Content>
         ) : (
-          <Content>
+          <Content className="w-[100%]">
+            {/* <Content className="bg-yellow-500 w-[25%] inline-block">
+              <Content className="p-3 shadow-sm rounded-md justify-center !bg-white w-[90%]">
+                <Content className="!text-black text-md mb-2 flex ">
+                  <Content className="flex justify-between items-baseline">
+                    <div>
+                      <span className="text-2xl font-semibold text-[#1A5692]">
+                        {dashboardData &&
+                          dashboardData.store_data &&
+                          dashboardData.store_data.total_count}{" "}
+                      </span>
+                      <span className="font-semibold text-lg">Stores</span>
+                    </div>
+                    <Text
+                      className="cursor-pointer linkColor float-right font-semibold"
+                      onClick={() => navigate("/dashboard/store")}
+                    >
+                      View All
+                    </Text>
+                  </Content>
+                </Content>
+                <Content className="!text-[#ffffff] flex !mt-5">
+                  <Content className="flex mr-[1.3rem]">
+                    <MdStore className="!text-5xl  !text-[#FCC32A]" />
+                    <Content className="!ml-2">
+                      <p className="!text-[#8C8C8C]">Active</p>
+                      <p className="-mt-3 text-black font-bold">
+                        {dashboardData &&
+                          dashboardData.store_data &&
+                          dashboardData.store_data.active_stores}
+                      </p>
+                    </Content>
+                  </Content>
+                  <Content className="flex">
+                    <MdStore className="!text-5xl  !text-[#8C8C8C]" />
+                    <Content className="!ml-2">
+                      <p className="!text-[#8C8C8C]">Inactive</p>
+                      <p className="-mt-3 font-bold text-black">
+                        {dashboardData &&
+                          dashboardData.store_data &&
+                          dashboardData.store_data.inactive_store}
+                      </p>
+                    </Content>
+                  </Content>
+                </Content>
+              </Content>
+            </Content>
+            <Content className="bg-green-500 w-[50%] inline-block">
+              dfadsf
+            </Content>
+            <Content className="bg-pink-500 w-[25%] inline-block">
+              dfadsf
+            </Content> */}
             <Content className="flex justify-between !mt-2">
               <Content
                 className="p-3 mr-5 shadow-sm rounded-md justify-center !bg-white !w-[25%]"
@@ -538,7 +590,7 @@ const Dashboard = () => {
                     width={125}
                     preview={false}
                     src={Positive}
-                    className="cursor-pointer"
+                    className="cursor-default"
                   />
                   <Content className="!ml-2">
                     <Content className="!text-[#00000073] text-md mb-2 !font-medium">
@@ -575,7 +627,7 @@ const Dashboard = () => {
                     width={100}
                     preview={false}
                     src={Profit}
-                    className="cursor-pointer"
+                    className="cursor-default"
                   />
                   <Content className="!ml-2">
                     <Content className="!text-[#00000073] text-md mb-2 !font-medium">
@@ -646,7 +698,7 @@ const Dashboard = () => {
                     width={118}
                     preview={false}
                     src={Payment}
-                    className="cursor-pointer"
+                    className="cursor-default"
                   />
                   <Content className="!ml-2">
                     <Content className="!text-[#00000073] text-md mb-2 !font-medium">

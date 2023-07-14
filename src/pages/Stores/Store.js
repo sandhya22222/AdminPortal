@@ -920,9 +920,9 @@ const Stores = () => {
     <Content className="">
       <StoreModal
         isVisible={isDeleteStoreModalOpen}
-        okButtonText={t("common:Ok")}
-        cancelButtonText={t("common:Cancel")}
-        title={t("common:Warning")}
+        okButtonText={"Yes"}
+        cancelButtonText={"Cancel"}
+        title={"Warning"}
         okCallback={() => removeStore()}
         cancelCallback={() => closeDeleteModal()}
         isSpin={isStoreDeleting}

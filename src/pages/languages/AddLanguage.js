@@ -242,14 +242,14 @@ const AddLanguage = () => {
         autoClose: 10000,
       });
     }
-    if (nativeName.trim().length < 4) {
+    if (nativeName.trim().length > 0 && nativeName.trim().length < 4) {
       setIsNativeFieldEmpty(true);
-      toast("Native name must contain minimum of 2 characters", {
+      toast("Native name must contain minimum of 4 characters", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
       });
-    }
+    } else setIsNativeFieldEmpty(false);
     // if (regex === "") {
     //   setIsRegexFieldEmpty(true);
     //   // validValues -= 1;
@@ -593,19 +593,13 @@ const AddLanguage = () => {
                     <Option value="RTL">Right to Left</Option>
                   </Select>
                 </Content>
-                <Content className="my-3 mt-4 w-[32%]">
+                {/* <Content className="my-3 mt-4 w-[32%]">
                   <label className="text-[13px] pb-1 mb-2">
                     Language Supported Document
                   </label>
-                  {/* <Input
-                    type="file"
-                    name="filename"
-                    onChange={(e) => handleUploadFile(e)}
-                    accept=".csv"
-                  />
-                  <Button onClick={temp}>Save</Button> */}
+                 
                   <Dragger
-                    // {...props}
+                   
                     beforeUpload={() => {
                       return false;
                     }}
@@ -616,7 +610,7 @@ const AddLanguage = () => {
                     maxCount={1}
                     name="file"
                     onChange={(e) => handleDropImage(e)}
-                    // onRemove={(e) => removeLanguageDocument(e)}
+                   
                     onRemove={true}
                   >
                     <p className="ant-upload-drag-icon">
@@ -628,7 +622,7 @@ const AddLanguage = () => {
                     </p>
                     <p className="ant-upload-hint">only .csv files</p>
                   </Dragger>
-                </Content>
+                </Content> */}
               </Content>
             </Content>
             <Content className="mt-3">
