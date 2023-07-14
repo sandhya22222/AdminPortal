@@ -242,14 +242,14 @@ const AddLanguage = () => {
         autoClose: 10000,
       });
     }
-    if (nativeName.trim().length < 4) {
+    if (nativeName.trim().length > 0 && nativeName.trim().length < 4) {
       setIsNativeFieldEmpty(true);
-      toast("Native name must contain minimum of 2 characters", {
+      toast("Native name must contain minimum of 4 characters", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
       });
-    }
+    } else setIsNativeFieldEmpty(false);
     // if (regex === "") {
     //   setIsRegexFieldEmpty(true);
     //   // validValues -= 1;
