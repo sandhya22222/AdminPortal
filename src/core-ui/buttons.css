@@ -1,14 +1,14 @@
 .app-btn-primary {
   /* background-color: #1677ff !important; */
-  background-color: #7D3192 !important;
+  background-color: #7d3192 !important;
   color: #ffffff !important;
-  border-color: #1677ff !important;
+  border-color: #7d3192 !important;
   /* border:1px solid #1677ff!important; */
   height: unset !important;
 }
 .app-btn-primary:hover {
-  background-color: #4096ff !important;
-  border-color: #4096ff !important ;
+  border-color: #7d3192 !important;
+  color: #ffffff !important;
 }
 .app-btn-secondary {
   background-color: #f4f4f4 !important;
@@ -17,9 +17,10 @@
   height: unset !important;
 }
 .app-btn-secondary:hover {
-  border-color: #4096ff !important;
-  color: #4096ff !important;
+  border-color: #7d3192 !important;
+  color: #7d3192 !important;
 }
+
 .app-btn-approve {
   background-color: #00c3b3 !important;
   color: #f6f6f6 !important;
@@ -27,11 +28,17 @@
   height: unset !important;
 }
 .app-btn-reject {
-  background-color: #f6f6f6 !important;
-  color: #a00a18;
+  background-color: #a00a18 !important;
+  color: #f6f6f6 !important;
   border: 1px solid #a00a18 !important;
   height: unset !important;
 }
+
+.app-btn-reject:hover {
+  background-color: #a00a18 !important;
+  color: #f6f6f6 !important;
+}
+
 .app-btn-review {
   background-color: #f6f6f6 !important;
   color: #393939 !important;
@@ -40,4 +47,8 @@
 }
 /* .ant-btn{
     border-radius:  0.23em !important;
+} */
+/* .ant-btn-default :hover{
+  border-color: #7d3192 !important;
+  color: #7d3192 !important;
 } */

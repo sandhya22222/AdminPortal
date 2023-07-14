@@ -604,7 +604,7 @@ const EditLanguage = () => {
                 </div>
               ) : (
                 <Content className="!w-[150%] ">
-                  <Content className="p-3 !bg-white mt-[8rem]">
+                  <Content className="p-3 !bg-white mt-[8rem] !rounded-lg mb-6">
                     <Content className="">
                       {/* <Typography.Title
                         level={3}

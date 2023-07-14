@@ -461,7 +461,7 @@ const AddLanguage = () => {
       <Content className="mt-[8rem] !w-full p-3">
         <Spin tip="Please wait!" size="large" spinning={isLoading}>
           <Content className="mt-[-15px]">
-            <Content className="p-3 bg-white mt-0 ">
+            <Content className="p-3 bg-white mt-0 !rounded-lg">
               <Content>
                 {/* <Typography.Title
                     level={3}
@@ -649,7 +649,6 @@ const AddLanguage = () => {
               <Row>
                 <Col>
                   <Button
-                    style={{ backgroundColor: "#393939" }}
                     className="app-btn-primary"
                     onClick={() => validateLanguageFieldEmptyOrNot()}
                   >

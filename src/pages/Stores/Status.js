@@ -204,7 +204,7 @@ function Status({
         <Col>
           <Space direction="vertical">
             <Switch
-              className="bg-gray-400"
+              className={switchStatus ? "!bg-green-500" : "!bg-gray-400"}
               checked={switchStatus}
               onChange={onChange}
               onClick={() => {

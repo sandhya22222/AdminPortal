@@ -50,6 +50,7 @@ const SidebarNew = () => {
   const [selectedItem, setSelectedItem] = useState([]);
   const [openedItem, setOpenedItem] = useState([]);
   const [loadingEffect, setLoadingEffect] = useState(false);
+
   const { pathname } = useLocation();
 
   const navigate = useNavigate();
@@ -164,7 +165,11 @@ const SidebarNew = () => {
               selectedKeys={selectedItem}
               openKeys={openedItem}
               theme={"dark"}
-              style={{ height: "calc(100vh - 145px)", overflow: "auto" }}
+              style={{
+                height: "calc(100vh - 145px)",
+                overflow: "auto",
+                backgroundColor: "#7d3192",
+              }}
             >
               {myData.map((item) => (
                 <Menu.Item
@@ -172,6 +177,7 @@ const SidebarNew = () => {
                     selectedItem === item.key ? item.icon : item.inactive_icon
                   }
                   key={item.key}
+                  className="hover:bg-[#4A2D73]"
                   onClick={() => {
                     navigate(item.navigate_to);
                   }}

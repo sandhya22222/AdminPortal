@@ -30,7 +30,7 @@ import {
   SearchOutlined,
 } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
-
+import { MdOutlineEdit, MdDeleteOutline } from "react-icons/md";
 //! Import user defined components
 import DynamicTable from "../../components/DynamicTable/DynamicTable";
 import StoreModal from "../../components/storeModal/StoreModal";
@@ -260,7 +260,7 @@ const Language = () => {
       key: "",
       render: (text, record) => {
         return (
-          <Col span={20} className="whitespace-nowrap">
+          <Col span={20} className="whitespace-nowrap flex align-middle">
             <Link
               to={{
                 pathname: "edit_language",
@@ -275,18 +275,13 @@ const Language = () => {
               className=" pl-[10px] font-semibold app-table-data-title"
             >
               <Tooltip title="Edit Language">
-                <EditOutlined
-                  style={{
-                    color: "black",
-                  }}
-                />
+                <MdOutlineEdit className="!text-xl text-black" />
               </Tooltip>
             </Link>
             <>
               <Tooltip title="Delete Language">
-                <DeleteOutlined
-                  className="app-delete-icon pr-4"
-                  style={{ fontSize: "16px", marginLeft: "20px" }}
+                <MdDeleteOutline
+                  className="!text-[#A00A18] !text-xl ml-4 "
                   onClick={() => {
                     openDeleteModal(record.id);
                   }}
@@ -538,7 +533,8 @@ const Language = () => {
             <p>
               {/* {errorMessage
                 ? errorMessage : */}
-                lease wait while we validate your information. If this process persists, please consider logging out and logging back in
+              lease wait while we validate your information. If this process
+              persists, please consider logging out and logging back in
             </p>
           </Layout>
         ) : (
