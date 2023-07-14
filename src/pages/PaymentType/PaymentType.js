@@ -40,7 +40,7 @@ const PaymentType = () => {
 
   const paymentTypeColumns = [
     {
-      title: "",
+      title: "Payment Types",
       dataIndex: "paymenttype",
       key: "paymenttype",
       width: "40%",
