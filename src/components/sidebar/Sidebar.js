@@ -125,11 +125,11 @@ const Sidebar = (props) => {
             </Spin>
           </Sider>
         </Affix>
-        <Layout>
+        {/* <Layout> */}
           <Content className="site-layout-background !bg-[#f4f4f4] min-h-[280px m-0] p-3">
             <Outlet />
           </Content>
-        </Layout>
+        {/* </Layout> */}
       </Layout>
     </Layout>
   );
