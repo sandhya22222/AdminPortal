@@ -497,7 +497,7 @@ const StoreImages = ({
                 className={`${
                   validStoreLogo
                     ? "!border-red-400 !border-2 focus:border-red-400 hover:border-red-400 !h-[105px] !w-[105px] rounded-lg"
-                    : ""
+                    : "ant-btn-default"
                 }`}
                 listType="picture-card"
                 fileList={fileList}
@@ -532,7 +532,7 @@ const StoreImages = ({
             </>
           ) : (
             <Upload
-              className="w-90"
+              className="w-90 ant-btn-default"
               listType="picture"
               beforeUpload={() => {
                 return false;
@@ -589,7 +589,7 @@ const StoreImages = ({
           <Content className="!mt-4">
             {type === "banner_images" ? (
               <Upload
-                className="w-90"
+                className="w-90  hover:border-purple-900 hover:text-[#7d3192]"
                 listType="picture"
                 beforeUpload={() => {
                   return false;

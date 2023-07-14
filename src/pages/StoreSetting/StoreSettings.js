@@ -1428,7 +1428,7 @@ const StoreSettings = () => {
             </StoreModal>
           </Content> */}
         <Spin tip="Please wait!" size="large" spinning={isUpLoading}>
-          <Content className="bg-white p-3">
+          <Content className="bg-white p-3 !rounded-lg">
             <label className="text-[20px] mb-2 mt-4 font-bold">
               {t("stores:Media")}
             </label>
@@ -1541,7 +1541,7 @@ const StoreSettings = () => {
             </Content>
           </Content>
         </Spin>
-        <Content className="bg-white mt-3 p-3">
+        <Content className="bg-white mt-3 p-3 rounded-lg">
           <label className="text-[20px] font-bold !text-center">
             {t("stores:Currency")}
           </label>
@@ -1640,8 +1640,8 @@ const StoreSettings = () => {
               />
             </Col>
           </Row>
-          {/* </Content> */}
-          {/* <Content className="bg-white mt-2 p-3 ">
+        </Content>
+        {/* <Content className="bg-white mt-2 p-3 ">
           <label className="text-[20px] mb-2 mt-4 font-bold">Region Code</label>
           <Content className="flex">
             <Input
@@ -1683,8 +1683,8 @@ const StoreSettings = () => {
             </Content>
           </Content>
         </Content> */}
-          {/* <Content className="bg-white mt-3 p-3 "> */}
-          <Content className="mt-3">
+        <Content className="bg-white mt-3 p-3 rounded-lg">
+          <Content className="">
             <Row className="!mb-4">
               <label className="text-[20px]  mt-2 font-bold">
                 {t("stores:Page-Theme")}
@@ -1727,6 +1727,7 @@ const StoreSettings = () => {
                 </StoreModal>
               </Content>
             </Row>
+            <Divider className="!my-4" />
             <Row className="mt-2">
               {/* <Col span={8} className="mr-2">
               <Button
@@ -3026,8 +3027,8 @@ const StoreSettings = () => {
             </Row>
           </Content>
         </Content>
-        {/* </Spin> */}
       </Content>
+      {/* </Spin> */}
     </Content>
   );
 };

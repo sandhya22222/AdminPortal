@@ -40,17 +40,17 @@
   border-radius: 0 0 2px 2px;
   /* background-color: white; 
   margin-left: -3px !important;
-}
+} 
 
-/* selected Card (active) 
+ selected Card (active) 
 .ant-tabs-card.ant-tabs-bottom > .ant-tabs-nav .ant-tabs-tab-active,
 .ant-tabs-card.ant-tabs-bottom > div > .ant-tabs-nav .ant-tabs-tab-active {
-  /* color: #dc3e3e !important; */
+   color: #dc3e3e !important; 
 
-  /* background-color: #e0e0e0 !important; 
+ background-color: #e0e0e0 !important; 
 }
 
-.ant-tabs-tab + .ant-tabs-tab {
+/*.ant-tabs-tab + .ant-tabs-tab {
   margin: 0 !important;
 }
 
@@ -80,6 +80,14 @@
 }
 */
 
-.ant-tabs-tab-btn{
-  color: #1A5692 !important;
+.ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #7d3192 !important;
+}
+
+.ant-tabs .ant-tabs-ink-bar {
+  background: #7d3192 !important;
+}
+
+.ant-tabs .ant-tabs-tab:hover {
+  color: #7d3192 !important;
 }
