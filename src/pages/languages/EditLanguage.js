@@ -65,6 +65,7 @@ const EditLanguage = () => {
   const [isLanguageFieldEmpty, setIsLanguageFieldEmpty] = useState(false);
   const [isLanguageCodeFieldEmpty, setIsLanguageCodeFieldEmpty] =
     useState(false);
+  const [isNativeFieldEmpty, setIsNativeFieldEmpty] = useState(false);
   const [isRegexFieldEmpty, setIsRegexFieldEmpty] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(false);
@@ -118,7 +119,7 @@ const EditLanguage = () => {
         toast(`Please select a file that is smaller than 4 MB in size`, {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
-          autoClose: false,
+          autoClose: 10000,
         });
       }
     }
@@ -228,7 +229,7 @@ const EditLanguage = () => {
     if (languageDetails.language === "") {
       setIsLanguageFieldEmpty(true);
       toast("Please enter the language name ", {
-        autoClose: false,
+        autoClose: 10000,
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
@@ -236,7 +237,7 @@ const EditLanguage = () => {
     if (languageDetails.language_code === "") {
       setIsLanguageCodeFieldEmpty(true);
       toast("Please enter the language code.", {
-        autoClose: false,
+        autoClose: 10000,
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
@@ -254,6 +255,7 @@ const EditLanguage = () => {
       toast("No changes were detected", {
         position: toast.POSITION.TOP_RIGHT,
         type: "info",
+        autoClose: 10000,
       });
     } else {
       updateEditLanguage();
@@ -335,6 +337,7 @@ const EditLanguage = () => {
           toast("Language edited successfully", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
+            autoClose: 10000,
           });
           navigate(-1);
         }
@@ -349,13 +352,14 @@ const EditLanguage = () => {
               {
                 position: toast.POSITION.TOP_RIGHT,
                 type: "error",
-                autoClose: false,
+                autoClose: 10000,
               }
             );
         } else {
           toast(error.response.data.message, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
+            autoClose: 10000,
           });
         }
         console.log(error.response);
@@ -410,6 +414,7 @@ const EditLanguage = () => {
         toast("File uploaded successfully", {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
+          autoClose: 10000,
         });
         setLanguageDetails({
           ...languageDetails,
@@ -421,6 +426,7 @@ const EditLanguage = () => {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
+            autoClose: 10000,
           });
         } else {
           if (fileExtension !== "csv") {
@@ -429,7 +435,7 @@ const EditLanguage = () => {
               {
                 position: toast.POSITION.TOP_RIGHT,
                 type: "error",
-                autoClose: false,
+                autoClose: 10000,
               }
             );
           }
@@ -455,6 +461,7 @@ const EditLanguage = () => {
         toast("File uploaded successfully", {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
+          autoClose: 10000,
         });
         // setIsUpLoading(false);
         let temp = { ...languageDetails };
@@ -475,7 +482,7 @@ const EditLanguage = () => {
               {
                 position: toast.POSITION.TOP_RIGHT,
                 type: "error",
-                autoClose: false,
+                autoClose: 10000,
               }
             );
           }
@@ -483,12 +490,13 @@ const EditLanguage = () => {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
+            autoClose: 10000,
           });
         } else {
           toast("Something went wrong, please try again later", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
-            autoClose: false,
+            autoClose: 10000,
           });
         }
         console.log(error.response);
@@ -520,6 +528,7 @@ const EditLanguage = () => {
           toast("Document deleted successfully", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
+            autoClose: 10000,
           });
         }
         setLanguageDetails({ ...languageDetails, lang_support_docs: null });
@@ -533,6 +542,7 @@ const EditLanguage = () => {
         toast(`${error.response.data.message}`, {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
+          autoClose: 10000,
         });
       });
   };
@@ -579,7 +589,7 @@ const EditLanguage = () => {
         {editLanguageButtonHeader()}
       </Content>
       <Spin tip="Please wait!" size="large" spinning={isLoading}>
-        <Content className="p-3">
+        <Content className="p-3 mt-[-15px]">
           <Row>
             <Col span={16}>
               {isDataLoading ? (
@@ -594,7 +604,7 @@ const EditLanguage = () => {
                 </div>
               ) : (
                 <Content className="!w-[150%] ">
-                  <Content className="p-3 !bg-white mt-[8rem]">
+                  <Content className="p-3 !bg-white mt-[8rem] !rounded-lg mb-6">
                     <Content className="">
                       {/* <Typography.Title
                         level={3}
@@ -622,7 +632,7 @@ const EditLanguage = () => {
                               }`}
                               maxLength={15}
                               onChange={(e) => {
-                                const regex = /^[a-zA-Z0-9]*$/;
+                                const regex = /^[a-zA-Z]*$/;
                                 if (
                                   e.target.value !== "" &&
                                   testValueByRegexPattern(regex, e.target.value)
@@ -654,7 +664,7 @@ const EditLanguage = () => {
                                   : ""
                               }`}
                               onChange={(e) => {
-                                const regex = /^[a-zA-Z0-9]*$/;
+                                const regex = /^[a-zA-Z]*$/;
                                 if (
                                   e.target.value !== "" &&
                                   testValueByRegexPattern(regex, e.target.value)
@@ -707,8 +717,26 @@ const EditLanguage = () => {
                             <Input
                               placeholder="Enter Native Name"
                               value={languageDetails.native_name}
+                              // className={`${
+                              //   isNativeFieldEmpty
+                              //     ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
+                              //     : ""
+                              // }`}
                               onChange={(e) => {
+                                // if (languageDetails.native_name.length < 4) {
+                                //   setIsNativeFieldEmpty(true);
+                                //   toast(
+                                //     "Native name must contain minimum of 2 characters",
+                                //     {
+                                //       position: toast.POSITION.TOP_RIGHT,
+                                //       type: "error",
+                                //       autoClose: 10000,
+                                //     }
+                                //   );
+                                // } else {
+                                // setIsNativeFieldEmpty(false);
                                 languageHandler("native_name", e.target.value);
+                                // }
                               }}
                               // className={
                               //   "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"

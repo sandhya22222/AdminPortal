@@ -52,14 +52,14 @@ const Signin = () => {
       toast("Please enter the username and password", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: 10000,
       });
     } else if (username === "") {
       setInValidUsername(true);
       toast("Please enter the username", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: 10000,
       });
     } else if (userPassword === "") {
       setInvalidUserPassword(true);
@@ -67,13 +67,14 @@ const Signin = () => {
       toast("Please enter the password", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose:false
+        autoClose: 10000,
       });
     } else {
       dispatch(fnUserLoggedInInfo([{ id: 1, name: username }]));
       toast("Signed in successfully", {
         position: toast.POSITION.TOP_RIGHT,
         type: "success",
+        autoClose: 10000,
         onClose: navigate("/dashboard"),
       });
       setUserPassword("");

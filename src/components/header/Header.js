@@ -124,6 +124,7 @@ const Header = () => {
     if (id === 2) {
       toast("Logged out successfully", {
         type: "info",
+        autoClose: 10000,
         onClose: navigate("/", { replace: true }),
       });
       dispatch(fnUserLoggedInInfo());

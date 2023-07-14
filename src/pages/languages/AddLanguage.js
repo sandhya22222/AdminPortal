@@ -37,7 +37,7 @@ const AddLanguage = () => {
   const [isLanguageCodeFieldEmpty, setIsLanguageCodeFieldEmpty] =
     useState(false);
   const [isSpecialCharacter, setIsSpecialCharacter] = useState("");
-  const [isRegexFieldEmpty, setIsRegexFieldEmpty] = useState(false);
+  const [isNativeFieldEmpty, setIsNativeFieldEmpty] = useState(false);
   const [language, setLanguage] = useState("");
   const [languageCode, setLanguageCode] = useState("");
   const [regex, setRegex] = useState("^[s\\S\\]*");
@@ -167,13 +167,14 @@ const AddLanguage = () => {
           toast("Something went wrong, please try again later", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
-            autoClose: false,
+            autoClose: 10000,
           });
         } else {
           if (error.response.status === 409) {
             toast(`${error.response.data.message}`, {
               position: toast.POSITION.TOP_RIGHT,
               type: "error",
+              autoClose: 10000,
             });
           }
           //  else if (fileData) {
@@ -183,7 +184,7 @@ const AddLanguage = () => {
           //       {
           //         position: toast.POSITION.TOP_RIGHT,
           //         type: "error",
-          //         autoClose: false,
+          //         autoClose: 10000,
           //       }
           //     );
           //   }
@@ -192,6 +193,7 @@ const AddLanguage = () => {
             toast(`${error.response.data.message}`, {
               position: toast.POSITION.TOP_RIGHT,
               type: "error",
+              autoClose: 10000,
             });
           }
         }
@@ -205,32 +207,31 @@ const AddLanguage = () => {
       setIsLanguageFieldEmpty(true);
       validValues--;
       toast("Please enter the language name", {
-        autoClose: false,
+        autoClose: 10000,
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
     }
-    const languageReg = /^[a-zA-Z0-9]{4,15}$/;
+    const languageReg = /^[a-zA-Z]{4,15}$/;
     if (language.trim() && languageReg.test(language.trim()) === false) {
       validValues--;
-
       setIsLanguageFieldEmpty(true);
       toast("Language name must contain minimum of 4 characters", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     }
     if (languageCode.trim() === "") {
       setIsLanguageCodeFieldEmpty(true);
       validValues--;
       toast("Please enter the language code.", {
-        autoClose: false,
+        autoClose: 10000,
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
     }
-    const userRegex = /^[a-zA-Z0-9]{2,3}$/;
+    const userRegex = /^[a-zA-Z]{2,3}$/;
     if (languageCode.trim() && userRegex.test(languageCode.trim()) === false) {
       validValues--;
 
@@ -238,7 +239,15 @@ const AddLanguage = () => {
       toast("Language code must contain minimum of 2 characters", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
+      });
+    }
+    if (nativeName.trim().length < 4) {
+      setIsNativeFieldEmpty(true);
+      toast("Native name must contain minimum of 2 characters", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+        autoClose: 10000,
       });
     }
     // if (regex === "") {
@@ -254,7 +263,7 @@ const AddLanguage = () => {
       saveLanguageAPI();
     }
   };
-
+  console.log("first", nativeName.trim().length);
   const addLanguageButtonHeader = () => {
     return (
       <>
@@ -317,6 +326,7 @@ const AddLanguage = () => {
         toast("File uploaded successfully", {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
+          autoClose: 10000,
         });
         // setIsUpLoading(false);
         console.log("Server Success Response From files", response.data);
@@ -334,7 +344,7 @@ const AddLanguage = () => {
               {
                 position: toast.POSITION.TOP_RIGHT,
                 type: "error",
-                autoClose: false,
+                autoClose: 10000,
               }
             );
           }
@@ -342,12 +352,13 @@ const AddLanguage = () => {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
+            autoClose: 10000,
           });
         } else {
           toast("Something went wrong, please try again later", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
-            autoClose: false,
+            autoClose: 10000,
           });
         }
         console.log(error.response);
@@ -379,6 +390,7 @@ const AddLanguage = () => {
           toast("Document deleted successfully", {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
+            autoClose: 10000,
           });
         }
         // disabling spinner
@@ -389,6 +401,7 @@ const AddLanguage = () => {
         toast(`${error.response.data.message}`, {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
+          autoClose: 10000,
         });
       });
   };
@@ -447,8 +460,8 @@ const AddLanguage = () => {
       </Content>
       <Content className="mt-[8rem] !w-full p-3">
         <Spin tip="Please wait!" size="large" spinning={isLoading}>
-          <Content>
-            <Content className="p-3 bg-white mt-0 ">
+          <Content className="mt-[-15px]">
+            <Content className="p-3 bg-white mt-0 !rounded-lg">
               <Content>
                 {/* <Typography.Title
                     level={3}
@@ -555,10 +568,13 @@ const AddLanguage = () => {
                         value={nativeName}
                         onChange={(e) => {
                           handleNativeNameChange(e);
+                          setIsNativeFieldEmpty(false);
                         }}
-                        // className={
-                        //   "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
-                        // }
+                        className={`${
+                          isNativeFieldEmpty
+                            ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
+                            : ""
+                        }`}
                       />
                     </Content>
                   </Col>
@@ -597,6 +613,7 @@ const AddLanguage = () => {
                       return false;
                     }}
                     accept=".csv"
+                    maxCount={1}
                     name="file"
                     onChange={(e) => handleDropImage(e)}
                     // onRemove={(e) => removeLanguageDocument(e)}
@@ -632,7 +649,6 @@ const AddLanguage = () => {
               <Row>
                 <Col>
                   <Button
-                    style={{ backgroundColor: "#393939" }}
                     className="app-btn-primary"
                     onClick={() => validateLanguageFieldEmptyOrNot()}
                   >

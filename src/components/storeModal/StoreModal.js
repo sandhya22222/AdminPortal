@@ -46,7 +46,7 @@ const StoreModal = ({
                 {cancelButtonText}
               </Button>,
               <Button
-                className={` app-btn-primary ${
+                className={`app-btn-reject ${
                   isSpin === true ? " !opacity-50 !cursor-not-allowed" : " "
                 }`}
                 key="submit"

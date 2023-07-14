@@ -20,7 +20,15 @@ import {
   Typography,
 } from "antd";
 import React, { useEffect, useRef, useState } from "react";
-import { MdInfo } from "react-icons/md";
+import {
+  MdInfo,
+  MdStore,
+  MdBusiness,
+  MdDomainDisabled,
+  MdOutlineEdit,
+  MdSettings,
+  MdDeleteOutline,
+} from "react-icons/md";
 import {
   Link,
   useLocation,
@@ -33,7 +41,6 @@ import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
 import { useTranslation } from "react-i18next";
 //! Import user defined components
 import Highlighter from "react-highlight-words";
-import { MdBusiness, MdDomainDisabled } from "react-icons/md";
 import DmPagination from "../../components/DmPagination/DmPagination";
 import DmTabAntDesign from "../../components/DmTabAntDesign/DmTabAntDesign";
 import DynamicTable from "../../components/DynamicTable/DynamicTable";
@@ -115,11 +122,11 @@ const Stores = () => {
   const storeTabData = [
     {
       tabId: 0,
-      tabIcon: <MdBusiness className="!text-2xl " />,
+      tabIcon: <MdStore className="!text-2xl !text-[#FCC32A] " />,
       tabTitle: (
         <div className="flex flex-row">
-          <Text>{t("stores:All")}</Text>
-          <div className="rounded-full bg-sky-100 ml-2">
+          <div className="!font-medium">{t("stores:All")}</div>
+          <div className="rounded-full bg-purple-100 ml-2 px-2  flex justify-center !font-medium">
             {activeCount && activeCount.totalStores}
           </div>{" "}
         </div>
@@ -130,8 +137,8 @@ const Stores = () => {
       tabIcon: <MdBusiness className="!text-2xl " />,
       tabTitle: (
         <div className="flex flex-row">
-          <Text>{t("stores:Active")}</Text>
-          <div className="rounded-full bg-sky-100 ml-2">
+          <div className="">{t("stores:Active")}</div>
+          <div className="rounded-full bg-purple-100 ml-2 px-2 flex justify-center ">
             {activeCount && activeCount.activeStores}
           </div>{" "}
         </div>
@@ -142,8 +149,8 @@ const Stores = () => {
       tabIcon: <MdDomainDisabled className="!text-2xl " />,
       tabTitle: (
         <div className="flex flex-row">
-          <Text>{t("stores:Inactive")}</Text>
-          <div className="rounded-full bg-sky-100 ml-2">
+          <div className="">{t("stores:Inactive")}</div>
+          <div className="rounded-full bg-purple-100 ml-2 px-2 flex justify-center ">
             {activeCount && activeCount.inactiveStores}
           </div>{" "}
         </div>
@@ -298,10 +305,10 @@ const Stores = () => {
       width: "12%",
       render: (text, record) => {
         return (
-          <content className="whitespace-nowrap">
+          <Content className="whitespace-nowrap flex align-middle">
             <Tooltip title={t("stores:Edit-Store")}>
-              <EditOutlined
-                className="app-edit-icon font-bold text-black pr-6"
+              <MdOutlineEdit
+                className=" !text-xl"
                 onClick={() => {
                   showEditDrawer(record.id);
                 }}
@@ -322,25 +329,21 @@ const Stores = () => {
               // className=" pl-[10px] font-semibold app-table-data-title"
             >
               <Tooltip title={t("stores:Store-Settings")}>
-                <SettingOutlined
-                  className="app-delete-icon pr-4  text-black"
-                  style={{ fontSize: "16px", marginLeft: "5px" }}
-                />
+                <MdSettings className=" text-black !text-xl ml-4" />
               </Tooltip>
             </Link>
 
             {record.status === "InActive" ? (
               <Tooltip title={t("stores:Delete-Store")}>
-                <DeleteOutlined
-                  className="app-delete-icon pr-4"
-                  style={{ fontSize: "16px", marginLeft: "5px" }}
+                <MdDeleteOutline
+                  className=" !text-[#A00A18] !text-xl ml-4"
                   onClick={() => {
                     openDeleteModal(record.id);
                   }}
                 />
               </Tooltip>
             ) : null}
-          </content>
+          </Content>
         );
       },
     },
@@ -577,7 +580,7 @@ const Stores = () => {
       toast(`${t("stores:Please-enter-the-store-name")}`, {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     }
     const patternName = /^[A-Za-z]+$/;
@@ -587,7 +590,7 @@ const Stores = () => {
       toast(`${t("stores:Please-enter-the-valid-store-name")}`, {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     }
 
@@ -598,7 +601,7 @@ const Stores = () => {
       toast(`${t("stores:Please-enter-the-valid-email-address")}`, {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     }
     if (
@@ -608,10 +611,10 @@ const Stores = () => {
     ) {
       count--;
       setInValidEmail(true);
-      toast(`${t("stores:Validation-Error-Message1")}`, {
+      toast(`${t("stores:Please-enter-the-valid-email-address")}`, {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     }
     if (
@@ -624,7 +627,7 @@ const Stores = () => {
       toast(`${t("stores:Please-enter-the-username")}`, {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     }
     const userRegex = /^[a-zA-Z0-9_ ]{6,15}$/;
@@ -634,7 +637,7 @@ const Stores = () => {
       toast(`${t("stores:Validation-Error-Message2")}`, {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     }
     // if (storeUserName && storeUserName.length < 6) {
@@ -655,7 +658,7 @@ const Stores = () => {
       toast(`${t("stores:Please-enter-the-password")}`, {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     }
     const pattern =
@@ -666,7 +669,7 @@ const Stores = () => {
       toast(`${t("stores:Validation-Error-Message1")}`, {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     }
     // if (storePassword && storePassword.length < 6) {
@@ -702,6 +705,7 @@ const Stores = () => {
         toast(`${t("stores:Store-created-successfully")}`, {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
+          autoClose: 10000,
         });
         setIsUpLoading(false);
         // window.location.reload(true);
@@ -714,20 +718,21 @@ const Stores = () => {
         setPostData(response.data);
       })
       .catch((error) => {
+        setIsUpLoading(false);
         if (error.response) {
-          toast(`${error.response.data.name[0]}`, {
+          toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
+            autoClose: 10000,
           });
         } else {
           toast(`${t("common:Something-Went-Wrong")}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
-            autoClose: false,
+            autoClose: 10000,
           });
         }
         console.log("Error respose from the store post call", error.response);
-        setIsUpLoading(false);
         // setInValidName(true)
         // onClose();
       });
@@ -770,21 +775,23 @@ const Stores = () => {
           toast(`${t("stores:Store-updated-successfully")}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
+            autoClose: 10000,
           });
         }
       })
       .catch((error) => {
         setIsUpLoading(false);
         if (error.response) {
-          toast(`${error.response.data.message.name[0]}`, {
+          toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
+            autoClose: 10000,
           });
         } else {
           toast(`${t("common:Something-Went-Wrong")}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
-            autoClose: false,
+            autoClose: 10000,
           });
         }
       });
@@ -812,12 +819,13 @@ const Stores = () => {
       toast(`${t("stores:Please-enter-the-store-name")}`, {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
-        autoClose: false,
+        autoClose: 10000,
       });
     } else if (editName === serverStoreName) {
       toast(`${t("common:No-Changes-Detected")}`, {
         position: toast.POSITION.TOP_RIGHT,
         type: "info",
+        autoClose: 10000,
       });
     } else {
       updateStoreData();
@@ -882,6 +890,7 @@ const Stores = () => {
           toast(`${t("stores:Store-deleted-successfully")}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
+            autoClose: 10000,
           });
         }
         // disabling spinner
@@ -895,12 +904,13 @@ const Stores = () => {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
+            autoClose: 10000,
           });
         } else {
           toast(`${t("common:Something-Went-Wrong")}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
-            autoClose: false,
+            autoClose: 10000,
           });
         }
       });
@@ -934,320 +944,335 @@ const Stores = () => {
         />
         <HeaderForTitle
           title={
-            <Content className="flex">
-              <Content className="!inline-block text-left self-center pr-3">
-                <Title level={3} className="!font-normal">
-                  {t("stores:Stores")}
-                </Title>
-              </Content>
-              <Content className="!inline-block text-right self-center">
-                <Button className="app-btn-primary" onClick={showAddDrawer}>
-                  {t("stores:Add-Store")}
-                </Button>
-                <Drawer
-                  title={
-                    drawerAction && drawerAction === "post"
-                      ? `${t("stores:Add-Store")}`
-                      : `${t("stores:Edit-Store")}`
-                  }
-                  placement="right"
-                  onClose={onClose}
-                  open={open}
-                  width={"40%"}
-                >
-                  {drawerAction && drawerAction === "post" ? (
-                    <>
-                      <Row>
-                        <Col span={1} className="flex items-start">
-                          <MdInfo className="text-blue-400 text-[16px]" />
-                        </Col>
-                        <Col span={23} className="align-center mb-3">
-                          <Text className=" mr-1 font-bold">
-                            {" "}
-                            {t("stores:Note")}:{" "}
-                          </Text>
-                          <Text>{t("stores:Add-Store-Description")}</Text>
-                        </Col>
-                      </Row>
-                      <Spin
-                        tip={t("stores:Please-wait!")}
-                        size="large"
-                        spinning={isUpLoading}
-                      >
-                        <span className="text-red-600 text-sm">*</span>
-                        <label className="text-[13px] mb-2 ml-1">
-                          {t("stores:Store-Name")}
-                          {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
-                        </label>
-                        <Input
-                          placeholder={t("stores:Enter-Store-Name")}
-                          value={name}
-                          maxLength={20}
-                          className={`${
-                            inValidName
-                              ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-2"
-                              : "mb-2"
-                          }`}
-                          onChange={(e) => {
-                            const patternName = /^[A-Za-z]+$/;
-                            if (patternName.test(e.target.value) === false) {
-                              setShowStoreErrorMessage(true);
-                              setName(e.target.value);
-                            } else {
-                              setName(e.target.value);
+            <>
+              <Content className="flex">
+                <Content className="!inline-block text-left self-center pr-3">
+                  <Title level={3} className="!font-normal">
+                    {t("stores:Stores")}
+                  </Title>
+                </Content>
+                <Content className="!inline-block text-right self-center">
+                  <Button className="app-btn-primary" onClick={showAddDrawer}>
+                    {t("stores:Add-Store")}
+                  </Button>
+                  <Drawer
+                    title={
+                      drawerAction && drawerAction === "post"
+                        ? `${t("stores:Add-Store")}`
+                        : `${t("stores:Edit-Store")}`
+                    }
+                    placement="right"
+                    onClose={onClose}
+                    open={open}
+                    width={"40%"}
+                  >
+                    {drawerAction && drawerAction === "post" ? (
+                      <>
+                        <Row>
+                          <Col span={1} className="flex items-start">
+                            <MdInfo className="text-blue-400 text-[16px]" />
+                          </Col>
+                          <Col span={23} className="align-center mb-3">
+                            <Text className=" mr-1 font-bold">
+                              {" "}
+                              {t("stores:Note")}:{" "}
+                            </Text>
+                            <Text>{t("stores:Add-Store-Description")}</Text>
+                          </Col>
+                        </Row>
+                        <Spin
+                          tip={t("stores:Please-wait!")}
+                          size="large"
+                          spinning={isUpLoading}
+                        >
+                          <span className="text-red-600 text-sm">*</span>
+                          <label className="text-[13px] mb-2 ml-1">
+                            {t("stores:Store-Name")}
+                            {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
+                          </label>
+                          <Input
+                            placeholder={t("stores:Enter-Store-Name")}
+                            value={name}
+                            maxLength={20}
+                            className={`${
+                              inValidName
+                                ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-6"
+                                : "mb-6"
+                            }`}
+                            onChange={(e) => {
+                              const patternName = /^[A-Za-z]+$/;
+                              if (patternName.test(e.target.value) === false) {
+                                setShowStoreErrorMessage(true);
+                                setName(e.target.value);
+                              } else {
+                                setName(e.target.value);
+                                setShowStoreErrorMessage(false);
+                              }
+                              setInValidName(false);
+                            }}
+                          />
 
-                              setShowStoreErrorMessage(false);
+                          {showStoreErrorMessage === true ? (
+                            <p className="text-red-600 text-sm">
+                              {t(
+                                "stores:Please-enter-alphabetic-characters-only"
+                              )}
+                            </p>
+                          ) : null}
+
+                          <Divider orientation="left" orientationMargin="0">
+                            {t("stores:Store-Administrator-Details")}
+                          </Divider>
+                          <span className="text-red-600 text-sm">*</span>
+                          <label className="text-[13px] mb-2 ml-1">
+                            {t("stores:Email")}
+                          </label>
+                          <Input
+                            placeholder={t("stores:Enter-Email")}
+                            value={storeEmail}
+                            maxLength={50}
+                            className={`${
+                              inValidEmail
+                                ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-6"
+                                : "mb-6"
+                            }`}
+                            onChange={(e) => {
+                              setStoreEmail(e.target.value);
+                              setInValidEmail(false);
+                            }}
+                          />
+                          <span className="text-red-600 text-sm">*</span>
+                          <label className="text-[13px] mb-2 ml-1">
+                            {t("stores:Username")}
+                          </label>
+                          <Input
+                            placeholder={t("stores:Enter-Username")}
+                            value={storeUserName}
+                            maxLength={15}
+                            minLength={6}
+                            suffix={`${storeUserName.length}/15`}
+                            className={`${
+                              inValidUserName
+                                ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-6"
+                                : "mb-6"
+                            }`}
+                            prefix={
+                              <UserOutlined className="site-form-item-icon" />
                             }
-                            setInValidName(false);
-                          }}
-                        />
-
-                        {showStoreErrorMessage === true ? (
-                          <p className="text-red-600 text-sm">
-                            {t(
-                              "stores:Please-enter-alphabetic-characters-only"
-                            )}
-                          </p>
-                        ) : null}
-
-                        <Divider orientation="left" orientationMargin="0">
-                          {t("stores:Store-Administrator-Details")}
-                        </Divider>
-                        <span className="text-red-600 text-sm">*</span>
-                        <label className="text-[13px] mb-2 ml-1">
-                          {t("stores:Email")}
-                        </label>
-                        <Input
-                          placeholder={t("stores:Enter-Email")}
-                          value={storeEmail}
-                          maxLength={50}
-                          className={`${
-                            inValidEmail
-                              ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-4"
-                              : "mb-4"
-                          }`}
-                          onChange={(e) => {
-                            setStoreEmail(e.target.value);
-                            setInValidEmail(false);
-                          }}
-                        />
-                        <span className="text-red-600 text-sm">*</span>
-                        <label className="text-[13px] mb-2 ml-1">
-                          {t("stores:Username")}
-                        </label>
-                        <Input
-                          placeholder={t("stores:Enter-Username")}
-                          value={storeUserName}
-                          maxLength={15}
-                          minLength={6}
-                          suffix={`${storeUserName.length}/15`}
-                          className={`${
-                            inValidUserName
-                              ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-4"
-                              : "mb-4"
-                          }`}
-                          prefix={
-                            <UserOutlined className="site-form-item-icon" />
-                          }
-                          onChange={(e) => {
-                            // const { value } = e.target;
-                            // const regex = /^[a-zA-Z0-9_ ]*$/; // only allow letters and numbers
-                            // if (regex.test(value)) {
-                            setStoreUserName(e.target.value);
-                            setInValidUserName(false);
-                            // } else {
-                            //   toast(
-                            //     "Please enter only alphabets, numbers, underscore, and hyphen.",
-                            //     {
-                            //       position: toast.POSITION.TOP_RIGHT,
-                            //       type: "warning",
-                            //     }
-                            //   );
-                            // }
-                          }}
-                        />
-                        <span className="text-red-600 text-sm">*</span>
-                        <label className="text-[13px] mb-2 ml-1">
-                          {t("stores:Password")}
-                        </label>
-                        <Input.Password
-                          placeholder={t("stores:Enter-Password")}
-                          value={storePassword}
-                          maxLength={15}
-                          className={`${
-                            inValidPassword
-                              ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-4"
-                              : "mb-4"
-                          }`}
-                          onChange={(e) => {
-                            const value = e.target.value;
-                            // if (value && value.length < 15) {
-                            setStorePassword(e.target.value);
-                            setInValidPassword(false);
-                            // }
-                            // else if (value && value.length >= 15) {
-                            //   toast(
-                            //     "Password should allow only 15 characters",
-                            //     {
-                            //       position: toast.POSITION.TOP_RIGHT,
-                            //       type: "warning",
-                            //     }
-                            //   );
-                            // } else
-                            if (e.target.value === "") {
+                            onChange={(e) => {
+                              // const { value } = e.target;
+                              // const regex = /^[a-zA-Z0-9_ ]*$/; // only allow letters and numbers
+                              // if (regex.test(value)) {
+                              setStoreUserName(e.target.value);
+                              setInValidUserName(false);
+                              // } else {
+                              //   toast(
+                              //     "Please enter only alphabets, numbers, underscore, and hyphen.",
+                              //     {
+                              //       position: toast.POSITION.TOP_RIGHT,
+                              //       type: "warning",
+                              //     }
+                              //   );
+                              // }
+                            }}
+                          />
+                          <span className="text-red-600 text-sm">*</span>
+                          <label className="text-[13px] mb-2 ml-1">
+                            {t("stores:Password")}
+                          </label>
+                          <Input.Password
+                            placeholder={t("stores:Enter-Password")}
+                            value={storePassword}
+                            maxLength={15}
+                            className={`${
+                              inValidPassword
+                                ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-10"
+                                : "mb-10"
+                            }`}
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              // if (value && value.length < 15) {
                               setStorePassword(e.target.value);
-                            }
-                          }}
-                        />
-                        <Button
-                          className="app-btn-primary"
-                          onClick={() => {
-                            validateStorePostField();
-                          }}
+                              setInValidPassword(false);
+                              // }
+                              // else if (value && value.length >= 15) {
+                              //   toast(
+                              //     "Password should allow only 15 characters",
+                              //     {
+                              //       position: toast.POSITION.TOP_RIGHT,
+                              //       type: "warning",
+                              //     }
+                              //   );
+                              // } else
+                              if (e.target.value === "") {
+                                setStorePassword(e.target.value);
+                              }
+                            }}
+                          />
+                          <Button
+                            className="app-btn-primary"
+                            onClick={() => {
+                              validateStorePostField();
+                            }}
+                          >
+                            {t("common:Save")}
+                          </Button>
+                        </Spin>
+                      </>
+                    ) : (
+                      <>
+                        <Row>
+                          <Col span={1} className="flex items-start">
+                            <MdInfo className="text-blue-400 text-[16px]" />
+                          </Col>
+                          <Col span={23} className="align-center mb-3">
+                            <Text className=" mr-1 font-bold">
+                              {" "}
+                              {t("stores:Note")}:
+                            </Text>
+                            <Text>{t("stores:Edit-Store-Description")}</Text>
+                          </Col>
+                        </Row>
+                        <Spin
+                          tip={t("stores:Please-wait!")}
+                          size="large"
+                          spinning={isUpLoading}
                         >
-                          {t("common:Save")}
-                        </Button>
-                      </Spin>
-                    </>
-                  ) : (
-                    <>
-                      <Row>
-                        <Col span={1} className="flex items-start">
-                          <MdInfo className="text-blue-400 text-[16px]" />
-                        </Col>
-                        <Col span={23} className="align-center mb-3">
-                          <Text className=" mr-1 font-bold">
+                          <span className="text-red-600 text-sm">*</span>
+                          <label className="text-[13px] mb-2 ml-1">
+                            {t("stores:Store-Name")}
+                            {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
+                          </label>
+                          <Input
+                            value={editName}
+                            placeholder={t("stores:Enter-Store-Name")}
+                            className={`${
+                              inValidEditName
+                                ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 mb-6"
+                                : "mb-6"
+                            }`}
+                            maxLength={20}
+                            onChange={(e) => {
+                              // const { value } = e.target;
+                              // const regex = /^[a-zA-Z0-9]*$/; // only allow letters and numbers
+                              // if (regex.test(value)) {
+                              //   setEditName(e.target.value);
+                              // }
+                              setEditName(e.target.value);
+                              setInValidEditName(false);
+                            }}
+                          />
+                          <Divider orientation="left" orientationMargin="0">
+                            {t("stores:Store-Administrator-Details")}
+                          </Divider>
+                          <span className="text-red-600 text-sm">*</span>
+                          <label className="text-[13px] mb-2 ml-1">
                             {" "}
-                            {t("stores:Note")}:
-                          </Text>
-                          <Text>{t("stores:Edit-Store-Description")}</Text>
-                        </Col>
-                      </Row>
-                      <Spin
-                        tip={t("stores:Please-wait!")}
-                        size="large"
-                        spinning={isUpLoading}
-                      >
-                        <span className="text-red-600 text-sm">*</span>
-                        <label className="text-[13px] mb-2 ml-1">
-                          {t("stores:Store-Name")}
-                          {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
-                        </label>
-                        <Input
-                          value={editName}
-                          placeholder={t("stores:Enter-Store-Name")}
-                          className={`${
-                            inValidEditName
-                              ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 mb-4"
-                              : "mb-4"
-                          }`}
-                          maxLength={20}
-                          onChange={(e) => {
-                            // const { value } = e.target;
-                            // const regex = /^[a-zA-Z0-9]*$/; // only allow letters and numbers
-                            // if (regex.test(value)) {
-                            //   setEditName(e.target.value);
-                            // }
-                            setEditName(e.target.value);
-                            setInValidEditName(false);
-                          }}
-                        />
-                        <Divider orientation="left" orientationMargin="0">
-                          {t("stores:Store-Administrator-Details")}
-                        </Divider>
-                        <span className="text-red-600 text-sm">*</span>
-                        <label className="text-[13px] mb-2 ml-1">
-                          {" "}
-                          {t("stores:Email")}
-                        </label>
-                        <Input
-                          placeholder={t("stores:Enter-Email")}
-                          value={storeEditEmail}
-                          maxLength={30}
-                          disabled
-                          className="mb-4"
-                          onChange={(e) => {
-                            // handleEmailChange(e);
-                            const { value } = e.target;
-                            const regex = /^[a-zA-Z0-9_.-@]*$/;
-                            if (regex.test(value)) {
-                              setStoreEditEmail(value);
-                            } else {
-                              toast(
-                                `${t(
-                                  "stores:Please enter the valid email address"
-                                )}`,
-                                {
-                                  position: toast.POSITION.TOP_RIGHT,
-                                  type: "warning",
-                                }
-                              );
+                            {t("stores:Email")}
+                          </label>
+                          <Input
+                            placeholder={t("stores:Enter-Email")}
+                            value={storeEditEmail}
+                            maxLength={30}
+                            disabled
+                            className="mb-6"
+                            onChange={(e) => {
+                              // handleEmailChange(e);
+                              const { value } = e.target;
+                              const regex = /^[a-zA-Z0-9_.-@]*$/;
+                              if (regex.test(value)) {
+                                setStoreEditEmail(value);
+                              } else {
+                                toast(
+                                  `${t(
+                                    "stores:Please enter the valid email address"
+                                  )}`,
+                                  {
+                                    position: toast.POSITION.TOP_RIGHT,
+                                    type: "warning",
+                                  }
+                                );
+                              }
+                            }}
+                          />
+                          <span className="text-red-600 text-sm">*</span>
+                          <label className="text-[13px] mb-2 ml-1">
+                            {t("stores:Username")}
+                          </label>
+                          <Input
+                            placeholder={t("stores:Enter-Username")}
+                            value={storeEditUserName}
+                            maxLength={10}
+                            className="mb-6"
+                            prefix={
+                              <UserOutlined className="site-form-item-icon" />
                             }
-                          }}
-                        />
-                        <span className="text-red-600 text-sm">*</span>
-                        <label className="text-[13px] mb-2 ml-1">
-                          {t("stores:Username")}
-                        </label>
-                        <Input
-                          placeholder={t("stores:Enter-Username")}
-                          value={storeEditUserName}
-                          maxLength={10}
-                          className="mb-4"
-                          prefix={
-                            <UserOutlined className="site-form-item-icon" />
-                          }
-                          suffix={`${storeEditUserName.length}/10`}
-                          disabled
-                          onChange={(e) => {
-                            const { value } = e.target;
-                            const regex = /^[a-zA-Z0-9_-]*$/; // only allow letters and numbers
-                            if (regex.test(value)) {
-                              setStoreEditUserName(value);
-                            } else {
-                              toast(
-                                "Please enter only alphabets, numbers, underscore, and hyphen.",
-                                {
-                                  position: toast.POSITION.TOP_RIGHT,
-                                  type: "warning",
-                                }
-                              );
-                            }
-                          }}
-                        />
-                        <span className="text-red-600 text-sm">*</span>
-                        <label className="text-[13px] mb-2 ml-1">
-                          {t("stores:Password")}
-                          {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
-                        </label>
-                        <Input.Password
-                          placeholder={t("stores:Enter-Password")}
-                          value={storeEditPassword}
-                          maxLength={6}
-                          disabled
-                          className="mb-4"
-                          onChange={(e) => {
-                            setStoreEditPassword(e.target.value);
-                          }}
-                        />
-                        <Button
-                          className="app-btn-primary"
-                          onClick={() => {
-                            validateStorePutField();
-                          }}
-                        >
-                          {t("common:Update")}
-                        </Button>
-                      </Spin>
-                    </>
-                  )}
-                </Drawer>
+                            suffix={`${storeEditUserName.length}/10`}
+                            disabled
+                            onChange={(e) => {
+                              const { value } = e.target;
+                              const regex = /^[a-zA-Z0-9_-]*$/; // only allow letters and numbers
+                              if (regex.test(value)) {
+                                setStoreEditUserName(value);
+                              } else {
+                                toast(
+                                  "Please enter only alphabets, numbers, underscore, and hyphen.",
+                                  {
+                                    position: toast.POSITION.TOP_RIGHT,
+                                    type: "warning",
+                                  }
+                                );
+                              }
+                            }}
+                          />
+                          <span className="text-red-600 text-sm">*</span>
+                          <label className="text-[13px] mb-2 ml-1">
+                            {t("stores:Password")}
+                            {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
+                          </label>
+                          <Input.Password
+                            placeholder={t("stores:Enter-Password")}
+                            value={storeEditPassword}
+                            maxLength={6}
+                            disabled
+                            className="mb-10"
+                            onChange={(e) => {
+                              setStoreEditPassword(e.target.value);
+                            }}
+                          />
+                          <Button
+                            className="app-btn-primary"
+                            onClick={() => {
+                              validateStorePutField();
+                            }}
+                          >
+                            {t("common:Update")}
+                          </Button>
+                        </Spin>
+                      </>
+                    )}
+                  </Drawer>
+                </Content>
               </Content>
-            </Content>
+              <Content className="!h-7">
+                <DmTabAntDesign
+                  tabData={storeTabData}
+                  handleTabChangeFunction={handleTabChangeStore}
+                  activeKey={
+                    // searchParams.get("tab") ? searchParams.get("tab") : "0"
+                    tab_id === null ? "0" : String(tab_id)
+                    // String(tab_id)
+                  }
+                  // totalItemsCount={countForStore}
+                  tabType={"line"}
+                  tabBarPosition={"top"}
+                />
+              </Content>
+            </>
           }
         />
       </Content>
-      <Content className="!p-3 mt-[8rem] !min-h-screen">
+      <Content className="!p-3 !mt-[10rem] !min-h-screen">
         {isLoading ? (
           <Content className="bg-white">
             <Skeleton
@@ -1263,12 +1288,16 @@ const Stores = () => {
           <Layout className="p-0 text-center mb-3 bg-[#F4F4F4]">
             {/* <p>Validation in Progress</p> */}
             <p>
-              {errorMessage ? errorMessage : `${t("common:Network-Error")}`}
+              {/* {errorMessage
+                ? errorMessage :*/}
+              Please wait while we validate your information. If this process
+              persists, please consider logging out and logging back in
+              {/* } */}
             </p>
           </Layout>
         ) : (
           <Content className="">
-            <Content className="px-3">
+            {/* <Content className="px-3">
               <DmTabAntDesign
                 tabData={storeTabData}
                 handleTabChangeFunction={handleTabChangeStore}
@@ -1281,7 +1310,7 @@ const Stores = () => {
                 tabType={"line"}
                 tabBarPosition={"top"}
               />
-            </Content>
+            </Content> */}
             <Content>
               <DynamicTable tableComponentData={tablePropsData} />
             </Content>

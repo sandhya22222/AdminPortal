@@ -22,6 +22,15 @@ import {
 } from "react-icons/md";
 import { FaHome } from "react-icons/fa";
 import { AiOutlineHome } from "react-icons/ai";
+import {
+  ViewDashboard,
+  Store,
+  TranslateIcon,
+  PaymentTypeIcon,
+  ProfileIcon,
+  BackBurger,
+  menuIcon,
+} from "../../constants/media";
 //! Import CSS libraries
 
 //! Import user defined functions
@@ -41,6 +50,7 @@ const SidebarNew = () => {
   const [selectedItem, setSelectedItem] = useState([]);
   const [openedItem, setOpenedItem] = useState([]);
   const [loadingEffect, setLoadingEffect] = useState(false);
+
   const { pathname } = useLocation();
 
   const navigate = useNavigate();
@@ -55,23 +65,23 @@ const SidebarNew = () => {
     // },
     {
       key: "1",
-      icon: <MdDashboard className="!text-[#FCC32A]" />,
-      inactive_icon: <MdDashboard className="!text-[#ffffffde]" />,
+      icon: <img src={ViewDashboard} />,
+      inactive_icon: <img src={ViewDashboard} />,
       label: "Dashboard",
       navigate_to: "/dashboard",
       // children: [],
     },
     {
       key: "2",
-      icon: <MdStore className="!text-[#FCC32A]" />,
-      inactive_icon: <MdStore className="!text-[#ffffffde]" />,
+      icon: <img src={Store} />,
+      inactive_icon: <img src={Store} />,
       label: "Stores",
       navigate_to: "/dashboard/store",
     },
     {
       key: "3",
-      icon: <MdLanguage className="!text-[#FCC32A]" />,
-      inactive_icon: <MdLanguage className="!text-[#ffffffde]" />,
+      icon: <img src={TranslateIcon} />,
+      inactive_icon: <img src={TranslateIcon} />,
       label: "Languages",
       navigate_to: "/dashboard/language",
     },
@@ -83,15 +93,15 @@ const SidebarNew = () => {
     // },
     {
       key: "5",
-      icon: <MdOutlinePayment className="!text-[#FCC32A]" />,
-      inactive_icon: <MdOutlinePayment className="!text-[#ffffffde]" />,
+      icon: <img src={PaymentTypeIcon} />,
+      inactive_icon: <img src={PaymentTypeIcon} />,
       label: "Payment Type",
       navigate_to: "/dashboard/paymenttype",
     },
     {
       key: "6",
-      icon: <UserOutlined className="!text-[#FCC32A]" />,
-      inactive_icon: <UserOutlined className="!text-[#ffffffde]" />,
+      icon: <img src={ProfileIcon} />,
+      inactive_icon: <img src={ProfileIcon} />,
       label: "Profile",
       navigate_to: "/dashboard/userprofile",
     },
@@ -127,8 +137,9 @@ const SidebarNew = () => {
 
   return (
     <Layout>
-      <Affix offsetTop={50}>
+      <Affix offsetTop={48}>
         <Sider
+          trigger={null}
           collapsible
           collapsed={collapsed}
           onCollapse={(value) => setCollapsed(value)}
@@ -136,13 +147,11 @@ const SidebarNew = () => {
           style={{
             // overflow: "auto",
             height: "100vh",
+            backgroundColor: "#4A2D73",
             // left: 0,
-
             // top: 0,
-
             // bottom: 0,
           }}
-
           // className="!flex-[0_0_20%] min-h-screen border-r-[1px] drop-shadow-[0_0px_2px_rgba(0,0,0,0.15)]"
         >
           <Spin
@@ -152,11 +161,15 @@ const SidebarNew = () => {
           >
             <Menu
               mode="inline"
-              className="h-full !text-base !bg-[#001529]"
+              className="h-full !text-base !bg-[#4A2D73]"
               selectedKeys={selectedItem}
               openKeys={openedItem}
               theme={"dark"}
-              style={{ height: "calc(100vh - 145px)", overflow: "auto" }}
+              style={{
+                height: "calc(100vh - 145px)",
+                overflow: "auto",
+                backgroundColor: "#7d3192",
+              }}
             >
               {myData.map((item) => (
                 <Menu.Item
@@ -164,6 +177,7 @@ const SidebarNew = () => {
                     selectedItem === item.key ? item.icon : item.inactive_icon
                   }
                   key={item.key}
+                  className="hover:bg-[#4A2D73]"
                   onClick={() => {
                     navigate(item.navigate_to);
                   }}
@@ -177,64 +191,33 @@ const SidebarNew = () => {
               ))}
             </Menu>
           </Spin>
-          <Content>
-            <Divider
-              style={{
-                background: "#FFFFFF",
-                opacity: "0.55",
-                alignSelf: "stretch",
-                margin: "0px",
-                marginTop: "320px",
-              }}
-            />
-            <Button
-              type="text"
-              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-              onClick={() => setCollapsed(!collapsed)}
-              style={{
-                width: "100%",
-                display: "flex",
-                // padding: "8 16 8 16",
-                // marginTop: "0px",
-                color: "white",
-                justifyContent: "center",
-                // alignItems: "center",
-                bottom: "0",
-              }}
-            />
-          </Content>
+          <Divider
+            width={50}
+            style={{
+              background: "#FFFFFF",
+              opacity: "0.55",
+              alignSelf: "stretch",
+              margin: "0px",
+              marginTop: "50px",
+            }}
+          />
+          <Button
+            type="text"
+            icon={collapsed ? <img src={menuIcon} /> : <img src={BackBurger} />}
+            onClick={() => setCollapsed(!collapsed)}
+            className="!bg-[#4A2D73] hover:bg-[#4A2D73]"
+            style={{
+              width: "100%",
+              display: "flex",
+              padding: "8 16 8 16",
+              marginTop: "10px",
+              color: "white",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          />
         </Sider>
       </Affix>
-
-      {/* </Sider>
-        </Affix>
-        <Content>
-            <Divider
-              style={{
-                background: "#FFFFFF",
-                opacity: "0.55",
-                alignSelf: "stretch",
-                margin: "0px",
-                marginTop: "350px",
-              }}
-            />
-            <Button
-              type="text"
-              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-              onClick={() => setCollapsed(!collapsed)}
-              style={{
-                width: "100%",
-                display: "flex",
-                // padding: "8 16 8 16",
-                // marginTop: "0px",
-                color: "white",
-                justifyContent: "center",
-                // alignItems: "center",
-                bottom: "0",
-              }}
-            />
-          </Content> */}
-
       <Layout className="site-layout !w-[80%]">
         <Outlet />
       </Layout>

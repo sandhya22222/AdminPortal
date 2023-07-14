@@ -386,7 +386,7 @@ const DynamicTable = ({ tableComponentData }) => {
     <div>
       {dataSource.table_content && dataSource.table_content.length > 0 ? (
         <div>
-          <Content className="bg-white mb-2">
+          <Content className="bg-white mb-2 !rounded-lg">
             {dataSource.filter_settings.is_enabled === true ||
             dataSource.search_settings.is_enabled === true ||
             dataSource.sorting_settings.is_enabled === true ? (

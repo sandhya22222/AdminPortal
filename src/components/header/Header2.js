@@ -120,7 +120,7 @@ const Header2 = () => {
   return (
     <Content>
       <Header className="fixed z-20 top-0 p-0 !h-12 w-full bg-white drop-shadow-md">
-        <Content className="px-3 !h-12 flex !justify-between ">
+        <Content className="px-3 !py-2 !h-12 flex !justify-between ">
           {/* Left content which displays brand logo and other stuffs */}
           <Content className="!inline-block text-left self-center">
             <a href="/dashboard">
@@ -151,7 +151,7 @@ const Header2 = () => {
                 <Paragraph className="inline-block !mb-0 relative">
                   <Avatar
                     src={AdminIcon}
-                    className="text-lg absolute bottom-[-2px] left-[-30px]"
+                    className="!h-8 absolute bottom-[-2px] left-[-30px]"
                   />
                   <Content className="ml-2 mr-1 !flex !items-center">
                     <Text className="text-lg text-slate-600 pr-1">Admin</Text>

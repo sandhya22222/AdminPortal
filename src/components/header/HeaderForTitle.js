@@ -32,7 +32,7 @@ function HeaderForTitle({
             />
           ) : null}
 
-          <Title level={4} className="!m-0 !p-0 !font-semibold">
+          <Title level={4} className="!m-0 !p-0 font-semibold">
             {title}
           </Title>
         </Content>
