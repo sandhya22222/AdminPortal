@@ -47,6 +47,7 @@ const StoreImages = ({
   setValiStoreLogo,
   InfoCircleText,
   bannerAbsoluteImage,
+  setImageChangeValues,
 }) => {
   const authorizationHeader = useAuthorization();
   const dispatch = useDispatch();
@@ -473,7 +474,7 @@ const StoreImages = ({
         </Title>
         <Content className=" items-end  ">
           <Tooltip title={InfoCircleText} className="">
-            <InfoCircleOutlined className="text-sky-600" />
+            <InfoCircleOutlined className="!text-[#7d3192]" />
           </Tooltip>
         </Content>
         {/* {reset === true ? (
@@ -497,13 +498,16 @@ const StoreImages = ({
                 className={`${
                   validStoreLogo
                     ? "!border-red-400 !border-2 focus:border-red-400 hover:border-red-400 !h-[105px] !w-[105px] rounded-lg"
-                    : "ant-btn-default"
+                    : "hover:!border-purple-900 hover:!text-[#7d3192]"
                 }`}
                 listType="picture-card"
                 fileList={fileList}
                 name="file"
                 onPreview={handlePreview}
-                onChange={(e) => handleChange(e)}
+                onChange={(e) => {
+                  handleChange(e);
+                  setImageChangeValues(true);
+                }}
                 beforeUpload={() => {
                   return false;
                 }}
@@ -543,9 +547,15 @@ const StoreImages = ({
               fileList={fileList}
               onPreview={handlePreview}
               accept=".png, .jpg, .jpeg"
-              onChange={(e) => handleChange(e)}
+              onChange={(e) => {
+                handleChange(e);
+                setImageChangeValues(true);
+              }}
             >
-              <Button icon={<UploadOutlined />} className="font-semibold">
+              <Button
+                icon={<UploadOutlined />}
+                className="font-semibold hover:!border-purple-900 hover:!text-[#7d3192]"
+              >
                 Click to Add Banner Image
               </Button>
             </Upload>
@@ -589,7 +599,7 @@ const StoreImages = ({
           <Content className="!mt-4">
             {type === "banner_images" ? (
               <Upload
-                className="w-90  hover:border-purple-900 hover:text-[#7d3192]"
+                className="w-90"
                 listType="picture"
                 beforeUpload={() => {
                   return false;
@@ -599,9 +609,15 @@ const StoreImages = ({
                 }}
                 fileList={fileList}
                 accept=".png, .jpg, .jpeg"
-                onChange={(e) => handleChange(e)}
+                onChange={(e) => {
+                  handleChange(e);
+                  setImageChangeValues(true);
+                }}
               >
-                <Button icon={<UploadOutlined />} className="font-semibold">
+                <Button
+                  icon={<UploadOutlined />}
+                  className="font-semibold hover:!border-purple-900 hover:!text-[#7d3192]"
+                >
                   Click to Add Banner Image
                 </Button>
               </Upload>

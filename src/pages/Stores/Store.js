@@ -25,9 +25,9 @@ import {
   MdStore,
   MdBusiness,
   MdDomainDisabled,
-  MdOutlineEdit,
+  MdEdit,
   MdSettings,
-  MdDeleteOutline,
+  MdDelete,
 } from "react-icons/md";
 import {
   Link,
@@ -101,7 +101,8 @@ const Stores = () => {
   const [deleteStoreID, setDeleteStoreID] = useState("");
   const [activeCount, setActiveCount] = useState("");
   const [showStoreErrorMessage, setShowStoreErrorMessage] = useState(false);
-
+  const [onChangeValues, setOnChangeValues] = useState(false);
+  const [onChangeEditValues, setOnChangeEditValues] = useState(false);
   // const [currentPage, setCurrentPage] = useState(
   //   params.page ? params.page.slice(5, params.page.length) : 1
   // );
@@ -307,7 +308,7 @@ const Stores = () => {
         return (
           <Content className="whitespace-nowrap flex align-middle">
             <Tooltip title={t("stores:Edit-Store")}>
-              <MdOutlineEdit
+              <MdEdit
                 className=" !text-xl"
                 onClick={() => {
                   showEditDrawer(record.id);
@@ -335,7 +336,7 @@ const Stores = () => {
 
             {record.status === "InActive" ? (
               <Tooltip title={t("stores:Delete-Store")}>
-                <MdDeleteOutline
+                <MdDelete
                   className=" !text-[#A00A18] !text-xl ml-4"
                   onClick={() => {
                     openDeleteModal(record.id);
@@ -970,7 +971,7 @@ const Stores = () => {
                       <>
                         <Row>
                           <Col span={1} className="flex items-start">
-                            <MdInfo className="text-blue-400 text-[16px]" />
+                            <MdInfo className="!text-[#7d3192] text-[16px]" />
                           </Col>
                           <Col span={23} className="align-center mb-3">
                             <Text className=" mr-1 font-bold">
@@ -1004,9 +1005,11 @@ const Stores = () => {
                               if (patternName.test(e.target.value) === false) {
                                 setShowStoreErrorMessage(true);
                                 setName(e.target.value);
+                                setOnChangeValues(true);
                               } else {
                                 setName(e.target.value);
                                 setShowStoreErrorMessage(false);
+                                setOnChangeValues(true);
                               }
                               setInValidName(false);
                             }}
@@ -1039,6 +1042,7 @@ const Stores = () => {
                             onChange={(e) => {
                               setStoreEmail(e.target.value);
                               setInValidEmail(false);
+                              setOnChangeValues(true);
                             }}
                           />
                           <span className="text-red-600 text-sm">*</span>
@@ -1065,6 +1069,7 @@ const Stores = () => {
                               // if (regex.test(value)) {
                               setStoreUserName(e.target.value);
                               setInValidUserName(false);
+                              setOnChangeValues(true);
                               // } else {
                               //   toast(
                               //     "Please enter only alphabets, numbers, underscore, and hyphen.",
@@ -1094,6 +1099,7 @@ const Stores = () => {
                               // if (value && value.length < 15) {
                               setStorePassword(e.target.value);
                               setInValidPassword(false);
+                              setOnChangeValues(true);
                               // }
                               // else if (value && value.length >= 15) {
                               //   toast(
@@ -1110,7 +1116,10 @@ const Stores = () => {
                             }}
                           />
                           <Button
-                            className="app-btn-primary"
+                            className={
+                              onChangeValues ? "app-btn-primary" : "!opacity-75"
+                            }
+                            disabled={!onChangeValues}
                             onClick={() => {
                               validateStorePostField();
                             }}
@@ -1123,7 +1132,7 @@ const Stores = () => {
                       <>
                         <Row>
                           <Col span={1} className="flex items-start">
-                            <MdInfo className="text-blue-400 text-[16px]" />
+                            <MdInfo className="!text-[#7d3192] text-[16px]" />
                           </Col>
                           <Col span={23} className="align-center mb-3">
                             <Text className=" mr-1 font-bold">
@@ -1160,6 +1169,7 @@ const Stores = () => {
                               // }
                               setEditName(e.target.value);
                               setInValidEditName(false);
+                              setOnChangeEditValues(true);
                             }}
                           />
                           <Divider orientation="left" orientationMargin="0">
@@ -1182,6 +1192,7 @@ const Stores = () => {
                               const regex = /^[a-zA-Z0-9_.-@]*$/;
                               if (regex.test(value)) {
                                 setStoreEditEmail(value);
+                                setOnChangeEditValues(true);
                               } else {
                                 toast(
                                   `${t(
@@ -1214,6 +1225,7 @@ const Stores = () => {
                               const regex = /^[a-zA-Z0-9_-]*$/; // only allow letters and numbers
                               if (regex.test(value)) {
                                 setStoreEditUserName(value);
+                                setOnChangeEditValues(true);
                               } else {
                                 toast(
                                   "Please enter only alphabets, numbers, underscore, and hyphen.",
@@ -1238,13 +1250,19 @@ const Stores = () => {
                             className="mb-10"
                             onChange={(e) => {
                               setStoreEditPassword(e.target.value);
+                              setOnChangeEditValues(true);
                             }}
                           />
                           <Button
-                            className="app-btn-primary"
+                            className={
+                              onChangeEditValues
+                                ? "app-btn-primary"
+                                : "!opacity-75"
+                            }
                             onClick={() => {
                               validateStorePutField();
                             }}
+                            disabled={!onChangeEditValues}
                           >
                             {t("common:Update")}
                           </Button>
