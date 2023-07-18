@@ -15,6 +15,7 @@ import {
   Space,
   Tooltip,
   Divider,
+  InputNumber,
 } from "antd";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
@@ -498,13 +499,7 @@ const StoreSettings = () => {
       })
       .catch((error) => {
         if (error.response) {
-          toast(`${error.response.data.message}`, {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
-        } else if (error && error.response && error.response.status === 400) {
-          toast(`${error.response.data.message}`, {
+          toast(`${error.response.statusText}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
             autoClose: 10000,
@@ -1061,7 +1056,7 @@ const StoreSettings = () => {
             autoClose: 10000,
           });
         }
-        console.log(error.response);
+        console.log(error.response.data);
         setIsLoading(false);
       });
   };
@@ -1284,6 +1279,14 @@ const StoreSettings = () => {
         </Row>
       </>
     );
+  };
+
+  const numberToBasicLimit = (e) => {
+    const { key, keyCode } = e;
+    const { value } = e.target;
+    if (value.length >= 5 && keyCode !== 8) {
+      e.preventDefault(); // Prevents the input event from being fired, except for Backspace key
+    }
   };
 
   const validateRegionCode = () => {
@@ -1561,12 +1564,19 @@ const StoreSettings = () => {
                 }`}
                 // defaultValue={storeSettingData.store_currency["symbol"]}
                 value={currencySymbol}
+                maxLength={3}
                 onChange={(e) => {
-                  setCurrencySymbol(e.target.value);
-                  setInValidCurrencySymbol(false);
-                  let temp = { ...copyImageOfStoreSettingsCurrency };
-                  temp["symbol"] = e.target.value;
-                  setCopyImageOfStoreSettingsCurrency(temp);
+                  const regex = /^[^\w\s]+$/;
+                  if (regex.test(e.target.value)) {
+                    setCurrencySymbol(e.target.value);
+                    setInValidCurrencySymbol(false);
+                    let temp = { ...copyImageOfStoreSettingsCurrency };
+                    temp["symbol"] = e.target.value;
+                    setCopyImageOfStoreSettingsCurrency(temp);
+                  } else {
+                    // setCurrencySymbol("");
+                    setInValidCurrencySymbol(true);
+                  }
                 }}
               />
             </Col>
@@ -1578,12 +1588,19 @@ const StoreSettings = () => {
               <Input
                 placeholder={t("stores:Enter-ISO-code")}
                 value={currencyIsoCode}
+                maxLength={3}
                 onChange={(e) => {
-                  setCurrencyIsoCode(e.target.value);
-                  setInValidCurrencyIsoCode(false);
-                  let temp = { ...copyImageOfStoreSettingsCurrency };
-                  temp["iso_code"] = e.target.value;
-                  setCopyImageOfStoreSettingsCurrency(temp);
+                  const regex = /^[A-Za-z]+$/;
+                  if (regex.test(e.target.value)) {
+                    setCurrencyIsoCode(e.target.value);
+                    setInValidCurrencyIsoCode(false);
+                    let temp = { ...copyImageOfStoreSettingsCurrency };
+                    temp["iso_code"] = e.target.value;
+                    setCopyImageOfStoreSettingsCurrency(temp);
+                  } else {
+                    // setCurrencyIsoCode("");
+                    setInValidCurrencyIsoCode(true);
+                  }
                 }}
                 className={`${
                   inValidCurrencyIsoCode
@@ -1602,12 +1619,18 @@ const StoreSettings = () => {
               <Input
                 placeholder={t("stores:Enter-fractional-unit")}
                 value={fractionalUnit}
+                maxLength={10}
                 onChange={(e) => {
-                  setFractionalUnit(e.target.value);
-                  setInValidFractionalUnit(false);
-                  let temp = { ...copyImageOfStoreSettingsCurrency };
-                  temp["fractional_unit"] = e.target.value;
-                  setCopyImageOfStoreSettingsCurrency(temp);
+                  const regex = /^[A-Za-z]+$/;
+                  if (regex.test(e.target.value)) {
+                    setFractionalUnit(e.target.value);
+                    setInValidFractionalUnit(false);
+                    let temp = { ...copyImageOfStoreSettingsCurrency };
+                    temp["fractional_unit"] = e.target.value;
+                    setCopyImageOfStoreSettingsCurrency(temp);
+                  } else {
+                    setInValidFractionalUnit(true);
+                  }
                 }}
                 className={`${
                   inValidFractionalUnit
@@ -1622,16 +1645,17 @@ const StoreSettings = () => {
               <label className="text-[13px] mb-2 ml-1">
                 {t("stores:Number-to-Basic")}
               </label>
-              <Input
+              <InputNumber
                 placeholder={t("stores:Enter-number-to-basic")}
                 value={numberToBasic}
                 onChange={(e) => {
-                  setNumberToBasic(e.target.value);
+                  setNumberToBasic(e);
                   setInValidNumberToBasic(false);
                   let temp = { ...copyImageOfStoreSettingsCurrency };
-                  temp["number_to_basic"] = e.target.value;
+                  temp["number_to_basic"] = e;
                   setCopyImageOfStoreSettingsCurrency(temp);
                 }}
+                onKeyDown={numberToBasicLimit}
                 className={`${
                   inValidNumberToBasic
                     ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
@@ -1781,7 +1805,7 @@ const StoreSettings = () => {
                     type="color"
                     value={pageBackgroundColor}
                     onChange={(e) => {
-                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      const patternName = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
                       if (patternName.test(e.target.value) === false) {
                         let temp = { ...colorCodeValidation };
                         temp["pageBgColorValidation"] = true;
@@ -1806,7 +1830,8 @@ const StoreSettings = () => {
                       maxLength={7}
                       className="w-[150px]"
                       onChange={(e) => {
-                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                        const patternName =
+                          /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["pageBgColorValidation"] = true;
@@ -1866,7 +1891,7 @@ const StoreSettings = () => {
                     type="color"
                     value={foreGroundColor}
                     onChange={(e) => {
-                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      const patternName = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
                       if (patternName.test(e.target.value) === false) {
                         let temp = { ...colorCodeValidation };
                         temp["pageTextColorValidation"] = true;
@@ -1890,7 +1915,8 @@ const StoreSettings = () => {
                       value={foreGroundColor}
                       className="w-[150px]"
                       onChange={(e) => {
-                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                        const patternName =
+                          /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["pageTextColorValidation"] = true;
@@ -2001,7 +2027,7 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                     value={buttonPrimaryBackgroundColor}
                     onChange={(e) => {
-                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      const patternName = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
                       if (patternName.test(e.target.value) === false) {
                         let temp = { ...colorCodeValidation };
                         temp["primaryBgValidation"] = true;
@@ -2025,7 +2051,8 @@ const StoreSettings = () => {
                       maxLength={7}
                       className="w-[150px]"
                       onChange={(e) => {
-                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                        const patternName =
+                          /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["primaryBgValidation"] = true;
@@ -2090,7 +2117,7 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                     value={buttonSecondaryBackgroundColor}
                     onChange={(e) => {
-                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      const patternName = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
                       if (patternName.test(e.target.value) === false) {
                         let temp = { ...colorCodeValidation };
                         temp["secondaryBgValidation"] = true;
@@ -2113,7 +2140,8 @@ const StoreSettings = () => {
                       value={buttonSecondaryBackgroundColor}
                       className="w-[150px]"
                       onChange={(e) => {
-                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                        const patternName =
+                          /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["secondaryBgValidation"] = true;
@@ -2179,7 +2207,7 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                     value={buttonTeritaryBackgroundColor}
                     onChange={(e) => {
-                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      const patternName = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
                       if (patternName.test(e.target.value) === false) {
                         let temp = { ...colorCodeValidation };
                         temp["tertiaryBgValidation"] = true;
@@ -2202,7 +2230,8 @@ const StoreSettings = () => {
                       value={buttonTeritaryBackgroundColor}
                       className="w-[150px]"
                       onChange={(e) => {
-                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                        const patternName =
+                          /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["tertiaryBgValidation"] = true;
@@ -2317,7 +2346,7 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                     value={buttonPrimaryForegroundColor}
                     onChange={(e) => {
-                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      const patternName = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
                       if (patternName.test(e.target.value) === false) {
                         let temp = { ...colorCodeValidation };
                         temp["primaryTextValidation"] = true;
@@ -2341,7 +2370,8 @@ const StoreSettings = () => {
                       maxLength={7}
                       className="w-[150px]"
                       onChange={(e) => {
-                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                        const patternName =
+                          /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["primaryTextValidation"] = true;
@@ -2406,7 +2436,7 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                     value={buttonSecondaryForegroundColor}
                     onChange={(e) => {
-                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      const patternName = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
                       if (patternName.test(e.target.value) === false) {
                         let temp = { ...colorCodeValidation };
                         temp["secondaryTextValidation"] = true;
@@ -2430,7 +2460,8 @@ const StoreSettings = () => {
                       maxLength={7}
                       className="w-[150px]"
                       onChange={(e) => {
-                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                        const patternName =
+                          /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["secondaryTextValidation"] = true;
@@ -2496,7 +2527,7 @@ const StoreSettings = () => {
                     maxLength={7}
                     value={buttonTeritaryForegroundColor}
                     onChange={(e) => {
-                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      const patternName = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
                       if (patternName.test(e.target.value) === false) {
                         let temp = { ...colorCodeValidation };
                         temp["tertiaryTextValidation"] = true;
@@ -2518,7 +2549,8 @@ const StoreSettings = () => {
                     <Input
                       value={buttonTeritaryForegroundColor}
                       onChange={(e) => {
-                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                        const patternName =
+                          /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["tertiaryTextValidation"] = true;
@@ -2642,7 +2674,7 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                     value={headerBackgroundColor}
                     onChange={(e) => {
-                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      const patternName = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
                       if (patternName.test(e.target.value) === false) {
                         let temp = { ...colorCodeValidation };
                         temp["headerBgValidation"] = true;
@@ -2666,7 +2698,8 @@ const StoreSettings = () => {
                       maxLength={7}
                       className="w-[150px]"
                       onChange={(e) => {
-                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                        const patternName =
+                          /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["headerBgValidation"] = true;
@@ -2730,7 +2763,7 @@ const StoreSettings = () => {
                     minLength={1}
                     value={headerForegroundColor}
                     onChange={(e) => {
-                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      const patternName = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
                       if (patternName.test(e.target.value) === false) {
                         let temp = { ...colorCodeValidation };
                         temp["headerTextValidation"] = true;
@@ -2753,7 +2786,8 @@ const StoreSettings = () => {
                       value={headerForegroundColor}
                       className="w-[150px]"
                       onChange={(e) => {
-                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                        const patternName =
+                          /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["headerTextValidation"] = true;
@@ -2821,7 +2855,7 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                     value={footerBackgroundColor}
                     onChange={(e) => {
-                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      const patternName = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
                       if (patternName.test(e.target.value) === false) {
                         let temp = { ...colorCodeValidation };
                         temp["footerBgValidation"] = true;
@@ -2844,7 +2878,8 @@ const StoreSettings = () => {
                       value={footerBackgroundColor}
                       className="w-[150px]"
                       onChange={(e) => {
-                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                        const patternName =
+                          /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["footerBgValidation"] = true;
@@ -2905,7 +2940,7 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                     value={footerForegroundColor}
                     onChange={(e) => {
-                      const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                      const patternName = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
                       if (patternName.test(e.target.value) === false) {
                         let temp = { ...colorCodeValidation };
                         temp["footerTextValidation"] = true;
@@ -2928,7 +2963,8 @@ const StoreSettings = () => {
                       value={footerForegroundColor}
                       className="w-[150px]"
                       onChange={(e) => {
-                        const patternName = /^(?=.{7}$)#([a-zA-Z0-9]*)$/;
+                        const patternName =
+                          /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["footerTextValidation"] = true;

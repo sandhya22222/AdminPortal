@@ -262,7 +262,7 @@ const Stores = () => {
       width: "30%",
       sorter: (name1, name2) => name1.name.localeCompare(name2.name),
       sortDirections: ["descend", "ascend"],
-      showSorterTooltip: false,
+      showSorterTooltip: true,
       render: (text, record) => {
         return <>{record.name}</>;
       },
