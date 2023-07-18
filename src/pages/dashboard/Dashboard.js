@@ -401,7 +401,7 @@ const Dashboard = () => {
     //     </Content>
     //   </Spin>
     // </Content>
-    <Content className="">
+    <Content className="mb-2">
       <Content className="mb-2">
         <HeaderForTitle
           title={
@@ -468,7 +468,7 @@ const Dashboard = () => {
             </p>
           </Content>
         ) : (
-          <Content className="w-[100%]">
+          <Content className="">
             {/* <Content className="bg-yellow-500 w-[25%] inline-block">
               <Content className="p-3 shadow-sm rounded-md justify-center !bg-white w-[90%]">
                 <Content className="!text-black text-md mb-2 flex ">
@@ -521,9 +521,9 @@ const Dashboard = () => {
             <Content className="bg-pink-500 w-[25%] inline-block">
               dfadsf
             </Content> */}
-            <Content className="flex justify-between !mt-2">
-              <Content
-                className="p-3 mr-5 shadow-sm rounded-md justify-center !bg-white !w-[25%]"
+            <Content className="flex flex-wrap w-[100%] !mt-2">
+              <div
+                className="p-3 m-2 shadow-sm rounded-md justify-center !bg-white"
                 // style={{
                 //   background:
                 //     "linear-gradient(74.8deg, rgba(52, 168, 83, 0.6) 0%, rgba(52, 168, 83, 0.4) 98.74%)",
@@ -577,9 +577,9 @@ const Dashboard = () => {
                     </Content>
                   </Content>
                 </Content>
-              </Content>
-              <Content
-                className="p-3 mr-5 shadow-sm rounded-md justify-between !w-auto flex just !bg-white"
+              </div>
+              <div
+                className="p-3 m-2 shadow-sm rounded-md justify-between !w-auto flex  !bg-white"
                 // style={{
                 //   background:
                 //     "linear-gradient(74.8deg, rgba(234, 67, 53, 0.6) 0%, rgba(234, 67, 53, 0.4) 98.74%)",
@@ -610,6 +610,8 @@ const Dashboard = () => {
                       <span className="text-sm text-[#000000D9]">
                         Monthly Revenue
                       </span>
+                    </Content>
+                    <Content>
                       <span className="text-md !ml-1 !text-[#7CB305] whitespace-nowrap">
                         {currencySymbol}{" "}
                         {parseInt(
@@ -643,10 +645,12 @@ const Dashboard = () => {
                         )}
                       </span>
                     </Content>
-                    <Content className="">
+                    <Content className=" ">
                       <span className="text-sm text-[#000000D9]">
                         Monthly Revenue
                       </span>
+                    </Content>
+                    <Content>
                       <span className="text-md !ml-1 !text-[#7CB305] whitespace-nowrap">
                         {currencySymbol}{" "}
                         {parseInt(
@@ -659,8 +663,7 @@ const Dashboard = () => {
                     </Content>
                   </Content>
                 </Content>
-              </Content>
-
+              </div>
               {/* <Content
                 className="p-3 mr-5 shadow-sm rounded-md justify-center"
                 style={{
@@ -684,9 +687,8 @@ const Dashboard = () => {
                   </span>
                 </Content>
               </Content> */}
-
-              <Content
-                className="p-3 shadow-sm rounded-md justify-center !bg-white"
+              <div
+                className="p-3 m-2 shadow-sm rounded-md justify-center !bg-white"
                 // style={{
                 //   background:
                 //     "linear-gradient(74.8deg, rgba(66, 133, 244, 0.6) 0%, rgba(66, 133, 244, 0.4) 98.74%)",
@@ -711,8 +713,15 @@ const Dashboard = () => {
                     </Content>
                     <Content className="!text-[#ffffff]">
                       <span className="text-sm text-[#000000D9]">
-                        Products Created Last Month
+                        Products Created
                       </span>
+                    </Content>
+                    <Content className="!text-[#ffffff]">
+                      <span className="text-sm text-[#000000D9]">
+                        Last Month
+                      </span>
+                    </Content>
+                    <Content>
                       <span className="text-base !ml-1 !text-[#1A5692]">
                         {dashboardData &&
                           dashboardData.total_products_last_month}
@@ -720,7 +729,7 @@ const Dashboard = () => {
                     </Content>
                   </Content>
                 </Content>
-              </Content>
+              </div>
             </Content>
             {/* <Content className="flex justify-between !mt-6">
               <Content className="bg-[#ffff] p-3 mr-5 shadow-sm rounded-md justify-center">
