@@ -521,7 +521,7 @@ const Dashboard = () => {
             <Content className="bg-pink-500 w-[25%] inline-block">
               dfadsf
             </Content> */}
-            <Content className="flex flex-wrap w-[100%] !mt-2">
+            <Content className="flex flex-wrap justify-between w-[100%] !mt-2">
               <div
                 className="p-3 m-2 shadow-sm rounded-md justify-center !bg-white"
                 // style={{
