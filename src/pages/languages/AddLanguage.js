@@ -49,6 +49,7 @@ const AddLanguage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [langugaeDocumentPath, setLanguageDocumentPath] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [onChangeValues, setOnChangeValues] = useState(false);
 
   const navigate = useNavigate();
 
@@ -439,7 +440,7 @@ const AddLanguage = () => {
     //   message.error(`${info.file.name} file upload failed.`);
     // }
   };
-
+  console.log("onChangeValues", onChangeValues);
   return (
     <Content>
       <Content className="">
@@ -495,6 +496,7 @@ const AddLanguage = () => {
                           setIsLanguageFieldEmpty(false);
                           setLanguage(e.target.value);
                           setNativeName(e.target.value);
+                          // setOnChangeValues(true);
                         }}
                         // pattern="^[A-Za-z0-9]+$"
                         // rules={[
@@ -530,6 +532,7 @@ const AddLanguage = () => {
                         onChange={(e) => {
                           setIsLanguageCodeFieldEmpty(false);
                           setLanguageCode(e.target.value);
+                          // setOnChangeValues(true);
                         }}
                         // pattern="^[A-Za-z0-9]+$"
                       />
@@ -556,6 +559,7 @@ const AddLanguage = () => {
                         // }`}
                         onChange={(e) => {
                           handleRegexChange(e);
+                          // setOnChangeValues(true);
                         }}
                       />
                     </Content>
@@ -569,6 +573,7 @@ const AddLanguage = () => {
                         onChange={(e) => {
                           handleNativeNameChange(e);
                           setIsNativeFieldEmpty(false);
+                          // setOnChangeValues(true);
                         }}
                         className={`${
                           isNativeFieldEmpty
@@ -587,6 +592,7 @@ const AddLanguage = () => {
                     value={scriptDirection}
                     onChange={(e) => {
                       handleScriptDirectionChange(e);
+                      // setOnChangeValues(true);
                     }}
                   >
                     <Option value="LTR">Left to Right</Option>
@@ -608,11 +614,15 @@ const AddLanguage = () => {
                     accept=".csv"
                     maxCount={1}
                     name="file"
-                    onChange={(e) => handleDropImage(e)}
+                    onChange={
+                      (e) => handleDropImage(e)
+                      // setOnChangeValues(true)
+                    }
                     onRemove={true}
+                    className="app-btn-secondary"
                   >
                     <p className="ant-upload-drag-icon">
-                      <InboxOutlined />
+                      <InboxOutlined className="!text-[#7d3192]" />
                     </p>
                     <p className="ant-upload-text">Upload File</p>
                     <p className="ant-upload-text mx-2">
@@ -641,20 +651,29 @@ const AddLanguage = () => {
               <Row>
                 <Col>
                   <Button
-                    className="app-btn-primary"
+                    className={
+                      onChangeValues ? "app-btn-primary" : "!opacity-75"
+                    }
                     onClick={() => validateLanguageFieldEmptyOrNot()}
+                    disabled={!onChangeValues}
                   >
                     Save
                   </Button>
                 </Col>
-                <Col className="pl-4">
+                <Col className="pl-2">
                   {/* <Link to="/dashboard/language"> */}
                   <Button
                     // style={{ background: "#FFFFFF" }}
                     onClick={() => {
                       setIsModalOpen(true);
                     }}
-                    className=" app-btn-secondary"
+                    // className=" app-btn-secondary"
+                    className={
+                      onChangeValues === true
+                        ? "app-btn-secondary"
+                        : "!opacity-75"
+                    }
+                    disabled={!onChangeValues}
                   >
                     Discard
                   </Button>

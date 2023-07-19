@@ -82,6 +82,7 @@ const EditLanguage = () => {
   const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
   const [fileName, setFileName] = useState();
   const [fileExtension, setFileExtension] = useState("");
+  const [onChangeValues, setOnChangeValues] = useState(false);
   const navigate = useNavigate();
   // hanler for language, language_code, native_name, writing_script_direction
   const languageHandler = (fieldName, value) => {
@@ -126,7 +127,7 @@ const EditLanguage = () => {
     copyofLanguageDetails.islanguageDetailsEdited = true;
     setLanguageDetails(copyofLanguageDetails);
   };
-  console.log("Final File In Function", fileData, fileValue);
+  console.log("Final File In Function", onChangeValues);
 
   const editLanguageButtonHeader = () => {
     return (
@@ -638,8 +639,10 @@ const EditLanguage = () => {
                                   testValueByRegexPattern(regex, e.target.value)
                                 ) {
                                   languageHandler("language", e.target.value);
+                                  setOnChangeValues(true);
                                 } else if (e.target.value === "") {
                                   languageHandler("language", e.target.value);
+                                  setOnChangeValues(true);
                                 }
                               }}
                             />
@@ -673,11 +676,13 @@ const EditLanguage = () => {
                                     "language_code",
                                     e.target.value
                                   );
+                                  setOnChangeValues(true);
                                 } else if (e.target.value === "") {
                                   languageHandler(
                                     "language_code",
                                     e.target.value
                                   );
+                                  setOnChangeValues(true);
                                 }
                               }}
                             />
@@ -705,6 +710,7 @@ const EditLanguage = () => {
                                   "language_regex",
                                   e.target.value
                                 );
+                                setOnChangeValues(true);
                               }}
                             />
                           </Content>
@@ -736,6 +742,7 @@ const EditLanguage = () => {
                                 // } else {
                                 // setIsNativeFieldEmpty(false);
                                 languageHandler("native_name", e.target.value);
+                                setOnChangeValues(true);
                                 // }
                               }}
                               // className={
@@ -758,17 +765,18 @@ const EditLanguage = () => {
                           value={languageDetails.writing_script_direction}
                           onChange={(e) => {
                             languageHandler("writing_script_direction", e);
+                            setOnChangeValues(true);
                           }}
                         >
                           <Option value="LTR">Left to right</Option>
                           <Option value="RTL">Right to left</Option>
                         </Select>
                       </Content>
-                      {/* <Content className="my-3 mt-4 w-[32%]">
+                      <Content className="my-3 mt-4 w-[32%]">
                         <label className="text-[13px] pb-1 mb-2">
                           Language Supported Document
                         </label>
-                       
+
                         <StoreModal
                           isVisible={isDocumentModalOpen}
                           okButtonText={"Yes"}
@@ -791,9 +799,9 @@ const EditLanguage = () => {
                             return false;
                           }}
                           accept=".csv"
-                        
                           onChange={(e) => {
                             handleDropImage(e);
+                            setOnChangeValues(true);
                             languageHandler(
                               "lang_support_docs",
                               e.target.files
@@ -838,7 +846,7 @@ const EditLanguage = () => {
                         ) : (
                           ""
                         )}
-                      </Content> */}
+                      </Content>
                     </Content>
                   </Content>
                   <Content className="mt-3">
@@ -861,7 +869,13 @@ const EditLanguage = () => {
                         {/* <Link to="/dashboard/language"> */}
                         <Button
                           // style={{ background: "#FFFFFF" }}
-                          className="app-btn-secondary"
+                          // className="app-btn-secondary"
+                          className={
+                            onChangeValues === true
+                              ? "app-btn-secondary "
+                              : "!opacity-75"
+                          }
+                          disabled={!onChangeValues}
                           onClick={() => {
                             setIsModalOpen(true);
                           }}
@@ -872,11 +886,14 @@ const EditLanguage = () => {
                         </Button>
                         {/* </Link> */}
                       </Col>
-                      <Col className="pl-4">
+                      <Col className="pl-2">
                         <Button
                           // style={{ backgroundColor: "#393939" }}
-                          className=" app-btn-primary"
+                          className={
+                            onChangeValues ? "app-btn-primary " : "!opacity-75"
+                          }
                           onClick={() => validateLanguageFieldEmptyOrNot()}
+                          disabled={!onChangeValues}
                         >
                           {/* <label className=" h-5  text-[14px]  text-[#FFFFFF] cursor-pointer"> */}
                           Update
