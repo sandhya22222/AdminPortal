@@ -149,10 +149,10 @@ const Header2 = () => {
                 className="cursor-pointer"
               >
                 <Paragraph className="inline-block !mb-0 relative">
-                  <Avatar
+                  {/* <Avatar
                     src={AdminIcon}
                     className="!h-8 absolute bottom-[-2px] left-[-30px]"
-                  />
+                  /> */}
                   <Content className="ml-2 mr-1 !flex !items-center">
                     <Text className="text-lg text-slate-600 pr-1">Admin</Text>
                     <DownOutlined className="text-xs text-slate-600" />

@@ -19,13 +19,7 @@ import {
   WalletOutlined,
   TagOutlined,
 } from "@ant-design/icons";
-import {
-  Outlet,
-  Link,
-  useLocation,
-  useParams,
-  useNavigate,
-} from "react-router-dom";
+import { Outlet, useLocation, useParams, useNavigate } from "react-router-dom";
 
 import { AdminIcon, Profit, Positive, Payment } from "../../constants/media";
 
@@ -69,7 +63,7 @@ const currencySymbol = process.env.REACT_APP_CURRENCY_SYMBOL;
 // const auth = getAuth.toLowerCase() === "true";
 
 //! Destructure the components
-const { Title, Text } = Typography;
+const { Title, Text, Link } = Typography;
 const { Content } = Layout;
 const antIcon = (
   <LoadingOutlined
@@ -416,7 +410,7 @@ const Dashboard = () => {
           }
         />
       </Content>
-      <Content className="!p-[1.2rem] !mt-[155px] !min-h-screen">
+      <Content className="!p-[1.2rem] !mt-[120px] !min-h-screen">
         {dashboardDataLoading ? (
           <Content className="bg-white !p-3">
             <Content className="flex justify-between">
@@ -468,269 +462,169 @@ const Dashboard = () => {
             </p>
           </Content>
         ) : (
-          <Content className="">
-            {/* <Content className="bg-yellow-500 w-[25%] inline-block">
-              <Content className="p-3 shadow-sm rounded-md justify-center !bg-white w-[90%]">
-                <Content className="!text-black text-md mb-2 flex ">
-                  <Content className="flex justify-between items-baseline">
-                    <div>
-                      <span className="text-2xl font-semibold text-[#1A5692]">
-                        {dashboardData &&
-                          dashboardData.store_data &&
-                          dashboardData.store_data.total_count}{" "}
-                      </span>
-                      <span className="font-semibold text-lg">Stores</span>
-                    </div>
-                    <Text
-                      className="cursor-pointer linkColor float-right font-semibold"
+          <Content>
+            <Content className="flex">
+              <Content className="p-3 w-[7%] mr-4 shadow-sm rounded-md justify-center !bg-white">
+                <Content className="flex mb-3">
+                  <Content className="flex items-center">
+                    <Title
+                      level={3}
+                      className="!text-[#1A5692] mb-0 !font-semibold mt-0 !inline-block"
+                    >
+                      {dashboardData &&
+                        dashboardData.store_data &&
+                        dashboardData.store_data.total_count}
+                    </Title>
+                    <Text className="font-semibold text-lg ml-2">Stores</Text>
+                  </Content>
+                  <Content className="flex flex-row-reverse items-center">
+                    <Link
+                      className="linkColor float-right font-semibold"
                       onClick={() => navigate("/dashboard/store")}
                     >
                       View All
-                    </Text>
+                    </Link>
                   </Content>
                 </Content>
-                <Content className="!text-[#ffffff] flex !mt-5">
-                  <Content className="flex mr-[1.3rem]">
-                    <MdStore className="!text-5xl  !text-[#FCC32A]" />
-                    <Content className="!ml-2">
-                      <p className="!text-[#8C8C8C]">Active</p>
-                      <p className="-mt-3 text-black font-bold">
+                <Content className="flex">
+                  <Content className="flex">
+                    <Content className="!inline-block w-[40%]">
+                      <MdStore className="!text-5xl !inline-block !text-[#FCC32A]" />
+                    </Content>
+                    <Content className="!inline-block w-[60%]">
+                      <Text className="!text-[#8C8C8C] ml-3">Active</Text>
+                      <Title level={5} className="!text-black mt-0 ml-3">
                         {dashboardData &&
                           dashboardData.store_data &&
                           dashboardData.store_data.active_stores}
-                      </p>
+                      </Title>
                     </Content>
                   </Content>
                   <Content className="flex">
-                    <MdStore className="!text-5xl  !text-[#8C8C8C]" />
-                    <Content className="!ml-2">
-                      <p className="!text-[#8C8C8C]">Inactive</p>
-                      <p className="-mt-3 font-bold text-black">
+                    <Content className="!inline-block w-[40%]">
+                      <MdStore className="!text-5xl !inline-block !text-[#8C8C8C]" />
+                    </Content>
+                    <Content className="!inline-block w-[60%]">
+                      <Text className="!text-[#8C8C8C] ml-3">Inactive</Text>
+                      <Title level={5} className="!text-black mt-0 ml-3">
                         {dashboardData &&
                           dashboardData.store_data &&
                           dashboardData.store_data.inactive_store}
-                      </p>
+                      </Title>
                     </Content>
                   </Content>
                 </Content>
               </Content>
-            </Content>
-            <Content className="bg-green-500 w-[50%] inline-block">
-              dfadsf
-            </Content>
-            <Content className="bg-pink-500 w-[25%] inline-block">
-              dfadsf
-            </Content> */}
-            <Content className="flex flex-wrap w-[100%] !mt-2">
-              <div
-                className="p-3 m-2 shadow-sm rounded-md justify-center !bg-white"
-                // style={{
-                //   background:
-                //     "linear-gradient(74.8deg, rgba(52, 168, 83, 0.6) 0%, rgba(52, 168, 83, 0.4) 98.74%)",
-                // }}
-              >
-                <Content className="!text-black text-md mb-2 flex ">
-                  <Content className="flex justify-between items-baseline">
-                    <div>
-                      <span className="text-2xl font-semibold text-[#1A5692]">
-                        {dashboardData &&
-                          dashboardData.store_data &&
-                          dashboardData.store_data.total_count}{" "}
-                      </span>
-                      <span className="font-semibold text-lg">Stores</span>
-                    </div>
-                    <Text
-                      className="cursor-pointer linkColor float-right font-semibold"
-                      onClick={() => navigate("/dashboard/store")}
-                    >
-                      View All
-                    </Text>
-                  </Content>
-                  {/* <Content
-                    className="!ml-28 !mt-2 text-[#1A5692] cursor-pointer "
-                    onClick={() => navigate("/dashboard/store")}
-                  >
-                    View all
-                  </Content> */}
-                </Content>
-                <Content className="!text-[#ffffff] flex !mt-5">
-                  <Content className="flex mr-[1.3rem]">
-                    <MdStore className="!text-5xl  !text-[#FCC32A]" />
-                    <Content className="!ml-2">
-                      <p className="!text-[#8C8C8C]">Active</p>
-                      <p className="-mt-3 text-black font-bold">
-                        {dashboardData &&
-                          dashboardData.store_data &&
-                          dashboardData.store_data.active_stores}
-                      </p>
-                    </Content>
-                  </Content>
-                  <Content className="flex">
-                    <MdStore className="!text-5xl  !text-[#8C8C8C]" />
-                    <Content className="!ml-2">
-                      <p className="!text-[#8C8C8C]">Inactive</p>
-                      <p className="-mt-3 font-bold text-black">
-                        {dashboardData &&
-                          dashboardData.store_data &&
-                          dashboardData.store_data.inactive_store}
-                      </p>
-                    </Content>
-                  </Content>
-                </Content>
-              </div>
-              <div
-                className="p-3 m-2 shadow-sm rounded-md justify-between !w-auto flex  !bg-white"
-                // style={{
-                //   background:
-                //     "linear-gradient(74.8deg, rgba(234, 67, 53, 0.6) 0%, rgba(234, 67, 53, 0.4) 98.74%)",
-                // }}
-              >
+              <Content className="p-3 w-[26%] mr-4 shadow-sm rounded-md justify-center !bg-white">
                 <Content className="flex items-center">
-                  <Image
-                    width={125}
-                    preview={false}
-                    src={Positive}
-                    className="cursor-default"
-                  />
-                  <Content className="!ml-2">
-                    <Content className="!text-[#00000073] text-md mb-2 !font-medium">
-                      Total Revenue
+                  <Content className="flex-1 w-[50%]">
+                    <Content className="!inline-block w-[40%]">
+                      <Image
+                        width={75}
+                        preview={false}
+                        src={Positive}
+                        className="cursor-default"
+                      />
                     </Content>
-                    <Content className="!text-[#7CB305] mb-2 !font-semibold">
-                      <span className="text-xl">
-                        {currencySymbol}{" "}
+                    <Content className="!inline-block w-[60%]">
+                      <Text className="!text-[#00000073] text-md mb-2 !font-medium">
+                        Total Revenue
+                      </Text>
+                      <Title
+                        level={3}
+                        className="!text-[#7CB305] mb-2 !font-semibold mt-0"
+                      >
+                        {currencySymbol}
                         {parseInt(
                           dashboardData &&
                             dashboardData.store_revenue &&
                             dashboardData.store_revenue.total_amount
                         )}
-                      </span>
-                    </Content>
-                    <Content className="">
-                      <span className="text-sm text-[#000000D9]">
+                      </Title>
+                      <Text className="!text-[#000000D9] text-sm">
                         Monthly Revenue
-                      </span>
-                    </Content>
-                    <Content>
-                      <span className="text-md !ml-1 !text-[#7CB305] whitespace-nowrap">
-                        {currencySymbol}{" "}
+                      </Text>
+                      <Title level={5} className="!text-[#7CB305] mt-0">
+                        {currencySymbol}
                         {parseInt(
                           dashboardData &&
                             dashboardData.store_revenue &&
                             dashboardData.store_revenue.total_amount_last_month
                         )}
-                      </span>
+                      </Title>
                     </Content>
                   </Content>
-                </Content>
-
-                <Content className="flex items-center">
-                  <Image
-                    width={100}
-                    preview={false}
-                    src={Profit}
-                    className="cursor-default"
-                  />
-                  <Content className="!ml-2">
-                    <Content className="!text-[#00000073] text-md mb-2 !font-medium">
-                      Total Profit
+                  <Content className="flex-1 w-[50%]">
+                    <Content className="!inline-block w-[40%]">
+                      <Image
+                        width={75}
+                        preview={false}
+                        src={Profit}
+                        className="cursor-default"
+                      />
                     </Content>
-                    <Content className="!text-[#7CB305] mb-2 !font-semibold">
-                      <span className="text-xl">
-                        {currencySymbol}{" "}
+                    <Content className="!inline-block w-[60%]">
+                      <Text className="!text-[#00000073] text-md mb-2 !font-medium">
+                        Total Profit
+                      </Text>
+                      <Title
+                        level={3}
+                        className="!text-[#7CB305] mb-2 !font-semibold mt-0"
+                      >
+                        {currencySymbol}
                         {parseInt(
                           dashboardData &&
                             dashboardData.store_revenue &&
                             dashboardData.store_revenue.store_commision_amount
                         )}
-                      </span>
-                    </Content>
-                    <Content className=" ">
-                      <span className="text-sm text-[#000000D9]">
-                        Monthly Revenue
-                      </span>
-                    </Content>
-                    <Content>
-                      <span className="text-md !ml-1 !text-[#7CB305] whitespace-nowrap">
-                        {currencySymbol}{" "}
+                      </Title>
+                      <Text className="!text-[#000000D9] text-sm">
+                        Monthly Profit
+                      </Text>
+                      <Title level={5} className="!text-[#7CB305] mt-0">
+                        {currencySymbol}
                         {parseInt(
                           dashboardData &&
                             dashboardData.store_revenue &&
                             dashboardData.store_revenue
                               .store_commision_last_month
                         )}
-                      </span>
+                      </Title>
                     </Content>
                   </Content>
                 </Content>
-              </div>
-              {/* <Content
-                className="p-3 mr-5 shadow-sm rounded-md justify-center"
-                style={{
-                  background:
-                    "linear-gradient(74.8deg, rgba(251, 188, 5, 0.6) 0%, rgba(251, 188, 5, 0.4) 98.74%)",
-                }}
-              >
-                <Content className="!text-[#ffffff] text-md mb-2">
-                  Total Profit
-                </Content>
-                <Content className="!text-[#ffffff] mb-4">
-                  <WalletOutlined className="text-xl" />
-                  <span className="float-right text-3xl">
-                    {currencySymbol} 13,554
-                  </span>
-                </Content>
-                <Content className="!text-[#ffffff]">
-                  <span className="text-md">Last month profit</span>
-                  <span className="float-right text-md">
-                    {currencySymbol} 2,550
-                  </span>
-                </Content>
-              </Content> */}
-              <div
-                className="p-3 m-2 shadow-sm rounded-md justify-center !bg-white"
-                // style={{
-                //   background:
-                //     "linear-gradient(74.8deg, rgba(66, 133, 244, 0.6) 0%, rgba(66, 133, 244, 0.4) 98.74%)",
-                // }}
-              >
-                {/* ### */}
+              </Content>
+              <Content className="p-3 w-[7%] shadow-sm rounded-md justify-center !bg-white">
                 <Content className="flex items-center">
-                  <Image
-                    width={118}
-                    preview={false}
-                    src={Payment}
-                    className="cursor-default"
-                  />
-                  <Content className="!ml-2">
-                    <Content className="!text-[#00000073] text-md mb-2 !font-medium">
+                  <Content className="flex-1 w-[40%]">
+                    <Image
+                      width={75}
+                      preview={false}
+                      src={Payment}
+                      className="cursor-default"
+                    />
+                  </Content>
+                  <Content className="flex-1 w-[60%]">
+                    <Text className="!text-[#00000073] text-md mb-2 !font-medium">
                       Total Products
-                    </Content>
-                    <Content className="!text-[#1A5692] mb-2 !font-semibold">
-                      <span className=" text-xl ">
-                        {dashboardData && dashboardData.total_products}{" "}
-                      </span>
-                    </Content>
-                    <Content className="!text-[#ffffff]">
-                      <span className="text-sm text-[#000000D9]">
-                        Products Created
-                      </span>
-                    </Content>
-                    <Content className="!text-[#ffffff]">
-                      <span className="text-sm text-[#000000D9]">
-                        Last Month
-                      </span>
-                    </Content>
-                    <Content>
-                      <span className="text-base !ml-1 !text-[#1A5692]">
-                        {dashboardData &&
-                          dashboardData.total_products_last_month}
-                      </span>
-                    </Content>
+                    </Text>
+                    <Title
+                      level={3}
+                      className="!text-[#1A5692] mb-2 !font-semibold mt-0"
+                    >
+                      {dashboardData && dashboardData.total_products}
+                    </Title>
+                    <Text className="!text-[#000000D9] text-sm">
+                      Products Created Last Month
+                    </Text>
+                    <Title level={5} className="!text-[#1A5692] mt-0">
+                      {dashboardData && dashboardData.total_products_last_month}
+                    </Title>
                   </Content>
                 </Content>
-              </div>
+              </Content>
             </Content>
+
             {/* <Content className="flex justify-between !mt-6">
               <Content className="bg-[#ffff] p-3 mr-5 shadow-sm rounded-md justify-center">
                 <Title level={3} className="!font-normal">
