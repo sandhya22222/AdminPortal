@@ -1289,6 +1289,18 @@ const StoreSettings = () => {
     if (value.length >= 5 && keyCode !== 8) {
       e.preventDefault(); // Prevents the input event from being fired, except for Backspace key
     }
+    if (
+      !(
+        e.key === "Backspace" ||
+        e.key === "Delete" ||
+        e.key === "ArrowLeft" ||
+        e.key === "ArrowRight" ||
+        e.key === "Tab" ||
+        (e.key >= "0" && e.key <= "9")
+      )
+    ) {
+      e.preventDefault();
+    }
   };
 
   const validateRegionCode = () => {
@@ -1581,7 +1593,7 @@ const StoreSettings = () => {
                 value={currencySymbol}
                 maxLength={3}
                 onChange={(e) => {
-                  const regex = /^[^\w\s]+$/;
+                  const regex = /^[^\w\s]*$/;
                   if (regex.test(e.target.value)) {
                     setCurrencySymbol(e.target.value);
                     setOnChangeValues(true);
@@ -1590,7 +1602,6 @@ const StoreSettings = () => {
                     temp["symbol"] = e.target.value;
                     setCopyImageOfStoreSettingsCurrency(temp);
                   } else {
-                    // setCurrencySymbol("");
                     setInValidCurrencySymbol(true);
                   }
                 }}
@@ -1606,7 +1617,7 @@ const StoreSettings = () => {
                 value={currencyIsoCode}
                 maxLength={3}
                 onChange={(e) => {
-                  const regex = /^[A-Za-z]+$/;
+                  const regex = /^[A-Za-z]*$/;
                   if (regex.test(e.target.value)) {
                     setCurrencyIsoCode(e.target.value);
                     setInValidCurrencyIsoCode(false);
@@ -1638,7 +1649,7 @@ const StoreSettings = () => {
                 value={fractionalUnit}
                 maxLength={10}
                 onChange={(e) => {
-                  const regex = /^[A-Za-z]+$/;
+                  const regex = /^[A-Za-z]*$/;
                   if (regex.test(e.target.value)) {
                     setFractionalUnit(e.target.value);
                     setInValidFractionalUnit(false);
@@ -1667,8 +1678,14 @@ const StoreSettings = () => {
                 placeholder={t("stores:Enter-number-to-basic")}
                 value={numberToBasic}
                 onChange={(e) => {
-                  setNumberToBasic(e);
-                  setInValidNumberToBasic(false);
+                  // setNumberToBasic(e);
+                  if (e !== null) {
+                    setNumberToBasic(e);
+                    setInValidNumberToBasic(false);
+                  } else {
+                    setNumberToBasic(e);
+                    setInValidNumberToBasic(true);
+                  }
                   let temp = { ...copyImageOfStoreSettingsCurrency };
                   temp["number_to_basic"] = e;
                   setCopyImageOfStoreSettingsCurrency(temp);
