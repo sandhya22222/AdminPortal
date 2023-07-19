@@ -30,7 +30,7 @@ import {
   SearchOutlined,
 } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
-import { MdOutlineEdit, MdDeleteOutline } from "react-icons/md";
+import { MdEdit, MdDelete } from "react-icons/md";
 //! Import user defined components
 import DynamicTable from "../../components/DynamicTable/DynamicTable";
 import StoreModal from "../../components/storeModal/StoreModal";
@@ -275,12 +275,12 @@ const Language = () => {
               className=" pl-[10px] font-semibold app-table-data-title"
             >
               <Tooltip title="Edit Language">
-                <MdOutlineEdit className="!text-xl text-black" />
+                <MdEdit className="!text-xl text-black" />
               </Tooltip>
             </Link>
             <>
               <Tooltip title="Delete Language">
-                <MdDeleteOutline
+                <MdDelete
                   className="!text-[#A00A18] !text-xl ml-4 "
                   onClick={() => {
                     openDeleteModal(record.id);

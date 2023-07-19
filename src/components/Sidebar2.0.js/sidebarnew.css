@@ -9,6 +9,9 @@
   background-color: #7d3192 !important;
 }
 
+.ant-menu .ant-menu-item .ant-menu-item-icon {
+  min-width: 20px !important;
+}
 /* :where(.css-dev-only-do-not-override-diro6f).ant-layout
   .ant-layout-sider-trigger {
   background-color: #4a2d73 !important;
