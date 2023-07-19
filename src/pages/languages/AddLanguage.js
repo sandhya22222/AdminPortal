@@ -496,7 +496,7 @@ const AddLanguage = () => {
                           setIsLanguageFieldEmpty(false);
                           setLanguage(e.target.value);
                           setNativeName(e.target.value);
-                          setOnChangeValues(true);
+                          // setOnChangeValues(true);
                         }}
                         // pattern="^[A-Za-z0-9]+$"
                         // rules={[
@@ -532,7 +532,7 @@ const AddLanguage = () => {
                         onChange={(e) => {
                           setIsLanguageCodeFieldEmpty(false);
                           setLanguageCode(e.target.value);
-                          setOnChangeValues(true);
+                          // setOnChangeValues(true);
                         }}
                         // pattern="^[A-Za-z0-9]+$"
                       />
@@ -559,7 +559,7 @@ const AddLanguage = () => {
                         // }`}
                         onChange={(e) => {
                           handleRegexChange(e);
-                          setOnChangeValues(true);
+                          // setOnChangeValues(true);
                         }}
                       />
                     </Content>
@@ -573,7 +573,7 @@ const AddLanguage = () => {
                         onChange={(e) => {
                           handleNativeNameChange(e);
                           setIsNativeFieldEmpty(false);
-                          setOnChangeValues(true);
+                          // setOnChangeValues(true);
                         }}
                         className={`${
                           isNativeFieldEmpty
@@ -592,7 +592,7 @@ const AddLanguage = () => {
                     value={scriptDirection}
                     onChange={(e) => {
                       handleScriptDirectionChange(e);
-                      setOnChangeValues(true);
+                      // setOnChangeValues(true);
                     }}
                   >
                     <Option value="LTR">Left to Right</Option>
@@ -615,7 +615,8 @@ const AddLanguage = () => {
                     maxCount={1}
                     name="file"
                     onChange={
-                      ((e) => handleDropImage(e), setOnChangeValues(true))
+                      (e) => handleDropImage(e)
+                      // setOnChangeValues(true)
                     }
                     onRemove={true}
                     className="app-btn-secondary"
