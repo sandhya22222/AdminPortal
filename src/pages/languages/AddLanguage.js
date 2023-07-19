@@ -496,7 +496,7 @@ const AddLanguage = () => {
                           setIsLanguageFieldEmpty(false);
                           setLanguage(e.target.value);
                           setNativeName(e.target.value);
-                          setOnChangeValues(true);
+                          // setOnChangeValues(true);
                         }}
                         // pattern="^[A-Za-z0-9]+$"
                         // rules={[
@@ -532,7 +532,7 @@ const AddLanguage = () => {
                         onChange={(e) => {
                           setIsLanguageCodeFieldEmpty(false);
                           setLanguageCode(e.target.value);
-                          setOnChangeValues(true);
+                          // setOnChangeValues(true);
                         }}
                         // pattern="^[A-Za-z0-9]+$"
                       />
