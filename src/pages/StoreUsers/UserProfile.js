@@ -78,9 +78,9 @@ const UserProfile = () => {
           <Content className="!text-center">
             <Content className="inline-block">
               <Content className="shadow-sm  bg-[#FFFFFF] rounded-2xl flex flex-col items-center px-8 py-10 w-[500px]">
-                <Row className="mb-2">
+                {/* <Row className="mb-2">
                   <Avatar size={104} icon={<UserOutlined />} />
-                </Row>
+                </Row> */}
                 <Row className="mb-2">
                   <Text className="font-medium text-lg">
                     {storeUsersData && storeUsersData.username}

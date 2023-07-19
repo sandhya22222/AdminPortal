@@ -1,12 +1,11 @@
-:where(.css-dev-only-do-not-override-diro6f).ant-menu-light
-  .ant-menu-item-selected {
-  background-color: #7d3192 !important;
-  color: white !important;
+@import url(../../core-ui/marketplaceTheme.css);
+
+.ant-menu-item-selected {
+  background-color: var(--mp-brand-color) !important;
 }
 
-:where(.css-dev-only-do-not-override-diro6f).ant-menu-dark
-  .ant-menu-item-selected {
-  background-color: #7d3192 !important;
+.ant-menu-item:not(.ant-menu-item-selected):active {
+    background-color: #7d3192 !important;
 }
 
 .ant-menu .ant-menu-item .ant-menu-item-icon {

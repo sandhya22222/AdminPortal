@@ -1841,7 +1841,7 @@ const StoreSettings = () => {
                     type="color"
                     value={pageBackgroundColor}
                     onChange={(e) => {
-                      const patternName = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+                      const patternName = /^#([A-Fa-f0-9]{6})$/;
                       if (patternName.test(e.target.value) === false) {
                         let temp = { ...colorCodeValidation };
                         temp["pageBgColorValidation"] = true;
@@ -1868,8 +1868,7 @@ const StoreSettings = () => {
                       maxLength={7}
                       className="w-[150px]"
                       onChange={(e) => {
-                        const patternName =
-                          /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+                        const patternName = /^#([A-Fa-f0-9]{6})$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["pageBgColorValidation"] = true;
@@ -1917,8 +1916,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.pageBgColorValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" <br />
-                    and has a maximum length of 7 characters
+                    Please enter valid Hexadecimal Color code <br />
+                    ex. #ffffff for white, #000000 for black
                   </p>
                 ) : null}
               </Col>
@@ -1931,7 +1930,7 @@ const StoreSettings = () => {
                     type="color"
                     value={foreGroundColor}
                     onChange={(e) => {
-                      const patternName = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+                      const patternName = /^#([A-Fa-f0-9]{6})$/;
                       if (patternName.test(e.target.value) === false) {
                         let temp = { ...colorCodeValidation };
                         temp["pageTextColorValidation"] = true;
@@ -1957,8 +1956,7 @@ const StoreSettings = () => {
                       value={foreGroundColor}
                       className="w-[150px]"
                       onChange={(e) => {
-                        const patternName =
-                          /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+                        const patternName = /^#([A-Fa-f0-9]{6})$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["pageTextColorValidation"] = true;
@@ -2006,8 +2004,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.pageTextColorValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" <br /> and
-                    has a maximum length of 7 characters
+                    Please enter valid Hexadecimal Color code <br />
+                    ex. #ffffff for white, #000000 for black
                   </p>
                 ) : null}
               </Col>
@@ -2071,7 +2069,7 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                     value={buttonPrimaryBackgroundColor}
                     onChange={(e) => {
-                      const patternName = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+                      const patternName = /^#([A-Fa-f0-9]{6})$/;
                       if (patternName.test(e.target.value) === false) {
                         let temp = { ...colorCodeValidation };
                         temp["primaryBgValidation"] = true;
@@ -2097,8 +2095,7 @@ const StoreSettings = () => {
                       maxLength={7}
                       className="w-[150px]"
                       onChange={(e) => {
-                        const patternName =
-                          /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+                        const patternName = /^#([A-Fa-f0-9]{6})$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["primaryBgValidation"] = true;
@@ -2150,8 +2147,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.primaryBgValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" <br /> and
-                    has a maximum length of 7 characters
+                    Please enter valid Hexadecimal Color code <br />
+                    ex. #ffffff for white, #000000 for black
                   </p>
                 ) : null}
               </Col>
@@ -2165,7 +2162,7 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                     value={buttonSecondaryBackgroundColor}
                     onChange={(e) => {
-                      const patternName = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+                      const patternName = /^#([A-Fa-f0-9]{6})$/;
                       if (patternName.test(e.target.value) === false) {
                         let temp = { ...colorCodeValidation };
                         temp["secondaryBgValidation"] = true;
@@ -2190,8 +2187,7 @@ const StoreSettings = () => {
                       value={buttonSecondaryBackgroundColor}
                       className="w-[150px]"
                       onChange={(e) => {
-                        const patternName =
-                          /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+                        const patternName = /^#([A-Fa-f0-9]{6})$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["secondaryBgValidation"] = true;
@@ -2244,8 +2240,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.secondaryBgValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" <br />
-                    and has a maximum length of 7 characters
+                    Please enter valid Hexadecimal Color code <br />
+                    ex. #ffffff for white, #000000 for black
                   </p>
                 ) : null}
               </Col>
@@ -2259,7 +2255,7 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                     value={buttonTeritaryBackgroundColor}
                     onChange={(e) => {
-                      const patternName = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+                      const patternName = /^#([A-Fa-f0-9]{6})$/;
                       if (patternName.test(e.target.value) === false) {
                         let temp = { ...colorCodeValidation };
                         temp["tertiaryBgValidation"] = true;
@@ -2284,8 +2280,7 @@ const StoreSettings = () => {
                       value={buttonTeritaryBackgroundColor}
                       className="w-[150px]"
                       onChange={(e) => {
-                        const patternName =
-                          /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+                        const patternName = /^#([A-Fa-f0-9]{6})$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["tertiaryBgValidation"] = true;
@@ -2337,8 +2332,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.tertiaryBgValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" <br />
-                    and has a maximum length of 7 characters
+                    Please enter valid Hexadecimal Color code <br />
+                    ex. #ffffff for white, #000000 for black
                   </p>
                 ) : null}
               </Col>
@@ -2402,7 +2397,7 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                     value={buttonPrimaryForegroundColor}
                     onChange={(e) => {
-                      const patternName = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+                      const patternName = /^#([A-Fa-f0-9]{6})$/;
                       if (patternName.test(e.target.value) === false) {
                         let temp = { ...colorCodeValidation };
                         temp["primaryTextValidation"] = true;
@@ -2428,8 +2423,7 @@ const StoreSettings = () => {
                       maxLength={7}
                       className="w-[150px]"
                       onChange={(e) => {
-                        const patternName =
-                          /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+                        const patternName = /^#([A-Fa-f0-9]{6})$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["primaryTextValidation"] = true;
@@ -2481,8 +2475,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.primaryTextValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" <br />
-                    and has a maximum length of 7 characters
+                    Please enter valid Hexadecimal Color code <br />
+                    ex. #ffffff for white, #000000 for black
                   </p>
                 ) : null}
               </Col>
@@ -2496,7 +2490,7 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                     value={buttonSecondaryForegroundColor}
                     onChange={(e) => {
-                      const patternName = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+                      const patternName = /^#([A-Fa-f0-9]{6})$/;
                       if (patternName.test(e.target.value) === false) {
                         let temp = { ...colorCodeValidation };
                         temp["secondaryTextValidation"] = true;
@@ -2522,8 +2516,7 @@ const StoreSettings = () => {
                       maxLength={7}
                       className="w-[150px]"
                       onChange={(e) => {
-                        const patternName =
-                          /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+                        const patternName = /^#([A-Fa-f0-9]{6})$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["secondaryTextValidation"] = true;
@@ -2575,8 +2568,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.secondaryTextValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" <br />
-                    and has a maximum length of 7 characters
+                    Please enter valid Hexadecimal Color code <br />
+                    ex. #ffffff for white, #000000 for black
                   </p>
                 ) : null}
               </Col>
@@ -2591,7 +2584,7 @@ const StoreSettings = () => {
                     maxLength={7}
                     value={buttonTeritaryForegroundColor}
                     onChange={(e) => {
-                      const patternName = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+                      const patternName = /^#([A-Fa-f0-9]{6})$/;
                       if (patternName.test(e.target.value) === false) {
                         let temp = { ...colorCodeValidation };
                         temp["tertiaryTextValidation"] = true;
@@ -2615,8 +2608,7 @@ const StoreSettings = () => {
                     <Input
                       value={buttonTeritaryForegroundColor}
                       onChange={(e) => {
-                        const patternName =
-                          /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+                        const patternName = /^#([A-Fa-f0-9]{6})$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["tertiaryTextValidation"] = true;
@@ -2669,8 +2661,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.tertiaryTextValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" <br />
-                    and has a maximum length of 7 characters
+                    Please enter valid Hexadecimal Color code <br />
+                    ex. #ffffff for white, #000000 for black
                   </p>
                 ) : null}
               </Col>
@@ -2742,7 +2734,7 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                     value={headerBackgroundColor}
                     onChange={(e) => {
-                      const patternName = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+                      const patternName = /^#([A-Fa-f0-9]{6})$/;
                       if (patternName.test(e.target.value) === false) {
                         let temp = { ...colorCodeValidation };
                         temp["headerBgValidation"] = true;
@@ -2768,8 +2760,7 @@ const StoreSettings = () => {
                       maxLength={7}
                       className="w-[150px]"
                       onChange={(e) => {
-                        const patternName =
-                          /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+                        const patternName = /^#([A-Fa-f0-9]{6})$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["headerBgValidation"] = true;
@@ -2817,8 +2808,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.headerBgValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" <br />
-                    and has a maximum length of 7 characters
+                    Please enter valid Hexadecimal Color code <br />
+                    ex. #ffffff for white, #000000 for black
                   </p>
                 ) : null}
               </Col>
@@ -2835,7 +2826,7 @@ const StoreSettings = () => {
                     minLength={1}
                     value={headerForegroundColor}
                     onChange={(e) => {
-                      const patternName = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+                      const patternName = /^#([A-Fa-f0-9]{6})$/;
                       if (patternName.test(e.target.value) === false) {
                         let temp = { ...colorCodeValidation };
                         temp["headerTextValidation"] = true;
@@ -2860,8 +2851,7 @@ const StoreSettings = () => {
                       value={headerForegroundColor}
                       className="w-[150px]"
                       onChange={(e) => {
-                        const patternName =
-                          /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+                        const patternName = /^#([A-Fa-f0-9]{6})$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["headerTextValidation"] = true;
@@ -2909,8 +2899,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.headerTextValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" <br />
-                    and has a maximum length of 7 characters
+                    Please enter valid Hexadecimal Color code <br />
+                    ex. #ffffff for white, #000000 for black
                   </p>
                 ) : null}
               </Col>
@@ -2931,7 +2921,7 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                     value={footerBackgroundColor}
                     onChange={(e) => {
-                      const patternName = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+                      const patternName = /^#([A-Fa-f0-9]{6})$/;
                       if (patternName.test(e.target.value) === false) {
                         let temp = { ...colorCodeValidation };
                         temp["footerBgValidation"] = true;
@@ -2956,8 +2946,7 @@ const StoreSettings = () => {
                       value={footerBackgroundColor}
                       className="w-[150px]"
                       onChange={(e) => {
-                        const patternName =
-                          /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+                        const patternName = /^#([A-Fa-f0-9]{6})$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["footerBgValidation"] = true;
@@ -3005,8 +2994,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.footerBgValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" <br />
-                    and has a maximum length of 7 characters
+                    Please enter valid Hexadecimal Color code <br />
+                    ex. #ffffff for white, #000000 for black
                   </p>
                 ) : null}
               </Col>
@@ -3020,7 +3009,7 @@ const StoreSettings = () => {
                     className="w-9 p-0"
                     value={footerForegroundColor}
                     onChange={(e) => {
-                      const patternName = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+                      const patternName = /^#([A-Fa-f0-9]{6})$/;
                       if (patternName.test(e.target.value) === false) {
                         let temp = { ...colorCodeValidation };
                         temp["footerTextValidation"] = true;
@@ -3045,8 +3034,7 @@ const StoreSettings = () => {
                       value={footerForegroundColor}
                       className="w-[150px]"
                       onChange={(e) => {
-                        const patternName =
-                          /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+                        const patternName = /^#([A-Fa-f0-9]{6})$/;
                         if (patternName.test(e.target.value) === false) {
                           let temp = { ...colorCodeValidation };
                           temp["footerTextValidation"] = true;
@@ -3094,8 +3082,8 @@ const StoreSettings = () => {
                 </Content>
                 {colorCodeValidation.footerTextValidation === true ? (
                   <p className="text-red-600 text-sm">
-                    Please ensure that the color code starts with "#" <br />
-                    and has a maximum length of 7 characters
+                    Please enter valid Hexadecimal Color code <br />
+                    ex. #ffffff for white, #000000 for black
                   </p>
                 ) : null}
               </Col>
