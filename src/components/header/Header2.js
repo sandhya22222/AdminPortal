@@ -22,6 +22,7 @@ import {
   AdminIcon,
   DmBrandLogo,
   marketPlaceLogo,
+  ProfileIcon,
 } from "../../constants/media";
 
 import util from "../../util/common";

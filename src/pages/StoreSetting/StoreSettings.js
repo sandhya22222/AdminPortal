@@ -140,6 +140,8 @@ const StoreSettings = () => {
     footerBgValidation: false,
     footerTextValidation: false,
   });
+  const [onChangeValues, setOnChangeValues] = useState(false);
+  const [imageChangeValues, setImageChangeValues] = useState(false);
   let sampleobject = {};
   //! get call of  getStoreSettingApi
   const findAllWithoutPageStoreSettingApi = (storeId) => {
@@ -1303,7 +1305,7 @@ const StoreSettings = () => {
   const log = (e) => {
     console.log(e);
   };
-  console.log("getImageData123", imagesUpload);
+  console.log("imageChangeValues", imageChangeValues);
   return (
     <Content>
       <Content className="mb-1">
@@ -1448,6 +1450,7 @@ const StoreSettings = () => {
                   validStoreLogo={validStoreLogo}
                   setValidStoreLogo={setValidStoreLogo}
                   InfoCircleText={`${t("stores:Store-Logo-Info")}`}
+                  setImageChangeValues={setImageChangeValues}
                 />
               </Col>
               <Col className="!ml-10">
@@ -1460,6 +1463,7 @@ const StoreSettings = () => {
                   setImagesUpload={setImagesUpload}
                   isSingleUpload={true}
                   InfoCircleText={`${t("stores:Search-Logo-Info")}`}
+                  setImageChangeValues={setImageChangeValues}
                 />
               </Col>
               <Col className="!ml-10">
@@ -1472,6 +1476,7 @@ const StoreSettings = () => {
                   setImagesUpload={setImagesUpload}
                   isSingleUpload={true}
                   InfoCircleText={`${t("stores:Customer-Logo-info")}`}
+                  setImageChangeValues={setImageChangeValues}
                 />
               </Col>
               <Col className="!ml-10">
@@ -1484,6 +1489,7 @@ const StoreSettings = () => {
                   setImagesUpload={setImagesUpload}
                   isSingleUpload={true}
                   InfoCircleText={`${t("stores:Cart-Logo-info")}`}
+                  setImageChangeValues={setImageChangeValues}
                 />
               </Col>
               <Col className="!ml-10">
@@ -1496,6 +1502,7 @@ const StoreSettings = () => {
                   setImagesUpload={setImagesUpload}
                   isSingleUpload={true}
                   InfoCircleText={`${t("stores:Wishlist-Logo-Info")}`}
+                  setImageChangeValues={setImageChangeValues}
                 />
               </Col>
             </Row>
@@ -1508,13 +1515,17 @@ const StoreSettings = () => {
               setImagesUpload={setImagesUpload}
               isSingleUpload={false}
               InfoCircleText={`${t("stores:Banner-Logo-Info")}`}
+              setImageChangeValues={setImageChangeValues}
             />
             <Content className="mt-5 mb-6">
               <Row>
                 <Col>
                   <Button
-                    style={{ backgroundColor: "#393939" }}
-                    className="app-btn-primary"
+                    // className="app-btn-primary"
+                    className={
+                      imageChangeValues ? "app-btn-primary" : "!opacity-75"
+                    }
+                    disabled={!imageChangeValues}
                     onClick={() => {
                       if (imagesUpload && imagesUpload.length > 0) {
                         postImageOnClickSave();
@@ -1530,9 +1541,13 @@ const StoreSettings = () => {
                     {t("common:Save")}
                   </Button>
                 </Col>
-                <Col className="pl-4">
+                <Col className="pl-2">
                   <Button
-                    className=" app-btn-secondary"
+                    // className=" app-btn-secondary"
+                    className={
+                      imageChangeValues ? "app-btn-secondary" : "!opacity-75"
+                    }
+                    disabled={!imageChangeValues}
                     onClick={() => {
                       navigate("/dashboard/store");
                     }}
@@ -1569,6 +1584,7 @@ const StoreSettings = () => {
                   const regex = /^[^\w\s]+$/;
                   if (regex.test(e.target.value)) {
                     setCurrencySymbol(e.target.value);
+                    setOnChangeValues(true);
                     setInValidCurrencySymbol(false);
                     let temp = { ...copyImageOfStoreSettingsCurrency };
                     temp["symbol"] = e.target.value;
@@ -1594,6 +1610,7 @@ const StoreSettings = () => {
                   if (regex.test(e.target.value)) {
                     setCurrencyIsoCode(e.target.value);
                     setInValidCurrencyIsoCode(false);
+                    setOnChangeValues(true);
                     let temp = { ...copyImageOfStoreSettingsCurrency };
                     temp["iso_code"] = e.target.value;
                     setCopyImageOfStoreSettingsCurrency(temp);
@@ -1625,6 +1642,7 @@ const StoreSettings = () => {
                   if (regex.test(e.target.value)) {
                     setFractionalUnit(e.target.value);
                     setInValidFractionalUnit(false);
+                    setOnChangeValues(true);
                     let temp = { ...copyImageOfStoreSettingsCurrency };
                     temp["fractional_unit"] = e.target.value;
                     setCopyImageOfStoreSettingsCurrency(temp);
@@ -1654,6 +1672,7 @@ const StoreSettings = () => {
                   let temp = { ...copyImageOfStoreSettingsCurrency };
                   temp["number_to_basic"] = e;
                   setCopyImageOfStoreSettingsCurrency(temp);
+                  setOnChangeValues(true);
                 }}
                 onKeyDown={numberToBasicLimit}
                 className={`${
@@ -1811,11 +1830,13 @@ const StoreSettings = () => {
                         temp["pageBgColorValidation"] = true;
                         setColorCodeValidation(temp);
                         setPageBackgroundColor(e.target.value);
+                        setOnChangeValues(true);
                       } else {
                         let temp = { ...colorCodeValidation };
                         temp["pageBgColorValidation"] = false;
                         setColorCodeValidation(temp);
                         setPageBackgroundColor(e.target.value);
+                        setOnChangeValues(true);
                       }
                       // setPageBackgroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreSettingsPageTheme };
@@ -1837,11 +1858,13 @@ const StoreSettings = () => {
                           temp["pageBgColorValidation"] = true;
                           setColorCodeValidation(temp);
                           setPageBackgroundColor(e.target.value);
+                          setOnChangeValues(true);
                         } else {
                           let temp = { ...colorCodeValidation };
                           temp["pageBgColorValidation"] = false;
                           setColorCodeValidation(temp);
                           setPageBackgroundColor(e.target.value);
+                          setOnChangeValues(true);
                         }
                         // setPageBackgroundColor(e.target.value);
                         let temp = { ...copyImageOfStoreSettingsPageTheme };
@@ -1897,11 +1920,13 @@ const StoreSettings = () => {
                         temp["pageTextColorValidation"] = true;
                         setColorCodeValidation(temp);
                         setForeGroundColor(e.target.value);
+                        setOnChangeValues(true);
                       } else {
                         let temp = { ...colorCodeValidation };
                         temp["pageTextColorValidation"] = false;
                         setColorCodeValidation(temp);
                         setForeGroundColor(e.target.value);
+                        setOnChangeValues(true);
                       }
                       // setForeGroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreSettingsPageTheme };
@@ -1922,11 +1947,13 @@ const StoreSettings = () => {
                           temp["pageTextColorValidation"] = true;
                           setColorCodeValidation(temp);
                           setForeGroundColor(e.target.value);
+                          setOnChangeValues(true);
                         } else {
                           let temp = { ...colorCodeValidation };
                           temp["pageTextColorValidation"] = false;
                           setColorCodeValidation(temp);
                           setForeGroundColor(e.target.value);
+                          setOnChangeValues(true);
                         }
                         // setForeGroundColor(e.target.value);
                         let temp = { ...copyImageOfStoreSettingsPageTheme };
@@ -2033,11 +2060,13 @@ const StoreSettings = () => {
                         temp["primaryBgValidation"] = true;
                         setColorCodeValidation(temp);
                         setButtonPrimaryBackgroundColor(e.target.value);
+                        setOnChangeValues(true);
                       } else {
                         let temp = { ...colorCodeValidation };
                         temp["primaryBgValidation"] = false;
                         setColorCodeValidation(temp);
                         setButtonPrimaryBackgroundColor(e.target.value);
+                        setOnChangeValues(true);
                       }
                       // setButtonPrimaryBackgroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreSettingsPageTheme };
@@ -2058,11 +2087,13 @@ const StoreSettings = () => {
                           temp["primaryBgValidation"] = true;
                           setColorCodeValidation(temp);
                           setButtonPrimaryBackgroundColor(e.target.value);
+                          setOnChangeValues(true);
                         } else {
                           let temp = { ...colorCodeValidation };
                           temp["primaryBgValidation"] = false;
                           setColorCodeValidation(temp);
                           setButtonPrimaryBackgroundColor(e.target.value);
+                          setOnChangeValues(true);
                         }
                         // setButtonPrimaryBackgroundColor(e.target.value);
                         let temp = { ...copyImageOfStoreSettingsPageTheme };
@@ -2123,11 +2154,13 @@ const StoreSettings = () => {
                         temp["secondaryBgValidation"] = true;
                         setColorCodeValidation(temp);
                         setButtonSecondaryBackgroundColor(e.target.value);
+                        setOnChangeValues(true);
                       } else {
                         let temp = { ...colorCodeValidation };
                         temp["secondaryBgValidation"] = false;
                         setColorCodeValidation(temp);
                         setButtonSecondaryBackgroundColor(e.target.value);
+                        setOnChangeValues(true);
                       }
                       // setButtonSecondaryBackgroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreSettingsPageTheme };
@@ -2147,11 +2180,13 @@ const StoreSettings = () => {
                           temp["secondaryBgValidation"] = true;
                           setColorCodeValidation(temp);
                           setButtonSecondaryBackgroundColor(e.target.value);
+                          setOnChangeValues(true);
                         } else {
                           let temp = { ...colorCodeValidation };
                           temp["secondaryBgValidation"] = false;
                           setColorCodeValidation(temp);
                           setButtonSecondaryBackgroundColor(e.target.value);
+                          setOnChangeValues(true);
                         }
 
                         // setButtonSecondaryBackgroundColor(e.target.value);
@@ -2213,11 +2248,13 @@ const StoreSettings = () => {
                         temp["tertiaryBgValidation"] = true;
                         setColorCodeValidation(temp);
                         setButtonTeritaryBackgroundColor(e.target.value);
+                        setOnChangeValues(true);
                       } else {
                         let temp = { ...colorCodeValidation };
                         temp["tertiaryBgValidation"] = false;
                         setColorCodeValidation(temp);
                         setButtonTeritaryBackgroundColor(e.target.value);
+                        setOnChangeValues(true);
                       }
                       // setButtonTeritaryBackgroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreSettingsPageTheme };
@@ -2237,11 +2274,13 @@ const StoreSettings = () => {
                           temp["tertiaryBgValidation"] = true;
                           setColorCodeValidation(temp);
                           setButtonTeritaryBackgroundColor(e.target.value);
+                          setOnChangeValues(true);
                         } else {
                           let temp = { ...colorCodeValidation };
                           temp["tertiaryBgValidation"] = false;
                           setColorCodeValidation(temp);
                           setButtonTeritaryBackgroundColor(e.target.value);
+                          setOnChangeValues(true);
                         }
                         // setButtonTeritaryBackgroundColor(e.target.value);
                         let temp = { ...copyImageOfStoreSettingsPageTheme };
@@ -2352,11 +2391,13 @@ const StoreSettings = () => {
                         temp["primaryTextValidation"] = true;
                         setColorCodeValidation(temp);
                         setButtonPrimaryForegroundColor(e.target.value);
+                        setOnChangeValues(true);
                       } else {
                         let temp = { ...colorCodeValidation };
                         temp["primaryTextValidation"] = false;
                         setColorCodeValidation(temp);
                         setButtonPrimaryForegroundColor(e.target.value);
+                        setOnChangeValues(true);
                       }
                       // setButtonPrimaryForegroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreSettingsPageTheme };
@@ -2377,11 +2418,13 @@ const StoreSettings = () => {
                           temp["primaryTextValidation"] = true;
                           setColorCodeValidation(temp);
                           setButtonPrimaryForegroundColor(e.target.value);
+                          setOnChangeValues(true);
                         } else {
                           let temp = { ...colorCodeValidation };
                           temp["primaryTextValidation"] = false;
                           setColorCodeValidation(temp);
                           setButtonPrimaryForegroundColor(e.target.value);
+                          setOnChangeValues(true);
                         }
                         // setButtonPrimaryForegroundColor(e.target.value);
                         let temp = { ...copyImageOfStoreSettingsPageTheme };
@@ -2442,11 +2485,13 @@ const StoreSettings = () => {
                         temp["secondaryTextValidation"] = true;
                         setColorCodeValidation(temp);
                         setButtonSecondaryForegroundColor(e.target.value);
+                        setOnChangeValues(true);
                       } else {
                         let temp = { ...colorCodeValidation };
                         temp["secondaryTextValidation"] = false;
                         setColorCodeValidation(temp);
                         setButtonSecondaryForegroundColor(e.target.value);
+                        setOnChangeValues(true);
                       }
                       // setButtonSecondaryForegroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreSettingsPageTheme };
@@ -2467,11 +2512,13 @@ const StoreSettings = () => {
                           temp["secondaryTextValidation"] = true;
                           setColorCodeValidation(temp);
                           setButtonSecondaryForegroundColor(e.target.value);
+                          setOnChangeValues(true);
                         } else {
                           let temp = { ...colorCodeValidation };
                           temp["secondaryTextValidation"] = false;
                           setColorCodeValidation(temp);
                           setButtonSecondaryForegroundColor(e.target.value);
+                          setOnChangeValues(true);
                         }
                         // setButtonSecondaryForegroundColor(e.target.value);
                         let temp = { ...copyImageOfStoreSettingsPageTheme };
@@ -2533,11 +2580,13 @@ const StoreSettings = () => {
                         temp["tertiaryTextValidation"] = true;
                         setColorCodeValidation(temp);
                         setButtonTeritaryForegroundColor(e.target.value);
+                        setOnChangeValues(true);
                       } else {
                         let temp = { ...colorCodeValidation };
                         temp["tertiaryTextValidation"] = false;
                         setColorCodeValidation(temp);
                         setButtonTeritaryForegroundColor(e.target.value);
+                        setOnChangeValues(true);
                       }
                       // setButtonTeritaryForegroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreSettingsPageTheme };
@@ -2556,11 +2605,13 @@ const StoreSettings = () => {
                           temp["tertiaryTextValidation"] = true;
                           setColorCodeValidation(temp);
                           setButtonTeritaryForegroundColor(e.target.value);
+                          setOnChangeValues(true);
                         } else {
                           let temp = { ...colorCodeValidation };
                           temp["tertiaryTextValidation"] = false;
                           setColorCodeValidation(temp);
                           setButtonTeritaryForegroundColor(e.target.value);
+                          setOnChangeValues(true);
                         }
                         // setButtonTeritaryForegroundColor(e.target.value);
                         let temp = { ...copyImageOfStoreSettingsPageTheme };
@@ -2680,11 +2731,13 @@ const StoreSettings = () => {
                         temp["headerBgValidation"] = true;
                         setColorCodeValidation(temp);
                         setHeaderBackgroundColor(e.target.value);
+                        setOnChangeValues(true);
                       } else {
                         let temp = { ...colorCodeValidation };
                         temp["headerBgValidation"] = false;
                         setColorCodeValidation(temp);
                         setHeaderBackgroundColor(e.target.value);
+                        setOnChangeValues(true);
                       }
                       // setHeaderBackgroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreHeaderSetting };
@@ -2705,11 +2758,13 @@ const StoreSettings = () => {
                           temp["headerBgValidation"] = true;
                           setColorCodeValidation(temp);
                           setHeaderBackgroundColor(e.target.value);
+                          setOnChangeValues(true);
                         } else {
                           let temp = { ...colorCodeValidation };
                           temp["headerBgValidation"] = false;
                           setColorCodeValidation(temp);
                           setHeaderBackgroundColor(e.target.value);
+                          setOnChangeValues(true);
                         }
                         // setHeaderBackgroundColor(e.target.value);
                         let temp = { ...copyImageOfStoreHeaderSetting };
@@ -2769,11 +2824,13 @@ const StoreSettings = () => {
                         temp["headerTextValidation"] = true;
                         setColorCodeValidation(temp);
                         setHeaderForegroundColor(e.target.value);
+                        setOnChangeValues(true);
                       } else {
                         let temp = { ...colorCodeValidation };
                         temp["headerTextValidation"] = false;
                         setColorCodeValidation(temp);
                         setHeaderForegroundColor(e.target.value);
+                        setOnChangeValues(true);
                       }
                       // setHeaderForegroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreHeaderSetting };
@@ -2793,11 +2850,13 @@ const StoreSettings = () => {
                           temp["headerTextValidation"] = true;
                           setColorCodeValidation(temp);
                           setHeaderForegroundColor(e.target.value);
+                          setOnChangeValues(true);
                         } else {
                           let temp = { ...colorCodeValidation };
                           temp["headerTextValidation"] = false;
                           setColorCodeValidation(temp);
                           setHeaderForegroundColor(e.target.value);
+                          setOnChangeValues(true);
                         }
                         // setHeaderForegroundColor(e.target.value);
                         let temp = { ...copyImageOfStoreHeaderSetting };
@@ -2861,11 +2920,13 @@ const StoreSettings = () => {
                         temp["footerBgValidation"] = true;
                         setColorCodeValidation(temp);
                         setFooterBackgroundColor(e.target.value);
+                        setOnChangeValues(true);
                       } else {
                         let temp = { ...colorCodeValidation };
                         temp["footerBgValidation"] = false;
                         setColorCodeValidation(temp);
                         setFooterBackgroundColor(e.target.value);
+                        setOnChangeValues(true);
                       }
                       // setFooterBackgroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreFooterSetting };
@@ -2885,11 +2946,13 @@ const StoreSettings = () => {
                           temp["footerBgValidation"] = true;
                           setColorCodeValidation(temp);
                           setFooterBackgroundColor(e.target.value);
+                          setOnChangeValues(true);
                         } else {
                           let temp = { ...colorCodeValidation };
                           temp["footerBgValidation"] = false;
                           setColorCodeValidation(temp);
                           setFooterBackgroundColor(e.target.value);
+                          setOnChangeValues(true);
                         }
                         // setFooterBackgroundColor(e.target.value);
                         let temp = { ...copyImageOfStoreFooterSetting };
@@ -2946,11 +3009,13 @@ const StoreSettings = () => {
                         temp["footerTextValidation"] = true;
                         setColorCodeValidation(temp);
                         setFooterForegroundColor(e.target.value);
+                        setOnChangeValues(true);
                       } else {
                         let temp = { ...colorCodeValidation };
                         temp["footerTextValidation"] = false;
                         setColorCodeValidation(temp);
                         setFooterForegroundColor(e.target.value);
+                        setOnChangeValues(true);
                       }
                       // setFooterForegroundColor(e.target.value);
                       let temp = { ...copyImageOfStoreFooterSetting };
@@ -2970,11 +3035,13 @@ const StoreSettings = () => {
                           temp["footerTextValidation"] = true;
                           setColorCodeValidation(temp);
                           setFooterForegroundColor(e.target.value);
+                          setOnChangeValues(true);
                         } else {
                           let temp = { ...colorCodeValidation };
                           temp["footerTextValidation"] = false;
                           setColorCodeValidation(temp);
                           setFooterForegroundColor(e.target.value);
+                          setOnChangeValues(true);
                         }
                         // setFooterForegroundColor(e.target.value);
                         let temp = { ...copyImageOfStoreFooterSetting };
@@ -3021,8 +3088,11 @@ const StoreSettings = () => {
             <Row>
               <Col>
                 <Button
-                  style={{ backgroundColor: "#393939" }}
-                  className="app-btn-primary"
+                  // className="app-btn-primary"
+                  className={
+                    onChangeValues ? "app-btn-primary " : "!opacity-75"
+                  }
+                  disabled={!onChangeValues}
                   onClick={() => {
                     validatePostStoreSetting();
                     // if (imagesUpload && imagesUpload.length > 0) {
@@ -3033,9 +3103,15 @@ const StoreSettings = () => {
                   {t("common:Save")}
                 </Button>
               </Col>
-              <Col className="pl-4">
+              <Col className="pl-2">
                 <Button
-                  className=" app-btn-secondary"
+                  // className=" app-btn-secondary"
+                  className={
+                    onChangeValues === true
+                      ? "app-btn-secondary "
+                      : "!opacity-75"
+                  }
+                  disabled={!onChangeValues}
                   onClick={() => {
                     navigate("/dashboard/store");
                     // setFractionalUnit("");
