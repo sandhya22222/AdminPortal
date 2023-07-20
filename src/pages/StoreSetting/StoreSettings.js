@@ -36,7 +36,7 @@ import Preview from "./Preview";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
 const { Content } = Layout;
-const { Title } = Typography;
+const { Title, Text } = Typography;
 const { TextArea } = Input;
 const storeSettingAPI = process.env.REACT_APP_STORE_FRONT_SETTINGS_API;
 const storeAPI = process.env.REACT_APP_STORE_API;
@@ -1320,20 +1320,31 @@ const StoreSettings = () => {
   console.log("imageChangeValues", imageChangeValues);
   return (
     <Content>
-      <Content className="mb-1">
-        <AntDesignBreadcrumbs
-          data={[
-            { title: "Home", navigationPath: "/", displayOrder: 1 },
-            { title: "Store Setting", navigationPath: "", displayOrder: 2 },
-          ]}
-        />
-      </Content>
-      <Content className="bg-white !w-full !fixed !z-10 mt">
-        {storeSettingsHeader()}
-        {/* <Content className="flex-end">
-          <Status storeId={storeId} storeApiData={storeData} />
-        </Content> */}
-      </Content>
+      <HeaderForTitle
+        title={
+          <Content className="flex">
+            <Content className="flex text-left self-center items-center pr-3">
+              <Link to="/dashboard/store">
+                <ArrowLeftOutlined
+                  role={"button"}
+                  className={"text-black text-lg -translate-y-1"}
+                />
+              </Link>
+              <Title level={3} className="!font-normal mb-0 ml-4">
+                {storeName}
+              </Title>
+            </Content>
+            <Content className="text-right flex flex-row-reverse items-center">
+              <Status
+                storeId={id}
+                storeStatus={changeSwitchStatus === 1 ? true : false}
+                storeApiData={storeData}
+                className="!inline-block"
+              />
+            </Content>
+          </Content>
+        }
+      />
       <Content className="p-3 mt-28">
         {/* <Spin tip="Please wait!" size="large" spinning={isLoading}> */}
         {/* <Content className="bg-white mt-2 p-3"> */}

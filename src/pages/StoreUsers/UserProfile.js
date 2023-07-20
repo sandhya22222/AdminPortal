@@ -86,8 +86,8 @@ const UserProfile = () => {
                     {storeUsersData && storeUsersData.username}
                   </Text>
                 </Row>
-                <Row className=" text-sky-600 underline underline-offset-2 mb-3">
-                  <Link to="">{storeUsersData && storeUsersData.email}</Link>
+                <Row className="font-semibold mb-3">
+                  <Text to="">{storeUsersData && storeUsersData.email}</Text>
                 </Row>
                 <Row className="mb-2">
                   <label className="text-md font-medium">

@@ -1,3 +1,5 @@
+@import url(./marketplaceTheme.css);
+
 .main {
   min-height: 90%;
   background-image: linear-gradient(
@@ -11,40 +13,36 @@
 }
 /* ant delete icon */
 .anticon-delete {
-  color: #a00a18 !important;
+  color: var(--mp-danger-color)  !important;
 }
 
 .ant-input:hover {
-  border-color: #7d3192 !important;
+  border-color: var(--mp-brand-color) !important;
 }
 
 .ant-pagination .ant-pagination-item-active {
-  border-color: #7d3192 !important;
+  border-color: var(--mp-brand-color)  !important;
 }
 
 .ant-select-selector:hover {
-  border-color: #7d3192 !important;
+  border-color: var(--mp-brand-color)  !important;
 }
 
 .ant-select-item-option-selected {
-  background-color: #f3e8ff !important;
+  background-color: var(--mp-light-color) !important;
 }
 .ant-select-dropdown {
   z-index: 1 !important;
 }
 
 .ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
-  color: #7d3192 !important;
+  color: var(--mp-brand-color)  !important;
 }
 
 .ant-tabs .ant-tabs-ink-bar {
-  background: #7d3192 !important;
+  background: var(--mp-brand-color)  !important;
 }
 
 .ant-tabs .ant-tabs-tab:hover {
-  color: #7d3192 !important;
+  color: var(--mp-brand-color)  !important;
 }
-
-/* .ant-switch-checked {
-      background: #00C3B3 !important
-  } */
