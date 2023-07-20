@@ -1,27 +1,11 @@
-@import url(../../core-ui/marketplaceTheme.css);
-
-.ant-menu-item-selected {
+  .ant-menu-item-selected {
   background-color: var(--mp-brand-color) !important;
 }
 
 .ant-menu-item:not(.ant-menu-item-selected):active {
-    background-color: #7d3192 !important;
+    background-color: var(--mp-brand-color) !important;
 }
 
 .ant-menu .ant-menu-item .ant-menu-item-icon {
   min-width: 20px !important;
 }
-/* :where(.css-dev-only-do-not-override-diro6f).ant-layout
-  .ant-layout-sider-trigger {
-  background-color: #4a2d73 !important;
-} */
-
-/* .anticon.anticon-right {
-  background-image: url("../../assets/images/sidebar/backburger.png") !important;
-  /* display: none; 
-}
-
-.anticon.anticon-left {
-  background-image: url("../../assets/images/sidebar/backburger.png") !important;
-  /* display: none; 
-} */

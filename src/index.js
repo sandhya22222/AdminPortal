@@ -18,7 +18,6 @@ import "./core-ui/index.css";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 //! Get all required details from .env file
-let realm = process.env.REACT_APP_REALM;
 const authority = process.env.REACT_APP_AUTHORITY;
 let clientId = process.env.REACT_APP_CLIENT_ID;
 const clientSecret = process.env.REACT_APP_CLIENT_SECRET;

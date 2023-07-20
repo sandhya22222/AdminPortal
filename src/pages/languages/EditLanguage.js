@@ -34,6 +34,7 @@ import StoreModal from "../../components/storeModal/StoreModal";
 //! Import CSS libraries
 import { Container } from "reactstrap";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
+import HeaderForTitle from "../../components/header/HeaderForTitle";
 
 //! Destructure the components
 const { Title, Text } = Typography;
@@ -573,19 +574,23 @@ const EditLanguage = () => {
 
   return (
     <Content>
-      <Content className="">
-        <AntDesignBreadcrumbs
-          data={[
-            { title: "Home", navigationPath: "/", displayOrder: 1 },
-            {
-              title: "Language",
-              navigationPath: "/dashboard/language",
-              displayOrder: 2,
-            },
-            { title: "Edit Language", navigationPath: "", displayOrder: 3 },
-          ]}
-        />
-      </Content>
+      <HeaderForTitle
+        title={
+          <Content className="flex">
+            <Content className="flex text-left self-center items-center pr-3">
+              <Link to="/dashboard/store">
+                <ArrowLeftOutlined
+                  role={"button"}
+                  className={"text-black text-lg -translate-y-1"}
+                />
+              </Link>
+              <Title level={3} className="!font-normal mb-0 ml-4">
+                Edit Language
+              </Title>
+            </Content>
+          </Content>
+        }
+      />
       <Content className="bg-white !w-full top-[3.0rem] fixed z-10">
         {editLanguageButtonHeader()}
       </Content>
