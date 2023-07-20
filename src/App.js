@@ -102,7 +102,6 @@ const App = () => {
                     path="onlinepaymentconnector"
                     element={<OnlinePaymentConnector />}
                   />
-                  <Route path="*" element={<PageNotFound />} />
                 </>
               </Route>
             ) : (

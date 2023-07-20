@@ -22,6 +22,7 @@ import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDes
 import "./language.css";
 import useAuthorization from "../../hooks/useAuthorization";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
+import HeaderForTitle from "../../components/header/HeaderForTitle";
 const { Title } = Typography;
 const { Option } = Select;
 const { Content } = Layout;
@@ -54,8 +55,6 @@ const AddLanguage = () => {
   const navigate = useNavigate();
 
   const handleLanguageChange = (e) => {
-    // setLanguage(e.target.value);
-    // setNativeName(e.target.value);
     if (e.target.value !== "") {
       setIsLanguageFieldEmpty(false);
       setLanguage(e.target.value);
@@ -66,6 +65,7 @@ const AddLanguage = () => {
     //   setNativeName(value);
     // }
   };
+
   const handleLanguageCodeChange = (e) => {
     // setLanguageCode(e.target.value);
     const { value } = e.target;
@@ -226,7 +226,7 @@ const AddLanguage = () => {
     if (languageCode.trim() === "") {
       setIsLanguageCodeFieldEmpty(true);
       validValues--;
-      toast("Please enter the language code.", {
+      toast("Please enter the language code", {
         autoClose: 10000,
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
@@ -265,6 +265,7 @@ const AddLanguage = () => {
     }
   };
   console.log("first", nativeName.trim().length);
+
   const addLanguageButtonHeader = () => {
     return (
       <>
@@ -309,6 +310,7 @@ const AddLanguage = () => {
         console.log("errorresponse--->", error);
       });
   };
+
   //! document post call
   const saveLanguageDocument = (fileValue, lastExtensionValue) => {
     const formData = new FormData();
@@ -372,16 +374,6 @@ const AddLanguage = () => {
 
   //! document delete call
   const removeLanguageDocument = () => {
-    // axios
-    //   .delete(
-    //     languageDeleteAPI,
-    //     {
-    //       params: {
-    //         document_path: langugaeDocumentPath,
-    //       },
-    //     },
-    //     authorizationHeader
-    //   )
     MarketplaceServices.remove(languageDeleteAPI, {
       document_path: langugaeDocumentPath,
     })
@@ -440,46 +432,38 @@ const AddLanguage = () => {
     //   message.error(`${info.file.name} file upload failed.`);
     // }
   };
-  console.log("onChangeValues", onChangeValues);
+
   return (
     <Content>
-      <Content className="">
-        <AntDesignBreadcrumbs
-          data={[
-            { title: "Home", navigationPath: "/", displayOrder: 1 },
-            {
-              title: "Language",
-              navigationPath: "/dashboard/language",
-              displayOrder: 2,
-            },
-            { title: "Add Language", navigationPath: "", displayOrder: 3 },
-          ]}
-        />
-      </Content>
-      <Content className="!bg-white top-[3.0rem] !w-full fixed z-10">
-        {addLanguageButtonHeader()}
-      </Content>
+      <HeaderForTitle
+        title={
+          <Content className="flex">
+            <Content className="flex text-left self-center items-center pr-3">
+              <Link to="/dashboard/store">
+                <ArrowLeftOutlined
+                  role={"button"}
+                  className={"text-black text-lg -translate-y-1"}
+                />
+              </Link>
+              <Title level={3} className="!font-normal mb-0 ml-4">
+                Add Language
+              </Title>
+            </Content>
+          </Content>
+        }
+      />
       <Content className="mt-[8rem] !w-full p-3">
         <Spin tip="Please wait!" size="large" spinning={isLoading}>
           <Content className="mt-[-15px]">
             <Content className="p-3 bg-white mt-0 !rounded-lg">
               <Content>
-                {/* <Typography.Title
-                    level={3}
-                    className="inline-block !font-normal"
-                  >
-                    Language Details
-                  </Typography.Title> */}
                 <Row>
                   <Col span={8} className="pr-2">
                     <Content className="my-3">
                       <span className="text-red-600 text-sm !text-center">
                         *
                       </span>
-                      <label className="text-[13px] mb-2 ml-1">
-                        Language
-                        {/* <sup className="text-red-600 text-sm mt-1">*</sup> */}
-                      </label>
+                      <label className="text-[13px] mb-2 ml-1">Language</label>
                       <Input
                         placeholder="Enter Language Name"
                         value={language}
@@ -489,14 +473,11 @@ const AddLanguage = () => {
                             ? "border-red-400 !border-[0.5px] border-solid focus:border-red-400 hover:border-red-400"
                             : ""
                         }`}
-                        // onChange={(e) => {
-                        //   handleLanguageChange(e);
-                        // }}
                         onChange={(e) => {
                           setIsLanguageFieldEmpty(false);
                           setLanguage(e.target.value);
                           setNativeName(e.target.value);
-                          // setOnChangeValues(true);
+                          setOnChangeValues(true);
                         }}
                         // pattern="^[A-Za-z0-9]+$"
                         // rules={[
@@ -532,7 +513,7 @@ const AddLanguage = () => {
                         onChange={(e) => {
                           setIsLanguageCodeFieldEmpty(false);
                           setLanguageCode(e.target.value);
-                          // setOnChangeValues(true);
+                          setOnChangeValues(true);
                         }}
                         // pattern="^[A-Za-z0-9]+$"
                       />
