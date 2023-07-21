@@ -516,7 +516,7 @@ const Language = () => {
         />
       </Content>
 
-      <Content className="!p-3 mt-[8rem] !min-h-screen">
+      <Content className="!p-3 mt-[8rem] ">
         {isLoading ? (
           <Content className="bg-white">
             <Skeleton

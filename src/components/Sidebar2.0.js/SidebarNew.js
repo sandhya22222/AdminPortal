@@ -31,6 +31,7 @@ import {
   BackBurger,
   menuIcon,
 } from "../../constants/media";
+import Footer from "./../footer/Footer";
 //! Import CSS libraries
 
 //! Import user defined functions
@@ -220,6 +221,7 @@ const SidebarNew = () => {
       </Affix>
       <Layout className="site-layout !w-[80%]">
         <Outlet />
+        <Footer />
       </Layout>
     </Layout>
   );

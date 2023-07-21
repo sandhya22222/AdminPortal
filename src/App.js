@@ -109,8 +109,8 @@ const App = () => {
             )}
           </Routes>
         </Container>
-        <Footer />
       </Router>
+      {/* <Footer /> */}
     </Suspense>
   );
 };

@@ -82,7 +82,7 @@ const Dashboard = () => {
           }
         />
       </Content>
-      <Content className="!p-[1.2rem] !mt-[120px] !min-h-screen">
+      <Content className="!p-[1.2rem] !mt-[120px]">
         {dashboardDataLoading ? (
           <Content className="!bg-[var(--mp-bright-color)] !p-3">
             <Content className="flex justify-between">
