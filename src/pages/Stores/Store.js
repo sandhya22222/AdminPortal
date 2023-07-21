@@ -309,7 +309,7 @@ const Stores = () => {
           <Content className="whitespace-nowrap flex align-middle">
             <Tooltip title={t("stores:Edit-Store")}>
               <MdEdit
-                className=" !text-xl"
+                className=" !text-xl cursor-pointer"
                 onClick={() => {
                   showEditDrawer(record.id);
                 }}
@@ -319,13 +319,15 @@ const Stores = () => {
             <Link
               to={{
                 pathname: "storesetting",
-                search: `?id=${record.id}&page=${searchParams.get("page") ? searchParams.get("page") : 1
-                  }&limit=${searchParams.get("limit")
+                search: `?id=${record.id}&page=${
+                  searchParams.get("page") ? searchParams.get("page") : 1
+                }&limit=${
+                  searchParams.get("limit")
                     ? searchParams.get("limit")
                     : pageLimit
-                  }`,
+                }`,
               }}
-            // className=" pl-[10px] font-semibold app-table-data-title"
+              // className=" pl-[10px] font-semibold app-table-data-title"
             >
               <Tooltip title={t("stores:Store-Settings")}>
                 <MdSettings className=" text-black !text-xl ml-4" />
@@ -335,7 +337,7 @@ const Stores = () => {
             {record.status === "InActive" ? (
               <Tooltip title={t("stores:Delete-Store")}>
                 <MdDelete
-                  className=" !text-[#A00A18] !text-xl ml-4"
+                  className=" !text-[#A00A18] !text-xl ml-4 cursor-pointer"
                   onClick={() => {
                     openDeleteModal(record.id);
                   }}
@@ -451,14 +453,14 @@ const Stores = () => {
   //!edit drawer
   const showEditDrawer = (id) => {
     console.log("storerecordid", id);
-    setOnChangeEditValues(false)
+    setOnChangeEditValues(false);
     setStoreEditId(id);
     setOpen(true);
     setDrawerAction("put");
     setEditName(
       storeApiData &&
-      storeApiData.length > 0 &&
-      storeApiData.filter((element) => element.store_uuid === id)[0].name
+        storeApiData.length > 0 &&
+        storeApiData.filter((element) => element.store_uuid === id)[0].name
     );
     setInValidEditName(false);
   };
@@ -571,8 +573,17 @@ const Stores = () => {
   }, [postData]);
   //! validation for post call
   const validateStorePostField = () => {
-
-    if((storeEmail.trim() === "" || storeEmail.trim() === null || storeEmail.trim() === undefined) &&  (storeUserName.trim() === "" || storeUserName.trim() === null || storeUserName.trim() === undefined) && (storePassword.trim() === "" || storePassword.trim() === null || storePassword.trim() === undefined)){
+    if (
+      (storeEmail.trim() === "" ||
+        storeEmail.trim() === null ||
+        storeEmail.trim() === undefined) &&
+      (storeUserName.trim() === "" ||
+        storeUserName.trim() === null ||
+        storeUserName.trim() === undefined) &&
+      (storePassword.trim() === "" ||
+        storePassword.trim() === null ||
+        storePassword.trim() === undefined)
+    ) {
       setInValidEmail(true);
       setInValidUserName(true);
       setInValidPassword(true);
@@ -588,135 +599,135 @@ const Stores = () => {
       ) {
         setInValidName(true);
       }
-    }else{
-    let count = 4;
-    if (
-      name.trim() === "" ||
-      name.trim() === null ||
-      name.trim() === undefined
-    ) {
-      setInValidName(true);
-    }
-    // if (
-    //   name.trim() === "" ||
-    //   name.trim() === null ||
-    //   name.trim() === undefined
-    // ) {
-    //   setInValidName(true);
-    //   count--;
-    //   toast(`${t("stores:Please-enter-the-store-name")}`, {
-    //     position: toast.POSITION.TOP_RIGHT,
-    //     type: "error",
-    //     autoClose: 10000,
-    //   });
-    // }
-    const patternName = /^[A-Za-z]+$/;
-    if (name && patternName.test(name.trim()) === false) {
-      setInValidName(true);
-      count--;
-      toast(`${t("stores:Please-enter-the-valid-store-name")}`, {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
-    }
+    } else {
+      let count = 4;
+      if (
+        name.trim() === "" ||
+        name.trim() === null ||
+        name.trim() === undefined
+      ) {
+        setInValidName(true);
+      }
+      // if (
+      //   name.trim() === "" ||
+      //   name.trim() === null ||
+      //   name.trim() === undefined
+      // ) {
+      //   setInValidName(true);
+      //   count--;
+      //   toast(`${t("stores:Please-enter-the-store-name")}`, {
+      //     position: toast.POSITION.TOP_RIGHT,
+      //     type: "error",
+      //     autoClose: 10000,
+      //   });
+      // }
+      const patternName = /^[A-Za-z]+$/;
+      if (name && patternName.test(name.trim()) === false) {
+        setInValidName(true);
+        count--;
+        toast(`${t("stores:Please-enter-the-valid-store-name")}`, {
+          position: toast.POSITION.TOP_RIGHT,
+          type: "error",
+          autoClose: 10000,
+        });
+      }
 
-    const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-    if (storeEmail && regex.test(storeEmail.trim()) === false) {
-      count--;
-      setInValidEmail(true);
-      toast(`${t("stores:Please-enter-the-valid-email-address")}`, {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+      if (storeEmail && regex.test(storeEmail.trim()) === false) {
+        count--;
+        setInValidEmail(true);
+        toast(`${t("stores:Please-enter-the-valid-email-address")}`, {
+          position: toast.POSITION.TOP_RIGHT,
+          type: "error",
+          autoClose: 10000,
+        });
+      }
+      // if (
+      //   storeEmail.trim() === "" ||
+      //   storeEmail.trim() === null ||
+      //   storeEmail.trim() === undefined
+      // ) {
+      //   count--;
+      //   setInValidEmail(true);
+      //   toast(`${t("stores:Please-enter-the-valid-email-address")}`, {
+      //     position: toast.POSITION.TOP_RIGHT,
+      //     type: "error",
+      //     autoClose: 10000,
+      //   });
+      // }
+      // if (
+      //   storeUserName.trim() === "" ||
+      //   storeUserName.trim() === null ||
+      //   storeUserName.trim() === undefined
+      // ) {
+      //   setInValidUserName(true);
+      //   count--;
+      //   toast(`${t("stores:Please-enter-the-username")}`, {
+      //     position: toast.POSITION.TOP_RIGHT,
+      //     type: "error",
+      //     autoClose: 10000,
+      //   });
+      // }
+      const userRegex = /^[a-zA-Z0-9_ ]{6,15}$/;
+      if (storeUserName && userRegex.test(storeUserName.trim()) === false) {
+        count--;
+        setInValidUserName(true);
+        toast(`${t("stores:Validation-Error-Message2")}`, {
+          position: toast.POSITION.TOP_RIGHT,
+          type: "error",
+          autoClose: 10000,
+        });
+      }
+      // if (storeUserName && storeUserName.length < 6) {
+      //   setInValidUserName(true);
+      //   count--;
+      //   toast("Username must contain minimum 6 characters", {
+      //     position: toast.POSITION.TOP_RIGHT,
+      //     type: "error",
+      //   });
+      // }
+      // if (
+      //   storePassword.trim() === "" ||
+      //   storePassword.trim() === null ||
+      //   storePassword.trim() === undefined
+      // ) {
+      //   setInValidPassword(true);
+      //   count--;
+      //   toast(`${t("stores:Please-enter-the-password")}`, {
+      //     position: toast.POSITION.TOP_RIGHT,
+      //     type: "error",
+      //     autoClose: 10000,
+      //   });
+      // }
+      const pattern =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,15}$/;
+      if (storePassword && pattern.test(storePassword.trim()) === false) {
+        setInValidPassword(true);
+        count--;
+        toast(`${t("stores:Validation-Error-Message1")}`, {
+          position: toast.POSITION.TOP_RIGHT,
+          type: "error",
+          autoClose: 10000,
+        });
+      }
+      // if (storePassword && storePassword.length < 6) {
+      //   setInValidPassword(true);
+      //   toast("Password must contain minimum 6 characters", {
+      //     position: toast.POSITION.TOP_RIGHT,
+      //     type: "error",
+      //   });
+      // }
+      if (
+        count === 4 &&
+        !showStoreErrorMessage
+        // name !== "" &&
+        // storeEmail !== "" &&
+        // storeUserName !== "" &&
+        // storePassword !== ""
+      ) {
+        saveStoreData();
+      }
     }
-    // if (
-    //   storeEmail.trim() === "" ||
-    //   storeEmail.trim() === null ||
-    //   storeEmail.trim() === undefined
-    // ) {
-    //   count--;
-    //   setInValidEmail(true);
-    //   toast(`${t("stores:Please-enter-the-valid-email-address")}`, {
-    //     position: toast.POSITION.TOP_RIGHT,
-    //     type: "error",
-    //     autoClose: 10000,
-    //   });
-    // }
-    // if (
-    //   storeUserName.trim() === "" ||
-    //   storeUserName.trim() === null ||
-    //   storeUserName.trim() === undefined
-    // ) {
-    //   setInValidUserName(true);
-    //   count--;
-    //   toast(`${t("stores:Please-enter-the-username")}`, {
-    //     position: toast.POSITION.TOP_RIGHT,
-    //     type: "error",
-    //     autoClose: 10000,
-    //   });
-    // }
-    const userRegex = /^[a-zA-Z0-9_ ]{6,15}$/;
-    if (storeUserName && userRegex.test(storeUserName.trim()) === false) {
-      count--;
-      setInValidUserName(true);
-      toast(`${t("stores:Validation-Error-Message2")}`, {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
-    }
-    // if (storeUserName && storeUserName.length < 6) {
-    //   setInValidUserName(true);
-    //   count--;
-    //   toast("Username must contain minimum 6 characters", {
-    //     position: toast.POSITION.TOP_RIGHT,
-    //     type: "error",
-    //   });
-    // }
-    // if (
-    //   storePassword.trim() === "" ||
-    //   storePassword.trim() === null ||
-    //   storePassword.trim() === undefined
-    // ) {
-    //   setInValidPassword(true);
-    //   count--;
-    //   toast(`${t("stores:Please-enter-the-password")}`, {
-    //     position: toast.POSITION.TOP_RIGHT,
-    //     type: "error",
-    //     autoClose: 10000,
-    //   });
-    // }
-    const pattern =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,15}$/;
-    if (storePassword && pattern.test(storePassword.trim()) === false) {
-      setInValidPassword(true);
-      count--;
-      toast(`${t("stores:Validation-Error-Message1")}`, {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
-    }
-    // if (storePassword && storePassword.length < 6) {
-    //   setInValidPassword(true);
-    //   toast("Password must contain minimum 6 characters", {
-    //     position: toast.POSITION.TOP_RIGHT,
-    //     type: "error",
-    //   });
-    // }
-    if (
-      count === 4 && !showStoreErrorMessage
-      // name !== "" &&
-      // storeEmail !== "" &&
-      // storeUserName !== "" &&
-      // storePassword !== "" 
-    ) {
-      saveStoreData();
-    }
-  }
-
   };
   //! post call for stores
   const saveStoreData = () => {
@@ -1033,10 +1044,11 @@ const Stores = () => {
                             placeholder={t("stores:Enter-Store-Name")}
                             value={name}
                             maxLength={20}
-                            className={`${inValidName
+                            className={`${
+                              inValidName
                                 ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-[0.5rem]"
                                 : "mb-[0.5rem]"
-                              }`}
+                            }`}
                             onChange={(e) => {
                               const patternName = /^[A-Za-z]+$/;
                               if (patternName.test(e.target.value) === false) {
@@ -1071,10 +1083,11 @@ const Stores = () => {
                             placeholder={t("stores:Enter-Email")}
                             value={storeEmail}
                             maxLength={50}
-                            className={`${inValidEmail
+                            className={`${
+                              inValidEmail
                                 ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-6"
                                 : "mb-6"
-                              }`}
+                            }`}
                             onChange={(e) => {
                               setStoreEmail(e.target.value);
                               setInValidEmail(false);
@@ -1091,10 +1104,11 @@ const Stores = () => {
                             maxLength={15}
                             minLength={6}
                             suffix={`${storeUserName.length}/15`}
-                            className={`${inValidUserName
+                            className={`${
+                              inValidUserName
                                 ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-6"
                                 : "mb-6"
-                              }`}
+                            }`}
                             prefix={
                               <UserOutlined className="site-form-item-icon" />
                             }
@@ -1124,10 +1138,11 @@ const Stores = () => {
                             placeholder={t("stores:Enter-Password")}
                             value={storePassword}
                             maxLength={15}
-                            className={`${inValidPassword
+                            className={`${
+                              inValidPassword
                                 ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-10"
                                 : "mb-10"
-                              }`}
+                            }`}
                             onChange={(e) => {
                               const value = e.target.value;
                               // if (value && value.length < 15) {
@@ -1189,10 +1204,11 @@ const Stores = () => {
                           <Input
                             value={editName}
                             placeholder={t("stores:Enter-Store-Name")}
-                            className={`${inValidEditName
+                            className={`${
+                              inValidEditName
                                 ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 mb-6"
                                 : "mb-6"
-                              }`}
+                            }`}
                             maxLength={20}
                             onChange={(e) => {
                               // const { value } = e.target;

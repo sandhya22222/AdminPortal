@@ -90,6 +90,7 @@ const EditLanguage = () => {
     let copyofLanguageDetails = { ...languageDetails };
     if (fieldName === "language") {
       copyofLanguageDetails.language = value;
+      copyofLanguageDetails.native_name = value;
       if (value != "") {
         setIsLanguageFieldEmpty(false);
       }
@@ -238,7 +239,7 @@ const EditLanguage = () => {
     }
     if (languageDetails.language_code === "") {
       setIsLanguageCodeFieldEmpty(true);
-      toast("Please enter the language code.", {
+      toast("Please enter the language code", {
         autoClose: 10000,
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
@@ -578,7 +579,7 @@ const EditLanguage = () => {
         title={
           <Content className="flex">
             <Content className="flex text-left self-center items-center pr-3">
-              <Link to="/dashboard/store">
+              <Link to="/dashboard/language">
                 <ArrowLeftOutlined
                   role={"button"}
                   className={"text-black text-lg -translate-y-1"}
@@ -591,9 +592,6 @@ const EditLanguage = () => {
           </Content>
         }
       />
-      <Content className="bg-white !w-full top-[3.0rem] fixed z-10">
-        {editLanguageButtonHeader()}
-      </Content>
       <Spin tip="Please wait!" size="large" spinning={isLoading}>
         <Content className="p-3 mt-[-15px]">
           <Row>
@@ -777,7 +775,7 @@ const EditLanguage = () => {
                           <Option value="RTL">Right to left</Option>
                         </Select>
                       </Content>
-                      <Content className="my-3 mt-4 w-[32%]">
+                      {/* <Content className="my-3 mt-4 w-[32%]">
                         <label className="text-[13px] pb-1 mb-2">
                           Language Supported Document
                         </label>
@@ -851,7 +849,7 @@ const EditLanguage = () => {
                         ) : (
                           ""
                         )}
-                      </Content>
+                      </Content> */}
                     </Content>
                   </Content>
                   <Content className="mt-3">

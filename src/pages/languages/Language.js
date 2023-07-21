@@ -206,9 +206,9 @@ const Language = () => {
       title: "Language",
       dataIndex: "language",
       key: "language",
-      sorter: (name1, name2) => name1.language.localeCompare(name2.language),
-      sortDirections: ["descend", "ascend"],
-      showSorterTooltip: false,
+      // sorter: (name1, name2) => name1.language.localeCompare(name2.language),
+      // sortDirections: ["descend", "ascend"],
+      // showSorterTooltip: false,
       render: (text, record) => {
         return <>{record.language}</>;
       },
@@ -281,7 +281,7 @@ const Language = () => {
             <>
               <Tooltip title="Delete Language">
                 <MdDelete
-                  className="!text-[#A00A18] !text-xl ml-4 "
+                  className="!text-[#A00A18] !text-xl ml-4 cursor-pointer"
                   onClick={() => {
                     openDeleteModal(record.id);
                   }}
@@ -533,7 +533,7 @@ const Language = () => {
             <p>
               {/* {errorMessage
                 ? errorMessage : */}
-              lease wait while we validate your information. If this process
+              Please wait while we validate your information. If this process
               persists, please consider logging out and logging back in
             </p>
           </Layout>
