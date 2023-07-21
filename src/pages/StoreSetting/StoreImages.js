@@ -86,6 +86,7 @@ const StoreImages = ({
   );
 
   const handleChange = (e) => {
+    setImageChangeValues(true)
     setFileList(e.fileList);
     if (type === "store_logo") {
       if (e.fileList.length === 0) {
@@ -506,7 +507,6 @@ const StoreImages = ({
                 onPreview={handlePreview}
                 onChange={(e) => {
                   handleChange(e);
-                  setImageChangeValues(true);
                 }}
                 beforeUpload={() => {
                   return false;
