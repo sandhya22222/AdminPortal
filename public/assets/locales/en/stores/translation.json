@@ -26,7 +26,7 @@
     "Validation-Error-Message2":"Username must contain a minimum of 6 characters and can only consist of alphabets, numbers, underscores, and hyphens",
     "Please-enter-the-username":"Please enter the username",
     "Please-enter-the-valid-email-address":"Please enter the valid email address" ,
-    "Please-enter-the-valid-store-name":"Please enter the valid  store name",
+    "Please-enter-the-valid-store-name":"Please enter valid store name and special characters are not allowed",
     "All":"All",
     "Active":"Active",
     "Inactive":"Inactive",
