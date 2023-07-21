@@ -1323,7 +1323,7 @@ const Stores = () => {
           }
         />
       </Content>
-      <Content className="!p-3 !mt-[10rem] !min-h-screen">
+      <Content className="!p-3 !mt-[10rem] ">
         {isLoading ? (
           <Content className="bg-white">
             <Skeleton
