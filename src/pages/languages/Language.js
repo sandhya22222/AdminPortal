@@ -238,14 +238,14 @@ const Language = () => {
         return <>{record.native_name}</>;
       },
     },
-    {
-      title: "Language Support Document",
-      dataIndex: "lang_support_docs",
-      key: "lang_support_docs",
-      render: (text, record) => {
-        return <>{record.lang_support_docs}</>;
-      },
-    },
+    // {
+    //   title: "Language Support Document",
+    //   dataIndex: "lang_support_docs",
+    //   key: "lang_support_docs",
+    //   render: (text, record) => {
+    //     return <>{record.lang_support_docs}</>;
+    //   },
+    // },
     // {
     //   title: "Language Regex",
     //   dataIndex: "dm_language_regex",

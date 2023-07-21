@@ -580,7 +580,7 @@ const AddLanguage = () => {
                     <Option value="RTL">Right to Left</Option>
                   </Select>
                 </Content>
-                <Content className="my-3 mt-4 w-[32%]">
+                {/* <Content className="my-3 mt-4 w-[32%]">
                   <label className="text-[13px] pb-1 mb-2">
                     Language Supported Document
                   </label>
@@ -611,7 +611,7 @@ const AddLanguage = () => {
                     </p>
                     <p className="ant-upload-hint">only .csv files</p>
                   </Dragger>
-                </Content>
+                </Content> */}
               </Content>
             </Content>
             <Content className="mt-3">
