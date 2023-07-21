@@ -439,7 +439,7 @@ const AddLanguage = () => {
         title={
           <Content className="flex">
             <Content className="flex text-left self-center items-center pr-3">
-              <Link to="/dashboard/store">
+              <Link to="/dashboard/language">
                 <ArrowLeftOutlined
                   role={"button"}
                   className={"text-black text-lg -translate-y-1"}
