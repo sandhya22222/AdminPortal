@@ -90,7 +90,7 @@ const StoreSettings = () => {
   const [footerBgColor, setFooterBgColor] = useState("#00000");
   const [footerForegroundColor, setFooterForegroundColor] = useState("#00000");
   const [footerFgColor, setFooterFgColor] = useState("#00000");
-  const [headerBackgroundColor, setHeaderBackgroundColor] = useState("#00000");
+  const [headerBackgroundColor, setHeaderBackgroundColor] = useState("#000000");
   const [headerBgColor, setHeaderBgColor] = useState("#00000");
   const [headerForegroundColor, setHeaderForegroundColor] = useState("#00000");
   const [headerFgColor, setHeaderFgColor] = useState("#00000");
@@ -302,7 +302,7 @@ const StoreSettings = () => {
           setFooterBackgroundColor("#00000");
           setFooterForegroundColor("#00000");
           setHeaderForegroundColor("#00000");
-          setHeaderBackgroundColor("#00000");
+          setHeaderBackgroundColor("#000000");
         }
       });
   };
@@ -1604,18 +1604,24 @@ const StoreSettings = () => {
                 value={currencySymbol}
                 maxLength={3}
                 onChange={(e) => {
-                  const regex = /^[^\w\s]*$/;
-                  if (regex.test(e.target.value)) {
-                    setCurrencySymbol(e.target.value);
+                  const regex = /^[A-Za-z $£€¥₹]*$/;
+                  const inputValue = e.target.value.replace(/\!/g, ''); 
+                
+                  if (regex.test(inputValue) || inputValue === '') { 
+                    setCurrencySymbol(inputValue);
                     setOnChangeValues(true);
                     setInValidCurrencySymbol(false);
                     let temp = { ...copyImageOfStoreSettingsCurrency };
-                    temp["symbol"] = e.target.value;
+                    temp["symbol"] = inputValue;
                     setCopyImageOfStoreSettingsCurrency(temp);
                   } else {
                     setInValidCurrencySymbol(true);
                   }
                 }}
+                
+                
+                
+                
               />
             </Col>
             <Col span={4} className="mx-2.5">
@@ -1711,7 +1717,7 @@ const StoreSettings = () => {
               />
             </Col>
           </Row>
-        </Content>
+        
         {/* <Content className="bg-white mt-2 p-3 ">
           <label className="text-[20px] mb-2 mt-4 font-bold">Region Code</label>
           <Content className="flex">
@@ -1754,10 +1760,10 @@ const StoreSettings = () => {
             </Content>
           </Content>
         </Content> */}
-        <Content className="bg-white mt-3 p-3 rounded-lg">
+        <Content className="">
           <Content className="">
             <Row className="!mb-4">
-              <label className="text-[20px]  mt-2 font-bold">
+              <label className="text-[20px]  mt-2 font-bold select-none">
                 {t("stores:Page-Theme")}
               </label>
               <Content className="text-right">
@@ -1800,51 +1806,9 @@ const StoreSettings = () => {
             </Row>
             <Divider className="!my-4" />
             <Row className="mt-2">
-              {/* <Col span={8} className="mr-2">
-              <Button
-                className="float-right mb-1"
-                onClick={() => {
-                  setPageBackgroundColor(pageBgColor);
-                }}
-              >
-                Reset
-              </Button>
-              <label className="text-[13px] mb-2 ml-1">Background Color</label>
-
-              <Input
-                placeholder="Enter header color"
-                maxLength={255}
-                minLength={1}
-                value={pageBackgroundColor}
-                onChange={(e) => {
-                  setPageBackgroundColor(e.target.value);
-                }}
-                type="color"
-              />
-            </Col> */}
-              {/* <Col span={8} className="ml-1">
-              <Button
-                className="float-right mb-1"
-                onClick={() => {
-                  setForeGroundColor(pageFgColor);
-                }}
-              >
-                Reset
-              </Button>
-              <label className="text-[13px] mb-2 ml-1">Foreground Color</label>
-              <Input
-                placeholder="Enter foreground color"
-                maxLength={255}
-                minLength={1}
-                value={foreGroundColor}
-                onChange={(e) => {
-                  setForeGroundColor(e.target.value);
-                }}
-                type="color"
-              />
-            </Col> */}
+             
               <Col span={8} className="mr-2 ">
-                <label className="text-[13px] mb-2 ml-1">
+                <label className="text-[13px] mb-2 ml-1 select-none">
                   {t("stores:Background-Color")}
                 </label>
                 <Content className="flex">
@@ -1933,7 +1897,7 @@ const StoreSettings = () => {
                 ) : null}
               </Col>
               <Col span={8} className="ml-1">
-                <label className="text-[13px] mb-2 ml-1">
+                <label className="text-[13px] mb-2 ml-1 select-none">
                   {t("stores:Text-Color")}
                 </label>
                 <Content className="flex">
@@ -2071,7 +2035,7 @@ const StoreSettings = () => {
                 />
               </Col> */}
               <Col span={8} className="mr-2 ">
-                <label className="text-[13px] mb-2 ml-1">
+                <label className="text-[13px] mb-2 ml-1 select-none">
                   {t("stores:Primary-Button-Background-Color")}
                 </label>
                 <Content className="flex">
@@ -2164,7 +2128,7 @@ const StoreSettings = () => {
                 ) : null}
               </Col>
               <Col span={8} className="ml-1">
-                <label className="text-[13px] mb-2 ml-1">
+                <label className="text-[13px] mb-2 ml-1 select-none">
                   {t("stores:Secondary-Button-Background-Color")}
                 </label>
                 <Content className="flex">
@@ -2257,7 +2221,7 @@ const StoreSettings = () => {
                 ) : null}
               </Col>
               <Col span={7} className="ml-2">
-                <label className="text-[13px] mb-2 ml-1">
+                <label className="text-[13px] mb-2 ml-1 select-none">
                   {t("stores:Tertiary-Button-Background-Color")}
                 </label>
                 <Content className="flex">
@@ -2399,7 +2363,7 @@ const StoreSettings = () => {
                 />
               </Col> */}
               <Col span={8} className="mr-2 ">
-                <label className="text-[13px] mb-2 ml-1">
+                <label className="text-[13px] mb-2 ml-1 select-none">
                   {t("stores:Primary-Button-Text-Color")}
                 </label>
                 <Content className="flex">
@@ -2492,7 +2456,7 @@ const StoreSettings = () => {
                 ) : null}
               </Col>
               <Col span={8} className="ml-1">
-                <label className="text-[13px] mb-2 ml-1">
+                <label className="text-[13px] mb-2 ml-1 select-none">
                   {t("stores:Secondary-Button-Text-Color")}
                 </label>
                 <Content className="flex">
@@ -2585,7 +2549,7 @@ const StoreSettings = () => {
                 ) : null}
               </Col>
               <Col span={7} className="ml-2">
-                <label className="text-[13px] mb-2 ml-1">
+                <label className="text-[13px] mb-2 ml-1 select-none">
                   {t("stores:Tertiary-Button-Text-Color")}
                 </label>
                 <Content className="flex">
@@ -2731,12 +2695,12 @@ const StoreSettings = () => {
             </Row> */}
           </Content>
           <Content>
-            <label className="text-[20px] mb-2 mt-4 font-bold">
+            <label className="text-[20px] mb-2 mt-4 font-bold select-none">
               {t("stores:Store-Header-Setting")}
             </label>
             <Row className="mt-2">
               <Col span={8} className="mr-2 ">
-                <label className="text-[13px] mb-2 ml-1">
+                <label className="text-[13px] mb-2 ml-1 select-none">
                   {t("stores:Background-Color")}
                 </label>
                 <Content className="flex">
@@ -2825,7 +2789,7 @@ const StoreSettings = () => {
                 ) : null}
               </Col>
               <Col span={8} className="ml-1">
-                <label className="text-[13px] mb-2 ml-1">
+                <label className="text-[13px] mb-2 ml-1 select-none">
                   {" "}
                   {t("stores:Text-Color")}
                 </label>
@@ -2918,12 +2882,12 @@ const StoreSettings = () => {
             </Row>
           </Content>
           <Content>
-            <label className="text-[20px] mb-2 mt-4 font-bold">
+            <label className="text-[20px] mb-2 mt-4 font-bold select-none">
               {t("stores:Store-Footer-Setting")}
             </label>
             <Row className="mt-2">
               <Col span={8} className="mr-2 ">
-                <label className="text-[13px] mb-2 ml-1">
+                <label className="text-[13px] mb-2 ml-1 select-none">
                   {t("stores:Background-Color")}
                 </label>
                 <Content className="flex">
@@ -3011,7 +2975,7 @@ const StoreSettings = () => {
                 ) : null}
               </Col>
               <Col span={8} className="ml-1">
-                <label className="text-[13px] mb-2 ml-1">
+                <label className="text-[13px] mb-2 ml-1 select-none">
                   {t("stores:Text-Color")}
                 </label>
                 <Content className="flex">
@@ -3154,6 +3118,7 @@ const StoreSettings = () => {
               </Col>
             </Row>
           </Content>
+        </Content>
         </Content>
       </Content>
       {/* </Spin> */}
