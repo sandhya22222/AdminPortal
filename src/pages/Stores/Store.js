@@ -319,15 +319,13 @@ const Stores = () => {
             <Link
               to={{
                 pathname: "storesetting",
-                search: `?id=${record.id}&page=${
-                  searchParams.get("page") ? searchParams.get("page") : 1
-                }&limit=${
-                  searchParams.get("limit")
+                search: `?id=${record.id}&page=${searchParams.get("page") ? searchParams.get("page") : 1
+                  }&limit=${searchParams.get("limit")
                     ? searchParams.get("limit")
                     : pageLimit
-                }`,
+                  }`,
               }}
-              // className=" pl-[10px] font-semibold app-table-data-title"
+            // className=" pl-[10px] font-semibold app-table-data-title"
             >
               <Tooltip title={t("stores:Store-Settings")}>
                 <MdSettings className=" text-black !text-xl ml-4" />
@@ -447,17 +445,20 @@ const Stores = () => {
     setInValidEmail(false);
     setInValidUserName(false);
     setInValidPassword(false);
+    setOnChangeValues(false);
+    setShowStoreErrorMessage(false);
   };
   //!edit drawer
   const showEditDrawer = (id) => {
     console.log("storerecordid", id);
+    setOnChangeEditValues(false)
     setStoreEditId(id);
     setOpen(true);
     setDrawerAction("put");
     setEditName(
       storeApiData &&
-        storeApiData.length > 0 &&
-        storeApiData.filter((element) => element.id === id)[0].name
+      storeApiData.length > 0 &&
+      storeApiData.filter((element) => element.store_uuid === id)[0].name
     );
     setInValidEditName(false);
   };
@@ -570,6 +571,24 @@ const Stores = () => {
   }, [postData]);
   //! validation for post call
   const validateStorePostField = () => {
+
+    if((storeEmail.trim() === "" || storeEmail.trim() === null || storeEmail.trim() === undefined) &&  (storeUserName.trim() === "" || storeUserName.trim() === null || storeUserName.trim() === undefined) && (storePassword.trim() === "" || storePassword.trim() === null || storePassword.trim() === undefined)){
+      setInValidEmail(true);
+      setInValidUserName(true);
+      setInValidPassword(true);
+      toast(`${t("Please provide values for the mandatory fields")}`, {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+        autoClose: 10000,
+      });
+      if (
+        name.trim() === "" ||
+        name.trim() === null ||
+        name.trim() === undefined
+      ) {
+        setInValidName(true);
+      }
+    }else{
     let count = 4;
     if (
       name.trim() === "" ||
@@ -577,13 +596,20 @@ const Stores = () => {
       name.trim() === undefined
     ) {
       setInValidName(true);
-      count--;
-      toast(`${t("stores:Please-enter-the-store-name")}`, {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
     }
+    // if (
+    //   name.trim() === "" ||
+    //   name.trim() === null ||
+    //   name.trim() === undefined
+    // ) {
+    //   setInValidName(true);
+    //   count--;
+    //   toast(`${t("stores:Please-enter-the-store-name")}`, {
+    //     position: toast.POSITION.TOP_RIGHT,
+    //     type: "error",
+    //     autoClose: 10000,
+    //   });
+    // }
     const patternName = /^[A-Za-z]+$/;
     if (name && patternName.test(name.trim()) === false) {
       setInValidName(true);
@@ -605,32 +631,32 @@ const Stores = () => {
         autoClose: 10000,
       });
     }
-    if (
-      storeEmail.trim() === "" ||
-      storeEmail.trim() === null ||
-      storeEmail.trim() === undefined
-    ) {
-      count--;
-      setInValidEmail(true);
-      toast(`${t("stores:Please-enter-the-valid-email-address")}`, {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
-    }
-    if (
-      storeUserName.trim() === "" ||
-      storeUserName.trim() === null ||
-      storeUserName.trim() === undefined
-    ) {
-      setInValidUserName(true);
-      count--;
-      toast(`${t("stores:Please-enter-the-username")}`, {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
-    }
+    // if (
+    //   storeEmail.trim() === "" ||
+    //   storeEmail.trim() === null ||
+    //   storeEmail.trim() === undefined
+    // ) {
+    //   count--;
+    //   setInValidEmail(true);
+    //   toast(`${t("stores:Please-enter-the-valid-email-address")}`, {
+    //     position: toast.POSITION.TOP_RIGHT,
+    //     type: "error",
+    //     autoClose: 10000,
+    //   });
+    // }
+    // if (
+    //   storeUserName.trim() === "" ||
+    //   storeUserName.trim() === null ||
+    //   storeUserName.trim() === undefined
+    // ) {
+    //   setInValidUserName(true);
+    //   count--;
+    //   toast(`${t("stores:Please-enter-the-username")}`, {
+    //     position: toast.POSITION.TOP_RIGHT,
+    //     type: "error",
+    //     autoClose: 10000,
+    //   });
+    // }
     const userRegex = /^[a-zA-Z0-9_ ]{6,15}$/;
     if (storeUserName && userRegex.test(storeUserName.trim()) === false) {
       count--;
@@ -649,19 +675,19 @@ const Stores = () => {
     //     type: "error",
     //   });
     // }
-    if (
-      storePassword.trim() === "" ||
-      storePassword.trim() === null ||
-      storePassword.trim() === undefined
-    ) {
-      setInValidPassword(true);
-      count--;
-      toast(`${t("stores:Please-enter-the-password")}`, {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
-    }
+    // if (
+    //   storePassword.trim() === "" ||
+    //   storePassword.trim() === null ||
+    //   storePassword.trim() === undefined
+    // ) {
+    //   setInValidPassword(true);
+    //   count--;
+    //   toast(`${t("stores:Please-enter-the-password")}`, {
+    //     position: toast.POSITION.TOP_RIGHT,
+    //     type: "error",
+    //     autoClose: 10000,
+    //   });
+    // }
     const pattern =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,15}$/;
     if (storePassword && pattern.test(storePassword.trim()) === false) {
@@ -681,14 +707,16 @@ const Stores = () => {
     //   });
     // }
     if (
-      count === 4
+      count === 4 && !showStoreErrorMessage
       // name !== "" &&
       // storeEmail !== "" &&
       // storeUserName !== "" &&
-      // storePassword !== ""
+      // storePassword !== "" 
     ) {
       saveStoreData();
     }
+  }
+
   };
   //! post call for stores
   const saveStoreData = () => {
@@ -782,12 +810,22 @@ const Stores = () => {
       })
       .catch((error) => {
         setIsUpLoading(false);
-        if (error.response) {
-          toast(`${error.response.data.message}`, {
+        if (error.response.status === 400) {
+          toast(`${t("stores:Please-enter-the-valid-store-name")}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
             autoClose: 10000,
           });
+          // toast(`${error.response.data.message.name}`, {
+          //   position: toast.POSITION.TOP_RIGHT,
+          //   type: "error",
+          //   autoClose: 10000,
+          // });
+          // toast(`${error.response.data.message.name}`, {
+          //   position: toast.POSITION.TOP_RIGHT,
+          //   type: "error",
+          //   autoClose: 10000,
+          // });
         } else {
           toast(`${t("common:Something-Went-Wrong")}`, {
             position: toast.POSITION.TOP_RIGHT,
@@ -970,7 +1008,7 @@ const Stores = () => {
                     {drawerAction && drawerAction === "post" ? (
                       <>
                         <Row>
-                          <Col span={1} className="flex items-start">
+                          <Col span={1} className="flex items-start mt-[3px]">
                             <MdInfo className="!text-[#7d3192] text-[16px]" />
                           </Col>
                           <Col span={23} className="align-center mb-3">
@@ -995,11 +1033,10 @@ const Stores = () => {
                             placeholder={t("stores:Enter-Store-Name")}
                             value={name}
                             maxLength={20}
-                            className={`${
-                              inValidName
-                                ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-6"
-                                : "mb-6"
-                            }`}
+                            className={`${inValidName
+                                ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-[0.5rem]"
+                                : "mb-[0.5rem]"
+                              }`}
                             onChange={(e) => {
                               const patternName = /^[A-Za-z]+$/;
                               if (patternName.test(e.target.value) === false) {
@@ -1034,11 +1071,10 @@ const Stores = () => {
                             placeholder={t("stores:Enter-Email")}
                             value={storeEmail}
                             maxLength={50}
-                            className={`${
-                              inValidEmail
+                            className={`${inValidEmail
                                 ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-6"
                                 : "mb-6"
-                            }`}
+                              }`}
                             onChange={(e) => {
                               setStoreEmail(e.target.value);
                               setInValidEmail(false);
@@ -1055,11 +1091,10 @@ const Stores = () => {
                             maxLength={15}
                             minLength={6}
                             suffix={`${storeUserName.length}/15`}
-                            className={`${
-                              inValidUserName
+                            className={`${inValidUserName
                                 ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-6"
                                 : "mb-6"
-                            }`}
+                              }`}
                             prefix={
                               <UserOutlined className="site-form-item-icon" />
                             }
@@ -1089,11 +1124,10 @@ const Stores = () => {
                             placeholder={t("stores:Enter-Password")}
                             value={storePassword}
                             maxLength={15}
-                            className={`${
-                              inValidPassword
+                            className={`${inValidPassword
                                 ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-10"
                                 : "mb-10"
-                            }`}
+                              }`}
                             onChange={(e) => {
                               const value = e.target.value;
                               // if (value && value.length < 15) {
@@ -1131,7 +1165,7 @@ const Stores = () => {
                     ) : (
                       <>
                         <Row>
-                          <Col span={1} className="flex items-start">
+                          <Col span={1} className="flex items-start mt-[3px]">
                             <MdInfo className="!text-[#7d3192] text-[16px]" />
                           </Col>
                           <Col span={23} className="align-center mb-3">
@@ -1155,11 +1189,10 @@ const Stores = () => {
                           <Input
                             value={editName}
                             placeholder={t("stores:Enter-Store-Name")}
-                            className={`${
-                              inValidEditName
+                            className={`${inValidEditName
                                 ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 mb-6"
                                 : "mb-6"
-                            }`}
+                              }`}
                             maxLength={20}
                             onChange={(e) => {
                               // const { value } = e.target;
