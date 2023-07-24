@@ -53,7 +53,7 @@ const UserProfile = () => {
           </Content>
         }
       />
-      <Content className="mt-[10rem] !min-h-screen !p-6">
+      <Content className="mt-[10rem]  !p-6">
         {isLoading ? (
           <Content className="bg-white">
             <Skeleton
