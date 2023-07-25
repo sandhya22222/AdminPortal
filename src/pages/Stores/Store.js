@@ -668,7 +668,7 @@ const Stores = () => {
       //     autoClose: 10000,
       //   });
       // }
-      const userRegex = /^[a-zA-Z0-9_ ]{6,15}$/;
+      const userRegex = /^[a-zA-Z0-9_-]{6,15}$/;
       if (storeUserName && userRegex.test(storeUserName.trim()) === false) {
         count--;
         setInValidUserName(true);
@@ -700,8 +700,10 @@ const Stores = () => {
       //   });
       // }
       const pattern =
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,15}$/;
-      if (storePassword && pattern.test(storePassword.trim()) === false) {
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!_%*?&])[A-Za-z\d@$!_%*?&]{6,15}$/;
+      const isValidPassword = pattern.test(storePassword);
+
+      if (storePassword && pattern.test(storePassword) === false) {
         setInValidPassword(true);
         count--;
         toast(`${t("stores:Validation-Error-Message1")}`, {
@@ -801,6 +803,7 @@ const Stores = () => {
     })
       .then((response) => {
         console.log("put response", response.data, storeApiData);
+        setIsUpLoading(false);
         let copyofStoreAPIData = [...storeApiData];
         copyofStoreAPIData.forEach((obj) => {
           if (obj.id === response.data.id) {
@@ -808,7 +811,6 @@ const Stores = () => {
           }
         });
         setStoreApiData(copyofStoreAPIData);
-        setIsUpLoading(false);
         setServerStoreName(response.data.name);
         onClose();
         if (response.status === 200 || response.status === 201) {
@@ -1031,7 +1033,7 @@ const Stores = () => {
                           </Col>
                         </Row>
                         <Spin
-                          tip={t("stores:Please-wait!")}
+                          tip={t("stores:Please-wait")}
                           size="large"
                           spinning={isUpLoading}
                         >
@@ -1163,6 +1165,10 @@ const Stores = () => {
                                 setStorePassword(e.target.value);
                               }
                             }}
+                            onBlur={() => {
+                              const trimmed = storePassword.trim();
+                              setStorePassword(trimmed);
+                            }}
                           />
                           <Button
                             className={
@@ -1192,7 +1198,7 @@ const Stores = () => {
                           </Col>
                         </Row>
                         <Spin
-                          tip={t("stores:Please-wait!")}
+                          tip={t("stores:Please-wait")}
                           size="large"
                           spinning={isUpLoading}
                         >
