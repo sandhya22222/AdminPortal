@@ -52,6 +52,7 @@ const Dashboard = () => {
     if (auth.isAuthenticated) {
       getDashBoardData();
     }
+    window.scrollTo(0, 0);
   }, []);
 
   const getDashBoardData = () => {
