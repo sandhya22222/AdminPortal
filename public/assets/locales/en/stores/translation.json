@@ -1,6 +1,6 @@
 {
     "Confirm-Store-Deletion":"Confirm Store Deletion",
-    "Store-Deletion-Confirmation-Message":"Are you sure you want to delete the store? This action cannot be undone",
+    "Store-Deletion-Confirmation-Message":"Are you sure you want to delete the store? This action cannot be undone.",
     "Stores":"Stores",
     "Add-Store":"Add Store",
     "Edit-Store":"Edit Store",
@@ -15,7 +15,7 @@
     "Password":"Password",
     "Enter-Password":"Enter Password",
     "Note":"Note",
-    "Please-wait!":"Please wait!",
+    "Please-wait":"Please wait!",
     "Edit-Store-Description":" Store administrator's details cannot be edited. You are permitted to only rename your store",
     "Store-deleted-successfully":"Store deleted successfully",
     "Please-enter-the-store-name":"Please enter the store name",
