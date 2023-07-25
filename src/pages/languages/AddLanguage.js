@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
+import validator from "validator";
 import {
   Layout,
   Row,
@@ -91,7 +92,11 @@ const AddLanguage = () => {
   };
 
   const handleNativeNameChange = (e) => {
-    setNativeName(e.target.value);
+    if (e.target.value !== "" && validator.isAlpha(e.target.value)) {
+      setNativeName(e.target.value);
+    } else if (e.target.value === "") {
+      setNativeName(e.target.value);
+    }
   };
 
   const handleScriptDirectionChange = (value) => {
@@ -203,8 +208,16 @@ const AddLanguage = () => {
 
   const validateLanguageFieldEmptyOrNot = () => {
     let validValues = 2;
-    // var pattern = /^[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~\d]*$/g;
-    if (language.trim() === "") {
+    if (language.trim() === "" && languageCode.trim() === "") {
+      setIsLanguageFieldEmpty(true);
+      setIsLanguageCodeFieldEmpty(true);
+      validValues--;
+      toast("Please enter the values for the mandatory field", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+        autoClose: 10000,
+      });
+    } else if (language.trim() === "" && languageCode.trim() !== "") {
       setIsLanguageFieldEmpty(true);
       validValues--;
       toast("Please enter the language name", {
@@ -213,17 +226,19 @@ const AddLanguage = () => {
         type: "error",
       });
     }
-    const languageReg = /^[a-zA-Z]{4,15}$/;
-    if (language.trim() && languageReg.test(language.trim()) === false) {
+    // const languageReg = /^[a-zA-Z]{4,15}$/;
+    else if (
+      (language.trim() && validator.isAlpha(language) === false) ||
+      validator.isLength(language.trim(), { min: 4, max: 15 }) === false
+    ) {
       validValues--;
       setIsLanguageFieldEmpty(true);
-      toast("Language name must contain minimum of 4 characters", {
+      toast("Language must contain minimum of 4 , maximum of 15 characters", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
       });
-    }
-    if (languageCode.trim() === "") {
+    } else if (languageCode.trim() === "" && language.trim() !== "") {
       setIsLanguageCodeFieldEmpty(true);
       validValues--;
       toast("Please enter the language code", {
@@ -231,35 +246,33 @@ const AddLanguage = () => {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
-    }
-    const userRegex = /^[a-zA-Z]{2,3}$/;
-    if (languageCode.trim() && userRegex.test(languageCode.trim()) === false) {
+    } else if (
+      (languageCode.trim() &&
+        validator.isAlpha(languageCode.trim()) === false) ||
+      validator.isLength(languageCode.trim(), { min: 2, max: 3 }) === false
+    ) {
       validValues--;
-
       setIsLanguageCodeFieldEmpty(true);
-      toast("Language code must contain minimum of 2 characters", {
+      toast(
+        "Language code must contain minimum of 2, maximum of 3 characters",
+        {
+          position: toast.POSITION.TOP_RIGHT,
+          type: "error",
+          autoClose: 10000,
+        }
+      );
+    } else if (
+      (nativeName.trim() && validator.isAlpha(nativeName.trim()) === false) ||
+      validator.isLength(nativeName.trim(), { min: 4, max: 20 }) === false
+    ) {
+      setIsNativeFieldEmpty(true);
+      validValues--;
+      toast("Native name must contain minimum of 4, maximum of 20 characters", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
       });
     }
-    if (nativeName.trim().length > 0 && nativeName.trim().length < 4) {
-      setIsNativeFieldEmpty(true);
-      toast("Native name must contain minimum of 4 characters", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
-    } else setIsNativeFieldEmpty(false);
-    // if (regex === "") {
-    //   setIsRegexFieldEmpty(true);
-    //   // validValues -= 1;
-    //   toast("Please Enter Language Regex", {
-    //     autoClose: 5000,
-    //     position: toast.POSITION.TOP_RIGHT,
-    //     type: "error",
-    //   });
-    // }
     if (validValues === 2) {
       saveLanguageAPI();
     }
@@ -467,6 +480,7 @@ const AddLanguage = () => {
                       <Input
                         placeholder="Enter Language Name"
                         value={language}
+                        minLength={4}
                         maxLength={15}
                         className={`${
                           isLanguageFieldEmpty
@@ -474,10 +488,19 @@ const AddLanguage = () => {
                             : ""
                         }`}
                         onChange={(e) => {
+                          if (
+                            e.target.value !== "" &&
+                            validator.isAlpha(e.target.value)
+                          ) {
+                            setLanguage(e.target.value);
+                            setNativeName(e.target.value);
+                            setOnChangeValues(true);
+                          } else if (e.target.value === "") {
+                            setLanguage(e.target.value);
+                            setNativeName(e.target.value);
+                            setOnChangeValues(true);
+                          }
                           setIsLanguageFieldEmpty(false);
-                          setLanguage(e.target.value);
-                          setNativeName(e.target.value);
-                          setOnChangeValues(true);
                         }}
                         // pattern="^[A-Za-z0-9]+$"
                         // rules={[
@@ -511,9 +534,17 @@ const AddLanguage = () => {
                         //   handleLanguageCodeChange(e);
                         // }}
                         onChange={(e) => {
+                          if (
+                            e.target.value !== "" &&
+                            validator.isAlpha(e.target.value)
+                          ) {
+                            setLanguageCode(e.target.value);
+                            setOnChangeValues(true);
+                          } else if (e.target.value === "") {
+                            setLanguageCode(e.target.value);
+                            setOnChangeValues(true);
+                          }
                           setIsLanguageCodeFieldEmpty(false);
-                          setLanguageCode(e.target.value);
-                          setOnChangeValues(true);
                         }}
                         // pattern="^[A-Za-z0-9]+$"
                       />
@@ -551,6 +582,8 @@ const AddLanguage = () => {
                       <Input
                         placeholder="Enter Native Name"
                         value={nativeName}
+                        minLength={4}
+                        maxLength={20}
                         onChange={(e) => {
                           handleNativeNameChange(e);
                           setIsNativeFieldEmpty(false);

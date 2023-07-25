@@ -206,6 +206,7 @@ const Language = () => {
       title: "Language",
       dataIndex: "language",
       key: "language",
+      width: "20%",
       // sorter: (name1, name2) => name1.language.localeCompare(name2.language),
       // sortDirections: ["descend", "ascend"],
       // showSorterTooltip: false,
@@ -218,6 +219,7 @@ const Language = () => {
       title: "Language Code",
       dataIndex: "language_code",
       key: "language_code",
+      width: "20%",
       render: (text, record) => {
         return <>{record.language_code}</>;
       },
@@ -226,6 +228,7 @@ const Language = () => {
       title: "Script Direction",
       dataIndex: "writing_script_direction",
       key: "writing_script_direction",
+      width: "20%",
       render: (text, record) => {
         return <>{record.writing_script_direction}</>;
       },
@@ -234,7 +237,9 @@ const Language = () => {
       title: "Native Name",
       dataIndex: "native_name",
       key: "native_name",
+      width: "20%",
       render: (text, record) => {
+        console.log("first",record.native_name)
         return <>{record.native_name}</>;
       },
     },
@@ -258,6 +263,7 @@ const Language = () => {
       title: "Action",
       dataIndex: "",
       key: "",
+      width: "20%",
       render: (text, record) => {
         return (
           <Col span={20} className="whitespace-nowrap flex align-middle">

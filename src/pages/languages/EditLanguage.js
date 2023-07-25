@@ -2,6 +2,7 @@ import React, { useEffect, useState, useImperativeHandle } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Content } from "antd/lib/layout/layout";
+import validator from "validator";
 import {
   ArrowLeftOutlined,
   InboxOutlined,
@@ -56,10 +57,10 @@ const EditLanguage = () => {
   const [languageDetails, setLanguageDetails] = useState({
     language: "",
     language_code: "",
-    native_name: "",
+    native_name: null,
     writing_script_direction: "",
     lang_support_docs: null,
-    lang_file_name: "",
+    lang_file_name: null,
     language_regex: "",
     islanguageDetailsEdited: false,
   });
@@ -212,8 +213,6 @@ const EditLanguage = () => {
     );
   }, []);
 
-  console.log("documentPath", documentPath);
-  console.log("responseLanguagedata", responseLanguageData);
   const validateLanguageFieldEmptyOrNot = () => {
     // if (
     //   languageDetails.language !== "" &&
@@ -229,20 +228,81 @@ const EditLanguage = () => {
     //   languageDetails.language_code === "" ||
     //   languageDetails.language_regex === regexName
     // ) {
-    if (languageDetails.language === "") {
+    if (
+      languageDetails.language.trim() === "" &&
+      languageDetails.language_code.trim() === ""
+    ) {
+      setIsLanguageFieldEmpty(true);
+      setIsLanguageCodeFieldEmpty(true);
+      toast("Please enter the values for the mandatory field", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+        autoClose: 10000,
+      });
+    } else if (
+      languageDetails.language === "" &&
+      languageDetails.language_code !== ""
+    ) {
       setIsLanguageFieldEmpty(true);
       toast("Please enter the language name ", {
         autoClose: 10000,
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
-    }
-    if (languageDetails.language_code === "") {
+    } else if (
+      languageDetails.language_code === "" &&
+      languageDetails.language !== ""
+    ) {
       setIsLanguageCodeFieldEmpty(true);
       toast("Please enter the language code", {
         autoClose: 10000,
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
+      });
+    } else if (
+      (languageDetails.language.trim() &&
+        validator.isAlpha(languageDetails.language) === false) ||
+      validator.isLength(languageDetails.language.trim(), {
+        min: 4,
+        max: 15,
+      }) === false
+    ) {
+      setIsLanguageFieldEmpty(true);
+      toast("Language must contain minimum of 4 , maximum of 15 characters", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+        autoClose: 10000,
+      });
+    } else if (
+      (languageDetails.language_code.trim() &&
+        validator.isAlpha(languageDetails.language_code) === false) ||
+      validator.isLength(languageDetails.language_code.trim(), {
+        min: 2,
+        max: 3,
+      }) === false
+    ) {
+      setIsLanguageCodeFieldEmpty(true);
+      toast(
+        "Language code must contain minimum of 4 , maximum of 20 characters",
+        {
+          position: toast.POSITION.TOP_RIGHT,
+          type: "error",
+          autoClose: 10000,
+        }
+      );
+    } else if (
+      (languageDetails.native_name.trim() &&
+        validator.isAlpha(languageDetails.native_name.trim()) === false) ||
+      validator.isLength(languageDetails.native_name, {
+        min: 4,
+        max: 20,
+      }) === false
+    ) {
+      setIsNativeFieldEmpty(true);
+      toast("Native name must contain minimum of 4, maximum of 20 characters", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+        autoClose: 10000,
       });
     } else if (
       newlyUploadedFile === 0 &&
@@ -296,16 +356,24 @@ const EditLanguage = () => {
     const temp = {};
     temp["language"] = languageDetails.language;
     temp["language_code"] = languageDetails.language_code;
-    temp["language_regex"] = languageDetails.language_regex;
-    temp["native_name"] = languageDetails.native_name;
-    temp["writing_script_direction"] = languageDetails.writing_script_direction;
-    if (
-      languageDetails.lang_support_docs !== null
-      // &&
-      // typeof languageDetails.lang_support_docs === "object"
-    ) {
-      temp["lang_support_docs_path"] = languageDetails.lang_support_docs;
+    if (languageDetails.language_regex !== "") {
+      temp["language_regex"] = languageDetails.language_regex;
     }
+    if (languageDetails.native_name !== null) {
+      temp["native_name"] = languageDetails.native_name;
+    }
+    if (languageDetails.writing_script_direction !== "") {
+      temp["writing_script_direction"] =
+        languageDetails.writing_script_direction;
+    }
+    // temp["lang_support_docs"] = languageDetails.lang_file_name;
+    // if (
+    //   languageDetails.lang_support_docs !== null
+    //   // &&
+    //   // typeof languageDetails.lang_support_docs === "object"
+    // ) {
+    //   temp["lang_support_docs_path"] = languageDetails.lang_support_docs;
+    // }
 
     console.log("PutObject----->", temp);
     // enabling spinner
@@ -639,7 +707,7 @@ const EditLanguage = () => {
                                 const regex = /^[a-zA-Z]*$/;
                                 if (
                                   e.target.value !== "" &&
-                                  testValueByRegexPattern(regex, e.target.value)
+                                  validator.isAlpha(e.target.value)
                                 ) {
                                   languageHandler("language", e.target.value);
                                   setOnChangeValues(true);
@@ -673,7 +741,7 @@ const EditLanguage = () => {
                                 const regex = /^[a-zA-Z]*$/;
                                 if (
                                   e.target.value !== "" &&
-                                  testValueByRegexPattern(regex, e.target.value)
+                                  validator.isAlpha(e.target.value)
                                 ) {
                                   languageHandler(
                                     "language_code",
@@ -726,31 +794,32 @@ const EditLanguage = () => {
                             <Input
                               placeholder="Enter Native Name"
                               value={languageDetails.native_name}
-                              // className={`${
-                              //   isNativeFieldEmpty
-                              //     ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
-                              //     : ""
-                              // }`}
+                              className={`${
+                                isNativeFieldEmpty
+                                  ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
+                                  : ""
+                              }`}
                               onChange={(e) => {
-                                // if (languageDetails.native_name.length < 4) {
-                                //   setIsNativeFieldEmpty(true);
-                                //   toast(
-                                //     "Native name must contain minimum of 2 characters",
-                                //     {
-                                //       position: toast.POSITION.TOP_RIGHT,
-                                //       type: "error",
-                                //       autoClose: 10000,
-                                //     }
-                                //   );
-                                // } else {
-                                // setIsNativeFieldEmpty(false);
-                                languageHandler("native_name", e.target.value);
-                                setOnChangeValues(true);
-                                // }
+                                // languageHandler("native_name", e.target.value);
+                                // setOnChangeValues(true);
+                                if (
+                                  e.target.value !== "" &&
+                                  validator.isAlpha(e.target.value)
+                                ) {
+                                  languageHandler(
+                                    "native_name",
+                                    e.target.value
+                                  );
+                                  setIsNativeFieldEmpty(false);
+                                  setOnChangeValues(true);
+                                } else if (e.target.value === "") {
+                                  languageHandler(
+                                    "native_name",
+                                    e.target.value
+                                  );
+                                  setOnChangeValues(true);
+                                }
                               }}
-                              // className={
-                              //   "h-10 px-2 py-[5px] border-[1px] border-solid border-[#C6C6C6] rounded-sm"
-                              // }
                             />
                           </Content>
                         </Col>
