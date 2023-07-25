@@ -32,6 +32,8 @@ const { Dragger } = Upload;
 const languageAPI = process.env.REACT_APP_LANGUAGE_API;
 const languageDocumentAPI = process.env.REACT_APP_LANGUAGE_DOCUMENT_API;
 const languageDeleteAPI = process.env.REACT_APP_LANGUAGE_DOCUMENT_UPDATE_API;
+const titleMinLength = process.env.REACT_APP_TITLE_MIN_LENGTH;
+const titleMaxLength = process.env.REACT_APP_TITLE_MAX_LENGTH;
 const AddLanguage = () => {
   const authorizationHeader = useAuthorization();
 
@@ -92,7 +94,11 @@ const AddLanguage = () => {
   };
 
   const handleNativeNameChange = (e) => {
-    if (e.target.value !== "" && validator.isAlpha(e.target.value)) {
+    const alphaWithSpacesRegex = /^[A-Za-z\s]+$/;
+    if (
+      e.target.value !== "" &&
+      validator.matches(e.target.value, alphaWithSpacesRegex)
+    ) {
       setNativeName(e.target.value);
     } else if (e.target.value === "") {
       setNativeName(e.target.value);
@@ -206,6 +212,10 @@ const AddLanguage = () => {
       });
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const validateLanguageFieldEmptyOrNot = () => {
     let validValues = 2;
     if (language.trim() === "" && languageCode.trim() === "") {
@@ -228,16 +238,22 @@ const AddLanguage = () => {
     }
     // const languageReg = /^[a-zA-Z]{4,15}$/;
     else if (
-      (language.trim() && validator.isAlpha(language) === false) ||
-      validator.isLength(language.trim(), { min: 4, max: 15 }) === false
+      // (language.trim() && validator.isAlpha(language) === false) ||
+      validator.isLength(language.trim(), {
+        min: titleMinLength,
+        max: titleMaxLength,
+      }) === false
     ) {
       validValues--;
       setIsLanguageFieldEmpty(true);
-      toast("Language must contain minimum of 4 , maximum of 15 characters", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      toast(
+        `Language must contain minimum of ${titleMinLength}, maximum of ${titleMaxLength} characters`,
+        {
+          position: toast.POSITION.TOP_RIGHT,
+          type: "error",
+          autoClose: 10000,
+        }
+      );
     } else if (languageCode.trim() === "" && language.trim() !== "") {
       setIsLanguageCodeFieldEmpty(true);
       validValues--;
@@ -249,12 +265,15 @@ const AddLanguage = () => {
     } else if (
       (languageCode.trim() &&
         validator.isAlpha(languageCode.trim()) === false) ||
-      validator.isLength(languageCode.trim(), { min: 2, max: 3 }) === false
+      validator.isLength(languageCode.trim(), {
+        min: titleMinLength,
+        max: titleMaxLength,
+      }) === false
     ) {
       validValues--;
       setIsLanguageCodeFieldEmpty(true);
       toast(
-        "Language code must contain minimum of 2, maximum of 3 characters",
+        `Language code must contain minimum of ${titleMinLength}, maximum of ${titleMaxLength} characters`,
         {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
@@ -262,16 +281,22 @@ const AddLanguage = () => {
         }
       );
     } else if (
-      (nativeName.trim() && validator.isAlpha(nativeName.trim()) === false) ||
-      validator.isLength(nativeName.trim(), { min: 4, max: 20 }) === false
+      // (nativeName.trim() && validator.isAlpha(nativeName.trim()) === false) ||
+      validator.isLength(nativeName.trim(), {
+        min: titleMinLength,
+        max: titleMaxLength,
+      }) === false
     ) {
       setIsNativeFieldEmpty(true);
       validValues--;
-      toast("Native name must contain minimum of 4, maximum of 20 characters", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      toast(
+        `Native name must contain minimum of ${titleMinLength}, maximum of ${titleMaxLength} characters`,
+        {
+          position: toast.POSITION.TOP_RIGHT,
+          type: "error",
+          autoClose: 10000,
+        }
+      );
     }
     if (validValues === 2) {
       saveLanguageAPI();
@@ -480,8 +505,8 @@ const AddLanguage = () => {
                       <Input
                         placeholder="Enter Language Name"
                         value={language}
-                        minLength={4}
-                        maxLength={15}
+                        minLength={titleMinLength}
+                        maxLength={titleMaxLength}
                         className={`${
                           isLanguageFieldEmpty
                             ? "border-red-400 !border-[0.5px] border-solid focus:border-red-400 hover:border-red-400"
@@ -524,7 +549,8 @@ const AddLanguage = () => {
                       <Input
                         placeholder="Enter Language Code"
                         value={languageCode}
-                        maxLength={3}
+                        minLength={titleMinLength}
+                        maxLength={titleMaxLength}
                         className={`${
                           isLanguageCodeFieldEmpty
                             ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
@@ -562,7 +588,6 @@ const AddLanguage = () => {
                       <Input
                         placeholder="Enter Language Regex"
                         value={regex}
-                        maxLength={128}
                         defaultValue="^[\s\S]*"
                         // className={`${
                         //   isRegexFieldEmpty
@@ -582,8 +607,8 @@ const AddLanguage = () => {
                       <Input
                         placeholder="Enter Native Name"
                         value={nativeName}
-                        minLength={4}
-                        maxLength={20}
+                        minLength={titleMinLength}
+                        maxLength={titleMaxLength}
                         onChange={(e) => {
                           handleNativeNameChange(e);
                           setIsNativeFieldEmpty(false);

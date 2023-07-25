@@ -20,6 +20,7 @@ import {
   Typography,
 } from "antd";
 import React, { useEffect, useRef, useState } from "react";
+import validator from "validator";
 import {
   MdInfo,
   MdStore,
@@ -57,7 +58,12 @@ const { Title, Text } = Typography;
 //! Get all required details from .env file
 const storeAPI = process.env.REACT_APP_STORE_API;
 const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE);
-//! tab data
+const titleMinLength = process.env.REACT_APP_TITLE_MIN_LENGTH;
+const titleMaxLength = process.env.REACT_APP_TITLE_MAX_LENGTH;
+const emailMinLength = process.env.REACT_APP_DESCRIPTION_MIN_LENGTH;
+const emailMaxLength = process.env.REACT_APP_DESCRIPTION_MAX_LENGTH;
+const passwordMinLength = process.env.REACT_APP_PASSWORD_MIN_LENGTH;
+const passwordMaxLength = process.env.REACT_APP_PASSWORD_MAX_LENGTH;
 
 const Stores = () => {
   const authorizationHeader = useAuthorization();
@@ -261,11 +267,19 @@ const Stores = () => {
       dataIndex: "name",
       key: "name",
       width: "30%",
+      ellipsis: true,
       // sorter: (name1, name2) => name1.name.localeCompare(name2.name),
       // sortDirections: ["descend", "ascend"],
       // showSorterTooltip: true,
       render: (text, record) => {
-        return <>{record.name}</>;
+        return (
+          <Tooltip title={record.name}>
+            <Text className="max-w-xs" ellipsis={{ tooltip: record.name }}>
+              {record.name}
+            </Text>
+          </Tooltip>
+        );
+        // <>{record.name}</>;
       },
       // ...getColumnSearchProps("name"),
     },
@@ -621,27 +635,52 @@ const Stores = () => {
       //     autoClose: 10000,
       //   });
       // }
-      const patternName = /^[A-Za-z]+$/;
-      if (name && patternName.test(name.trim()) === false) {
+      // const patternName = /^[A-Za-z]+$/;
+      if (
+        name &&
+        validator.isLength(name.trim(), {
+          min: titleMinLength,
+          max: titleMaxLength,
+        }) === false
+      ) {
         setInValidName(true);
         count--;
-        toast(`${t("stores:Please-enter-the-valid-store-name")}`, {
+        toast(
+          `Store name must contain minimum of ${titleMinLength}, maximum of ${titleMaxLength} characters`,
+          {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+            autoClose: 10000,
+          }
+        );
+      }
+
+      if (
+        (storeEmail && validator.isEmail(storeEmail) === false) ||
+        validator.isLength(storeEmail.trim(), {
+          min: emailMinLength,
+          max: emailMaxLength,
+        }) === false
+      ) {
+        setInValidEmail(true);
+        count--;
+        toast("Please enter valid email", {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
           autoClose: 10000,
         });
       }
 
-      const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-      if (storeEmail && regex.test(storeEmail.trim()) === false) {
-        count--;
-        setInValidEmail(true);
-        toast(`${t("stores:Please-enter-the-valid-email-address")}`, {
-          position: toast.POSITION.TOP_RIGHT,
-          type: "error",
-          autoClose: 10000,
-        });
-      }
+      // const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{12,50}$/i;
+      // if (storeEmail && regex.test(storeEmail.trim()) === false) {
+      //   count--;
+      //   setInValidEmail(true);
+      //   toast(`${t("stores:Please-enter-the-valid-email-address")}`, {
+      //     position: toast.POSITION.TOP_RIGHT,
+      //     type: "error",
+      //     autoClose: 10000,
+      //   });
+      // }
       // if (
       //   storeEmail.trim() === "" ||
       //   storeEmail.trim() === null ||
@@ -668,16 +707,56 @@ const Stores = () => {
       //     autoClose: 10000,
       //   });
       // }
-      const userRegex = /^[a-zA-Z0-9_-]{6,15}$/;
-      if (storeUserName && userRegex.test(storeUserName.trim()) === false) {
-        count--;
+      // /^[a-zA-Z0-9_ ]{6,15}$/
+      // const userRegex = /^[A-Za-z0-9_\- ]+$/;
+      // if (storeUserName && userRegex.test(storeUserName.trim()) === false) {
+      //   count--;
+      //   setInValidUserName(true);
+      //   toast(`${t("stores:Validation-Error-Message2")}`, {
+      //     position: toast.POSITION.TOP_RIGHT,
+      //     type: "error",
+      //     autoClose: 10000,
+      //   });
+      // }
+
+      if (
+        storeUserName &&
+        validator.isLength(storeUserName.trim(), {
+          min: titleMinLength,
+          max: titleMaxLength,
+        }) === false
+      ) {
         setInValidUserName(true);
-        toast(`${t("stores:Validation-Error-Message2")}`, {
-          position: toast.POSITION.TOP_RIGHT,
-          type: "error",
-          autoClose: 10000,
-        });
+        count--;
+        toast(
+          `Username must contain minimum of ${titleMinLength}, maximum of ${titleMaxLength} characters`,
+          {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+            autoClose: 10000,
+          }
+        );
       }
+
+      // if (
+      //   storePassword &&
+      //   validator.isLength(storePassword.trim(), {
+      //     min: passwordMinLength,
+      //     max: passwordMaxLength,
+      //   }) === false
+      // ) {
+      //   setInValidPassword(true);
+      //   count--;
+      //   toast(
+      //     `Password must contain minimum of ${passwordMinLength}, maximum of ${passwordMaxLength} characters`,
+      //     {
+      //       position: toast.POSITION.TOP_RIGHT,
+      //       type: "error",
+      //       autoClose: 10000,
+      //     }
+      //   );
+      // }
+
       // if (storeUserName && storeUserName.length < 6) {
       //   setInValidUserName(true);
       //   count--;
@@ -873,6 +952,23 @@ const Stores = () => {
         type: "error",
         autoClose: 10000,
       });
+    } else if (
+      editName &&
+      validator.isLength(editName.trim(), {
+        min: titleMinLength,
+        max: titleMaxLength,
+      }) === false
+    ) {
+      setInValidEditName(true);
+      count--;
+      toast(
+        `Store name must contain minimum of ${titleMinLength}, maximum of ${titleMaxLength} characters`,
+        {
+          position: toast.POSITION.TOP_RIGHT,
+          type: "error",
+          autoClose: 10000,
+        }
+      );
     } else if (editName === serverStoreName) {
       toast(`${t("common:No-Changes-Detected")}`, {
         position: toast.POSITION.TOP_RIGHT,
@@ -1045,34 +1141,41 @@ const Stores = () => {
                           <Input
                             placeholder={t("stores:Enter-Store-Name")}
                             value={name}
-                            maxLength={20}
+                            minLength={titleMinLength}
+                            maxLength={titleMaxLength}
                             className={`${
                               inValidName
                                 ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-[0.5rem]"
                                 : "mb-[0.5rem]"
                             }`}
                             onChange={(e) => {
-                              const patternName = /^[A-Za-z]+$/;
-                              if (patternName.test(e.target.value) === false) {
-                                setShowStoreErrorMessage(true);
+                              const alphaWithSpacesRegex = /^[A-Za-z\s]+$/;
+                              if (
+                                e.target.value !== "" &&
+                                validator.matches(
+                                  e.target.value,
+                                  alphaWithSpacesRegex
+                                )
+                              ) {
+                                // setShowStoreErrorMessage(true);
                                 setName(e.target.value);
                                 setOnChangeValues(true);
-                              } else {
+                              } else if (e.target.value === "") {
                                 setName(e.target.value);
-                                setShowStoreErrorMessage(false);
+                                // setShowStoreErrorMessage(false);
                                 setOnChangeValues(true);
                               }
                               setInValidName(false);
                             }}
                           />
 
-                          {showStoreErrorMessage === true ? (
+                          {/* {showStoreErrorMessage === true ? (
                             <p className="text-red-600 text-sm">
                               {t(
                                 "stores:Please-enter-alphabetic-characters-only"
                               )}
                             </p>
-                          ) : null}
+                          ) : null} */}
 
                           <Divider orientation="left" orientationMargin="0">
                             {t("stores:Store-Administrator-Details")}
@@ -1084,7 +1187,8 @@ const Stores = () => {
                           <Input
                             placeholder={t("stores:Enter-Email")}
                             value={storeEmail}
-                            maxLength={50}
+                            minLength={emailMinLength}
+                            maxLength={emailMaxLength}
                             className={`${
                               inValidEmail
                                 ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-6"
@@ -1103,9 +1207,9 @@ const Stores = () => {
                           <Input
                             placeholder={t("stores:Enter-Username")}
                             value={storeUserName}
-                            maxLength={15}
-                            minLength={6}
-                            suffix={`${storeUserName.length}/15`}
+                            minLength={titleMinLength}
+                            maxLength={titleMaxLength}
+                            // suffix={`${storeUserName.length}/15`}
                             className={`${
                               inValidUserName
                                 ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-6"
@@ -1115,21 +1219,19 @@ const Stores = () => {
                               <UserOutlined className="site-form-item-icon" />
                             }
                             onChange={(e) => {
-                              // const { value } = e.target;
-                              // const regex = /^[a-zA-Z0-9_ ]*$/; // only allow letters and numbers
-                              // if (regex.test(value)) {
-                              setStoreUserName(e.target.value);
-                              setInValidUserName(false);
+                              const regex = /^[A-Za-z0-9_\- ]+$/;
+                              if (
+                                e.target.value !== "" &&
+                                validator.matches(e.target.value, regex)
+                              ) {
+                                setInValidUserName(false);
+                                setStoreUserName(e.target.value);
+                                setOnChangeValues(true);
+                              } else if (e.target.value === "") {
+                                setStoreUserName(e.target.value);
+                                setOnChangeValues(true);
+                              }
                               setOnChangeValues(true);
-                              // } else {
-                              //   toast(
-                              //     "Please enter only alphabets, numbers, underscore, and hyphen.",
-                              //     {
-                              //       position: toast.POSITION.TOP_RIGHT,
-                              //       type: "warning",
-                              //     }
-                              //   );
-                              // }
                             }}
                           />
                           <span className="text-red-600 text-sm">*</span>
@@ -1139,7 +1241,8 @@ const Stores = () => {
                           <Input.Password
                             placeholder={t("stores:Enter-Password")}
                             value={storePassword}
-                            maxLength={15}
+                            minLength={passwordMinLength}
+                            maxLength={passwordMaxLength}
                             className={`${
                               inValidPassword
                                 ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-10"
@@ -1215,16 +1318,31 @@ const Stores = () => {
                                 ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 mb-6"
                                 : "mb-6"
                             }`}
-                            maxLength={20}
+                            minLength={titleMinLength}
+                            maxLength={titleMaxLength}
                             onChange={(e) => {
                               // const { value } = e.target;
                               // const regex = /^[a-zA-Z0-9]*$/; // only allow letters and numbers
                               // if (regex.test(value)) {
                               //   setEditName(e.target.value);
                               // }
-                              setEditName(e.target.value);
-                              setInValidEditName(false);
-                              setOnChangeEditValues(true);
+                              const alphaWithSpacesRegex = /^[A-Za-z\s]+$/;
+                              if (
+                                e.target.value !== "" &&
+                                validator.matches(
+                                  e.target.value,
+                                  alphaWithSpacesRegex
+                                )
+                              ) {
+                                // setShowStoreErrorMessage(true);
+                                setEditName(e.target.value);
+                                setOnChangeEditValues(true);
+                                setInValidEditName(false);
+                              } else if (e.target.value === "") {
+                                setEditName(e.target.value);
+                                // setShowStoreErrorMessage(false);
+                                setOnChangeEditValues(true);
+                              }
                             }}
                           />
                           <Divider orientation="left" orientationMargin="0">

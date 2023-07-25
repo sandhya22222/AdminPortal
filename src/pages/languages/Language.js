@@ -44,7 +44,7 @@ import useAuthorization from "../../hooks/useAuthorization";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 const { Content } = Layout;
 
 const languageAPI = process.env.REACT_APP_LANGUAGE_API;
@@ -206,12 +206,25 @@ const Language = () => {
       title: "Language",
       dataIndex: "language",
       key: "language",
-      width: "20%",
+      width: "25%",
+      ellipsis: true,
       // sorter: (name1, name2) => name1.language.localeCompare(name2.language),
       // sortDirections: ["descend", "ascend"],
       // showSorterTooltip: false,
       render: (text, record) => {
-        return <>{record.language}</>;
+        return (
+          <>
+            <Tooltip title={record.language}>
+              <Text
+                className="max-w-xs"
+                ellipsis={{ tooltip: record.language }}
+              >
+                {record.language}
+              </Text>
+            </Tooltip>
+          </>
+        );
+        // <>{record.language}</>;
       },
       // ...getColumnSearchProps("language"),
     },
@@ -219,16 +232,28 @@ const Language = () => {
       title: "Language Code",
       dataIndex: "language_code",
       key: "language_code",
-      width: "20%",
+      width: "23%",
       render: (text, record) => {
-        return <>{record.language_code}</>;
+        return (
+          <>
+            <Tooltip title={record.language_code}>
+              <Text
+                className="max-w-xs"
+                ellipsis={{ tooltip: record.language_code }}
+              >
+                {record.language_code}
+              </Text>
+            </Tooltip>
+          </>
+        );
+        //  <>{record.language_code}</>;
       },
     },
     {
       title: "Script Direction",
       dataIndex: "writing_script_direction",
       key: "writing_script_direction",
-      width: "20%",
+      width: "15%",
       render: (text, record) => {
         return <>{record.writing_script_direction}</>;
       },
@@ -237,10 +262,22 @@ const Language = () => {
       title: "Native Name",
       dataIndex: "native_name",
       key: "native_name",
-      width: "20%",
+      width: "25%",
+      ellipsis: true,
       render: (text, record) => {
-        console.log("first",record.native_name)
-        return <>{record.native_name}</>;
+        return (
+          // {record.native_name}
+          <>
+            <Tooltip title={record.native_name}>
+              <Text
+                className="max-w-xs"
+                ellipsis={{ tooltip: record.native_name }}
+              >
+                {record.native_name}
+              </Text>
+            </Tooltip>
+          </>
+        );
       },
     },
     // {
@@ -263,7 +300,7 @@ const Language = () => {
       title: "Action",
       dataIndex: "",
       key: "",
-      width: "20%",
+      width: "12%",
       render: (text, record) => {
         return (
           <Col span={20} className="whitespace-nowrap flex align-middle">
@@ -467,8 +504,11 @@ const Language = () => {
         ? parseInt(searchParams.get("limit"))
         : pageLimit
     );
-    window.scrollTo(0, 0);
   }, [searchParams]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <Content className="">

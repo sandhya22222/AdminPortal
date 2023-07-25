@@ -1605,9 +1605,9 @@ const StoreSettings = () => {
                 maxLength={3}
                 onChange={(e) => {
                   const regex = /^[A-Za-z $£€¥₹]*$/;
-                  const inputValue = e.target.value.replace(/\!/g, ''); 
-                
-                  if (regex.test(inputValue) || inputValue === '') { 
+                  const inputValue = e.target.value.replace(/\!/g, "");
+
+                  if (regex.test(inputValue) || inputValue === "") {
                     setCurrencySymbol(inputValue);
                     setOnChangeValues(true);
                     setInValidCurrencySymbol(false);
@@ -1618,10 +1618,6 @@ const StoreSettings = () => {
                     setInValidCurrencySymbol(true);
                   }
                 }}
-                
-                
-                
-                
               />
             </Col>
             <Col span={4} className="mx-2.5">
@@ -1717,8 +1713,8 @@ const StoreSettings = () => {
               />
             </Col>
           </Row>
-        
-        {/* <Content className="bg-white mt-2 p-3 ">
+
+          {/* <Content className="bg-white mt-2 p-3 ">
           <label className="text-[20px] mb-2 mt-4 font-bold">Region Code</label>
           <Content className="flex">
             <Input
@@ -1760,88 +1756,64 @@ const StoreSettings = () => {
             </Content>
           </Content>
         </Content> */}
-        <Content className="">
           <Content className="">
-            <Row className="!mb-4">
-              <label className="text-[20px]  mt-2 font-bold select-none">
-                {t("stores:Page-Theme")}
-              </label>
-              <Content className="text-right">
-                <Button className="!text-right" onClick={() => openModal()}>
-                  <EyeOutlined className="!text-center -translate-y-0.5" />{" "}
-                  {t("stores:Preview")}
-                </Button>
-                <StoreModal
-                  isVisible={isModalOpen}
-                  title={`${t("stores:Sample-Preview-Page-For-Store-Front")}`}
-                  width={1000}
-                  cancelCallback={() => closeModal()}
-                  isSpin={false}
-                  className="!h-96"
-                >
-                  <Preview
-                    headerBackgroundColor={headerBackgroundColor}
-                    headerForegroundColor={headerForegroundColor}
-                    footerBackgroundColor={footerBackgroundColor}
-                    footerForegroundColor={footerForegroundColor}
-                    pageBackgroundColor={pageBackgroundColor}
-                    foreGroundColor={foreGroundColor}
-                    buttonPrimaryBackgroundColor={buttonPrimaryBackgroundColor}
-                    buttonSecondaryBackgroundColor={
-                      buttonSecondaryBackgroundColor
-                    }
-                    buttonTeritaryBackgroundColor={
-                      buttonTeritaryBackgroundColor
-                    }
-                    buttonPrimaryForegroundColor={buttonPrimaryForegroundColor}
-                    buttonSecondaryForegroundColor={
-                      buttonSecondaryForegroundColor
-                    }
-                    buttonTeritaryForegroundColor={
-                      buttonTeritaryForegroundColor
-                    }
-                  />
-                </StoreModal>
-              </Content>
-            </Row>
-            <Divider className="!my-4" />
-            <Row className="mt-2">
-             
-              <Col span={8} className="mr-2 ">
-                <label className="text-[13px] mb-2 ml-1 select-none">
-                  {t("stores:Background-Color")}
+            <Content className="">
+              <Row className="!mb-4">
+                <label className="text-[20px]  mt-2 font-bold select-none">
+                  {t("stores:Page-Theme")}
                 </label>
-                <Content className="flex">
-                  <Input
-                    type="color"
-                    value={pageBackgroundColor}
-                    onChange={(e) => {
-                      const patternName = /^#([A-Fa-f0-9]{6})$/;
-                      if (patternName.test(e.target.value) === false) {
-                        let temp = { ...colorCodeValidation };
-                        temp["pageBgColorValidation"] = true;
-                        setColorCodeValidation(temp);
-                        setPageBackgroundColor(e.target.value);
-                        setOnChangeValues(true);
-                      } else {
-                        let temp = { ...colorCodeValidation };
-                        temp["pageBgColorValidation"] = false;
-                        setColorCodeValidation(temp);
-                        setPageBackgroundColor(e.target.value);
-                        setOnChangeValues(true);
+                <Content className="text-right">
+                  <Button className="!text-right" onClick={() => openModal()}>
+                    <EyeOutlined className="!text-center -translate-y-0.5" />{" "}
+                    {t("stores:Preview")}
+                  </Button>
+                  <StoreModal
+                    isVisible={isModalOpen}
+                    title={`${t("stores:Sample-Preview-Page-For-Store-Front")}`}
+                    width={1000}
+                    cancelCallback={() => closeModal()}
+                    isSpin={false}
+                    className="!h-96"
+                  >
+                    <Preview
+                      headerBackgroundColor={headerBackgroundColor}
+                      headerForegroundColor={headerForegroundColor}
+                      footerBackgroundColor={footerBackgroundColor}
+                      footerForegroundColor={footerForegroundColor}
+                      pageBackgroundColor={pageBackgroundColor}
+                      foreGroundColor={foreGroundColor}
+                      buttonPrimaryBackgroundColor={
+                        buttonPrimaryBackgroundColor
                       }
-                      // setPageBackgroundColor(e.target.value);
-                      let temp = { ...copyImageOfStoreSettingsPageTheme };
-                      temp["bg_color"] = e.target.value;
-                      setCopyImageOfStoreSettingsPageTheme(temp);
-                    }}
-                    className="w-9 p-0"
-                  />
-                  <Space.Compact className="ml-2">
+                      buttonSecondaryBackgroundColor={
+                        buttonSecondaryBackgroundColor
+                      }
+                      buttonTeritaryBackgroundColor={
+                        buttonTeritaryBackgroundColor
+                      }
+                      buttonPrimaryForegroundColor={
+                        buttonPrimaryForegroundColor
+                      }
+                      buttonSecondaryForegroundColor={
+                        buttonSecondaryForegroundColor
+                      }
+                      buttonTeritaryForegroundColor={
+                        buttonTeritaryForegroundColor
+                      }
+                    />
+                  </StoreModal>
+                </Content>
+              </Row>
+              <Divider className="!my-4" />
+              <Row className="mt-2">
+                <Col span={8} className="mr-2 ">
+                  <label className="text-[13px] mb-2 ml-1 select-none">
+                    {t("stores:Background-Color")}
+                  </label>
+                  <Content className="flex">
                     <Input
+                      type="color"
                       value={pageBackgroundColor}
-                      maxLength={7}
-                      className="w-[150px]"
                       onChange={(e) => {
                         const patternName = /^#([A-Fa-f0-9]{6})$/;
                         if (patternName.test(e.target.value) === false) {
@@ -1862,19 +1834,49 @@ const StoreSettings = () => {
                         temp["bg_color"] = e.target.value;
                         setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
-                      addonAfter={
-                        <Tooltip
-                          title={t("stores:Reset-to-the-original-value")}
-                        >
-                          <UndoOutlined
-                            onClick={() => {
-                              setPageBackgroundColor(pageBgColor);
-                            }}
-                          />
-                        </Tooltip>
-                      }
+                      className="w-9 p-0"
                     />
-                    {/* <Input
+                    <Space.Compact className="ml-2">
+                      <Input
+                        value={pageBackgroundColor}
+                        maxLength={7}
+                        className="w-[150px]"
+                        onChange={(e) => {
+                          const patternName = /^#([A-Fa-f0-9]{6})$/;
+                          if (patternName.test(e.target.value) === false) {
+                            let temp = { ...colorCodeValidation };
+                            temp["pageBgColorValidation"] = true;
+                            setColorCodeValidation(temp);
+                            setPageBackgroundColor(e.target.value);
+                            setOnChangeValues(true);
+                          } else {
+                            let temp = { ...colorCodeValidation };
+                            temp["pageBgColorValidation"] = false;
+                            setColorCodeValidation(temp);
+                            setPageBackgroundColor(e.target.value);
+                            setOnChangeValues(true);
+                          }
+                          // setPageBackgroundColor(e.target.value);
+                          let temp = { ...copyImageOfStoreSettingsPageTheme };
+                          temp["bg_color"] = e.target.value;
+                          setCopyImageOfStoreSettingsPageTheme(temp);
+                        }}
+                        addonAfter={
+                          <Tooltip
+                            title={t("stores:Reset-to-the-original-value")}
+                          >
+                            <UndoOutlined
+                              onClick={() => {
+                                setPageBackgroundColor(pageBgColor);
+                                let temp = { ...colorCodeValidation };
+                                temp["pageBgColorValidation"] = false;
+                                setColorCodeValidation(temp);
+                              }}
+                            />
+                          </Tooltip>
+                        }
+                      />
+                      {/* <Input
                       addonAfter={
                         <Tooltip title="Reset to the original value">
                           <UndoOutlined
@@ -1887,49 +1889,23 @@ const StoreSettings = () => {
                       defaultValue="100%"
                       className="w-24"
                     /> */}
-                  </Space.Compact>
-                </Content>
-                {colorCodeValidation.pageBgColorValidation === true ? (
-                  <p className="text-red-600 text-sm">
-                    Please enter valid Hexadecimal Color code <br />
-                    ex. #ffffff for white, #000000 for black
-                  </p>
-                ) : null}
-              </Col>
-              <Col span={8} className="ml-1">
-                <label className="text-[13px] mb-2 ml-1 select-none">
-                  {t("stores:Text-Color")}
-                </label>
-                <Content className="flex">
-                  <Input
-                    type="color"
-                    value={foreGroundColor}
-                    onChange={(e) => {
-                      const patternName = /^#([A-Fa-f0-9]{6})$/;
-                      if (patternName.test(e.target.value) === false) {
-                        let temp = { ...colorCodeValidation };
-                        temp["pageTextColorValidation"] = true;
-                        setColorCodeValidation(temp);
-                        setForeGroundColor(e.target.value);
-                        setOnChangeValues(true);
-                      } else {
-                        let temp = { ...colorCodeValidation };
-                        temp["pageTextColorValidation"] = false;
-                        setColorCodeValidation(temp);
-                        setForeGroundColor(e.target.value);
-                        setOnChangeValues(true);
-                      }
-                      // setForeGroundColor(e.target.value);
-                      let temp = { ...copyImageOfStoreSettingsPageTheme };
-                      temp["fg_color"] = e.target.value;
-                      setCopyImageOfStoreSettingsPageTheme(temp);
-                    }}
-                    className="w-9 p-0"
-                  />
-                  <Space.Compact className="ml-2">
+                    </Space.Compact>
+                  </Content>
+                  {colorCodeValidation.pageBgColorValidation === true ? (
+                    <p className="text-red-600 text-sm">
+                      Please enter valid Hexadecimal Color code <br />
+                      ex. #ffffff for white, #000000 for black
+                    </p>
+                  ) : null}
+                </Col>
+                <Col span={8} className="ml-1">
+                  <label className="text-[13px] mb-2 ml-1 select-none">
+                    {t("stores:Text-Color")}
+                  </label>
+                  <Content className="flex">
                     <Input
+                      type="color"
                       value={foreGroundColor}
-                      className="w-[150px]"
                       onChange={(e) => {
                         const patternName = /^#([A-Fa-f0-9]{6})$/;
                         if (patternName.test(e.target.value) === false) {
@@ -1950,19 +1926,48 @@ const StoreSettings = () => {
                         temp["fg_color"] = e.target.value;
                         setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
-                      addonAfter={
-                        <Tooltip
-                          title={t("stores:Reset-to-the-original-value")}
-                        >
-                          <UndoOutlined
-                            onClick={() => {
-                              setForeGroundColor(pageFgColor);
-                            }}
-                          />
-                        </Tooltip>
-                      }
+                      className="w-9 p-0"
                     />
-                    {/* <Input
+                    <Space.Compact className="ml-2">
+                      <Input
+                        value={foreGroundColor}
+                        className="w-[150px]"
+                        onChange={(e) => {
+                          const patternName = /^#([A-Fa-f0-9]{6})$/;
+                          if (patternName.test(e.target.value) === false) {
+                            let temp = { ...colorCodeValidation };
+                            temp["pageTextColorValidation"] = true;
+                            setColorCodeValidation(temp);
+                            setForeGroundColor(e.target.value);
+                            setOnChangeValues(true);
+                          } else {
+                            let temp = { ...colorCodeValidation };
+                            temp["pageTextColorValidation"] = false;
+                            setColorCodeValidation(temp);
+                            setForeGroundColor(e.target.value);
+                            setOnChangeValues(true);
+                          }
+                          // setForeGroundColor(e.target.value);
+                          let temp = { ...copyImageOfStoreSettingsPageTheme };
+                          temp["fg_color"] = e.target.value;
+                          setCopyImageOfStoreSettingsPageTheme(temp);
+                        }}
+                        addonAfter={
+                          <Tooltip
+                            title={t("stores:Reset-to-the-original-value")}
+                          >
+                            <UndoOutlined
+                              onClick={() => {
+                                let temp = { ...colorCodeValidation };
+                                temp["pageTextColorValidation"] = false;
+                                setColorCodeValidation(temp);
+                                setForeGroundColor(pageFgColor);
+                              }}
+                            />
+                          </Tooltip>
+                        }
+                      />
+                      {/* <Input
                       addonAfter={
                         <Tooltip title="Reset to the original value">
                           <UndoOutlined
@@ -1975,18 +1980,18 @@ const StoreSettings = () => {
                       defaultValue="100%"
                       className="w-24"
                     /> */}
-                  </Space.Compact>
-                </Content>
-                {colorCodeValidation.pageTextColorValidation === true ? (
-                  <p className="text-red-600 text-sm">
-                    Please enter valid Hexadecimal Color code <br />
-                    ex. #ffffff for white, #000000 for black
-                  </p>
-                ) : null}
-              </Col>
-            </Row>
-            <Row className="mt-4">
-              {/* <Col span={8} className="mr-2">
+                    </Space.Compact>
+                  </Content>
+                  {colorCodeValidation.pageTextColorValidation === true ? (
+                    <p className="text-red-600 text-sm">
+                      Please enter valid Hexadecimal Color code <br />
+                      ex. #ffffff for white, #000000 for black
+                    </p>
+                  ) : null}
+                </Col>
+              </Row>
+              <Row className="mt-4">
+                {/* <Col span={8} className="mr-2">
                 <Button
                   className="float-right mb-1"
                   onClick={() => {
@@ -2034,41 +2039,15 @@ const StoreSettings = () => {
                   type="color"
                 />
               </Col> */}
-              <Col span={8} className="mr-2 ">
-                <label className="text-[13px] mb-2 ml-1 select-none">
-                  {t("stores:Primary-Button-Background-Color")}
-                </label>
-                <Content className="flex">
-                  <Input
-                    type="color"
-                    className="w-9 p-0"
-                    value={buttonPrimaryBackgroundColor}
-                    onChange={(e) => {
-                      const patternName = /^#([A-Fa-f0-9]{6})$/;
-                      if (patternName.test(e.target.value) === false) {
-                        let temp = { ...colorCodeValidation };
-                        temp["primaryBgValidation"] = true;
-                        setColorCodeValidation(temp);
-                        setButtonPrimaryBackgroundColor(e.target.value);
-                        setOnChangeValues(true);
-                      } else {
-                        let temp = { ...colorCodeValidation };
-                        temp["primaryBgValidation"] = false;
-                        setColorCodeValidation(temp);
-                        setButtonPrimaryBackgroundColor(e.target.value);
-                        setOnChangeValues(true);
-                      }
-                      // setButtonPrimaryBackgroundColor(e.target.value);
-                      let temp = { ...copyImageOfStoreSettingsPageTheme };
-                      temp["btn_primary_bg_color"] = e.target.value;
-                      setCopyImageOfStoreSettingsPageTheme(temp);
-                    }}
-                  />
-                  <Space.Compact className="ml-2">
+                <Col span={8} className="mr-2 ">
+                  <label className="text-[13px] mb-2 ml-1 select-none">
+                    {t("stores:Primary-Button-Background-Color")}
+                  </label>
+                  <Content className="flex">
                     <Input
+                      type="color"
+                      className="w-9 p-0"
                       value={buttonPrimaryBackgroundColor}
-                      maxLength={7}
-                      className="w-[150px]"
                       onChange={(e) => {
                         const patternName = /^#([A-Fa-f0-9]{6})$/;
                         if (patternName.test(e.target.value) === false) {
@@ -2089,21 +2068,50 @@ const StoreSettings = () => {
                         temp["btn_primary_bg_color"] = e.target.value;
                         setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
-                      addonAfter={
-                        <Tooltip
-                          title={t("stores:Reset-to-the-original-value")}
-                        >
-                          <UndoOutlined
-                            onClick={() => {
-                              setButtonPrimaryBackgroundColor(
-                                btnPrimaryBgColor
-                              );
-                            }}
-                          />
-                        </Tooltip>
-                      }
                     />
-                    {/* <Input
+                    <Space.Compact className="ml-2">
+                      <Input
+                        value={buttonPrimaryBackgroundColor}
+                        maxLength={7}
+                        className="w-[150px]"
+                        onChange={(e) => {
+                          const patternName = /^#([A-Fa-f0-9]{6})$/;
+                          if (patternName.test(e.target.value) === false) {
+                            let temp = { ...colorCodeValidation };
+                            temp["primaryBgValidation"] = true;
+                            setColorCodeValidation(temp);
+                            setButtonPrimaryBackgroundColor(e.target.value);
+                            setOnChangeValues(true);
+                          } else {
+                            let temp = { ...colorCodeValidation };
+                            temp["primaryBgValidation"] = false;
+                            setColorCodeValidation(temp);
+                            setButtonPrimaryBackgroundColor(e.target.value);
+                            setOnChangeValues(true);
+                          }
+                          // setButtonPrimaryBackgroundColor(e.target.value);
+                          let temp = { ...copyImageOfStoreSettingsPageTheme };
+                          temp["btn_primary_bg_color"] = e.target.value;
+                          setCopyImageOfStoreSettingsPageTheme(temp);
+                        }}
+                        addonAfter={
+                          <Tooltip
+                            title={t("stores:Reset-to-the-original-value")}
+                          >
+                            <UndoOutlined
+                              onClick={() => {
+                                setButtonPrimaryBackgroundColor(
+                                  btnPrimaryBgColor
+                                );
+                                let temp = { ...colorCodeValidation };
+                                temp["primaryBgValidation"] = false;
+                                setColorCodeValidation(temp);
+                              }}
+                            />
+                          </Tooltip>
+                        }
+                      />
+                      {/* <Input
                       addonAfter={
                         <Tooltip title="Reset to the original value">
                           <UndoOutlined
@@ -2118,49 +2126,24 @@ const StoreSettings = () => {
                       defaultValue="100%"
                       className="w-24"
                     /> */}
-                  </Space.Compact>
-                </Content>
-                {colorCodeValidation.primaryBgValidation === true ? (
-                  <p className="text-red-600 text-sm">
-                    Please enter valid Hexadecimal Color code <br />
-                    ex. #ffffff for white, #000000 for black
-                  </p>
-                ) : null}
-              </Col>
-              <Col span={8} className="ml-1">
-                <label className="text-[13px] mb-2 ml-1 select-none">
-                  {t("stores:Secondary-Button-Background-Color")}
-                </label>
-                <Content className="flex">
-                  <Input
-                    type="color"
-                    className="w-9 p-0"
-                    value={buttonSecondaryBackgroundColor}
-                    onChange={(e) => {
-                      const patternName = /^#([A-Fa-f0-9]{6})$/;
-                      if (patternName.test(e.target.value) === false) {
-                        let temp = { ...colorCodeValidation };
-                        temp["secondaryBgValidation"] = true;
-                        setColorCodeValidation(temp);
-                        setButtonSecondaryBackgroundColor(e.target.value);
-                        setOnChangeValues(true);
-                      } else {
-                        let temp = { ...colorCodeValidation };
-                        temp["secondaryBgValidation"] = false;
-                        setColorCodeValidation(temp);
-                        setButtonSecondaryBackgroundColor(e.target.value);
-                        setOnChangeValues(true);
-                      }
-                      // setButtonSecondaryBackgroundColor(e.target.value);
-                      let temp = { ...copyImageOfStoreSettingsPageTheme };
-                      temp["btn_secondary_bg_color"] = e.target.value;
-                      setCopyImageOfStoreSettingsPageTheme(temp);
-                    }}
-                  />
-                  <Space.Compact className="ml-2">
+                    </Space.Compact>
+                  </Content>
+                  {colorCodeValidation.primaryBgValidation === true ? (
+                    <p className="text-red-600 text-sm">
+                      Please enter valid Hexadecimal Color code <br />
+                      ex. #ffffff for white, #000000 for black
+                    </p>
+                  ) : null}
+                </Col>
+                <Col span={8} className="ml-1">
+                  <label className="text-[13px] mb-2 ml-1 select-none">
+                    {t("stores:Secondary-Button-Background-Color")}
+                  </label>
+                  <Content className="flex">
                     <Input
+                      type="color"
+                      className="w-9 p-0"
                       value={buttonSecondaryBackgroundColor}
-                      className="w-[150px]"
                       onChange={(e) => {
                         const patternName = /^#([A-Fa-f0-9]{6})$/;
                         if (patternName.test(e.target.value) === false) {
@@ -2176,27 +2159,55 @@ const StoreSettings = () => {
                           setButtonSecondaryBackgroundColor(e.target.value);
                           setOnChangeValues(true);
                         }
-
                         // setButtonSecondaryBackgroundColor(e.target.value);
                         let temp = { ...copyImageOfStoreSettingsPageTheme };
                         temp["btn_secondary_bg_color"] = e.target.value;
                         setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
-                      addonAfter={
-                        <Tooltip
-                          title={t("stores:Reset-to-the-original-value")}
-                        >
-                          <UndoOutlined
-                            onClick={() => {
-                              setButtonSecondaryBackgroundColor(
-                                btnSecondaryBgColor
-                              );
-                            }}
-                          />
-                        </Tooltip>
-                      }
                     />
-                    {/* <Input
+                    <Space.Compact className="ml-2">
+                      <Input
+                        value={buttonSecondaryBackgroundColor}
+                        className="w-[150px]"
+                        onChange={(e) => {
+                          const patternName = /^#([A-Fa-f0-9]{6})$/;
+                          if (patternName.test(e.target.value) === false) {
+                            let temp = { ...colorCodeValidation };
+                            temp["secondaryBgValidation"] = true;
+                            setColorCodeValidation(temp);
+                            setButtonSecondaryBackgroundColor(e.target.value);
+                            setOnChangeValues(true);
+                          } else {
+                            let temp = { ...colorCodeValidation };
+                            temp["secondaryBgValidation"] = false;
+                            setColorCodeValidation(temp);
+                            setButtonSecondaryBackgroundColor(e.target.value);
+                            setOnChangeValues(true);
+                          }
+
+                          // setButtonSecondaryBackgroundColor(e.target.value);
+                          let temp = { ...copyImageOfStoreSettingsPageTheme };
+                          temp["btn_secondary_bg_color"] = e.target.value;
+                          setCopyImageOfStoreSettingsPageTheme(temp);
+                        }}
+                        addonAfter={
+                          <Tooltip
+                            title={t("stores:Reset-to-the-original-value")}
+                          >
+                            <UndoOutlined
+                              onClick={() => {
+                                setButtonSecondaryBackgroundColor(
+                                  btnSecondaryBgColor
+                                );
+                                let temp = { ...colorCodeValidation };
+                                temp["secondaryBgValidation"] = false;
+                                setColorCodeValidation(temp);
+                              }}
+                            />
+                          </Tooltip>
+                        }
+                      />
+                      {/* <Input
                       addonAfter={
                         <Tooltip title="Reset to the original value">
                           <UndoOutlined
@@ -2211,49 +2222,24 @@ const StoreSettings = () => {
                       defaultValue="100%"
                       className="w-24"
                     /> */}
-                  </Space.Compact>
-                </Content>
-                {colorCodeValidation.secondaryBgValidation === true ? (
-                  <p className="text-red-600 text-sm">
-                    Please enter valid Hexadecimal Color code <br />
-                    ex. #ffffff for white, #000000 for black
-                  </p>
-                ) : null}
-              </Col>
-              <Col span={7} className="ml-2">
-                <label className="text-[13px] mb-2 ml-1 select-none">
-                  {t("stores:Tertiary-Button-Background-Color")}
-                </label>
-                <Content className="flex">
-                  <Input
-                    type="color"
-                    className="w-9 p-0"
-                    value={buttonTeritaryBackgroundColor}
-                    onChange={(e) => {
-                      const patternName = /^#([A-Fa-f0-9]{6})$/;
-                      if (patternName.test(e.target.value) === false) {
-                        let temp = { ...colorCodeValidation };
-                        temp["tertiaryBgValidation"] = true;
-                        setColorCodeValidation(temp);
-                        setButtonTeritaryBackgroundColor(e.target.value);
-                        setOnChangeValues(true);
-                      } else {
-                        let temp = { ...colorCodeValidation };
-                        temp["tertiaryBgValidation"] = false;
-                        setColorCodeValidation(temp);
-                        setButtonTeritaryBackgroundColor(e.target.value);
-                        setOnChangeValues(true);
-                      }
-                      // setButtonTeritaryBackgroundColor(e.target.value);
-                      let temp = { ...copyImageOfStoreSettingsPageTheme };
-                      temp["btn_tertiary_bg_color"] = e.target.value;
-                      setCopyImageOfStoreSettingsPageTheme(temp);
-                    }}
-                  />
-                  <Space.Compact className="ml-2">
+                    </Space.Compact>
+                  </Content>
+                  {colorCodeValidation.secondaryBgValidation === true ? (
+                    <p className="text-red-600 text-sm">
+                      Please enter valid Hexadecimal Color code <br />
+                      ex. #ffffff for white, #000000 for black
+                    </p>
+                  ) : null}
+                </Col>
+                <Col span={7} className="ml-2">
+                  <label className="text-[13px] mb-2 ml-1 select-none">
+                    {t("stores:Tertiary-Button-Background-Color")}
+                  </label>
+                  <Content className="flex">
                     <Input
+                      type="color"
+                      className="w-9 p-0"
                       value={buttonTeritaryBackgroundColor}
-                      className="w-[150px]"
                       onChange={(e) => {
                         const patternName = /^#([A-Fa-f0-9]{6})$/;
                         if (patternName.test(e.target.value) === false) {
@@ -2274,21 +2260,49 @@ const StoreSettings = () => {
                         temp["btn_tertiary_bg_color"] = e.target.value;
                         setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
-                      addonAfter={
-                        <Tooltip
-                          title={t("stores:Reset-to-the-original-value")}
-                        >
-                          <UndoOutlined
-                            onClick={() => {
-                              setButtonTeritaryBackgroundColor(
-                                btnTeritaryBgColor
-                              );
-                            }}
-                          />
-                        </Tooltip>
-                      }
                     />
-                    {/* <Input
+                    <Space.Compact className="ml-2">
+                      <Input
+                        value={buttonTeritaryBackgroundColor}
+                        className="w-[150px]"
+                        onChange={(e) => {
+                          const patternName = /^#([A-Fa-f0-9]{6})$/;
+                          if (patternName.test(e.target.value) === false) {
+                            let temp = { ...colorCodeValidation };
+                            temp["tertiaryBgValidation"] = true;
+                            setColorCodeValidation(temp);
+                            setButtonTeritaryBackgroundColor(e.target.value);
+                            setOnChangeValues(true);
+                          } else {
+                            let temp = { ...colorCodeValidation };
+                            temp["tertiaryBgValidation"] = false;
+                            setColorCodeValidation(temp);
+                            setButtonTeritaryBackgroundColor(e.target.value);
+                            setOnChangeValues(true);
+                          }
+                          // setButtonTeritaryBackgroundColor(e.target.value);
+                          let temp = { ...copyImageOfStoreSettingsPageTheme };
+                          temp["btn_tertiary_bg_color"] = e.target.value;
+                          setCopyImageOfStoreSettingsPageTheme(temp);
+                        }}
+                        addonAfter={
+                          <Tooltip
+                            title={t("stores:Reset-to-the-original-value")}
+                          >
+                            <UndoOutlined
+                              onClick={() => {
+                                setButtonTeritaryBackgroundColor(
+                                  btnTeritaryBgColor
+                                );
+                                let temp = { ...colorCodeValidation };
+                                temp["tertiaryBgValidation"] = false;
+                                setColorCodeValidation(temp);
+                              }}
+                            />
+                          </Tooltip>
+                        }
+                      />
+                      {/* <Input
                       addonAfter={
                         <Tooltip title="Reset to the original value">
                           <UndoOutlined
@@ -2303,18 +2317,18 @@ const StoreSettings = () => {
                       defaultValue="100%"
                       className="w-24"
                     /> */}
-                  </Space.Compact>
-                </Content>
-                {colorCodeValidation.tertiaryBgValidation === true ? (
-                  <p className="text-red-600 text-sm">
-                    Please enter valid Hexadecimal Color code <br />
-                    ex. #ffffff for white, #000000 for black
-                  </p>
-                ) : null}
-              </Col>
-            </Row>
-            <Row className="mt-4">
-              {/* <Col span={8} className="mr-2">
+                    </Space.Compact>
+                  </Content>
+                  {colorCodeValidation.tertiaryBgValidation === true ? (
+                    <p className="text-red-600 text-sm">
+                      Please enter valid Hexadecimal Color code <br />
+                      ex. #ffffff for white, #000000 for black
+                    </p>
+                  ) : null}
+                </Col>
+              </Row>
+              <Row className="mt-4">
+                {/* <Col span={8} className="mr-2">
                 <Button
                   className="float-right mb-1"
                   onClick={() => {
@@ -2362,41 +2376,15 @@ const StoreSettings = () => {
                   type="color"
                 />
               </Col> */}
-              <Col span={8} className="mr-2 ">
-                <label className="text-[13px] mb-2 ml-1 select-none">
-                  {t("stores:Primary-Button-Text-Color")}
-                </label>
-                <Content className="flex">
-                  <Input
-                    type="color"
-                    className="w-9 p-0"
-                    value={buttonPrimaryForegroundColor}
-                    onChange={(e) => {
-                      const patternName = /^#([A-Fa-f0-9]{6})$/;
-                      if (patternName.test(e.target.value) === false) {
-                        let temp = { ...colorCodeValidation };
-                        temp["primaryTextValidation"] = true;
-                        setColorCodeValidation(temp);
-                        setButtonPrimaryForegroundColor(e.target.value);
-                        setOnChangeValues(true);
-                      } else {
-                        let temp = { ...colorCodeValidation };
-                        temp["primaryTextValidation"] = false;
-                        setColorCodeValidation(temp);
-                        setButtonPrimaryForegroundColor(e.target.value);
-                        setOnChangeValues(true);
-                      }
-                      // setButtonPrimaryForegroundColor(e.target.value);
-                      let temp = { ...copyImageOfStoreSettingsPageTheme };
-                      temp["btn_primary_fg_color"] = e.target.value;
-                      setCopyImageOfStoreSettingsPageTheme(temp);
-                    }}
-                  />
-                  <Space.Compact className="ml-2">
+                <Col span={8} className="mr-2 ">
+                  <label className="text-[13px] mb-2 ml-1 select-none">
+                    {t("stores:Primary-Button-Text-Color")}
+                  </label>
+                  <Content className="flex">
                     <Input
+                      type="color"
+                      className="w-9 p-0"
                       value={buttonPrimaryForegroundColor}
-                      maxLength={7}
-                      className="w-[150px]"
                       onChange={(e) => {
                         const patternName = /^#([A-Fa-f0-9]{6})$/;
                         if (patternName.test(e.target.value) === false) {
@@ -2417,21 +2405,50 @@ const StoreSettings = () => {
                         temp["btn_primary_fg_color"] = e.target.value;
                         setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
-                      addonAfter={
-                        <Tooltip
-                          title={t("stores:Reset-to-the-original-value")}
-                        >
-                          <UndoOutlined
-                            onClick={() => {
-                              setButtonTeritaryBackgroundColor(
-                                btnTeritaryBgColor
-                              );
-                            }}
-                          />
-                        </Tooltip>
-                      }
                     />
-                    {/* <Input
+                    <Space.Compact className="ml-2">
+                      <Input
+                        value={buttonPrimaryForegroundColor}
+                        maxLength={7}
+                        className="w-[150px]"
+                        onChange={(e) => {
+                          const patternName = /^#([A-Fa-f0-9]{6})$/;
+                          if (patternName.test(e.target.value) === false) {
+                            let temp = { ...colorCodeValidation };
+                            temp["primaryTextValidation"] = true;
+                            setColorCodeValidation(temp);
+                            setButtonPrimaryForegroundColor(e.target.value);
+                            setOnChangeValues(true);
+                          } else {
+                            let temp = { ...colorCodeValidation };
+                            temp["primaryTextValidation"] = false;
+                            setColorCodeValidation(temp);
+                            setButtonPrimaryForegroundColor(e.target.value);
+                            setOnChangeValues(true);
+                          }
+                          // setButtonPrimaryForegroundColor(e.target.value);
+                          let temp = { ...copyImageOfStoreSettingsPageTheme };
+                          temp["btn_primary_fg_color"] = e.target.value;
+                          setCopyImageOfStoreSettingsPageTheme(temp);
+                        }}
+                        addonAfter={
+                          <Tooltip
+                            title={t("stores:Reset-to-the-original-value")}
+                          >
+                            <UndoOutlined
+                              onClick={() => {
+                                setButtonPrimaryForegroundColor(
+                                  btnPrimaryFgColor
+                                );
+                                let temp = { ...colorCodeValidation };
+                                temp["primaryTextValidation"] = false;
+                                setColorCodeValidation(temp);
+                              }}
+                            />
+                          </Tooltip>
+                        }
+                      />
+                      {/* <Input
                       addonAfter={
                         <Tooltip title="Reset to the original value">
                           <UndoOutlined
@@ -2446,50 +2463,24 @@ const StoreSettings = () => {
                       defaultValue="100%"
                       className="w-24"
                     /> */}
-                  </Space.Compact>
-                </Content>
-                {colorCodeValidation.primaryTextValidation === true ? (
-                  <p className="text-red-600 text-sm">
-                    Please enter valid Hexadecimal Color code <br />
-                    ex. #ffffff for white, #000000 for black
-                  </p>
-                ) : null}
-              </Col>
-              <Col span={8} className="ml-1">
-                <label className="text-[13px] mb-2 ml-1 select-none">
-                  {t("stores:Secondary-Button-Text-Color")}
-                </label>
-                <Content className="flex">
-                  <Input
-                    type="color"
-                    className="w-9 p-0"
-                    value={buttonSecondaryForegroundColor}
-                    onChange={(e) => {
-                      const patternName = /^#([A-Fa-f0-9]{6})$/;
-                      if (patternName.test(e.target.value) === false) {
-                        let temp = { ...colorCodeValidation };
-                        temp["secondaryTextValidation"] = true;
-                        setColorCodeValidation(temp);
-                        setButtonSecondaryForegroundColor(e.target.value);
-                        setOnChangeValues(true);
-                      } else {
-                        let temp = { ...colorCodeValidation };
-                        temp["secondaryTextValidation"] = false;
-                        setColorCodeValidation(temp);
-                        setButtonSecondaryForegroundColor(e.target.value);
-                        setOnChangeValues(true);
-                      }
-                      // setButtonSecondaryForegroundColor(e.target.value);
-                      let temp = { ...copyImageOfStoreSettingsPageTheme };
-                      temp["btn_secondary_fg_color"] = e.target.value;
-                      setCopyImageOfStoreSettingsPageTheme(temp);
-                    }}
-                  />
-                  <Space.Compact className="ml-2">
+                    </Space.Compact>
+                  </Content>
+                  {colorCodeValidation.primaryTextValidation === true ? (
+                    <p className="text-red-600 text-sm">
+                      Please enter valid Hexadecimal Color code <br />
+                      ex. #ffffff for white, #000000 for black
+                    </p>
+                  ) : null}
+                </Col>
+                <Col span={8} className="ml-1">
+                  <label className="text-[13px] mb-2 ml-1 select-none">
+                    {t("stores:Secondary-Button-Text-Color")}
+                  </label>
+                  <Content className="flex">
                     <Input
+                      type="color"
+                      className="w-9 p-0"
                       value={buttonSecondaryForegroundColor}
-                      maxLength={7}
-                      className="w-[150px]"
                       onChange={(e) => {
                         const patternName = /^#([A-Fa-f0-9]{6})$/;
                         if (patternName.test(e.target.value) === false) {
@@ -2510,21 +2501,50 @@ const StoreSettings = () => {
                         temp["btn_secondary_fg_color"] = e.target.value;
                         setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
-                      addonAfter={
-                        <Tooltip
-                          title={t("stores:Reset-to-the-original-value")}
-                        >
-                          <UndoOutlined
-                            onClick={() => {
-                              setButtonPrimaryForegroundColor(
-                                btnPrimaryFgColor
-                              );
-                            }}
-                          />
-                        </Tooltip>
-                      }
                     />
-                    {/* <Input
+                    <Space.Compact className="ml-2">
+                      <Input
+                        value={buttonSecondaryForegroundColor}
+                        maxLength={7}
+                        className="w-[150px]"
+                        onChange={(e) => {
+                          const patternName = /^#([A-Fa-f0-9]{6})$/;
+                          if (patternName.test(e.target.value) === false) {
+                            let temp = { ...colorCodeValidation };
+                            temp["secondaryTextValidation"] = true;
+                            setColorCodeValidation(temp);
+                            setButtonSecondaryForegroundColor(e.target.value);
+                            setOnChangeValues(true);
+                          } else {
+                            let temp = { ...colorCodeValidation };
+                            temp["secondaryTextValidation"] = false;
+                            setColorCodeValidation(temp);
+                            setButtonSecondaryForegroundColor(e.target.value);
+                            setOnChangeValues(true);
+                          }
+                          // setButtonSecondaryForegroundColor(e.target.value);
+                          let temp = { ...copyImageOfStoreSettingsPageTheme };
+                          temp["btn_secondary_fg_color"] = e.target.value;
+                          setCopyImageOfStoreSettingsPageTheme(temp);
+                        }}
+                        addonAfter={
+                          <Tooltip
+                            title={t("stores:Reset-to-the-original-value")}
+                          >
+                            <UndoOutlined
+                              onClick={() => {
+                                setButtonSecondaryForegroundColor(
+                                  btnSecondaryFgColor
+                                );
+                                let temp = { ...colorCodeValidation };
+                                temp["secondaryTextValidation"] = false;
+                                setColorCodeValidation(temp);
+                              }}
+                            />
+                          </Tooltip>
+                        }
+                      />
+                      {/* <Input
                       addonAfter={
                         <Tooltip title="Reset to the original value">
                           <UndoOutlined
@@ -2539,48 +2559,24 @@ const StoreSettings = () => {
                       defaultValue="100%"
                       className="w-24"
                     /> */}
-                  </Space.Compact>
-                </Content>
-                {colorCodeValidation.secondaryTextValidation === true ? (
-                  <p className="text-red-600 text-sm">
-                    Please enter valid Hexadecimal Color code <br />
-                    ex. #ffffff for white, #000000 for black
-                  </p>
-                ) : null}
-              </Col>
-              <Col span={7} className="ml-2">
-                <label className="text-[13px] mb-2 ml-1 select-none">
-                  {t("stores:Tertiary-Button-Text-Color")}
-                </label>
-                <Content className="flex">
-                  <Input
-                    type="color"
-                    className="w-9 p-0"
-                    maxLength={7}
-                    value={buttonTeritaryForegroundColor}
-                    onChange={(e) => {
-                      const patternName = /^#([A-Fa-f0-9]{6})$/;
-                      if (patternName.test(e.target.value) === false) {
-                        let temp = { ...colorCodeValidation };
-                        temp["tertiaryTextValidation"] = true;
-                        setColorCodeValidation(temp);
-                        setButtonTeritaryForegroundColor(e.target.value);
-                        setOnChangeValues(true);
-                      } else {
-                        let temp = { ...colorCodeValidation };
-                        temp["tertiaryTextValidation"] = false;
-                        setColorCodeValidation(temp);
-                        setButtonTeritaryForegroundColor(e.target.value);
-                        setOnChangeValues(true);
-                      }
-                      // setButtonTeritaryForegroundColor(e.target.value);
-                      let temp = { ...copyImageOfStoreSettingsPageTheme };
-                      temp["btn_tertiary_fg_color"] = e.target.value;
-                      setCopyImageOfStoreSettingsPageTheme(temp);
-                    }}
-                  />
-                  <Space.Compact className="ml-2">
+                    </Space.Compact>
+                  </Content>
+                  {colorCodeValidation.secondaryTextValidation === true ? (
+                    <p className="text-red-600 text-sm">
+                      Please enter valid Hexadecimal Color code <br />
+                      ex. #ffffff for white, #000000 for black
+                    </p>
+                  ) : null}
+                </Col>
+                <Col span={7} className="ml-2">
+                  <label className="text-[13px] mb-2 ml-1 select-none">
+                    {t("stores:Tertiary-Button-Text-Color")}
+                  </label>
+                  <Content className="flex">
                     <Input
+                      type="color"
+                      className="w-9 p-0"
+                      maxLength={7}
                       value={buttonTeritaryForegroundColor}
                       onChange={(e) => {
                         const patternName = /^#([A-Fa-f0-9]{6})$/;
@@ -2602,22 +2598,49 @@ const StoreSettings = () => {
                         temp["btn_tertiary_fg_color"] = e.target.value;
                         setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
-                      className="w-[150px]"
-                      addonAfter={
-                        <Tooltip
-                          title={t("stores:Reset-to-the-original-value")}
-                        >
-                          <UndoOutlined
-                            onClick={() => {
-                              setButtonTeritaryForegroundColor(
-                                btnTeritaryFgColor
-                              );
-                            }}
-                          />
-                        </Tooltip>
-                      }
                     />
-                    {/* <Input
+                    <Space.Compact className="ml-2">
+                      <Input
+                        value={buttonTeritaryForegroundColor}
+                        onChange={(e) => {
+                          const patternName = /^#([A-Fa-f0-9]{6})$/;
+                          if (patternName.test(e.target.value) === false) {
+                            let temp = { ...colorCodeValidation };
+                            temp["tertiaryTextValidation"] = true;
+                            setColorCodeValidation(temp);
+                            setButtonTeritaryForegroundColor(e.target.value);
+                            setOnChangeValues(true);
+                          } else {
+                            let temp = { ...colorCodeValidation };
+                            temp["tertiaryTextValidation"] = false;
+                            setColorCodeValidation(temp);
+                            setButtonTeritaryForegroundColor(e.target.value);
+                            setOnChangeValues(true);
+                          }
+                          // setButtonTeritaryForegroundColor(e.target.value);
+                          let temp = { ...copyImageOfStoreSettingsPageTheme };
+                          temp["btn_tertiary_fg_color"] = e.target.value;
+                          setCopyImageOfStoreSettingsPageTheme(temp);
+                        }}
+                        className="w-[150px]"
+                        addonAfter={
+                          <Tooltip
+                            title={t("stores:Reset-to-the-original-value")}
+                          >
+                            <UndoOutlined
+                              onClick={() => {
+                                setButtonTeritaryForegroundColor(
+                                  btnTeritaryFgColor
+                                );
+                                let temp = { ...colorCodeValidation };
+                                temp["tertiaryTextValidation"] = false;
+                                setColorCodeValidation(temp);
+                              }}
+                            />
+                          </Tooltip>
+                        }
+                      />
+                      {/* <Input
                       addonAfter={
                         <Tooltip title="Reset to the original value">
                           <UndoOutlined
@@ -2632,17 +2655,17 @@ const StoreSettings = () => {
                       defaultValue="100%"
                       className="w-24"
                     /> */}
-                  </Space.Compact>
-                </Content>
-                {colorCodeValidation.tertiaryTextValidation === true ? (
-                  <p className="text-red-600 text-sm">
-                    Please enter valid Hexadecimal Color code <br />
-                    ex. #ffffff for white, #000000 for black
-                  </p>
-                ) : null}
-              </Col>
-            </Row>
-            {/* <Row className="mt-4">
+                    </Space.Compact>
+                  </Content>
+                  {colorCodeValidation.tertiaryTextValidation === true ? (
+                    <p className="text-red-600 text-sm">
+                      Please enter valid Hexadecimal Color code <br />
+                      ex. #ffffff for white, #000000 for black
+                    </p>
+                  ) : null}
+                </Col>
+              </Row>
+              {/* <Row className="mt-4">
               <Col span={8} className="mr-2">
                 <Button
                   className="float-right mb-1"
@@ -2693,47 +2716,21 @@ const StoreSettings = () => {
                 />
               </Col>
             </Row> */}
-          </Content>
-          <Content>
-            <label className="text-[20px] mb-2 mt-4 font-bold select-none">
-              {t("stores:Store-Header-Setting")}
-            </label>
-            <Row className="mt-2">
-              <Col span={8} className="mr-2 ">
-                <label className="text-[13px] mb-2 ml-1 select-none">
-                  {t("stores:Background-Color")}
-                </label>
-                <Content className="flex">
-                  <Input
-                    type="color"
-                    className="w-9 p-0"
-                    value={headerBackgroundColor}
-                    onChange={(e) => {
-                      const patternName = /^#([A-Fa-f0-9]{6})$/;
-                      if (patternName.test(e.target.value) === false) {
-                        let temp = { ...colorCodeValidation };
-                        temp["headerBgValidation"] = true;
-                        setColorCodeValidation(temp);
-                        setHeaderBackgroundColor(e.target.value);
-                        setOnChangeValues(true);
-                      } else {
-                        let temp = { ...colorCodeValidation };
-                        temp["headerBgValidation"] = false;
-                        setColorCodeValidation(temp);
-                        setHeaderBackgroundColor(e.target.value);
-                        setOnChangeValues(true);
-                      }
-                      // setHeaderBackgroundColor(e.target.value);
-                      let temp = { ...copyImageOfStoreHeaderSetting };
-                      temp["bg_color"] = e.target.value;
-                      setCopyImageOfStoreHeaderSetting(temp);
-                    }}
-                  />
-                  <Space.Compact className="ml-2">
+            </Content>
+            <Content>
+              <label className="text-[20px] mb-2 mt-4 font-bold select-none">
+                {t("stores:Store-Header-Setting")}
+              </label>
+              <Row className="mt-2">
+                <Col span={8} className="mr-2 ">
+                  <label className="text-[13px] mb-2 ml-1 select-none">
+                    {t("stores:Background-Color")}
+                  </label>
+                  <Content className="flex">
                     <Input
+                      type="color"
+                      className="w-9 p-0"
                       value={headerBackgroundColor}
-                      maxLength={7}
-                      className="w-[150px]"
                       onChange={(e) => {
                         const patternName = /^#([A-Fa-f0-9]{6})$/;
                         if (patternName.test(e.target.value) === false) {
@@ -2754,19 +2751,48 @@ const StoreSettings = () => {
                         temp["bg_color"] = e.target.value;
                         setCopyImageOfStoreHeaderSetting(temp);
                       }}
-                      addonAfter={
-                        <Tooltip
-                          title={t("stores:Reset-to-the-original-value")}
-                        >
-                          <UndoOutlined
-                            onClick={() => {
-                              setHeaderBackgroundColor(headerBgColor);
-                            }}
-                          />
-                        </Tooltip>
-                      }
                     />
-                    {/* <Input
+                    <Space.Compact className="ml-2">
+                      <Input
+                        value={headerBackgroundColor}
+                        maxLength={7}
+                        className="w-[150px]"
+                        onChange={(e) => {
+                          const patternName = /^#([A-Fa-f0-9]{6})$/;
+                          if (patternName.test(e.target.value) === false) {
+                            let temp = { ...colorCodeValidation };
+                            temp["headerBgValidation"] = true;
+                            setColorCodeValidation(temp);
+                            setHeaderBackgroundColor(e.target.value);
+                            setOnChangeValues(true);
+                          } else {
+                            let temp = { ...colorCodeValidation };
+                            temp["headerBgValidation"] = false;
+                            setColorCodeValidation(temp);
+                            setHeaderBackgroundColor(e.target.value);
+                            setOnChangeValues(true);
+                          }
+                          // setHeaderBackgroundColor(e.target.value);
+                          let temp = { ...copyImageOfStoreHeaderSetting };
+                          temp["bg_color"] = e.target.value;
+                          setCopyImageOfStoreHeaderSetting(temp);
+                        }}
+                        addonAfter={
+                          <Tooltip
+                            title={t("stores:Reset-to-the-original-value")}
+                          >
+                            <UndoOutlined
+                              onClick={() => {
+                                setHeaderBackgroundColor(headerBgColor);
+                                let temp = { ...colorCodeValidation };
+                                temp["headerBgValidation"] = false;
+                                setColorCodeValidation(temp);
+                              }}
+                            />
+                          </Tooltip>
+                        }
+                      />
+                      {/* <Input
                       addonAfter={
                         <Tooltip title="Reset to the original value">
                           <UndoOutlined
@@ -2779,52 +2805,27 @@ const StoreSettings = () => {
                       defaultValue="100%"
                       className="w-24"
                     /> */}
-                  </Space.Compact>
-                </Content>
-                {colorCodeValidation.headerBgValidation === true ? (
-                  <p className="text-red-600 text-sm">
-                    Please enter valid Hexadecimal Color code <br />
-                    ex. #ffffff for white, #000000 for black
-                  </p>
-                ) : null}
-              </Col>
-              <Col span={8} className="ml-1">
-                <label className="text-[13px] mb-2 ml-1 select-none">
-                  {" "}
-                  {t("stores:Text-Color")}
-                </label>
-                <Content className="flex">
-                  <Input
-                    type="color"
-                    className="w-9 p-0"
-                    maxLength={255}
-                    minLength={1}
-                    value={headerForegroundColor}
-                    onChange={(e) => {
-                      const patternName = /^#([A-Fa-f0-9]{6})$/;
-                      if (patternName.test(e.target.value) === false) {
-                        let temp = { ...colorCodeValidation };
-                        temp["headerTextValidation"] = true;
-                        setColorCodeValidation(temp);
-                        setHeaderForegroundColor(e.target.value);
-                        setOnChangeValues(true);
-                      } else {
-                        let temp = { ...colorCodeValidation };
-                        temp["headerTextValidation"] = false;
-                        setColorCodeValidation(temp);
-                        setHeaderForegroundColor(e.target.value);
-                        setOnChangeValues(true);
-                      }
-                      // setHeaderForegroundColor(e.target.value);
-                      let temp = { ...copyImageOfStoreHeaderSetting };
-                      temp["fg_color"] = e.target.value;
-                      setCopyImageOfStoreHeaderSetting(temp);
-                    }}
-                  />
-                  <Space.Compact className="ml-2">
+                    </Space.Compact>
+                  </Content>
+                  {colorCodeValidation.headerBgValidation === true ? (
+                    <p className="text-red-600 text-sm">
+                      Please enter valid Hexadecimal Color code <br />
+                      ex. #ffffff for white, #000000 for black
+                    </p>
+                  ) : null}
+                </Col>
+                <Col span={8} className="ml-1">
+                  <label className="text-[13px] mb-2 ml-1 select-none">
+                    {" "}
+                    {t("stores:Text-Color")}
+                  </label>
+                  <Content className="flex">
                     <Input
+                      type="color"
+                      className="w-9 p-0"
+                      maxLength={255}
+                      minLength={1}
                       value={headerForegroundColor}
-                      className="w-[150px]"
                       onChange={(e) => {
                         const patternName = /^#([A-Fa-f0-9]{6})$/;
                         if (patternName.test(e.target.value) === false) {
@@ -2845,19 +2846,47 @@ const StoreSettings = () => {
                         temp["fg_color"] = e.target.value;
                         setCopyImageOfStoreHeaderSetting(temp);
                       }}
-                      addonAfter={
-                        <Tooltip
-                          title={t("stores:Reset-to-the-original-value")}
-                        >
-                          <UndoOutlined
-                            onClick={() => {
-                              setHeaderForegroundColor(headerFgColor);
-                            }}
-                          />
-                        </Tooltip>
-                      }
                     />
-                    {/* <Input
+                    <Space.Compact className="ml-2">
+                      <Input
+                        value={headerForegroundColor}
+                        className="w-[150px]"
+                        onChange={(e) => {
+                          const patternName = /^#([A-Fa-f0-9]{6})$/;
+                          if (patternName.test(e.target.value) === false) {
+                            let temp = { ...colorCodeValidation };
+                            temp["headerTextValidation"] = true;
+                            setColorCodeValidation(temp);
+                            setHeaderForegroundColor(e.target.value);
+                            setOnChangeValues(true);
+                          } else {
+                            let temp = { ...colorCodeValidation };
+                            temp["headerTextValidation"] = false;
+                            setColorCodeValidation(temp);
+                            setHeaderForegroundColor(e.target.value);
+                            setOnChangeValues(true);
+                          }
+                          // setHeaderForegroundColor(e.target.value);
+                          let temp = { ...copyImageOfStoreHeaderSetting };
+                          temp["fg_color"] = e.target.value;
+                          setCopyImageOfStoreHeaderSetting(temp);
+                        }}
+                        addonAfter={
+                          <Tooltip
+                            title={t("stores:Reset-to-the-original-value")}
+                          >
+                            <UndoOutlined
+                              onClick={() => {
+                                setHeaderForegroundColor(headerFgColor);
+                                let temp = { ...colorCodeValidation };
+                                temp["headerTextValidation"] = false;
+                                setColorCodeValidation(temp);
+                              }}
+                            />
+                          </Tooltip>
+                        }
+                      />
+                      {/* <Input
                       addonAfter={
                         <Tooltip title="Reset to the original value">
                           <UndoOutlined
@@ -2870,56 +2899,31 @@ const StoreSettings = () => {
                       defaultValue="100%"
                       className="w-24"
                     /> */}
-                  </Space.Compact>
-                </Content>
-                {colorCodeValidation.headerTextValidation === true ? (
-                  <p className="text-red-600 text-sm">
-                    Please enter valid Hexadecimal Color code <br />
-                    ex. #ffffff for white, #000000 for black
-                  </p>
-                ) : null}
-              </Col>
-            </Row>
-          </Content>
-          <Content>
-            <label className="text-[20px] mb-2 mt-4 font-bold select-none">
-              {t("stores:Store-Footer-Setting")}
-            </label>
-            <Row className="mt-2">
-              <Col span={8} className="mr-2 ">
-                <label className="text-[13px] mb-2 ml-1 select-none">
-                  {t("stores:Background-Color")}
-                </label>
-                <Content className="flex">
-                  <Input
-                    type="color"
-                    className="w-9 p-0"
-                    value={footerBackgroundColor}
-                    onChange={(e) => {
-                      const patternName = /^#([A-Fa-f0-9]{6})$/;
-                      if (patternName.test(e.target.value) === false) {
-                        let temp = { ...colorCodeValidation };
-                        temp["footerBgValidation"] = true;
-                        setColorCodeValidation(temp);
-                        setFooterBackgroundColor(e.target.value);
-                        setOnChangeValues(true);
-                      } else {
-                        let temp = { ...colorCodeValidation };
-                        temp["footerBgValidation"] = false;
-                        setColorCodeValidation(temp);
-                        setFooterBackgroundColor(e.target.value);
-                        setOnChangeValues(true);
-                      }
-                      // setFooterBackgroundColor(e.target.value);
-                      let temp = { ...copyImageOfStoreFooterSetting };
-                      temp["bg_color"] = e.target.value;
-                      setCopyImageOfStoreFooterSetting(temp);
-                    }}
-                  />
-                  <Space.Compact className="ml-2">
+                    </Space.Compact>
+                  </Content>
+                  {colorCodeValidation.headerTextValidation === true ? (
+                    <p className="text-red-600 text-sm">
+                      Please enter valid Hexadecimal Color code <br />
+                      ex. #ffffff for white, #000000 for black
+                    </p>
+                  ) : null}
+                </Col>
+              </Row>
+            </Content>
+            <Content>
+              <label className="text-[20px] mb-2 mt-4 font-bold select-none">
+                {t("stores:Store-Footer-Setting")}
+              </label>
+              <Row className="mt-2">
+                <Col span={8} className="mr-2 ">
+                  <label className="text-[13px] mb-2 ml-1 select-none">
+                    {t("stores:Background-Color")}
+                  </label>
+                  <Content className="flex">
                     <Input
+                      type="color"
+                      className="w-9 p-0"
                       value={footerBackgroundColor}
-                      className="w-[150px]"
                       onChange={(e) => {
                         const patternName = /^#([A-Fa-f0-9]{6})$/;
                         if (patternName.test(e.target.value) === false) {
@@ -2940,19 +2944,47 @@ const StoreSettings = () => {
                         temp["bg_color"] = e.target.value;
                         setCopyImageOfStoreFooterSetting(temp);
                       }}
-                      addonAfter={
-                        <Tooltip
-                          title={t("stores:Reset-to-the-original-value")}
-                        >
-                          <UndoOutlined
-                            onClick={() => {
-                              setFooterBackgroundColor(headerFgColor);
-                            }}
-                          />
-                        </Tooltip>
-                      }
                     />
-                    {/* <Input
+                    <Space.Compact className="ml-2">
+                      <Input
+                        value={footerBackgroundColor}
+                        className="w-[150px]"
+                        onChange={(e) => {
+                          const patternName = /^#([A-Fa-f0-9]{6})$/;
+                          if (patternName.test(e.target.value) === false) {
+                            let temp = { ...colorCodeValidation };
+                            temp["footerBgValidation"] = true;
+                            setColorCodeValidation(temp);
+                            setFooterBackgroundColor(e.target.value);
+                            setOnChangeValues(true);
+                          } else {
+                            let temp = { ...colorCodeValidation };
+                            temp["footerBgValidation"] = false;
+                            setColorCodeValidation(temp);
+                            setFooterBackgroundColor(e.target.value);
+                            setOnChangeValues(true);
+                          }
+                          // setFooterBackgroundColor(e.target.value);
+                          let temp = { ...copyImageOfStoreFooterSetting };
+                          temp["bg_color"] = e.target.value;
+                          setCopyImageOfStoreFooterSetting(temp);
+                        }}
+                        addonAfter={
+                          <Tooltip
+                            title={t("stores:Reset-to-the-original-value")}
+                          >
+                            <UndoOutlined
+                              onClick={() => {
+                                setFooterBackgroundColor(headerFgColor);
+                                let temp = { ...colorCodeValidation };
+                                temp["footerBgValidation"] = false;
+                                setColorCodeValidation(temp);
+                              }}
+                            />
+                          </Tooltip>
+                        }
+                      />
+                      {/* <Input
                       addonAfter={
                         <Tooltip title="Reset to the original value">
                           <UndoOutlined
@@ -2965,49 +2997,24 @@ const StoreSettings = () => {
                       defaultValue="100%"
                       className="w-24"
                     /> */}
-                  </Space.Compact>
-                </Content>
-                {colorCodeValidation.footerBgValidation === true ? (
-                  <p className="text-red-600 text-sm">
-                    Please enter valid Hexadecimal Color code <br />
-                    ex. #ffffff for white, #000000 for black
-                  </p>
-                ) : null}
-              </Col>
-              <Col span={8} className="ml-1">
-                <label className="text-[13px] mb-2 ml-1 select-none">
-                  {t("stores:Text-Color")}
-                </label>
-                <Content className="flex">
-                  <Input
-                    type="color"
-                    className="w-9 p-0"
-                    value={footerForegroundColor}
-                    onChange={(e) => {
-                      const patternName = /^#([A-Fa-f0-9]{6})$/;
-                      if (patternName.test(e.target.value) === false) {
-                        let temp = { ...colorCodeValidation };
-                        temp["footerTextValidation"] = true;
-                        setColorCodeValidation(temp);
-                        setFooterForegroundColor(e.target.value);
-                        setOnChangeValues(true);
-                      } else {
-                        let temp = { ...colorCodeValidation };
-                        temp["footerTextValidation"] = false;
-                        setColorCodeValidation(temp);
-                        setFooterForegroundColor(e.target.value);
-                        setOnChangeValues(true);
-                      }
-                      // setFooterForegroundColor(e.target.value);
-                      let temp = { ...copyImageOfStoreFooterSetting };
-                      temp["fg_color"] = e.target.value;
-                      setCopyImageOfStoreFooterSetting(temp);
-                    }}
-                  />
-                  <Space.Compact className="ml-2">
+                    </Space.Compact>
+                  </Content>
+                  {colorCodeValidation.footerBgValidation === true ? (
+                    <p className="text-red-600 text-sm">
+                      Please enter valid Hexadecimal Color code <br />
+                      ex. #ffffff for white, #000000 for black
+                    </p>
+                  ) : null}
+                </Col>
+                <Col span={8} className="ml-1">
+                  <label className="text-[13px] mb-2 ml-1 select-none">
+                    {t("stores:Text-Color")}
+                  </label>
+                  <Content className="flex">
                     <Input
+                      type="color"
+                      className="w-9 p-0"
                       value={footerForegroundColor}
-                      className="w-[150px]"
                       onChange={(e) => {
                         const patternName = /^#([A-Fa-f0-9]{6})$/;
                         if (patternName.test(e.target.value) === false) {
@@ -3028,19 +3035,47 @@ const StoreSettings = () => {
                         temp["fg_color"] = e.target.value;
                         setCopyImageOfStoreFooterSetting(temp);
                       }}
-                      addonAfter={
-                        <Tooltip
-                          title={t("stores:Reset-to-the-original-value")}
-                        >
-                          <UndoOutlined
-                            onClick={() => {
-                              setFooterForegroundColor(footerFgColor);
-                            }}
-                          />
-                        </Tooltip>
-                      }
                     />
-                    {/* <Input
+                    <Space.Compact className="ml-2">
+                      <Input
+                        value={footerForegroundColor}
+                        className="w-[150px]"
+                        onChange={(e) => {
+                          const patternName = /^#([A-Fa-f0-9]{6})$/;
+                          if (patternName.test(e.target.value) === false) {
+                            let temp = { ...colorCodeValidation };
+                            temp["footerTextValidation"] = true;
+                            setColorCodeValidation(temp);
+                            setFooterForegroundColor(e.target.value);
+                            setOnChangeValues(true);
+                          } else {
+                            let temp = { ...colorCodeValidation };
+                            temp["footerTextValidation"] = false;
+                            setColorCodeValidation(temp);
+                            setFooterForegroundColor(e.target.value);
+                            setOnChangeValues(true);
+                          }
+                          // setFooterForegroundColor(e.target.value);
+                          let temp = { ...copyImageOfStoreFooterSetting };
+                          temp["fg_color"] = e.target.value;
+                          setCopyImageOfStoreFooterSetting(temp);
+                        }}
+                        addonAfter={
+                          <Tooltip
+                            title={t("stores:Reset-to-the-original-value")}
+                          >
+                            <UndoOutlined
+                              onClick={() => {
+                                setFooterForegroundColor(footerFgColor);
+                                let temp = { ...colorCodeValidation };
+                                temp["footerTextValidation"] = false;
+                                setColorCodeValidation(temp);
+                              }}
+                            />
+                          </Tooltip>
+                        }
+                      />
+                      {/* <Input
                       addonAfter={
                         <Tooltip title="Reset to the original value">
                           <UndoOutlined
@@ -3053,72 +3088,72 @@ const StoreSettings = () => {
                       defaultValue="100%"
                       className="w-24"
                     /> */}
-                  </Space.Compact>
-                </Content>
-                {colorCodeValidation.footerTextValidation === true ? (
-                  <p className="text-red-600 text-sm">
-                    Please enter valid Hexadecimal Color code <br />
-                    ex. #ffffff for white, #000000 for black
-                  </p>
-                ) : null}
-              </Col>
-            </Row>
+                    </Space.Compact>
+                  </Content>
+                  {colorCodeValidation.footerTextValidation === true ? (
+                    <p className="text-red-600 text-sm">
+                      Please enter valid Hexadecimal Color code <br />
+                      ex. #ffffff for white, #000000 for black
+                    </p>
+                  ) : null}
+                </Col>
+              </Row>
+            </Content>
+            <Content className="mt-5 mb-6">
+              <Row>
+                <Col>
+                  <Button
+                    // className="app-btn-primary"
+                    className={
+                      onChangeValues ? "app-btn-primary " : "!opacity-75"
+                    }
+                    disabled={!onChangeValues}
+                    onClick={() => {
+                      validatePostStoreSetting();
+                      // if (imagesUpload && imagesUpload.length > 0) {
+                      //   postImageOnClickSave();
+                      // }
+                    }}
+                  >
+                    {t("common:Save")}
+                  </Button>
+                </Col>
+                <Col className="pl-2">
+                  <Button
+                    // className=" app-btn-secondary"
+                    className={
+                      onChangeValues === true
+                        ? "app-btn-secondary "
+                        : "!opacity-75"
+                    }
+                    disabled={!onChangeValues}
+                    onClick={() => {
+                      navigate("/dashboard/store");
+                      // setFractionalUnit("");
+                      // setNumberToBasic("");
+                      // setCurrencyIsoCode("");
+                      // setCurrencySymbol("");
+                      // setPageBackgroundColor("#EBEBEB");
+                      // setButtonPrimaryBackgroundColor("#00000");
+                      // setButtonSecondaryBackgroundColor("#00000");
+                      // setButtonTeritaryBackgroundColor("#00000");
+                      // setButtonPrimaryForegroundColor("#00000");
+                      // setButtonSecondaryForegroundColor("#00000");
+                      // setButtonTeritaryForegroundColor("#00000");
+                      // setForeGroundColor("#333333");
+                      // setFooterBackgroundColor("#00000");
+                      // setFooterForegroundColor("#00000");
+                      // setHeaderForegroundColor("#00000");
+                      // setHeaderBackgroundColor("#00000");
+                      // setImagesUpload([]);
+                    }}
+                  >
+                    {t("common:Discard")}
+                  </Button>
+                </Col>
+              </Row>
+            </Content>
           </Content>
-          <Content className="mt-5 mb-6">
-            <Row>
-              <Col>
-                <Button
-                  // className="app-btn-primary"
-                  className={
-                    onChangeValues ? "app-btn-primary " : "!opacity-75"
-                  }
-                  disabled={!onChangeValues}
-                  onClick={() => {
-                    validatePostStoreSetting();
-                    // if (imagesUpload && imagesUpload.length > 0) {
-                    //   postImageOnClickSave();
-                    // }
-                  }}
-                >
-                  {t("common:Save")}
-                </Button>
-              </Col>
-              <Col className="pl-2">
-                <Button
-                  // className=" app-btn-secondary"
-                  className={
-                    onChangeValues === true
-                      ? "app-btn-secondary "
-                      : "!opacity-75"
-                  }
-                  disabled={!onChangeValues}
-                  onClick={() => {
-                    navigate("/dashboard/store");
-                    // setFractionalUnit("");
-                    // setNumberToBasic("");
-                    // setCurrencyIsoCode("");
-                    // setCurrencySymbol("");
-                    // setPageBackgroundColor("#EBEBEB");
-                    // setButtonPrimaryBackgroundColor("#00000");
-                    // setButtonSecondaryBackgroundColor("#00000");
-                    // setButtonTeritaryBackgroundColor("#00000");
-                    // setButtonPrimaryForegroundColor("#00000");
-                    // setButtonSecondaryForegroundColor("#00000");
-                    // setButtonTeritaryForegroundColor("#00000");
-                    // setForeGroundColor("#333333");
-                    // setFooterBackgroundColor("#00000");
-                    // setFooterForegroundColor("#00000");
-                    // setHeaderForegroundColor("#00000");
-                    // setHeaderBackgroundColor("#00000");
-                    // setImagesUpload([]);
-                  }}
-                >
-                  {t("common:Discard")}
-                </Button>
-              </Col>
-            </Row>
-          </Content>
-        </Content>
         </Content>
       </Content>
       {/* </Spin> */}
