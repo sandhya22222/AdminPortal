@@ -268,9 +268,9 @@ const Stores = () => {
       key: "name",
       width: "30%",
       ellipsis: true,
-      // sorter: (name1, name2) => name1.name.localeCompare(name2.name),
-      // sortDirections: ["descend", "ascend"],
-      // showSorterTooltip: true,
+      sorter: (name1, name2) => name1.name.localeCompare(name2.name),
+      sortDirections: ["descend", "ascend"],
+      showSorterTooltip: true,
       render: (text, record) => {
         return (
           <Tooltip title={record.name}>
@@ -1064,6 +1064,13 @@ const Stores = () => {
       });
   };
 
+  const handleKeyDown = (e) => {
+    // Prevent spaces from being entered by checking the key code
+    if (e.keyCode === 32) {
+      e.preventDefault();
+    }
+  };
+
   return (
     <Content className="">
       <StoreModal
@@ -1268,6 +1275,7 @@ const Stores = () => {
                                 setStorePassword(e.target.value);
                               }
                             }}
+                            onKeyDown={handleKeyDown}
                             onBlur={() => {
                               const trimmed = storePassword.trim();
                               setStorePassword(trimmed);
