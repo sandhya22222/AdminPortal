@@ -15,17 +15,27 @@ const UserProfile = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isNetworkError, setIsNetworkError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
+  const [hideEmail, setHideEmail] = useState("");
 
   const findAllWithoutPageStoreUsers = () => {
     MarketplaceServices.findAllWithoutPage(storeUsersAPI, null, false)
       .then(function (response) {
+        setIsNetworkError(false);
         console.log(
           "get from  store user server response-----> ",
-          response.data
+          response.data.email
         );
         setStoreUsersData(response.data);
-        setIsNetworkError(false);
         setIsLoading(false);
+        // const email = response.data.email;
+        // const emailHide =
+        //   email &&
+        //   email.replace(
+        //     /(?<=^\w)\w+(?=\w*?@\w)/,
+        //     (match) =>
+        //       match[0] + "*".repeat(match.length - 2) + match[match.length - 1]
+        //   );
+        // setHideEmail(emailHide);
       })
       .catch((error) => {
         console.log("error from store all users API ====>", error.response);
@@ -53,9 +63,9 @@ const UserProfile = () => {
           </Content>
         }
       />
-      <Content className="mt-[10rem]  !p-6">
+      <Content className="mt-[9rem] ">
         {isLoading ? (
-          <Content className="bg-white">
+          <Content className="bg-white !mx-[17rem]">
             <Skeleton
               active
               paragraph={{
@@ -67,19 +77,20 @@ const UserProfile = () => {
         ) : isNetworkError ? (
           <Layout className="p-0 text-center mb-3 bg-[#F4F4F4]">
             {/* <p>Validation in Progress</p> */}
-            <h5>
+            <p>
               {/* {errorMessage
                 ? errorMessage :*/}
               Please wait while we validate your information. If this process
               persists, please consider logging out and logging back in
-            </h5>
+            </p>
           </Layout>
         ) : (
-          <Content className="!text-center">
+          <Content className="!text-center !p-6  !mx-[17rem]">
             <Content className="inline-block">
               <Content className="shadow-sm  bg-[#FFFFFF] rounded-2xl flex flex-col items-center px-8 py-10 w-[500px]">
                 {/* <Row className="mb-2">
                   <Avatar size={104} icon={<UserOutlined />} />
+                </Row>
                 </Row> */}
                 <Row className="mb-2">
                   <Text className="font-medium text-lg">
@@ -89,33 +100,46 @@ const UserProfile = () => {
                 <Row className="font-semibold mb-3">
                   <Text to="">{storeUsersData && storeUsersData.email}</Text>
                 </Row>
-                <Row className="mb-2">
-                  <label className="text-md font-medium">
-                    First Name :{" "}
-                    {(storeUsersData && storeUsersData.firstName === "") ||
-                    (storeUsersData && storeUsersData.firstName === undefined)
-                      ? "NA"
-                      : storeUsersData && storeUsersData.firstName}
-                  </label>
-                </Row>
-                <Row className=" mb-2">
-                  <label className="text-md font-medium">
-                    Last Name :{" "}
-                    {(storeUsersData && storeUsersData.lastName === "") ||
-                    (storeUsersData && storeUsersData.lastName === undefined)
-                      ? "NA"
-                      : storeUsersData && storeUsersData.lastName}
-                  </label>
-                </Row>
-                <Row className="">
-                  <label className="text-md font-medium">
-                    Onboarded on :{" "}
-                    {getGenerateDateAndTime(
-                      storeUsersData && storeUsersData.createdTimestamp,
-                      "D MMMM YYYY"
-                    )}
-                  </label>
-                </Row>
+                <Content className="flex flex-col items-center">
+                  <Row className="mb-2">
+                    <label className="text-md font-medium">
+                      Role :{" "}
+                      {(storeUsersData &&
+                        storeUsersData.roles[0].name === "") ||
+                      (storeUsersData &&
+                        storeUsersData.roles[0].name === undefined)
+                        ? "NA"
+                        : storeUsersData && storeUsersData.roles[0].name}
+                    </label>
+                  </Row>
+                  <Row className="mb-2">
+                    <label className="text-md font-medium">
+                      First Name :{" "}
+                      {(storeUsersData && storeUsersData.firstName === "") ||
+                      (storeUsersData && storeUsersData.firstName === undefined)
+                        ? "NA"
+                        : storeUsersData && storeUsersData.firstName}
+                    </label>
+                  </Row>
+                  <Row className=" mb-2">
+                    <label className="text-md font-medium">
+                      Last Name :{" "}
+                      {(storeUsersData && storeUsersData.lastName === "") ||
+                      (storeUsersData && storeUsersData.lastName === undefined)
+                        ? "NA"
+                        : storeUsersData && storeUsersData.lastName}
+                    </label>
+                  </Row>
+                  <Row className="">
+                    <label className="text-md font-medium">
+                      Onboarded on :{" "}
+                      {getGenerateDateAndTime(
+                        storeUsersData && storeUsersData.createdTimestamp,
+                        "D MMMM YYYY"
+                      )}
+                    </label>
+                  </Row>
+                </Content>
               </Content>
             </Content>
           </Content>

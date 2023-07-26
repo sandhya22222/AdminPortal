@@ -587,228 +587,485 @@ const Stores = () => {
   }, [postData]);
   //! validation for post call
   const validateStorePostField = () => {
+    const pattern =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!_%*?&])[A-Za-z\d@$!_%*?&]{6,15}$/;
+    let count = 4;
     if (
-      (storeEmail.trim() === "" ||
-        storeEmail.trim() === null ||
-        storeEmail.trim() === undefined) &&
-      (storeUserName.trim() === "" ||
-        storeUserName.trim() === null ||
-        storeUserName.trim() === undefined) &&
-      (storePassword.trim() === "" ||
-        storePassword.trim() === null ||
-        storePassword.trim() === undefined)
+      storeEmail === "" &&
+      storeUserName === "" &&
+      storePassword === "" &&
+      name === ""
     ) {
       setInValidEmail(true);
       setInValidUserName(true);
       setInValidPassword(true);
-      toast(`${t("Please provide values for the mandatory fields")}`, {
+      setInValidName(true);
+      count--;
+      toast("Please provide values for the mandatory fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
       });
-      if (
-        name.trim() === "" ||
-        name.trim() === null ||
-        name.trim() === undefined
-      ) {
-        setInValidName(true);
-      }
-    } else {
-      let count = 4;
-      if (
-        name.trim() === "" ||
-        name.trim() === null ||
-        name.trim() === undefined
-      ) {
-        setInValidName(true);
-      }
-      // if (
-      //   name.trim() === "" ||
-      //   name.trim() === null ||
-      //   name.trim() === undefined
-      // ) {
-      //   setInValidName(true);
-      //   count--;
-      //   toast(`${t("stores:Please-enter-the-store-name")}`, {
-      //     position: toast.POSITION.TOP_RIGHT,
-      //     type: "error",
-      //     autoClose: 10000,
-      //   });
-      // }
-      // const patternName = /^[A-Za-z]+$/;
-      if (
-        name &&
-        validator.isLength(name.trim(), {
-          min: titleMinLength,
-          max: titleMaxLength,
-        }) === false
-      ) {
-        setInValidName(true);
-        count--;
-        toast(
-          `Store name must contain minimum of ${titleMinLength}, maximum of ${titleMaxLength} characters`,
-          {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          }
-        );
-      }
-
-      if (
-        (storeEmail && validator.isEmail(storeEmail) === false) ||
-        validator.isLength(storeEmail.trim(), {
-          min: emailMinLength,
-          max: emailMaxLength,
-        }) === false
-      ) {
-        setInValidEmail(true);
-        count--;
-        toast("Please enter valid email", {
+    } else if (
+      storeEmail === "" &&
+      storeUserName === "" &&
+      storePassword === "" &&
+      name !== ""
+    ) {
+      setInValidEmail(true);
+      setInValidUserName(true);
+      setInValidPassword(true);
+      count--;
+      toast("Please provide values for email, username and password", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+        autoClose: 10000,
+      });
+    } else if (
+      storeEmail !== "" &&
+      storeUserName === "" &&
+      storePassword === "" &&
+      name === ""
+    ) {
+      setInValidUserName(true);
+      setInValidPassword(true);
+      setInValidName(true);
+      count--;
+      toast("Please provide values for name, username and password", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+        autoClose: 10000,
+      });
+    } else if (
+      storeEmail === "" &&
+      storeUserName !== "" &&
+      storePassword === "" &&
+      name === ""
+    ) {
+      setInValidEmail(true);
+      setInValidPassword(true);
+      setInValidName(true);
+      count--;
+      toast("Please provide values for email, password and name", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+        autoClose: 10000,
+      });
+    } else if (
+      storeEmail === "" &&
+      storeUserName === "" &&
+      storePassword !== "" &&
+      name === ""
+    ) {
+      setInValidEmail(true);
+      setInValidUserName(true);
+      setInValidName(true);
+      count--;
+      toast("Please provide values for email , username and name", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+        autoClose: 10000,
+      });
+    } else if (
+      storeEmail === "" &&
+      storeUserName === "" &&
+      storePassword !== "" &&
+      name !== ""
+    ) {
+      setInValidEmail(true);
+      setInValidUserName(true);
+      count--;
+      toast("Please provide values for email and username ", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+        autoClose: 10000,
+      });
+    } else if (
+      storeEmail === "" &&
+      storeUserName !== "" &&
+      storePassword === "" &&
+      name !== ""
+    ) {
+      setInValidEmail(true);
+      setInValidPassword(true);
+      count--;
+      toast("Please provide values for email and password ", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+        autoClose: 10000,
+      });
+    } else if (
+      storeEmail !== "" &&
+      storeUserName === "" &&
+      storePassword === "" &&
+      name !== ""
+    ) {
+      setInValidUserName(true);
+      setInValidPassword(true);
+      count--;
+      toast("Please provide values for username and password ", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+        autoClose: 10000,
+      });
+    } else if (
+      storeEmail !== "" &&
+      storeUserName === "" &&
+      storePassword !== "" &&
+      name === ""
+    ) {
+      setInValidName(true);
+      setInValidUserName(true);
+      count--;
+      toast("Please provide values for name and username ", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+        autoClose: 10000,
+      });
+    } else if (
+      storeEmail !== "" &&
+      storeUserName !== "" &&
+      storePassword === "" &&
+      name === ""
+    ) {
+      setInValidName(true);
+      setInValidPassword(true);
+      count--;
+      toast("Please provide values for name and password ", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+        autoClose: 10000,
+      });
+    } else if (
+      storeEmail === "" &&
+      storeUserName !== "" &&
+      storePassword !== "" &&
+      name === ""
+    ) {
+      setInValidName(true);
+      setInValidEmail(true);
+      count--;
+      toast("Please provide values for email and name ", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+        autoClose: 10000,
+      });
+    } else if (
+      storeEmail !== "" &&
+      storeUserName !== "" &&
+      storePassword !== "" &&
+      name === ""
+    ) {
+      setInValidName(true);
+      count--;
+      toast(`${t("stores:Please-enter-the-store-name")}`, {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+        autoClose: 10000,
+      });
+    } else if (
+      storeEmail === "" &&
+      storeUserName !== "" &&
+      storePassword !== "" &&
+      name !== ""
+    ) {
+      setInValidEmail(true);
+      count--;
+      toast(`${t("stores:Please-enter-the-valid-email-address")}`, {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+        autoClose: 10000,
+      });
+    } else if (
+      storeEmail !== "" &&
+      storeUserName === "" &&
+      storePassword !== "" &&
+      name !== ""
+    ) {
+      setInValidUserName(true);
+      count--;
+      toast(`${t("stores:Please-enter-the-username")}`, {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+        autoClose: 10000,
+      });
+    } else if (
+      storeEmail !== "" &&
+      storeUserName !== "" &&
+      storePassword === "" &&
+      name !== ""
+    ) {
+      setInValidPassword(true);
+      count--;
+      toast(`${t("stores:Please-enter-the-password")}`, {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+        autoClose: 10000,
+      });
+    } else if (
+      name &&
+      validator.isLength(name.trim(), {
+        min: titleMinLength,
+        max: titleMaxLength,
+      }) === false
+    ) {
+      setInValidName(true);
+      count--;
+      toast(
+        `Store name must contain minimum of ${titleMinLength}, maximum of ${titleMaxLength} characters`,
+        {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
           autoClose: 10000,
-        });
-      }
-
-      // const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{12,50}$/i;
-      // if (storeEmail && regex.test(storeEmail.trim()) === false) {
-      //   count--;
-      //   setInValidEmail(true);
-      //   toast(`${t("stores:Please-enter-the-valid-email-address")}`, {
-      //     position: toast.POSITION.TOP_RIGHT,
-      //     type: "error",
-      //     autoClose: 10000,
-      //   });
-      // }
-      // if (
-      //   storeEmail.trim() === "" ||
-      //   storeEmail.trim() === null ||
-      //   storeEmail.trim() === undefined
-      // ) {
-      //   count--;
-      //   setInValidEmail(true);
-      //   toast(`${t("stores:Please-enter-the-valid-email-address")}`, {
-      //     position: toast.POSITION.TOP_RIGHT,
-      //     type: "error",
-      //     autoClose: 10000,
-      //   });
-      // }
-      // if (
-      //   storeUserName.trim() === "" ||
-      //   storeUserName.trim() === null ||
-      //   storeUserName.trim() === undefined
-      // ) {
-      //   setInValidUserName(true);
-      //   count--;
-      //   toast(`${t("stores:Please-enter-the-username")}`, {
-      //     position: toast.POSITION.TOP_RIGHT,
-      //     type: "error",
-      //     autoClose: 10000,
-      //   });
-      // }
-      // /^[a-zA-Z0-9_ ]{6,15}$/
-      // const userRegex = /^[A-Za-z0-9_\- ]+$/;
-      // if (storeUserName && userRegex.test(storeUserName.trim()) === false) {
-      //   count--;
-      //   setInValidUserName(true);
-      //   toast(`${t("stores:Validation-Error-Message2")}`, {
-      //     position: toast.POSITION.TOP_RIGHT,
-      //     type: "error",
-      //     autoClose: 10000,
-      //   });
-      // }
-
-      if (
-        storeUserName &&
-        validator.isLength(storeUserName.trim(), {
-          min: titleMinLength,
-          max: titleMaxLength,
-        }) === false
-      ) {
-        setInValidUserName(true);
-        count--;
-        toast(
-          `Username must contain minimum of ${titleMinLength}, maximum of ${titleMaxLength} characters`,
-          {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          }
-        );
-      }
-
-      // if (
-      //   storePassword &&
-      //   validator.isLength(storePassword.trim(), {
-      //     min: passwordMinLength,
-      //     max: passwordMaxLength,
-      //   }) === false
-      // ) {
-      //   setInValidPassword(true);
-      //   count--;
-      //   toast(
-      //     `Password must contain minimum of ${passwordMinLength}, maximum of ${passwordMaxLength} characters`,
-      //     {
-      //       position: toast.POSITION.TOP_RIGHT,
-      //       type: "error",
-      //       autoClose: 10000,
-      //     }
-      //   );
-      // }
-
-      // if (storeUserName && storeUserName.length < 6) {
-      //   setInValidUserName(true);
-      //   count--;
-      //   toast("Username must contain minimum 6 characters", {
-      //     position: toast.POSITION.TOP_RIGHT,
-      //     type: "error",
-      //   });
-      // }
-      // if (
-      //   storePassword.trim() === "" ||
-      //   storePassword.trim() === null ||
-      //   storePassword.trim() === undefined
-      // ) {
-      //   setInValidPassword(true);
-      //   count--;
-      //   toast(`${t("stores:Please-enter-the-password")}`, {
-      //     position: toast.POSITION.TOP_RIGHT,
-      //     type: "error",
-      //     autoClose: 10000,
-      //   });
-      // }
-      const pattern =
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!_%*?&])[A-Za-z\d@$!_%*?&]{6,15}$/;
-      const isValidPassword = pattern.test(storePassword);
-
-      if (storePassword && pattern.test(storePassword) === false) {
-        setInValidPassword(true);
-        count--;
-        toast(`${t("stores:Validation-Error-Message1")}`, {
+        }
+      );
+    } else if (
+      (storeEmail && validator.isEmail(storeEmail) === false) ||
+      validator.isLength(storeEmail.trim(), {
+        min: emailMinLength,
+        max: emailMaxLength,
+      }) === false
+    ) {
+      setInValidEmail(true);
+      count--;
+      toast(`${t("stores:Please-enter-the-valid-email-address")}`, {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+        autoClose: 10000,
+      });
+    } else if (
+      storeUserName &&
+      validator.isLength(storeUserName.trim(), {
+        min: titleMinLength,
+        max: titleMaxLength,
+      }) === false
+    ) {
+      setInValidUserName(true);
+      count--;
+      toast(
+        `Username must contain minimum of ${titleMinLength}, maximum of ${titleMaxLength} characters`,
+        {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
           autoClose: 10000,
-        });
-      }
-      // if (storePassword && storePassword.length < 6) {
-      //   setInValidPassword(true);
-      //   toast("Password must contain minimum 6 characters", {
-      //     position: toast.POSITION.TOP_RIGHT,
-      //     type: "error",
-      //   });
-      // }
-      if (
-        count === 4 &&
-        !showStoreErrorMessage
-        // name !== "" &&
-        // storeEmail !== "" &&
-        // storeUserName !== "" &&
-        // storePassword !== ""
-      ) {
-        saveStoreData();
-      }
+        }
+      );
+    } else if (storePassword && pattern.test(storePassword) === false) {
+      setInValidPassword(true);
+      count--;
+      toast(`${t("stores:Validation-Error-Message1")}`, {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+        autoClose: 10000,
+      });
     }
+    if (count === 4) {
+      saveStoreData();
+    }
+    //  else  {
+    //   let count = 4;
+    //   if (
+    //     name.trim() === "" ||
+    //     name.trim() === null ||
+    //     name.trim() === undefined
+    //   ) {
+    //     setInValidName(true);
+    //   }
+    //   //   if (
+    //   //     name.trim() === "" ||
+    //   //     name.trim() === null ||
+    //   //     name.trim() === undefined
+    //   //   ) {
+    //   //     setInValidName(true);
+    //   //   }
+    //   // }
+    //   // if (
+    //   //   name.trim() === "" ||
+    //   //   name.trim() === null ||
+    //   //   name.trim() === undefined
+    //   // ) {
+    //   //   setInValidName(true);
+    //   //   count--;
+    //   //   toast(`${t("stores:Please-enter-the-store-name")}`, {
+    //   //     position: toast.POSITION.TOP_RIGHT,
+    //   //     type: "error",
+    //   //     autoClose: 10000,
+    //   //   });
+    //   // }
+    //   // const patternName = /^[A-Za-z]+$/;
+    //   if (
+    //     name &&
+    //     validator.isLength(name.trim(), {
+    //       min: titleMinLength,
+    //       max: titleMaxLength,
+    //     }) === false
+    //   ) {
+    //     setInValidName(true);
+    //     count--;
+    //     toast(
+    //       `Store name must contain minimum of ${titleMinLength}, maximum of ${titleMaxLength} characters`,
+    //       {
+    //         position: toast.POSITION.TOP_RIGHT,
+    //         type: "error",
+    //         autoClose: 10000,
+    //       }
+    //     );
+    //   }
+
+    //   if (
+    //     (storeEmail && validator.isEmail(storeEmail) === false) ||
+    //     validator.isLength(storeEmail.trim(), {
+    //       min: emailMinLength,
+    //       max: emailMaxLength,
+    //     }) === false
+    //   ) {
+    //     setInValidEmail(true);
+    //     count--;
+    //     toast(`${t("stores:Please-enter-the-valid-email-address")}`, {
+    //       position: toast.POSITION.TOP_RIGHT,
+    //       type: "error",
+    //       autoClose: 10000,
+    //     });
+    //   }
+
+    //   // const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{12,50}$/i;
+    //   // if (storeEmail && regex.test(storeEmail.trim()) === false) {
+    //   //   count--;
+    //   //   setInValidEmail(true);
+    //   //   toast(`${t("stores:Please-enter-the-valid-email-address")}`, {
+    //   //     position: toast.POSITION.TOP_RIGHT,
+    //   //     type: "error",
+    //   //     autoClose: 10000,
+    //   //   });
+    //   // }
+    //   // if (
+    //   //   storeEmail.trim() === "" ||
+    //   //   storeEmail.trim() === null ||
+    //   //   storeEmail.trim() === undefined
+    //   // ) {
+    //   //   count--;
+    //   //   setInValidEmail(true);
+    //   //   toast(`${t("stores:Please-enter-the-valid-email-address")}`, {
+    //   //     position: toast.POSITION.TOP_RIGHT,
+    //   //     type: "error",
+    //   //     autoClose: 10000,
+    //   //   });
+    //   // }
+    //   // if (
+    //   //   storeUserName.trim() === "" ||
+    //   //   storeUserName.trim() === null ||
+    //   //   storeUserName.trim() === undefined
+    //   // ) {
+    //   //   setInValidUserName(true);
+    //   //   count--;
+    //   //   toast(`${t("stores:Please-enter-the-username")}`, {
+    //   //     position: toast.POSITION.TOP_RIGHT,
+    //   //     type: "error",
+    //   //     autoClose: 10000,
+    //   //   });
+    //   // }
+    //   // /^[a-zA-Z0-9_ ]{6,15}$/
+    //   // const userRegex = /^[A-Za-z0-9_\- ]+$/;
+    //   // if (storeUserName && userRegex.test(storeUserName.trim()) === false) {
+    //   //   count--;
+    //   //   setInValidUserName(true);
+    //   //   toast(`${t("stores:Validation-Error-Message2")}`, {
+    //   //     position: toast.POSITION.TOP_RIGHT,
+    //   //     type: "error",
+    //   //     autoClose: 10000,
+    //   //   });
+    //   // }
+
+    //   if (
+    //     storeUserName &&
+    //     validator.isLength(storeUserName.trim(), {
+    //       min: titleMinLength,
+    //       max: titleMaxLength,
+    //     }) === false
+    //   ) {
+    //     setInValidUserName(true);
+    //     count--;
+    //     toast(
+    //       `Username must contain minimum of ${titleMinLength}, maximum of ${titleMaxLength} characters`,
+    //       {
+    //         position: toast.POSITION.TOP_RIGHT,
+    //         type: "error",
+    //         autoClose: 10000,
+    //       }
+    //     );
+    //   }
+
+    //   // if (
+    //   //   storePassword &&
+    //   //   validator.isLength(storePassword.trim(), {
+    //   //     min: passwordMinLength,
+    //   //     max: passwordMaxLength,
+    //   //   }) === false
+    //   // ) {
+    //   //   setInValidPassword(true);
+    //   //   count--;
+    //   //   toast(
+    //   //     `Password must contain minimum of ${passwordMinLength}, maximum of ${passwordMaxLength} characters`,
+    //   //     {
+    //   //       position: toast.POSITION.TOP_RIGHT,
+    //   //       type: "error",
+    //   //       autoClose: 10000,
+    //   //     }
+    //   //   );
+    //   // }
+
+    //   // if (storeUserName && storeUserName.length < 6) {
+    //   //   setInValidUserName(true);
+    //   //   count--;
+    //   //   toast("Username must contain minimum 6 characters", {
+    //   //     position: toast.POSITION.TOP_RIGHT,
+    //   //     type: "error",
+    //   //   });
+    //   // }
+    //   // if (
+    //   //   storePassword.trim() === "" ||
+    //   //   storePassword.trim() === null ||
+    //   //   storePassword.trim() === undefined
+    //   // ) {
+    //   //   setInValidPassword(true);
+    //   //   count--;
+    //   //   toast(`${t("stores:Please-enter-the-password")}`, {
+    //   //     position: toast.POSITION.TOP_RIGHT,
+    //   //     type: "error",
+    //   //     autoClose: 10000,
+    //   //   });
+    //   // }
+    //   const pattern =
+    //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!_%*?&])[A-Za-z\d@$!_%*?&]{6,15}$/;
+    //   const isValidPassword = pattern.test(storePassword);
+
+    //   if (storePassword && pattern.test(storePassword) === false) {
+    //     setInValidPassword(true);
+    //     count--;
+    //     toast(`${t("stores:Validation-Error-Message1")}`, {
+    //       position: toast.POSITION.TOP_RIGHT,
+    //       type: "error",
+    //       autoClose: 10000,
+    //     });
+    //   }
+    //   // if (storePassword && storePassword.length < 6) {
+    //   //   setInValidPassword(true);
+    //   //   toast("Password must contain minimum 6 characters", {
+    //   //     position: toast.POSITION.TOP_RIGHT,
+    //   //     type: "error",
+    //   //   });
+    //   // }
+    //   if (
+    //     count === 4 &&
+    //     !showStoreErrorMessage
+    //     // name !== "" &&
+    //     // storeEmail !== "" &&
+    //     // storeUserName !== "" &&
+    //     // storePassword !== ""
+    //   ) {
+    //     saveStoreData();
+    //   }
+    // }
   };
   //! post call for stores
   const saveStoreData = () => {
@@ -1271,9 +1528,9 @@ const Stores = () => {
                               //     }
                               //   );
                               // } else
-                              if (e.target.value === "") {
-                                setStorePassword(e.target.value);
-                              }
+                              // if (e.target.value === "") {
+                              //   setStorePassword(e.target.value);
+                              // }
                             }}
                             onKeyDown={handleKeyDown}
                             onBlur={() => {
