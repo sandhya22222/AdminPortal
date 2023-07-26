@@ -960,7 +960,7 @@ const Stores = () => {
       }) === false
     ) {
       setInValidEditName(true);
-      count--;
+      // count--;
       toast(
         `Store name must contain minimum of ${titleMinLength}, maximum of ${titleMaxLength} characters`,
         {
