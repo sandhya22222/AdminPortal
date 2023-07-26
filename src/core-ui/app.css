@@ -13,7 +13,7 @@
 }
 /* ant delete icon */
 .anticon-delete {
-  color: var(--mp-danger-color)  !important;
+  color: var(--mp-danger-color) !important;
 }
 
 .ant-input:hover {
@@ -21,11 +21,11 @@
 }
 
 .ant-pagination .ant-pagination-item-active {
-  border-color: var(--mp-brand-color)  !important;
+  border-color: var(--mp-brand-color) !important;
 }
 
 .ant-select-selector:hover {
-  border-color: var(--mp-brand-color)  !important;
+  border-color: var(--mp-brand-color) !important;
 }
 
 .ant-select-item-option-selected {
@@ -36,13 +36,17 @@
 }
 
 .ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
-  color: var(--mp-brand-color)  !important;
+  color: var(--mp-brand-color) !important;
 }
 
 .ant-tabs .ant-tabs-ink-bar {
-  background: var(--mp-brand-color)  !important;
+  background: var(--mp-brand-color) !important;
 }
 
 .ant-tabs .ant-tabs-tab:hover {
-  color: var(--mp-brand-color)  !important;
+  color: var(--mp-brand-color) !important;
+}
+
+.ant-tooltip {
+  z-index: 10 !important;
 }
