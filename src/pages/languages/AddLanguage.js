@@ -266,14 +266,14 @@ const AddLanguage = () => {
       (languageCode.trim() &&
         validator.isAlpha(languageCode.trim()) === false) ||
       validator.isLength(languageCode.trim(), {
-        min: titleMinLength,
-        max: titleMaxLength,
+        min: 2,
+        max: 5,
       }) === false
     ) {
       validValues--;
       setIsLanguageCodeFieldEmpty(true);
       toast(
-        `Language code must contain minimum of ${titleMinLength}, maximum of ${titleMaxLength} characters`,
+        `Language code must contain minimum of 2, maximum of 5 characters`,
         {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
@@ -493,8 +493,8 @@ const AddLanguage = () => {
       <Content className="mt-[8rem] !w-full p-3">
         <Spin tip="Please wait!" size="large" spinning={isLoading}>
           <Content className="mt-[-15px]">
-            <Content className="p-3 bg-white mt-0 !rounded-lg">
-              <Content>
+            <Content className="p-3 bg-white mt-0 !rounded-l">
+              <Content className="!mb-10">
                 <Row>
                   <Col span={8} className="pr-2">
                     <Content className="my-3">
@@ -527,6 +527,11 @@ const AddLanguage = () => {
                           }
                           setIsLanguageFieldEmpty(false);
                         }}
+                        onBlur={() => {
+                          const trimmed = language.trim();
+                          const trimmedUpdate = trimmed.replace(/\s+/g, " ");
+                          setLanguage(trimmedUpdate);
+                        }}
                         // pattern="^[A-Za-z0-9]+$"
                         // rules={[
                         //   {
@@ -549,8 +554,8 @@ const AddLanguage = () => {
                       <Input
                         placeholder="Enter Language Code"
                         value={languageCode}
-                        minLength={titleMinLength}
-                        maxLength={titleMaxLength}
+                        minLength={2}
+                        maxLength={5}
                         className={`${
                           isLanguageCodeFieldEmpty
                             ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
@@ -571,6 +576,11 @@ const AddLanguage = () => {
                             setOnChangeValues(true);
                           }
                           setIsLanguageCodeFieldEmpty(false);
+                        }}
+                        onBlur={() => {
+                          const trimmed = languageCode.trim();
+                          const trimmedUpdate = trimmed.replace(/\s+/g, " ");
+                          setLanguageCode(trimmedUpdate);
                         }}
                         // pattern="^[A-Za-z0-9]+$"
                       />
@@ -598,6 +608,11 @@ const AddLanguage = () => {
                           handleRegexChange(e);
                           // setOnChangeValues(true);
                         }}
+                        onBlur={() => {
+                          const trimmed = regex.trim();
+                          const trimmedUpdate = trimmed.replace(/\s+/g, " ");
+                          setRegex(trimmedUpdate);
+                        }}
                       />
                     </Content>
                   </Col>
@@ -613,6 +628,11 @@ const AddLanguage = () => {
                           handleNativeNameChange(e);
                           setIsNativeFieldEmpty(false);
                           // setOnChangeValues(true);
+                        }}
+                        onBlur={() => {
+                          const trimmed = nativeName.trim();
+                          const trimmedUpdate = trimmed.replace(/\s+/g, " ");
+                          setNativeName(trimmedUpdate);
                         }}
                         className={`${
                           isNativeFieldEmpty
@@ -671,54 +691,56 @@ const AddLanguage = () => {
                   </Dragger>
                 </Content> */}
               </Content>
-            </Content>
-            <Content className="mt-3">
-              <StoreModal
-                isVisible={isModalOpen}
-                okButtonText={"Yes"}
-                title={"Warning"}
-                cancelButtonText={"No"}
-                okCallback={() => navigate("/dashboard/language")}
-                cancelCallback={() => closeModal()}
-                isSpin={false}
-              >
-                <div>
-                  <p>{`Discard Changes Confirmation`}</p>
-                  <p>{`This action will take you back to the listing page, and any changes made here will not be saved. Are you sure you would like to proceed?`}</p>
-                </div>
-              </StoreModal>
-              <Row>
-                <Col>
-                  <Button
-                    className={
-                      onChangeValues ? "app-btn-primary" : "!opacity-75"
-                    }
-                    onClick={() => validateLanguageFieldEmptyOrNot()}
-                    disabled={!onChangeValues}
-                  >
-                    Save
-                  </Button>
-                </Col>
-                <Col className="pl-2">
-                  {/* <Link to="/dashboard/language"> */}
-                  <Button
-                    // style={{ background: "#FFFFFF" }}
-                    onClick={() => {
-                      setIsModalOpen(true);
-                    }}
-                    // className=" app-btn-secondary"
-                    className={
-                      onChangeValues === true
-                        ? "app-btn-secondary"
-                        : "!opacity-75"
-                    }
-                    disabled={!onChangeValues}
-                  >
-                    Discard
-                  </Button>
-                  {/* </Link> */}
-                </Col>
-              </Row>
+              {/* </Content> */}
+              <Content className="">
+                <StoreModal
+                  isVisible={isModalOpen}
+                  okButtonText={"Yes"}
+                  title={"Warning"}
+                  cancelButtonText={"No"}
+                  okCallback={() => navigate("/dashboard/language")}
+                  cancelCallback={() => closeModal()}
+                  hideCloseButton={false}
+                  isSpin={false}
+                >
+                  <div>
+                    <p>{`Discard Changes Confirmation`}</p>
+                    <p>{`This action will take you back to the listing page, and any changes made here will not be saved. Are you sure you would like to proceed?`}</p>
+                  </div>
+                </StoreModal>
+                <Row>
+                  <Col>
+                    <Button
+                      className={
+                        onChangeValues ? "app-btn-primary" : "!opacity-75"
+                      }
+                      onClick={() => validateLanguageFieldEmptyOrNot()}
+                      disabled={!onChangeValues}
+                    >
+                      Save
+                    </Button>
+                  </Col>
+                  <Col className="pl-2">
+                    {/* <Link to="/dashboard/language"> */}
+                    <Button
+                      // style={{ background: "#FFFFFF" }}
+                      onClick={() => {
+                        setIsModalOpen(true);
+                      }}
+                      // className=" app-btn-secondary"
+                      className={
+                        onChangeValues === true
+                          ? "app-btn-secondary"
+                          : "!opacity-75"
+                      }
+                      disabled={!onChangeValues}
+                    >
+                      Discard
+                    </Button>
+                    {/* </Link> */}
+                  </Col>
+                </Row>
+              </Content>
             </Content>
           </Content>
         </Spin>

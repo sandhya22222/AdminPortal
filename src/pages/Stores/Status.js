@@ -185,6 +185,7 @@ function Status({
         okCallback={() => updateStoreStatus()}
         cancelCallback={() => closeModal()}
         isSpin={isLoading}
+        hideCloseButton={false}
       >
         {/* <Content className="!w-3/5"> */}
         {changeSwitchStatus ? (

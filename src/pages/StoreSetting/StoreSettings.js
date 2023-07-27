@@ -1618,6 +1618,11 @@ const StoreSettings = () => {
                     setInValidCurrencySymbol(true);
                   }
                 }}
+                onBlur={() => {
+                  const trimmed = currencySymbol.trim();
+                  const trimmedUpdate = trimmed.replace(/\s+/g, " ");
+                  setCurrencySymbol(trimmedUpdate);
+                }}
               />
             </Col>
             <Col span={4} className="mx-2.5">
@@ -1642,6 +1647,11 @@ const StoreSettings = () => {
                     // setCurrencyIsoCode("");
                     setInValidCurrencyIsoCode(true);
                   }
+                }}
+                onBlur={() => {
+                  const trimmed = currencyIsoCode.trim();
+                  const trimmedUpdate = trimmed.replace(/\s+/g, " ");
+                  setCurrencyIsoCode(trimmedUpdate);
                 }}
                 className={`${
                   inValidCurrencyIsoCode
@@ -1674,6 +1684,11 @@ const StoreSettings = () => {
                     setInValidFractionalUnit(true);
                   }
                 }}
+                onBlur={() => {
+                  const trimmed = fractionalUnit.trim();
+                  const trimmedUpdate = trimmed.replace(/\s+/g, " ");
+                  setFractionalUnit(trimmedUpdate);
+                }}
                 className={`${
                   inValidFractionalUnit
                     ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
@@ -1703,6 +1718,11 @@ const StoreSettings = () => {
                   temp["number_to_basic"] = e;
                   setCopyImageOfStoreSettingsCurrency(temp);
                   setOnChangeValues(true);
+                }}
+                onBlur={() => {
+                  const trimmed = numberToBasic.trim();
+                  const trimmedUpdate = trimmed.replace(/\s+/g, " ");
+                  setNumberToBasic(trimmedUpdate);
                 }}
                 onKeyDown={numberToBasicLimit}
                 className={`${
@@ -1774,6 +1794,7 @@ const StoreSettings = () => {
                     cancelCallback={() => closeModal()}
                     isSpin={false}
                     className="!h-96"
+                    // hideCloseButton={false}
                   >
                     <Preview
                       headerBackgroundColor={headerBackgroundColor}

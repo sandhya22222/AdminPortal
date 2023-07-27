@@ -22,7 +22,9 @@ import TranslateIcon from "../assets/images/sidebar/translate-variant.png";
 import PaymentTypeIcon from "../assets/images/sidebar/credit-card-settings-outline.png";
 import ProfileIcon from "../assets/images/sidebar/account.png";
 import BackBurger from "../assets/images/sidebar/backburger.png";
-import menuIcon from "../assets/images/sidebar/menu.png"
+import menuIcon from "../assets/images/sidebar/menu.png";
+import DeleteIcon from "../assets/images/common/deleteIcon.png";
+import EditIcon from "../assets/images/common/editIcon.png";
 export {
   BrandLogo,
   AppStoreLogo,
@@ -45,5 +47,7 @@ export {
   PaymentTypeIcon,
   ProfileIcon,
   BackBurger,
-  menuIcon
+  menuIcon,
+  DeleteIcon,
+  EditIcon
 };

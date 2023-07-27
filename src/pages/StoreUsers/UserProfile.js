@@ -23,7 +23,7 @@ const UserProfile = () => {
         setIsNetworkError(false);
         console.log(
           "get from  store user server response-----> ",
-          response.data.email
+          response.data
         );
         setStoreUsersData(response.data);
         setIsLoading(false);
