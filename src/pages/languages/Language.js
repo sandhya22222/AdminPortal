@@ -43,7 +43,7 @@ import { use } from "i18next";
 import useAuthorization from "../../hooks/useAuthorization";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
-
+import { EditIcon, DeleteIcon } from "../../constants/media";
 const { Title, Text } = Typography;
 const { Content } = Layout;
 
@@ -318,13 +318,14 @@ const Language = () => {
               className=" pl-[10px] font-semibold app-table-data-title"
             >
               <Tooltip title="Edit Language">
-                <MdEdit className="!text-xl text-black" />
+                <img src={EditIcon} className="!text-xl text-black" />
               </Tooltip>
             </Link>
             <>
               <Tooltip title="Delete Language">
-                <MdDelete
-                  className="!text-[#A00A18] !text-xl ml-4 cursor-pointer"
+                <img
+                  src={DeleteIcon}
+                  className="!text-xl ml-5 cursor-pointer"
                   onClick={() => {
                     openDeleteModal(record.id);
                   }}

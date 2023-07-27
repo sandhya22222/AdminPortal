@@ -40,6 +40,7 @@ import {
 import { toast } from "react-toastify";
 import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
 import { useTranslation } from "react-i18next";
+import { EditIcon, DeleteIcon } from "../../constants/media";
 //! Import user defined components
 import Highlighter from "react-highlight-words";
 import DmPagination from "../../components/DmPagination/DmPagination";
@@ -322,7 +323,8 @@ const Stores = () => {
         return (
           <Content className="whitespace-nowrap flex align-middle">
             <Tooltip title={t("stores:Edit-Store")}>
-              <MdEdit
+              <img
+                src={EditIcon}
                 className=" !text-xl cursor-pointer"
                 onClick={() => {
                   showEditDrawer(record.id);
@@ -350,8 +352,9 @@ const Stores = () => {
 
             {record.status === "InActive" ? (
               <Tooltip title={t("stores:Delete-Store")}>
-                <MdDelete
-                  className=" !text-[#A00A18] !text-xl ml-4 cursor-pointer"
+                <img
+                  src={DeleteIcon}
+                  className="!text-xl ml-4 cursor-pointer"
                   onClick={() => {
                     openDeleteModal(record.id);
                   }}
@@ -587,9 +590,8 @@ const Stores = () => {
   }, [postData]);
   //! validation for post call
   const validateStorePostField = () => {
-    const pattern =
-      /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{12,64}$/;
-      // /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!_%*?&])[A-Za-z\d@$!_%*?&]{6,15}$/;
+    const pattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{12,64}$/;
+    // /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!_%*?&])[A-Za-z\d@$!_%*?&]{6,15}$/;
     let count = 4;
     if (
       storeEmail === "" &&
@@ -617,7 +619,7 @@ const Stores = () => {
       setInValidUserName(true);
       setInValidPassword(true);
       count--;
-      toast("Please provide values for email, username and password", {
+      toast("Please provide values for the mandatory fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -632,7 +634,7 @@ const Stores = () => {
       setInValidPassword(true);
       setInValidName(true);
       count--;
-      toast("Please provide values for name, username and password", {
+      toast("Please provide values for the mandatory fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -647,7 +649,7 @@ const Stores = () => {
       setInValidPassword(true);
       setInValidName(true);
       count--;
-      toast("Please provide values for email, password and name", {
+      toast("Please provide values for the mandatory fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -662,7 +664,7 @@ const Stores = () => {
       setInValidUserName(true);
       setInValidName(true);
       count--;
-      toast("Please provide values for email , username and name", {
+      toast("Please provide values for the mandatory fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -676,7 +678,7 @@ const Stores = () => {
       setInValidEmail(true);
       setInValidUserName(true);
       count--;
-      toast("Please provide values for email and username ", {
+      toast("Please provide values for the mandatory fields ", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -690,7 +692,7 @@ const Stores = () => {
       setInValidEmail(true);
       setInValidPassword(true);
       count--;
-      toast("Please provide values for email and password ", {
+      toast("Please provide values for the mandatory fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -704,7 +706,7 @@ const Stores = () => {
       setInValidUserName(true);
       setInValidPassword(true);
       count--;
-      toast("Please provide values for username and password ", {
+      toast("Please provide values for the mandatory fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -718,7 +720,7 @@ const Stores = () => {
       setInValidName(true);
       setInValidUserName(true);
       count--;
-      toast("Please provide values for name and username ", {
+      toast("Please provide values for the mandatory fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -732,7 +734,7 @@ const Stores = () => {
       setInValidName(true);
       setInValidPassword(true);
       count--;
-      toast("Please provide values for name and password ", {
+      toast("Please provide values for the mandatory fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -746,7 +748,7 @@ const Stores = () => {
       setInValidName(true);
       setInValidEmail(true);
       count--;
-      toast("Please provide values for email and name ", {
+      toast("Please provide values for the mandatory fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -759,7 +761,7 @@ const Stores = () => {
     ) {
       setInValidName(true);
       count--;
-      toast(`${t("stores:Please-enter-the-store-name")}`, {
+      toast("Please provide values for the mandatory fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -772,7 +774,7 @@ const Stores = () => {
     ) {
       setInValidEmail(true);
       count--;
-      toast(`${t("stores:Please-enter-the-valid-email-address")}`, {
+      toast("Please provide values for the mandatory fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -785,7 +787,7 @@ const Stores = () => {
     ) {
       setInValidUserName(true);
       count--;
-      toast(`${t("stores:Please-enter-the-username")}`, {
+      toast("Please provide values for the mandatory fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -798,7 +800,7 @@ const Stores = () => {
     ) {
       setInValidPassword(true);
       count--;
-      toast(`${t("stores:Please-enter-the-password")}`, {
+      toast("Please provide values for the mandatory fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -1634,6 +1636,14 @@ const Stores = () => {
                                 setOnChangeEditValues(true);
                               }
                             }}
+                            onBlur={() => {
+                              const trimmed = editName.trim();
+                              const trimmedUpdate = trimmed.replace(
+                                /\s+/g,
+                                " "
+                              );
+                              setEditName(trimmedUpdate);
+                            }}
                           />
                           <Divider orientation="left" orientationMargin="0">
                             {t("stores:Store-Administrator-Details")}
@@ -1698,6 +1708,14 @@ const Stores = () => {
                                   }
                                 );
                               }
+                            }}
+                            onBlur={() => {
+                              const trimmed = storeEditUserName.trim();
+                              const trimmedUpdate = trimmed.replace(
+                                /\s+/g,
+                                " "
+                              );
+                              setStoreEditUserName(trimmedUpdate);
                             }}
                           />
                           <span className="text-red-600 text-sm">*</span>

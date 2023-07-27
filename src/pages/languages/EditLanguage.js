@@ -281,13 +281,13 @@ const EditLanguage = () => {
       languageDetails.language_code.trim() &&
       // validator.isAlpha(languageDetails.language_code) === false) ||
       validator.isLength(languageDetails.language_code.trim(), {
-        min: titleMinLength,
-        max: titleMaxLength,
+        min: 2,
+        max: 5,
       }) === false
     ) {
       setIsLanguageCodeFieldEmpty(true);
       toast(
-        `Language code must contain minimum of ${titleMinLength}, maximum of ${titleMaxLength} characters`,
+        `Language code must contain minimum of 2, maximum of 5 characters`,
         {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
@@ -684,7 +684,7 @@ const EditLanguage = () => {
               ) : (
                 <Content className="!w-[150%] ">
                   <Content className="p-3 !bg-white mt-[8rem] !rounded-lg mb-6">
-                    <Content className="">
+                    <Content className="!mb-10">
                       {/* <Typography.Title
                         level={3}
                         className="inline-block !font-normal"
@@ -724,6 +724,14 @@ const EditLanguage = () => {
                                   setOnChangeValues(true);
                                 }
                               }}
+                              onBlur={() => {
+                                const trimmed = languageDetails.language.trim();
+                                const trimmedUpdate = trimmed.replace(
+                                  /\s+/g,
+                                  " "
+                                );
+                                languageHandler("language", trimmedUpdate);
+                              }}
                             />
                           </Content>
                         </Col>
@@ -739,8 +747,8 @@ const EditLanguage = () => {
                             <Input
                               placeholder="Enter Language Code"
                               value={languageDetails.language_code}
-                              minLength={titleMinLength}
-                              maxLength={titleMaxLength}
+                              minLength={2}
+                              maxLength={5}
                               className={`${
                                 isLanguageCodeFieldEmpty
                                   ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
@@ -764,6 +772,15 @@ const EditLanguage = () => {
                                   );
                                   setOnChangeValues(true);
                                 }
+                              }}
+                              onBlur={() => {
+                                const trimmed =
+                                  languageDetails.language_code.trim();
+                                const trimmedUpdate = trimmed.replace(
+                                  /\s+/g,
+                                  " "
+                                );
+                                languageHandler("language_code", trimmedUpdate);
                               }}
                             />
                           </Content>
@@ -792,6 +809,18 @@ const EditLanguage = () => {
                                   e.target.value
                                 );
                                 setOnChangeValues(true);
+                              }}
+                              onBlur={() => {
+                                const trimmed =
+                                  languageDetails.language_regex.trim();
+                                const trimmedUpdate = trimmed.replace(
+                                  /\s+/g,
+                                  " "
+                                );
+                                languageHandler(
+                                  "language_regex",
+                                  trimmedUpdate
+                                );
                               }}
                             />
                           </Content>
@@ -835,6 +864,15 @@ const EditLanguage = () => {
                                   );
                                   setOnChangeValues(true);
                                 }
+                              }}
+                              onBlur={() => {
+                                const trimmed =
+                                  languageDetails.native_name.trim();
+                                const trimmedUpdate = trimmed.replace(
+                                  /\s+/g,
+                                  " "
+                                );
+                                languageHandler("native_name", trimmedUpdate);
                               }}
                             />
                           </Content>
@@ -936,59 +974,62 @@ const EditLanguage = () => {
                         )}
                       </Content> */}
                     </Content>
-                  </Content>
-                  <Content className="mt-3">
-                    <StoreModal
-                      isVisible={isModalOpen}
-                      okButtonText={"Yes"}
-                      title={"Warning"}
-                      cancelButtonText={"No"}
-                      okCallback={() => navigate("/dashboard/language")}
-                      cancelCallback={() => closeModal()}
-                      isSpin={false}
-                    >
-                      <div>
-                        <p>{`Discard Changes Confirmation`}</p>
-                        <p>{`This action will take you back to the listing page, and any changes made here will not be saved. Are you sure you would like to proceed?`}</p>
-                      </div>
-                    </StoreModal>
-                    <Row>
-                      <Col>
-                        {/* <Link to="/dashboard/language"> */}
-                        <Button
-                          // style={{ background: "#FFFFFF" }}
-                          // className="app-btn-secondary"
-                          className={
-                            onChangeValues === true
-                              ? "app-btn-secondary "
-                              : "!opacity-75"
-                          }
-                          disabled={!onChangeValues}
-                          onClick={() => {
-                            setIsModalOpen(true);
-                          }}
-                        >
-                          {/* <label className="h-5 text-[14px]  text-[#393939] cursor-pointer"> */}
-                          Discard
-                          {/* </label> */}
-                        </Button>
-                        {/* </Link> */}
-                      </Col>
-                      <Col className="pl-2">
-                        <Button
-                          // style={{ backgroundColor: "#393939" }}
-                          className={
-                            onChangeValues ? "app-btn-primary " : "!opacity-75"
-                          }
-                          onClick={() => validateLanguageFieldEmptyOrNot()}
-                          disabled={!onChangeValues}
-                        >
-                          {/* <label className=" h-5  text-[14px]  text-[#FFFFFF] cursor-pointer"> */}
-                          Update
-                          {/* </label> */}
-                        </Button>
-                      </Col>
-                    </Row>
+                    <Content className="mt-3">
+                      <StoreModal
+                        isVisible={isModalOpen}
+                        okButtonText={"Yes"}
+                        title={"Warning"}
+                        cancelButtonText={"No"}
+                        okCallback={() => navigate("/dashboard/language")}
+                        cancelCallback={() => closeModal()}
+                        isSpin={false}
+                        hideCloseButton={false}
+                      >
+                        <div>
+                          <p>{`Discard Changes Confirmation`}</p>
+                          <p>{`This action will take you back to the listing page, and any changes made here will not be saved. Are you sure you would like to proceed?`}</p>
+                        </div>
+                      </StoreModal>
+                      <Row>
+                        <Col>
+                          {/* <Link to="/dashboard/language"> */}
+                          <Button
+                            // style={{ backgroundColor: "#393939" }}
+                            className={
+                              onChangeValues
+                                ? "app-btn-primary "
+                                : "!opacity-75"
+                            }
+                            onClick={() => validateLanguageFieldEmptyOrNot()}
+                            disabled={!onChangeValues}
+                          >
+                            {/* <label className=" h-5  text-[14px]  text-[#FFFFFF] cursor-pointer"> */}
+                            Update
+                            {/* </label> */}
+                          </Button>
+                          {/* </Link> */}
+                        </Col>
+                        <Col className="pl-2">
+                          <Button
+                            // style={{ background: "#FFFFFF" }}
+                            // className="app-btn-secondary"
+                            className={
+                              onChangeValues === true
+                                ? "app-btn-secondary "
+                                : "!opacity-75"
+                            }
+                            disabled={!onChangeValues}
+                            onClick={() => {
+                              setIsModalOpen(true);
+                            }}
+                          >
+                            {/* <label className="h-5 text-[14px]  text-[#393939] cursor-pointer"> */}
+                            Discard
+                            {/* </label> */}
+                          </Button>
+                        </Col>
+                      </Row>
+                    </Content>
                   </Content>
                 </Content>
               )}
