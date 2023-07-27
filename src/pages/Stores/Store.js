@@ -1107,7 +1107,7 @@ const Stores = () => {
             autoClose: 10000,
           });
         } else {
-          toast(`${t("common:Something-Went-Wrong")}`, {
+          toast(`iutui`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
             autoClose: 10000,
@@ -1817,6 +1817,11 @@ const Stores = () => {
               <Content className=" grid justify-items-end">
                 <DmPagination
                   currentPage={
+                    parseInt(searchParams.get("page"))
+                      ? parseInt(searchParams.get("page"))
+                      : 1
+                  }
+                  presentPage={
                     parseInt(searchParams.get("page"))
                       ? parseInt(searchParams.get("page"))
                       : 1

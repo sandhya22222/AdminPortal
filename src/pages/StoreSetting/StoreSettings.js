@@ -1476,7 +1476,7 @@ const StoreSettings = () => {
                   setImageChangeValues={setImageChangeValues}
                 />
               </Col>
-              <Col className="!ml-10">
+              {/* <Col className="!ml-10">
                 <StoreImages
                   title={`${t("stores:Search-Logo")}`}
                   type={"search_logo"}
@@ -1527,7 +1527,7 @@ const StoreSettings = () => {
                   InfoCircleText={`${t("stores:Wishlist-Logo-Info")}`}
                   setImageChangeValues={setImageChangeValues}
                 />
-              </Col>
+              </Col> */}
             </Row>
             <StoreImages
               title={`${t("stores:Banner-Logo")}`}
