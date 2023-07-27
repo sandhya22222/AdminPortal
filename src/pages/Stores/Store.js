@@ -588,7 +588,8 @@ const Stores = () => {
   //! validation for post call
   const validateStorePostField = () => {
     const pattern =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!_%*?&])[A-Za-z\d@$!_%*?&]{6,15}$/;
+      /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{12,64}$/;
+      // /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!_%*?&])[A-Za-z\d@$!_%*?&]{6,15}$/;
     let count = 4;
     if (
       storeEmail === "" &&
@@ -1431,6 +1432,14 @@ const Stores = () => {
                               }
                               setInValidName(false);
                             }}
+                            onBlur={() => {
+                              const trimmed = name.trim();
+                              const trimmedUpdate = trimmed.replace(
+                                /\s+/g,
+                                " "
+                              );
+                              setName(trimmedUpdate);
+                            }}
                           />
 
                           {/* {showStoreErrorMessage === true ? (
@@ -1462,6 +1471,14 @@ const Stores = () => {
                               setStoreEmail(e.target.value);
                               setInValidEmail(false);
                               setOnChangeValues(true);
+                            }}
+                            onBlur={() => {
+                              const trimmed = storeEmail.trim();
+                              const trimmedUpdate = trimmed.replace(
+                                /\s+/g,
+                                " "
+                              );
+                              setStoreEmail(trimmedUpdate);
                             }}
                           />
                           <span className="text-red-600 text-sm">*</span>
@@ -1496,6 +1513,14 @@ const Stores = () => {
                                 setOnChangeValues(true);
                               }
                               setOnChangeValues(true);
+                            }}
+                            onBlur={() => {
+                              const trimmed = storeUserName.trim();
+                              const trimmedUpdate = trimmed.replace(
+                                /\s+/g,
+                                " "
+                              );
+                              setStoreUserName(trimmedUpdate);
                             }}
                           />
                           <span className="text-red-600 text-sm">*</span>
