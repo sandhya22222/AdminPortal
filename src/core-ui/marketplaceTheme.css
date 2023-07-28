@@ -1,34 +1,34 @@
 :root {
-    --mp-brand-color: #7d3192;
-    --mp-brand-color-h: #4A2D73;
+    --mp-brand-color: #0246BB;
+    --mp-brand-color-h: #3367CD;
 
-    --mp-primary-color: #7d3192;
-    --mp-primary-color-h: #7d3192;
-    --mp-primary-border-color: #7d3192;
-    --mp-primary-border-color-h: #7d3192;
+    --mp-primary-color: #0246BB;
+    --mp-primary-color-h: #0246BB;
+    --mp-primary-border-color: #0246BB;
+    --mp-primary-border-color-h: #0246BB;
     --mp-primary-text-color: #ffffff;
     --mp-primary-text-color-h: #ffffff;
 
     --mp-secondary-color: #f4f4f4;
     --mp-secondary-color-h: #f4f4f4;
-    --mp-secondary-border-color: #7d3192;
-    --mp-secondary-border-color-h: #7d3192;
+    --mp-secondary-border-color: #0246BB;
+    --mp-secondary-border-color-h: #0246BB;
     --mp-secondary-text-color: #1f1f1f;
     --mp-secondary-text-color-h: #1f1f1f;
 
 
-    --mp-success-color: #7d3192;
-    --mp-success-color-h: #7d3192;
+    --mp-success-color: #0246BB;
+    --mp-success-color-h: #0246BB;
     --mp-danger-color: #a00a18;
     --mp-danger-color-h: #a00a18;
-    --mp-warning-color: #7d3192;
-    --mp-warning-color-h: #7d3192;
-    --mp-info-color: #7d3192;
-    --mp-info-color-h: #7d3192;
+    --mp-warning-color: #0246BB;
+    --mp-warning-color-h: #0246BB;
+    --mp-info-color: #0246BB;
+    --mp-info-color-h: #0246BB;
     --mp-light-color: #f3e8ff;
     --mp-light-color-h: #f3e8ff;
-    --mp-dark-color: #7d3192;
-    --mp-dark-color-h: #7d3192;
+    --mp-dark-color: #0246BB;
+    --mp-dark-color-h: #0246BB;
     --mp-bright-color: #ffffff;
     --mp-bright-color-h: #ffffff;
     --mp-link-color: #1A5692;
