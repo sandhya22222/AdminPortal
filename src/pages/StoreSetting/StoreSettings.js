@@ -1821,6 +1821,7 @@ const StoreSettings = () => {
                       buttonTeritaryForegroundColor={
                         buttonTeritaryForegroundColor
                       }
+                     getImageData={getImageData}
                     />
                   </StoreModal>
                 </Content>

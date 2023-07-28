@@ -596,6 +596,11 @@ const Language = () => {
                         ? parseInt(searchParams.get("page"))
                         : 1
                     }
+                    presentPage={
+                      searchParams.get("page")
+                        ? parseInt(searchParams.get("page"))
+                        : 1
+                    }
                     totalItemsCount={totalLanguageCount}
                     pageLimit={pageLimit}
                     pageSize={

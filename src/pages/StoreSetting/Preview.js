@@ -18,12 +18,14 @@ const Preview = ({
   buttonPrimaryForegroundColor,
   buttonSecondaryForegroundColor,
   buttonTeritaryForegroundColor,
-  storeLogo,
+  getImageData,
 }) => {
   const absoluteStoreImageInfo = useSelector(
     (state) => state.reducerAbsoluteStoreImageInfo.absoluteStoreImageInfo
   );
 
+  console.log("absoluteStoreImageInfo", absoluteStoreImageInfo.value);
+  console.log("getImageData", getImageData);
   return (
     <Content>
       <Content>
@@ -37,11 +39,18 @@ const Preview = ({
             mode="horizontal"
           >
             <Content className="!text-start p-3">
-              {absoluteStoreImageInfo &&
-              absoluteStoreImageInfo.type === "store_logo" ? (
-                <img className="w-[38px]" src={absoluteStoreImageInfo.value} />
+              {getImageData && getImageData.length > 0 ? (
+                absoluteStoreImageInfo &&
+                absoluteStoreImageInfo.type === "store_logo" ? (
+                  <img
+                    className="w-[170px] !mb-2"
+                    src={absoluteStoreImageInfo.value}
+                  />
+                ) : (
+                  <img className="w-[38px] !mb-2" src={DmBrandLogo} />
+                )
               ) : (
-                <img className="w-[170px] !mb-2" src={DmBrandLogo} />
+                <img className="w-[38px] !mb-2" src={DmBrandLogo} />
               )}
             </Content>
             <Content

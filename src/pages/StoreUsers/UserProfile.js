@@ -27,15 +27,15 @@ const UserProfile = () => {
         );
         setStoreUsersData(response.data);
         setIsLoading(false);
-        // const email = response.data.email;
-        // const emailHide =
-        //   email &&
-        //   email.replace(
-        //     /(?<=^\w)\w+(?=\w*?@\w)/,
-        //     (match) =>
-        //       match[0] + "*".repeat(match.length - 2) + match[match.length - 1]
-        //   );
-        // setHideEmail(emailHide);
+        const email = response.data.email;
+        const emailHide =
+          email &&
+          email.replace(
+            /(?<=^\w)\w+(?=\w*?@\w)/,
+            (match) =>
+              match[0] + "*".repeat(match.length - 2) + match[match.length - 1]
+          );
+        setHideEmail(emailHide);
       })
       .catch((error) => {
         console.log("error from store all users API ====>", error.response);
@@ -98,7 +98,7 @@ const UserProfile = () => {
                   </Text>
                 </Row>
                 <Row className="font-semibold mb-3">
-                  <Text to="">{storeUsersData && storeUsersData.email}</Text>
+                  <Text to="">{hideEmail && hideEmail}</Text>
                 </Row>
                 <Content className="flex flex-col items-center">
                   <Row className="mb-2">
