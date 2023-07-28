@@ -51,6 +51,7 @@ const SidebarNew = () => {
   const [selectedItem, setSelectedItem] = useState([]);
   const [openedItem, setOpenedItem] = useState([]);
   const [loadingEffect, setLoadingEffect] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
 
   const { pathname } = useLocation();
 
@@ -113,6 +114,17 @@ const SidebarNew = () => {
       // navigate(0);
     }
   };
+
+  // Function to handle mouse enter event on the sidebar
+  const handleMouseEnter = () => {
+    setIsHovering(true);
+  };
+
+  // Function to handle mouse leave event on the sidebar
+  const handleMouseLeave = () => {
+    setIsHovering(false);
+  };
+
   useEffect(() => {
     switch (pathname.split("/")[2]) {
       case "userprofile":
@@ -145,9 +157,15 @@ const SidebarNew = () => {
           collapsed={collapsed}
           onCollapse={(value) => setCollapsed(value)}
           width={252}
+          onMouseEnter={() => {
+            handleMouseEnter();
+          }}
+          onMouseLeave={() => {
+            handleMouseLeave();
+          }}
           className="!bg-[var(--mp-brand-color)]"
           style={{
-            // overflow: "auto",
+            overflow: isHovering ? "auto" : "hidden",
             height: "100vh",
             // backgroundColor: "#4A2D73",
             // left: 0,
