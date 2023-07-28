@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Nav, Collapse, NavbarBrand, Navbar } from "reactstrap";
 import { Button, Layout, Menu, Typography } from "antd";
-import { BrandLogo, DmBrandLogo } from "../../constants/media";
+import { BrandLogo, DmBrandLogo, marketPlaceLogo } from "../../constants/media";
 import { useDispatch, useSelector } from "react-redux";
 const { Header, Content, Sider } = Layout;
 const { Text } = Typography;
@@ -23,8 +23,6 @@ const Preview = ({
   const absoluteStoreImageInfo = useSelector(
     (state) => state.reducerAbsoluteStoreImageInfo.absoluteStoreImageInfo
   );
-
-  console.log("absoluteStoreImageInfo", absoluteStoreImageInfo.value);
   console.log("getImageData", getImageData);
   return (
     <Content>
@@ -44,13 +42,13 @@ const Preview = ({
                 absoluteStoreImageInfo.type === "store_logo" ? (
                   <img
                     className="w-[170px] !mb-2"
-                    src={absoluteStoreImageInfo.value}
+                    src={absoluteStoreImageInfo && absoluteStoreImageInfo.value}
                   />
                 ) : (
-                  <img className="w-[38px] !mb-2" src={DmBrandLogo} />
+                  <img className="w-[170px] !mb-2" src={marketPlaceLogo} />
                 )
               ) : (
-                <img className="w-[38px] !mb-2" src={DmBrandLogo} />
+                <img className="w-[170px] !mb-2" src={marketPlaceLogo} />
               )}
             </Content>
             <Content
