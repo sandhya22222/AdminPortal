@@ -134,7 +134,7 @@ const Stores = () => {
       tabTitle: (
         <div className="flex flex-row">
           <div className="!font-medium">{t("stores:All")}</div>
-          <div className="rounded-full bg-purple-100 ml-2 px-2  flex justify-center !font-medium">
+          <div className="rounded-full bg-[#E2F1FC] ml-2 px-2  flex justify-center !font-medium">
             {activeCount && activeCount.totalStores}
           </div>{" "}
         </div>
@@ -146,7 +146,7 @@ const Stores = () => {
       tabTitle: (
         <div className="flex flex-row">
           <div className="">{t("stores:Active")}</div>
-          <div className="rounded-full bg-purple-100 ml-2 px-2 flex justify-center ">
+          <div className="rounded-full bg-[#E2F1FC] ml-2 px-2 flex justify-center ">
             {activeCount && activeCount.activeStores}
           </div>{" "}
         </div>
@@ -158,7 +158,7 @@ const Stores = () => {
       tabTitle: (
         <div className="flex flex-row">
           <div className="">{t("stores:Inactive")}</div>
-          <div className="rounded-full bg-purple-100 ml-2 px-2 flex justify-center ">
+          <div className="rounded-full bg-[#E2F1FC] ml-2 px-2 flex justify-center ">
             {activeCount && activeCount.inactiveStores}
           </div>{" "}
         </div>
@@ -1385,7 +1385,7 @@ const Stores = () => {
                       <>
                         <Row>
                           <Col span={1} className="flex items-start mt-[3px]">
-                            <MdInfo className="!text-[#7d3192] text-[16px]" />
+                            <MdInfo className="!text-[var(--mp-brand-color-h)] text-[16px]" />
                           </Col>
                           <Col span={23} className="align-center mb-3">
                             <Text className=" mr-1 font-bold">
@@ -1582,7 +1582,7 @@ const Stores = () => {
                       <>
                         <Row>
                           <Col span={1} className="flex items-start mt-[3px]">
-                            <MdInfo className="!text-[#7d3192] text-[16px]" />
+                            <MdInfo className="!text-[var(--mp-brand-color-h)] text-[16px]" />
                           </Col>
                           <Col span={23} className="align-center mb-3">
                             <Text className=" mr-1 font-bold">

@@ -86,7 +86,7 @@ const StoreImages = ({
   );
 
   const handleChange = (e) => {
-    setImageChangeValues(true)
+    setImageChangeValues(true);
     setFileList(e.fileList);
     if (type === "store_logo") {
       if (e.fileList.length === 0) {
@@ -475,7 +475,7 @@ const StoreImages = ({
         </Title>
         <Content className=" items-end  ">
           <Tooltip title={InfoCircleText} className="">
-            <InfoCircleOutlined className="!text-[#7d3192]" />
+            <InfoCircleOutlined className="!text-[var(--mp-brand-color-h)]" />
           </Tooltip>
         </Content>
         {/* {reset === true ? (
@@ -499,7 +499,7 @@ const StoreImages = ({
                 className={`${
                   validStoreLogo
                     ? "!border-red-400 !border-2 focus:border-red-400 hover:border-red-400 !h-[105px] !w-[105px] rounded-lg"
-                    : "hover:!border-purple-900 hover:!text-[#7d3192]"
+                    : "hover:border-[var(--mp-primary-border-color)] hover:text-[var(--mp-brand-color-h)]"
                 }`}
                 listType="picture-card"
                 fileList={fileList}
@@ -554,7 +554,7 @@ const StoreImages = ({
             >
               <Button
                 icon={<UploadOutlined />}
-                className="font-semibold hover:!border-purple-900 hover:!text-[#7d3192]"
+                className="font-semibold hover:border-[var(--mp-primary-border-color)] hover:text-[var(--mp-brand-color-h)]"
               >
                 Click to Add Banner Image
               </Button>
@@ -616,7 +616,7 @@ const StoreImages = ({
               >
                 <Button
                   icon={<UploadOutlined />}
-                  className="font-semibold hover:!border-purple-900 hover:!text-[#7d3192]"
+                  className="font-semibold hover:border-[var(--mp-primary-border-color)] hover:text-[var(--mp-brand-color-h)]"
                 >
                   Click to Add Banner Image
                 </Button>

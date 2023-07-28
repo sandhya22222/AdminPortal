@@ -145,10 +145,11 @@ const SidebarNew = () => {
           collapsed={collapsed}
           onCollapse={(value) => setCollapsed(value)}
           width={252}
+          className="!bg-[var(--mp-brand-color)]"
           style={{
             // overflow: "auto",
             height: "100vh",
-            backgroundColor: "#4A2D73",
+            // backgroundColor: "#4A2D73",
             // left: 0,
             // top: 0,
             // bottom: 0,
@@ -162,14 +163,14 @@ const SidebarNew = () => {
           >
             <Menu
               mode="inline"
-              className="h-full !text-base !bg-[#4A2D73]"
+              className="h-full !text-base !bg-[var(--mp-brand-color)]"
               selectedKeys={selectedItem}
               openKeys={openedItem}
               theme={"dark"}
               style={{
                 height: "calc(100vh - 145px)",
                 overflow: "auto",
-                backgroundColor: "#7d3192",
+                // backgroundColor: "#7d3192",
               }}
             >
               {myData.map((item) => (
@@ -178,7 +179,7 @@ const SidebarNew = () => {
                     selectedItem === item.key ? item.icon : item.inactive_icon
                   }
                   key={item.key}
-                  className="hover:bg-[#4A2D73]"
+                  // className="!bg-[var(--mp-brand-color)] !hover:bg-[var(--mp-brand-color)]"
                   onClick={() => {
                     navigate(item.navigate_to);
                   }}
@@ -206,7 +207,7 @@ const SidebarNew = () => {
             type="text"
             icon={collapsed ? <img src={menuIcon} /> : <img src={BackBurger} />}
             onClick={() => setCollapsed(!collapsed)}
-            className="!bg-[#4A2D73] hover:bg-[#4A2D73]"
+            className="!bg-[var(--mp-brand-color)] hover:bg-[var(--mp-brand-color)]"
             style={{
               width: "100%",
               display: "flex",
