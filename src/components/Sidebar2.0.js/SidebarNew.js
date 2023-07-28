@@ -187,7 +187,7 @@ const SidebarNew = () => {
               theme={"dark"}
               style={{
                 height: "calc(100vh - 145px)",
-                overflow: "auto",
+                overflow: isHovering ? "auto" : "hidden",
                 // backgroundColor: "#7d3192",
               }}
             >
