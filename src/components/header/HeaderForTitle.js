@@ -22,7 +22,7 @@ function HeaderForTitle({
 }) {
   const navigate = useNavigate();
   return (
-    <Content className="fixed !h-auto top-[3.0rem] headerWidth z-50 !py-4 !px-6 bg-white drop-shadow">
+    <Content className="fixed !h-auto top-[3.0rem] headerWidth z-10 !py-4 !px-6 bg-white drop-shadow">
       <Content className="flex justify-between">
         <Content className={`${showArrowIcon === true ? "flex" : ""}`}>
           {showArrowIcon === true ? (
