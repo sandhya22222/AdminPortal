@@ -69,31 +69,31 @@ const StoreSettings = () => {
   const [foreGroundColor, setForeGroundColor] = useState("#333333");
   const [pageFgColor, setPageFgColor] = useState("#333333");
   const [buttonPrimaryBackgroundColor, setButtonPrimaryBackgroundColor] =
-    useState("#00000");
-  const [btnPrimaryBgColor, setbtnPrimaryBgColor] = useState("#00000");
+    useState("#000000");
+  const [btnPrimaryBgColor, setbtnPrimaryBgColor] = useState("#000000");
   const [buttonSecondaryBackgroundColor, setButtonSecondaryBackgroundColor] =
-    useState("#00000");
-  const [btnSecondaryBgColor, setbtnSecondaryBgColor] = useState("#00000");
+    useState("#000000");
+  const [btnSecondaryBgColor, setbtnSecondaryBgColor] = useState("#000000");
   const [buttonTeritaryBackgroundColor, setButtonTeritaryBackgroundColor] =
-    useState("#00000");
-  const [btnTeritaryBgColor, setbtnTeritaryBgColor] = useState("#00000");
+    useState("#000000");
+  const [btnTeritaryBgColor, setbtnTeritaryBgColor] = useState("#000000");
   const [buttonPrimaryForegroundColor, setButtonPrimaryForegroundColor] =
-    useState("#00000");
-  const [btnPrimaryFgColor, setbtnPrimaryFgColor] = useState("#00000");
+    useState("#000000");
+  const [btnPrimaryFgColor, setbtnPrimaryFgColor] = useState("#000000");
   const [buttonSecondaryForegroundColor, setButtonSecondaryForegroundColor] =
-    useState("#00000");
-  const [btnSecondaryFgColor, setbtnSecondaryFgColor] = useState("#00000");
+    useState("#000000");
+  const [btnSecondaryFgColor, setbtnSecondaryFgColor] = useState("#000000");
   const [buttonTeritaryForegroundColor, setButtonTeritaryForegroundColor] =
-    useState("#00000");
-  const [btnTeritaryFgColor, setbtnTeritaryFgColor] = useState("#00000");
-  const [footerBackgroundColor, setFooterBackgroundColor] = useState("#00000");
-  const [footerBgColor, setFooterBgColor] = useState("#00000");
-  const [footerForegroundColor, setFooterForegroundColor] = useState("#00000");
-  const [footerFgColor, setFooterFgColor] = useState("#00000");
+    useState("#000000");
+  const [btnTeritaryFgColor, setbtnTeritaryFgColor] = useState("#000000");
+  const [footerBackgroundColor, setFooterBackgroundColor] = useState("#000000");
+  const [footerBgColor, setFooterBgColor] = useState("#000000");
+  const [footerForegroundColor, setFooterForegroundColor] = useState("#000000");
+  const [footerFgColor, setFooterFgColor] = useState("#000000");
   const [headerBackgroundColor, setHeaderBackgroundColor] = useState("#000000");
-  const [headerBgColor, setHeaderBgColor] = useState("#00000");
-  const [headerForegroundColor, setHeaderForegroundColor] = useState("#00000");
-  const [headerFgColor, setHeaderFgColor] = useState("#00000");
+  const [headerBgColor, setHeaderBgColor] = useState("#000000");
+  const [headerForegroundColor, setHeaderForegroundColor] = useState("#000000");
+  const [headerFgColor, setHeaderFgColor] = useState("#000000");
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [imagesUpload, setImagesUpload] = useState([]);
@@ -292,16 +292,16 @@ const StoreSettings = () => {
           setFractionalUnit("");
           setNumberToBasic("");
           setPageBackgroundColor("#EBEBEB");
-          setButtonPrimaryBackgroundColor("#00000");
-          setButtonSecondaryBackgroundColor("#00000");
-          setButtonTeritaryBackgroundColor("#00000");
-          setButtonPrimaryForegroundColor("#00000");
-          setButtonSecondaryForegroundColor("#00000");
-          setButtonTeritaryForegroundColor("#00000");
+          setButtonPrimaryBackgroundColor("#000000");
+          setButtonSecondaryBackgroundColor("#000000");
+          setButtonTeritaryBackgroundColor("#000000");
+          setButtonPrimaryForegroundColor("#000000");
+          setButtonSecondaryForegroundColor("#000000");
+          setButtonTeritaryForegroundColor("#000000");
           setForeGroundColor("#333333");
-          setFooterBackgroundColor("#00000");
-          setFooterForegroundColor("#00000");
-          setHeaderForegroundColor("#00000");
+          setFooterBackgroundColor("#000000");
+          setFooterForegroundColor("#000000");
+          setHeaderForegroundColor("#000000");
           setHeaderBackgroundColor("#000000");
         }
       });
@@ -1587,8 +1587,16 @@ const StoreSettings = () => {
             {t("stores:Currency")}
           </label>
           <Divider className="!my-4" />
-          <Row className="mt-2">
-            <Col span={4} className="mr-2.5">
+          <Row
+            className="mt-2"
+            gutter={{
+              xs: 8,
+              sm: 16,
+              md: 24,
+              lg: 32,
+            }}
+          >
+            <Col span={4} className="gutter-row">
               <span className="text-red-600 text-sm !text-center">*</span>
               <label className="text-[13px] mb-2 ml-1">
                 {t("stores:Symbol")}
@@ -1625,7 +1633,7 @@ const StoreSettings = () => {
                 }}
               />
             </Col>
-            <Col span={4} className="mx-2.5">
+            <Col span={4} className="gutter-row">
               <span className="text-red-600 text-sm !text-center">*</span>
               <label className="text-[13px] mb-2 ml-1">
                 {t("stores:ISO-Code")}
@@ -1662,7 +1670,7 @@ const StoreSettings = () => {
             </Col>
             {/* </Row>
           <Row className="mt-4"> */}
-            <Col span={4} className="mx-2.5">
+            <Col span={4} className="gutter-row">
               <span className="text-red-600 text-sm !text-center">*</span>
               <label className="text-[13px] mb-2 ml-1">
                 {t("stores:Fractional-Unit")}
@@ -1696,7 +1704,7 @@ const StoreSettings = () => {
                 }`}
               />
             </Col>
-            <Col span={4} className="mx-2.5">
+            <Col span={4} className="gutter-row">
               {" "}
               <span className="text-red-600 text-sm !text-center">*</span>
               <label className="text-[13px] mb-2 ml-1">
@@ -1705,6 +1713,7 @@ const StoreSettings = () => {
               <InputNumber
                 placeholder={t("stores:Enter-number-to-basic")}
                 value={numberToBasic}
+                min={0}
                 onChange={(e) => {
                   // setNumberToBasic(e);
                   if (e !== null) {
@@ -1821,7 +1830,7 @@ const StoreSettings = () => {
                       buttonTeritaryForegroundColor={
                         buttonTeritaryForegroundColor
                       }
-                     getImageData={getImageData}
+                      getImageData={getImageData}
                     />
                   </StoreModal>
                 </Content>
@@ -1916,7 +1925,7 @@ const StoreSettings = () => {
                   {colorCodeValidation.pageBgColorValidation === true ? (
                     <p className="text-red-600 text-sm">
                       Please enter valid Hexadecimal Color code <br />
-                      ex. #ffffff for white, #000000 for black
+                      ex. #ffffff for white, #0000000 for black
                     </p>
                   ) : null}
                 </Col>
@@ -3156,17 +3165,17 @@ const StoreSettings = () => {
                       // setCurrencyIsoCode("");
                       // setCurrencySymbol("");
                       // setPageBackgroundColor("#EBEBEB");
-                      // setButtonPrimaryBackgroundColor("#00000");
-                      // setButtonSecondaryBackgroundColor("#00000");
-                      // setButtonTeritaryBackgroundColor("#00000");
-                      // setButtonPrimaryForegroundColor("#00000");
-                      // setButtonSecondaryForegroundColor("#00000");
-                      // setButtonTeritaryForegroundColor("#00000");
+                      // setButtonPrimaryBackgroundColor("#000000");
+                      // setButtonSecondaryBackgroundColor("#000000");
+                      // setButtonTeritaryBackgroundColor("#000000");
+                      // setButtonPrimaryForegroundColor("#000000");
+                      // setButtonSecondaryForegroundColor("#000000");
+                      // setButtonTeritaryForegroundColor("#000000");
                       // setForeGroundColor("#333333");
-                      // setFooterBackgroundColor("#00000");
-                      // setFooterForegroundColor("#00000");
-                      // setHeaderForegroundColor("#00000");
-                      // setHeaderBackgroundColor("#00000");
+                      // setFooterBackgroundColor("#000000");
+                      // setFooterForegroundColor("#000000");
+                      // setHeaderForegroundColor("#000000");
+                      // setHeaderBackgroundColor("#000000");
                       // setImagesUpload([]);
                     }}
                   >
