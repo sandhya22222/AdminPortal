@@ -72,7 +72,7 @@ const Dashboard = () => {
       <Content className="mb-2">
         <HeaderForTitle
           title={
-            <Content className="flex !justify-between">
+            <Content className="flex z-20 !justify-between">
               <Content className="!w-[80%]">
                 <Title level={3} className="!font-normal">
                   Dashboard
