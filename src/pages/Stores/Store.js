@@ -1416,12 +1416,13 @@ const Stores = () => {
                                 : "mb-[0.5rem]"
                             }`}
                             onChange={(e) => {
-                              const alphaWithSpacesRegex = /^[A-Za-z\s]+$/;
+                              // const alphaWithSpacesRegex = /^[A-Za-z\s]+$/;
+                              const alphaWithoutSpaces = /^[a-zA-Z0-9]+$/;
                               if (
                                 e.target.value !== "" &&
                                 validator.matches(
                                   e.target.value,
-                                  alphaWithSpacesRegex
+                                  alphaWithoutSpaces
                                 )
                               ) {
                                 // setShowStoreErrorMessage(true);
@@ -1613,17 +1614,13 @@ const Stores = () => {
                             minLength={titleMinLength}
                             maxLength={titleMaxLength}
                             onChange={(e) => {
-                              // const { value } = e.target;
-                              // const regex = /^[a-zA-Z0-9]*$/; // only allow letters and numbers
-                              // if (regex.test(value)) {
-                              //   setEditName(e.target.value);
-                              // }
-                              const alphaWithSpacesRegex = /^[A-Za-z\s]+$/;
+                              // const alphaWithSpacesRegex = /^[A-Za-z\s]+$/;
+                              const alphaWithoutSpaces = /^[a-zA-Z0-9]+$/;
                               if (
                                 e.target.value !== "" &&
                                 validator.matches(
                                   e.target.value,
-                                  alphaWithSpacesRegex
+                                  alphaWithoutSpaces
                                 )
                               ) {
                                 // setShowStoreErrorMessage(true);
