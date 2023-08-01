@@ -151,21 +151,28 @@ function Status({
         // setIsLoading(false);
       })
       .catch((error) => {
-        if (error.response && error.response.message) {
-          toast(error.response.data.message, {
+        setIsLoading(false);
+        closeModal();
+        if (error && error.response && error.response.status === 401) {
+          toast("Session expired", {
+            position: toast.POSITION.TOP_RIGHT,
             type: "error",
             autoClose: 10000,
           });
         } else {
-          toast("Sorry, failed to update the store status", {
-            type: "error",
-            autoClose: 10000,
-          });
+          if (error.response && error.response.message) {
+            toast(error.response.data.message, {
+              type: "error",
+              autoClose: 10000,
+            });
+          } else {
+            toast("Sorry, failed to update the store status", {
+              type: "error",
+              autoClose: 10000,
+            });
+          }
         }
-
         console.log("Error from the status response ===>", error.response);
-        setIsLoading(false);
-        closeModal();
       });
   };
 

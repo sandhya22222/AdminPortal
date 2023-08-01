@@ -433,11 +433,19 @@ const StoreImages = ({
       .catch((error) => {
         // disabling spinner
         setIsImageDeleting(false);
-        toast(`${error.response.data.message}`, {
-          position: toast.POSITION.TOP_RIGHT,
-          type: "error",
-          autoClose: 10000,
-        });
+        if (error && error.response && error.response.status === 401) {
+          toast("Session expired", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+            autoClose: 10000,
+          });
+        } else {
+          toast(`${error.response.data.message}`, {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+            autoClose: 10000,
+          });
+        }
       });
   };
 

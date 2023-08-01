@@ -401,11 +401,19 @@ const Language = () => {
         // disabling spinner
         setIslanguageDeleting(false);
         console.log("response from delete===>", error.response);
-        toast("Deletion unsuccessful, please try again later", {
-          position: toast.POSITION.TOP_RIGHT,
-          type: "error",
-          autoClose: 10000,
-        });
+        if (error && error.response && error.response.status === 401) {
+          toast("Session expired", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+            autoClose: 10000,
+          });
+        } else {
+          toast("Deletion unsuccessful, please try again later", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+            autoClose: 10000,
+          });
+        }
       });
   };
 
@@ -443,14 +451,22 @@ const Language = () => {
           "server error response from language API call",
           error.response
         );
-        if (error.response) {
-          setErrorMessage(error.response.data.message);
-        }
-        if (error.response.data.message === "That page contains no results") {
-          setSearchParams({
-            page: 1,
-            limit: parseInt(searchParams.get("limit")),
+        if (error && error.response && error.response.status === 401) {
+          toast("Session expired", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+            autoClose: 10000,
           });
+        } else {
+          if (error.response) {
+            setErrorMessage(error.response.data.message);
+          }
+          if (error.response.data.message === "That page contains no results") {
+            setSearchParams({
+              page: 1,
+              limit: parseInt(searchParams.get("limit")),
+            });
+          }
         }
       });
   };
@@ -505,11 +521,12 @@ const Language = () => {
         ? parseInt(searchParams.get("limit"))
         : pageLimit
     );
+    window.scrollTo(0, 0);
   }, [searchParams]);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // }, []);
 
   return (
     <Content className="">

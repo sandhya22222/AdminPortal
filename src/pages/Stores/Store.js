@@ -554,23 +554,30 @@ const Stores = () => {
           "Server error from findByPageStoreApi Function ",
           error.response
         );
-
-        if (error.response) {
-          setErrorMessage(error.response.data.message);
-        }
-        if (error && error.response === undefined) {
-          setSearchParams({
-            tab: parseInt(searchParams.get("tab")),
-            page: 1,
-            limit: parseInt(searchParams.get("limit")),
+        if (error && error.response && error.response.status === 401) {
+          toast("Session expired", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+            autoClose: 10000,
           });
-        }
-        if (error.response.data.message === "That page contains no results") {
-          setSearchParams({
-            tab: parseInt(searchParams.get("tab")),
-            page: 1,
-            limit: parseInt(searchParams.get("limit")),
-          });
+        } else {
+          if (error.response) {
+            setErrorMessage(error.response.data.message);
+          }
+          if (error && error.response === undefined) {
+            setSearchParams({
+              tab: parseInt(searchParams.get("tab")),
+              page: 1,
+              limit: parseInt(searchParams.get("limit")),
+            });
+          }
+          if (error.response.data.message === "That page contains no results") {
+            setSearchParams({
+              tab: parseInt(searchParams.get("tab")),
+              page: 1,
+              limit: parseInt(searchParams.get("limit")),
+            });
+          }
         }
       });
   };
@@ -1100,6 +1107,13 @@ const Stores = () => {
       })
       .catch((error) => {
         setIsUpLoading(false);
+        if (error && error.response && error.response.status === 401) {
+          toast("Session expired", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+            autoClose: 10000,
+          });
+        } else {
         if (error.response) {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
@@ -1107,12 +1121,13 @@ const Stores = () => {
             autoClose: 10000,
           });
         } else {
-          toast(`iutui`, {
+          toast(`${t("common:Something-Went-Wrong")}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
             autoClose: 10000,
           });
         }
+      }
         console.log("Error respose from the store post call", error.response);
         // setInValidName(true)
         // onClose();
@@ -1162,6 +1177,13 @@ const Stores = () => {
       })
       .catch((error) => {
         setIsUpLoading(false);
+        if (error && error.response && error.response.status === 401) {
+          toast("Session expired", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+            autoClose: 10000,
+          });
+        } else {
         if (error.response.status === 400) {
           toast(`${t("stores:Please-enter-the-valid-store-name")}`, {
             position: toast.POSITION.TOP_RIGHT,
@@ -1185,6 +1207,7 @@ const Stores = () => {
             autoClose: 10000,
           });
         }
+      }
       });
   };
 
@@ -1308,18 +1331,26 @@ const Stores = () => {
         // disabling spinner
         setIsStoreDeleting(false);
         console.log("response from delete===>", error.response.data);
-        if (error.response) {
-          toast(`${error.response.data.message}`, {
+        if (error && error.response && error.response.status === 401) {
+          toast("Session expired", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
             autoClose: 10000,
           });
         } else {
-          toast(`${t("common:Something-Went-Wrong")}`, {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
+          if (error.response) {
+            toast(`${error.response.data.message}`, {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "error",
+              autoClose: 10000,
+            });
+          } else {
+            toast(`${t("common:Something-Went-Wrong")}`, {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "error",
+              autoClose: 10000,
+            });
+          }
         }
       });
   };
