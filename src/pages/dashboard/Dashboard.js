@@ -4,6 +4,7 @@ import { Layout, Typography, Skeleton, Image } from "antd";
 import { useNavigate } from "react-router-dom";
 
 import { Profit, Positive, Payment } from "../../constants/media";
+import { toast } from "react-toastify";
 
 import { MdStore } from "react-icons/md";
 
@@ -64,6 +65,13 @@ const Dashboard = () => {
       .catch((error) => {
         setDashboardDataLoading(false);
         setDashboardDataNetWorkError(true);
+        if (error && error.response && error.response.status === 401) {
+          toast("Session expired", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+            autoClose: 10000,
+          });
+        }
       });
   };
 

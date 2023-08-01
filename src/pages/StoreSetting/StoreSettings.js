@@ -286,23 +286,31 @@ const StoreSettings = () => {
       })
       .catch((error) => {
         console.log("errorresponse--->", error.response);
-        if (error.response === undefined) {
-          setCurrencySymbol("");
-          setCurrencyIsoCode("");
-          setFractionalUnit("");
-          setNumberToBasic("");
-          setPageBackgroundColor("#EBEBEB");
-          setButtonPrimaryBackgroundColor("#000000");
-          setButtonSecondaryBackgroundColor("#000000");
-          setButtonTeritaryBackgroundColor("#000000");
-          setButtonPrimaryForegroundColor("#000000");
-          setButtonSecondaryForegroundColor("#000000");
-          setButtonTeritaryForegroundColor("#000000");
-          setForeGroundColor("#333333");
-          setFooterBackgroundColor("#000000");
-          setFooterForegroundColor("#000000");
-          setHeaderForegroundColor("#000000");
-          setHeaderBackgroundColor("#000000");
+        if (error && error.response && error.response.status === 401) {
+          toast("Session expired", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+            autoClose: 10000,
+          });
+        } else {
+          if (error.response === undefined) {
+            setCurrencySymbol("");
+            setCurrencyIsoCode("");
+            setFractionalUnit("");
+            setNumberToBasic("");
+            setPageBackgroundColor("#EBEBEB");
+            setButtonPrimaryBackgroundColor("#000000");
+            setButtonSecondaryBackgroundColor("#000000");
+            setButtonTeritaryBackgroundColor("#000000");
+            setButtonPrimaryForegroundColor("#000000");
+            setButtonSecondaryForegroundColor("#000000");
+            setButtonTeritaryForegroundColor("#000000");
+            setForeGroundColor("#333333");
+            setFooterBackgroundColor("#000000");
+            setFooterForegroundColor("#000000");
+            setHeaderForegroundColor("#000000");
+            setHeaderBackgroundColor("#000000");
+          }
         }
       });
   };
@@ -326,6 +334,13 @@ const StoreSettings = () => {
       })
       .catch((error) => {
         console.log("Server error from getStoreApi Function ", error.response);
+        if (error && error.response && error.response.status === 401) {
+          toast("Session expired", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+            autoClose: 10000,
+          });
+        }
       });
   };
 
@@ -500,21 +515,29 @@ const StoreSettings = () => {
         setFooterFgColor(response.data.store_footer_settings[0].fg_color);
       })
       .catch((error) => {
-        if (error.response) {
-          toast(`${error.response.statusText}`, {
+        setIsLoading(false);
+        if (error && error.response && error.response.status === 401) {
+          toast("Session expired", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
             autoClose: 10000,
           });
         } else {
-          toast("Something went wrong, please try again later", {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
+          if (error.response) {
+            toast(`${error.response.statusText}`, {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "error",
+              autoClose: 10000,
+            });
+          } else {
+            toast("Something went wrong, please try again later", {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "error",
+              autoClose: 10000,
+            });
+          }
         }
         console.log(error.response);
-        setIsLoading(false);
         // setInValidName(true)
         // onClose();
       });
@@ -972,6 +995,13 @@ const StoreSettings = () => {
       })
       .catch((error) => {
         console.log("errorresponse from images--->", error);
+        if (error && error.response && error.response.status === 401) {
+          toast("Session expired", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+            autoClose: 10000,
+          });
+        }
         setGetImageData([]);
       });
   };
@@ -1039,24 +1069,32 @@ const StoreSettings = () => {
       })
       .catch((error) => {
         setIsUpLoading(false);
-        if (error.response) {
-          toast(`${error.response.data.message}`, {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
-        } else if (error && error.response && error.response.status === 400) {
-          toast(`${error.response.data.message}`, {
+        if (error && error.response && error.response.status === 401) {
+          toast("Session expired", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
             autoClose: 10000,
           });
         } else {
-          toast("Something went wrong, please try again later", {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
+          if (error.response) {
+            toast(`${error.response.data.message}`, {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "error",
+              autoClose: 10000,
+            });
+          } else if (error && error.response && error.response.status === 400) {
+            toast(`${error.response.data.message}`, {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "error",
+              autoClose: 10000,
+            });
+          } else {
+            toast("Something went wrong, please try again later", {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "error",
+              autoClose: 10000,
+            });
+          }
         }
         console.log(error.response.data);
         setIsLoading(false);
@@ -1140,28 +1178,36 @@ const StoreSettings = () => {
         // setImagesUpload([]);
       })
       .catch((error) => {
-        if (error.response) {
-          toast(`${error.response.data.message}`, {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
-        } else if (error && error.response && error.response.status === 400) {
-          toast(`${error.response.data.message}`, {
+        setIsUpLoading(false);
+        console.log(error.response);
+        setIsLoading(false);
+        if (error && error.response && error.response.status === 401) {
+          toast("Session expired", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
             autoClose: 10000,
           });
         } else {
-          toast("Something went wrong, please try again later", {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
+          if (error.response) {
+            toast(`${error.response.data.message}`, {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "error",
+              autoClose: 10000,
+            });
+          } else if (error && error.response && error.response.status === 400) {
+            toast(`${error.response.data.message}`, {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "error",
+              autoClose: 10000,
+            });
+          } else {
+            toast("Something went wrong, please try again later", {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "error",
+              autoClose: 10000,
+            });
+          }
         }
-        setIsUpLoading(false);
-        console.log(error.response);
-        setIsLoading(false);
       });
   };
 
@@ -1216,6 +1262,13 @@ const StoreSettings = () => {
         // setStoreData(response.data.data);
       })
       .catch((error) => {
+        if (error && error.response && error.response.status === 401) {
+          toast("Session expired", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+            autoClose: 10000,
+          });
+        } 
         console.log("Server error from getStoreApi Function ", error.response);
       });
   };

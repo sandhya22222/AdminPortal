@@ -92,7 +92,7 @@ const EditLanguage = () => {
     let copyofLanguageDetails = { ...languageDetails };
     if (fieldName === "language") {
       copyofLanguageDetails.language = value;
-      copyofLanguageDetails.native_name = value;
+      // copyofLanguageDetails.native_name = value;
       if (value != "") {
         setIsLanguageFieldEmpty(false);
       }
@@ -202,6 +202,13 @@ const EditLanguage = () => {
         // disabling skeleton
         setIsDataLoading(false);
         console.log("errorFromLanguageApi====>", error);
+        if (error && error.response && error.response.status === 401) {
+          toast("Session expired", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+            autoClose: 10000,
+          });
+        }
       });
   };
   useEffect(() => {
@@ -215,6 +222,8 @@ const EditLanguage = () => {
   }, []);
 
   const validateLanguageFieldEmptyOrNot = () => {
+    let validValues = 2;
+
     // if (
     //   languageDetails.language !== "" &&
     //   languageDetails.language_code !== "" &&
@@ -233,6 +242,7 @@ const EditLanguage = () => {
       languageDetails.language.trim() === "" &&
       languageDetails.language_code.trim() === ""
     ) {
+      validValues--;
       setIsLanguageFieldEmpty(true);
       setIsLanguageCodeFieldEmpty(true);
       toast("Please enter the values for the mandatory field", {
@@ -244,6 +254,7 @@ const EditLanguage = () => {
       languageDetails.language === "" &&
       languageDetails.language_code !== ""
     ) {
+      validValues--;
       setIsLanguageFieldEmpty(true);
       toast("Please enter the language name ", {
         autoClose: 10000,
@@ -254,6 +265,7 @@ const EditLanguage = () => {
       languageDetails.language_code === "" &&
       languageDetails.language !== ""
     ) {
+      validValues--;
       setIsLanguageCodeFieldEmpty(true);
       toast("Please enter the language code", {
         autoClose: 10000,
@@ -268,6 +280,7 @@ const EditLanguage = () => {
         max: titleMaxLength,
       }) === false
     ) {
+      validValues--;
       setIsLanguageFieldEmpty(true);
       toast(
         `Language must contain minimum of ${titleMinLength}, maximum of ${titleMaxLength} characters`,
@@ -285,6 +298,7 @@ const EditLanguage = () => {
         max: 5,
       }) === false
     ) {
+      validValues--;
       setIsLanguageCodeFieldEmpty(true);
       toast(
         `Language code must contain minimum of 2, maximum of 5 characters`,
@@ -295,22 +309,28 @@ const EditLanguage = () => {
         }
       );
     } else if (
-      languageDetails.native_name.trim() &&
-      // validator.isAlpha(languageDetails.native_name.trim()) === false) ||
-      validator.isLength(languageDetails.native_name.trim(), {
-        min: titleMinLength,
-        max: titleMaxLength,
-      }) === false
+      languageDetails.native_name !== null &&
+      languageDetails.native_name !== ""
     ) {
-      setIsNativeFieldEmpty(true);
-      toast(
-        `Native name must contain minimum of${titleMinLength}, maximum of ${titleMaxLength} characters`,
-        {
-          position: toast.POSITION.TOP_RIGHT,
-          type: "error",
-          autoClose: 10000,
-        }
-      );
+      if (
+        // languageDetails.native_name.trim() &&
+        // validator.isAlpha(languageDetails.native_name.trim()) === false) ||
+        validator.isLength(languageDetails.native_name.trim(), {
+          min: titleMinLength,
+          max: titleMaxLength,
+        }) === false
+      ) {
+        validValues--;
+        setIsNativeFieldEmpty(true);
+        toast(
+          `Native name must contain minimum of ${titleMinLength}, maximum of ${titleMaxLength} characters`,
+          {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+            autoClose: 10000,
+          }
+        );
+      }
     } else if (
       newlyUploadedFile === 0 &&
       responseLanguageData[0].language === languageDetails.language &&
@@ -322,12 +342,14 @@ const EditLanguage = () => {
         languageDetails.writing_script_direction &&
       responseLanguageData[0].language_regex === languageDetails.language_regex
     ) {
+      validValues--;
       toast("No changes were detected", {
         position: toast.POSITION.TOP_RIGHT,
         type: "info",
         autoClose: 10000,
       });
-    } else {
+    }
+    if (validValues === 2) {
       updateEditLanguage();
     }
     // } else {
@@ -338,7 +360,7 @@ const EditLanguage = () => {
     //   });
     // }
   };
-  console.log("newlyUploadedFile", newlyUploadedFile);
+  console.log("newlyUploadedFile", languageDetails.native_name);
   // Language PUT API call
   const updateEditLanguage = () => {
     // const langaugeData = new FormData();
@@ -366,7 +388,10 @@ const EditLanguage = () => {
     if (languageDetails.language_regex !== "") {
       temp["language_regex"] = languageDetails.language_regex.trim();
     }
-    if (languageDetails.native_name !== null) {
+    if (
+      languageDetails.native_name !== null &&
+      languageDetails.native_name !== ""
+    ) {
       temp["native_name"] = languageDetails.native_name.trim();
     }
     if (languageDetails.writing_script_direction !== "") {
@@ -423,22 +448,30 @@ const EditLanguage = () => {
       .catch((error) => {
         // disabling spinner
         setIsLoading(false);
-        if (fileData) {
-          if (fileValue !== ".csv")
-            toast(
-              "Invalid file extension, only '.csv' extension is supported.",
-              {
-                position: toast.POSITION.TOP_RIGHT,
-                type: "error",
-                autoClose: 10000,
-              }
-            );
-        } else {
-          toast(error.response.data.message, {
+        if (error && error.response && error.response.status === 401) {
+          toast("Session expired", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
             autoClose: 10000,
           });
+        } else {
+          if (fileData) {
+            if (fileValue !== ".csv")
+              toast(
+                "Invalid file extension, only '.csv' extension is supported.",
+                {
+                  position: toast.POSITION.TOP_RIGHT,
+                  type: "error",
+                  autoClose: 10000,
+                }
+              );
+          } else {
+            toast(error.response.data.message, {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "error",
+              autoClose: 10000,
+            });
+          }
         }
         console.log(error.response);
       });
@@ -455,7 +488,14 @@ const EditLanguage = () => {
         console.log(response);
       })
       .catch((error) => {
-        console.log(error.response);
+        console.log("error", error.response.status);
+        if (error && error.response && error.response.status === 401) {
+          toast("Session expired", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+            autoClose: 10000,
+          });
+        }
       });
   };
   const closeModal = () => {
@@ -500,22 +540,30 @@ const EditLanguage = () => {
         });
       })
       .catch((error) => {
-        if (error.response) {
-          toast(`${error.response.data.message}`, {
+        if (error && error.response && error.response.status === 401) {
+          toast("Session expired", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
             autoClose: 10000,
           });
         } else {
-          if (fileExtension !== "csv") {
-            toast(
-              "Invalid file extension, only '.csv' extension is supported.",
-              {
-                position: toast.POSITION.TOP_RIGHT,
-                type: "error",
-                autoClose: 10000,
-              }
-            );
+          if (error.response) {
+            toast(`${error.response.data.message}`, {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "error",
+              autoClose: 10000,
+            });
+          } else {
+            if (fileExtension !== "csv") {
+              toast(
+                "Invalid file extension, only '.csv' extension is supported.",
+                {
+                  position: toast.POSITION.TOP_RIGHT,
+                  type: "error",
+                  autoClose: 10000,
+                }
+              );
+            }
           }
         }
       });
@@ -549,38 +597,46 @@ const EditLanguage = () => {
         console.log("Server Success Response From files", response.data);
       })
       .catch((error) => {
-        if (error.response) {
-          // toast(`${error.response.data.extension[0]}`, {
-          //   position: toast.POSITION.TOP_RIGHT,
-          //   type: "error",
-          // });
-          if (fileExtension !== "csv") {
-            toast(
-              "Invalid file extension, only '.csv' extension is supported.",
-              {
-                position: toast.POSITION.TOP_RIGHT,
-                type: "error",
-                autoClose: 10000,
-              }
-            );
-          }
-        } else if (error && error.response && error.response.status === 400) {
-          toast(`${error.response.data.message}`, {
+        if (error && error.response && error.response.status === 401) {
+          toast("Session expired", {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
             autoClose: 10000,
           });
         } else {
-          toast("Something went wrong, please try again later", {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
+          if (error.response) {
+            // toast(`${error.response.data.extension[0]}`, {
+            //   position: toast.POSITION.TOP_RIGHT,
+            //   type: "error",
+            // });
+            if (fileExtension !== "csv") {
+              toast(
+                "Invalid file extension, only '.csv' extension is supported.",
+                {
+                  position: toast.POSITION.TOP_RIGHT,
+                  type: "error",
+                  autoClose: 10000,
+                }
+              );
+            }
+          } else if (error && error.response && error.response.status === 400) {
+            toast(`${error.response.data.message}`, {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "error",
+              autoClose: 10000,
+            });
+          } else {
+            toast("Something went wrong, please try again later", {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "error",
+              autoClose: 10000,
+            });
+          }
+          console.log(error.response);
+          // setIsUpLoading(false);
+          // setInValidName(true)
+          // onClose();
         }
-        console.log(error.response);
-        // setIsUpLoading(false);
-        // setInValidName(true)
-        // onClose();
       });
     // }
   };
@@ -617,11 +673,19 @@ const EditLanguage = () => {
       .catch((error) => {
         // disabling spinner
         console.log("response from delete===>", error.response);
-        toast(`${error.response.data.message}`, {
-          position: toast.POSITION.TOP_RIGHT,
-          type: "error",
-          autoClose: 10000,
-        });
+        if (error && error.response && error.response.status === 401) {
+          toast("Session expired", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+            autoClose: 10000,
+          });
+        } else {
+          toast(`${error.response.data.message}`, {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+            autoClose: 10000,
+          });
+        }
       });
   };
 
@@ -755,10 +819,13 @@ const EditLanguage = () => {
                                   : ""
                               }`}
                               onChange={(e) => {
-                                const regex = /^[a-zA-Z]*$/;
+                                const languageCodeRegex = /^[a-zA-Z\-]+$/;
                                 if (
                                   e.target.value !== "" &&
-                                  validator.isAlpha(e.target.value)
+                                  validator.matches(
+                                    e.target.value,
+                                    languageCodeRegex
+                                  )
                                 ) {
                                   languageHandler(
                                     "language_code",

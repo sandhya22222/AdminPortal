@@ -41,8 +41,16 @@ const UserProfile = () => {
         console.log("error from store all users API ====>", error.response);
         setIsNetworkError(true);
         setIsLoading(false);
-        if (error.response) {
-          setErrorMessage(error.response.data.message);
+        if (error && error.response && error.response.status === 401) {
+          toast("Session expired", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+            autoClose: 10000,
+          });
+        } else {
+          if (error.response) {
+            setErrorMessage(error.response.data.message);
+          }
         }
       });
   };
