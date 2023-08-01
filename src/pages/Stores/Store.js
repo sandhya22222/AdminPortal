@@ -269,9 +269,9 @@ const Stores = () => {
       key: "name",
       width: "30%",
       ellipsis: true,
-      sorter: (name1, name2) => name1.name.localeCompare(name2.name),
-      sortDirections: ["descend", "ascend"],
-      showSorterTooltip: true,
+      // sorter: (name1, name2) => name1.name.localeCompare(name2.name),
+      // sortDirections: ["descend", "ascend"],
+      // showSorterTooltip: true,
       render: (text, record) => {
         return (
           <Tooltip title={record.name}>
