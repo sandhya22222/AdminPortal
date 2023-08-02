@@ -296,7 +296,7 @@ const Dashboard = () => {
                       {dashboardData && dashboardData.total_products}
                     </Title>
                     <Text className="!text-[#000000D9] text-sm">
-                      Products Created Last Month
+                      Products Created Last 30 days
                     </Text>
                     <Title level={5} className="!text-[#1A5692] mt-0">
                       {dashboardData && dashboardData.total_products_last_month}
