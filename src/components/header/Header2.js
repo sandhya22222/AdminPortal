@@ -147,6 +147,7 @@ const Header2 = () => {
                 }}
                 placement="bottom"
                 arrow
+                trigger={["click"]}
                 className="cursor-pointer"
               >
                 <Paragraph className="inline-block !mb-0 relative">
