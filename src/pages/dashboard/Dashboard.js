@@ -216,22 +216,26 @@ const Dashboard = () => {
                         className="!text-[#7CB305] mb-2 !font-semibold mt-0"
                       >
                         {currencySymbol}
-                        {parseInt(
-                          dashboardData &&
-                            dashboardData.store_revenue &&
-                            dashboardData.store_revenue.total_amount
-                        )}
+                        {dashboardData &&
+                        dashboardData.store_revenue &&
+                        dashboardData.store_revenue.total_amount !== null
+                          ? parseInt(dashboardData.store_revenue.total_amount)
+                          : 0}
                       </Title>
                       <Text className="!text-[#000000D9] text-sm">
                         Monthly Revenue
                       </Text>
                       <Title level={5} className="!text-[#7CB305] mt-0">
                         {currencySymbol}
-                        {parseInt(
-                          dashboardData &&
-                            dashboardData.store_revenue &&
-                            dashboardData.store_revenue.total_amount_last_month
-                        )}
+                        {dashboardData &&
+                        dashboardData.store_revenue &&
+                        dashboardData.store_revenue.total_amount_last_month !==
+                          null
+                          ? parseInt(
+                              dashboardData.store_revenue
+                                .total_amount_last_month
+                            )
+                          : 0}
                       </Title>
                     </Content>
                   </Content>
@@ -253,23 +257,29 @@ const Dashboard = () => {
                         className="!text-[#7CB305] mb-2 !font-semibold mt-0"
                       >
                         {currencySymbol}
-                        {parseInt(
-                          dashboardData &&
-                            dashboardData.store_revenue &&
-                            dashboardData.store_revenue.store_commision_amount
-                        )}
+                        {dashboardData &&
+                        dashboardData.store_revenue &&
+                        dashboardData.store_revenue.store_commision_amount !==
+                          null
+                          ? parseInt(
+                              dashboardData.store_revenue.store_commision_amount
+                            )
+                          : 0}
                       </Title>
                       <Text className="!text-[#000000D9] text-sm">
                         Monthly Profit
                       </Text>
                       <Title level={5} className="!text-[#7CB305] mt-0">
                         {currencySymbol}
-                        {parseInt(
-                          dashboardData &&
-                            dashboardData.store_revenue &&
-                            dashboardData.store_revenue
-                              .store_commision_last_month
-                        )}
+                        {dashboardData &&
+                        dashboardData.store_revenue &&
+                        dashboardData.store_revenue
+                          .store_commision_last_month !== null
+                          ? parseInt(
+                              dashboardData.store_revenue
+                                .store_commision_last_month
+                            )
+                          : 0}
                       </Title>
                     </Content>
                   </Content>
@@ -296,7 +306,7 @@ const Dashboard = () => {
                       {dashboardData && dashboardData.total_products}
                     </Title>
                     <Text className="!text-[#000000D9] text-sm">
-                      Products Created Last 30 days
+                      Last 30 days
                     </Text>
                     <Title level={5} className="!text-[#1A5692] mt-0">
                       {dashboardData && dashboardData.total_products_last_month}
