@@ -24,6 +24,7 @@ import "./language.css";
 import useAuthorization from "../../hooks/useAuthorization";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
+import { usePageTitle } from "../../hooks/usePageTitle";
 const { Title } = Typography;
 const { Option } = Select;
 const { Content } = Layout;
@@ -35,7 +36,7 @@ const languageDeleteAPI = process.env.REACT_APP_LANGUAGE_DOCUMENT_UPDATE_API;
 const titleMinLength = process.env.REACT_APP_TITLE_MIN_LENGTH;
 const titleMaxLength = process.env.REACT_APP_TITLE_MAX_LENGTH;
 const AddLanguage = () => {
-  const authorizationHeader = useAuthorization();
+  usePageTitle("Add Language");
 
   const [isLanguageFieldEmpty, setIsLanguageFieldEmpty] = useState(false);
   const [isLanguageCodeFieldEmpty, setIsLanguageCodeFieldEmpty] =

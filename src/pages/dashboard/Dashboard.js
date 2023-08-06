@@ -35,7 +35,7 @@ const { Content } = Layout;
 
 const Dashboard = () => {
   const auth = useAuth();
-  usePageTitle("Admin Portal - Dashboard");
+  usePageTitle("Dashboard");
   const navigate = useNavigate();
 
   const [dashboardData, setDashboardData] = useState();

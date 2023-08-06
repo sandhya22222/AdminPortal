@@ -67,9 +67,9 @@ const passwordMinLength = process.env.REACT_APP_PASSWORD_MIN_LENGTH;
 const passwordMaxLength = process.env.REACT_APP_PASSWORD_MAX_LENGTH;
 
 const Stores = () => {
-  const authorizationHeader = useAuthorization();
   const { t } = useTranslation();
-  usePageTitle("Admin Portal - Store");
+  usePageTitle("Stores");
+
   const params = useParams();
   const navigate = useNavigate();
   const search = useLocation().search;
@@ -424,7 +424,7 @@ const Stores = () => {
   };
   //!this useEffect for tab(initial rendering)
   useEffect(() => {
-    if (storeApiData && storeApiData.length > 0) {
+    if (storeApiData && storeApiData.length > 0 && !isLoading) {
       setIsLoading(false);
       // if (tab_id === "0" || tab_id === "1" || tab_id === "2") {
       //   handleTabChangeStore(tab_id);
@@ -481,6 +481,7 @@ const Stores = () => {
     );
     setInValidEditName(false);
   };
+
   const onClose = () => {
     setOpen(false);
     setName("");
@@ -499,6 +500,7 @@ const Stores = () => {
   const closeDeleteModal = () => {
     setIsDeleteStoreModalOpen(false);
   };
+
   //!get call for stores
   const findByPageStoreApi = (pageNumber, pageLimit, storeStatus) => {
     // setIsLoading(true);
@@ -581,6 +583,7 @@ const Stores = () => {
         }
       });
   };
+
   //!useEffect for getting the table in table without refreshing
   useEffect(() => {
     if (postData != null) {
@@ -595,6 +598,7 @@ const Stores = () => {
       setActiveCount(totalStoresCount);
     }
   }, [postData]);
+
   //! validation for post call
   const validateStorePostField = () => {
     const pattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{12,64}$/;
@@ -1114,20 +1118,20 @@ const Stores = () => {
             autoClose: 10000,
           });
         } else {
-        if (error.response) {
-          toast(`${error.response.data.message}`, {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
-        } else {
-          toast(`${t("common:Something-Went-Wrong")}`, {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
+          if (error.response) {
+            toast(`${error.response.data.message}`, {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "error",
+              autoClose: 10000,
+            });
+          } else {
+            toast(`${t("common:Something-Went-Wrong")}`, {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "error",
+              autoClose: 10000,
+            });
+          }
         }
-      }
         console.log("Error respose from the store post call", error.response);
         // setInValidName(true)
         // onClose();
@@ -1184,30 +1188,30 @@ const Stores = () => {
             autoClose: 10000,
           });
         } else {
-        if (error.response.status === 400) {
-          toast(`${t("stores:Please-enter-the-valid-store-name")}`, {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
-          // toast(`${error.response.data.message.name}`, {
-          //   position: toast.POSITION.TOP_RIGHT,
-          //   type: "error",
-          //   autoClose: 10000,
-          // });
-          // toast(`${error.response.data.message.name}`, {
-          //   position: toast.POSITION.TOP_RIGHT,
-          //   type: "error",
-          //   autoClose: 10000,
-          // });
-        } else {
-          toast(`${t("common:Something-Went-Wrong")}`, {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
+          if (error.response.status === 400) {
+            toast(`${t("stores:Please-enter-the-valid-store-name")}`, {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "error",
+              autoClose: 10000,
+            });
+            // toast(`${error.response.data.message.name}`, {
+            //   position: toast.POSITION.TOP_RIGHT,
+            //   type: "error",
+            //   autoClose: 10000,
+            // });
+            // toast(`${error.response.data.message.name}`, {
+            //   position: toast.POSITION.TOP_RIGHT,
+            //   type: "error",
+            //   autoClose: 10000,
+            // });
+          } else {
+            toast(`${t("common:Something-Went-Wrong")}`, {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "error",
+              autoClose: 10000,
+            });
+          }
         }
-      }
       });
   };
 
@@ -1781,20 +1785,22 @@ const Stores = () => {
                   </Drawer>
                 </Content>
               </Content>
-              <Content className="!h-7">
-                <DmTabAntDesign
-                  tabData={storeTabData}
-                  handleTabChangeFunction={handleTabChangeStore}
-                  activeKey={
-                    // searchParams.get("tab") ? searchParams.get("tab") : "0"
-                    tab_id === null ? "0" : String(tab_id)
-                    // String(tab_id)
-                  }
-                  // totalItemsCount={countForStore}
-                  tabType={"line"}
-                  tabBarPosition={"top"}
-                />
-              </Content>
+              {!isLoading && (
+                <Content className="!h-7">
+                  <DmTabAntDesign
+                    tabData={storeTabData}
+                    handleTabChangeFunction={handleTabChangeStore}
+                    activeKey={
+                      // searchParams.get("tab") ? searchParams.get("tab") : "0"
+                      tab_id === null ? "0" : String(tab_id)
+                      // String(tab_id)
+                    }
+                    // totalItemsCount={countForStore}
+                    tabType={"line"}
+                    tabBarPosition={"top"}
+                  />
+                </Content>
+              )}
             </>
           }
         />
