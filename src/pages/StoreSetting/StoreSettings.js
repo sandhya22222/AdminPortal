@@ -35,6 +35,7 @@ import Status from "../Stores/Status";
 import Preview from "./Preview";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
+import { usePageTitle } from "../../hooks/usePageTitle";
 const { Content } = Layout;
 const { Title, Text } = Typography;
 const { TextArea } = Input;
@@ -46,6 +47,7 @@ const storeAbsoluteImgesAPI =
 const storeBannerImageAPI = process.env.REACT_APP_STORE_BANNER_IMAGES_API;
 
 const StoreSettings = () => {
+  usePageTitle("Store Settings");
   const { t } = useTranslation();
   const navigate = useNavigate();
   const search = useLocation().search;
@@ -1185,6 +1187,7 @@ const StoreSettings = () => {
         //window.location.reload();
         setIsUpLoading(false);
         setIsLoading(false);
+        setImageChangeValues(false)
         console.log(
           "Server Success Response From storeImagePutCall",
           response.data
