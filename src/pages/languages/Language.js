@@ -51,7 +51,7 @@ const languageAPI = process.env.REACT_APP_LANGUAGE_API;
 const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE);
 
 const Language = () => {
-  usePageTitle("Admin Portal - Language");
+  usePageTitle("Languages");
   const authorizationHeader = useAuthorization();
   const params = useParams();
 
@@ -304,34 +304,46 @@ const Language = () => {
       render: (text, record) => {
         return (
           <Col span={20} className="whitespace-nowrap flex align-middle">
-            <Link
-              to={{
-                pathname: "edit_language",
-                search: `?_id=${record.id}&page=${
-                  searchParams.get("page") ? searchParams.get("page") : 1
-                }&limit=${
-                  searchParams.get("limit")
-                    ? searchParams.get("limit")
-                    : pageLimit
-                }`,
-              }}
-              className=" pl-[10px] font-semibold app-table-data-title"
-            >
-              <Tooltip title="Edit Language">
-                <img src={EditIcon} className="!text-xl text-black" />
-              </Tooltip>
-            </Link>
-            <>
+            {record.language_code.toLowerCase() !== "en" ? (
+              <Link
+                to={{
+                  pathname: "edit_language",
+                  search: `?_id=${record.id}&page=${
+                    searchParams.get("page") ? searchParams.get("page") : 1
+                  }&limit=${
+                    searchParams.get("limit")
+                      ? searchParams.get("limit")
+                      : pageLimit
+                  }`,
+                }}
+                className=" pl-[10px] font-semibold app-table-data-title"
+              >
+                <Tooltip title="Edit Language">
+                  <img
+                    src={EditIcon}
+                    alt="edit"
+                    className="!text-xl text-black"
+                  />
+                </Tooltip>
+              </Link>
+            ) : (
+              ""
+            )}
+
+            {record.language_code.toLowerCase() !== "en" ? (
               <Tooltip title="Delete Language">
                 <img
                   src={DeleteIcon}
+                  alt="delete"
                   className="!text-xl ml-5 cursor-pointer"
                   onClick={() => {
                     openDeleteModal(record.id);
                   }}
                 />
               </Tooltip>
-            </>
+            ) : (
+              ""
+            )}
           </Col>
         );
       },
@@ -407,6 +419,15 @@ const Language = () => {
             type: "error",
             autoClose: 10000,
           });
+        } else if (error && error.response && error.response.status === 409) {
+          toast(
+            "Language cannot be deleted since there is a reference in the store",
+            {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "error",
+              autoClose: 10000,
+            }
+          );
         } else {
           toast("Deletion unsuccessful, please try again later", {
             position: toast.POSITION.TOP_RIGHT,

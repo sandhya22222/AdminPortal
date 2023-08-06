@@ -6,11 +6,14 @@ import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
 import { getGenerateDateAndTime } from "../../util/util";
 import { toast } from "react-toastify";
+import { usePageTitle } from "../../hooks/usePageTitle";
 const { Content } = Layout;
 const { Text, Title } = Typography;
 
+const storeUsersAPI = process.env.REACT_APP_USERS_API;
+
 const UserProfile = () => {
-  const storeUsersAPI = process.env.REACT_APP_USERS_API;
+  usePageTitle("Profile");
 
   const [storeUsersData, setStoreUsersData] = useState();
   const [isLoading, setIsLoading] = useState(true);

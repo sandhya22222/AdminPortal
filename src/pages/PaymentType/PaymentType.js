@@ -4,6 +4,7 @@ import { Layout, Typography } from "antd";
 import DynamicTable from "../../components/DynamicTable/DynamicTable";
 import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
+import { usePageTitle } from "../../hooks/usePageTitle";
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -34,6 +35,7 @@ const paymentTypesData = [
 ];
 
 const PaymentType = () => {
+  usePageTitle("Payment Type");
   useEffect(() => {
     window.scroll(0, 0);
   }, []);

@@ -36,6 +36,7 @@ import StoreModal from "../../components/storeModal/StoreModal";
 import { Container } from "reactstrap";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
+import { usePageTitle } from "../../hooks/usePageTitle";
 
 //! Destructure the components
 const { Title, Text } = Typography;
@@ -51,7 +52,7 @@ const titleMaxLength = process.env.REACT_APP_TITLE_MAX_LENGTH;
 toast.configure();
 
 const EditLanguage = () => {
-  const authorizationHeader = useAuthorization();
+  usePageTitle("Edit Language");
 
   const search = useLocation().search;
   const _id = new URLSearchParams(search).get("_id");
@@ -211,6 +212,7 @@ const EditLanguage = () => {
         }
       });
   };
+
   useEffect(() => {
     window.scrollTo(0, 0);
     getLanguageAPI(
@@ -360,7 +362,9 @@ const EditLanguage = () => {
     //   });
     // }
   };
+
   console.log("newlyUploadedFile", languageDetails.native_name);
+  
   // Language PUT API call
   const updateEditLanguage = () => {
     // const langaugeData = new FormData();
@@ -385,15 +389,16 @@ const EditLanguage = () => {
     const temp = {};
     temp["language"] = languageDetails.language.trim();
     temp["language_code"] = languageDetails.language_code.trim();
+    temp["native_name"] = languageDetails.native_name.trim();
     if (languageDetails.language_regex !== "") {
       temp["language_regex"] = languageDetails.language_regex.trim();
     }
-    if (
-      languageDetails.native_name !== null &&
-      languageDetails.native_name !== ""
-    ) {
-      temp["native_name"] = languageDetails.native_name.trim();
-    }
+    // if (
+    //   languageDetails.native_name !== null &&
+    //   languageDetails.native_name !== ""
+    // ) {
+    //   temp["native_name"] = languageDetails.native_name.trim();
+    // }
     if (languageDetails.writing_script_direction !== "") {
       temp["writing_script_direction"] =
         languageDetails.writing_script_direction;

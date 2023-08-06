@@ -13,6 +13,7 @@ import { useEffect } from "react";
  * */
 
 export const usePageTitle = (newTitle) => {
+  newTitle = "Admin Portal - " + newTitle;
   useEffect(() => {
     const prevTitle = document.title;
     document.title = newTitle;
