@@ -61,6 +61,7 @@ const Dashboard = () => {
       .then(function (response) {
         setDashboardData(response.data);
         setDashboardDataLoading(false);
+        setDashboardDataNetWorkError(false);
       })
       .catch((error) => {
         setDashboardDataLoading(false);
@@ -91,9 +92,9 @@ const Dashboard = () => {
           }
         />
       </Content>
-      <Content className="!p-[1.2rem] !mt-[120px]">
+      <Content className="!p-3 !mt-[7.8rem]">
         {dashboardDataLoading ? (
-          <Content className="!bg-[var(--mp-bright-color)] !p-3">
+          <Content className="!bg-[var(--mp-bright-color)] !p-3 !rounded-md">
             <Content className="flex justify-between">
               {" "}
               <Skeleton
@@ -136,11 +137,9 @@ const Dashboard = () => {
             </Content>
           </Content>
         ) : dashboardDataNetWorkError ? (
-          <Content className="text-center !mt-10 !mb-2">
-            <p>
-              Please wait while we validate your information. If this process
-              persists, please consider logging out and logging back in
-            </p>
+          <Content className="text-center !bg-[var(--mp-bright-color)] !p-3 !rounded-md">
+            Unfortunately, we were unable to retrieve dashboard information.
+            Please try again later.
           </Content>
         ) : (
           <Content>

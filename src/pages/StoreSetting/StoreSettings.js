@@ -1398,7 +1398,7 @@ const StoreSettings = () => {
           </Content>
         }
       />
-      <Content className="p-3 mt-28">
+      <Content className="p-3 mt-[7rem]">
         {/* <Spin tip="Please wait!" size="large" spinning={isLoading}> */}
         {/* <Content className="bg-white mt-2 p-3"> */}
         {/* <span className="text-red-600 text-sm !text-center">*</span>
@@ -1509,8 +1509,8 @@ const StoreSettings = () => {
             </StoreModal>
           </Content> */}
         <Spin tip="Please wait!" size="large" spinning={isUpLoading}>
-          <Content className="bg-white p-3 !rounded-lg">
-            <label className="text-[20px] mb-2 mt-4 font-bold">
+          <Content className="bg-white p-3 !rounded-md">
+            <label className="text-[20px] mb-2 font-bold">
               {t("stores:Media")}
             </label>
             <Row class="flex space-x-4">
@@ -1593,7 +1593,7 @@ const StoreSettings = () => {
               InfoCircleText={`${t("stores:Banner-Logo-Info")}`}
               setImageChangeValues={setImageChangeValues}
             />
-            <Content className="mt-5 mb-6">
+            <Content className="mt-4">
               <Row>
                 <Col>
                   <Button
@@ -3183,7 +3183,7 @@ const StoreSettings = () => {
                 </Col>
               </Row>
             </Content>
-            <Content className="mt-5 mb-6">
+            <Content className="mt-4">
               <Row>
                 <Col>
                   <Button

@@ -516,10 +516,10 @@ const AddLanguage = () => {
           </Content>
         }
       />
-      <Content className="mt-[8rem] !w-full p-3">
+      <Content className="mt-[7rem] !w-full p-3">
         <Spin tip="Please wait!" size="large" spinning={isLoading}>
-          <Content className="mt-[-15px]">
-            <Content className="p-3 bg-white mt-0 !rounded-l">
+          {/* <Content className="mt-[-15px]"> */}
+            <Content className="p-3 bg-white mt-0 !rounded-md">
               <Content className="!mb-10">
                 <Row>
                   <Col span={8} className="pr-2">
@@ -769,7 +769,7 @@ const AddLanguage = () => {
                 </Row>
               </Content>
             </Content>
-          </Content>
+          {/* </Content> */}
         </Spin>
       </Content>
     </Content>

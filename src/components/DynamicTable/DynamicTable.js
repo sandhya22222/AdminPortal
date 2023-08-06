@@ -386,7 +386,7 @@ const DynamicTable = ({ tableComponentData }) => {
     <div>
       {dataSource.table_content && dataSource.table_content.length > 0 ? (
         <div>
-          <Content className="bg-white mb-2 !rounded-lg">
+          <Content className="bg-white mb-2 !rounded-md">
             {dataSource.filter_settings.is_enabled === true ||
             dataSource.search_settings.is_enabled === true ||
             dataSource.sorting_settings.is_enabled === true ? (
@@ -586,10 +586,7 @@ const DynamicTable = ({ tableComponentData }) => {
         </div>
       ) : (
         <div className="h-28 flex items-center justify-center !bg-white">
-          <h6>No Data Available</h6>
-          <h6 className="!font-medium">
-            Currently, there is no data to display in the table
-          </h6>
+          {/* No Data Available Currently, there is no data to display in the table. */}
         </div>
       )}
     </div>

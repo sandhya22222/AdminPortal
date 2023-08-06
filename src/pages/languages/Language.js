@@ -601,27 +601,21 @@ const Language = () => {
         />
       </Content>
 
-      <Content className="!p-3 mt-[8rem] ">
+      <Content className="!p-3 mt-[7.8rem] ">
         {isLoading ? (
-          <Content className="bg-white">
+          <Content className="bg-white p-3 !rounded-md">
             <Skeleton
               active
               paragraph={{
                 rows: 6,
               }}
-              className="p-3"
             ></Skeleton>
           </Content>
         ) : isNetworkErrorLanguage ? (
-          <Layout className="p-0 text-center mb-3 bg-[#F4F4F4]">
-            {/* <p>Validation in Progress</p> */}
-            <p>
-              {/* {errorMessage
-                ? errorMessage : */}
-              Please wait while we validate your information. If this process
-              persists, please consider logging out and logging back in
-            </p>
-          </Layout>
+          <Content className="p-3 text-center bg-white !rounded-md">
+            Unfortunately, we were unable to retrieve language information.
+            Please try again later.
+          </Content>
         ) : (
           <Layout className="">
             <Content>
