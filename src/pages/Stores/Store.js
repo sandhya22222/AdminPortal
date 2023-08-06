@@ -422,6 +422,7 @@ const Stores = () => {
       });
     setSelectedTabTableContent(tempArray);
   };
+
   //!this useEffect for tab(initial rendering)
   useEffect(() => {
     if (storeApiData && storeApiData.length > 0 && !isLoading) {
@@ -1805,31 +1806,24 @@ const Stores = () => {
           }
         />
       </Content>
-      <Content className="!p-3 !mt-[10rem] ">
+      <Content className="!p-3 !mt-[7.8rem]">
         {isLoading ? (
-          <Content className="bg-white">
+          <Content className="bg-white p-3 !rounded-md">
             <Skeleton
               active
               paragraph={{
                 rows: 6,
               }}
-              className="p-3"
             ></Skeleton>
             {/* <SkeletonComponent Layout="layout1" /> */}
           </Content>
         ) : isNetworkError ? (
-          <Layout className="p-0 text-center mb-3 bg-[#F4F4F4]">
-            {/* <p>Validation in Progress</p> */}
-            <p>
-              {/* {errorMessage
-                ? errorMessage :*/}
-              Please wait while we validate your information. If this process
-              persists, please consider logging out and logging back in
-              {/* } */}
-            </p>
-          </Layout>
+          <Content className="!mt-[1.7rem] !text-center bg-white p-3 !rounded-md">
+            Unfortunately, we were unable to retrieve store information.
+            Please try again later.
+          </Content>
         ) : (
-          <Content className="">
+          <Content className="!mt-[1.7rem]">
             {/* <Content className="px-3">
               <DmTabAntDesign
                 tabData={storeTabData}

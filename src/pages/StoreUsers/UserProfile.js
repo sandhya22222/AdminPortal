@@ -75,31 +75,30 @@ const UserProfile = () => {
           </Content>
         }
       />
-      <Content className="mt-[9rem] ">
+      <Content className="mt-[7.8rem] ">
         {isLoading ? (
-          <Content className="bg-white !mx-[17rem]">
-            <Skeleton
-              active
-              paragraph={{
-                rows: 6,
-              }}
-              className="p-3"
-            ></Skeleton>
+          <Content className="!text-center !p-6">
+            <Content className="inline-block shadow-sm  bg-[#FFFFFF] !rounded-md px-8 py-10 w-[500px]">
+              <Skeleton
+                active
+                paragraph={{
+                  rows: 3,
+                }}
+                className="p-3"
+              ></Skeleton>
+            </Content>
           </Content>
         ) : isNetworkError ? (
-          <Layout className="p-0 text-center mb-3 bg-[#F4F4F4]">
-            {/* <p>Validation in Progress</p> */}
-            <p>
-              {/* {errorMessage
-                ? errorMessage :*/}
-              Please wait while we validate your information. If this process
-              persists, please consider logging out and logging back in
-            </p>
-          </Layout>
+          <Content className="!text-center !p-6">
+            <Content className="inline-block shadow-sm  bg-[#FFFFFF] !rounded-md px-8 py-10 w-[500px]">
+              Unfortunately, we were unable to retrieve your profile
+              information. Please try again later.
+            </Content>
+          </Content>
         ) : (
-          <Content className="!text-center !p-6  !mx-[17rem]">
+          <Content className="!text-center !p-6">
             <Content className="inline-block">
-              <Content className="shadow-sm  bg-[#FFFFFF] rounded-2xl flex flex-col items-center px-8 py-10 w-[500px]">
+              <Content className="shadow-sm  bg-[#FFFFFF] !rounded-md flex flex-col items-center px-8 py-10 w-[500px]">
                 {/* <Row className="mb-2">
                   <Avatar size={104} icon={<UserOutlined />} />
                 </Row>

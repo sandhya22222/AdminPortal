@@ -364,7 +364,7 @@ const EditLanguage = () => {
   };
 
   console.log("newlyUploadedFile", languageDetails.native_name);
-  
+
   // Language PUT API call
   const updateEditLanguage = () => {
     // const langaugeData = new FormData();
@@ -736,241 +736,245 @@ const EditLanguage = () => {
           </Content>
         }
       />
-      <Spin tip="Please wait!" size="large" spinning={isLoading}>
-        <Content className="p-3 mt-[-15px]">
-          <Row>
-            <Col span={16}>
-              {isDataLoading ? (
-                <div className="mt-[-480px]">
-                  <Skeleton
-                    active
-                    paragraph={{
-                      rows: 5,
-                    }}
-                    className="p-3"
-                  ></Skeleton>
-                </div>
-              ) : (
-                <Content className="!w-[150%] ">
-                  <Content className="p-3 !bg-white mt-[8rem] !rounded-lg mb-6">
-                    <Content className="!mb-10">
-                      {/* <Typography.Title
+      <Content className="mt-[7rem] !w-full p-3">
+        <Spin tip="Please wait!" size="large" spinning={isLoading}>
+          <Content className="p-3 !bg-white !rounded-md">
+            <Row>
+              <Col span={16}>
+                {isDataLoading ? (
+                  <div className="mt-[-480px]">
+                    <Skeleton
+                      active
+                      paragraph={{
+                        rows: 5,
+                      }}
+                    ></Skeleton>
+                  </div>
+                ) : (
+                  <Content className="!w-[150%] ">
+                    <Content className="mb-6">
+                      <Content className="!mb-10">
+                        {/* <Typography.Title
                         level={3}
                         className="inline-block !font-normal"
                       >
                         Language Details
                       </Typography.Title> */}
-                      <Row>
-                        <Col span={8} className="pr-2">
-                          <Content className="my-3">
-                            <span className="text-red-600 text-sm !items-center py-4">
-                              *
-                            </span>
-                            <label className="text-[13px] mb-2 ml-1">
-                              Language
-                              {/* <sup className="text-red-600 text-sm">*</sup> */}
-                            </label>
-                            <Input
-                              placeholder="Enter Language Name"
-                              value={languageDetails.language}
-                              className={`${
-                                isLanguageFieldEmpty
-                                  ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
-                                  : ""
-                              }`}
-                              minLength={titleMinLength}
-                              maxLength={titleMaxLength}
-                              onChange={(e) => {
-                                const regex = /^[a-zA-Z]*$/;
-                                if (
-                                  e.target.value !== "" &&
-                                  validator.isAlpha(e.target.value)
-                                ) {
-                                  languageHandler("language", e.target.value);
-                                  setOnChangeValues(true);
-                                } else if (e.target.value === "") {
-                                  languageHandler("language", e.target.value);
-                                  setOnChangeValues(true);
-                                }
-                              }}
-                              onBlur={() => {
-                                const trimmed = languageDetails.language.trim();
-                                const trimmedUpdate = trimmed.replace(
-                                  /\s+/g,
-                                  " "
-                                );
-                                languageHandler("language", trimmedUpdate);
-                              }}
-                            />
-                          </Content>
-                        </Col>
-                        <Col span={8} className="pl-2">
-                          <Content className="my-3">
-                            <span className="text-red-600 text-sm !text-center">
-                              *
-                            </span>
-                            <label className="text-[13px] mb-2 ml-1">
-                              Language Code
-                              {/* <sup className="text-red-600 text-sm">*</sup> */}
-                            </label>
-                            <Input
-                              placeholder="Enter Language Code"
-                              value={languageDetails.language_code}
-                              minLength={2}
-                              maxLength={5}
-                              className={`${
-                                isLanguageCodeFieldEmpty
-                                  ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
-                                  : ""
-                              }`}
-                              onChange={(e) => {
-                                const languageCodeRegex = /^[a-zA-Z\-]+$/;
-                                if (
-                                  e.target.value !== "" &&
-                                  validator.matches(
-                                    e.target.value,
-                                    languageCodeRegex
-                                  )
-                                ) {
+                        <Row>
+                          <Col span={8} className="pr-2">
+                            <Content className="my-3">
+                              <span className="text-red-600 text-sm !items-center py-4">
+                                *
+                              </span>
+                              <label className="text-[13px] mb-2 ml-1">
+                                Language
+                                {/* <sup className="text-red-600 text-sm">*</sup> */}
+                              </label>
+                              <Input
+                                placeholder="Enter Language Name"
+                                value={languageDetails.language}
+                                className={`${
+                                  isLanguageFieldEmpty
+                                    ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
+                                    : ""
+                                }`}
+                                minLength={titleMinLength}
+                                maxLength={titleMaxLength}
+                                onChange={(e) => {
+                                  const regex = /^[a-zA-Z]*$/;
+                                  if (
+                                    e.target.value !== "" &&
+                                    validator.isAlpha(e.target.value)
+                                  ) {
+                                    languageHandler("language", e.target.value);
+                                    setOnChangeValues(true);
+                                  } else if (e.target.value === "") {
+                                    languageHandler("language", e.target.value);
+                                    setOnChangeValues(true);
+                                  }
+                                }}
+                                onBlur={() => {
+                                  const trimmed =
+                                    languageDetails.language.trim();
+                                  const trimmedUpdate = trimmed.replace(
+                                    /\s+/g,
+                                    " "
+                                  );
+                                  languageHandler("language", trimmedUpdate);
+                                }}
+                              />
+                            </Content>
+                          </Col>
+                          <Col span={8} className="pl-2">
+                            <Content className="my-3">
+                              <span className="text-red-600 text-sm !text-center">
+                                *
+                              </span>
+                              <label className="text-[13px] mb-2 ml-1">
+                                Language Code
+                                {/* <sup className="text-red-600 text-sm">*</sup> */}
+                              </label>
+                              <Input
+                                placeholder="Enter Language Code"
+                                value={languageDetails.language_code}
+                                minLength={2}
+                                maxLength={5}
+                                className={`${
+                                  isLanguageCodeFieldEmpty
+                                    ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
+                                    : ""
+                                }`}
+                                onChange={(e) => {
+                                  const languageCodeRegex = /^[a-zA-Z\-]+$/;
+                                  if (
+                                    e.target.value !== "" &&
+                                    validator.matches(
+                                      e.target.value,
+                                      languageCodeRegex
+                                    )
+                                  ) {
+                                    languageHandler(
+                                      "language_code",
+                                      e.target.value
+                                    );
+                                    setOnChangeValues(true);
+                                  } else if (e.target.value === "") {
+                                    languageHandler(
+                                      "language_code",
+                                      e.target.value
+                                    );
+                                    setOnChangeValues(true);
+                                  }
+                                }}
+                                onBlur={() => {
+                                  const trimmed =
+                                    languageDetails.language_code.trim();
+                                  const trimmedUpdate = trimmed.replace(
+                                    /\s+/g,
+                                    " "
+                                  );
                                   languageHandler(
                                     "language_code",
-                                    e.target.value
+                                    trimmedUpdate
                                   );
-                                  setOnChangeValues(true);
-                                } else if (e.target.value === "") {
+                                }}
+                              />
+                            </Content>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col span={8} className="pr-2">
+                            <Content className="my-3">
+                              <label className="text-[13px] mb-2">
+                                Language Regex
+                                {/* <sup className="text-red-600 text-sm">*</sup> */}
+                              </label>
+                              <Input
+                                placeholder="Enter Language Regex"
+                                value={languageDetails.language_regex}
+                                minLength={titleMinLength}
+                                maxLength={titleMaxLength}
+                                className={`${
+                                  isRegexFieldEmpty
+                                    ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
+                                    : ""
+                                }`}
+                                onChange={(e) => {
                                   languageHandler(
-                                    "language_code",
+                                    "language_regex",
                                     e.target.value
                                   );
                                   setOnChangeValues(true);
-                                }
-                              }}
-                              onBlur={() => {
-                                const trimmed =
-                                  languageDetails.language_code.trim();
-                                const trimmedUpdate = trimmed.replace(
-                                  /\s+/g,
-                                  " "
-                                );
-                                languageHandler("language_code", trimmedUpdate);
-                              }}
-                            />
-                          </Content>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col span={8} className="pr-2">
-                          <Content className="my-3">
-                            <label className="text-[13px] mb-2">
-                              Language Regex
-                              {/* <sup className="text-red-600 text-sm">*</sup> */}
-                            </label>
-                            <Input
-                              placeholder="Enter Language Regex"
-                              value={languageDetails.language_regex}
-                              minLength={titleMinLength}
-                              maxLength={titleMaxLength}
-                              className={`${
-                                isRegexFieldEmpty
-                                  ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
-                                  : ""
-                              }`}
-                              onChange={(e) => {
-                                languageHandler(
-                                  "language_regex",
-                                  e.target.value
-                                );
-                                setOnChangeValues(true);
-                              }}
-                              onBlur={() => {
-                                const trimmed =
-                                  languageDetails.language_regex.trim();
-                                const trimmedUpdate = trimmed.replace(
-                                  /\s+/g,
-                                  " "
-                                );
-                                languageHandler(
-                                  "language_regex",
-                                  trimmedUpdate
-                                );
-                              }}
-                            />
-                          </Content>
-                        </Col>
-                        <Col span={8} className="pl-2">
-                          <Content className="my-3">
-                            <label className="text-[13px] mb-2">
-                              Native Name
-                            </label>
-                            <Input
-                              placeholder="Enter Native Name"
-                              minLength={titleMinLength}
-                              maxLength={titleMaxLength}
-                              value={languageDetails.native_name}
-                              className={`${
-                                isNativeFieldEmpty
-                                  ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
-                                  : ""
-                              }`}
-                              onChange={(e) => {
-                                // languageHandler("native_name", e.target.value);
-                                // setOnChangeValues(true);
-                                const alphaWithSpacesRegex = /^[A-Za-z\s]+$/;
-                                if (
-                                  e.target.value !== "" &&
-                                  validator.matches(
-                                    e.target.value,
-                                    alphaWithSpacesRegex
-                                  )
-                                ) {
+                                }}
+                                onBlur={() => {
+                                  const trimmed =
+                                    languageDetails.language_regex.trim();
+                                  const trimmedUpdate = trimmed.replace(
+                                    /\s+/g,
+                                    " "
+                                  );
                                   languageHandler(
-                                    "native_name",
-                                    e.target.value
+                                    "language_regex",
+                                    trimmedUpdate
                                   );
-                                  setIsNativeFieldEmpty(false);
-                                  setOnChangeValues(true);
-                                } else if (e.target.value === "") {
-                                  languageHandler(
-                                    "native_name",
-                                    e.target.value
+                                }}
+                              />
+                            </Content>
+                          </Col>
+                          <Col span={8} className="pl-2">
+                            <Content className="my-3">
+                              <label className="text-[13px] mb-2">
+                                Native Name
+                              </label>
+                              <Input
+                                placeholder="Enter Native Name"
+                                minLength={titleMinLength}
+                                maxLength={titleMaxLength}
+                                value={languageDetails.native_name}
+                                className={`${
+                                  isNativeFieldEmpty
+                                    ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
+                                    : ""
+                                }`}
+                                onChange={(e) => {
+                                  // languageHandler("native_name", e.target.value);
+                                  // setOnChangeValues(true);
+                                  const alphaWithSpacesRegex = /^[A-Za-z\s]+$/;
+                                  if (
+                                    e.target.value !== "" &&
+                                    validator.matches(
+                                      e.target.value,
+                                      alphaWithSpacesRegex
+                                    )
+                                  ) {
+                                    languageHandler(
+                                      "native_name",
+                                      e.target.value
+                                    );
+                                    setIsNativeFieldEmpty(false);
+                                    setOnChangeValues(true);
+                                  } else if (e.target.value === "") {
+                                    languageHandler(
+                                      "native_name",
+                                      e.target.value
+                                    );
+                                    setOnChangeValues(true);
+                                  }
+                                }}
+                                onBlur={() => {
+                                  const trimmed =
+                                    languageDetails.native_name.trim();
+                                  const trimmedUpdate = trimmed.replace(
+                                    /\s+/g,
+                                    " "
                                   );
-                                  setOnChangeValues(true);
-                                }
-                              }}
-                              onBlur={() => {
-                                const trimmed =
-                                  languageDetails.native_name.trim();
-                                const trimmedUpdate = trimmed.replace(
-                                  /\s+/g,
-                                  " "
-                                );
-                                languageHandler("native_name", trimmedUpdate);
-                              }}
-                            />
-                          </Content>
-                        </Col>
-                      </Row>
-                      <Content className="my-3 w-[32%]">
-                        <label className="text-[13px] mb-2">
-                          Script Direction
-                        </label>
-                        <Select
-                          // size={"large"}
-                          style={{ display: "flex" }}
-                          defaultValue={
-                            languageDetails.writing_script_direction
-                          }
-                          value={languageDetails.writing_script_direction}
-                          onChange={(e) => {
-                            languageHandler("writing_script_direction", e);
-                            setOnChangeValues(true);
-                          }}
-                        >
-                          <Option value="LTR">Left to right</Option>
-                          <Option value="RTL">Right to left</Option>
-                        </Select>
-                      </Content>
-                      {/* <Content className="my-3 mt-4 w-[32%]">
+                                  languageHandler("native_name", trimmedUpdate);
+                                }}
+                              />
+                            </Content>
+                          </Col>
+                        </Row>
+                        <Content className="my-3 w-[32%]">
+                          <label className="text-[13px] mb-2">
+                            Script Direction
+                          </label>
+                          <Select
+                            // size={"large"}
+                            style={{ display: "flex" }}
+                            defaultValue={
+                              languageDetails.writing_script_direction
+                            }
+                            value={languageDetails.writing_script_direction}
+                            onChange={(e) => {
+                              languageHandler("writing_script_direction", e);
+                              setOnChangeValues(true);
+                            }}
+                          >
+                            <Option value="LTR">Left to right</Option>
+                            <Option value="RTL">Right to left</Option>
+                          </Select>
+                        </Content>
+                        {/* <Content className="my-3 mt-4 w-[32%]">
                         <label className="text-[13px] pb-1 mb-2">
                           Language Supported Document
                         </label>
@@ -1045,70 +1049,71 @@ const EditLanguage = () => {
                           ""
                         )}
                       </Content> */}
-                    </Content>
-                    <Content className="mt-3">
-                      <StoreModal
-                        isVisible={isModalOpen}
-                        okButtonText={"Yes"}
-                        title={"Warning"}
-                        cancelButtonText={"No"}
-                        okCallback={() => navigate("/dashboard/language")}
-                        cancelCallback={() => closeModal()}
-                        isSpin={false}
-                        hideCloseButton={false}
-                      >
-                        <div>
-                          <p>{`Discard Changes Confirmation`}</p>
-                          <p>{`This action will take you back to the listing page, and any changes made here will not be saved. Are you sure you would like to proceed?`}</p>
-                        </div>
-                      </StoreModal>
-                      <Row>
-                        <Col>
-                          {/* <Link to="/dashboard/language"> */}
-                          <Button
-                            // style={{ backgroundColor: "#393939" }}
-                            className={
-                              onChangeValues
-                                ? "app-btn-primary "
-                                : "!opacity-75"
-                            }
-                            onClick={() => validateLanguageFieldEmptyOrNot()}
-                            disabled={!onChangeValues}
-                          >
-                            {/* <label className=" h-5  text-[14px]  text-[#FFFFFF] cursor-pointer"> */}
-                            Update
-                            {/* </label> */}
-                          </Button>
-                          {/* </Link> */}
-                        </Col>
-                        <Col className="pl-2">
-                          <Button
-                            // style={{ background: "#FFFFFF" }}
-                            // className="app-btn-secondary"
-                            className={
-                              onChangeValues === true
-                                ? "app-btn-secondary "
-                                : "!opacity-75"
-                            }
-                            disabled={!onChangeValues}
-                            onClick={() => {
-                              setIsModalOpen(true);
-                            }}
-                          >
-                            {/* <label className="h-5 text-[14px]  text-[#393939] cursor-pointer"> */}
-                            Discard
-                            {/* </label> */}
-                          </Button>
-                        </Col>
-                      </Row>
+                      </Content>
+                      <Content className="mt-3">
+                        <StoreModal
+                          isVisible={isModalOpen}
+                          okButtonText={"Yes"}
+                          title={"Warning"}
+                          cancelButtonText={"No"}
+                          okCallback={() => navigate("/dashboard/language")}
+                          cancelCallback={() => closeModal()}
+                          isSpin={false}
+                          hideCloseButton={false}
+                        >
+                          <div>
+                            <p>{`Discard Changes Confirmation`}</p>
+                            <p>{`This action will take you back to the listing page, and any changes made here will not be saved. Are you sure you would like to proceed?`}</p>
+                          </div>
+                        </StoreModal>
+                        <Row>
+                          <Col>
+                            {/* <Link to="/dashboard/language"> */}
+                            <Button
+                              // style={{ backgroundColor: "#393939" }}
+                              className={
+                                onChangeValues
+                                  ? "app-btn-primary "
+                                  : "!opacity-75"
+                              }
+                              onClick={() => validateLanguageFieldEmptyOrNot()}
+                              disabled={!onChangeValues}
+                            >
+                              {/* <label className=" h-5  text-[14px]  text-[#FFFFFF] cursor-pointer"> */}
+                              Update
+                              {/* </label> */}
+                            </Button>
+                            {/* </Link> */}
+                          </Col>
+                          <Col className="pl-2">
+                            <Button
+                              // style={{ background: "#FFFFFF" }}
+                              // className="app-btn-secondary"
+                              className={
+                                onChangeValues === true
+                                  ? "app-btn-secondary "
+                                  : "!opacity-75"
+                              }
+                              disabled={!onChangeValues}
+                              onClick={() => {
+                                setIsModalOpen(true);
+                              }}
+                            >
+                              {/* <label className="h-5 text-[14px]  text-[#393939] cursor-pointer"> */}
+                              Discard
+                              {/* </label> */}
+                            </Button>
+                          </Col>
+                        </Row>
+                      </Content>
                     </Content>
                   </Content>
-                </Content>
-              )}
-            </Col>
-          </Row>
-        </Content>
-      </Spin>
+                )}
+              </Col>
+            </Row>
+          </Content>
+        </Spin>
+      </Content>
     </Content>
   );
 };
