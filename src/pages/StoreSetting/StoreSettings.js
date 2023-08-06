@@ -1109,6 +1109,7 @@ const StoreSettings = () => {
   //!put call of store images
   const updateStoreLogoImageCall = () => {
     const formData = new FormData();
+    imagesUpload.filter((ele) => typeof ele.imageValue.status === "undefined");
     if (imagesUpload && imagesUpload.length > 0) {
       for (var i = 0; i < imagesUpload.length; i++) {
         if (imagesUpload[i].type == "store_logo") {
@@ -1120,7 +1121,20 @@ const StoreSettings = () => {
           //     formData.append("banner_images", updateBannerImage[i]);
           //   }
           // } else {
-          formData.append("banner_images", imagesUpload[i].imageValue);
+          // debugger;
+          let removedItem = imagesUpload.filter(
+            (ele) => ele.imageValue.status === "removed"
+          );
+          if (removedItem.length > 0) {
+            //Remove removed items from main array
+            const currentItemUid = imagesUpload[i].imageValue.uid;
+            let itemToIgnore = removedItem.filter(
+              (element) => element.imageValue.uid === currentItemUid
+            );
+            if (itemToIgnore.length === 0) {
+              formData.append("banner_images", imagesUpload[i].imageValue);
+            }
+          } else formData.append("banner_images", imagesUpload[i].imageValue);
           // }
         } else if (imagesUpload[i].type == "search_logo") {
           formData.append("search_logo", imagesUpload[i].imageValue);
@@ -1268,7 +1282,7 @@ const StoreSettings = () => {
             type: "error",
             autoClose: 10000,
           });
-        } 
+        }
         console.log("Server error from getStoreApi Function ", error.response);
       });
   };
