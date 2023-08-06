@@ -86,6 +86,7 @@ const StoreImages = ({
   );
 
   const handleChange = (e) => {
+    // debugger;
     setImageChangeValues(true);
     setFileList(e.fileList);
     if (type === "store_logo") {
@@ -105,6 +106,18 @@ const StoreImages = ({
         setImagesUpload(temp);
       } else {
         let copyimageData = [...imagesUpload];
+        // let removedItem = copyimageData.filter(
+        //   (ele) => ele.imageValue.status === "removed"
+        // );
+        // let notRemovedItems = copyimageData.filter(
+        //   (ele) => typeof ele.imageValue.status === "undefined"
+        // );
+        // if (removedItem.length > 0) {
+        //   setImagesUpload(notRemovedItems);
+        // } else {
+        //   copyimageData.push({ type: "banner_images", imageValue: e.file });
+        //   setImagesUpload(copyimageData);
+        // }
         copyimageData.push({ type: "banner_images", imageValue: e.file });
         setImagesUpload(copyimageData);
       }
@@ -392,7 +405,6 @@ const StoreImages = ({
   //!delete function of language
   const removeMedia = (index) => {
     setIsImageDeleting(true);
-
     console.log("index", index);
     let dataObject = {};
     dataObject["store_id"] = storeId;
@@ -415,6 +427,9 @@ const StoreImages = ({
           });
         }
         if (type === "banner_images") {
+          //remove from setBannerAbsoluteImage
+          bannerAbsoluteImage.splice(imageIndex, 1);
+
           let temp = allImageUrl.filter((item) => item !== imageElement);
           if (temp && temp.length > 0) {
             setAllImageUrl(temp);
