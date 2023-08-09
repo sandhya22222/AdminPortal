@@ -621,29 +621,46 @@ const StoreImages = ({
           </Content>
           <Content className="!mt-4">
             {type === "banner_images" ? (
-              <Upload
-                className="w-90"
-                listType="picture"
-                beforeUpload={() => {
-                  return false;
-                }}
-                afterUpload={() => {
-                  return false;
-                }}
-                fileList={fileList}
-                accept=".png, .jpg, .jpeg"
-                onChange={(e) => {
-                  handleChange(e);
-                  setImageChangeValues(true);
-                }}
-              >
-                <Button
-                  icon={<UploadOutlined />}
-                  className="font-semibold hover:border-[var(--mp-primary-border-color)] hover:text-[var(--mp-brand-color-h)]"
+              <>
+                <Upload
+                  className="w-90"
+                  listType="picture"
+                  onPreview={handlePreview}
+                  beforeUpload={() => {
+                    return false;
+                  }}
+                  afterUpload={() => {
+                    return false;
+                  }}
+                  fileList={fileList}
+                  accept=".png, .jpg, .jpeg"
+                  onChange={(e) => {
+                    handleChange(e);
+                    setImageChangeValues(true);
+                  }}
                 >
-                  Click to Add Banner Image
-                </Button>
-              </Upload>
+                  <Button
+                    icon={<UploadOutlined />}
+                    className="font-semibold hover:border-[var(--mp-primary-border-color)] hover:text-[var(--mp-brand-color-h)]"
+                  >
+                    Click to Add Banner Image
+                  </Button>
+                </Upload>
+                <Modal
+                  open={previewOpen}
+                  title={previewTitle}
+                  footer={null}
+                  onCancel={handleCancel}
+                >
+                  <img
+                    alt="previewImage"
+                    style={{
+                      width: "100%",
+                    }}
+                    src={previewImage}
+                  />
+                </Modal>
+              </>
             ) : null}
           </Content>
         </>
