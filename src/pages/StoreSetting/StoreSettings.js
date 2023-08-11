@@ -36,6 +36,7 @@ import Preview from "./Preview";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
 import { usePageTitle } from "../../hooks/usePageTitle";
+import StoreMedia from "./StoreMedia";
 const { Content } = Layout;
 const { Title, Text } = Typography;
 const { TextArea } = Input;
@@ -1102,7 +1103,6 @@ const StoreSettings = () => {
         setIsLoading(false);
       });
   };
-  console.log("getImageData", getImageData);
   useEffect(() => {
     if (getImageData && getImageData.length > 0) {
       findAllWithoutPageStoreBannerImageApi(id);
@@ -1187,7 +1187,7 @@ const StoreSettings = () => {
         //window.location.reload();
         setIsUpLoading(false);
         setIsLoading(false);
-        setImageChangeValues(false)
+        setImageChangeValues(false);
         console.log(
           "Server Success Response From storeImagePutCall",
           response.data
@@ -1295,7 +1295,7 @@ const StoreSettings = () => {
     window.scroll(0, 0);
     if (id) {
       findAllWithoutPageStoreSettingApi(id);
-      findAllWithoutPageStoreImagesApi(id);
+      // findAllWithoutPageStoreImagesApi(id);
       // findAllWithoutPageStoreBannerImageApi(id);
     }
   }, []);
@@ -1531,7 +1531,7 @@ const StoreSettings = () => {
               {t("stores:Media")}
             </label>
             <Row class="flex space-x-4">
-              <Col>
+              {/* <Col>
                 <StoreImages
                   title={`${t("stores:Store-Logo")}`}
                   type={"store_logo"}
@@ -1545,7 +1545,7 @@ const StoreSettings = () => {
                   InfoCircleText={`${t("stores:Store-Logo-Info")}`}
                   setImageChangeValues={setImageChangeValues}
                 />
-              </Col>
+              </Col> */}
               {/* <Col className="!ml-10">
                 <StoreImages
                   title={`${t("stores:Search-Logo")}`}
@@ -1598,8 +1598,12 @@ const StoreSettings = () => {
                   setImageChangeValues={setImageChangeValues}
                 />
               </Col> */}
+              <StoreMedia
+                title={`${t("stores:Store-Logo")}`}
+                type={"store_logo"}
+              />
             </Row>
-            <StoreImages
+            {/* <StoreImages
               title={`${t("stores:Banner-Logo")}`}
               type={"banner_images"}
               storeId={id}
@@ -1609,8 +1613,12 @@ const StoreSettings = () => {
               isSingleUpload={false}
               InfoCircleText={`${t("stores:Banner-Logo-Info")}`}
               setImageChangeValues={setImageChangeValues}
+            /> */}
+            <StoreMedia
+              title={`${t("stores:Banner-Logo")}`}
+              type={"banner_images"}
             />
-            <Content className="mt-4">
+            {/* <Content className="mt-4">
               <Row>
                 <Col>
                   <Button
@@ -1649,7 +1657,7 @@ const StoreSettings = () => {
                   </Button>
                 </Col>
               </Row>
-            </Content>
+            </Content> */}
           </Content>
         </Spin>
         <Content className="bg-white mt-3 p-3 rounded-lg">
