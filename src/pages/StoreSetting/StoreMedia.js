@@ -394,6 +394,71 @@ const StoreMedia = ({ type, title }) => {
         }
       });
   };
+  const handleRemove = (file) => {
+    console.log("file:", file);
+    const { confirm } = Modal;
+    return new Promise((resolve, reject) => {
+      confirm({
+        title: "Confirm Image Deletion",
+        icon: null,
+        content:
+          "Are you absolutely sure you want to delete the image? This action cannot be undone.",
+        onOk: () => {
+          let dataObject = {};
+          dataObject["store_id"] = storeUUID;
+          dataObject["image-type"] = type;
+          dataObject["image-path"] = file.deleteImagePath;
+          // if (type === "banner_images") {
+          //   dataObject["image-path"] = file.deleteImagePath;
+          // } else {
+          //   dataObject["image-path"] = imageDelete;
+          // }
+          MarketplaceServices.remove(storeDeleteImagesAPI, dataObject)
+            .then((response) => {
+              setIsDeleteImageModalOpen(false);
+              console.log("response from delete===>", response);
+              if (response.status === 200 || response.status === 201) {
+                toast(`${response.data.message}`, {
+                  position: toast.POSITION.TOP_RIGHT,
+                  type: "success",
+                  autoClose: 10000,
+                });
+                resolve(true);
+              }
+              getImageData([]);
+              // if (type === "banner_images") {
+              //   //remove from setBannerAbsoluteImage
+              //   bannerAbsoluteImage.splice(imageIndex, 1);
+              // }
+              // disabling spinner
+              setIsImageDeleting(false);
+            })
+            .catch((error) => {
+              // disabling spinner
+              setIsImageDeleting(false);
+              reject(true);
+              if (error && error.response && error.response.status === 401) {
+                toast("Session expired", {
+                  position: toast.POSITION.TOP_RIGHT,
+                  type: "error",
+                  autoClose: 10000,
+                });
+              } else {
+                toast(`${error.response.data.message}`, {
+                  position: toast.POSITION.TOP_RIGHT,
+                  type: "error",
+                  autoClose: 10000,
+                });
+              }
+            });
+        },
+        onCancel: () => {
+          reject(true);
+        },
+      });
+    });
+  };
+
   return (
     <Content>
       <Content className="my-2">
@@ -420,9 +485,7 @@ const StoreMedia = ({ type, title }) => {
               onChange={(e) => {
                 handleChange(e);
               }}
-              onRemove={(e) => {
-                openDeleteModal(e);
-              }}
+              onRemove={handleRemove}
               // onRemove={false}
             >
               {fileList && fileList.length >= 1 ? null : uploadButton}
@@ -488,7 +551,7 @@ const StoreMedia = ({ type, title }) => {
           </>
         )}
       </Content>
-      <StoreModal
+      {/* <StoreModal
         isVisible={isDeleteImageModalOpen}
         okButtonText={"Yes"}
         cancelButtonText={"Cancel"}
@@ -504,7 +567,7 @@ const StoreMedia = ({ type, title }) => {
             <p>{`Are you absolutely sure you want to delete the image? This action cannot be undone.`}</p>
           </div>
         }
-      </StoreModal>
+      </StoreModal> */}
     </Content>
   );
 };
