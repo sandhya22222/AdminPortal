@@ -103,7 +103,7 @@ i18next
     backend: {
       loadPath: "/assets/locales/{{lng}}/{{ns}}/translation.json",
     },
-    ns: ["dashboard", "common", "stores"],
+    ns: ["common", "placeholders", "stores"],
   });
 
 export default i18next;

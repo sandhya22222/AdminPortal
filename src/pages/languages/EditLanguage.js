@@ -27,6 +27,7 @@ import {
   useLocation,
   useSearchParams,
 } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
 import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
 import { testValueByRegexPattern } from "../../util/util";
@@ -53,6 +54,7 @@ toast.configure();
 
 const EditLanguage = () => {
   usePageTitle("Edit Language");
+  const { t } = useTranslation();
 
   const search = useLocation().search;
   const _id = new URLSearchParams(search).get("_id");
@@ -771,7 +773,9 @@ const EditLanguage = () => {
                                 {/* <sup className="text-red-600 text-sm">*</sup> */}
                               </label>
                               <Input
-                                placeholder="Enter Language Name"
+                                placeholder={t(
+                                  "placeholders:enter_language_name"
+                                )}
                                 value={languageDetails.language}
                                 className={`${
                                   isLanguageFieldEmpty
@@ -815,7 +819,9 @@ const EditLanguage = () => {
                                 {/* <sup className="text-red-600 text-sm">*</sup> */}
                               </label>
                               <Input
-                                placeholder="Enter Language Code"
+                                placeholder={t(
+                                  "placeholders:enter_language_code"
+                                )}
                                 value={languageDetails.language_code}
                                 minLength={2}
                                 maxLength={5}
@@ -870,7 +876,9 @@ const EditLanguage = () => {
                                 {/* <sup className="text-red-600 text-sm">*</sup> */}
                               </label>
                               <Input
-                                placeholder="Enter Language Regex"
+                                placeholder={t(
+                                  "placeholders:enter_language_regex"
+                                )}
                                 value={languageDetails.language_regex}
                                 minLength={titleMinLength}
                                 maxLength={titleMaxLength}
@@ -907,7 +915,9 @@ const EditLanguage = () => {
                                 Native Name
                               </label>
                               <Input
-                                placeholder="Enter Native Name"
+                                placeholder={t(
+                                  "placeholders:enter_native_name"
+                                )}
                                 minLength={titleMinLength}
                                 maxLength={titleMaxLength}
                                 value={languageDetails.native_name}
