@@ -55,12 +55,11 @@
     "Currency":"Currency",
     "Symbol":"Symbol",
     "ISO-Code":"ISO Code",
-    "Enter-currency-symbol":"eg: ₹, $, £",
-    "Enter-ISO-code":"eg: INR, USP ,GBP",
+    
     "Fractional-Unit":"Fractional Unit",
-    "Enter-fractional-unit":"eg: paisa, cent",
-    "Number-to-Basic":"Number to Basic",
-    "Enter-number-to-basic":"eg: 100",
+    
+    "Number-to-Basic":"Number To Basic",
+    
     "Page-Theme":"Page Theme",
     "Preview":"Preview",
     "Sample-Preview-Page-For-Store-Front":"Sample Preview Page For Store Front",

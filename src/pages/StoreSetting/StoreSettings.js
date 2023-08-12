@@ -1680,7 +1680,7 @@ const StoreSettings = () => {
                 {t("stores:Symbol")}
               </label>
               <Input
-                placeholder={t("stores:Enter-currency-symbol")}
+                placeholder={t("placeholders:enter_currency_symbol")}
                 className={`${
                   inValidCurrencySymbol
                     ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
@@ -1717,7 +1717,7 @@ const StoreSettings = () => {
                 {t("stores:ISO-Code")}
               </label>
               <Input
-                placeholder={t("stores:Enter-ISO-code")}
+                placeholder={t("placeholders:enter_iso_code")}
                 value={currencyIsoCode}
                 maxLength={3}
                 onChange={(e) => {
@@ -1754,7 +1754,7 @@ const StoreSettings = () => {
                 {t("stores:Fractional-Unit")}
               </label>
               <Input
-                placeholder={t("stores:Enter-fractional-unit")}
+                placeholder={t("placeholders:enter_fractional_unit")}
                 value={fractionalUnit}
                 maxLength={10}
                 onChange={(e) => {
@@ -1789,7 +1789,7 @@ const StoreSettings = () => {
                 {t("stores:Number-to-Basic")}
               </label>
               <InputNumber
-                placeholder={t("stores:Enter-number-to-basic")}
+                placeholder={t("placeholders:enter_number_to_basic")}
                 value={numberToBasic}
                 min={0}
                 onChange={(e) => {

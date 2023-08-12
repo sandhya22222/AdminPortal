@@ -1442,7 +1442,7 @@ const Stores = () => {
                             {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
                           </label>
                           <Input
-                            placeholder={t("stores:Enter-Store-Name")}
+                            placeholder={t("placeholders:enter_store_name")}
                             value={name}
                             minLength={titleMinLength}
                             maxLength={titleMaxLength}
@@ -1497,7 +1497,7 @@ const Stores = () => {
                             {t("stores:Email")}
                           </label>
                           <Input
-                            placeholder={t("stores:Enter-Email")}
+                            placeholder={t("placeholders:enter_email")}
                             value={storeEmail}
                             minLength={emailMinLength}
                             maxLength={emailMaxLength}
@@ -1525,7 +1525,7 @@ const Stores = () => {
                             {t("stores:Username")}
                           </label>
                           <Input
-                            placeholder={t("stores:Enter-Username")}
+                            placeholder={t("placeholders:enter_username")}
                             value={storeUserName}
                             minLength={titleMinLength}
                             maxLength={titleMaxLength}
@@ -1567,7 +1567,7 @@ const Stores = () => {
                             {t("stores:Password")}
                           </label>
                           <Input.Password
-                            placeholder={t("stores:Enter-Password")}
+                            placeholder={t("placeholders:enter_password")}
                             value={storePassword}
                             minLength={passwordMinLength}
                             maxLength={passwordMaxLength}
@@ -1641,7 +1641,7 @@ const Stores = () => {
                           </label>
                           <Input
                             value={editName}
-                            placeholder={t("stores:Enter-Store-Name")}
+                            placeholder={t("placeholders:enter_store_name")}
                             className={`${
                               inValidEditName
                                 ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 mb-6"
@@ -1687,7 +1687,7 @@ const Stores = () => {
                             {t("stores:Email")}
                           </label>
                           <Input
-                            placeholder={t("stores:Enter-Email")}
+                            placeholder={t("placeholders:enter_email")}
                             value={storeEditEmail}
                             maxLength={30}
                             disabled
@@ -1717,7 +1717,7 @@ const Stores = () => {
                             {t("stores:Username")}
                           </label>
                           <Input
-                            placeholder={t("stores:Enter-Username")}
+                            placeholder={t("placeholders:enter_username")}
                             value={storeEditUserName}
                             maxLength={10}
                             className="mb-6"
@@ -1757,7 +1757,7 @@ const Stores = () => {
                             {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
                           </label>
                           <Input.Password
-                            placeholder={t("stores:Enter-Password")}
+                            placeholder={t("placeholders:enter_password")}
                             value={storeEditPassword}
                             maxLength={6}
                             disabled

@@ -17,7 +17,7 @@ const paymentTypesData = [
     data: [
       {
         id: 1,
-        payment_type: "Cash on Delivery",
+        payment_type: "Cash On Delivery",
         is_payment_gateway: false,
       },
       {
