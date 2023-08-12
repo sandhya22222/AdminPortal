@@ -14,11 +14,10 @@ const { Content } = Layout;
 const { Title } = Typography;
 
 const storeImagesAPI = process.env.REACT_APP_STORE_IMAGES_API;
-const storeBannerImageAPI = process.env.REACT_APP_STORE_BANNER_IMAGES_API;
 const storeDeleteImagesAPI = process.env.REACT_APP_STORE_DELETE_IMAGES_API;
 const bannerImagesLength = process.env.REACT_APP_BANNER_IMAGES_MAX_LENGTH;
 const supportedExtensions = process.env.REACT_APP_IMAGES_EXTENSIONS;
-const StoreMedia = ({ type, title }) => {
+const StoreMedia = ({ type, title, getImageData, setGetImageData }) => {
   const search = useLocation().search;
   const storeUUID = new URLSearchParams(search).get("id");
   const dispatch = useDispatch();
@@ -28,14 +27,9 @@ const StoreMedia = ({ type, title }) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
-  const [getImageData, setGetImageData] = useState([]);
-  const [imageIndex, setImageIndex] = useState([]);
-  const [isImageDeleting, setIsImageDeleting] = useState(false);
-  const [isDeleteImageModalOpen, setIsDeleteImageModalOpen] = useState(false);
-  const [bannerAbsoluteImage, setBannerAbsoluteImage] = useState([]);
-  const [fileList, setFileList] = useState();
+  const [storeLogo, setStoreLogo] = useState([]);
   const [bannerFileList, setBannerFileList] = useState();
-  const [imageDelete, setImageDelete] = useState();
+
   const absoluteStoreImageInfo = useSelector(
     (state) => state.reducerAbsoluteStoreImageInfo.absoluteStoreImageInfo
   );
@@ -62,14 +56,15 @@ const StoreMedia = ({ type, title }) => {
   };
 
   const handleChange = (e) => {
-    console.log("file", e.file);
+    console.log("e.file", e.file);
     setBannerFileList(e.fileList);
-    setFileList(e.fileList);
-    if (e.file.status !== "removed") {
-      postPutImageOnClickSave(e.file);
-    }
-    if (e.file.status === "removed") {
-      setIsDeleteImageModalOpen(true);
+    setStoreLogo(e.fileList);
+    if (getImageData && getImageData.length > 0) {
+      if (e.file.status !== "removed") {
+        updateStoreLogoImageCall(e.file);
+      }
+    } else {
+      saveStoreLogoImageCall(e.file);
     }
   };
 
@@ -95,7 +90,7 @@ const StoreMedia = ({ type, title }) => {
         console.log("Get response of Store setting Images--->", response.data);
         setGetImageData([response.data]);
         if (response.data && response.data.store_logo_path) {
-          setFileList([
+          setStoreLogo([
             {
               uid: "-1",
               name: response.data.store_logo_name,
@@ -123,7 +118,7 @@ const StoreMedia = ({ type, title }) => {
         }
       })
       .catch((error) => {
-        // setGetImageData([]);
+        setGetImageData([]);
         console.log(
           "Get error response of Store setting Images--->",
           error.response
@@ -150,19 +145,13 @@ const StoreMedia = ({ type, title }) => {
             autoClose: 10000,
           });
         }
-        let temp = [];
-        temp.push(response.data);
-        console.log("temp", temp);
-        setGetImageData(temp);
-        // setIsUpLoading(false);
-        // setIsLoading(false);
         console.log(
           "Server Success Response From storeImagePostCall",
           response.data
         );
         setGetImageData([response.data]);
         if (response.data && response.data.store_logo_path) {
-          setFileList([
+          setStoreLogo([
             {
               uid: "-1",
               name: response.data.store_logo_name,
@@ -236,7 +225,7 @@ const StoreMedia = ({ type, title }) => {
         }
         setGetImageData([response.data]);
         if (response.data && response.data.store_logo_path) {
-          setFileList([
+          setStoreLogo([
             {
               uid: "-1",
               name: response.data.store_logo_name,
@@ -294,106 +283,39 @@ const StoreMedia = ({ type, title }) => {
         }
       });
   };
-  console.log("getImageData1234", getImageData);
-
-  const postPutImageOnClickSave = (e) => {
-    console.log("getImageData1234", getImageData);
-
-    if (getImageData && getImageData.length > 0) {
-      updateStoreLogoImageCall(e);
-    } else {
-      saveStoreLogoImageCall(e);
-    }
-  };
-
-  const findAllWithoutPageStoreBannerImageApi = () => {
-    MarketplaceServices.findAllWithoutPage(storeBannerImageAPI, {
-      store_id: storeUUID,
-    })
-      .then(function (response) {
-        console.log(
-          "Server Response from getstoreBannerImageApi Function: ",
-          response.data
-        );
-        setBannerAbsoluteImage(response.data);
-      })
-      .catch((error) => {
-        if (error && error.response && error.response.status === 401) {
-          toast("Session expired", {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
-        }
-        console.log("Server error from getStoreApi Function ", error.response);
-      });
-  };
 
   useEffect(() => {
-    if (storeUUID) {
-      findAllWithoutPageStoreImagesApi();
+    if (getImageData && getImageData.length > 0) {
+      let temp = getImageData[0];
+      if (temp && temp.store_logo_path) {
+        setStoreLogo([
+          {
+            uid: "-1",
+            name: temp.store_logo_name,
+            status: "done",
+            url: baseURL + temp.store_logo_path,
+            deleteImagePath: temp.store_logo,
+          },
+        ]);
+      }
+      if (temp && temp.banner_images) {
+        let tempArrayForBannerImage = [];
+        temp &&
+          temp.banner_images.length > 0 &&
+          temp.banner_images.map((element, index) => {
+            tempArrayForBannerImage.push({
+              uid: index,
+              name: element.banner_images_name,
+              status: "done",
+              url: baseURL + element.banner_fullpath,
+              deleteImagePath: element.path,
+            });
+          });
+        setBannerFileList(tempArrayForBannerImage);
+      }
     }
-  }, [storeUUID]);
+  }, [getImageData]);
 
-  const closeDeleteModal = () => {
-    setIsDeleteImageModalOpen(false);
-  };
-
-  // opening the delete popup model
-  const openDeleteModal = (data) => {
-    console.log("data2345", data.deleteImagePath);
-    setIsDeleteImageModalOpen(true);
-    setImageDelete(data.deleteImagePath);
-  };
-
-  //!delete function of language
-  const removeMedia = () => {
-    setIsImageDeleting(true);
-    let dataObject = {};
-    dataObject["store_id"] = storeUUID;
-    dataObject["image-type"] = type;
-    if (type === "banner_images") {
-      dataObject["image-path"] = imageIndex.deleteImagePath;
-    } else {
-      dataObject["image-path"] = imageDelete;
-    }
-    MarketplaceServices.remove(storeDeleteImagesAPI, dataObject)
-      .then((response) => {
-        setIsDeleteImageModalOpen(false);
-        console.log("response from delete===>", response);
-        if (response.status === 200 || response.status === 201) {
-          toast(`${response.data.message}`, {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "success",
-            autoClose: 10000,
-          });
-        }
-        getImageData([]);
-        // if (type === "banner_images") {
-        //   //remove from setBannerAbsoluteImage
-        //   bannerAbsoluteImage.splice(imageIndex, 1);
-        // }
-        // disabling spinner
-        setIsImageDeleting(false);
-      })
-      .catch((error) => {
-        // disabling spinner
-        setIsImageDeleting(false);
-        if (error && error.response && error.response.status === 401) {
-          toast("Session expired", {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
-        } else {
-          toast(`${error.response.data.message}`, {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
-        }
-      });
-  };
   const handleRemove = (file) => {
     console.log("file:", file);
     const { confirm } = Modal;
@@ -401,6 +323,9 @@ const StoreMedia = ({ type, title }) => {
       confirm({
         title: "Confirm Image Deletion",
         icon: null,
+        okButtonProps: { className: "app-btn-primary" },
+        cancelButtonProps: { className: "pp-btn-secondary" },
+        okText: "Ok",
         content:
           "Are you absolutely sure you want to delete the image? This action cannot be undone.",
         onOk: () => {
@@ -408,14 +333,8 @@ const StoreMedia = ({ type, title }) => {
           dataObject["store_id"] = storeUUID;
           dataObject["image-type"] = type;
           dataObject["image-path"] = file.deleteImagePath;
-          // if (type === "banner_images") {
-          //   dataObject["image-path"] = file.deleteImagePath;
-          // } else {
-          //   dataObject["image-path"] = imageDelete;
-          // }
           MarketplaceServices.remove(storeDeleteImagesAPI, dataObject)
             .then((response) => {
-              setIsDeleteImageModalOpen(false);
               console.log("response from delete===>", response);
               if (response.status === 200 || response.status === 201) {
                 toast(`${response.data.message}`, {
@@ -426,16 +345,8 @@ const StoreMedia = ({ type, title }) => {
                 resolve(true);
               }
               getImageData([]);
-              // if (type === "banner_images") {
-              //   //remove from setBannerAbsoluteImage
-              //   bannerAbsoluteImage.splice(imageIndex, 1);
-              // }
-              // disabling spinner
-              setIsImageDeleting(false);
             })
             .catch((error) => {
-              // disabling spinner
-              setIsImageDeleting(false);
               reject(true);
               if (error && error.response && error.response.status === 401) {
                 toast("Session expired", {
@@ -478,7 +389,7 @@ const StoreMedia = ({ type, title }) => {
               afterUpload={() => {
                 return false;
               }}
-              fileList={fileList}
+              fileList={storeLogo}
               name="file"
               onPreview={handlePreview}
               accept={supportedExtensions}
@@ -488,7 +399,7 @@ const StoreMedia = ({ type, title }) => {
               onRemove={handleRemove}
               // onRemove={false}
             >
-              {fileList && fileList.length >= 1 ? null : uploadButton}
+              {storeLogo && storeLogo.length >= 1 ? null : uploadButton}
             </Upload>
             <Modal
               open={previewOpen}
@@ -518,9 +429,7 @@ const StoreMedia = ({ type, title }) => {
                 return false;
               }}
               fileList={bannerFileList}
-              onRemove={(e) => {
-                setImageIndex(e);
-              }}
+              onRemove={handleRemove}
               onPreview={handlePreview}
               accept={supportedExtensions}
               onChange={(e) => {
@@ -551,23 +460,6 @@ const StoreMedia = ({ type, title }) => {
           </>
         )}
       </Content>
-      {/* <StoreModal
-        isVisible={isDeleteImageModalOpen}
-        okButtonText={"Yes"}
-        cancelButtonText={"Cancel"}
-        title={"Warning"}
-        okCallback={() => removeMedia()}
-        cancelCallback={() => closeDeleteModal()}
-        isSpin={isImageDeleting}
-        hideCloseButton={false}
-      >
-        {
-          <div>
-            <p>{`Confirm image Deletion`}</p>
-            <p>{`Are you absolutely sure you want to delete the image? This action cannot be undone.`}</p>
-          </div>
-        }
-      </StoreModal> */}
     </Content>
   );
 };

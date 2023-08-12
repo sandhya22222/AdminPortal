@@ -334,6 +334,15 @@ const StoreSettings = () => {
           response.data.data
         );
         setStoreData(response.data.data);
+        if (response && response.data.data && response.data.data.length > 0) {
+          let selectedStore = response.data.data.filter(
+            (element) => element.store_uuid === id
+          );
+          if (selectedStore.length > 0) {
+            setStoreName(selectedStore[0].name);
+            setChangeSwitchStatus(selectedStore[0].status);
+          }
+        }
       })
       .catch((error) => {
         console.log("Server error from getStoreApi Function ", error.response);
@@ -347,19 +356,18 @@ const StoreSettings = () => {
       });
   };
 
-  useEffect(() => {
-    if (storeData && storeData.length > 0) {
-      var storeApiData =
-        storeData &&
-        storeData.length > 0 &&
-        storeData.filter((element) => element.store_uuid === id);
-      if (storeApiData && storeApiData.length > 0) {
-        setStoreName(storeApiData[0].name);
-        setChangeSwitchStatus(storeApiData[0].status);
-      }
-    }
-  }, [storeData]);
-
+  // useEffect(() => {
+  //   if (storeData && storeData.length > 0) {
+  //     var storeApiData =
+  //       storeData &&
+  //       storeData.length > 0 &&
+  //       storeData.filter((element) => element.store_uuid === id);
+  //     if (storeApiData && storeApiData.length > 0) {
+  //       setStoreName(storeApiData[0].name);
+  //       setChangeSwitchStatus(storeApiData[0].status);
+  //     }
+  //   }
+  // }, [storeData]);
   //! post call for store settings
   const saveStoreSettingsCall = () => {
     const postBody = {
@@ -994,7 +1002,10 @@ const StoreSettings = () => {
     })
       .then(function (response) {
         console.log("Get response of Store setting Images--->", response.data);
-        setGetImageData([response.data]);
+        // setGetImageData([response.data]);
+        let data = [];
+        data.push(response.data);
+        setGetImageData(data);
       })
       .catch((error) => {
         console.log("errorresponse from images--->", error);
@@ -1009,293 +1020,292 @@ const StoreSettings = () => {
       });
   };
 
-  //! post call of store images
-  const saveStoreLogoImageCall = () => {
-    const formData = new FormData();
-    if (imagesUpload && imagesUpload.length > 0) {
-      for (var i = 0; i < imagesUpload.length; i++) {
-        if (imagesUpload[i].type == "store_logo") {
-          formData.append("store_logo", imagesUpload[i].imageValue);
-        } else if (imagesUpload[i].type == "banner_images") {
-          formData.append("banner_images", imagesUpload[i].imageValue);
-        } else if (imagesUpload[i].type == "search_logo") {
-          formData.append("search_logo", imagesUpload[i].imageValue);
-        } else if (imagesUpload[i].type == "customer_logo") {
-          formData.append("customer_logo", imagesUpload[i].imageValue);
-        } else if (imagesUpload[i].type == "cart_logo") {
-          formData.append("cart_logo", imagesUpload[i].imageValue);
-        } else if (imagesUpload[i].type == "wishlist_logo") {
-          formData.append("wishlist_logo", imagesUpload[i].imageValue);
-        }
-      }
-      formData.append("store_id", id);
-    }
-    // axios
-    //   .post(
-    //     storeImagesAPI,
-    //     formData,
-    //     {
-    //       headers: { "Content-Type": "multipart/form-data" },
-    //     },
-    //     authorizationHeader
-    //   )
-    setIsUpLoading(true);
-    MarketplaceServices.save(
-      storeImagesAPI,
-      formData
-      //   {
-      //   headers: { "Content-Type": "multipart/form-data" },
-      // }
-    )
-      .then((response) => {
-        if (
-          Object.keys(sampleobject).length > 0 &&
-          Object.keys(sampleobject).length !== 2
-        ) {
-          if (sampleobject["images"] === "images") {
-            toast("Images saved successfully", {
-              position: toast.POSITION.TOP_RIGHT,
-              type: "success",
-              autoClose: 10000,
-            });
-          }
-        }
-        setIsUpLoading(false);
-        setIsLoading(false);
-        console.log(
-          "Server Success Response From storeImagePostCall",
-          response.data
-        );
-        setGetImageData([response.data]);
-        setImagesUpload([]);
-        // findAllWithoutPageStoreImagesApi(id);
-      })
-      .catch((error) => {
-        setIsUpLoading(false);
-        if (error && error.response && error.response.status === 401) {
-          toast("Session expired", {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
-        } else {
-          if (error.response) {
-            toast(`${error.response.data.message}`, {
-              position: toast.POSITION.TOP_RIGHT,
-              type: "error",
-              autoClose: 10000,
-            });
-          } else if (error && error.response && error.response.status === 400) {
-            toast(`${error.response.data.message}`, {
-              position: toast.POSITION.TOP_RIGHT,
-              type: "error",
-              autoClose: 10000,
-            });
-          } else {
-            toast("Something went wrong, please try again later", {
-              position: toast.POSITION.TOP_RIGHT,
-              type: "error",
-              autoClose: 10000,
-            });
-          }
-        }
-        console.log(error.response.data);
-        setIsLoading(false);
-      });
-  };
-  useEffect(() => {
-    if (getImageData && getImageData.length > 0) {
-      findAllWithoutPageStoreBannerImageApi(id);
-    }
-  }, [getImageData]);
-  //!put call of store images
-  const updateStoreLogoImageCall = () => {
-    const formData = new FormData();
-    imagesUpload.filter((ele) => typeof ele.imageValue.status === "undefined");
-    if (imagesUpload && imagesUpload.length > 0) {
-      for (var i = 0; i < imagesUpload.length; i++) {
-        if (imagesUpload[i].type == "store_logo") {
-          formData.append("store_logo", imagesUpload[i].imageValue);
-        } else if (imagesUpload[i].type == "banner_images") {
-          // if (updateBannerImage && updateBannerImage.length > 0) {
-          //   updateBannerImage.push(imagesUpload[i].imageValue);
-          //   for (var i = 0; i < updateBannerImage.length; i++) {
-          //     formData.append("banner_images", updateBannerImage[i]);
-          //   }
-          // } else {
-          // debugger;
-          let removedItem = imagesUpload.filter(
-            (ele) => ele.imageValue.status === "removed"
-          );
-          if (removedItem.length > 0) {
-            //Remove removed items from main array
-            const currentItemUid = imagesUpload[i].imageValue.uid;
-            let itemToIgnore = removedItem.filter(
-              (element) => element.imageValue.uid === currentItemUid
-            );
-            if (itemToIgnore.length === 0) {
-              formData.append("banner_images", imagesUpload[i].imageValue);
-            }
-          } else formData.append("banner_images", imagesUpload[i].imageValue);
-          // }
-        } else if (imagesUpload[i].type == "search_logo") {
-          formData.append("search_logo", imagesUpload[i].imageValue);
-        } else if (imagesUpload[i].type == "customer_logo") {
-          formData.append("customer_logo", imagesUpload[i].imageValue);
-        } else if (imagesUpload[i].type == "cart_logo") {
-          formData.append("cart_logo", imagesUpload[i].imageValue);
-        } else if (imagesUpload[i].type == "wishlist_logo") {
-          formData.append("wishlist_logo", imagesUpload[i].imageValue);
-        }
-      }
-      formData.append("store_id", id);
-    }
-    // axios
-    //   .put(
-    //     storeImagesAPI,
-    //     formData,
-    //     {
-    //       headers: { "Content-Type": "multipart/form-data" },
-    //     },
-    //     authorizationHeader
-    //   )
-    setIsUpLoading(true);
-    MarketplaceServices.update(
-      storeImagesAPI,
-      formData
-      //   {
-      //   headers: { "Content-Type": "multipart/form-data" },
-      // }
-    )
-      .then((response) => {
-        if (
-          Object.keys(sampleobject).length > 0 &&
-          Object.keys(sampleobject).length !== 2
-        ) {
-          if (sampleobject["images"] === "images") {
-            toast("Images saved successfully", {
-              position: toast.POSITION.TOP_RIGHT,
-              type: "success",
-              autoClose: 10000,
-            });
-          }
-        }
-        setGetImageData([response.data]);
-        setImagesUpload([]);
-        // !TODO: Update response is not , backend is giving null for previously updated images So we are doing get call here again.
-        // findAllWithoutPageStoreImagesApi(id);
-        //window.location.reload();
-        setIsUpLoading(false);
-        setIsLoading(false);
-        setImageChangeValues(false);
-        console.log(
-          "Server Success Response From storeImagePutCall",
-          response.data
-        );
-        // setImagesUpload([]);
-      })
-      .catch((error) => {
-        setIsUpLoading(false);
-        console.log(error.response);
-        setIsLoading(false);
-        if (error && error.response && error.response.status === 401) {
-          toast("Session expired", {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
-        } else {
-          if (error.response) {
-            toast(`${error.response.data.message}`, {
-              position: toast.POSITION.TOP_RIGHT,
-              type: "error",
-              autoClose: 10000,
-            });
-          } else if (error && error.response && error.response.status === 400) {
-            toast(`${error.response.data.message}`, {
-              position: toast.POSITION.TOP_RIGHT,
-              type: "error",
-              autoClose: 10000,
-            });
-          } else {
-            toast("Something went wrong, please try again later", {
-              position: toast.POSITION.TOP_RIGHT,
-              type: "error",
-              autoClose: 10000,
-            });
-          }
-        }
-      });
-  };
+  // //! post call of store images
+  // const saveStoreLogoImageCall = () => {
+  //   const formData = new FormData();
+  //   if (imagesUpload && imagesUpload.length > 0) {
+  //     for (var i = 0; i < imagesUpload.length; i++) {
+  //       if (imagesUpload[i].type == "store_logo") {
+  //         formData.append("store_logo", imagesUpload[i].imageValue);
+  //       } else if (imagesUpload[i].type == "banner_images") {
+  //         formData.append("banner_images", imagesUpload[i].imageValue);
+  //       } else if (imagesUpload[i].type == "search_logo") {
+  //         formData.append("search_logo", imagesUpload[i].imageValue);
+  //       } else if (imagesUpload[i].type == "customer_logo") {
+  //         formData.append("customer_logo", imagesUpload[i].imageValue);
+  //       } else if (imagesUpload[i].type == "cart_logo") {
+  //         formData.append("cart_logo", imagesUpload[i].imageValue);
+  //       } else if (imagesUpload[i].type == "wishlist_logo") {
+  //         formData.append("wishlist_logo", imagesUpload[i].imageValue);
+  //       }
+  //     }
+  //     formData.append("store_id", id);
+  //   }
+  //   // axios
+  //   //   .post(
+  //   //     storeImagesAPI,
+  //   //     formData,
+  //   //     {
+  //   //       headers: { "Content-Type": "multipart/form-data" },
+  //   //     },
+  //   //     authorizationHeader
+  //   //   )
+  //   setIsUpLoading(true);
+  //   MarketplaceServices.save(
+  //     storeImagesAPI,
+  //     formData
+  //     //   {
+  //     //   headers: { "Content-Type": "multipart/form-data" },
+  //     // }
+  //   )
+  //     .then((response) => {
+  //       if (
+  //         Object.keys(sampleobject).length > 0 &&
+  //         Object.keys(sampleobject).length !== 2
+  //       ) {
+  //         if (sampleobject["images"] === "images") {
+  //           toast("Images saved successfully", {
+  //             position: toast.POSITION.TOP_RIGHT,
+  //             type: "success",
+  //             autoClose: 10000,
+  //           });
+  //         }
+  //       }
+  //       setIsUpLoading(false);
+  //       setIsLoading(false);
+  //       console.log(
+  //         "Server Success Response From storeImagePostCall",
+  //         response.data
+  //       );
+  //       setGetImageData([response.data]);
+  //       setImagesUpload([]);
+  //       // findAllWithoutPageStoreImagesApi(id);
+  //     })
+  //     .catch((error) => {
+  //       setIsUpLoading(false);
+  //       if (error && error.response && error.response.status === 401) {
+  //         toast("Session expired", {
+  //           position: toast.POSITION.TOP_RIGHT,
+  //           type: "error",
+  //           autoClose: 10000,
+  //         });
+  //       } else {
+  //         if (error.response) {
+  //           toast(`${error.response.data.message}`, {
+  //             position: toast.POSITION.TOP_RIGHT,
+  //             type: "error",
+  //             autoClose: 10000,
+  //           });
+  //         } else if (error && error.response && error.response.status === 400) {
+  //           toast(`${error.response.data.message}`, {
+  //             position: toast.POSITION.TOP_RIGHT,
+  //             type: "error",
+  //             autoClose: 10000,
+  //           });
+  //         } else {
+  //           toast("Something went wrong, please try again later", {
+  //             position: toast.POSITION.TOP_RIGHT,
+  //             type: "error",
+  //             autoClose: 10000,
+  //           });
+  //         }
+  //       }
+  //       console.log(error.response.data);
+  //       setIsLoading(false);
+  //     });
+  // };
+  // useEffect(() => {
+  //   if (getImageData && getImageData.length > 0) {
+  //     findAllWithoutPageStoreBannerImageApi(id);
+  //   }
+  // }, [getImageData]);
+  // //!put call of store images
+  // const updateStoreLogoImageCall = () => {
+  //   const formData = new FormData();
+  //   imagesUpload.filter((ele) => typeof ele.imageValue.status === "undefined");
+  //   if (imagesUpload && imagesUpload.length > 0) {
+  //     for (var i = 0; i < imagesUpload.length; i++) {
+  //       if (imagesUpload[i].type == "store_logo") {
+  //         formData.append("store_logo", imagesUpload[i].imageValue);
+  //       } else if (imagesUpload[i].type == "banner_images") {
+  //         // if (updateBannerImage && updateBannerImage.length > 0) {
+  //         //   updateBannerImage.push(imagesUpload[i].imageValue);
+  //         //   for (var i = 0; i < updateBannerImage.length; i++) {
+  //         //     formData.append("banner_images", updateBannerImage[i]);
+  //         //   }
+  //         // } else {
+  //         // debugger;
+  //         let removedItem = imagesUpload.filter(
+  //           (ele) => ele.imageValue.status === "removed"
+  //         );
+  //         if (removedItem.length > 0) {
+  //           //Remove removed items from main array
+  //           const currentItemUid = imagesUpload[i].imageValue.uid;
+  //           let itemToIgnore = removedItem.filter(
+  //             (element) => element.imageValue.uid === currentItemUid
+  //           );
+  //           if (itemToIgnore.length === 0) {
+  //             formData.append("banner_images", imagesUpload[i].imageValue);
+  //           }
+  //         } else formData.append("banner_images", imagesUpload[i].imageValue);
+  //         // }
+  //       } else if (imagesUpload[i].type == "search_logo") {
+  //         formData.append("search_logo", imagesUpload[i].imageValue);
+  //       } else if (imagesUpload[i].type == "customer_logo") {
+  //         formData.append("customer_logo", imagesUpload[i].imageValue);
+  //       } else if (imagesUpload[i].type == "cart_logo") {
+  //         formData.append("cart_logo", imagesUpload[i].imageValue);
+  //       } else if (imagesUpload[i].type == "wishlist_logo") {
+  //         formData.append("wishlist_logo", imagesUpload[i].imageValue);
+  //       }
+  //     }
+  //     formData.append("store_id", id);
+  //   }
+  //   // axios
+  //   //   .put(
+  //   //     storeImagesAPI,
+  //   //     formData,
+  //   //     {
+  //   //       headers: { "Content-Type": "multipart/form-data" },
+  //   //     },
+  //   //     authorizationHeader
+  //   //   )
+  //   setIsUpLoading(true);
+  //   MarketplaceServices.update(
+  //     storeImagesAPI,
+  //     formData
+  //     //   {
+  //     //   headers: { "Content-Type": "multipart/form-data" },
+  //     // }
+  //   )
+  //     .then((response) => {
+  //       if (
+  //         Object.keys(sampleobject).length > 0 &&
+  //         Object.keys(sampleobject).length !== 2
+  //       ) {
+  //         if (sampleobject["images"] === "images") {
+  //           toast("Images saved successfully", {
+  //             position: toast.POSITION.TOP_RIGHT,
+  //             type: "success",
+  //             autoClose: 10000,
+  //           });
+  //         }
+  //       }
+  //       setGetImageData([response.data]);
+  //       setImagesUpload([]);
+  //       // !TODO: Update response is not , backend is giving null for previously updated images So we are doing get call here again.
+  //       // findAllWithoutPageStoreImagesApi(id);
+  //       //window.location.reload();
+  //       setIsUpLoading(false);
+  //       setIsLoading(false);
+  //       setImageChangeValues(false);
+  //       console.log(
+  //         "Server Success Response From storeImagePutCall",
+  //         response.data
+  //       );
+  //       // setImagesUpload([]);
+  //     })
+  //     .catch((error) => {
+  //       setIsUpLoading(false);
+  //       console.log(error.response);
+  //       setIsLoading(false);
+  //       if (error && error.response && error.response.status === 401) {
+  //         toast("Session expired", {
+  //           position: toast.POSITION.TOP_RIGHT,
+  //           type: "error",
+  //           autoClose: 10000,
+  //         });
+  //       } else {
+  //         if (error.response) {
+  //           toast(`${error.response.data.message}`, {
+  //             position: toast.POSITION.TOP_RIGHT,
+  //             type: "error",
+  //             autoClose: 10000,
+  //           });
+  //         } else if (error && error.response && error.response.status === 400) {
+  //           toast(`${error.response.data.message}`, {
+  //             position: toast.POSITION.TOP_RIGHT,
+  //             type: "error",
+  //             autoClose: 10000,
+  //           });
+  //         } else {
+  //           toast("Something went wrong, please try again later", {
+  //             position: toast.POSITION.TOP_RIGHT,
+  //             type: "error",
+  //             autoClose: 10000,
+  //           });
+  //         }
+  //       }
+  //     });
+  // };
 
-  const postImageOnClickSave = () => {
-    // let temp = [...isEditStoreSetting];
-    // temp.push({ id: 1 });
-    // setIsEditStoreSetting(temp);
-    sampleobject["images"] = "images";
-    if (getImageData && getImageData.length > 0) {
-      updateStoreLogoImageCall();
-    } else {
-      // let count = 1;
-      // if (imagesUpload && imagesUpload.length === 0) {
-      //   count--;
-      //   setValidStoreLogo(true);
-      //   toast("Please upload the store logo", {
-      //     position: toast.POSITION.TOP_RIGHT,
-      //     type: "error",
-      //   });
-      // }
-      // if (count === 1) {
-      saveStoreLogoImageCall();
-      // }
-    }
-  };
-  console.log("updateBannerImage,", updateBannerImage);
-  const findAllWithoutPageStoreBannerImageApi = (storeId) => {
-    // setIsLoading(true);
-    // axios
-    //   .get(storeBannerImageAPI, {
-    //     params: {
-    //       "store-id": storeId,
-    //     },
-    //     authorizationHeader,
-    //   })
-    MarketplaceServices.findAllWithoutPage(storeBannerImageAPI, {
-      store_id: storeId,
-    })
-      .then(function (response) {
-        console.log(
-          "Server Response from getstoreBannerImageApi Function: ",
-          response.data
-        );
-        // if (response.data.length > 0) {
-        //   let temp = [];
-        //   for (var i = 0; i < response.data.length; i++) {
-        //     temp.push(response.data[i].path);
-        //   }
-        //   setUpdateBannerImage(temp);
-        // }
-        setBannerAbsoluteImage(response.data);
-        // setStoreData(response.data.data);
-      })
-      .catch((error) => {
-        if (error && error.response && error.response.status === 401) {
-          toast("Session expired", {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
-        }
-        console.log("Server error from getStoreApi Function ", error.response);
-      });
-  };
+  // const postImageOnClickSave = () => {
+  //   // let temp = [...isEditStoreSetting];
+  //   // temp.push({ id: 1 });
+  //   // setIsEditStoreSetting(temp);
+  //   sampleobject["images"] = "images";
+  //   if (getImageData && getImageData.length > 0) {
+  //     updateStoreLogoImageCall();
+  //   } else {
+  //     // let count = 1;
+  //     // if (imagesUpload && imagesUpload.length === 0) {
+  //     //   count--;
+  //     //   setValidStoreLogo(true);
+  //     //   toast("Please upload the store logo", {
+  //     //     position: toast.POSITION.TOP_RIGHT,
+  //     //     type: "error",
+  //     //   });
+  //     // }
+  //     // if (count === 1) {
+  //     saveStoreLogoImageCall();
+  //     // }
+  //   }
+  // };
+  // const findAllWithoutPageStoreBannerImageApi = (storeId) => {
+  //   // setIsLoading(true);
+  //   // axios
+  //   //   .get(storeBannerImageAPI, {
+  //   //     params: {
+  //   //       "store-id": storeId,
+  //   //     },
+  //   //     authorizationHeader,
+  //   //   })
+  //   MarketplaceServices.findAllWithoutPage(storeBannerImageAPI, {
+  //     store_id: storeId,
+  //   })
+  //     .then(function (response) {
+  //       console.log(
+  //         "Server Response from getstoreBannerImageApi Function: ",
+  //         response.data
+  //       );
+  //       // if (response.data.length > 0) {
+  //       //   let temp = [];
+  //       //   for (var i = 0; i < response.data.length; i++) {
+  //       //     temp.push(response.data[i].path);
+  //       //   }
+  //       //   setUpdateBannerImage(temp);
+  //       // }
+  //       setBannerAbsoluteImage(response.data);
+  //       // setStoreData(response.data.data);
+  //     })
+  //     .catch((error) => {
+  //       if (error && error.response && error.response.status === 401) {
+  //         toast("Session expired", {
+  //           position: toast.POSITION.TOP_RIGHT,
+  //           type: "error",
+  //           autoClose: 10000,
+  //         });
+  //       }
+  //       console.log("Server error from getStoreApi Function ", error.response);
+  //     });
+  // };
 
   useEffect(() => {
     findAllStoreApi();
     window.scroll(0, 0);
     if (id) {
       findAllWithoutPageStoreSettingApi(id);
-      // findAllWithoutPageStoreImagesApi(id);
+      findAllWithoutPageStoreImagesApi(id);
       // findAllWithoutPageStoreBannerImageApi(id);
     }
   }, []);
@@ -1601,6 +1611,8 @@ const StoreSettings = () => {
               <StoreMedia
                 title={`${t("stores:Store-Logo")}`}
                 type={"store_logo"}
+                getImageData={getImageData && getImageData}
+                setGetImageData={setGetImageData}
               />
             </Row>
             {/* <StoreImages
@@ -1615,8 +1627,10 @@ const StoreSettings = () => {
               setImageChangeValues={setImageChangeValues}
             /> */}
             <StoreMedia
-              title={`${t("stores:Banner-Logo")}`}
+              title="Banner Images"
               type={"banner_images"}
+              getImageData={getImageData && getImageData}
+              setGetImageData={setGetImageData}
             />
             {/* <Content className="mt-4">
               <Row>
