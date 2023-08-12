@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
-import { Modal, Upload, Layout, Typography, Button } from "antd";
+import { Modal, Upload, Layout, Typography, Button, message, Spin ,Space} from "antd";
 import { toast } from "react-toastify";
 import { useLocation } from "react-router-dom";
 import { TiDelete } from "react-icons/ti";
@@ -15,8 +15,12 @@ const { Title } = Typography;
 
 const storeImagesAPI = process.env.REACT_APP_STORE_IMAGES_API;
 const storeDeleteImagesAPI = process.env.REACT_APP_STORE_DELETE_IMAGES_API;
-const bannerImagesLength = process.env.REACT_APP_BANNER_IMAGES_MAX_LENGTH;
+const bannerImagesLengthDisplay =
+  process.env.REACT_APP_BANNER_IMAGES_MAX_LENGTH;
 const supportedExtensions = process.env.REACT_APP_IMAGES_EXTENSIONS;
+const storeLogoFileSize = process.env.REACT_APP_STORE_LOGOS_SIZE;
+const bannerImagesFileSize = process.env.REACT_APP_BANNER_IMAGES_SIZE;
+
 const StoreMedia = ({ type, title, getImageData, setGetImageData }) => {
   const search = useLocation().search;
   const storeUUID = new URLSearchParams(search).get("id");
@@ -28,7 +32,8 @@ const StoreMedia = ({ type, title, getImageData, setGetImageData }) => {
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
   const [storeLogo, setStoreLogo] = useState([]);
-  const [bannerFileList, setBannerFileList] = useState();
+  const [bannerFileList, setBannerFileList] = useState([]);
+  const [isImageUploading, setImageUploading] = useState(false);
 
   const absoluteStoreImageInfo = useSelector(
     (state) => state.reducerAbsoluteStoreImageInfo.absoluteStoreImageInfo
@@ -136,6 +141,7 @@ const StoreMedia = ({ type, title, getImageData, setGetImageData }) => {
       formData.append("banner_images", fileValue);
     }
     formData.append("store_id", storeUUID);
+    setImageUploading(true);
     MarketplaceServices.save(storeImagesAPI, formData)
       .then((response) => {
         if (response.data) {
@@ -145,6 +151,7 @@ const StoreMedia = ({ type, title, getImageData, setGetImageData }) => {
             autoClose: 10000,
           });
         }
+        setImageUploading(false);
         console.log(
           "Server Success Response From storeImagePostCall",
           response.data
@@ -179,7 +186,12 @@ const StoreMedia = ({ type, title, getImageData, setGetImageData }) => {
         }
       })
       .catch((error) => {
-        // setIsUpLoading(false);
+        setImageUploading(false);
+        setStoreLogo([]);
+        const filteredArray = bannerFileList.filter((item) =>
+          Number.isInteger(item.uid)
+        );
+        setBannerFileList(filteredArray);
         if (error.response) {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
@@ -214,15 +226,20 @@ const StoreMedia = ({ type, title, getImageData, setGetImageData }) => {
       formData.append("banner_images", fileValue);
     }
     formData.append("store_id", storeUUID);
+    setImageUploading(true);
     MarketplaceServices.update(storeImagesAPI, formData)
       .then((response) => {
         if (response.data) {
-          toast("Images saved successfully", {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "success",
-            autoClose: 10000,
-          });
-        }
+            toast("Images saved successfully", {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "success",
+              autoClose: 10000,
+            });
+          }
+        // if (type === "banner_images") {
+        //   setDisplayToastMessage(1);
+        // }
+        setImageUploading(false);
         setGetImageData([response.data]);
         if (response.data && response.data.store_logo_path) {
           setStoreLogo([
@@ -241,27 +258,32 @@ const StoreMedia = ({ type, title, getImageData, setGetImageData }) => {
             response.data.banner_images.length > 0 &&
             response.data.banner_images.map((element, index) => {
               console.log("elementTest#", element);
+              var temp = 1;
               tempArrayForBannerImage.push({
-                uid: index,
+                uid: temp,
                 name: element.banner_images_name,
                 status: "done",
                 url: baseURL + element.banner_fullpath,
                 deleteImagePath: element.path,
               });
+              temp = temp + 1;
+              console.log("temp", temp);
             });
           setBannerFileList(tempArrayForBannerImage);
         }
-        // setIsUpLoading(false);
-        // setIsLoading(false);
         console.log(
           "Server Success Response From storeImagePutCall",
           response.data
         );
       })
       .catch((error) => {
-        // setIsUpLoading(false);
+        setStoreLogo([]);
+        setImageUploading(false);
+        const filteredArray = bannerFileList.filter((item) =>
+          Number.isInteger(item.uid)
+        );
+        setBannerFileList(filteredArray);
         console.log(error.response);
-        // setIsLoading(false);
         if (error.response) {
           toast(`${error.response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
@@ -299,17 +321,19 @@ const StoreMedia = ({ type, title, getImageData, setGetImageData }) => {
         ]);
       }
       if (temp && temp.banner_images) {
+        let imageID = 1;
         let tempArrayForBannerImage = [];
         temp &&
           temp.banner_images.length > 0 &&
           temp.banner_images.map((element, index) => {
             tempArrayForBannerImage.push({
-              uid: index,
+              uid: imageID,
               name: element.banner_images_name,
               status: "done",
               url: baseURL + element.banner_fullpath,
               deleteImagePath: element.path,
             });
+            imageID = imageID + 1;
           });
         setBannerFileList(tempArrayForBannerImage);
       }
@@ -317,7 +341,6 @@ const StoreMedia = ({ type, title, getImageData, setGetImageData }) => {
   }, [getImageData]);
 
   const handleRemove = (file) => {
-    console.log("file:", file);
     const { confirm } = Modal;
     return new Promise((resolve, reject) => {
       confirm({
@@ -333,9 +356,11 @@ const StoreMedia = ({ type, title, getImageData, setGetImageData }) => {
           dataObject["store_id"] = storeUUID;
           dataObject["image-type"] = type;
           dataObject["image-path"] = file.deleteImagePath;
+          setImageUploading(true);
           MarketplaceServices.remove(storeDeleteImagesAPI, dataObject)
             .then((response) => {
               console.log("response from delete===>", response);
+              setImageUploading(false);
               if (response.status === 200 || response.status === 201) {
                 toast(`${response.data.message}`, {
                   position: toast.POSITION.TOP_RIGHT,
@@ -348,6 +373,7 @@ const StoreMedia = ({ type, title, getImageData, setGetImageData }) => {
             })
             .catch((error) => {
               reject(true);
+              setImageUploading(false);
               if (error && error.response && error.response.status === 401) {
                 toast("Session expired", {
                   position: toast.POSITION.TOP_RIGHT,
@@ -371,96 +397,106 @@ const StoreMedia = ({ type, title, getImageData, setGetImageData }) => {
   };
 
   return (
-    <Content>
-      <Content className="my-2">
-        <Title level={5} className="mr-1">
-          {title}
-        </Title>
-      </Content>
+    <Spin tip="Please wait" size="small" spinning={isImageUploading}>
       <Content>
-        {type && type === "store_logo" ? (
-          <>
-            <Upload
-              maxCount={1}
-              listType="picture-card"
-              beforeUpload={() => {
-                return false;
-              }}
-              afterUpload={() => {
-                return false;
-              }}
-              fileList={storeLogo}
-              name="file"
-              onPreview={handlePreview}
-              accept={supportedExtensions}
-              onChange={(e) => {
-                handleChange(e);
-              }}
-              onRemove={handleRemove}
-              // onRemove={false}
-            >
-              {storeLogo && storeLogo.length >= 1 ? null : uploadButton}
-            </Upload>
-            <Modal
-              open={previewOpen}
-              title={previewTitle}
-              footer={null}
-              onCancel={handleCancel}
-            >
-              <img
-                alt="example"
-                style={{
-                  width: "100%",
+        <Content className="my-2">
+          <Title level={5} className="mr-1">
+            {title}
+          </Title>
+        </Content>
+        <Content>
+          {type && type === "store_logo" ? (
+            <>
+              <Upload
+                maxCount={1}
+                // className="avatar-uploader"
+                listType="picture-card"
+                beforeUpload={() => {
+                  return false;
                 }}
-                src={previewImage}
-              />
-            </Modal>
-          </>
-        ) : (
-          <>
-            <Upload
-              maxCount={bannerImagesLength}
-              multiple
-              listType="picture"
-              beforeUpload={() => {
-                return false;
-              }}
-              afterUpload={() => {
-                return false;
-              }}
-              fileList={bannerFileList}
-              onRemove={handleRemove}
-              onPreview={handlePreview}
-              accept={supportedExtensions}
-              onChange={(e) => {
-                handleChange(e);
-              }}
-            >
-              {bannerFileList &&
-              bannerFileList.length >= bannerImagesLength ? null : (
-                <Button icon={<UploadOutlined />}>
-                  Upload (Max: {bannerImagesLength})
+                // beforeUpload={beforeUpload}
+                afterUpload={() => {
+                  return false;
+                }}
+                fileList={storeLogo}
+                name="file"
+                onPreview={handlePreview}
+                accept={supportedExtensions}
+                onChange={(e) => {
+                  handleChange(e);
+                }}
+                onRemove={handleRemove}
+                // onRemove={false}
+              >
+                {storeLogo && storeLogo.length >= 1 ? null : uploadButton}
+              </Upload>
+              <Modal
+                open={previewOpen}
+                title={previewTitle}
+                footer={null}
+                onCancel={handleCancel}
+              >
+                <img
+                  alt="example"
+                  style={{
+                    width: "100%",
+                  }}
+                  src={previewImage}
+                />
+              </Modal>
+            </>
+          ) : (
+            <>
+              <Upload
+                maxCount={bannerImagesLengthDisplay}
+                multiple
+                listType="picture"
+                beforeUpload={() => {
+                  return false;
+                }}
+                // beforeUpload={beforeUpload}
+                afterUpload={() => {
+                  return false;
+                }}
+                fileList={bannerFileList}
+                onRemove={handleRemove}
+                onPreview={handlePreview}
+                accept={supportedExtensions}
+                onChange={(e) => {
+                  handleChange(e);
+                }}
+              >
+                <Button
+                  icon={<UploadOutlined />}
+                  disabled={
+                    bannerFileList &&
+                    bannerFileList.length < bannerImagesLengthDisplay
+                      ? false
+                      : true
+                  }
+                >
+                  Upload (Max: {bannerImagesLengthDisplay})
                 </Button>
-              )}
-            </Upload>
-            <Modal
-              open={previewOpen}
-              title={previewTitle}
-              footer={null}
-              onCancel={handleCancel}
-            >
-              <img
-                alt="example"
-                style={{
-                  width: "100%",
-                }}
-                src={previewImage}
-              />
-            </Modal>
-          </>
-        )}
+              </Upload>
+              <Modal
+                open={previewOpen}
+                title={previewTitle}
+                footer={null}
+                onCancel={handleCancel}
+              >
+                <img
+                  alt="example"
+                  style={{
+                    width: "100%",
+                  }}
+                  src={previewImage}
+                />
+              </Modal>
+            </>
+          )}
+        </Content>
       </Content>
-    </Content>
+    </Spin>
   );
 };
 
