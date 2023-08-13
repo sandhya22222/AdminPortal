@@ -560,7 +560,7 @@ const StoreSettings = () => {
       currencySymbol === "" &&
       currencyIsoCode === "" &&
       fractionalUnit === "" &&
-      numberToBasic === ""
+      (numberToBasic === "" && numberToBasic === null)
     ) {
       count--;
       setInValidCurrencySymbol(true);
@@ -1813,7 +1813,7 @@ const StoreSettings = () => {
                     setInValidNumberToBasic(false);
                   } else {
                     setNumberToBasic(e);
-                    setInValidNumberToBasic(true);
+                    setInValidNumberToBasic(false);
                   }
                   let temp = { ...copyImageOfStoreSettingsCurrency };
                   temp["number_to_basic"] = e;
