@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
-import { Modal, Upload, Layout, Typography, Button, message, Spin ,Space} from "antd";
+import {
+  Modal,
+  Upload,
+  Layout,
+  Typography,
+  Button,
+  message,
+  Spin,
+  Space,
+} from "antd";
 import { toast } from "react-toastify";
 import { useLocation } from "react-router-dom";
-import { TiDelete } from "react-icons/ti";
 import { useDispatch, useSelector } from "react-redux";
 import { fnAbsoluteStoreImageInfo } from "../../services/redux/actions/ActionStoreImages";
-import StoreModal from "../../components/storeModal/StoreModal";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
-import { UploadFile } from "antd/es/upload/interface";
-
+import { deepCopy } from "../../util/util";
 const { Content } = Layout;
 const { Title } = Typography;
 
@@ -34,7 +40,6 @@ const StoreMedia = ({ type, title, getImageData, setGetImageData }) => {
   const [storeLogo, setStoreLogo] = useState([]);
   const [bannerFileList, setBannerFileList] = useState([]);
   const [isImageUploading, setImageUploading] = useState(false);
-
   const absoluteStoreImageInfo = useSelector(
     (state) => state.reducerAbsoluteStoreImageInfo.absoluteStoreImageInfo
   );
@@ -59,11 +64,10 @@ const StoreMedia = ({ type, title, getImageData, setGetImageData }) => {
       file.name || file.url.substring(file.url.lastIndexOf("/") + 1)
     );
   };
-
   const handleChange = (e) => {
-    console.log("e.file", e.file);
-    setBannerFileList(e.fileList);
-    setStoreLogo(e.fileList);
+    if (type === "store_logo") {
+      setStoreLogo(e.fileList);
+    }
     if (getImageData && getImageData.length > 0) {
       if (e.file.status !== "removed") {
         updateStoreLogoImageCall(e.file);
@@ -73,7 +77,27 @@ const StoreMedia = ({ type, title, getImageData, setGetImageData }) => {
     }
   };
 
-  const uploadButton = (
+  const bannerHandleChange = (e) => {
+    // console.log("file", e.file);
+    // var getImagePath = [];
+    // if (e && e.fileList && e.fileList.length > 0) {
+    //   for (var i = 0; i < e.fileList.length; i++) {
+    //     getImagePath.push(e.file);
+    //   }
+    //   console.log("getImagePath", getImagePath);
+    setBannerFileList(e.fileList);
+    // if (toastMessageCount === false) {
+    if (getImageData && getImageData.length > 0) {
+      if (e.file.status !== "removed") {
+        updateStoreLogoImageCall(e.file);
+      }
+    } else {
+      saveStoreLogoImageCall(e.file);
+    }
+    //   }
+    // }
+  };
+    const uploadButton = (
     <div>
       <PlusOutlined />
       <div
@@ -224,21 +248,22 @@ const StoreMedia = ({ type, title, getImageData, setGetImageData }) => {
       formData.append("store_logo", fileValue);
     } else if (type == "banner_images") {
       formData.append("banner_images", fileValue);
+      // for (var i = 0; i < getImagePath.length; i++) {
+      //   console.log("getImagePath[i]", getImagePath[i]);
+      //   formData.append("banner_images", getImagePath[i]);
+      // }
     }
     formData.append("store_id", storeUUID);
     setImageUploading(true);
     MarketplaceServices.update(storeImagesAPI, formData)
       .then((response) => {
         if (response.data) {
-            toast("Images saved successfully", {
-              position: toast.POSITION.TOP_RIGHT,
-              type: "success",
-              autoClose: 10000,
-            });
-          }
-        // if (type === "banner_images") {
-        //   setDisplayToastMessage(1);
-        // }
+          toast("Images saved successfully", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "success",
+            autoClose: 10000,
+          });
+        }
         setImageUploading(false);
         setGetImageData([response.data]);
         if (response.data && response.data.store_logo_path) {
@@ -267,7 +292,6 @@ const StoreMedia = ({ type, title, getImageData, setGetImageData }) => {
                 deleteImagePath: element.path,
               });
               temp = temp + 1;
-              console.log("temp", temp);
             });
           setBannerFileList(tempArrayForBannerImage);
         }
@@ -369,7 +393,15 @@ const StoreMedia = ({ type, title, getImageData, setGetImageData }) => {
                 });
                 resolve(true);
               }
-              getImageData([]);
+              if (type === "banner_images") {
+                let temp = deepCopy(getImageData);
+                let localBannerImages = temp[0].banner_images;
+                let filteredBannerImages = localBannerImages.filter(
+                  (ele) => ele.path !== file.deleteImagePath
+                );
+                temp[0]["banner_images"] = filteredBannerImages;
+                setGetImageData(temp);
+              }
             })
             .catch((error) => {
               reject(true);
@@ -408,8 +440,7 @@ const StoreMedia = ({ type, title, getImageData, setGetImageData }) => {
           {type && type === "store_logo" ? (
             <>
               <Upload
-                maxCount={1}
-                // className="avatar-uploader"
+               maxCount={1}
                 listType="picture-card"
                 beforeUpload={() => {
                   return false;
@@ -463,7 +494,7 @@ const StoreMedia = ({ type, title, getImageData, setGetImageData }) => {
                 onPreview={handlePreview}
                 accept={supportedExtensions}
                 onChange={(e) => {
-                  handleChange(e);
+                  bannerHandleChange(e);
                 }}
               >
                 <Button
