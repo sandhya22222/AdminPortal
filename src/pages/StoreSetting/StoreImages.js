@@ -34,6 +34,8 @@ const storeBannerImageAPI = process.env.REACT_APP_STORE_BANNER_IMAGES_API;
 const storeAbsoluteImgesAPI = process.env.REACT_APP_STORE_ABSOLUTE_IMAGES_API;
 const storeDeleteImagesAPI = process.env.REACT_APP_STORE_DELETE_IMAGES_API;
 const baseURL = process.env.REACT_APP_BASE_URL;
+const BannerImagesUploadLength = process.env.REACT_APP_BANNER_IMAGES_MAX_LENGTH;
+const supportedFileExtensions = process.env.REACT_APP_IMAGES_EXTENSIONS;
 
 const StoreImages = ({
   title,
@@ -44,7 +46,6 @@ const StoreImages = ({
   setImagesUpload,
   getImageData,
   validStoreLogo,
-  setValiStoreLogo,
   InfoCircleText,
   bannerAbsoluteImage,
   setImageChangeValues,
@@ -64,14 +65,16 @@ const StoreImages = ({
   const [previewTitle, setPreviewTitle] = useState("");
   const [imagePathShow, setImagePathShow] = useState();
   const [copyImagePath, setCopyImagePath] = useState();
-  const [bannerImage, setBannerImage] = useState([]);
   const [allImageUrl, setAllImageUrl] = useState([]);
-  const [bannerAbsoluteImagePath, setBannerAbsoluteImagePath] = useState([]);
   const [reset, setReset] = useState(false);
   const [imageIndex, setImageIndex] = useState();
   const [imageElement, setImageElement] = useState();
   const [isImageDeleting, setIsImageDeleting] = useState(false);
   const [isDeleteImageModalOpen, setIsDeleteImageModalOpen] = useState(false);
+  const [bannerImagesLength, setBannerImagesLength] = useState(0);
+
+  var selectedImageArrayOfObject = [];
+
   const uploadButton = (
     <div>
       <PlusOutlined />
@@ -84,9 +87,12 @@ const StoreImages = ({
       </div>
     </div>
   );
+  console.log("getImageData", getImageData);
 
   const handleChange = (e) => {
     // debugger;
+    console.log("checking-->", e.fileList);
+
     setImageChangeValues(true);
     setFileList(e.fileList);
     if (type === "store_logo") {
@@ -94,42 +100,53 @@ const StoreImages = ({
         let temp = imagesUpload.filter((e) => e.type !== "store_logo");
         setImagesUpload(temp);
       } else {
-        let copyimageData = [...imagesUpload];
-        copyimageData.push({ type: "store_logo", imageValue: e.file });
-        setImagesUpload(copyimageData);
-        setValiStoreLogo(false);
+        let copyImageData = [...imagesUpload];
+        copyImageData.push({ type: "store_logo", imageValue: e.file });
+        setImagesUpload(copyImageData);
       }
     }
     if (type === "banner_images") {
+      selectedImageArrayOfObject.push(e.file);
+      setBannerImagesLength(
+        parseInt(allImageUrl && allImageUrl.length) +
+          parseInt(e && e.fileList && e.fileList.length)
+      );
+      var sampleBannerImagesLength =
+        parseInt(allImageUrl && allImageUrl.length) +
+        parseInt(e && e.fileList && e.fileList.length);
+      console.log("sampleBannerImagesLength", sampleBannerImagesLength);
+      // if (sampleBannerImagesLength <= BannerImagesUploadLength) {
+
       if (e.fileList.length === 0) {
         let temp = imagesUpload.filter((e) => e.type !== "banner_images");
         setImagesUpload(temp);
       } else {
-        let copyimageData = [...imagesUpload];
-        // let removedItem = copyimageData.filter(
-        //   (ele) => ele.imageValue.status === "removed"
-        // );
-        // let notRemovedItems = copyimageData.filter(
-        //   (ele) => typeof ele.imageValue.status === "undefined"
-        // );
-        // if (removedItem.length > 0) {
-        //   setImagesUpload(notRemovedItems);
-        // } else {
-        //   copyimageData.push({ type: "banner_images", imageValue: e.file });
-        //   setImagesUpload(copyimageData);
-        // }
-        copyimageData.push({ type: "banner_images", imageValue: e.file });
-        setImagesUpload(copyimageData);
+        let totalSelectLength = e.fileList.length;
+        if (sampleBannerImagesLength > BannerImagesUploadLength) {
+          let imagesUploadLength =
+            sampleBannerImagesLength - BannerImagesUploadLength;
+          let imagesSelect = sampleBannerImagesLength - imagesUploadLength;
+          totalSelectLength = imagesSelect - allImageUrl.length;
+          e.fileList.splice(totalSelectLength); // Limit the fileList to eight files
+        }
+        let copyImageData = [...imagesUpload];
+        selectedImageArrayOfObject.splice(totalSelectLength);
+        copyImageData.push({
+          type: "banner_images",
+          imageValue: selectedImageArrayOfObject,
+        });
+        setImagesUpload(copyImageData);
       }
+      // }
     }
     if (type === "search_logo") {
       if (e.fileList.length == 0) {
         let temp = imagesUpload.filter((e) => e.type !== "search_logo");
         setImagesUpload(temp);
       } else {
-        let copyimageData = [...imagesUpload];
-        copyimageData.push({ type: "search_logo", imageValue: e.file });
-        setImagesUpload(copyimageData);
+        let copyImageData = [...imagesUpload];
+        copyImageData.push({ type: "search_logo", imageValue: e.file });
+        setImagesUpload(copyImageData);
       }
     }
     if (type === "customer_logo") {
@@ -137,9 +154,9 @@ const StoreImages = ({
         let temp = imagesUpload.filter((e) => e.type !== "customer_logo");
         setImagesUpload(temp);
       } else {
-        let copyimageData = [...imagesUpload];
-        copyimageData.push({ type: "customer_logo", imageValue: e.file });
-        setImagesUpload(copyimageData);
+        let copyImageData = [...imagesUpload];
+        copyImageData.push({ type: "customer_logo", imageValue: e.file });
+        setImagesUpload(copyImageData);
       }
     }
     if (type === "cart_logo") {
@@ -147,9 +164,9 @@ const StoreImages = ({
         let temp = imagesUpload.filter((e) => e.type !== "cart_logo");
         setImagesUpload(temp);
       } else {
-        let copyimageData = [...imagesUpload];
-        copyimageData.push({ type: "cart_logo", imageValue: e.file });
-        setImagesUpload(copyimageData);
+        let copyImageData = [...imagesUpload];
+        copyImageData.push({ type: "cart_logo", imageValue: e.file });
+        setImagesUpload(copyImageData);
       }
     }
     if (type === "wishlist_logo") {
@@ -157,43 +174,18 @@ const StoreImages = ({
         let temp = imagesUpload.filter((e) => e.type !== "wishlist_logo");
         setImagesUpload(temp);
       } else {
-        let copyimageData = [...imagesUpload];
-        copyimageData.push({ type: "wishlist_logo", imageValue: e.file });
-        setImagesUpload(copyimageData);
+        let copyImageData = [...imagesUpload];
+        copyImageData.push({ type: "wishlist_logo", imageValue: e.file });
+        setImagesUpload(copyImageData);
       }
     }
   };
 
-  // const findAllWithoutPageStoreBannerImageApi = () => {
-  //   // setIsLoading(true);
-  //   // axios
-  //   //   .get(storeBannerImageAPI, {
-  //   //     params: {
-  //   //       "store-id": storeId,
-  //   //     },
-  //   //     authorizationHeader,
-  //   //   })
-  //   MarketplaceServices.findAllWithoutPage(storeBannerImageAPI, {
-  //     store_id: storeId,
-  //   })
-  //     .then(function (response) {
-  //       console.log(
-  //         "Server Response from getstoreBannerImageApi Function: ",
-  //         response.data
-  //       );
-  //       setBannerAbsoluteImage(response.data);
-  //       // setStoreData(response.data.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log("Server error from getStoreApi Function ", error.response);
-  //     });
-  // };
   useEffect(() => {
     console.log("getImageData1234", getImageData);
     if (getImageData && getImageData !== undefined) {
       if (type === "store_logo") {
         let temp = getImageData && getImageData.store_logo_path;
-        console.log("templogo", temp);
         if (temp !== null) {
           findAllWithoutPageStoreAbsoluteImagesApi(temp);
           // let mediaData = [...deleteStoreImage];
@@ -253,11 +245,11 @@ const StoreImages = ({
     if (type === "banner_images") {
       // findAllWithoutPageStoreBannerImageApi();
     }
+    selectedImageArrayOfObject = [];
   }, [getImageData]);
 
   useEffect(() => {
     setImagePathShow();
-    // setAllImageUrl([]);
   }, []);
 
   useEffect(() => {
@@ -268,26 +260,34 @@ const StoreImages = ({
           temp.push(baseURL + bannerAbsoluteImage[i].image_fullpath);
         }
       }
-      console.log("temp1234456-->", temp);
       setAllImageUrl(temp);
       setImagePathShow(temp);
     }
   }, [bannerAbsoluteImage]);
 
-  const getBase64 = (file) => {
+  const getBase64 = (file) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => resolve(reader.result);
       reader.onerror = (error) => reject(error);
     });
+
+  const handleCancel = () => setPreviewOpen(false);
+
+  const handlePreview = async (file) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+    setPreviewImage(file.url || file.preview);
+    setPreviewOpen(true);
+    setPreviewTitle(
+      file.name || file.url.substring(file.url.lastIndexOf("/") + 1)
+    );
   };
 
   const findAllWithoutPageStoreAbsoluteImagesApi = (imagePath) => {
-    console.log("allImageUrl--->", allImageUrl, "type---->", type);
     let url = baseURL + imagePath;
-    // let temp = allImageUrl;
-    // temp.push(url);
     let temp = [];
     temp.push(url);
     if (absoluteStoreImageInfo && absoluteStoreImageInfo.length > 0) {
@@ -299,96 +299,9 @@ const StoreImages = ({
       let imageType = { type: type, value: url };
       dispatch(fnAbsoluteStoreImageInfo(imageType));
     }
-    console.log("tempoTest#", temp);
     setAllImageUrl(temp);
     setImagePathShow(url);
     setCopyImagePath(url);
-    // console.log("imagePath1234", imagePath);
-    // axios
-    //   .get(
-    //     storeAbsoluteImgesAPI,
-    //     {
-    //       params: {
-    //         store_id: storeId,
-    //         "image-path": imagePath,
-    //         "image-type": type,
-    //       },
-    //       responseType: "blob",
-    //     },
-    //     authorizationHeader
-    //   )
-    //   // MarketplaceServices.findMedia(
-    //   //   storeBannerImageAPI,
-    //   //   {
-    //   //     "store-id": storeId,
-    //   //     "image-path": imagePath,
-    //   //     "image-type": type,
-    //   //   }
-    //   // )
-    //   .then(function (response) {
-    //     console.log(
-    //       "Get response of Store setting absolute Images--->",
-    //       response.data
-    //     );
-    //     // if (type === "banner_images") {
-    //     //   console.log("first");
-    //     //   let temp = [...bannerImage];
-    //     //   const url = URL.createObjectURL(response.data);
-    //     //   temp.push(url);
-    //     //   setBannerImage(temp);
-    //     // } else {
-    //     //   const url = URL.createObjectURL(response.data);
-    //     //   console.log("image-url", url);
-    //     //   setImagePathShow(url);
-    //     //   setCopyImagePath(url);
-    //     // }
-
-    //     const url = URL.createObjectURL(response.data);
-    //     console.log("image-url", url);
-    //     let temp = allImageUrl;
-    //     temp.push(url);
-    //     if (absoluteStoreImageInfo && absoluteStoreImageInfo.length > 0) {
-    //       let imageData = [...absoluteStoreImageInfo];
-    //       let imageType = { type: type, value: url };
-    //       imageData.push(imageType);
-    //       dispatch(fnAbsoluteStoreImageInfo(ImageData));
-    //     } else {
-    //       let imageType = { type: type, value: url };
-    //       dispatch(fnAbsoluteStoreImageInfo(imageType));
-    //     }
-    //     // const imageData = absoluteStoreImageInfo;
-    //     // let image = allImageUrl
-    //     // image.push(imageData)
-    //     // console.log("imageData", imageData);
-    //     // if (imageData !== undefined) {
-    //     //   imageData.push(temp);
-    //     //   dispatch(fnAbsoluteStoreImageInfo(imageData));
-    //     // } else {
-    //     //   dispatch(fnAbsoluteStoreImageInfo(temp));
-    //     // }
-    //     // dispatch(fnAbsoluteStoreImageInfo(temp));
-    //     console.log("tempoTest#", temp);
-    //     setAllImageUrl(temp);
-    //     setImagePathShow(url);
-    //     setCopyImagePath(url);
-    //   })
-    //   .catch((error) => {
-    //     console.log("errorresponse from images--->", error.response);
-    //     setImagePathShow();
-    //   });
-  };
-
-  const handleCancel = () => setPreviewOpen(false);
-
-  const handlePreview = async (file) => {
-    if (!file.thumbUrl && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-    setPreviewImage(file.thumbUrl || file.preview);
-    setPreviewOpen(true);
-    setPreviewTitle(
-      file.name || file.url.substring(file.url.lastIndexOf("/") + 1)
-    );
   };
 
   // closing the delete popup model
@@ -411,7 +324,6 @@ const StoreImages = ({
     dataObject["image-type"] = type;
     if (type === "banner_images") {
       let temp = bannerAbsoluteImage[imageIndex];
-      console.log("tempbannerAbsoluteImage", temp);
       dataObject["image-path"] = temp.path;
     } else {
       dataObject["image-path"] = getImageData[type];
@@ -429,6 +341,8 @@ const StoreImages = ({
         if (type === "banner_images") {
           //remove from setBannerAbsoluteImage
           bannerAbsoluteImage.splice(imageIndex, 1);
+
+          setBannerImagesLength(bannerImagesLength - 1);
 
           let temp = allImageUrl.filter((item) => item !== imageElement);
           if (temp && temp.length > 0) {
@@ -490,9 +404,6 @@ const StoreImages = ({
         }
       </StoreModal>
       <Content className="flex !mb-3">
-        {/* {title === "Store Logo" ? (
-          <span className="text-red-600 text-sm text-center ">*</span>
-        ) : null} */}
         <Title level={5} className="mr-1">
           {title}
         </Title>
@@ -537,14 +448,13 @@ const StoreImages = ({
                 afterUpload={() => {
                   return false;
                 }}
-                accept=".png, .jpg, .jpeg"
+                accept={supportedFileExtensions}
               >
                 {fileList.length >= 1 ? null : uploadButton}
               </Upload>
               {/* <Modal
                 open={previewOpen}
-                // title={previewTitle}
-                visible={previewOpen}
+                title={previewTitle}
                 footer={null}
                 onCancel={handleCancel}
               >
@@ -559,8 +469,10 @@ const StoreImages = ({
             </>
           ) : (
             <Upload
+              maxCount={BannerImagesUploadLength}
               className="w-90 ant-btn-default"
               listType="picture"
+              multiple={true}
               beforeUpload={() => {
                 return false;
               }}
@@ -569,17 +481,20 @@ const StoreImages = ({
               }}
               fileList={fileList}
               onPreview={handlePreview}
-              accept=".png, .jpg, .jpeg"
+              accept={supportedFileExtensions}
               onChange={(e) => {
                 handleChange(e);
                 setImageChangeValues(true);
               }}
             >
               <Button
+                disabled={
+                  bannerImagesLength < BannerImagesUploadLength ? false : true
+                }
                 icon={<UploadOutlined />}
-                className="font-semibold hover:border-[var(--mp-primary-border-color)] hover:text-[var(--mp-brand-color-h)]"
+                className="font-semibold"
               >
-                Click to Add Banner Image
+                Click to Add Banner Image (Max: {BannerImagesUploadLength})
               </Button>
             </Upload>
           )}
@@ -623,6 +538,8 @@ const StoreImages = ({
             {type === "banner_images" ? (
               <>
                 <Upload
+                  maxCount={BannerImagesUploadLength}
+                  multiple={true}
                   className="w-90"
                   listType="picture"
                   onPreview={handlePreview}
@@ -633,17 +550,23 @@ const StoreImages = ({
                     return false;
                   }}
                   fileList={fileList}
-                  accept=".png, .jpg, .jpeg"
+                  accept={supportedFileExtensions}
                   onChange={(e) => {
                     handleChange(e);
                     setImageChangeValues(true);
                   }}
+                  // disabled={bannerImagesLength <= BannerImagesUploadLength ? false : true}
                 >
                   <Button
+                    disabled={
+                      bannerImagesLength < BannerImagesUploadLength
+                        ? false
+                        : true
+                    }
                     icon={<UploadOutlined />}
-                    className="font-semibold hover:border-[var(--mp-primary-border-color)] hover:text-[var(--mp-brand-color-h)]"
+                    className="font-semibold"
                   >
-                    Click to Add Banner Image
+                    Click to Add Banner Image (Max: {BannerImagesUploadLength})
                   </Button>
                 </Upload>
                 <Modal
