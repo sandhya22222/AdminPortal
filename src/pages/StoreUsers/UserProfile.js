@@ -114,7 +114,7 @@ const UserProfile = () => {
                 <Content className="flex flex-col items-center">
                   <Row className="mb-2">
                     <label className="text-md font-medium">
-                      Role :{" "}
+                      Role:{" "}
                       {(storeUsersData &&
                         storeUsersData.roles[0].name === "") ||
                       (storeUsersData &&
@@ -125,7 +125,7 @@ const UserProfile = () => {
                   </Row>
                   <Row className="mb-2">
                     <label className="text-md font-medium">
-                      First Name :{" "}
+                      First Name:{" "}
                       {(storeUsersData && storeUsersData.firstName === "") ||
                       (storeUsersData && storeUsersData.firstName === undefined)
                         ? "NA"
@@ -134,7 +134,7 @@ const UserProfile = () => {
                   </Row>
                   <Row className=" mb-2">
                     <label className="text-md font-medium">
-                      Last Name :{" "}
+                      Last Name:{" "}
                       {(storeUsersData && storeUsersData.lastName === "") ||
                       (storeUsersData && storeUsersData.lastName === undefined)
                         ? "NA"
@@ -143,7 +143,7 @@ const UserProfile = () => {
                   </Row>
                   <Row className="">
                     <label className="text-md font-medium">
-                      Onboarded On :{" "}
+                      Onboarded On:{" "}
                       {getGenerateDateAndTime(
                         storeUsersData && storeUsersData.createdTimestamp,
                         "D MMMM YYYY"

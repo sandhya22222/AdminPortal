@@ -1126,8 +1126,6 @@ const StoreSettings = () => {
   //!put call of store images
   const updateStoreLogoImageCall = () => {
     const formData = new FormData();
-    console.log('formData', formData)
-
     imagesUpload.filter((ele) => typeof ele.imageValue.status === "undefined");
     if (imagesUpload && imagesUpload.length > 0) {
       for (var i = 0; i < imagesUpload.length; i++) {
@@ -1141,26 +1139,32 @@ const StoreSettings = () => {
           //     formData.append("banner_images", updateBannerImage[i]);
           //   }
           // } else {
-          // debugger;
-          let removedItem = imagesUpload.filter(
-            (ele) => ele.imageValue.status === "removed"
+            console.log('localBannerImagesUpload', localBannerImagesUpload)
+          let removedItem = localBannerImagesUpload.filter(
+            (ele) => ele.status === "removed"
           );
+          console.log("removedItem", removedItem);
           if (removedItem.length > 0) {
             //Remove removed items from main array
-            const currentItemUid = imagesUpload[i].imageValue.uid;
+            for (var k = 0; k < localBannerImagesUpload.length; k++) {
+              var currentItemUid = localBannerImagesUpload[k].uid;
+            }
             let itemToIgnore = removedItem.filter(
-              (element) => element.imageValue.uid === currentItemUid
+              (element) => element.uid === currentItemUid
             );
+            console.log("itemToIgnore", itemToIgnore);
             if (itemToIgnore.length === 0) {
               for (var j = 0; j < localBannerImagesUpload.length; j++) {
                 formData.append("banner_images", localBannerImagesUpload[j]);
+                console.log('localBannerImagesUpload', localBannerImagesUpload[j].originFileObj)
               }
             }
-          } else {
-            for (var j = 0; j < localBannerImagesUpload.length; j++) {
-              formData.append("banner_images", localBannerImagesUpload[j]);
-            }
           }
+          else{
+            for (var j = 0; j < localBannerImagesUpload.length; j++) {
+              formData.append("banner_images", localBannerImagesUpload[j].originFileObj);
+              console.log('localBannerImagesUpload', localBannerImagesUpload[j])
+          } }
         } else if (imagesUpload[i].type == "search_logo") {
           formData.append("search_logo", imagesUpload[i].imageValue);
         } else if (imagesUpload[i].type == "customer_logo") {
