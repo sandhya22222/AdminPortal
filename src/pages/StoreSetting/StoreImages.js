@@ -72,7 +72,6 @@ const StoreImages = ({
   const [isImageDeleting, setIsImageDeleting] = useState(false);
   const [isDeleteImageModalOpen, setIsDeleteImageModalOpen] = useState(false);
   const [bannerImagesLength, setBannerImagesLength] = useState(0);
-
   var selectedImageArrayOfObject = [];
 
   const uploadButton = (
@@ -87,12 +86,9 @@ const StoreImages = ({
       </div>
     </div>
   );
-  console.log("getImageData", getImageData);
 
   const handleChange = (e) => {
     // debugger;
-    console.log("checking-->", e.fileList);
-
     setImageChangeValues(true);
     setFileList(e.fileList);
     if (type === "store_logo") {
@@ -384,6 +380,10 @@ const StoreImages = ({
     }
   }, [imagesUpload]);
 
+  useEffect(() => {
+    setBannerImagesLength(bannerAbsoluteImage && bannerAbsoluteImage.length);
+  }, [bannerAbsoluteImage]);
+  console.log("bannerImagesLength", bannerImagesLength);
   return (
     <Content className=" mb-2">
       <StoreModal
@@ -486,6 +486,9 @@ const StoreImages = ({
                 handleChange(e);
                 setImageChangeValues(true);
               }}
+              openFileDialogOnClick={
+                bannerImagesLength < BannerImagesUploadLength ? true : false
+              }
             >
               <Button
                 disabled={
@@ -555,7 +558,9 @@ const StoreImages = ({
                     handleChange(e);
                     setImageChangeValues(true);
                   }}
-                  // disabled={bannerImagesLength <= BannerImagesUploadLength ? false : true}
+                  openFileDialogOnClick={
+                    bannerImagesLength < BannerImagesUploadLength ? true : false
+                  }
                 >
                   <Button
                     disabled={
