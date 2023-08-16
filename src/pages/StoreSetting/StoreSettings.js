@@ -1123,6 +1123,7 @@ const StoreSettings = () => {
       findAllWithoutPageStoreBannerImageApi(id);
     }
   }, [getImageData]);
+
   //!put call of store images
   const updateStoreLogoImageCall = () => {
     const formData = new FormData();
@@ -1139,7 +1140,7 @@ const StoreSettings = () => {
           //     formData.append("banner_images", updateBannerImage[i]);
           //   }
           // } else {
-            console.log('localBannerImagesUpload', localBannerImagesUpload)
+          console.log("localBannerImagesUpload", localBannerImagesUpload);
           let removedItem = localBannerImagesUpload.filter(
             (ele) => ele.status === "removed"
           );
@@ -1156,15 +1157,13 @@ const StoreSettings = () => {
             if (itemToIgnore.length === 0) {
               for (var j = 0; j < localBannerImagesUpload.length; j++) {
                 formData.append("banner_images", localBannerImagesUpload[j]);
-                console.log('localBannerImagesUpload', localBannerImagesUpload[j].originFileObj)
               }
             }
-          }
-          else{
+          } else {
             for (var j = 0; j < localBannerImagesUpload.length; j++) {
-              formData.append("banner_images", localBannerImagesUpload[j].originFileObj);
-              console.log('localBannerImagesUpload', localBannerImagesUpload[j])
-          } }
+              formData.append("banner_images", localBannerImagesUpload[j]);
+            }
+          }
         } else if (imagesUpload[i].type == "search_logo") {
           formData.append("search_logo", imagesUpload[i].imageValue);
         } else if (imagesUpload[i].type == "customer_logo") {

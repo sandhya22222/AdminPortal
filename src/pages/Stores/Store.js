@@ -821,14 +821,14 @@ const Stores = () => {
     } else if (
       name &&
       validator.isLength(name.trim(), {
-        min: titleMinLength,
-        max: titleMaxLength,
+        min: storeNameMinLength,
+        max: storeNameMaxLength,
       }) === false
     ) {
       setInValidName(true);
       count--;
       toast(
-        `Store name must contain minimum of ${titleMinLength}, maximum of ${titleMaxLength} characters`,
+        `Store name must contain minimum of ${storeNameMinLength}, maximum of ${storeNameMaxLength} characters`,
         {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
@@ -1244,14 +1244,14 @@ const Stores = () => {
     } else if (
       editName &&
       validator.isLength(editName.trim(), {
-        min: titleMinLength,
-        max: titleMaxLength,
+        min: storeNameMinLength,
+        max: storeNameMaxLength,
       }) === false
     ) {
       setInValidEditName(true);
       // count--;
       toast(
-        `Store name must contain minimum of ${titleMinLength}, maximum of ${titleMaxLength} characters`,
+        `Store name must contain minimum of ${storeNameMinLength}, maximum of ${storeNameMaxLength} characters`,
         {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
