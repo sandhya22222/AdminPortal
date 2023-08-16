@@ -86,8 +86,8 @@ const StoreImages = ({
     </div>
   );
 
+
   const handleChange = (e) => {
-    // debugger;
     setImageChangeValues(true);
     setFileList(e.fileList);
     if (type === "store_logo") {
@@ -101,18 +101,6 @@ const StoreImages = ({
       }
     }
     if (type === "banner_images") {
-      console.log("file", e.file);
-      var deletedImage = e.fileList.filter((ele) => ele.status !== "removed");
-      console.log("deletedImage", deletedImage);
-      var tempArray = [];
-      // deletedImage &&
-      // deletedImage.length > 0 &&
-      deletedImage.map((ele) => {
-        console.log("elements$", ele);
-        tempArray.push(ele);
-      });
-
-      console.log("tempArray", tempArray);
       setBannerImagesLength(
         parseInt(allImageUrl && allImageUrl.length) +
           parseInt(e && e.fileList && e.fileList.length)
@@ -121,7 +109,6 @@ const StoreImages = ({
       var sampleBannerImagesLength =
         parseInt(allImageUrl && allImageUrl.length) +
         parseInt(e && e.fileList && e.fileList.length);
-      console.log("sampleBannerImagesLength", sampleBannerImagesLength);
 
       if (e.fileList.length === 0) {
         let temp = imagesUpload.filter((e) => e.type !== "banner_images");
@@ -136,10 +123,10 @@ const StoreImages = ({
           e.fileList.splice(totalSelectLength); // Limit the fileList to eight files
         }
         let copyImageData = [...imagesUpload];
-        tempArray.splice(totalSelectLength);
+        selectedImageArrayOfObject.splice(totalSelectLength);
         copyImageData.push({
           type: "banner_images",
-          imageValue: tempArray,
+          imageValue: selectedImageArrayOfObject,
         });
         setImagesUpload(copyImageData);
       }
@@ -187,7 +174,6 @@ const StoreImages = ({
   };
 
   useEffect(() => {
-    console.log("getImageData1234", getImageData);
     if (getImageData && getImageData !== undefined) {
       if (type === "store_logo") {
         let temp = getImageData && getImageData.store_logo_path;
@@ -250,7 +236,7 @@ const StoreImages = ({
     if (type === "banner_images") {
       // findAllWithoutPageStoreBannerImageApi();
     }
-    // selectedImageArrayOfObject = [];
+    selectedImageArrayOfObject = [];
   }, [getImageData]);
 
   useEffect(() => {
@@ -322,6 +308,7 @@ const StoreImages = ({
 
   //!delete function of language
   const removeMedia = (index) => {
+    // debugger;
     setIsImageDeleting(true);
     console.log("index", index);
     let dataObject = {};
@@ -392,6 +379,7 @@ const StoreImages = ({
   useEffect(() => {
     setBannerImagesLength(bannerAbsoluteImage && bannerAbsoluteImage.length);
   }, [bannerAbsoluteImage]);
+
   console.log("bannerImagesLength", bannerImagesLength);
   return (
     <Content className=" mb-2">
@@ -533,7 +521,9 @@ const StoreImages = ({
               allImageUrl.map((ele, index) => {
                 return (
                   <div className="!relative">
-                    <img src={ele} className="!w-24 !h-26" />
+                    {/* <div className="grid grid-cols-4 gap-4"> */}
+                    <img src={ele} className="!w-24 !h-26 " />
+                    {/* </div> */}
                     <TiDelete
                       className="!absolute !cursor-pointer !right-[-5px] !z-5  !top-[-10px] !text-2xl !text-red-600 !shadow-lg  hover:translate-"
                       onClick={() => {
