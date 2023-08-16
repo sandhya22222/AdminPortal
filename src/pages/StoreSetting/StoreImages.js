@@ -73,7 +73,6 @@ const StoreImages = ({
   const [isDeleteImageModalOpen, setIsDeleteImageModalOpen] = useState(false);
   const [bannerImagesLength, setBannerImagesLength] = useState(0);
   var selectedImageArrayOfObject = [];
-
   const uploadButton = (
     <div>
       <PlusOutlined />
@@ -102,16 +101,27 @@ const StoreImages = ({
       }
     }
     if (type === "banner_images") {
-      selectedImageArrayOfObject.push(e.file);
+      console.log("file", e.file);
+      var deletedImage = e.fileList.filter((ele) => ele.status !== "removed");
+      console.log("deletedImage", deletedImage);
+      var tempArray = [];
+      // deletedImage &&
+      // deletedImage.length > 0 &&
+      deletedImage.map((ele) => {
+        console.log("elements$", ele);
+        tempArray.push(ele);
+      });
+
+      console.log("tempArray", tempArray);
       setBannerImagesLength(
         parseInt(allImageUrl && allImageUrl.length) +
           parseInt(e && e.fileList && e.fileList.length)
       );
+      selectedImageArrayOfObject.push(e.file);
       var sampleBannerImagesLength =
         parseInt(allImageUrl && allImageUrl.length) +
         parseInt(e && e.fileList && e.fileList.length);
       console.log("sampleBannerImagesLength", sampleBannerImagesLength);
-      // if (sampleBannerImagesLength <= BannerImagesUploadLength) {
 
       if (e.fileList.length === 0) {
         let temp = imagesUpload.filter((e) => e.type !== "banner_images");
@@ -126,14 +136,13 @@ const StoreImages = ({
           e.fileList.splice(totalSelectLength); // Limit the fileList to eight files
         }
         let copyImageData = [...imagesUpload];
-        selectedImageArrayOfObject.splice(totalSelectLength);
+        tempArray.splice(totalSelectLength);
         copyImageData.push({
           type: "banner_images",
-          imageValue: selectedImageArrayOfObject,
+          imageValue: tempArray,
         });
         setImagesUpload(copyImageData);
       }
-      // }
     }
     if (type === "search_logo") {
       if (e.fileList.length == 0) {
@@ -241,7 +250,7 @@ const StoreImages = ({
     if (type === "banner_images") {
       // findAllWithoutPageStoreBannerImageApi();
     }
-    selectedImageArrayOfObject = [];
+    // selectedImageArrayOfObject = [];
   }, [getImageData]);
 
   useEffect(() => {

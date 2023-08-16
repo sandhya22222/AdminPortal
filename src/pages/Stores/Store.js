@@ -65,7 +65,8 @@ const emailMinLength = process.env.REACT_APP_DESCRIPTION_MIN_LENGTH;
 const emailMaxLength = process.env.REACT_APP_DESCRIPTION_MAX_LENGTH;
 const passwordMinLength = process.env.REACT_APP_PASSWORD_MIN_LENGTH;
 const passwordMaxLength = process.env.REACT_APP_PASSWORD_MAX_LENGTH;
-
+const storeNameMinLength = process.env.REACT_APP_STORE_NAME_MIN_LENGTH;
+const storeNameMaxLength = process.env.REACT_APP_STORE_NAME_MAX_LENGTH;
 const Stores = () => {
   const { t } = useTranslation();
   usePageTitle("Stores");
@@ -1444,8 +1445,8 @@ const Stores = () => {
                           <Input
                             placeholder={t("placeholders:enter_store_name")}
                             value={name}
-                            minLength={titleMinLength}
-                            maxLength={titleMaxLength}
+                            minLength={storeNameMinLength}
+                            maxLength={storeNameMaxLength}
                             className={`${
                               inValidName
                                 ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-[0.5rem]"
@@ -1647,8 +1648,8 @@ const Stores = () => {
                                 ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 mb-6"
                                 : "mb-6"
                             }`}
-                            minLength={titleMinLength}
-                            maxLength={titleMaxLength}
+                            minLength={storeNameMinLength}
+                            maxLength={storeNameMaxLength}
                             onChange={(e) => {
                               // const alphaWithSpacesRegex = /^[A-Za-z\s]+$/;
                               const alphaWithoutSpaces = /^[a-zA-Z0-9]+$/;
@@ -1819,8 +1820,8 @@ const Stores = () => {
           </Content>
         ) : isNetworkError ? (
           <Content className="!mt-[1.7rem] !text-center bg-white p-3 !rounded-md">
-            Unfortunately, we were unable to retrieve store information.
-            Please try again later.
+            Unfortunately, we were unable to retrieve store information. Please
+            try again later.
           </Content>
         ) : (
           <Content className="!mt-[1.7rem]">
