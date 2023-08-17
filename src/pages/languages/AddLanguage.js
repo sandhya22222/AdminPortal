@@ -241,14 +241,20 @@ const AddLanguage = () => {
     } else if (language.trim() === "" && languageCode.trim() !== "") {
       setIsLanguageFieldEmpty(true);
       validValues--;
-      toast("Please enter the language name", {
+      toast("Please enter the values for the mandatory field", {
         autoClose: 10000,
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
       });
-    }
-    // const languageReg = /^[a-zA-Z]{4,15}$/;
-    if (
+    } else if (languageCode.trim() === "" && language.trim() !== "") {
+      setIsLanguageCodeFieldEmpty(true);
+      validValues--;
+      toast("Please enter the values for the mandatory field", {
+        autoClose: 10000,
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+      });
+    } else if (
       // (language.trim() && validator.isAlpha(language) === false) ||
       validator.isLength(language.trim(), {
         min: titleMinLength,
@@ -265,14 +271,6 @@ const AddLanguage = () => {
           autoClose: 10000,
         }
       );
-    } else if (languageCode.trim() === "" && language.trim() !== "") {
-      setIsLanguageCodeFieldEmpty(true);
-      validValues--;
-      toast("Please enter the language code", {
-        autoClose: 10000,
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-      });
     } else if (
       // (languageCode.trim() &&
       //   validator.isAlpha(languageCode.trim()) === false) ||

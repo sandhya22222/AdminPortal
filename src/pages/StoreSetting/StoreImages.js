@@ -86,7 +86,6 @@ const StoreImages = ({
     </div>
   );
 
-
   const handleChange = (e) => {
     setImageChangeValues(true);
     setFileList(e.fileList);
@@ -124,10 +123,38 @@ const StoreImages = ({
         }
         let copyImageData = [...imagesUpload];
         selectedImageArrayOfObject.splice(totalSelectLength);
-        copyImageData.push({
-          type: "banner_images",
-          imageValue: selectedImageArrayOfObject,
-        });
+        let index = copyImageData.findIndex(
+          (item) => item.type === "banner_images"
+        );
+        console.log("index", index);
+        if (index === -1) {
+          if (e.fileList.length === 0) {
+            copyImageData.push({
+              type: "banner_images",
+              imageValue: [e.file],
+            });
+          } else {
+            copyImageData.push({
+              type: "banner_images",
+              imageValue: selectedImageArrayOfObject,
+            });
+          }
+        } else {
+          let bannerImagesData = copyImageData[index];
+          let duplicateValues = [...bannerImagesData.imageValue];
+          if (e.file.status === "removed") {
+            let filteredDuplicateValues = duplicateValues.filter(
+              (ele) => ele.uid !== e.file.uid
+            );
+            bannerImagesData["imageValue"] = filteredDuplicateValues;
+          } else {
+            duplicateValues.push(e.file);
+            bannerImagesData["imageValue"] = duplicateValues;
+          }
+          copyImageData[index] = bannerImagesData;
+          console.log("bannerImagesData", bannerImagesData);
+        }
+        console.log("copyImageData", copyImageData);
         setImagesUpload(copyImageData);
       }
     }
@@ -467,7 +494,7 @@ const StoreImages = ({
           ) : (
             <Upload
               maxCount={BannerImagesUploadLength}
-              className="w-90 ant-btn-default"
+              className="w-90"
               listType="picture"
               multiple={true}
               beforeUpload={() => {
@@ -491,10 +518,10 @@ const StoreImages = ({
                 disabled={
                   bannerImagesLength < BannerImagesUploadLength ? false : true
                 }
-                icon={<UploadOutlined />}
+                icon={<UploadOutlined className="-translate-y-1" />}
                 className="font-semibold"
               >
-                Click to Add Banner Image (Max: {BannerImagesUploadLength})
+                Click To Upload(Max: {BannerImagesUploadLength})
               </Button>
             </Upload>
           )}
@@ -542,7 +569,7 @@ const StoreImages = ({
                 <Upload
                   maxCount={BannerImagesUploadLength}
                   multiple={true}
-                  className="w-90"
+                  className="!w-90"
                   listType="picture"
                   onPreview={handlePreview}
                   beforeUpload={() => {
@@ -567,10 +594,10 @@ const StoreImages = ({
                         ? false
                         : true
                     }
-                    icon={<UploadOutlined />}
+                    icon={<UploadOutlined className="-translate-y-1" />}
                     className="font-semibold"
                   >
-                    Click to Add Banner Image (Max: {BannerImagesUploadLength})
+                    Click To Upload(Max: {BannerImagesUploadLength})
                   </Button>
                 </Upload>
                 <Modal
