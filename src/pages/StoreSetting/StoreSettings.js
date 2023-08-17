@@ -567,7 +567,7 @@ const StoreSettings = () => {
       setInValidCurrencyIsoCode(true);
       setInValidFractionalUnit(true);
       setInValidNumberToBasic(true);
-      toast("Please enter the values for the mandatory field", {
+      toast("Please provide values for the mandatory fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -582,7 +582,7 @@ const StoreSettings = () => {
       setInValidNumberToBasic(true);
       setInValidCurrencyIsoCode(true);
       setInValidFractionalUnit(true);
-      toast("Please enter the values for the mandatory field", {
+      toast("Please provide values for the mandatory fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -597,7 +597,7 @@ const StoreSettings = () => {
       setInValidNumberToBasic(true);
       setInValidCurrencySymbol(true);
       setInValidFractionalUnit(true);
-      toast("Please enter the values for the mandatory fields", {
+      toast("Please provide values for the mandatory fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -612,7 +612,7 @@ const StoreSettings = () => {
       setInValidNumberToBasic(true);
       setInValidCurrencySymbol(true);
       setInValidCurrencyIsoCode(true);
-      toast("Please enter the values for the mandatory field", {
+      toast("Please provide values for the mandatory fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -627,7 +627,7 @@ const StoreSettings = () => {
       setInValidFractionalUnit(true);
       setInValidCurrencySymbol(true);
       setInValidCurrencyIsoCode(true);
-      toast("Please enter the values for the mandatory field", {
+      toast("Please provide values for the mandatory fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -641,7 +641,7 @@ const StoreSettings = () => {
       count--;
       setInValidCurrencySymbol(true);
       setInValidCurrencyIsoCode(true);
-      toast("Please enter the values for the mandatory field", {
+      toast("Please provide values for the mandatory fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -655,7 +655,7 @@ const StoreSettings = () => {
       count--;
       setInValidCurrencySymbol(true);
       setInValidFractionalUnit(true);
-      toast("Please enter the values for the mandatory field", {
+      toast("Please provide values for the mandatory fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -669,7 +669,7 @@ const StoreSettings = () => {
       count--;
       setInValidCurrencySymbol(true);
       setInValidNumberToBasic(true);
-      toast("Please enter the values for the mandatory field", {
+      toast("Please provide values for the mandatory fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -683,7 +683,7 @@ const StoreSettings = () => {
       count--;
       setInValidCurrencySymbol(true);
       setInValidCurrencyIsoCode(true);
-      toast("Please enter the values for the mandatory field", {
+      toast("Please provide values for the mandatory fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -697,7 +697,7 @@ const StoreSettings = () => {
       count--;
       setInValidCurrencyIsoCode(true);
       setInValidFractionalUnit(true);
-      toast("Please enter the values for the mandatory field", {
+      toast("Please provide values for the mandatory fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -711,7 +711,7 @@ const StoreSettings = () => {
       count--;
       setInValidCurrencyIsoCode(true);
       setInValidNumberToBasic(true);
-      toast("Please enter the values for the mandatory field", {
+      toast("Please provide values for the mandatory fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -725,7 +725,7 @@ const StoreSettings = () => {
       count--;
       setInValidCurrencySymbol(true);
       setInValidFractionalUnit(true);
-      toast("Please enter the values for the mandatory field", {
+      toast("Please provide values for the mandatory fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -739,7 +739,7 @@ const StoreSettings = () => {
       count--;
       setInValidFractionalUnit(true);
       setInValidNumberToBasic(true);
-      toast("Please enter the values for the mandatory field", {
+      toast("Please provide values for the mandatory fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -751,7 +751,7 @@ const StoreSettings = () => {
     ) {
       count--;
       setInValidCurrencySymbol(true);
-      toast("Please enter the values for the mandatory field", {
+      toast("Please provide values for the mandatory fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -763,7 +763,7 @@ const StoreSettings = () => {
     ) {
       count--;
       setInValidCurrencyIsoCode(true);
-      toast("Please enter the values for the mandatory field", {
+      toast("Please provide values for the mandatory fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -775,7 +775,7 @@ const StoreSettings = () => {
     ) {
       count--;
       setInValidFractionalUnit(true);
-      toast("Please enter the values for the mandatory field", {
+      toast("Please provide values for the mandatory fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -787,7 +787,7 @@ const StoreSettings = () => {
     ) {
       count--;
       setInValidNumberToBasic(true);
-      toast("Please enter the values for the mandatory field", {
+      toast("Please provide values for the mandatory fields", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,

@@ -68,19 +68,26 @@ function Status({
         setSwitchStatus(changeSwitchStatus);
         closeModal();
         setIsLoading(false);
-        if (switchStatus === false) {
-          toast("Store status changed successfully", {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "success",
-            autoClose: 10000,
-          });
-        } else {
-          toast("Store status changed successfully", {
+        if (response.data) {
+          toast(`${response.data.message}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
             autoClose: 10000,
           });
         }
+        // if (switchStatus === false) {
+        //   toast("Store status changed successfully", {
+        //     position: toast.POSITION.TOP_RIGHT,
+        //     type: "success",
+        //     autoClose: 10000,
+        //   });
+        // } else {
+        //   toast("Store status changed successfully", {
+        //     position: toast.POSITION.TOP_RIGHT,
+        //     type: "success",
+        //     autoClose: 10000,
+        //   });
+        // }
         console.log(
           "Selected content",
           selectedTabTableContent,
