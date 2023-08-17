@@ -560,8 +560,7 @@ const StoreSettings = () => {
       currencySymbol === "" &&
       currencyIsoCode === "" &&
       fractionalUnit === "" &&
-      numberToBasic === "" &&
-      numberToBasic === null
+      numberToBasic === ""
     ) {
       count--;
       setInValidCurrencySymbol(true);
@@ -583,14 +582,11 @@ const StoreSettings = () => {
       setInValidNumberToBasic(true);
       setInValidCurrencyIsoCode(true);
       setInValidFractionalUnit(true);
-      toast(
-        "Please enter the ISO Code, Fractional Unit, and Number to Basic fields",
-        {
-          position: toast.POSITION.TOP_RIGHT,
-          type: "error",
-          autoClose: 10000,
-        }
-      );
+      toast("Please enter the values for the mandatory field", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+        autoClose: 10000,
+      });
     } else if (
       currencySymbol === "" &&
       currencyIsoCode !== "" &&
@@ -601,14 +597,11 @@ const StoreSettings = () => {
       setInValidNumberToBasic(true);
       setInValidCurrencySymbol(true);
       setInValidFractionalUnit(true);
-      toast(
-        "Please enter the Symbol, Fractional Unit, and Number to Basic fields",
-        {
-          position: toast.POSITION.TOP_RIGHT,
-          type: "error",
-          autoClose: 10000,
-        }
-      );
+      toast("Please enter the values for the mandatory fields", {
+        position: toast.POSITION.TOP_RIGHT,
+        type: "error",
+        autoClose: 10000,
+      });
     } else if (
       currencySymbol === "" &&
       currencyIsoCode == "" &&
@@ -619,7 +612,7 @@ const StoreSettings = () => {
       setInValidNumberToBasic(true);
       setInValidCurrencySymbol(true);
       setInValidCurrencyIsoCode(true);
-      toast("Please enter the Symbol, ISO Code, and Number to Basic fields", {
+      toast("Please enter the values for the mandatory field", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -634,7 +627,7 @@ const StoreSettings = () => {
       setInValidFractionalUnit(true);
       setInValidCurrencySymbol(true);
       setInValidCurrencyIsoCode(true);
-      toast("Please enter the Symbol, ISO Code, and Fractional Unit fields", {
+      toast("Please enter the values for the mandatory field", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -648,7 +641,7 @@ const StoreSettings = () => {
       count--;
       setInValidCurrencySymbol(true);
       setInValidCurrencyIsoCode(true);
-      toast("Please enter the Symbol and ISO Code fields", {
+      toast("Please enter the values for the mandatory field", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -662,7 +655,7 @@ const StoreSettings = () => {
       count--;
       setInValidCurrencySymbol(true);
       setInValidFractionalUnit(true);
-      toast("Please enter the Symbol and Fractional Unit fields", {
+      toast("Please enter the values for the mandatory field", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -676,7 +669,7 @@ const StoreSettings = () => {
       count--;
       setInValidCurrencySymbol(true);
       setInValidNumberToBasic(true);
-      toast("Please enter the Symbol and Number to Basic fields", {
+      toast("Please enter the values for the mandatory field", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -690,7 +683,7 @@ const StoreSettings = () => {
       count--;
       setInValidCurrencySymbol(true);
       setInValidCurrencyIsoCode(true);
-      toast("Please enter the Symbol and ISO Code fields", {
+      toast("Please enter the values for the mandatory field", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -704,7 +697,7 @@ const StoreSettings = () => {
       count--;
       setInValidCurrencyIsoCode(true);
       setInValidFractionalUnit(true);
-      toast("Please enter the ISO Code and Fractional Unit fields", {
+      toast("Please enter the values for the mandatory field", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -718,7 +711,7 @@ const StoreSettings = () => {
       count--;
       setInValidCurrencyIsoCode(true);
       setInValidNumberToBasic(true);
-      toast("Please enter the ISO Code and Number to Basic fields", {
+      toast("Please enter the values for the mandatory field", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -732,7 +725,7 @@ const StoreSettings = () => {
       count--;
       setInValidCurrencySymbol(true);
       setInValidFractionalUnit(true);
-      toast("Please enter the Symbol and Fractional Unit fields", {
+      toast("Please enter the values for the mandatory field", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -746,7 +739,7 @@ const StoreSettings = () => {
       count--;
       setInValidFractionalUnit(true);
       setInValidNumberToBasic(true);
-      toast("Please enter the Fractional unit and Number to Basic fields", {
+      toast("Please enter the values for the mandatory field", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -758,7 +751,7 @@ const StoreSettings = () => {
     ) {
       count--;
       setInValidCurrencySymbol(true);
-      toast("Please enter the Symbol", {
+      toast("Please enter the values for the mandatory field", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -770,7 +763,7 @@ const StoreSettings = () => {
     ) {
       count--;
       setInValidCurrencyIsoCode(true);
-      toast("Please enter the ISO code", {
+      toast("Please enter the values for the mandatory field", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -782,7 +775,7 @@ const StoreSettings = () => {
     ) {
       count--;
       setInValidFractionalUnit(true);
-      toast("Please enter the Fractional Unit", {
+      toast("Please enter the values for the mandatory field", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -794,7 +787,7 @@ const StoreSettings = () => {
     ) {
       count--;
       setInValidNumberToBasic(true);
-      toast("Please enter the Number to Basic", {
+      toast("Please enter the values for the mandatory field", {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -1134,36 +1127,40 @@ const StoreSettings = () => {
           formData.append("store_logo", imagesUpload[i].imageValue);
         } else if (imagesUpload[i].type == "banner_images") {
           let localBannerImagesUpload = imagesUpload[i].imageValue;
+          for (var j = 0; j < localBannerImagesUpload.length; j++) {
+            formData.append("banner_images", localBannerImagesUpload[j]);
+          }
           // if (updateBannerImage && updateBannerImage.length > 0) {
           //   updateBannerImage.push(imagesUpload[i].imageValue);
           //   for (var i = 0; i < updateBannerImage.length; i++) {
           //     formData.append("banner_images", updateBannerImage[i]);
           //   }
           // } else {
-          console.log("localBannerImagesUpload", localBannerImagesUpload);
-          let removedItem = localBannerImagesUpload.filter(
-            (ele) => ele.status === "removed"
-          );
-          console.log("removedItem", removedItem);
-          if (removedItem.length > 0) {
-            //Remove removed items from main array
-            for (var k = 0; k < localBannerImagesUpload.length; k++) {
-              var currentItemUid = localBannerImagesUpload[k].uid;
-            }
-            let itemToIgnore = removedItem.filter(
-              (element) => element.uid === currentItemUid
-            );
-            console.log("itemToIgnore", itemToIgnore);
-            if (itemToIgnore.length === 0) {
-              for (var j = 0; j < localBannerImagesUpload.length; j++) {
-                formData.append("banner_images", localBannerImagesUpload[j]);
-              }
-            }
-          } else {
-            for (var j = 0; j < localBannerImagesUpload.length; j++) {
-              formData.append("banner_images", localBannerImagesUpload[j]);
-            }
-          }
+          // debugger;
+          // console.log("localBannerImagesUpload", localBannerImagesUpload);
+          // let removedItem = localBannerImagesUpload.filter(
+          //   (ele) => ele.status === "removed"
+          // );
+          // console.log("removedItem", removedItem);
+          // if (removedItem.length > 0) {
+          //   //Remove removed items from main array
+          //   for (var k = 0; k < localBannerImagesUpload.length; k++) {
+          //     var currentItemUid = localBannerImagesUpload[k].uid;
+          //   }
+          //   let itemToIgnore = removedItem.filter(
+          //     (element) => element.uid === currentItemUid
+          //   );
+          //   console.log("itemToIgnore", itemToIgnore);
+          //   if (itemToIgnore.length === 0) {
+          //     for (var j = 0; j < localBannerImagesUpload.length; j++) {
+          //       formData.append("banner_images", localBannerImagesUpload[j]);
+          //     }
+          //   }
+          // } else {
+          //   for (var j = 0; j < localBannerImagesUpload.length; j++) {
+          //     formData.append("banner_images", localBannerImagesUpload[j]);
+          //   }
+          // }
         } else if (imagesUpload[i].type == "search_logo") {
           formData.append("search_logo", imagesUpload[i].imageValue);
         } else if (imagesUpload[i].type == "customer_logo") {

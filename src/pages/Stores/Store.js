@@ -67,6 +67,9 @@ const passwordMinLength = process.env.REACT_APP_PASSWORD_MIN_LENGTH;
 const passwordMaxLength = process.env.REACT_APP_PASSWORD_MAX_LENGTH;
 const storeNameMinLength = process.env.REACT_APP_STORE_NAME_MIN_LENGTH;
 const storeNameMaxLength = process.env.REACT_APP_STORE_NAME_MAX_LENGTH;
+const userNameMinLength = process.env.REACT_APP_USERNAME_MIN_LENGTH;
+const userNameMaxLength = process.env.REACT_APP_USERNAME_MAX_LENGTH;
+
 const Stores = () => {
   const { t } = useTranslation();
   usePageTitle("Stores");
@@ -323,7 +326,7 @@ const Stores = () => {
       render: (text, record) => {
         return (
           <Content className="whitespace-nowrap flex align-middle">
-            <Tooltip title={t("stores:Edit-Store")}>
+            {/* <Tooltip title={t("stores:Edit-Store")}>
               <img
                 src={EditIcon}
                 className=" !text-xl cursor-pointer"
@@ -331,7 +334,7 @@ const Stores = () => {
                   showEditDrawer(record.id);
                 }}
               />
-            </Tooltip>
+            </Tooltip> */}
 
             <Link
               to={{
@@ -347,7 +350,7 @@ const Stores = () => {
               // className=" pl-[10px] font-semibold app-table-data-title"
             >
               <Tooltip title={t("stores:Store-Settings")}>
-                <MdSettings className=" text-black !text-xl ml-4" />
+                <MdSettings className=" text-black !text-xl ml-2" />
               </Tooltip>
             </Link>
 
@@ -852,14 +855,14 @@ const Stores = () => {
     } else if (
       storeUserName &&
       validator.isLength(storeUserName.trim(), {
-        min: titleMinLength,
-        max: titleMaxLength,
+        min: userNameMinLength,
+        max: userNameMaxLength,
       }) === false
     ) {
       setInValidUserName(true);
       count--;
       toast(
-        `Username must contain minimum of ${titleMinLength}, maximum of ${titleMaxLength} characters`,
+        `Username must contain minimum of ${userNameMinLength}, maximum of ${userNameMaxLength} characters`,
         {
           position: toast.POSITION.TOP_RIGHT,
           type: "error",
@@ -1528,8 +1531,8 @@ const Stores = () => {
                           <Input
                             placeholder={t("placeholders:enter_username")}
                             value={storeUserName}
-                            minLength={titleMinLength}
-                            maxLength={titleMaxLength}
+                            minLength={userNameMinLength}
+                            maxLength={userNameMaxLength}
                             // suffix={`${storeUserName.length}/15`}
                             className={`${
                               inValidUserName

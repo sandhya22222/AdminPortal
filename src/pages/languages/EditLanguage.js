@@ -260,7 +260,7 @@ const EditLanguage = () => {
     ) {
       validValues--;
       setIsLanguageFieldEmpty(true);
-      toast("Please enter the language name ", {
+      toast("Please enter the values for the mandatory field", {
         autoClose: 10000,
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
@@ -271,7 +271,7 @@ const EditLanguage = () => {
     ) {
       validValues--;
       setIsLanguageCodeFieldEmpty(true);
-      toast("Please enter the language code", {
+      toast("Please enter the values for the mandatory field", {
         autoClose: 10000,
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
