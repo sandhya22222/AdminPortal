@@ -560,7 +560,7 @@ const StoreSettings = () => {
       currencySymbol === "" &&
       currencyIsoCode === "" &&
       fractionalUnit === "" &&
-      numberToBasic === ""
+      numberToBasic === null
     ) {
       count--;
       setInValidCurrencySymbol(true);
@@ -576,7 +576,7 @@ const StoreSettings = () => {
       currencySymbol !== "" &&
       currencyIsoCode === "" &&
       fractionalUnit === "" &&
-      numberToBasic === ""
+      numberToBasic === null
     ) {
       count--;
       setInValidNumberToBasic(true);
@@ -591,7 +591,7 @@ const StoreSettings = () => {
       currencySymbol === "" &&
       currencyIsoCode !== "" &&
       fractionalUnit === "" &&
-      numberToBasic === ""
+      numberToBasic === null
     ) {
       count--;
       setInValidNumberToBasic(true);
@@ -606,7 +606,7 @@ const StoreSettings = () => {
       currencySymbol === "" &&
       currencyIsoCode == "" &&
       fractionalUnit !== "" &&
-      numberToBasic === ""
+      numberToBasic === null
     ) {
       count--;
       setInValidNumberToBasic(true);
@@ -664,7 +664,7 @@ const StoreSettings = () => {
       currencySymbol === "" &&
       currencyIsoCode !== "" &&
       fractionalUnit !== "" &&
-      numberToBasic === ""
+      numberToBasic === null
     ) {
       count--;
       setInValidCurrencySymbol(true);
@@ -706,7 +706,7 @@ const StoreSettings = () => {
       currencySymbol !== "" &&
       currencyIsoCode === "" &&
       fractionalUnit !== "" &&
-      numberToBasic === ""
+      numberToBasic === null
     ) {
       count--;
       setInValidCurrencyIsoCode(true);
@@ -734,7 +734,7 @@ const StoreSettings = () => {
       currencySymbol !== "" &&
       currencyIsoCode !== "" &&
       fractionalUnit === "" &&
-      numberToBasic === ""
+      numberToBasic === null
     ) {
       count--;
       setInValidFractionalUnit(true);
@@ -979,6 +979,7 @@ const StoreSettings = () => {
     }
   };
 
+  console.log("numberToBasic", inValidNumberToBasic);
   //! get call of store images
   const findAllWithoutPageStoreImagesApi = (storeId) => {
     // axios
@@ -1817,20 +1818,23 @@ const StoreSettings = () => {
               <InputNumber
                 placeholder={t("placeholders:enter_number_to_basic")}
                 value={numberToBasic}
-                min={0}
+                // type="number"
+                min={1}
+                minLength={1}
                 onChange={(e) => {
                   // setNumberToBasic(e);
-                  if (e !== null) {
+                  if (e !== "" && e !== null && e !== undefined) {
                     setNumberToBasic(e);
-                    setInValidNumberToBasic(false);
+                    setOnChangeValues(true);
                   } else {
                     setNumberToBasic(e);
-                    setInValidNumberToBasic(false);
+                    // setInValidNumberToBasic(true);
                   }
+                  setInValidNumberToBasic(false);
+
                   let temp = { ...copyImageOfStoreSettingsCurrency };
                   temp["number_to_basic"] = e;
                   setCopyImageOfStoreSettingsCurrency(temp);
-                  setOnChangeValues(true);
                 }}
                 onBlur={() => {
                   const trimmed = numberToBasic.trim();
