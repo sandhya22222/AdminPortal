@@ -1371,6 +1371,8 @@ const Stores = () => {
     }
   };
 
+  console.log("storeApiData", storeApiData);
+
   return (
     <Content className="">
       <StoreModal
@@ -1843,7 +1845,13 @@ const Stores = () => {
               />
             </Content> */}
             <Content>
-              <DynamicTable tableComponentData={tablePropsData} />
+              {storeApiData && storeApiData.length > 0 ? (
+                <DynamicTable tableComponentData={tablePropsData} />
+              ) : (
+                <Content className="!mt-[1.7rem] !text-center bg-white p-3 !rounded-md">
+                  No data available
+                </Content>
+              )}
             </Content>
             {countForStore && countForStore >= pageLimit ? (
               <Content className=" grid justify-items-end">
