@@ -18,8 +18,10 @@
 
   --mp-success-color: #0246bb;
   --mp-success-color-h: #0246bb;
-  --mp-danger-color: #a00a18;
-  --mp-danger-color-h: #a00a18;
+  --mp-danger-color: #e5394b;
+  --mp-danger-color-h: #e5394b;
+  --mp-danger-text-color: #ffffff;
+  --mp-danger-border-color-h: #e5394b;
   --mp-warning-color: #0246bb;
   --mp-warning-color-h: #0246bb;
   --mp-info-color: #0246bb;

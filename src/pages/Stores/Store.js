@@ -1545,7 +1545,7 @@ const Stores = () => {
                               <UserOutlined className="site-form-item-icon" />
                             }
                             onChange={(e) => {
-                              const regex = /^[A-Za-z0-9_\- .]+$/;
+                              const regex = /^[A-Za-z0-9_\- ]+$/;
                               if (
                                 e.target.value !== "" &&
                                 validator.matches(e.target.value, regex)
