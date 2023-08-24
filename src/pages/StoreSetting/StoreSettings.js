@@ -1821,6 +1821,8 @@ const StoreSettings = () => {
                 // type="number"
                 min={1}
                 minLength={1}
+                maxLength={99999}
+                max={99999}
                 onChange={(e) => {
                   // setNumberToBasic(e);
                   if (e !== "" && e !== null && e !== undefined) {

@@ -18,3 +18,14 @@
   border-color: var(--mp-secondary-border-color-h) !important;
   color: var(--mp-secondary-text-color-h) !important;
 }
+
+.app-btn-reject{
+  background-color: var(--mp-danger-color) !important;
+  color: var( --mp-danger-text-color) !important;
+  height: unset !important;
+}
+
+.app-btn-reject:hover{
+  border: var(--mp-danger-color-h) !important;
+  border-color: var(--mp-danger-border-color-h) !important ;
+}

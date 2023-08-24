@@ -14,6 +14,7 @@ import {
   Space,
   Input,
   Tooltip,
+  Tag,
 } from "antd";
 import axios from "axios";
 import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
@@ -43,13 +44,23 @@ import { use } from "i18next";
 import useAuthorization from "../../hooks/useAuthorization";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
-import { EditIcon, DeleteIcon } from "../../constants/media";
+import {
+  EditIcon,
+  DeleteIcon,
+  plusIcon,
+  tableDropDownArrow,
+  DownloadIcon,
+  DownloadIconDisable,
+} from "../../constants/media";
 const { Title, Text } = Typography;
 const { Content } = Layout;
 
 const languageAPI = process.env.REACT_APP_LANGUAGE_API;
 const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE);
-
+const languageSupportDocTemplateDownload =
+  process.env.REACT_APP_LANGUAGE_SUPPORT_DOCS_CSV_DOWNLOAD;
+const languageAbsoluteDocumentDownload =
+  process.env.REACT_APP_LANGUAGE_ABSOLUTE_DOCUMENT_DOWNLOAD;
 const Language = () => {
   usePageTitle("Languages");
   const authorizationHeader = useAuthorization();
@@ -206,7 +217,7 @@ const Language = () => {
       title: "Language",
       dataIndex: "language",
       key: "language",
-      width: "25%",
+      width: "23%",
       ellipsis: true,
       // sorter: (name1, name2) => name1.language.localeCompare(name2.language),
       // sortDirections: ["descend", "ascend"],
@@ -229,10 +240,10 @@ const Language = () => {
       // ...getColumnSearchProps("language"),
     },
     {
-      title: "Language Code",
+      title: "Code",
       dataIndex: "language_code",
       key: "language_code",
-      width: "23%",
+      width: "10%",
       render: (text, record) => {
         return (
           <>
@@ -253,16 +264,25 @@ const Language = () => {
       title: "Script Direction",
       dataIndex: "writing_script_direction",
       key: "writing_script_direction",
-      width: "15%",
+      ellipsis: true,
+      width: "20%",
       render: (text, record) => {
-        return <>{record.writing_script_direction}</>;
+        return (
+          <>
+            {record.writing_script_direction === "LTR" ? (
+              <Tag color="success">Left To Right</Tag>
+            ) : (
+              <Tag color="warning">Right To Left</Tag>
+            )}
+          </>
+        );
       },
     },
     {
       title: "Native Name",
       dataIndex: "native_name",
       key: "native_name",
-      width: "25%",
+      width: "15%",
       ellipsis: true,
       render: (text, record) => {
         return (
@@ -280,14 +300,46 @@ const Language = () => {
         );
       },
     },
-    // {
-    //   title: "Language Support Document",
-    //   dataIndex: "lang_support_docs",
-    //   key: "lang_support_docs",
-    //   render: (text, record) => {
-    //     return <>{record.lang_support_docs}</>;
-    //   },
-    // },
+    {
+      title: "Support Document",
+      dataIndex: "lang_support_docs",
+      key: "lang_support_docs",
+      render: (text, record) => {
+        return (
+          <>
+            {record.lang_support_docs_path !== null ? (
+              <Content
+                className="whitespace-nowrap flex align-middle cursor-pointer"
+                onClick={() => {
+                  findMediaAbsoluteDocumentDownload(
+                    record.lang_support_docs_path,
+                    record.lang_support_docs
+                  );
+                }}
+              >
+                <img
+                  src={DownloadIcon}
+                  className="!text-xs !w-3 mr-1 !items-center"
+                />
+                <div className="text-[#0246bb] !ml-[10px]">
+                  Download Document
+                </div>
+              </Content>
+            ) : (
+              <Content className="whitespace-nowrap flex align-middle cursor-not-allowed">
+                <img
+                  src={DownloadIconDisable}
+                  className="!text-xs !w-3 mr-1 !items-center"
+                />
+                <div className="text-[#cbd5e1] !ml-[10px]">
+                  Download Document
+                </div>
+              </Content>
+            )}
+          </>
+        );
+      },
+    },
     // {
     //   title: "Language Regex",
     //   dataIndex: "dm_language_regex",
@@ -319,11 +371,7 @@ const Language = () => {
                 className=" pl-[10px] font-semibold app-table-data-title"
               >
                 <Tooltip title="Edit Language">
-                  <img
-                    src={EditIcon}
-                    alt="edit"
-                    className="!text-xl text-black"
-                  />
+                  <img src={EditIcon} alt="edit" className="!text-sm !w-5" />
                 </Tooltip>
               </Link>
             ) : (
@@ -335,7 +383,7 @@ const Language = () => {
                 <img
                   src={DeleteIcon}
                   alt="delete"
-                  className="!text-xl ml-5 cursor-pointer"
+                  className="!text-sm ml-5 cursor-pointer !w-4"
                   onClick={() => {
                     openDeleteModal(record.id);
                   }}
@@ -361,6 +409,7 @@ const Language = () => {
         var Writing_script_direction = element.writing_script_direction;
         var Native_name = element.native_name;
         var Lang_support_docs = element.lang_support_docs;
+        var Language_document_path = element.lang_support_docs_path;
         var Dm_language_regex = element.language_regex;
         tempArray &&
           tempArray.push({
@@ -372,6 +421,7 @@ const Language = () => {
             native_name: Native_name,
             lang_support_docs: Lang_support_docs,
             dm_language_regex: Dm_language_regex,
+            lang_support_docs_path: Language_document_path,
           });
       });
     console.log("tempArray", tempArray);
@@ -492,6 +542,50 @@ const Language = () => {
       });
   };
 
+  console.log("languageData", languageData);
+  //! get call of get document template API
+  const findAllSupportDocumentTemplateDownload = () => {
+    MarketplaceServices.findMedia(languageSupportDocTemplateDownload, {
+      " is-format": 1,
+    })
+      .then(function (response) {
+        console.log(
+          "Server Response from getStoreApi Function: ",
+          response.data
+        );
+        const fileURL = window.URL.createObjectURL(response.data);
+        let alink = document.createElement("a");
+        alink.href = fileURL;
+        alink.download = "key_value_format.csv";
+        alink.click();
+      })
+      .catch((error) => {
+        console.log("Server error from getStoreApi Function ", error.response);
+      });
+  };
+
+  //! get call of get document template API
+  const findMediaAbsoluteDocumentDownload = (documentPath, documentName) => {
+    MarketplaceServices.findMedia(languageSupportDocTemplateDownload, {
+      "document-path": documentPath,
+      // responseType: "blob",
+    })
+      .then(function (response) {
+        console.log(
+          "Server Response from getStoreApi Function: ",
+          response.data
+        );
+        const fileURL = window.URL.createObjectURL(response.data);
+        let alink = document.createElement("a");
+        alink.href = fileURL;
+        alink.download = documentName;
+        alink.click();
+      })
+      .catch((error) => {
+        console.log("Server error from getStoreApi Function ", error.response);
+      });
+  };
+
   const ProductSortingOption = [
     {
       sortType: "asc",
@@ -545,10 +639,6 @@ const Language = () => {
     window.scrollTo(0, 0);
   }, [searchParams]);
 
-  // useEffect(() => {
-  //   window.scrollTo(0, 0);
-  // }, []);
-
   return (
     <Content className="">
       <StoreModal
@@ -584,16 +674,30 @@ const Language = () => {
                   Languages
                 </Title>
               </Content>
+              <Content>
+                <Button
+                  className="app-btn-secondary mr-2 !flex !justify-items-center"
+                  onClick={() => findAllSupportDocumentTemplateDownload()}
+                >
+                  <img
+                    src={tableDropDownArrow}
+                    className="!text-xs !w-4 my-1 mr-1 !items-center"
+                  />
+                  <div className=" !mr-[10px]">
+                    Download Support Document Template
+                  </div>
+                </Button>
+              </Content>
               <Content className="!w-[20%] text-right !right-0">
                 <Button
-                  className=" app-btn-primary "
+                  className=" app-btn-primary !flex !justify-items-center"
                   onClick={() => navigate("add_language")}
-                  // type="primary"
-                  // style={{
-                  //   background: "black",
-                  // }}
                 >
-                  Add Language
+                  <img
+                    src={plusIcon}
+                    className="!text-xs !w-3 my-1 mr-2 !items-center"
+                  />
+                  <div className="mr-[10px]">Add Language</div>
                 </Button>
               </Content>
             </Content>
