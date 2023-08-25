@@ -4,9 +4,6 @@ import { useEffect, useState, useRef } from "react";
 import { toast } from "react-toastify";
 import {
   Layout,
-  Breadcrumb,
-  Table,
-  Row,
   Col,
   Button,
   Typography,
@@ -16,31 +13,22 @@ import {
   Tooltip,
   Tag,
 } from "antd";
-import axios from "axios";
-import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
 import {
-  Navigate,
   useNavigate,
   Link,
   useSearchParams,
   useParams,
 } from "react-router-dom";
 import {
-  DeleteOutlined,
-  EditOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
-import { MdEdit, MdDelete } from "react-icons/md";
 //! Import user defined components
 import DynamicTable from "../../components/DynamicTable/DynamicTable";
 import StoreModal from "../../components/storeModal/StoreModal";
-import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
-import SkeletonComponent from "../../components/Skeleton/SkeletonComponent";
 import DmPagination from "../../components/DmPagination/DmPagination";
 import { usePageTitle } from "../../hooks/usePageTitle";
 import "./language.css";
-import { use } from "i18next";
 import useAuthorization from "../../hooks/useAuthorization";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
@@ -659,12 +647,6 @@ const Language = () => {
         }
       </StoreModal>
       {/* <Content className="mb-3"> */}
-      <AntDesignBreadcrumbs
-        data={[
-          { title: "Home", navigationPath: "/", displayOrder: 1 },
-          { title: "Language", navigationPath: "", displayOrder: 3 },
-        ]}
-      />
       <Content>
         <HeaderForTitle
           title={

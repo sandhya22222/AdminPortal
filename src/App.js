@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from "react";
+import React, { Suspense } from "react";
 import { Container } from "reactstrap";
 import { Layout, Spin } from "antd";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -8,10 +8,8 @@ import "./core-ui/app.css";
 import "./core-ui/buttons.css";
 import LoadingMarkup from "./components/loader/LoadingMarkup";
 import Header2 from "./components/header/Header2";
-import Footer from "./components/footer/Footer";
 import Home from "./pages/home/Home";
 import Dashboard from "./pages/dashboard/Dashboard";
-import PageNotFound from "./pages/404/PageNotFound";
 import { useFavicon } from "./hooks/useFavicon";
 import axios from "axios";
 import Store from "./pages/Stores/Store";

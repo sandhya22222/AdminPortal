@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ImgCrop from "antd-img-crop";
-import { Typography, Upload, Layout, Modal, Radio, Button } from "antd";
+import { Typography, Upload, Layout, Modal, Radio } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { toast } from "react-toastify";
-import axios from "axios";
-import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
 import useAuthorization from "../../hooks/useAuthorization";
 
 const { Title } = Typography;

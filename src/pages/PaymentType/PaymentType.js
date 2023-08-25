@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { Layout, Typography } from "antd";
 
 import DynamicTable from "../../components/DynamicTable/DynamicTable";
-import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
 import { usePageTitle } from "../../hooks/usePageTitle";
 
@@ -88,14 +87,6 @@ const PaymentType = () => {
 
   return (
     <Content className="">
-      <Content className="mb-1">
-        <AntDesignBreadcrumbs
-          data={[
-            { title: "Home", navigationPath: "/", displayOrder: 1 },
-            { title: "Payment Types", navigationPath: "", displayOrder: 2 },
-          ]}
-        />
-      </Content>
       <HeaderForTitle
         title={
           <Content>

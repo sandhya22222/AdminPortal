@@ -4,29 +4,21 @@ import {
   Row,
   Col,
   Typography,
-  Select,
   Input,
   Button,
-  Upload,
   Spin,
-  Switch,
-  Tag,
-  Skeleton,
   Space,
   Tooltip,
   Divider,
   InputNumber,
 } from "antd";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
 import { toast } from "react-toastify";
 import {
   ArrowLeftOutlined,
   EyeOutlined,
   UndoOutlined,
 } from "@ant-design/icons";
-import axios from "axios";
-import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
 import { useTranslation } from "react-i18next";
 import useAuthorization from "../../hooks/useAuthorization";
 import StoreModal from "../../components/storeModal/StoreModal";
@@ -36,7 +28,6 @@ import Preview from "./Preview";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
 import { usePageTitle } from "../../hooks/usePageTitle";
-import StoreMedia from "./StoreMedia";
 const { Content } = Layout;
 const { Title, Text } = Typography;
 const { TextArea } = Input;
