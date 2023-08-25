@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Switch, Space, Row, Col, Button, Spin, Layout } from "antd";
+import { Switch, Space, Row, Col } from "antd";
 import { toast } from "react-toastify";
 import StoreModal from "../../components/storeModal/StoreModal";
-import axios from "axios";
-import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
 import useAuthorization from "../../hooks/useAuthorization";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 

@@ -1,8 +1,5 @@
 import {
-  DeleteOutlined,
-  EditOutlined,
   SearchOutlined,
-  SettingOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import {
@@ -26,9 +23,7 @@ import {
   MdStore,
   MdBusiness,
   MdDomainDisabled,
-  MdEdit,
   MdSettings,
-  MdDelete,
 } from "react-icons/md";
 import {
   Link,
@@ -38,18 +33,15 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { toast } from "react-toastify";
-import { makeHttpRequestForRefreshToken } from "../../util/unauthorizedControl";
 import { useTranslation } from "react-i18next";
-import { EditIcon, DeleteIcon } from "../../constants/media";
+import { DeleteIcon } from "../../constants/media";
 //! Import user defined components
 import Highlighter from "react-highlight-words";
 import DmPagination from "../../components/DmPagination/DmPagination";
 import DmTabAntDesign from "../../components/DmTabAntDesign/DmTabAntDesign";
 import DynamicTable from "../../components/DynamicTable/DynamicTable";
-import AntDesignBreadcrumbs from "../../components/ant-design-breadcrumbs/AntDesignBreadcrumbs";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
 import StoreModal from "../../components/storeModal/StoreModal";
-import useAuthorization from "../../hooks/useAuthorization";
 import { usePageTitle } from "../../hooks/usePageTitle";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import Status from "./Status";
@@ -1393,12 +1385,6 @@ const Stores = () => {
         }
       </StoreModal>
       <Content className="mb-3">
-        <AntDesignBreadcrumbs
-          data={[
-            { title: "Home", navigationPath: "/", displayOrder: 1 },
-            { title: "Stores", navigationPath: "", displayOrder: 2 },
-          ]}
-        />
         <HeaderForTitle
           title={
             <>
