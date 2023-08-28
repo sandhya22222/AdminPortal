@@ -366,7 +366,7 @@ const Language = () => {
               ""
             )}
 
-            {record.language_code.toLowerCase() !== "en" ? (
+            {/* {record.language_code.toLowerCase() !== "en" ? (
               <Tooltip title="Delete Language">
                 <img
                   src={DeleteIcon}
@@ -379,7 +379,7 @@ const Language = () => {
               </Tooltip>
             ) : (
               ""
-            )}
+            )} */}
           </Col>
         );
       },
@@ -418,16 +418,6 @@ const Language = () => {
   //!delete function of language
   const removeLanguage = () => {
     setIslanguageDeleting(true);
-    // axios
-    //   .delete(
-    //     languageAPI,
-    //     {
-    //       params: {
-    //         _id: deleteLanguageID,
-    //       },
-    //     },
-    //     authorizationHeader
-    //   )
     MarketplaceServices.remove(languageAPI, { _id: deleteLanguageID })
       .then((response) => {
         console.log("response from delete===>", response, deleteLanguageID);

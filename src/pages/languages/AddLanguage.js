@@ -681,7 +681,7 @@ const AddLanguage = () => {
                   style={{ display: "flex" }}
                   value={scriptDirection}
                   onChange={(e) => {
-                    handleScriptDirectionChange(e);
+                    handleScriptDirectionChange(e.target.value);
                   }}
                 >
                   <Radio.Button value="LTR">Left to Right</Radio.Button>

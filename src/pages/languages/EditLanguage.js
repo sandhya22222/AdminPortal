@@ -27,6 +27,7 @@ import {
 } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import StoreModal from "../../components/storeModal/StoreModal";
+import { TrashIcon } from "../../constants/media";
 //! Import CSS libraries
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
@@ -82,6 +83,11 @@ const EditLanguage = () => {
   const [fileName, setFileName] = useState();
   const [fileExtension, setFileExtension] = useState("");
   const [onChangeValues, setOnChangeValues] = useState(false);
+  const [isLanguageDeleting, setIsLanguageDeleting] = useState(false);
+  const [isDeleteLanguageModalOpen, setIsDeleteLanguageModalOpen] =
+    useState(false);
+  // const [deleteLanguageID, setDeleteLanguageID] = useState("");
+
   const navigate = useNavigate();
   // hanler for language, language_code, native_name, writing_script_direction
   const languageHandler = (fieldName, value) => {
@@ -155,13 +161,6 @@ const EditLanguage = () => {
   const getLanguageAPI = (page, limit) => {
     // Enabling skeleton
     setIsDataLoading(true);
-    // axios
-    //   .get(languageAPI, authorizationHeader, {
-    //     params: {
-    //       "page-number": page,
-    //       "page-limit": limit,
-    //     },
-    //   })
     MarketplaceServices.findByPage(languageAPI, null, page, limit, false)
       .then((response) => {
         console.log(
@@ -384,7 +383,7 @@ const EditLanguage = () => {
     const temp = {};
     temp["language"] = languageDetails.language.trim();
     temp["language_code"] = languageDetails.language_code.trim();
-    temp["native_name"] = languageDetails.native_name.trim();
+    temp["native_name"] = languageDetails.native_name;
     if (languageDetails.language_regex !== "") {
       temp["language_regex"] = languageDetails.language_regex.trim();
     }
@@ -398,14 +397,14 @@ const EditLanguage = () => {
       temp["writing_script_direction"] =
         languageDetails.writing_script_direction;
     }
-    // temp["lang_support_docs"] = languageDetails.lang_file_name;
-    // if (
-    //   languageDetails.lang_support_docs !== null
-    //   // &&
-    //   // typeof languageDetails.lang_support_docs === "object"
-    // ) {
-    //   temp["lang_support_docs_path"] = languageDetails.lang_support_docs;
-    // }
+    temp["lang_support_docs"] = languageDetails.lang_file_name;
+    if (
+      languageDetails.lang_support_docs !== null
+      // &&
+      // typeof languageDetails.lang_support_docs === "object"
+    ) {
+      temp["lang_support_docs_path"] = languageDetails.lang_support_docs;
+    }
 
     console.log("PutObject----->", temp);
     // enabling spinner
@@ -712,6 +711,64 @@ const EditLanguage = () => {
 
   console.log("languageDetails", languageDetails);
 
+  //!delete function of language
+  const removeLanguage = () => {
+    setIsLanguageDeleting(true);
+    MarketplaceServices.remove(languageAPI, { _id: parseInt(_id) })
+      .then((response) => {
+        console.log("response from delete===>", response, "languageId", _id);
+        if (response.status === 200 || response.status === 201) {
+          setIsDeleteLanguageModalOpen(false);
+          toast("Language deleted successfully", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "success",
+            autoClose: 10000,
+          });
+        }
+        navigate("/dashboard/language");
+        // disabling spinner
+        setIsLanguageDeleting(false);
+      })
+      .catch((error) => {
+        // disabling spinner
+        setIsLanguageDeleting(false);
+        console.log("response from delete===>", error.response);
+        if (error && error.response && error.response.status === 401) {
+          toast("Session expired", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+            autoClose: 10000,
+          });
+        } else if (error && error.response && error.response.status === 409) {
+          toast(
+            "Language cannot be deleted since there is a reference in the store",
+            {
+              position: toast.POSITION.TOP_RIGHT,
+              type: "error",
+              autoClose: 10000,
+            }
+          );
+        } else {
+          toast("Deletion unsuccessful, please try again later", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+            autoClose: 10000,
+          });
+        }
+      });
+  };
+
+  // closing the delete popup model
+  const closeDeleteModal = () => {
+    setIsDeleteLanguageModalOpen(false);
+  };
+
+  // opening the delete popup model
+  const openDeleteModal = () => {
+    setIsDeleteLanguageModalOpen(true);
+    // setDeleteLanguageID(id);
+  };
+
   return (
     <Content>
       <HeaderForTitle
@@ -728,9 +785,16 @@ const EditLanguage = () => {
                 Edit Language
               </Title>
             </Content>
-            {/* <Content className="!w-[20%] text-right !right-0">
-              <Button className="app-btn-reject">Delete Language</Button>
-            </Content> */}
+            <Button
+              className="app-btn-reject mr-2 !flex !justify-items-center"
+              onClick={() => openDeleteModal()}
+            >
+              <img
+                src={TrashIcon}
+                className="!text-xs !w-4 my-1 mr-1 !items-center"
+              />
+              <div className=" !mr-[10px]">Delete Language</div>
+            </Button>
           </Content>
         }
       />
@@ -984,7 +1048,10 @@ const EditLanguage = () => {
                             style={{ display: "flex" }}
                             value={languageDetails.writing_script_direction}
                             onChange={(e) => {
-                              languageHandler("writing_script_direction", e);
+                              languageHandler(
+                                "writing_script_direction",
+                                e.target.value
+                              );
                               setOnChangeValues(true);
                             }}
                           >
@@ -1145,6 +1212,25 @@ const EditLanguage = () => {
             </Row>
           </Content>
         </Spin>
+        <StoreModal
+          isVisible={isDeleteLanguageModalOpen}
+          okButtonText={"Yes"}
+          cancelButtonText={"Cancel"}
+          title={"Warning"}
+          okCallback={() => {
+            removeLanguage();
+          }}
+          cancelCallback={() => closeDeleteModal()}
+          isSpin={isLanguageDeleting}
+          hideCloseButton={false}
+        >
+          {
+            <div>
+              <p>{`Confirm Language Deletion`}</p>
+              <p>{`Are you absolutely sure you want to delete the language? This action cannot be undone.`}</p>
+            </div>
+          }
+        </StoreModal>
       </Content>
     </Content>
   );
