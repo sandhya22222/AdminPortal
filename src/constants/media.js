@@ -24,6 +24,7 @@ import plusIcon from "../assets/images/common/Vector.svg";
 import tableDropDownArrow from "../assets/images/common/MUI-table-arrow-down.svg";
 import DownloadIcon from "../assets/images/common/DownloadIcon.svg";
 import DownloadIconDisable from "../assets/images/common/DownloadIconDisable.svg";
+import TrashIcon from "../assets/images/common/TrashIcon.svg";
 export {
   AppStoreLogo,
   PlayStoreLogo,
@@ -51,4 +52,5 @@ export {
   tableDropDownArrow,
   DownloadIcon,
   DownloadIconDisable,
+  TrashIcon,
 };
