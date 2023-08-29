@@ -150,94 +150,98 @@ const SidebarNew = () => {
 
   return (
     <Layout>
-      <Affix offsetTop={48}>
-        <Sider
-          trigger={null}
-          collapsible
-          collapsed={collapsed}
-          onCollapse={(value) => setCollapsed(value)}
-          width={252}
-          onMouseEnter={() => {
-            handleMouseEnter();
-          }}
-          onMouseLeave={() => {
-            handleMouseLeave();
-          }}
-          className="!bg-[var(--mp-brand-color)]"
-          style={{
-            overflow: isHovering ? "auto" : "hidden",
-            height: "100vh",
-            // backgroundColor: "#4A2D73",
-            // left: 0,
-            // top: 0,
-            // bottom: 0,
-          }}
-          // className="!flex-[0_0_20%] min-h-screen border-r-[1px] drop-shadow-[0_0px_2px_rgba(0,0,0,0.15)]"
-        >
-          <Spin
-            spinning={loadingEffect}
-            indicator={antIcon}
-            tip="Please Wait..."
+      <div>
+        <Affix offsetTop={48}>
+          <Sider
+            trigger={null}
+            collapsible
+            collapsed={collapsed}
+            onCollapse={(value) => setCollapsed(value)}
+            width={252}
+            onMouseEnter={() => {
+              handleMouseEnter();
+            }}
+            onMouseLeave={() => {
+              handleMouseLeave();
+            }}
+            className="!bg-[var(--mp-brand-color)]"
+            style={{
+              overflow: isHovering ? "auto" : "hidden",
+              height: "100vh",
+              // backgroundColor: "#4A2D73",
+              // left: 0,
+              // top: 0,
+              // bottom: 0,
+            }}
+            // className="!flex-[0_0_20%] min-h-screen border-r-[1px] drop-shadow-[0_0px_2px_rgba(0,0,0,0.15)]"
           >
-            <Menu
-              mode="inline"
-              className="h-full !text-base !bg-[var(--mp-brand-color)]"
-              selectedKeys={selectedItem}
-              openKeys={openedItem}
-              theme={"dark"}
-              style={{
-                height: "calc(100vh - 145px)",
-                overflow: isHovering ? "auto" : "hidden",
-                // backgroundColor: "#7d3192",
-              }}
+            <Spin
+              spinning={loadingEffect}
+              indicator={antIcon}
+              tip="Please Wait..."
             >
-              {myData.map((item) => (
-                <Menu.Item
-                  icon={
-                    selectedItem === item.key ? item.icon : item.inactive_icon
-                  }
-                  key={item.key}
-                  // className="!bg-[var(--mp-brand-color)] !hover:bg-[var(--mp-brand-color)]"
-                  onClick={() => {
-                    navigate(item.navigate_to);
-                  }}
-                >
-                  {selectedItem === item.key ? (
-                    <span className="font-semibold ">{item.label}</span>
-                  ) : (
-                    <span className="text-[#ffffffde]"> {item.label} </span>
-                  )}
-                </Menu.Item>
-              ))}
-            </Menu>
-          </Spin>
-          <Divider
-            width={50}
-            style={{
-              background: "#FFFFFF",
-              opacity: "0.55",
-              alignSelf: "stretch",
-              margin: "0px",
-              marginTop: "50px",
-            }}
-          />
-          <Button
-            type="text"
-            icon={collapsed ? <img src={menuIcon} /> : <img src={BackBurger} />}
-            onClick={() => setCollapsed(!collapsed)}
-            className="!bg-[var(--mp-brand-color)] hover:bg-[var(--mp-brand-color)]"
-            style={{
-              width: "100%",
-              display: "flex",
-              padding: "8 16 8 16",
-              marginTop: "10px",
-              color: "white",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          />
-        </Sider>
-      </Affix>
+              <Menu
+                mode="inline"
+                className="h-full !text-base !bg-[var(--mp-brand-color)]"
+                selectedKeys={selectedItem}
+                openKeys={openedItem}
+                theme={"dark"}
+                style={{
+                  height: "calc(100vh - 145px)",
+                  overflow: isHovering ? "auto" : "hidden",
+                  // backgroundColor: "#7d3192",
+                }}
+              >
+                {myData.map((item) => (
+                  <Menu.Item
+                    icon={
+                      selectedItem === item.key ? item.icon : item.inactive_icon
+                    }
+                    key={item.key}
+                    // className="!bg-[var(--mp-brand-color)] !hover:bg-[var(--mp-brand-color)]"
+                    onClick={() => {
+                      navigate(item.navigate_to);
+                    }}
+                  >
+                    {selectedItem === item.key ? (
+                      <span className="font-semibold ">{item.label}</span>
+                    ) : (
+                      <span className="text-[#ffffffde]"> {item.label} </span>
+                    )}
+                  </Menu.Item>
+                ))}
+              </Menu>
+            </Spin>
+            <Divider
+              width={50}
+              style={{
+                background: "#FFFFFF",
+                opacity: "0.55",
+                alignSelf: "stretch",
+                margin: "0px",
+                marginTop: "50px",
+              }}
+            />
+            <Button
+              type="text"
+              icon={
+                collapsed ? <img src={menuIcon} /> : <img src={BackBurger} />
+              }
+              onClick={() => setCollapsed(!collapsed)}
+              className="!bg-[var(--mp-brand-color)] hover:bg-[var(--mp-brand-color)]"
+              style={{
+                width: "100%",
+                display: "flex",
+                padding: "8 16 8 16",
+                marginTop: "10px",
+                color: "white",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            />
+          </Sider>
+        </Affix>
+      </div>
       <Layout className="site-layout !w-[80%]">
         <Outlet />
         <Footer />
