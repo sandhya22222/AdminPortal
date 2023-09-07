@@ -562,7 +562,7 @@ const AddLanguage = () => {
                     />
                   </Content>
                 </Col>
-                <Col span={3} className="pl-2">
+                <Col span={8} className="pl-2">
                   <Content className="my-3">
                     <span className="text-red-600 text-sm text-center">*</span>
                     <label className="text-[13px] mb-2 ml-1">
@@ -664,7 +664,7 @@ const AddLanguage = () => {
               </Row>
               <Content className="my-3 w-[32%]">
                 <label className="text-[13px] mb-2">Script Direction</label>
-                {/* <Select
+                <Select
                   // size={"large"}
                   style={{ display: "flex" }}
                   value={scriptDirection}
@@ -675,8 +675,8 @@ const AddLanguage = () => {
                 >
                   <Option value="LTR">Left to Right</Option>
                   <Option value="RTL">Right to Left</Option>
-                </Select> */}
-                <Radio.Group
+                </Select>
+                {/* <Radio.Group
                   buttonStyle="solid"
                   style={{ display: "flex" }}
                   value={scriptDirection}
@@ -686,9 +686,9 @@ const AddLanguage = () => {
                 >
                   <Radio.Button value="LTR">Left to Right</Radio.Button>
                   <Radio.Button value="RTL">Right to Left</Radio.Button>
-                </Radio.Group>
+                </Radio.Group> */}
               </Content>
-              <Content className="my-3 mt-4">
+              {/* <Content className="my-3 mt-4">
                 <label className="text-[13px] pb-1 mb-2 !font-semibold">
                   Language Supported Document
                 </label>
@@ -723,14 +723,14 @@ const AddLanguage = () => {
                     </p>
                     {/* <p className="ant-upload-text mx-2">
                       Upload your file here or drag and drop the file here
-                    </p> */}
+                    </p> 
                     <p className="ant-upload-hint">
                       We only accept single file uploads, and the file format
                       must be in .csv for successful submission.
                     </p>
                   </Dragger>
                 </Content>
-              </Content>
+              </Content> */}
             </Content>
             {/* </Content> */}
             <Content className="">

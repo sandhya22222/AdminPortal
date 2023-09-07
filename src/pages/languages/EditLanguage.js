@@ -785,7 +785,7 @@ const EditLanguage = () => {
                 Edit Language
               </Title>
             </Content>
-            <Button
+            {/* <Button
               className="app-btn-reject mr-2 !flex !justify-items-center"
               onClick={() => openDeleteModal()}
             >
@@ -794,7 +794,7 @@ const EditLanguage = () => {
                 className="!text-xs !w-4 my-1 mr-1 !items-center"
               />
               <div className=" !mr-[10px]">Delete Language</div>
-            </Button>
+            </Button> */}
           </Content>
         }
       />
@@ -869,7 +869,7 @@ const EditLanguage = () => {
                               />
                             </Content>
                           </Col>
-                          <Col span={3} className="pl-2">
+                          <Col span={8} className="pl-2">
                             <Content className="my-3">
                               <span className="text-red-600 text-sm !text-center">
                                 *
@@ -1028,7 +1028,7 @@ const EditLanguage = () => {
                           <label className="text-[13px] mb-2">
                             Script Direction
                           </label>
-                          {/* <Select
+                          <Select
                             // size={"large"}
                             style={{ display: "flex" }}
                             defaultValue={
@@ -1042,8 +1042,8 @@ const EditLanguage = () => {
                           >
                             <Option value="LTR">Left to right</Option>
                             <Option value="RTL">Right to left</Option>
-                          </Select> */}
-                          <Radio.Group
+                          </Select>
+                          {/* <Radio.Group
                             buttonStyle="solid"
                             style={{ display: "flex" }}
                             value={languageDetails.writing_script_direction}
@@ -1061,9 +1061,9 @@ const EditLanguage = () => {
                             <Radio.Button value="RTL">
                               Right to Left
                             </Radio.Button>
-                          </Radio.Group>
+                          </Radio.Group> */}
                         </Content>
-                        <Content className="my-3 mt-4">
+                        {/* <Content className="my-3 mt-4">
                           <label className="text-[13px] pb-1 mb-2 !font-semibold">
                             Language Supported Document
                           </label>
@@ -1147,7 +1147,7 @@ const EditLanguage = () => {
                               ""
                             )}
                           </Content>
-                        </Content>
+                        </Content> */}
                       </Content>
                       <Content className="mt-3">
                         <StoreModal
