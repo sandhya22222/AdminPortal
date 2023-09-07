@@ -1,4 +1,56 @@
+@import url(./marketplaceTheme.css);
+
 .main {
-    min-height: 90%;
-    background-image: linear-gradient(to bottom, #fafafa, #f6f6f6, #f2f2f2, #eeeeee, #eaeaea);
+  min-height: 90%;
+  background-image: linear-gradient(
+    to bottom,
+    #fafafa,
+    #f6f6f6,
+    #f2f2f2,
+    #eeeeee,
+    #eaeaea
+  );
+}
+/* ant delete icon */
+.anticon-delete {
+  color: var(--mp-danger-color) !important;
+}
+
+.ant-input:hover {
+  border-color: var(--mp-brand-color) !important;
+}
+
+.ant-pagination .ant-pagination-item-active {
+  border-color: var(--mp-brand-color) !important;
+}
+
+.ant-select-selector:hover {
+  border-color: var(--mp-brand-color) !important;
+}
+
+.ant-select-item-option-selected {
+  background-color: var(--mp-light-color) !important;
+}
+.ant-select-dropdown {
+  z-index: 1 !important;
+}
+
+.ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: var(--mp-brand-color) !important;
+}
+
+.ant-tabs .ant-tabs-ink-bar {
+  background: var(--mp-brand-color) !important;
+}
+
+.ant-tabs .ant-tabs-tab:hover {
+  color: var(--mp-brand-color) !important;
+}
+
+.ant-tooltip {
+  z-index: 5 !important;
+}
+
+.ant-pagination-options-size-changer  .ant-select-dropdown {
+  z-index: unset !important;
 }

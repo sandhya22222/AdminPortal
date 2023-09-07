@@ -1,0 +1,37 @@
+:root {
+  --mp-brand-color: #0246bb;
+  --mp-brand-color-h: #3367cd;
+
+  --mp-primary-color: #0246bb;
+  --mp-primary-color-h: #0246bb;
+  --mp-primary-border-color: #0246bb;
+  --mp-primary-border-color-h: #0246bb;
+  --mp-primary-text-color: #ffffff;
+  --mp-primary-text-color-h: #ffffff;
+
+  --mp-secondary-color: #f4f4f4;
+  --mp-secondary-color-h: #f4f4f4;
+  --mp-secondary-border-color: #0246bb;
+  --mp-secondary-border-color-h: #0246bb;
+  --mp-secondary-text-color: #1f1f1f;
+  --mp-secondary-text-color-h: #1f1f1f;
+
+  --mp-success-color: #0246bb;
+  --mp-success-color-h: #0246bb;
+  --mp-danger-color: #e5394b;
+  --mp-danger-color-h: #e5394b;
+  --mp-danger-text-color: #ffffff;
+  --mp-danger-border-color-h: #e5394b;
+  --mp-warning-color: #0246bb;
+  --mp-warning-color-h: #0246bb;
+  --mp-info-color: #0246bb;
+  --mp-info-color-h: #0246bb;
+  --mp-light-color: #e2f1fc;
+  --mp-light-color-h: #e2f1fc;
+  --mp-dark-color: #0246bb;
+  --mp-dark-color-h: #0246bb;
+  --mp-bright-color: #ffffff;
+  --mp-bright-color-h: #ffffff;
+  --mp-link-color: #1a5692;
+  --mp-link-color-h: #1a5692;
+}

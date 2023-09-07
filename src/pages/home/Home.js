@@ -1,13 +1,37 @@
-import React from "react";
-import { Container } from "reactstrap";
+//! Import libraries & components
+import React, { useEffect } from "react";
+import { Layout } from "antd";
+import { useLocation, useNavigate } from "react-router-dom";
+
+//! Import CSS libraries
+
+//! Import user defined services
+
+//! Import user defined components & hooks
+import { usePageTitle } from "../../hooks/usePageTitle";
+
+//! Import user defined functions
+
+//! Import user defined CSS
+import "./home.css";
+//! Destructure the components
+const { Content } = Layout;
+
+//! Get all required details from .env file
 
 const Home = () => {
+  usePageTitle("Admin Portal - Home");
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate("/dashboard");
+  }, [location.search]);
+
   return (
-      <Container fluid className="text-center">
-          <h3>Welcome to Digit Market</h3>
-          <h4>DM Admin Portal</h4>
-          <h5 className="mt-5">This page is under Construction</h5>
-      </Container>
+    <Content className=" temppic grid justify-items-center p-3 h-[100vh] bg-bottom ">
+     
+    </Content>
   );
 };
 
