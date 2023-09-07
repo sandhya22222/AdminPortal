@@ -19,9 +19,7 @@ import {
   useSearchParams,
   useParams,
 } from "react-router-dom";
-import {
-  SearchOutlined,
-} from "@ant-design/icons";
+import { SearchOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 //! Import user defined components
 import DynamicTable from "../../components/DynamicTable/DynamicTable";
@@ -205,7 +203,7 @@ const Language = () => {
       title: "Language",
       dataIndex: "language",
       key: "language",
-      width: "23%",
+      width: "25%",
       ellipsis: true,
       // sorter: (name1, name2) => name1.language.localeCompare(name2.language),
       // sortDirections: ["descend", "ascend"],
@@ -231,7 +229,7 @@ const Language = () => {
       title: "Code",
       dataIndex: "language_code",
       key: "language_code",
-      width: "10%",
+      width: "23%",
       render: (text, record) => {
         return (
           <>
@@ -253,15 +251,17 @@ const Language = () => {
       dataIndex: "writing_script_direction",
       key: "writing_script_direction",
       ellipsis: true,
-      width: "20%",
+      width: "15%",
       render: (text, record) => {
         return (
           <>
-            {record.writing_script_direction === "LTR" ? (
-              <Tag color="success">Left To Right</Tag>
-            ) : (
-              <Tag color="warning">Right To Left</Tag>
-            )}
+            {record.writing_script_direction}
+
+            {/* //   {record.writing_script_direction === "LTR" ? (
+          //     <Tag color="success">Left To Right</Tag>
+          //   ) : (
+          //     <Tag color="warning">Right To Left</Tag>
+          //   )} */}
           </>
         );
       },
@@ -270,7 +270,7 @@ const Language = () => {
       title: "Native Name",
       dataIndex: "native_name",
       key: "native_name",
-      width: "15%",
+      width: "25%",
       ellipsis: true,
       render: (text, record) => {
         return (
@@ -288,46 +288,46 @@ const Language = () => {
         );
       },
     },
-    {
-      title: "Support Document",
-      dataIndex: "lang_support_docs",
-      key: "lang_support_docs",
-      render: (text, record) => {
-        return (
-          <>
-            {record.lang_support_docs_path !== null ? (
-              <Content
-                className="whitespace-nowrap flex align-middle cursor-pointer"
-                onClick={() => {
-                  findMediaAbsoluteDocumentDownload(
-                    record.lang_support_docs_path,
-                    record.lang_support_docs
-                  );
-                }}
-              >
-                <img
-                  src={DownloadIcon}
-                  className="!text-xs !w-3 mr-1 !items-center"
-                />
-                <div className="text-[#0246bb] !ml-[10px]">
-                  Download Document
-                </div>
-              </Content>
-            ) : (
-              <Content className="whitespace-nowrap flex align-middle cursor-not-allowed">
-                <img
-                  src={DownloadIconDisable}
-                  className="!text-xs !w-3 mr-1 !items-center"
-                />
-                <div className="text-[#cbd5e1] !ml-[10px]">
-                  Download Document
-                </div>
-              </Content>
-            )}
-          </>
-        );
-      },
-    },
+    // {
+    //   title: "Support Document",
+    //   dataIndex: "lang_support_docs",
+    //   key: "lang_support_docs",
+    //   render: (text, record) => {
+    //     return (
+    //       <>
+    //         {record.lang_support_docs_path !== null ? (
+    //           <Content
+    //             className="whitespace-nowrap flex align-middle cursor-pointer"
+    //             onClick={() => {
+    //               findMediaAbsoluteDocumentDownload(
+    //                 record.lang_support_docs_path,
+    //                 record.lang_support_docs
+    //               );
+    //             }}
+    //           >
+    //             <img
+    //               src={DownloadIcon}
+    //               className="!text-xs !w-3 mr-1 !items-center"
+    //             />
+    //             <div className="text-[#0246bb] !ml-[10px]">
+    //               Download Document
+    //             </div>
+    //           </Content>
+    //         ) : (
+    //           <Content className="whitespace-nowrap flex align-middle cursor-not-allowed">
+    //             <img
+    //               src={DownloadIconDisable}
+    //               className="!text-xs !w-3 mr-1 !items-center"
+    //             />
+    //             <div className="text-[#cbd5e1] !ml-[10px]">
+    //               Download Document
+    //             </div>
+    //           </Content>
+    //         )}
+    //       </>
+    //     );
+    //   },
+    // },
     // {
     //   title: "Language Regex",
     //   dataIndex: "dm_language_regex",
@@ -366,7 +366,7 @@ const Language = () => {
               ""
             )}
 
-            {/* {record.language_code.toLowerCase() !== "en" ? (
+            {record.language_code.toLowerCase() !== "en" ? (
               <Tooltip title="Delete Language">
                 <img
                   src={DeleteIcon}
@@ -379,7 +379,7 @@ const Language = () => {
               </Tooltip>
             ) : (
               ""
-            )} */}
+            )}
           </Col>
         );
       },
@@ -646,7 +646,7 @@ const Language = () => {
                   Languages
                 </Title>
               </Content>
-              <Content>
+              {/* <Content>
                 <Button
                   className="app-btn-secondary mr-2 !flex !justify-items-center"
                   onClick={() => findAllSupportDocumentTemplateDownload()}
@@ -659,17 +659,18 @@ const Language = () => {
                     Download Support Document Template
                   </div>
                 </Button>
-              </Content>
+              </Content> */}
               <Content className="!w-[20%] text-right !right-0">
                 <Button
-                  className=" app-btn-primary !flex !justify-items-center"
+                  className=" app-btn-primary"
                   onClick={() => navigate("add_language")}
                 >
-                  <img
+                  {/* <img
                     src={plusIcon}
                     className="!text-xs !w-3 my-1 mr-2 !items-center"
-                  />
-                  <div className="mr-[10px]">Add Language</div>
+                  /> */}
+                  {/* <div className="mr-[10px]">Add Language</div> */}
+                  Add Language
                 </Button>
               </Content>
             </Content>
