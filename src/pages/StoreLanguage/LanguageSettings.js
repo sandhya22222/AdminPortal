@@ -30,14 +30,14 @@ function LanguageSettings() {
       <Content>
         <HeaderForTitle
           title={
-            <Content className="flex !mb-[7px]">
+            <Content className="">
               {/* <Content> */}
               {/**
                * Below is the part responsible for displaying the title of the page in a header.
                * If @languageName is there, which means it is a edit page so it will display the languageName for the edit page.
                * If @languageName is undefined or null means it is a add page.So it will show "Add a language"
                */}
-              <Title level={3} className="!font-normal !m-[unset]">
+              <Title level={3} className="!font-normal">
                 {languageName &&
                 languageName !== undefined &&
                 languageName !== null
@@ -50,7 +50,6 @@ function LanguageSettings() {
                * @languageCode -> It is the language code.
                * @languageStatus -> It is the status of the language.
                */}
-
               {/* </Content> */}
             </Content>
           }
@@ -64,7 +63,7 @@ function LanguageSettings() {
               ></LanguageHeaderAction>
             ) : null
           }
-          backNavigationPath={`/dashboard/languages`}
+          backNavigationPath={`/dashboard/language`}
           // ?${MarketplaceAppConfig.getStore(
           //   ""
           // )}
@@ -72,7 +71,7 @@ function LanguageSettings() {
           showButtons={false}
         />
       </Content>
-      <Content className="p-3 mt-[7.4rem] !min-h-screen">
+      <Content className="p-3 mt-[7rem] !min-h-screen">
         <Content className="!bg-white">
           <Title level={4} className="p-3 !m-0">
             Language Details

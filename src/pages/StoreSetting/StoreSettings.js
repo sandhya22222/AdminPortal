@@ -404,7 +404,7 @@ const StoreSettings = () => {
     MarketplaceServices.save(storeSettingAPI, postBody)
       .then((response) => {
         if (sampleobject["settings"] === "contentSettings") {
-          toast(`${t("stores:Store-settings-saved-successfully")}`, {
+          toast(`Store settings saved successfully`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
             autoClose: 10000,
@@ -1451,7 +1451,7 @@ const StoreSettings = () => {
           </Content>
         }
       />
-      <Content className="p-3 mt-[7rem]">
+      <Content className="p-3 mt-[6.2rem]">
         {/* <Spin tip="Please wait!" size="large" spinning={isLoading}> */}
         {/* <Content className="bg-white mt-2 p-3"> */}
         {/* <span className="text-red-600 text-sm !text-center">*</span>
@@ -2634,7 +2634,7 @@ const StoreSettings = () => {
                 </Col>
                 <Col span={8} className="ml-1">
                   <label className="text-[13px] mb-2 ml-1 select-none">
-                    {t("stores:Secondary-Button-Text-Color")}
+                    {t("labels:secondary_button_text_color")}
                   </label>
                   <Content className="flex">
                     <Input

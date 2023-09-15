@@ -1,37 +1,19 @@
 //! Import libraries
-import React, { useState, useEffect } from "react";
-import { Layout, Menu, Affix, Spin, Button, Divider } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
+import { Affix, Button, Divider, Layout, Menu, Spin } from "antd";
+import React, { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
-  DashboardOutlined,
-  CopyOutlined,
-  LoadingOutlined,
-  TranslationOutlined,
-  ShopOutlined,
-  DollarCircleOutlined,
-  SettingOutlined,
-  UserOutlined,
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-} from "@ant-design/icons";
-import {
-  MdDashboard,
-  MdStore,
-  MdLanguage,
-  MdOutlinePayment,
-} from "react-icons/md";
-import { FaHome } from "react-icons/fa";
-import { AiOutlineHome } from "react-icons/ai";
-import {
-  ViewDashboard,
-  Store,
-  TranslateIcon,
+  BackBurger,
   PaymentTypeIcon,
   ProfileIcon,
-  BackBurger,
+  Store,
+  TranslateIcon,
+  ViewDashboard,
   menuIcon,
 } from "../../constants/media";
 import Footer from "./../footer/Footer";
+import { useTranslation } from "react-i18next";
 //! Import CSS libraries
 
 //! Import user defined functions
@@ -47,6 +29,7 @@ const antIcon = <LoadingOutlined className="text-[10px] hidden" spin />;
 //! Global Variables
 
 const SidebarNew = () => {
+  const { t } = useTranslation();
   const [collapsed, setCollapsed] = useState(false);
   const [selectedItem, setSelectedItem] = useState([]);
   const [openedItem, setOpenedItem] = useState([]);
@@ -56,7 +39,6 @@ const SidebarNew = () => {
   const { pathname } = useLocation();
 
   const navigate = useNavigate();
-  // testt
   const myData = [
     // {
     //   key: "-1",
@@ -69,7 +51,7 @@ const SidebarNew = () => {
       key: "1",
       icon: <img src={ViewDashboard} />,
       inactive_icon: <img src={ViewDashboard} />,
-      label: "Dashboard",
+      label: ` ${t("labels:dashboard")}`,
       navigate_to: "/dashboard",
       // children: [],
     },
@@ -77,14 +59,14 @@ const SidebarNew = () => {
       key: "2",
       icon: <img src={Store} />,
       inactive_icon: <img src={Store} />,
-      label: "Stores",
+      label: ` ${t("labels:stores")}`,
       navigate_to: "/dashboard/store",
     },
     {
       key: "3",
       icon: <img src={TranslateIcon} />,
       inactive_icon: <img src={TranslateIcon} />,
-      label: "Languages",
+      label: ` ${t("labels:languages")}`,
       navigate_to: "/dashboard/language",
     },
     // {
@@ -97,14 +79,14 @@ const SidebarNew = () => {
       key: "5",
       icon: <img src={PaymentTypeIcon} />,
       inactive_icon: <img src={PaymentTypeIcon} />,
-      label: "Payment Type",
+      label: ` ${t("labels:payment_type")}`,
       navigate_to: "/dashboard/paymenttype",
     },
     {
       key: "6",
       icon: <img src={ProfileIcon} />,
       inactive_icon: <img src={ProfileIcon} />,
-      label: "Profile",
+      label: ` ${t("labels:profile")}`,
       navigate_to: "/dashboard/userprofile",
     },
   ];

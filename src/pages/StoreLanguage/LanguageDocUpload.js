@@ -185,11 +185,11 @@ function LanguageDocUpload({ langCode }) {
             <p className="ant-upload-drag-icon">
               <InboxOutlined />
             </p>
-            <p className="ant-upload-text">{t("languages:Drag-Message")}</p>
+            <p className="ant-upload-text">{t("messages:drag_message")}</p>
             {/* <p className="ant-upload-text mx-2">
               Upload your file here or drag and drop the file here
             </p> */}
-            <p className="ant-upload-hint p-2">{t("languages:Drag-Info")}</p>
+            <p className="ant-upload-hint p-2">{t("messages:drag_info")}</p>
           </Dragger>
         </Spin>
         {/* {uploadSuccess ? ( */}
@@ -203,7 +203,7 @@ function LanguageDocUpload({ langCode }) {
             className="!text-xs !w-[10px] mr-1 !items-center"
           />
           <div className="text-[#0246bb] !ml-[8px]">
-            {t("languages:Download-Current-Document")}
+            {t("messages:download_current_document")}
           </div>
         </Content>
         {/* ) : (
@@ -221,15 +221,15 @@ function LanguageDocUpload({ langCode }) {
         <Content className="flex flex-col justify-center items-center">
           <CheckCircleFilled className=" text-[#52c41a] text-[80px]" />
           <Title level={3} className="!mt-5 !mb-0">
-            {t("languages:Upload-Success")}
+            {t("messages:upload_success")}
           </Title>
-          <Text>{t("languages:Upload-Success-Message")}</Text>
+          <Text>{t("messages:upload_success_message")}</Text>
           <Content className="mt-3">
             <Button
               className="app-btn-primary mr-2"
               onClick={() => closeSuccessModal()}
             >
-              {t("common:Close")}
+              {t("labels:close")}
             </Button>
             <Upload
               showUploadList={false}
@@ -247,7 +247,7 @@ function LanguageDocUpload({ langCode }) {
               }}
             >
               <Button className={"flex items-center"} icon={<UploadOutlined />}>
-                {t("languages:Upload-again")}
+                {t("labels:upload_again")}
               </Button>
             </Upload>
           </Content>
@@ -255,7 +255,7 @@ function LanguageDocUpload({ langCode }) {
       </StoreModal>
       <StoreModal
         isVisible={chooseDownloadModalVisible}
-        // title={t("languages:Download-Current-Document")}
+        // title={t("messages:download_current_document")}
         okButtonText={null}
         hideCloseButton={false}
         cancelButtonText={null}
@@ -264,7 +264,7 @@ function LanguageDocUpload({ langCode }) {
       >
         <Spin spinning={isSpinning} tip="Please wait">
           <Content className="flex justify-between items-center">
-            <Title level={4}>{t("languages:Download-Current-Document")}</Title>
+            <Title level={4}>{t("messages:download_current_document")}</Title>
             <CloseOutlined
               role={"button"}
               className="mb-[5px]"
@@ -272,7 +272,7 @@ function LanguageDocUpload({ langCode }) {
             ></CloseOutlined>
           </Content>
           <Content className="my-2">
-            <Typography>{t("languages:Choose-Download-Format")}</Typography>
+            <Typography>{t("messages:choose_download_format")}</Typography>
             <Content className="mt-3 flex">
               <Card
                 onClick={() => downloadZIP()}
@@ -280,7 +280,7 @@ function LanguageDocUpload({ langCode }) {
               >
                 <Content className="flex flex-col items-center">
                   <img src={codeJsonIcon} alt="json icon" />
-                  <p>{t("languages:Json-Format")}</p>
+                  <p>{t("labels:json_format")}</p>
                 </Content>
               </Card>
               <Card
@@ -289,7 +289,7 @@ function LanguageDocUpload({ langCode }) {
               >
                 <Content className="flex flex-col items-center">
                   <img alt="table icon" src={tableIcon} />
-                  <p>{t("languages:Csv-Format")}</p>
+                  <p>{t("labels:csv_format")}</p>
                 </Content>
               </Card>
             </Content>

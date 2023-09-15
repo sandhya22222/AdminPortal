@@ -1,39 +1,36 @@
 //! Import libraries
-import React from "react";
-import { useEffect, useState, useRef } from "react";
-import { toast } from "react-toastify";
 import {
-  Layout,
-  Col,
-  Button,
-  Typography,
-  Tooltip,
-  Tag,
-  Empty,
   Badge,
+  Button,
+  Col,
+  Empty,
+  Layout,
+  Tag,
+  Tooltip,
+  Typography,
 } from "antd";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { toast } from "react-toastify";
 //! Import user defined components
-import DynamicTable from "../../components/DynamicTable/DynamicTable";
 import DmPagination from "../../components/DmPagination/DmPagination";
-import { usePageTitle } from "../../hooks/usePageTitle";
-import util from "../../util/common";
-import MarketplaceServices from "../../services/axios/MarketplaceServices";
-import HeaderForTitle from "../../components/header/HeaderForTitle";
+import DynamicTable from "../../components/DynamicTable/DynamicTable";
 import SkeletonComponent from "../../components/Skeleton/SkeletonComponent";
+import HeaderForTitle from "../../components/header/HeaderForTitle";
 import PageSpinner from "../../components/spinner/PageSpinner";
 import {
-  EditIcon,
-  plusIcon,
-  tableDropDownArrow,
   DownloadIcon,
   DownloadIconDisable,
+  EditIcon,
+  plusIcon,
   starIcon,
+  tableDropDownArrow,
 } from "../../constants/media";
+import { usePageTitle } from "../../hooks/usePageTitle";
+import MarketplaceServices from "../../services/axios/MarketplaceServices";
 
 import LanguageBanner from "./LanguageBanner";
-import MarketplaceToaster from "../../util/marketplaceToaster";
 const { Title, Text, Paragraph } = Typography;
 const { Content } = Layout;
 
@@ -65,7 +62,7 @@ const Language = () => {
 
   const columns = [
     {
-      title: "Language",
+      title: `${t("labels:language")}`,
       dataIndex: "language",
       key: "language",
       width: "30%",
@@ -99,7 +96,7 @@ const Language = () => {
       },
     },
     {
-      title: "Code",
+      title: `${t("labels:code")}`,
       dataIndex: "language_code",
       key: "language_code",
       width: "12%",
@@ -119,7 +116,7 @@ const Language = () => {
       },
     },
     {
-      title: "Script Direction",
+      title: `${t("labels:script_direction")}`,
       dataIndex: "writing_script_direction",
       key: "writing_script_direction",
       ellipsis: true,
@@ -137,7 +134,7 @@ const Language = () => {
       },
     },
     {
-      title: "Status",
+      title: `${t("labels:status")}`,
       dataIndex: "status",
       key: "status",
       width: "15%",
@@ -156,7 +153,7 @@ const Language = () => {
       },
     },
     {
-      title: "Support Document",
+      title: `${t("labels:support_document")}`,
       dataIndex: "lang_support_docs",
       key: "lang_support_docs",
       width: "20%",
@@ -197,7 +194,7 @@ const Language = () => {
       },
     },
     {
-      title: "Action",
+      title: `${t("labels:action")}`,
       dataIndex: "",
       key: "",
       width: "8%",
@@ -214,7 +211,7 @@ const Language = () => {
                   navigate(
                     `/dashboard/language/language-settings?k=${record.id}&n=${
                       record.language
-                    }&c=${record.language_code}&d=${
+                    }&c=${record.language_code}&s=${record.status}&d=${
                       record.is_default === false ? 0 : 1
                     }`
                   );
@@ -391,7 +388,7 @@ const Language = () => {
             <Content className="flex">
               <Content className="!w-[80%]">
                 <Title level={3} className="!font-normal">
-                  {t("languages:Languages")}
+                  {t("labels:Languages")}
                 </Title>
               </Content>
               <Content className="!w-[20%] text-right">
@@ -423,7 +420,7 @@ const Language = () => {
                         className="!text-xs !w-3 my-1 mr-2 !items-center"
                       />
                       <div className="mr-[10px]">
-                        {t("languages:add_language")}
+                        {t("labels:add_language")}
                       </div>
                     </Button>
                   </Content>
@@ -433,7 +430,7 @@ const Language = () => {
           }
         />
       </Content>
-      <Content className="p-3 mt-[7.8rem]">
+      <Content className="p-3 mt-[7.0rem]">
         {languageData && languageData.length > 0 ? (
           <>
             <Content className="bg-white p-2">
@@ -481,7 +478,7 @@ const Language = () => {
           </Content>
         ) : isNetworkErrorLanguage ? (
           <Content className="p-3 text-center mb-3 bg-[#F4F4F4]">
-            <p>{t("common:Network-Error")}</p>
+            <p>{t("messages:network_error")}</p>
           </Content>
         ) : languageData && languageData.length === 0 ? (
           <div className="w-[100%] p-5 flex items-center justify-center !bg-white">

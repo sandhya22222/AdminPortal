@@ -88,7 +88,7 @@ const LanguageForm = ({
                 if (res.data) {
                   MarketplaceToaster.showToast(res);
                   navigate(
-                    `/dashboard/languages/language-settings?k=${
+                    `/dashboard/language/language-settings?k=${
                       res.data.response_body[0].id
                     }&n=${res.data.response_body[0].language}&c=${
                       res.data.response_body[0].language_code
@@ -129,7 +129,7 @@ const LanguageForm = ({
       validValues--;
       MarketplaceToaster.showToast(
         util.getToastObject(
-          `${t("languages:please_enter_the_values_for_the_mandatory_fields")}`,
+          `${t("messages:please_enter_the_values_for_the_mandatory_fields")}`,
           "error"
         )
       );
@@ -138,7 +138,7 @@ const LanguageForm = ({
       validValues--;
       MarketplaceToaster.showToast(
         util.getToastObject(
-          `${t("languages:please_enter_the_values_for_the_mandatory_fields")}`,
+          `${t("messages:please_enter_the_values_for_the_mandatory_fields")}`,
           "error"
         )
       );
@@ -147,7 +147,7 @@ const LanguageForm = ({
       validValues--;
       MarketplaceToaster.showToast(
         util.getToastObject(
-          `${t("languages:please_enter_the_values_for_the_mandatory_fields")}`,
+          `${t("messages:please_enter_the_values_for_the_mandatory_fields")}`,
           "error"
         )
       );
@@ -162,10 +162,10 @@ const LanguageForm = ({
       MarketplaceToaster.showToast(
         util.getToastObject(
           `${t(
-            "languages:language_must_contain_minimum_of"
+            "messages:language_must_contain_minimum_of"
           )} ${titleMinLength}, ${t(
-            "languages:maximum_of"
-          )} ${titleMaxLength} ${t("languages:characters")}`,
+            "messages:maximum_of"
+          )} ${titleMaxLength} ${t("messages:characters")}`,
           "error"
         )
       );
@@ -180,7 +180,7 @@ const LanguageForm = ({
       MarketplaceToaster.showToast(
         util.getToastObject(
           `${t(
-            "languages:language_code_must_contain_minimum_of_2_maximum_of_5_characters"
+            "messages:language_code_must_contain_minimum_of_2_maximum_of_5_characters"
           )}`,
           "error"
         )
@@ -206,7 +206,7 @@ const LanguageForm = ({
           "server Success response from language get API call",
           response.data
         );
-        let serverLanguageData = response.data.response_body.data;
+        let serverLanguageData = response.data.response_body;
         if (serverLanguageData && serverLanguageData.length > 0) {
           const filteredLanguageData = serverLanguageData.filter(
             (ele) => ele.language_code === languageCode
@@ -231,6 +231,7 @@ const LanguageForm = ({
       });
   };
 
+  console.log("languageCode", languageCode);
   useEffect(() => {
     window.scrollTo(0, 0);
     if (languageCode !== undefined && languageCode !== null) {
@@ -240,21 +241,20 @@ const LanguageForm = ({
       setIsEditLanguageCodeFieldEmpty(false);
       setIsEditLanguageFieldEmpty(false);
     }
-  }, [languageCode]);
+  }, [languageCode, languageName]);
 
-  console.log("onChangeValues", onChangeValues);
   return (
     <Content>
-      <Spin tip={t("languages:please_wait")} size="large" spinning={isLoading}>
+      <Spin tip={t("labels:please_wait")} size="large" spinning={isLoading}>
         <Row>
           <Col span={8} className="pr-2 mb-3">
             <Content className="">
               <span className="text-red-600 text-sm !text-center">*</span>
               <label className="text-[13px] mb-2 ml-1">
-                {t("languages:language")}
+                {t("labels:language")}
               </label>
               <Input
-                placeholder={t("languages:enter_language_name")}
+                placeholder={t("placeholders:enter_language_name")}
                 value={txtLanguage}
                 minLength={titleMinLength}
                 maxLength={titleMaxLength}
@@ -288,10 +288,10 @@ const LanguageForm = ({
             <Content className="">
               <span className="text-red-600 text-sm text-center">*</span>
               <label className="text-[13px] mb-2 ml-1">
-                {t("languages:language_code")}
+                {t("labels:language_code")}
               </label>
               <Input
-                placeholder={t("languages:enter_code")}
+                placeholder={t("placeholders:enter_code")}
                 value={txtLanguageCode}
                 minLength={2}
                 maxLength={5}
@@ -325,7 +325,7 @@ const LanguageForm = ({
         </Row>
         <Content className="w-[50%] ">
           <label className="text-[13px] !mb-2">
-            {t("languages:script_direction")}
+            {t("labels:script_direction")}
           </label>
           <Radio.Group
             optionType="button"
@@ -339,10 +339,10 @@ const LanguageForm = ({
             }}
           >
             <Radio.Button value="LTR">
-              {t("languages:left_to_right")}
+              {t("labels:left_to_right")}
             </Radio.Button>
             <Radio.Button value="RTL">
-              {t("languages:right_to_left")}
+              {t("labels:right_to_left")}
             </Radio.Button>
           </Radio.Group>
         </Content>
@@ -363,7 +363,7 @@ const LanguageForm = ({
                   ) {
                     MarketplaceToaster.showToast(
                       util.getToastObject(
-                        `${t("languages:no_changes_were_detected")}`,
+                        `${t("messages:no_changes_were_detected")}`,
                         "warning"
                       )
                     );
@@ -373,8 +373,8 @@ const LanguageForm = ({
                 }}
               >
                 {languageCode !== undefined && languageCode !== null
-                  ? `${t("common:Update")}`
-                  : `${t("common:Save")}`}
+                  ? `${t("labels:update")}`
+                  : `${t("labels:save")}`}
               </Button>
             </Col>
             <Col className="pl-2">
@@ -395,7 +395,7 @@ const LanguageForm = ({
                 }}
                 className={"app-btn-secondary !mt-5"}
               >
-                {t("common:Cancel")}
+                {t("labels:cancel")}
               </Button>
             </Col>
           </Row>

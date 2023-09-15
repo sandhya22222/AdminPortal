@@ -136,7 +136,7 @@ function LanguageHeaderAction({
           n: searchParams.get("n"),
           c: searchParams.get("c"),
           s: searchParams.get("s"),
-          d: isMakeAsDefault ? 1 : 0,
+          d: defaultChecked ? 1 : 0,
         });
       })
       .catch((error) => {
@@ -195,11 +195,11 @@ function LanguageHeaderAction({
         <Content>
           <StoreModal
             isVisible={isModalOpen}
-            okButtonText={t("common:Yes")}
+            okButtonText={t("labels:yes")}
             title={
-              changeSwitchStatus ? t("common:Success") : t("common:Warning")
+              changeSwitchStatus ? t("labels:success") : t("labels:warning")
             }
-            cancelButtonText={t("common:Cancel")}
+            cancelButtonText={t("labels:cancel")}
             okCallback={() => updateLanguageStatus()}
             cancelCallback={() => closeModal()}
             isSpin={isLoading}
@@ -207,14 +207,14 @@ function LanguageHeaderAction({
           >
             {changeSwitchStatus ? (
               <div>
-                <p>{t("languages:Language-Activation-Confirmation")}</p>
-                <p>{t("languages:Language-Activation-Confirmation-Message")}</p>
+                <p>{t("messages:language_activation_confirmation")}</p>
+                <p>{t("messages:language_activation_confirmation_message")}</p>
               </div>
             ) : (
               <div>
-                <p>{t("languages:Language-Deactivation-Confirmation")}</p>
+                <p>{t("messages:language_deactivation_confirmation")}</p>
                 <p>
-                  {t("languages:Language-Deactivation-Confirmation-Message")}
+                  {t("messages:language_deactivation_confirmation_message")}
                 </p>
               </div>
             )}
@@ -222,7 +222,7 @@ function LanguageHeaderAction({
           <Content className="inline-flex items-center">
             <Typography className="pr-2">
               {" "}
-              {t("languages:Status-Label")}{" "}
+              {t("labels:status_label")}{" "}
             </Typography>
             <Space direction="vertical">
               <Switch
@@ -234,6 +234,7 @@ function LanguageHeaderAction({
                 onClick={() => {
                   openModal(switchStatus);
                 }}
+                disabled={isMakeAsDefault}
                 checkedChildren={"Active"}
                 unCheckedChildren={"Inactive"}
               />
@@ -250,12 +251,12 @@ function LanguageHeaderAction({
           }}
           disabled={switchStatus & !isMakeAsDefault ? false : true}
         ></Checkbox>
-        <Typography> {t("languages:Default-Language-Label")}</Typography>
+        <Typography> {t("labels:default_language_label")}</Typography>
         <StoreModal
           isVisible={warningLanguageDefaultModal}
-          okButtonText={t("common:Yes")}
-          cancelButtonText={t("common:Cancel")}
-          title={t("common:Warning")}
+          okButtonText={t("labels:yes")}
+          cancelButtonText={t("labels:cancel")}
+          title={t("labels:warning")}
           okCallback={() => makeAsDefaultLanguage()}
           cancelCallback={() => {
             closeLanguageDefaultWaringModal();
@@ -266,7 +267,7 @@ function LanguageHeaderAction({
         >
           {
             <div>
-              <p>{t("languages:Default-Language-Warning-Msg")}</p>
+              <p>{t("messages:default_language_warning_msg")}</p>
             </div>
           }
         </StoreModal>
@@ -283,16 +284,14 @@ function LanguageHeaderAction({
             alt="plusIconWithAddLanguage"
             className="!flex !mr-2 !items-center"
           />
-          <div className="mr-[10px]">
-            {t("languages:Remove-Language-Label")}
-          </div>
+          <div className="mr-[10px]">{t("labels:remove_language_label")}</div>
         </Button>
       ) : null}
       <StoreModal
         isVisible={isDeleteLanguageModalOpen}
-        okButtonText={t("common:Yes")}
-        cancelButtonText={t("common:Cancel")}
-        title={t("common:Warning")}
+        okButtonText={t("labels:yes")}
+        cancelButtonText={t("labels:cancel")}
+        title={t("labels:warning")}
         okCallback={() => removeLanguage()}
         cancelCallback={() => closeDeleteModal()}
         isSpin={islanguageDeleting}
@@ -300,8 +299,8 @@ function LanguageHeaderAction({
       >
         {
           <div>
-            <p>{t("languages:Remove-Language-Confirmation")}</p>
-            <p>{t("languages:Remove-Language-Confirmation-message")}</p>
+            <p>{t("messages:remove_language_confirmation")}</p>
+            <p>{t("messages:remove_language_confirmation_message")}</p>
           </div>
         }
       </StoreModal>
@@ -316,19 +315,19 @@ function LanguageHeaderAction({
         <Content className="flex flex-col justify-center items-center">
           <CheckCircleFilled className=" text-[#52c41a] text-[30px]" />
           <Title level={4} className="!mt-5 !mb-0">
-            {t("languages:Language-Deleted-Successfully")}
+            {t("messages:language_deleted_successfully")}
           </Title>
           <Content className="mt-3">
             <Button
               className="app-btn-primary"
               onClick={() =>
                 navigate(
-                  `/dashboard/languages`
+                  `/dashboard/language`
                   //   ?${MarketplaceAppConfig.getStore("")}
                 )
               }
             >
-              {t("common:Close")}
+              {t("labels:close")}
             </Button>
           </Content>
         </Content>
