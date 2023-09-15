@@ -1,11 +1,10 @@
 {
-    "Network-Error":"Please wait while we validate your information. If this process persists, please consider logging out and logging back in",
+    "Network-Error": "Please wait, we are validating you, if this persists, logout and login.",
     "Save":"Save",
     "Update":"Update",
     "Warning":"Warning",
     "Ok":"Ok",
     "Cancel":"Cancel",
-    "Something-Went-Wrong":"Something went wrong, please try again later",
     "No-Changes-Detected":"No changes were detected",
-    "Discard":"Discard"       
+    "Discard":"Discard"
 }

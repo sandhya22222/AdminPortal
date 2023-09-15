@@ -14,7 +14,7 @@ import { useFavicon } from "./hooks/useFavicon";
 import axios from "axios";
 import Store from "./pages/Stores/Store";
 // import Sidebar from "./components/sidebar/Sidebar";
-import Language from "./pages/languages/Language";
+// import Language from "./pages/languages/Language";
 import AddLanguage from "./pages/languages/AddLanguage";
 import EditLanguage from "./pages/languages/EditLanguage";
 import SidebarNew from "./components/Sidebar2.0.js/SidebarNew";
@@ -23,6 +23,8 @@ import OnlinePaymentConnector from "./pages/OnlinePaymentConnector/OnlinePayment
 import StoreSettings from "./pages/StoreSetting/StoreSettings";
 import Preview from "./pages/StoreSetting/Preview";
 import UserProfile from "./pages/StoreUsers/UserProfile";
+import Language from "./pages/StoreLanguage/Language";
+import LanguageSettings from "./pages/StoreLanguage/LanguageSettings";
 import { LoadingOutlined } from "@ant-design/icons";
 import LogOut from "./components/LogOut";
 
@@ -79,7 +81,7 @@ const App = () => {
               <Route path="/dashboard" element={<SidebarNew />}>
                 <Route path="" element={<Dashboard />} />
                 <>
-                  <Route path="language" element={<Language />} />
+                  {/* <Route path="language" element={<Language />} />
                   <Route
                     path="language/edit_language"
                     element={<EditLanguage />}
@@ -87,6 +89,11 @@ const App = () => {
                   <Route
                     path="language/add_language"
                     element={<AddLanguage />}
+                  /> */}
+                  <Route path="language" element={<Language />} />
+                  <Route
+                    path="language/language-settings"
+                    element={<LanguageSettings />}
                   />
                   <Route path="store" element={<Store />} />
                   <Route

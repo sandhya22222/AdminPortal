@@ -28,6 +28,8 @@ import Preview from "./Preview";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
 import { usePageTitle } from "../../hooks/usePageTitle";
+import MarketplaceToaster from "../../util/marketplaceToaster";
+import util from "../../util/common";
 const { Content } = Layout;
 const { Title, Text } = Typography;
 const { TextArea } = Input;
@@ -532,7 +534,7 @@ const StoreSettings = () => {
               autoClose: 10000,
             });
           } else {
-            toast("Something went wrong, please try again later", {
+            toast(`${t("messages:something_went_wrong")}`, {
               position: toast.POSITION.TOP_RIGHT,
               type: "error",
               autoClose: 10000,
@@ -558,11 +560,17 @@ const StoreSettings = () => {
       setInValidCurrencyIsoCode(true);
       setInValidFractionalUnit(true);
       setInValidNumberToBasic(true);
-      toast("Please provide values for the mandatory fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      // toast("Please provide values for the mandatory fields", {
+      //   position: toast.POSITION.TOP_RIGHT,
+      //   type: "error",
+      //   autoClose: 10000,
+      // });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     } else if (
       currencySymbol !== "" &&
       currencyIsoCode === "" &&
@@ -573,11 +581,12 @@ const StoreSettings = () => {
       setInValidNumberToBasic(true);
       setInValidCurrencyIsoCode(true);
       setInValidFractionalUnit(true);
-      toast("Please provide values for the mandatory fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     } else if (
       currencySymbol === "" &&
       currencyIsoCode !== "" &&
@@ -588,11 +597,12 @@ const StoreSettings = () => {
       setInValidNumberToBasic(true);
       setInValidCurrencySymbol(true);
       setInValidFractionalUnit(true);
-      toast("Please provide values for the mandatory fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     } else if (
       currencySymbol === "" &&
       currencyIsoCode == "" &&
@@ -603,11 +613,12 @@ const StoreSettings = () => {
       setInValidNumberToBasic(true);
       setInValidCurrencySymbol(true);
       setInValidCurrencyIsoCode(true);
-      toast("Please provide values for the mandatory fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     } else if (
       currencySymbol === "" &&
       currencyIsoCode == "" &&
@@ -618,11 +629,12 @@ const StoreSettings = () => {
       setInValidFractionalUnit(true);
       setInValidCurrencySymbol(true);
       setInValidCurrencyIsoCode(true);
-      toast("Please provide values for the mandatory fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     } else if (
       currencySymbol === "" &&
       currencyIsoCode === "" &&
@@ -632,11 +644,12 @@ const StoreSettings = () => {
       count--;
       setInValidCurrencySymbol(true);
       setInValidCurrencyIsoCode(true);
-      toast("Please provide values for the mandatory fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     } else if (
       currencySymbol === "" &&
       currencyIsoCode !== "" &&
@@ -646,11 +659,12 @@ const StoreSettings = () => {
       count--;
       setInValidCurrencySymbol(true);
       setInValidFractionalUnit(true);
-      toast("Please provide values for the mandatory fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     } else if (
       currencySymbol === "" &&
       currencyIsoCode !== "" &&
@@ -660,11 +674,12 @@ const StoreSettings = () => {
       count--;
       setInValidCurrencySymbol(true);
       setInValidNumberToBasic(true);
-      toast("Please provide values for the mandatory fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     } else if (
       currencySymbol === "" &&
       currencyIsoCode === "" &&
@@ -674,11 +689,12 @@ const StoreSettings = () => {
       count--;
       setInValidCurrencySymbol(true);
       setInValidCurrencyIsoCode(true);
-      toast("Please provide values for the mandatory fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     } else if (
       currencySymbol !== "" &&
       currencyIsoCode === "" &&
@@ -688,11 +704,12 @@ const StoreSettings = () => {
       count--;
       setInValidCurrencyIsoCode(true);
       setInValidFractionalUnit(true);
-      toast("Please provide values for the mandatory fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     } else if (
       currencySymbol !== "" &&
       currencyIsoCode === "" &&
@@ -702,11 +719,12 @@ const StoreSettings = () => {
       count--;
       setInValidCurrencyIsoCode(true);
       setInValidNumberToBasic(true);
-      toast("Please provide values for the mandatory fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     } else if (
       currencySymbol === "" &&
       currencyIsoCode !== "" &&
@@ -716,11 +734,12 @@ const StoreSettings = () => {
       count--;
       setInValidCurrencySymbol(true);
       setInValidFractionalUnit(true);
-      toast("Please provide values for the mandatory fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     } else if (
       currencySymbol !== "" &&
       currencyIsoCode !== "" &&
@@ -730,11 +749,12 @@ const StoreSettings = () => {
       count--;
       setInValidFractionalUnit(true);
       setInValidNumberToBasic(true);
-      toast("Please provide values for the mandatory fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     } else if (
       currencySymbol === "" ||
       currencySymbol === undefined ||
@@ -742,11 +762,12 @@ const StoreSettings = () => {
     ) {
       count--;
       setInValidCurrencySymbol(true);
-      toast("Please provide values for the mandatory fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     } else if (
       currencyIsoCode === "" ||
       currencyIsoCode === undefined ||
@@ -754,11 +775,12 @@ const StoreSettings = () => {
     ) {
       count--;
       setInValidCurrencyIsoCode(true);
-      toast("Please provide values for the mandatory fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     } else if (
       fractionalUnit === "" ||
       fractionalUnit === undefined ||
@@ -766,11 +788,12 @@ const StoreSettings = () => {
     ) {
       count--;
       setInValidFractionalUnit(true);
-      toast("Please provide values for the mandatory fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     } else if (
       numberToBasic === "" ||
       numberToBasic === undefined ||
@@ -778,11 +801,12 @@ const StoreSettings = () => {
     ) {
       count--;
       setInValidNumberToBasic(true);
-      toast("Please provide values for the mandatory fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     } else if (
       (imageOfStoreSettingsCurrency && imageOfStoreSettingsCurrency.symbol) ===
         (copyImageOfStoreSettingsCurrency &&
@@ -845,11 +869,9 @@ const StoreSettings = () => {
           copyImageOfStoreFooterSetting.fg_color) &&
       imagesUpload.length === 0
     ) {
-      toast("No changes were detected", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "info",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(`${t("messages:no_changes_were_detected")}`, "info")
+      );
     }
     //else if (
     //   (imageOfStoreSettingsCurrency && imageOfStoreSettingsCurrency.symbol) ===
@@ -1092,7 +1114,7 @@ const StoreSettings = () => {
               autoClose: 10000,
             });
           } else {
-            toast("Something went wrong, please try again later", {
+            toast(`${t("messages:something_went_wrong")}`, {
               position: toast.POSITION.TOP_RIGHT,
               type: "error",
               autoClose: 10000,
@@ -1188,7 +1210,7 @@ const StoreSettings = () => {
           Object.keys(sampleobject).length !== 2
         ) {
           if (sampleobject["images"] === "images") {
-            toast("Images saved successfully", {
+            toast(`${t("messages:images_saved_successfully")}`, {
               position: toast.POSITION.TOP_RIGHT,
               type: "success",
               autoClose: 10000,
@@ -1233,7 +1255,7 @@ const StoreSettings = () => {
               autoClose: 10000,
             });
           } else {
-            toast("Something went wrong, please try again later", {
+            toast(`${t("messages:something_went_wrong")}`, {
               position: toast.POSITION.TOP_RIGHT,
               type: "error",
               autoClose: 10000,
@@ -1542,12 +1564,12 @@ const StoreSettings = () => {
         <Spin tip="Please wait!" size="large" spinning={isUpLoading}>
           <Content className="bg-white p-3 !rounded-md">
             <label className="text-[20px] mb-2 font-bold">
-              {t("stores:Media")}
+              {t("labels:media")}
             </label>
             <Row class="flex space-x-4">
               <Col>
                 <StoreImages
-                  title={`${t("stores:Store-Logo")}`}
+                  title={`${t("labels:store_logo")}`}
                   type={"store_logo"}
                   storeId={id}
                   imagesUpload={imagesUpload}
@@ -1556,7 +1578,7 @@ const StoreSettings = () => {
                   isSingleUpload={true}
                   validStoreLogo={validStoreLogo}
                   setValidStoreLogo={setValidStoreLogo}
-                  InfoCircleText={`${t("stores:Store-Logo-Info")}`}
+                  InfoCircleText={`${t("messages:store_logo_info")}`}
                   setImageChangeValues={setImageChangeValues}
                 />
               </Col>
@@ -1620,14 +1642,14 @@ const StoreSettings = () => {
               /> */}
             </Row>
             <StoreImages
-              title={`${t("stores:Banner-Logo")}`}
+              title={`${t("labels:banner_logo")}`}
               type={"banner_images"}
               storeId={id}
               imagesUpload={imagesUpload}
               bannerAbsoluteImage={bannerAbsoluteImage}
               setImagesUpload={setImagesUpload}
               isSingleUpload={false}
-              InfoCircleText={`${t("stores:Banner-Logo-Info")}`}
+              InfoCircleText={`${t("messages:banner_logo_info")}`}
               setImageChangeValues={setImageChangeValues}
             />
             {/* <StoreMedia
@@ -1649,15 +1671,21 @@ const StoreSettings = () => {
                       if (imagesUpload && imagesUpload.length > 0) {
                         postImageOnClickSave();
                       } else {
-                        toast(`${t("common:No-Changes-Detected")}`, {
+                        toast(`${t("messages:no_changes_were_detected")}`, {
                           position: toast.POSITION.TOP_RIGHT,
                           type: "info",
                           autoClose: 10000,
                         });
+                        MarketplaceToaster.showToast(
+                          util.getToastObject(
+                            `${t("messages:no_changes_were_detected")}`,
+                            "info"
+                          )
+                        );
                       }
                     }}
                   >
-                    {t("common:Save")}
+                    {t("labels:save")}
                   </Button>
                 </Col>
                 <Col className="pl-2">
@@ -1671,7 +1699,7 @@ const StoreSettings = () => {
                       navigate("/dashboard/store");
                     }}
                   >
-                    {t("common:Discard")}
+                    {t("labels:discard")}
                   </Button>
                 </Col>
               </Row>
@@ -1680,7 +1708,7 @@ const StoreSettings = () => {
         </Spin>
         <Content className="bg-white mt-3 p-3 rounded-lg">
           <label className="text-[20px] font-bold !text-center">
-            {t("stores:Currency")}
+            {t("labels:currency")}
           </label>
           <Divider className="!my-4" />
           <Row
@@ -1695,7 +1723,7 @@ const StoreSettings = () => {
             <Col span={4} className="gutter-row">
               <span className="text-red-600 text-sm !text-center">*</span>
               <label className="text-[13px] mb-2 ml-1">
-                {t("stores:Symbol")}
+                {t("labels:symbol")}
               </label>
               <Input
                 placeholder={t("placeholders:enter_currency_symbol")}
@@ -1732,7 +1760,7 @@ const StoreSettings = () => {
             <Col span={4} className="gutter-row">
               <span className="text-red-600 text-sm !text-center">*</span>
               <label className="text-[13px] mb-2 ml-1">
-                {t("stores:ISO-Code")}
+                {t("labels:iso_code")}
               </label>
               <Input
                 placeholder={t("placeholders:enter_iso_code")}
@@ -1769,7 +1797,7 @@ const StoreSettings = () => {
             <Col span={4} className="gutter-row">
               <span className="text-red-600 text-sm !text-center">*</span>
               <label className="text-[13px] mb-2 ml-1">
-                {t("stores:Fractional-Unit")}
+                {t("labels:fractional_unit")}
               </label>
               <Input
                 placeholder={t("placeholders:enter_fractional_unit")}
@@ -1804,7 +1832,7 @@ const StoreSettings = () => {
               {" "}
               <span className="text-red-600 text-sm !text-center">*</span>
               <label className="text-[13px] mb-2 ml-1">
-                {t("stores:Number-to-Basic")}
+                {t("labels:number_to_basic")}
               </label>
               <InputNumber
                 placeholder={t("placeholders:enter_number_to_basic")}
@@ -1890,16 +1918,16 @@ const StoreSettings = () => {
             <Content className="">
               <Row className="!mb-4">
                 <label className="text-[20px]  mt-2 font-bold select-none">
-                  {t("stores:Page-Theme")}
+                  {t("labels:page_theme")}
                 </label>
                 <Content className="text-right">
                   <Button className="!text-right" onClick={() => openModal()}>
                     <EyeOutlined className="!text-center -translate-y-0.5" />{" "}
-                    {t("stores:Preview")}
+                    {t("labels:preview")}
                   </Button>
                   <StoreModal
                     isVisible={isModalOpen}
-                    title={`${t("stores:Sample-Preview-Page-For-Store-Front")}`}
+                    title={`${t("labels:sample_preview_page_for_store_front")}`}
                     width={1000}
                     cancelCallback={() => closeModal()}
                     isSpin={false}
@@ -1940,7 +1968,7 @@ const StoreSettings = () => {
               <Row className="mt-2">
                 <Col span={8} className="mr-2 ">
                   <label className="text-[13px] mb-2 ml-1 select-none">
-                    {t("stores:Background-Color")}
+                    {t("labels:background_color")}
                   </label>
                   <Content className="flex">
                     <Input
@@ -1995,7 +2023,7 @@ const StoreSettings = () => {
                         }}
                         addonAfter={
                           <Tooltip
-                            title={t("stores:Reset-to-the-original-value")}
+                            title={t("messages:reset_to_the_original_value")}
                           >
                             <UndoOutlined
                               onClick={() => {
@@ -2025,14 +2053,14 @@ const StoreSettings = () => {
                   </Content>
                   {colorCodeValidation.pageBgColorValidation === true ? (
                     <p className="text-red-600 text-sm">
-                      Please enter valid Hexadecimal Color code <br />
-                      ex. #ffffff for white, #0000000 for black
+                      {t("messages:please_enter_valid_hexadecimal_code")} <br />
+                      {t("messages:ex_#ffffff_for_white_#000000_for_black")}
                     </p>
                   ) : null}
                 </Col>
                 <Col span={8} className="ml-1">
                   <label className="text-[13px] mb-2 ml-1 select-none">
-                    {t("stores:Text-Color")}
+                    {t("labels:text_color")}
                   </label>
                   <Content className="flex">
                     <Input
@@ -2086,7 +2114,7 @@ const StoreSettings = () => {
                         }}
                         addonAfter={
                           <Tooltip
-                            title={t("stores:Reset-to-the-original-value")}
+                            title={t("messages:reset_to_the_original_value")}
                           >
                             <UndoOutlined
                               onClick={() => {
@@ -2116,8 +2144,8 @@ const StoreSettings = () => {
                   </Content>
                   {colorCodeValidation.pageTextColorValidation === true ? (
                     <p className="text-red-600 text-sm">
-                      Please enter valid Hexadecimal Color code <br />
-                      ex. #ffffff for white, #000000 for black
+                      {t("messages:please_enter_valid_hexadecimal_code")} <br />
+                      {t("messages:ex_#ffffff_for_white_#000000_for_black")}
                     </p>
                   ) : null}
                 </Col>
@@ -2173,7 +2201,7 @@ const StoreSettings = () => {
               </Col> */}
                 <Col span={8} className="mr-2 ">
                   <label className="text-[13px] mb-2 ml-1 select-none">
-                    {t("stores:Primary-Button-Background-Color")}
+                    {t("labels:primary_button_background_color")}
                   </label>
                   <Content className="flex">
                     <Input
@@ -2228,7 +2256,7 @@ const StoreSettings = () => {
                         }}
                         addonAfter={
                           <Tooltip
-                            title={t("stores:Reset-to-the-original-value")}
+                            title={t("messages:reset_to_the_original_value")}
                           >
                             <UndoOutlined
                               onClick={() => {
@@ -2262,14 +2290,14 @@ const StoreSettings = () => {
                   </Content>
                   {colorCodeValidation.primaryBgValidation === true ? (
                     <p className="text-red-600 text-sm">
-                      Please enter valid Hexadecimal Color code <br />
-                      ex. #ffffff for white, #000000 for black
+                      {t("messages:please_enter_valid_hexadecimal_code")} <br />
+                      {t("messages:ex_#ffffff_for_white_#000000_for_black")}
                     </p>
                   ) : null}
                 </Col>
                 <Col span={8} className="ml-1">
                   <label className="text-[13px] mb-2 ml-1 select-none">
-                    {t("stores:Secondary-Button-Background-Color")}
+                    {t("labels:secondary_button_background_color")}
                   </label>
                   <Content className="flex">
                     <Input
@@ -2324,7 +2352,7 @@ const StoreSettings = () => {
                         }}
                         addonAfter={
                           <Tooltip
-                            title={t("stores:Reset-to-the-original-value")}
+                            title={t("messages:reset_to_the_original_value")}
                           >
                             <UndoOutlined
                               onClick={() => {
@@ -2358,14 +2386,14 @@ const StoreSettings = () => {
                   </Content>
                   {colorCodeValidation.secondaryBgValidation === true ? (
                     <p className="text-red-600 text-sm">
-                      Please enter valid Hexadecimal Color code <br />
-                      ex. #ffffff for white, #000000 for black
+                      {t("messages:please_enter_valid_hexadecimal_code")} <br />
+                      {t("messages:ex_#ffffff_for_white_#000000_for_black")}
                     </p>
                   ) : null}
                 </Col>
                 <Col span={7} className="ml-2">
                   <label className="text-[13px] mb-2 ml-1 select-none">
-                    {t("stores:Tertiary-Button-Background-Color")}
+                    {t("labels:tertiary_button_background_color")}
                   </label>
                   <Content className="flex">
                     <Input
@@ -2419,7 +2447,7 @@ const StoreSettings = () => {
                         }}
                         addonAfter={
                           <Tooltip
-                            title={t("stores:Reset-to-the-original-value")}
+                            title={t("messages:reset_to_the_original_value")}
                           >
                             <UndoOutlined
                               onClick={() => {
@@ -2453,8 +2481,8 @@ const StoreSettings = () => {
                   </Content>
                   {colorCodeValidation.tertiaryBgValidation === true ? (
                     <p className="text-red-600 text-sm">
-                      Please enter valid Hexadecimal Color code <br />
-                      ex. #ffffff for white, #000000 for black
+                      {t("messages:please_enter_valid_hexadecimal_code")} <br />
+                      {t("messages:ex_#ffffff_for_white_#000000_for_black")}
                     </p>
                   ) : null}
                 </Col>
@@ -2510,7 +2538,7 @@ const StoreSettings = () => {
               </Col> */}
                 <Col span={8} className="mr-2 ">
                   <label className="text-[13px] mb-2 ml-1 select-none">
-                    {t("stores:Primary-Button-Text-Color")}
+                    {t("labels:primary_button_text_color")}
                   </label>
                   <Content className="flex">
                     <Input
@@ -2565,7 +2593,7 @@ const StoreSettings = () => {
                         }}
                         addonAfter={
                           <Tooltip
-                            title={t("stores:Reset-to-the-original-value")}
+                            title={t("messages:reset_to_the_original_value")}
                           >
                             <UndoOutlined
                               onClick={() => {
@@ -2599,8 +2627,8 @@ const StoreSettings = () => {
                   </Content>
                   {colorCodeValidation.primaryTextValidation === true ? (
                     <p className="text-red-600 text-sm">
-                      Please enter valid Hexadecimal Color code <br />
-                      ex. #ffffff for white, #000000 for black
+                      {t("messages:please_enter_valid_hexadecimal_code")} <br />
+                      {t("messages:ex_#ffffff_for_white_#000000_for_black")}
                     </p>
                   ) : null}
                 </Col>
@@ -2661,7 +2689,7 @@ const StoreSettings = () => {
                         }}
                         addonAfter={
                           <Tooltip
-                            title={t("stores:Reset-to-the-original-value")}
+                            title={t("messages:reset_to_the_original_value")}
                           >
                             <UndoOutlined
                               onClick={() => {
@@ -2695,14 +2723,14 @@ const StoreSettings = () => {
                   </Content>
                   {colorCodeValidation.secondaryTextValidation === true ? (
                     <p className="text-red-600 text-sm">
-                      Please enter valid Hexadecimal Color code <br />
-                      ex. #ffffff for white, #000000 for black
+                      {t("messages:please_enter_valid_hexadecimal_code")} <br />
+                      {t("messages:ex_#ffffff_for_white_#000000_for_black")}
                     </p>
                   ) : null}
                 </Col>
                 <Col span={7} className="ml-2">
                   <label className="text-[13px] mb-2 ml-1 select-none">
-                    {t("stores:Tertiary-Button-Text-Color")}
+                    {t("labels:tertiary_button_text_color")}
                   </label>
                   <Content className="flex">
                     <Input
@@ -2757,7 +2785,7 @@ const StoreSettings = () => {
                         className="w-[150px]"
                         addonAfter={
                           <Tooltip
-                            title={t("stores:Reset-to-the-original-value")}
+                            title={t("messages:reset_to_the_original_value")}
                           >
                             <UndoOutlined
                               onClick={() => {
@@ -2791,8 +2819,8 @@ const StoreSettings = () => {
                   </Content>
                   {colorCodeValidation.tertiaryTextValidation === true ? (
                     <p className="text-red-600 text-sm">
-                      Please enter valid Hexadecimal Color code <br />
-                      ex. #ffffff for white, #000000 for black
+                      {t("messages:please_enter_valid_hexadecimal_code")} <br />
+                      {t("messages:ex_#ffffff_for_white_#000000_for_black")}
                     </p>
                   ) : null}
                 </Col>
@@ -2851,12 +2879,12 @@ const StoreSettings = () => {
             </Content>
             <Content>
               <label className="text-[20px] mb-2 mt-4 font-bold select-none">
-                {t("stores:Store-Header-Setting")}
+                {t("labels:store_header_setting")}
               </label>
               <Row className="mt-2">
                 <Col span={8} className="mr-2 ">
                   <label className="text-[13px] mb-2 ml-1 select-none">
-                    {t("stores:Background-Color")}
+                    {t("labels:background_color")}
                   </label>
                   <Content className="flex">
                     <Input
@@ -2911,7 +2939,7 @@ const StoreSettings = () => {
                         }}
                         addonAfter={
                           <Tooltip
-                            title={t("stores:Reset-to-the-original-value")}
+                            title={t("messages:reset_to_the_original_value")}
                           >
                             <UndoOutlined
                               onClick={() => {
@@ -2941,15 +2969,15 @@ const StoreSettings = () => {
                   </Content>
                   {colorCodeValidation.headerBgValidation === true ? (
                     <p className="text-red-600 text-sm">
-                      Please enter valid Hexadecimal Color code <br />
-                      ex. #ffffff for white, #000000 for black
+                      {t("messages:please_enter_valid_hexadecimal_code")} <br />
+                      {t("messages:ex_#ffffff_for_white_#000000_for_black")}
                     </p>
                   ) : null}
                 </Col>
                 <Col span={8} className="ml-1">
                   <label className="text-[13px] mb-2 ml-1 select-none">
                     {" "}
-                    {t("stores:Text-Color")}
+                    {t("labels:text_color")}
                   </label>
                   <Content className="flex">
                     <Input
@@ -3005,7 +3033,7 @@ const StoreSettings = () => {
                         }}
                         addonAfter={
                           <Tooltip
-                            title={t("stores:Reset-to-the-original-value")}
+                            title={t("messages:reset_to_the_original_value")}
                           >
                             <UndoOutlined
                               onClick={() => {
@@ -3035,8 +3063,8 @@ const StoreSettings = () => {
                   </Content>
                   {colorCodeValidation.headerTextValidation === true ? (
                     <p className="text-red-600 text-sm">
-                      Please enter valid Hexadecimal Color code <br />
-                      ex. #ffffff for white, #000000 for black
+                      {t("messages:please_enter_valid_hexadecimal_code")} <br />
+                      {t("messages:ex_#ffffff_for_white_#000000_for_black")}
                     </p>
                   ) : null}
                 </Col>
@@ -3044,12 +3072,12 @@ const StoreSettings = () => {
             </Content>
             <Content>
               <label className="text-[20px] mb-2 mt-4 font-bold select-none">
-                {t("stores:Store-Footer-Setting")}
+                {t("labels:store_footer_setting")}
               </label>
               <Row className="mt-2">
                 <Col span={8} className="mr-2 ">
                   <label className="text-[13px] mb-2 ml-1 select-none">
-                    {t("stores:Background-Color")}
+                    {t("labels:background_color")}
                   </label>
                   <Content className="flex">
                     <Input
@@ -3103,7 +3131,7 @@ const StoreSettings = () => {
                         }}
                         addonAfter={
                           <Tooltip
-                            title={t("stores:Reset-to-the-original-value")}
+                            title={t("messages:reset_to_the_original_value")}
                           >
                             <UndoOutlined
                               onClick={() => {
@@ -3133,14 +3161,14 @@ const StoreSettings = () => {
                   </Content>
                   {colorCodeValidation.footerBgValidation === true ? (
                     <p className="text-red-600 text-sm">
-                      Please enter valid Hexadecimal Color code <br />
-                      ex. #ffffff for white, #000000 for black
+                      {t("messages:please_enter_valid_hexadecimal_code")} <br />
+                      {t("messages:ex_#ffffff_for_white_#000000_for_black")}
                     </p>
                   ) : null}
                 </Col>
                 <Col span={8} className="ml-1">
                   <label className="text-[13px] mb-2 ml-1 select-none">
-                    {t("stores:Text-Color")}
+                    {t("labels:text_color")}
                   </label>
                   <Content className="flex">
                     <Input
@@ -3194,7 +3222,7 @@ const StoreSettings = () => {
                         }}
                         addonAfter={
                           <Tooltip
-                            title={t("stores:Reset-to-the-original-value")}
+                            title={t("messages:reset_to_the_original_value")}
                           >
                             <UndoOutlined
                               onClick={() => {
@@ -3224,8 +3252,8 @@ const StoreSettings = () => {
                   </Content>
                   {colorCodeValidation.footerTextValidation === true ? (
                     <p className="text-red-600 text-sm">
-                      Please enter valid Hexadecimal Color code <br />
-                      ex. #ffffff for white, #000000 for black
+                      {t("messages:please_enter_valid_hexadecimal_code")} <br />
+                      {t("messages:ex_#ffffff_for_white_#000000_for_black")}
                     </p>
                   ) : null}
                 </Col>
@@ -3247,7 +3275,7 @@ const StoreSettings = () => {
                       // }
                     }}
                   >
-                    {t("common:Save")}
+                    {t("labels:save")}
                   </Button>
                 </Col>
                 <Col className="pl-2">
@@ -3280,7 +3308,7 @@ const StoreSettings = () => {
                       // setImagesUpload([]);
                     }}
                   >
-                    {t("common:Discard")}
+                    {t("labels:discard")}
                   </Button>
                 </Col>
               </Row>
