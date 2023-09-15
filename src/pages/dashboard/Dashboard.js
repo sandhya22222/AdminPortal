@@ -24,6 +24,8 @@ import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import util from "../../util/common";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
 import { useAuth } from "react-oidc-context";
+import { useTranslation } from "react-i18next";
+
 const storeAdminDashboardAPI =
   process.env.REACT_APP_STORE_ADMIN_DASHBOARD_DATA_API;
 const currencySymbol = process.env.REACT_APP_CURRENCY_SYMBOL;
@@ -37,7 +39,7 @@ const Dashboard = () => {
   const auth = useAuth();
   usePageTitle("Dashboard");
   const navigate = useNavigate();
-
+  const { t } = useTranslation();
   const [dashboardData, setDashboardData] = useState();
   const [dashboardDataLoading, setDashboardDataLoading] = useState(true);
   const [dashboardDataNetWorkError, setDashboardDataNetWorkError] =
@@ -84,7 +86,7 @@ const Dashboard = () => {
             <Content className="flex z-20 !justify-between">
               <Content className="!w-[80%]">
                 <Title level={3} className="!font-normal">
-                  Dashboard
+                  {t("labels:dashboard")}
                 </Title>
               </Content>
               <Content className="!w-[20%] text-right !right-0"></Content>
@@ -138,8 +140,7 @@ const Dashboard = () => {
           </Content>
         ) : dashboardDataNetWorkError ? (
           <Content className="text-center !bg-[var(--mp-bright-color)] !p-3 !rounded-md">
-            Unfortunately, we were unable to retrieve dashboard information.
-            Please try again later.
+            {t("messages:dashboard_network_error")}
           </Content>
         ) : (
           <Content>
@@ -155,14 +156,16 @@ const Dashboard = () => {
                         dashboardData.store_data &&
                         dashboardData.store_data.total_count}
                     </Title>
-                    <Text className="font-semibold text-lg ml-2">Stores</Text>
+                    <Text className="font-semibold text-lg ml-2">
+                      {t("labels:stores")}
+                    </Text>
                   </Content>
                   <Content className="flex flex-row-reverse items-center">
                     <Link
                       className="!text-[var(--mp-link-color)] float-right font-semibold"
                       onClick={() => navigate("/dashboard/store")}
                     >
-                      View All
+                      {t("labels:view_all")}
                     </Link>
                   </Content>
                 </Content>
@@ -172,7 +175,9 @@ const Dashboard = () => {
                       <MdStore className="!text-5xl !inline-block !text-[#FCC32A]" />
                     </Content>
                     <Content className="!inline-block w-[60%]">
-                      <Text className="!text-[#8C8C8C] ml-3">Active</Text>
+                      <Text className="!text-[#8C8C8C] ml-3">
+                        {t("labels:active")}
+                      </Text>
                       <Title level={5} className="!text-black mt-0 ml-3">
                         {dashboardData &&
                           dashboardData.store_data &&
@@ -185,7 +190,10 @@ const Dashboard = () => {
                       <MdStore className="!text-5xl !inline-block !text-[#8C8C8C]" />
                     </Content>
                     <Content className="!inline-block w-[60%]">
-                      <Text className="!text-[#8C8C8C] ml-3">Inactive</Text>
+                      <Text className="!text-[#8C8C8C] ml-3">
+                        {" "}
+                        {t("labels:inactive")}
+                      </Text>
                       <Title level={5} className="!text-black mt-0 ml-3">
                         {dashboardData &&
                           dashboardData.store_data &&
@@ -208,7 +216,7 @@ const Dashboard = () => {
                     </Content>
                     <Content className="!inline-block w-[60%]">
                       <Text className="!text-[#00000073] text-md mb-2 !font-medium">
-                        Total Revenue
+                        {t("labels:total_revenue")}
                       </Text>
                       <Title
                         level={3}
@@ -222,7 +230,7 @@ const Dashboard = () => {
                           : 0}
                       </Title>
                       <Text className="!text-[#000000D9] text-sm">
-                        Monthly Revenue
+                        {t("labels:monthly_revenue")}
                       </Text>
                       <Title level={5} className="!text-[#7CB305] mt-0">
                         {currencySymbol}
@@ -249,7 +257,7 @@ const Dashboard = () => {
                     </Content>
                     <Content className="!inline-block w-[60%]">
                       <Text className="!text-[#00000073] text-md mb-2 !font-medium">
-                        Total Profit
+                        {t("labels:total_profit")}
                       </Text>
                       <Title
                         level={3}
@@ -266,7 +274,7 @@ const Dashboard = () => {
                           : 0}
                       </Title>
                       <Text className="!text-[#000000D9] text-sm">
-                        Monthly Profit
+                        {t("labels:monthly_profit")}
                       </Text>
                       <Title level={5} className="!text-[#7CB305] mt-0">
                         {currencySymbol}
@@ -296,7 +304,7 @@ const Dashboard = () => {
                   </Content>
                   <Content className="flex-1 w-[60%]">
                     <Text className="!text-[#00000073] text-md mb-2 !font-medium">
-                      Total Products
+                      {t("labels:total_products")}
                     </Text>
                     <Title
                       level={3}
@@ -305,7 +313,7 @@ const Dashboard = () => {
                       {dashboardData && dashboardData.total_products}
                     </Title>
                     <Text className="!text-[#000000D9] text-sm">
-                      Last 30 Days
+                      {t("labels:last_30_days")}
                     </Text>
                     <Title level={5} className="!text-[#1A5692] mt-0">
                       {dashboardData && dashboardData.total_products_last_month}

@@ -1,7 +1,4 @@
-import {
-  SearchOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import { SearchOutlined, UserOutlined } from "@ant-design/icons";
 import {
   Button,
   Col,
@@ -45,6 +42,8 @@ import StoreModal from "../../components/storeModal/StoreModal";
 import { usePageTitle } from "../../hooks/usePageTitle";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import Status from "./Status";
+import MarketplaceToaster from "../../util/marketplaceToaster";
+import util from "../../util/common";
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
@@ -260,7 +259,7 @@ const Stores = () => {
     //   },
     // },
     {
-      title: `${t("stores:Name")}`,
+      title: `${t("labels:name")}`,
       dataIndex: "name",
       key: "name",
       width: "30%",
@@ -281,7 +280,7 @@ const Stores = () => {
       // ...getColumnSearchProps("name"),
     },
     {
-      title: `${t("stores:Status")}`,
+      title: `${t("labels:status")}`,
       dataIndex: "status",
       key: "status",
       width: "20%",
@@ -302,7 +301,7 @@ const Stores = () => {
       },
     },
     {
-      title: `${t("stores:Created-Date-And-Time")}`,
+      title: `${t("labels:created_date_and_time")}`,
       dataIndex: "created_on",
       key: "created_on",
       width: "30%",
@@ -311,7 +310,7 @@ const Stores = () => {
       },
     },
     {
-      title: `${t("stores:Action")}`,
+      title: `${t("labels:action")}`,
       dataIndex: "",
       key: "",
       width: "12%",
@@ -341,13 +340,13 @@ const Stores = () => {
               }}
               // className=" pl-[10px] font-semibold app-table-data-title"
             >
-              <Tooltip title={t("stores:Store-Settings")}>
+              <Tooltip title={t("labels:store_settings")}>
                 <MdSettings className=" text-black !text-xl ml-2" />
               </Tooltip>
             </Link>
 
             {record.status === "InActive" ? (
-              <Tooltip title={t("stores:Delete-Store")}>
+              <Tooltip title={t("labels:delete_store")}>
                 <img
                   src={DeleteIcon}
                   className="!text-xl ml-4 cursor-pointer"
@@ -466,7 +465,6 @@ const Stores = () => {
   };
   //!edit drawer
   const showEditDrawer = (id) => {
-    console.log("storerecordid", id);
     setOnChangeEditValues(false);
     setStoreEditId(id);
     setOpen(true);
@@ -612,11 +610,17 @@ const Stores = () => {
       setInValidPassword(true);
       setInValidName(true);
       count--;
-      toast("Please provide values for the mandatory fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      // toast("Please provide values for the mandatory fields", {
+      //   position: toast.POSITION.TOP_RIGHT,
+      //   type: "error",
+      //   autoClose: 10000,
+      // });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     } else if (
       storeEmail === "" &&
       storeUserName === "" &&
@@ -627,11 +631,12 @@ const Stores = () => {
       setInValidUserName(true);
       setInValidPassword(true);
       count--;
-      toast("Please provide values for the mandatory fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     } else if (
       storeEmail !== "" &&
       storeUserName === "" &&
@@ -642,11 +647,12 @@ const Stores = () => {
       setInValidPassword(true);
       setInValidName(true);
       count--;
-      toast("Please provide values for the mandatory fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     } else if (
       storeEmail === "" &&
       storeUserName !== "" &&
@@ -657,11 +663,12 @@ const Stores = () => {
       setInValidPassword(true);
       setInValidName(true);
       count--;
-      toast("Please provide values for the mandatory fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     } else if (
       storeEmail === "" &&
       storeUserName === "" &&
@@ -672,11 +679,12 @@ const Stores = () => {
       setInValidUserName(true);
       setInValidName(true);
       count--;
-      toast("Please provide values for the mandatory fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     } else if (
       storeEmail === "" &&
       storeUserName === "" &&
@@ -686,11 +694,12 @@ const Stores = () => {
       setInValidEmail(true);
       setInValidUserName(true);
       count--;
-      toast("Please provide values for the mandatory fields ", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     } else if (
       storeEmail === "" &&
       storeUserName !== "" &&
@@ -700,11 +709,12 @@ const Stores = () => {
       setInValidEmail(true);
       setInValidPassword(true);
       count--;
-      toast("Please provide values for the mandatory fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     } else if (
       storeEmail !== "" &&
       storeUserName === "" &&
@@ -714,11 +724,12 @@ const Stores = () => {
       setInValidUserName(true);
       setInValidPassword(true);
       count--;
-      toast("Please provide values for the mandatory fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     } else if (
       storeEmail !== "" &&
       storeUserName === "" &&
@@ -728,11 +739,12 @@ const Stores = () => {
       setInValidName(true);
       setInValidUserName(true);
       count--;
-      toast("Please provide values for the mandatory fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     } else if (
       storeEmail !== "" &&
       storeUserName !== "" &&
@@ -742,11 +754,12 @@ const Stores = () => {
       setInValidName(true);
       setInValidPassword(true);
       count--;
-      toast("Please provide values for the mandatory fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     } else if (
       storeEmail === "" &&
       storeUserName !== "" &&
@@ -756,11 +769,12 @@ const Stores = () => {
       setInValidName(true);
       setInValidEmail(true);
       count--;
-      toast("Please provide values for the mandatory fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     } else if (
       storeEmail !== "" &&
       storeUserName !== "" &&
@@ -769,11 +783,12 @@ const Stores = () => {
     ) {
       setInValidName(true);
       count--;
-      toast("Please provide values for the mandatory fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     } else if (
       storeEmail === "" &&
       storeUserName !== "" &&
@@ -782,11 +797,12 @@ const Stores = () => {
     ) {
       setInValidEmail(true);
       count--;
-      toast("Please provide values for the mandatory fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     } else if (
       storeEmail !== "" &&
       storeUserName === "" &&
@@ -795,11 +811,12 @@ const Stores = () => {
     ) {
       setInValidUserName(true);
       count--;
-      toast("Please provide values for the mandatory fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     } else if (
       storeEmail !== "" &&
       storeUserName !== "" &&
@@ -808,11 +825,12 @@ const Stores = () => {
     ) {
       setInValidPassword(true);
       count--;
-      toast("Please provide values for the mandatory fields", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     } else if (
       name &&
       validator.isLength(name.trim(), {
@@ -822,13 +840,15 @@ const Stores = () => {
     ) {
       setInValidName(true);
       count--;
-      toast(
-        `Store name must contain minimum of ${storeNameMinLength}, maximum of ${storeNameMaxLength} characters`,
-        {
-          position: toast.POSITION.TOP_RIGHT,
-          type: "error",
-          autoClose: 10000,
-        }
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t(
+            "messages:store_name_must_contain_minimum_of"
+          )} ${storeNameMinLength}, ${t(
+            "messages:maximum_of"
+          )} ${storeNameMaxLength} ${t("messages:characters")}`,
+          "error"
+        )
       );
     } else if (
       (storeEmail && validator.isEmail(storeEmail) === false) ||
@@ -839,11 +859,12 @@ const Stores = () => {
     ) {
       setInValidEmail(true);
       count--;
-      toast(`${t("stores:Please-enter-the-valid-email-address")}`, {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_enter_the_valid_email_address")}`,
+          "error"
+        )
+      );
     } else if (
       storeUserName &&
       validator.isLength(storeUserName.trim(), {
@@ -853,22 +874,27 @@ const Stores = () => {
     ) {
       setInValidUserName(true);
       count--;
-      toast(
-        `Username must contain minimum of ${userNameMinLength}, maximum of ${userNameMaxLength} characters`,
-        {
-          position: toast.POSITION.TOP_RIGHT,
-          type: "error",
-          autoClose: 10000,
-        }
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t(
+            "messages:username_must_contain_minimum_of"
+          )} ${userNameMinLength}, ${t(
+            "messages:maximum_of"
+          )} ${userNameMaxLength} ${t("messages:characters")}`,
+          "error"
+        )
       );
     } else if (storePassword && pattern.test(storePassword) === false) {
       setInValidPassword(true);
       count--;
-      toast(`${t("stores:Validation-Error-Message1")}`, {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t(
+            "messages:password_must_contain_minimum_of"
+          )} ${passwordMinLength} ${t("messages:password_error_message")}`,
+          "error"
+        )
+      );
     }
     if (count === 4) {
       saveStoreData();
@@ -1091,7 +1117,7 @@ const Stores = () => {
     //   .post(storeAPI, postBody, authorizationHeader)
     MarketplaceServices.save(storeAPI, postBody)
       .then((response) => {
-        toast(`${t("stores:Store-created-successfully")}`, {
+        toast(`${t("messages:store_created_successfully")}`, {
           position: toast.POSITION.TOP_RIGHT,
           type: "success",
           autoClose: 10000,
@@ -1122,7 +1148,7 @@ const Stores = () => {
               autoClose: 10000,
             });
           } else {
-            toast(`${t("common:Something-Went-Wrong")}`, {
+            toast(`${t("messages:something_went_wrong")}`, {
               position: toast.POSITION.TOP_RIGHT,
               type: "error",
               autoClose: 10000,
@@ -1169,7 +1195,7 @@ const Stores = () => {
         setServerStoreName(response.data.name);
         onClose();
         if (response.status === 200 || response.status === 201) {
-          toast(`${t("stores:Store-updated-successfully")}`, {
+          toast(`${t("messages:store_updated_successfully")}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
             autoClose: 10000,
@@ -1178,36 +1204,18 @@ const Stores = () => {
       })
       .catch((error) => {
         setIsUpLoading(false);
-        if (error && error.response && error.response.status === 401) {
-          toast("Session expired", {
+        if (error.response.status === 400) {
+          toast(`${t("stores:Please-enter-the-valid-store-name")}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
             autoClose: 10000,
           });
         } else {
-          if (error.response.status === 400) {
-            toast(`${t("stores:Please-enter-the-valid-store-name")}`, {
-              position: toast.POSITION.TOP_RIGHT,
-              type: "error",
-              autoClose: 10000,
-            });
-            // toast(`${error.response.data.message.name}`, {
-            //   position: toast.POSITION.TOP_RIGHT,
-            //   type: "error",
-            //   autoClose: 10000,
-            // });
-            // toast(`${error.response.data.message.name}`, {
-            //   position: toast.POSITION.TOP_RIGHT,
-            //   type: "error",
-            //   autoClose: 10000,
-            // });
-          } else {
-            toast(`${t("common:Something-Went-Wrong")}`, {
-              position: toast.POSITION.TOP_RIGHT,
-              type: "error",
-              autoClose: 10000,
-            });
-          }
+          toast(`${t("messages:something_went_wrong")}`, {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+            autoClose: 10000,
+          });
         }
       });
   };
@@ -1319,7 +1327,7 @@ const Stores = () => {
           }
           setStoreApiData(removedData);
           setCountForStore(countForStore - 1);
-          toast(`${t("stores:Store-deleted-successfully")}`, {
+          toast(`${t("messages:store_deleted_successfully")}`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "success",
             autoClose: 10000,
@@ -1346,7 +1354,7 @@ const Stores = () => {
               autoClose: 10000,
             });
           } else {
-            toast(`${t("common:Something-Went-Wrong")}`, {
+            toast(`${t("messages:something_went_wrong")}`, {
               position: toast.POSITION.TOP_RIGHT,
               type: "error",
               autoClose: 10000,
@@ -1363,15 +1371,13 @@ const Stores = () => {
     }
   };
 
-  console.log("storeApiData", storeApiData);
-
   return (
     <Content className="">
       <StoreModal
         isVisible={isDeleteStoreModalOpen}
-        okButtonText={"Yes"}
-        cancelButtonText={"Cancel"}
-        title={"Warning"}
+        okButtonText={t("labels:yes")}
+        cancelButtonText={t("labels:cancel")}
+        title={t("labels:warning")}
         okCallback={() => removeStore()}
         cancelCallback={() => closeDeleteModal()}
         isSpin={isStoreDeleting}
@@ -1379,8 +1385,8 @@ const Stores = () => {
       >
         {
           <div>
-            <p>{t("stores:Confirm-Store-Deletion")}</p>
-            <p>{t("stores:Store-Deletion-Confirmation-Message")}</p>
+            <p>{t("messages:confirm_store_deletion")}</p>
+            <p>{t("messages:store_deletion_confirmation_message")}</p>
           </div>
         }
       </StoreModal>
@@ -1391,18 +1397,18 @@ const Stores = () => {
               <Content className="flex">
                 <Content className="!inline-block text-left self-center pr-3">
                   <Title level={3} className="!font-normal">
-                    {t("stores:Stores")}
+                    {t("labels:stores")}
                   </Title>
                 </Content>
                 <Content className="!inline-block text-right self-center">
                   <Button className="app-btn-primary" onClick={showAddDrawer}>
-                    {t("stores:Add-Store")}
+                    {t("labels:add_store")}
                   </Button>
                   <Drawer
                     title={
                       drawerAction && drawerAction === "post"
-                        ? `${t("stores:Add-Store")}`
-                        : `${t("stores:Edit-Store")}`
+                        ? `${t("labels:add_store")}`
+                        : `${t("labels:edit_store")}`
                     }
                     placement="right"
                     onClose={onClose}
@@ -1418,19 +1424,19 @@ const Stores = () => {
                           <Col span={23} className="align-center mb-3">
                             <Text className=" mr-1 font-bold">
                               {" "}
-                              {t("stores:Note")}:{" "}
+                              {t("labels:note")}:{" "}
                             </Text>
-                            <Text>{t("stores:Add-Store-Description")}</Text>
+                            <Text>{t("messages:add_store_description")}</Text>
                           </Col>
                         </Row>
                         <Spin
-                          tip={t("stores:Please-wait")}
+                          tip={t("labels:please_wait")}
                           size="large"
                           spinning={isUpLoading}
                         >
                           <span className="text-red-600 text-sm">*</span>
                           <label className="text-[13px] mb-2 ml-1">
-                            {t("stores:Store-Name")}
+                            {t("labels:store_name")}
                             {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
                           </label>
                           <Input
@@ -1482,11 +1488,11 @@ const Stores = () => {
                           ) : null} */}
 
                           <Divider orientation="left" orientationMargin="0">
-                            {t("stores:Store-Administrator-Details")}
+                            {t("labels:store_administrator_details")}
                           </Divider>
                           <span className="text-red-600 text-sm">*</span>
                           <label className="text-[13px] mb-2 ml-1">
-                            {t("stores:Email")}
+                            {t("labels:email")}
                           </label>
                           <Input
                             placeholder={t("placeholders:enter_email")}
@@ -1514,7 +1520,7 @@ const Stores = () => {
                           />
                           <span className="text-red-600 text-sm">*</span>
                           <label className="text-[13px] mb-2 ml-1">
-                            {t("stores:Username")}
+                            {t("labels:username")}
                           </label>
                           <Input
                             placeholder={t("placeholders:enter_username")}
@@ -1556,7 +1562,7 @@ const Stores = () => {
                           />
                           <span className="text-red-600 text-sm">*</span>
                           <label className="text-[13px] mb-2 ml-1">
-                            {t("stores:Password")}
+                            {t("labels:password")}
                           </label>
                           <Input.Password
                             placeholder={t("placeholders:enter_password")}
@@ -1603,7 +1609,7 @@ const Stores = () => {
                               validateStorePostField();
                             }}
                           >
-                            {t("common:Save")}
+                            {t("labels:Save")}
                           </Button>
                         </Spin>
                       </>
@@ -1616,13 +1622,13 @@ const Stores = () => {
                           <Col span={23} className="align-center mb-3">
                             <Text className=" mr-1 font-bold">
                               {" "}
-                              {t("stores:Note")}:
+                              {t("labels:note")}:
                             </Text>
-                            <Text>{t("stores:Edit-Store-Description")}</Text>
+                            <Text>{t("messages:edit_store_description")}</Text>
                           </Col>
                         </Row>
                         <Spin
-                          tip={t("stores:Please-wait")}
+                          tip={t("labels:please_wait")}
                           size="large"
                           spinning={isUpLoading}
                         >
@@ -1671,12 +1677,12 @@ const Stores = () => {
                             }}
                           />
                           <Divider orientation="left" orientationMargin="0">
-                            {t("stores:Store-Administrator-Details")}
+                            {t("labels:store_administrator_details")}
                           </Divider>
                           <span className="text-red-600 text-sm">*</span>
                           <label className="text-[13px] mb-2 ml-1">
                             {" "}
-                            {t("stores:Email")}
+                            {t("labels:email")}
                           </label>
                           <Input
                             placeholder={t("placeholders:enter_email")}
@@ -1811,8 +1817,7 @@ const Stores = () => {
           </Content>
         ) : isNetworkError ? (
           <Content className="!mt-[1.7rem] !text-center bg-white p-3 !rounded-md">
-            Unfortunately, we were unable to retrieve store information. Please
-            try again later.
+            {t("messages:store_network_error")}
           </Content>
         ) : (
           <Content className="!mt-[1.7rem]">
@@ -1835,7 +1840,7 @@ const Stores = () => {
                 <DynamicTable tableComponentData={tablePropsData} />
               ) : (
                 <Content className="!mt-[1.7rem] !text-center bg-white p-3 !rounded-md">
-                  No data available
+                  {t("messages:no_data_available")}
                 </Content>
               )}
             </Content>

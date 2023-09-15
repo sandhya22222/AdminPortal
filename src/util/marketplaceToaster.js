@@ -1,28 +1,44 @@
 import { toast } from "react-toastify";
 
-const popToast = (responseObj) => {
-  console.log("responseObj", responseObj);
-  toast(responseObj.response_description, {
-    position: toast.POSITION.TOP_RIGHT,
-    type: getErrorType(responseObj.error_type.toUpperCase()),
-  });
+const showToast = (object) => {
+  console.log("object", object);
+  try {
+    //Remove all the toast already displaying on the screen before displaying new one
+    toast.dismiss();
+
+    const message = object.data.response_message;
+    const errorType = object.data.error_type;
+
+    toast(message, {
+      position: toast.POSITION.TOP_RIGHT,
+      type: errorType.toLowerCase(),
+      autoClose: getToastTimeoutDuration(errorType.toUpperCase()),
+    });
+  } catch (error) {
+    toast("Please try again after a while. Something went wrong", {
+      type: "error",
+      autoClose: false,
+    });
+  }
 };
 
-const getErrorType = (key) => {
+const getToastTimeoutDuration = (key) => {
   switch (key) {
     case "ERROR":
-      return "error";
+      return 10000;
     case "WARNING":
-      return "warning";
+      return 5000;
     case "INFO":
-      return "info";
+      return 5000;
+    case "SUCCESS":
+      return 5000;
     default:
-      return "success";
+      return false;
   }
 };
 
 const MarketplaceToaster = {
-  popToast,
+  showToast,
 };
 
 export default MarketplaceToaster;

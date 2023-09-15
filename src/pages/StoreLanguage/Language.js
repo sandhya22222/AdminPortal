@@ -1,0 +1,500 @@
+//! Import libraries
+import React from "react";
+import { useEffect, useState, useRef } from "react";
+import { toast } from "react-toastify";
+import {
+  Layout,
+  Col,
+  Button,
+  Typography,
+  Tooltip,
+  Tag,
+  Empty,
+  Badge,
+} from "antd";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+//! Import user defined components
+import DynamicTable from "../../components/DynamicTable/DynamicTable";
+import DmPagination from "../../components/DmPagination/DmPagination";
+import { usePageTitle } from "../../hooks/usePageTitle";
+import util from "../../util/common";
+import MarketplaceServices from "../../services/axios/MarketplaceServices";
+import HeaderForTitle from "../../components/header/HeaderForTitle";
+import SkeletonComponent from "../../components/Skeleton/SkeletonComponent";
+import PageSpinner from "../../components/spinner/PageSpinner";
+import {
+  EditIcon,
+  plusIcon,
+  tableDropDownArrow,
+  DownloadIcon,
+  DownloadIconDisable,
+  starIcon,
+} from "../../constants/media";
+
+import LanguageBanner from "./LanguageBanner";
+import MarketplaceToaster from "../../util/marketplaceToaster";
+const { Title, Text, Paragraph } = Typography;
+const { Content } = Layout;
+
+const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API;
+const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE);
+const LanguageDownloadAPI =
+  process.env.REACT_APP_DOWNLOAD_LANGUAGE_TRANSLATION_CSV;
+const Language = () => {
+  const { t } = useTranslation();
+  usePageTitle("Languages");
+  const navigate = useNavigate();
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [languageData, setLanguageData] = useState([]);
+  const [isNetworkErrorLanguage, setIsNetworkErrorLanguage] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [totalLanguageCount, setTotalLanguageCount] = useState();
+  const [showAddLanguageBtn, setShowAddLanguageBtn] = useState(false);
+  const [showLanguageList, setShowLanguageList] = useState(false);
+  const [errorMessage, setErrorMessage] = useState();
+
+  const StarIcon = () => {
+    return (
+      <>
+        <img src={starIcon} className="mr-1 flex !items-center" />
+      </>
+    );
+  };
+
+  const columns = [
+    {
+      title: "Language",
+      dataIndex: "language",
+      key: "language",
+      width: "30%",
+      ellipsis: true,
+      render: (text, record) => {
+        return (
+          <Content className="inline-block">
+            <Tooltip title={record.language}>
+              <Text
+                className={`mr-2 ${
+                  record.is_default ? "!max-w-[215px]" : "!max-w-[290px]"
+                } `}
+                ellipsis={true}
+              >
+                {record.language}
+              </Text>
+            </Tooltip>
+            {record.is_default ? (
+              <Tag
+                icon={<StarIcon />}
+                className="inline-flex items-center"
+                color="#FB8500"
+              >
+                Default
+              </Tag>
+            ) : (
+              ""
+            )}
+          </Content>
+        );
+      },
+    },
+    {
+      title: "Code",
+      dataIndex: "language_code",
+      key: "language_code",
+      width: "12%",
+      render: (text, record) => {
+        return (
+          <>
+            <Tooltip title={record.language_code}>
+              <Text
+                className="max-w-xs"
+                ellipsis={{ tooltip: record.language_code }}
+              >
+                {record.language_code}
+              </Text>
+            </Tooltip>
+          </>
+        );
+      },
+    },
+    {
+      title: "Script Direction",
+      dataIndex: "writing_script_direction",
+      key: "writing_script_direction",
+      ellipsis: true,
+      width: "15%",
+      render: (text, record) => {
+        return (
+          <>
+            {record.writing_script_direction === "LTR" ? (
+              <Tag color="success">Left To Right</Tag>
+            ) : (
+              <Tag color="warning">Right To Left</Tag>
+            )}
+          </>
+        );
+      },
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      width: "15%",
+      render: (text, record) => {
+        return (
+          <>
+            <Text>
+              {record.status == 2 ? (
+                <Badge status="default" text="In Active" />
+              ) : (
+                <Badge status="success" text="Active" />
+              )}
+            </Text>
+          </>
+        );
+      },
+    },
+    {
+      title: "Support Document",
+      dataIndex: "lang_support_docs",
+      key: "lang_support_docs",
+      width: "20%",
+      render: (text, record) => {
+        return (
+          <Content className="flex whitespace-nowrap align-middle">
+            {record.lang_support_docs_path !== null ? (
+              <Content
+                className="whitespace-nowrap flex align-middle cursor-pointer"
+                onClick={() => {
+                  findAllSupportDocumentTemplateDownload(
+                    2,
+                    record.language_code
+                  );
+                }}
+              >
+                <img
+                  src={DownloadIcon}
+                  className="!text-xs !w-[10px] mr-1 !items-center"
+                />
+                <div className="text-[#0246bb] !ml-[8px]">
+                  Download Document
+                </div>
+              </Content>
+            ) : (
+              <Content className="whitespace-nowrap flex align-middle cursor-not-allowed">
+                <img
+                  src={DownloadIconDisable}
+                  className="!text-xs !w-3 mr-1 !items-center"
+                />
+                <div className="text-[#cbd5e1] !ml-[10px]">
+                  Download Document
+                </div>
+              </Content>
+            )}
+          </Content>
+        );
+      },
+    },
+    {
+      title: "Action",
+      dataIndex: "",
+      key: "",
+      width: "8%",
+      align: "center",
+      render: (text, record) => {
+        return (
+          <Col className="whitespace-nowrap !text-center">
+            <Tooltip title="Edit Language">
+              <img
+                src={EditIcon}
+                alt="Edit Icon"
+                className=" !w-[12px] !text-center !text-sm cursor-pointer"
+                onClick={() => {
+                  navigate(
+                    `/dashboard/language/language-settings?k=${record.id}&n=${
+                      record.language
+                    }&c=${record.language_code}&d=${
+                      record.is_default === false ? 0 : 1
+                    }`
+                  );
+                }}
+              />
+            </Tooltip>
+          </Col>
+        );
+      },
+    },
+  ];
+
+  let tempArray = [];
+  {
+    languageData &&
+      languageData.length > 0 &&
+      languageData.map((element, index) => {
+        var Id = element.id;
+        var Language = element.language;
+        var LanguageCode = element.language_code;
+        var Writing_script_direction = element.writing_script_direction;
+        var Native_name = element.native_name;
+        var Lang_support_docs = element.lang_support_docs;
+        var Language_document_path = element.lang_support_docs_path;
+        var Dm_language_regex = element.language_regex;
+        var is_default = element.is_default;
+        var status = element.status;
+        tempArray &&
+          tempArray.push({
+            key: index,
+            id: Id,
+            language: Language,
+            language_code: LanguageCode,
+            writing_script_direction: Writing_script_direction,
+            native_name: Native_name,
+            lang_support_docs: Lang_support_docs,
+            dm_language_regex: Dm_language_regex,
+            lang_support_docs_path: Language_document_path,
+            is_default: is_default,
+            status: status,
+          });
+      });
+    console.log("tempArray", tempArray);
+  }
+  //!get call of list language
+  const findByPageLanguageData = (page, limit) => {
+    // enabling spinner
+    setIsLoading(true);
+    MarketplaceServices.findByPage(languageAPI, null, page, limit, false)
+      .then(function (response) {
+        setIsLoading(false);
+        setIsNetworkErrorLanguage(false);
+        console.log(
+          "server Success response from language API call",
+          response.data
+        );
+        setLanguageData(response.data.response_body.data);
+        setTotalLanguageCount(response.data.response_body.count);
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        setIsNetworkErrorLanguage(true);
+        console.log(
+          "server error response from language API call",
+          error.response
+        );
+        // MarketplaceToaster.showToast(error.response);
+        if (error && error.response && error.response.status === 401) {
+          toast("Session expired", {
+            position: toast.POSITION.TOP_RIGHT,
+            type: "error",
+            autoClose: 10000,
+          });
+        } else {
+          if (error.response) {
+            setErrorMessage(error.response.data.response_body.message);
+          }
+          if (
+            error.response.data.response_body.message ===
+            "That page contains no results"
+          ) {
+            setSearchParams({
+              page: 1,
+              limit: parseInt(searchParams.get("limit")),
+            });
+          }
+        }
+      });
+  };
+
+  //! get call of get document template API
+  const findAllSupportDocumentTemplateDownload = (formatOption, langCode) => {
+    MarketplaceServices.findMedia(LanguageDownloadAPI, {
+      "is-format": formatOption,
+      language_code: langCode,
+    })
+      .then(function (response) {
+        console.log(
+          "Server Response from DocumentTemplateDownload Function: ",
+          response.data
+        );
+        const fileURL = window.URL.createObjectURL(response.data.response_body);
+        let alink = document.createElement("a");
+        alink.href = fileURL;
+        alink.download = "key_value_format.csv";
+        alink.click();
+      })
+      .catch((error) => {
+        console.log(
+          "Server error from DocumentTemplateDownload Function ",
+          error.response
+        );
+      });
+  };
+
+  const ProductSortingOption = [
+    {
+      sortType: "asc",
+      sortKey: "id",
+      title: "Title A-Z",
+      default: true,
+    },
+    {
+      sortType: "desc",
+      sortKey: "id",
+      title: "Title Z-A",
+      default: false,
+    },
+  ];
+
+  //!dynamic table data
+  const tablePropsData = {
+    table_header: columns,
+    table_content: tempArray && tempArray,
+    search_settings: {
+      is_enabled: false,
+      search_title: "Search by language",
+      search_data: ["language"],
+    },
+    filter_settings: {
+      is_enabled: false,
+      filter_title: "filter by",
+      filter_data: [],
+    },
+    sorting_settings: {
+      is_enabled: false,
+      sorting_title: "Sorting by",
+      sorting_data: ProductSortingOption,
+    },
+  };
+
+  const handlePageNumberChange = (page, pageSize) => {
+    setSearchParams({
+      page: parseInt(page) ? parseInt(page) : 1,
+      limit: parseInt(pageSize) ? parseInt(pageSize) : pageLimit,
+    });
+  };
+
+  useEffect(() => {
+    findByPageLanguageData(
+      searchParams.get("page") ? parseInt(searchParams.get("page")) : 1,
+      searchParams.get("limit")
+        ? parseInt(searchParams.get("limit"))
+        : pageLimit
+    );
+    window.scrollTo(0, 0);
+  }, [searchParams]);
+
+  return (
+    <Content>
+      <Content>
+        <HeaderForTitle
+          title={
+            <Content className="flex">
+              <Content className="!w-[80%]">
+                <Title level={3} className="!font-normal">
+                  {t("languages:Languages")}
+                </Title>
+              </Content>
+              <Content className="!w-[20%] text-right">
+                <>
+                  <Content className="!flex !justify-end">
+                    <Button
+                      className="app-btn-secondary mr-2 !flex !justify-items-center"
+                      onClick={() =>
+                        findAllSupportDocumentTemplateDownload(1, "en")
+                      }
+                    >
+                      <img
+                        src={tableDropDownArrow}
+                        className="!text-xs !w-4 my-1 mr-1 !items-center"
+                      />
+                      <div className=" !mr-[10px]">
+                        Download Support Document Template
+                      </div>
+                    </Button>
+                    <Button
+                      className="app-btn-primary !flex !justify-items-center"
+                      onClick={() =>
+                        navigate("/dashboard/language/language-settings")
+                      }
+                    >
+                      <img
+                        src={plusIcon}
+                        alt="plusIconWithAddLanguage"
+                        className="!text-xs !w-3 my-1 mr-2 !items-center"
+                      />
+                      <div className="mr-[10px]">
+                        {t("languages:add_language")}
+                      </div>
+                    </Button>
+                  </Content>
+                </>
+              </Content>
+            </Content>
+          }
+        />
+      </Content>
+      <Content className="p-3 mt-[7.8rem]">
+        {languageData && languageData.length > 0 ? (
+          <>
+            <Content className="bg-white p-2">
+              <Content>
+                <DynamicTable tableComponentData={tablePropsData} />
+                {totalLanguageCount && totalLanguageCount >= pageLimit ? (
+                  <Content className=" grid justify-items-end">
+                    <DmPagination
+                      currentPage={
+                        searchParams.get("page")
+                          ? parseInt(searchParams.get("page"))
+                          : 1
+                      }
+                      presentPage={
+                        searchParams.get("page")
+                          ? parseInt(searchParams.get("page"))
+                          : 1
+                      }
+                      totalItemsCount={totalLanguageCount}
+                      pageLimit={pageLimit}
+                      pageSize={
+                        searchParams.get("limit")
+                          ? parseInt(searchParams.get("limit"))
+                          : pageLimit
+                      }
+                      handlePageNumberChange={handlePageNumberChange}
+                      showSizeChanger={true}
+                      showTotal={true}
+                    />
+                  </Content>
+                ) : null}
+              </Content>
+            </Content>
+            {languageData &&
+            languageData.length == 1 &&
+            languageData[0].language_code ? (
+              <Content className="bg-white mt-4 p-2">
+                <LanguageBanner></LanguageBanner>
+              </Content>
+            ) : null}
+          </>
+        ) : isLoading ? (
+          <Content className=" bg-white p-3 ">
+            <SkeletonComponent />
+          </Content>
+        ) : isNetworkErrorLanguage ? (
+          <Content className="p-3 text-center mb-3 bg-[#F4F4F4]">
+            <p>{t("common:Network-Error")}</p>
+          </Content>
+        ) : languageData && languageData.length === 0 ? (
+          <div className="w-[100%] p-5 flex items-center justify-center !bg-white">
+            <Empty description={errorMessage} />
+          </div>
+        ) : (
+          <Content className="text-center bg-white p-3">
+            <PageSpinner />
+          </Content>
+        )}
+      </Content>
+    </Content>
+  );
+};
+
+export default Language;

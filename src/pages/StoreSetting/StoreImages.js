@@ -16,6 +16,7 @@ import {
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { fnAbsoluteStoreImageInfo } from "../../services/redux/actions/ActionStoreImages";
+import { useTranslation } from "react-i18next";
 import useAuthorization from "../../hooks/useAuthorization";
 import StoreModal from "../../components/storeModal/StoreModal";
 import { TiDelete } from "react-icons/ti";
@@ -47,7 +48,7 @@ const StoreImages = ({
 }) => {
   const authorizationHeader = useAuthorization();
   const dispatch = useDispatch();
-
+  const { t } = useTranslation();
   const absoluteStoreImageInfo = useSelector(
     (state) => state.reducerAbsoluteStoreImageInfo.absoluteStoreImageInfo
   );
@@ -516,7 +517,7 @@ const StoreImages = ({
                 icon={<UploadOutlined className="-translate-y-1" />}
                 className="font-semibold"
               >
-                Click To Upload(Max: {BannerImagesUploadLength})
+                 {t("labels:click_to_upload")}(Max: {BannerImagesUploadLength})
               </Button>
             </Upload>
           )}
@@ -592,7 +593,7 @@ const StoreImages = ({
                     icon={<UploadOutlined className="-translate-y-1" />}
                     className="font-semibold"
                   >
-                    Click To Upload(Max: {BannerImagesUploadLength})
+                    {t("labels:click_to_upload")}(Max: {BannerImagesUploadLength})
                   </Button>
                 </Upload>
                 <Modal

@@ -25,6 +25,11 @@ import tableDropDownArrow from "../assets/images/common/MUI-table-arrow-down.svg
 import DownloadIcon from "../assets/images/common/DownloadIcon.svg";
 import DownloadIconDisable from "../assets/images/common/DownloadIconDisable.svg";
 import TrashIcon from "../assets/images/common/TrashIcon.svg";
+import tableIcon from "../assets/images/common/tableIcon.svg";
+import codeJsonIcon from "../assets/images/common/codeJsonIcon.svg";
+import crossIcon from "../assets/images/common/crossIcon.svg";
+import starIcon from "../assets/images/common/starIcon.svg";
+import globeIcon from "../assets/images/common/globeIcon.svg";
 export {
   AppStoreLogo,
   PlayStoreLogo,
@@ -53,4 +58,9 @@ export {
   DownloadIcon,
   DownloadIconDisable,
   TrashIcon,
+  tableIcon,
+  codeJsonIcon,
+  crossIcon,
+  starIcon,
+  globeIcon,
 };

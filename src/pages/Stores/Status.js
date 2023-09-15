@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Switch, Space, Row, Col } from "antd";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 import StoreModal from "../../components/storeModal/StoreModal";
 import useAuthorization from "../../hooks/useAuthorization";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
-
 const storeEditStatusAPI = process.env.REACT_APP_STORE_STATUS_API;
 
 function Status({
@@ -19,7 +19,7 @@ function Status({
   setActiveCount,
 }) {
   const authorizationHeader = useAuthorization();
-
+  const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [switchStatus, setSwitchStatus] = useState(storeStatus);
   const [changeSwitchStatus, setChangeSwitchStatus] = useState("");
@@ -186,14 +186,17 @@ function Status({
     setIsModalOpen(true);
   };
 
-  console.log("isLoading", isLoading);
   return (
     <div>
       <StoreModal
         isVisible={isModalOpen}
-        okButtonText={"Yes"}
-        title={changeSwitchStatus ? "Success" : "Warning"}
-        cancelButtonText={"Cancel"}
+        okButtonText="Yes"
+        title={
+          changeSwitchStatus
+            ? `${t("labels:success")}`
+            : `${t("labels:warning")}`
+        }
+        cancelButtonText="Cancel"
         okCallback={() => updateStoreStatus()}
         cancelCallback={() => closeModal()}
         isSpin={isLoading}
@@ -202,13 +205,13 @@ function Status({
         {/* <Content className="!w-3/5"> */}
         {changeSwitchStatus ? (
           <div>
-            <p>{`Store Activation Confirmation`}</p>
-            <p>{`Great news! You are about to activate your store. Are you sure you would like to proceed?`}</p>
+            <p>{t("messages:store_activation_confirmation")}</p>
+            <p>{t("messages:store_active_confirmation_message")}</p>
           </div>
         ) : (
           <div>
-            <p>{`Store Deactivation Confirmation`}</p>
-            <p>{`You are about to deactivate your store. Are you sure you would like to proceed?`}</p>
+            <p>{t("messages:store_deactivation_confirmation")}</p>
+            <p>{t("messages:store_deactivation_confirmation_message")}</p>
           </div>
         )}
         {/* </Content> */}
@@ -226,7 +229,9 @@ function Status({
             />
           </Space>
         </Col>
-        <div className="pl-1">{switchStatus ? "Active" : "Inactive"}</div>
+        <div className="pl-1">
+          {switchStatus ? `${t("labels:active")}` : `${t("labels:inactive")}`}
+        </div>
       </Row>
     </div>
   );

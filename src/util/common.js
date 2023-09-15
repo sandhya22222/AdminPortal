@@ -68,6 +68,17 @@ const getImageAbsolutePath = (relativePath) => {
   return baseURL + "" + relativePath;
 };
 
+const getToastObject = (message, type) => {
+  const toastObject = {};
+  const dataObject = {};
+  dataObject["response_message"] = message;
+  dataObject["error_type"] = type;
+
+  toastObject["data"] = dataObject;
+
+  return toastObject;
+};
+
 const util = {
   hasKeyCloakData,
   hasUserLoggedIn,
@@ -80,6 +91,7 @@ const util = {
   getSelectedLanguageCode,
   getRealmName,
   getImageAbsolutePath,
+  getToastObject,
 };
 
 export default util;
