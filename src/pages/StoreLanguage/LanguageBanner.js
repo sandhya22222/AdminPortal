@@ -10,7 +10,7 @@ function LanguageBanner() {
     <Content className="flex items-center flex-col">
       <img src={globeIcon} className="!my-2" />
       <Title level={3} className="!mt-1 !mb-[1.25rem]">
-        Connect with your customers in their preferred language
+        {t("messages:connect_with_your_customers_in_their_preferred_language")}
       </Title>
       <p className="w-[80%] text-center">
         Enhancing your store with multilingual translations can boost
@@ -18,11 +18,9 @@ function LanguageBanner() {
         quick and cost-free process that only takes minutes to complete. Know
         more
       </p>
-      <Button
-        className="app-btn-primary !my-[1.5rem] !flex !justify-items-center"
-      >
+      <Button className="app-btn-primary !my-[1.5rem] !flex !justify-items-center">
         <img src={plusIcon} className="!text-xs !w-3 my-1 mr-2 !items-center" />
-        <div className="mr-[10px]">{t("languages:Add-Language")}</div>
+        <div className="mr-[10px]">{t("labels:add_language")}</div>
       </Button>
     </Content>
   );

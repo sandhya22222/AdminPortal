@@ -4,7 +4,7 @@ import { Layout, Typography } from "antd";
 import DynamicTable from "../../components/DynamicTable/DynamicTable";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
 import { usePageTitle } from "../../hooks/usePageTitle";
-
+import { useTranslation } from "react-i18next";
 const { Content } = Layout;
 const { Title } = Typography;
 
@@ -35,15 +35,16 @@ const paymentTypesData = [
 
 const PaymentType = () => {
   usePageTitle("Payment Type");
+  const { t } = useTranslation();
   useEffect(() => {
     window.scroll(0, 0);
   }, []);
 
   const paymentTypeColumns = [
     {
-      title: "Payment Types",
-      dataIndex: "paymenttype",
-      key: "paymenttype",
+      title: `${t("labels:payment_types")}`,
+      dataIndex: "paymentType",
+      key: "paymentType",
       width: "40%",
       render: (text, record) => {
         return <>{record.name}</>;
@@ -62,7 +63,6 @@ const PaymentType = () => {
         id: tempId,
       });
     });
-  console.log("first", tempArray);
 
   const tablePropsData = {
     table_header: paymentTypeColumns,
@@ -91,12 +91,12 @@ const PaymentType = () => {
         title={
           <Content>
             <Title level={3} className="!font-normal">
-              Payment Type
+              {t("labels:payment_type")}
             </Title>
           </Content>
         }
       />
-      <Content className="!p-3 !mt-[7.8rem] ">
+      <Content className="!p-3 !mt-[7.4rem] ">
         <DynamicTable tableComponentData={tablePropsData} />
       </Content>
     </Content>

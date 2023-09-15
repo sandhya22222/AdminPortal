@@ -128,7 +128,7 @@ const Stores = () => {
       tabIcon: <MdStore className="!text-2xl !text-[#FCC32A] " />,
       tabTitle: (
         <div className="flex flex-row">
-          <div className="!font-medium">{t("stores:All")}</div>
+          <div className="!font-medium">{t("labels:all")}</div>
           <div className="rounded-full bg-[#E2F1FC] ml-2 px-2  flex justify-center !font-medium">
             {activeCount && activeCount.totalStores}
           </div>{" "}
@@ -140,7 +140,7 @@ const Stores = () => {
       tabIcon: <MdBusiness className="!text-2xl " />,
       tabTitle: (
         <div className="flex flex-row">
-          <div className="">{t("stores:Active")}</div>
+          <div className="">{t("labels:active")}</div>
           <div className="rounded-full bg-[#E2F1FC] ml-2 px-2 flex justify-center ">
             {activeCount && activeCount.activeStores}
           </div>{" "}
@@ -152,7 +152,7 @@ const Stores = () => {
       tabIcon: <MdDomainDisabled className="!text-2xl " />,
       tabTitle: (
         <div className="flex flex-row">
-          <div className="">{t("stores:Inactive")}</div>
+          <div className="">{t("labels:inactive")}</div>
           <div className="rounded-full bg-[#E2F1FC] ml-2 px-2 flex justify-center ">
             {activeCount && activeCount.inactiveStores}
           </div>{" "}
@@ -1205,7 +1205,7 @@ const Stores = () => {
       .catch((error) => {
         setIsUpLoading(false);
         if (error.response.status === 400) {
-          toast(`${t("stores:Please-enter-the-valid-store-name")}`, {
+          toast(`Please enter the valid store name`, {
             position: toast.POSITION.TOP_RIGHT,
             type: "error",
             autoClose: 10000,
@@ -1239,7 +1239,7 @@ const Stores = () => {
   const validateStorePutField = () => {
     if (editName === "" || editName === null || editName === undefined) {
       setInValidEditName(true);
-      toast(`${t("stores:Please-enter-the-store-name")}`, {
+      toast(`Please enter the store name`, {
         position: toast.POSITION.TOP_RIGHT,
         type: "error",
         autoClose: 10000,
@@ -1262,7 +1262,7 @@ const Stores = () => {
         }
       );
     } else if (editName === serverStoreName) {
-      toast(`${t("common:No-Changes-Detected")}`, {
+      toast(`No changes were detected`, {
         position: toast.POSITION.TOP_RIGHT,
         type: "info",
         autoClose: 10000,
@@ -1634,7 +1634,7 @@ const Stores = () => {
                         >
                           <span className="text-red-600 text-sm">*</span>
                           <label className="text-[13px] mb-2 ml-1">
-                            {t("stores:Store-Name")}
+                            Store Name
                             {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
                           </label>
                           <Input
@@ -1712,7 +1712,7 @@ const Stores = () => {
                           />
                           <span className="text-red-600 text-sm">*</span>
                           <label className="text-[13px] mb-2 ml-1">
-                            {t("stores:Username")}
+                            Username
                           </label>
                           <Input
                             placeholder={t("placeholders:enter_username")}
@@ -1751,7 +1751,7 @@ const Stores = () => {
                           />
                           <span className="text-red-600 text-sm">*</span>
                           <label className="text-[13px] mb-2 ml-1">
-                            {t("stores:Password")}
+                            Password
                             {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
                           </label>
                           <Input.Password
@@ -1776,7 +1776,7 @@ const Stores = () => {
                             }}
                             disabled={!onChangeEditValues}
                           >
-                            {t("common:Update")}
+                            {t("labels:update")}
                           </Button>
                         </Spin>
                       </>
@@ -1785,7 +1785,7 @@ const Stores = () => {
                 </Content>
               </Content>
               {!isLoading && (
-                <Content className="!h-7">
+                <Content className="!h-10">
                   <DmTabAntDesign
                     tabData={storeTabData}
                     handleTabChangeFunction={handleTabChangeStore}
@@ -1804,7 +1804,7 @@ const Stores = () => {
           }
         />
       </Content>
-      <Content className="!p-3 !mt-[7.8rem]">
+      <Content className="!p-3 !mt-[8.0rem]">
         {isLoading ? (
           <Content className="bg-white p-3 !rounded-md">
             <Skeleton

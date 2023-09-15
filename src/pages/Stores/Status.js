@@ -190,13 +190,13 @@ function Status({
     <div>
       <StoreModal
         isVisible={isModalOpen}
-        okButtonText="Yes"
+        okButtonText={t("labels:yes")}
         title={
           changeSwitchStatus
             ? `${t("labels:success")}`
             : `${t("labels:warning")}`
         }
-        cancelButtonText="Cancel"
+        cancelButtonText={t("labels:cancel")}
         okCallback={() => updateStoreStatus()}
         cancelCallback={() => closeModal()}
         isSpin={isLoading}
