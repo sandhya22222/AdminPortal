@@ -9,9 +9,9 @@
   "enter_language_code": "குறியீட்டை உள்ளிடவும்",
   "enter_language_regex": "மொழி regex ஐ உள்ளிடவும்",
   "enter_native_name": "சொந்த பெயரை உள்ளிடவும்",
-  "enter_currency_symbol": "எ.கா. ",
-  "enter_iso_code": "எ.கா. ",
-  "enter_fractional_unit": "எ.கா. ",
-  "enter_number_to_basic": "எ.கா. ",
+  "enter_currency_symbol": "எ.கா. ₹, $, £",
+  "enter_iso_code": "எ.கா. INR, USD ,GBP",
+  "enter_fractional_unit": "எ.கா. paisa, cent",
+  "enter_number_to_basic": "எ.கா. 100",
   "enter_code": "குறியீட்டை உள்ளிடவும்"
 }

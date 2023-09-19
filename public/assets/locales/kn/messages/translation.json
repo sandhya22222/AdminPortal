@@ -7,7 +7,7 @@
   "maximum_of": " ಗರಿಷ್ಠ ",
   "characters": "ಪಾತ್ರಗಳು",
   "please_enter_the_valid_email_address": "ದಯವಿಟ್ಟು ಮಾನ್ಯವಾದ ಇಮೇಲ್ ವಿಳಾಸವನ್ನು ನಮೂದಿಸಿ",
-  "username_must_contain_minimum_of ": "ಬಳಕೆದಾರಹೆಸರು ಕನಿಷ್ಠ ಹೊಂದಿರಬೇಕು ",
+  "username_must_contain_minimum_of": "ಬಳಕೆದಾರಹೆಸರು ಕನಿಷ್ಠ ಹೊಂದಿರಬೇಕು ",
   "password_must_contain_minimum_of": "ಪಾಸ್ವರ್ಡ್ ಕನಿಷ್ಠ ಹೊಂದಿರಬೇಕು",
   "password_error_message": "ಅಕ್ಷರಗಳು ಮತ್ತು ಕನಿಷ್ಠ ಒಂದು ದೊಡ್ಡಕ್ಷರ, ಒಂದು ಸಣ್ಣ ಅಕ್ಷರ, ಒಂದು ಸಂಖ್ಯೆ ಮತ್ತು ಒಂದು ವಿಶೇಷ ಅಕ್ಷರವನ್ನು ಒಳಗೊಂಡಿರುತ್ತದೆ",
   "store_created_successfully": "ಸ್ಟೋರ್ ಅನ್ನು ಯಶಸ್ವಿಯಾಗಿ ರಚಿಸಲಾಗಿದೆ",
@@ -24,13 +24,13 @@
   "store_logo_info": "ಈ ಲೋಗೋವನ್ನು ಸ್ಟೋರ್‌ನ ಲೋಗೋ ಆಗಿ ಬಳಸಲಾಗುತ್ತದೆ",
   "banner_logo_info": "ಈ ಚಿತ್ರಗಳನ್ನು ಅಂಗಡಿ ಮುಂಭಾಗದ ಏರಿಳಿಕೆಯಲ್ಲಿ ಬಳಸಲಾಗುತ್ತದೆ",
   "please_enter_valid_hexadecimal_code": "ದಯವಿಟ್ಟು ಮಾನ್ಯವಾದ ಹೆಕ್ಸಾಡೆಸಿಮಲ್ ಬಣ್ಣದ ಕೋಡ್ ಅನ್ನು ನಮೂದಿಸಿ",
-  "ex_#ffffff_for_white_#000000_for_black": "ಉದಾ.",
+  "ex_ffffff_for_white_000000_for_black": "ಉದಾ.",
   "reset_to_the_original_value": "ಮೂಲ ಮೌಲ್ಯಕ್ಕೆ ಮರುಹೊಂದಿಸಿ",
   "store_activation_confirmation": "ಸ್ಟೋರ್ ಸಕ್ರಿಯಗೊಳಿಸುವಿಕೆ ದೃಢೀಕರಣ",
   "store_active_confirmation_message": "ಉತ್ತಮ ಸುದ್ದಿ! ",
   "store_deactivation_confirmation": "ಅಂಗಡಿ ನಿಷ್ಕ್ರಿಯಗೊಳಿಸುವಿಕೆ ದೃಢೀಕರಣ",
   "store_deactivation_confirmation_message": "ನಿಮ್ಮ ಅಂಗಡಿಯನ್ನು ನೀವು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಿರುವಿರಿ. ",
-  "please_provide_details_for_default_language.": "ದಯವಿಟ್ಟು ಡೀಫಾಲ್ಟ್ ಭಾಷೆಗೆ ವಿವರಗಳನ್ನು ಒದಗಿಸಿ.",
+  "please_provide_details_for_default_language": "ದಯವಿಟ್ಟು ಡೀಫಾಲ್ಟ್ ಭಾಷೆಗೆ ವಿವರಗಳನ್ನು ಒದಗಿಸಿ.",
   "language_with_invalid_inputs": "ಬಹುಭಾಷಾ ಮಾಹಿತಿಯಲ್ಲಿ ಅಮಾನ್ಯ ಇನ್‌ಪುಟ್‌ಗಳು",
   "please_enter_the_values_for_the_mandatory_fields": "ದಯವಿಟ್ಟು ಕಡ್ಡಾಯ ಕ್ಷೇತ್ರಗಳಿಗೆ ಮೌಲ್ಯಗಳನ್ನು ನಮೂದಿಸಿ",
   "language_must_contain_minimum_of": "ಭಾಷೆ ಕನಿಷ್ಠ ಹೊಂದಿರಬೇಕು",
@@ -49,5 +49,5 @@
   "upload_success": "ಯಶಸ್ವಿಯಾಗಿ ಅಪ್‌ಲೋಡ್ ಮಾಡಲಾಗಿದೆ!",
   "upload_success_message": "ಅಭಿನಂದನೆಗಳು! ",
   "choose_download_format": "ನಿಮ್ಮ ಆದ್ಯತೆಯ ಡೌನ್‌ಲೋಡ್ ಸ್ವರೂಪವನ್ನು ಆಯ್ಕೆಮಾಡಿ",
-  " connect_with_your_customers_in_their_preferred_language": " ನಿಮ್ಮ ಗ್ರಾಹಕರೊಂದಿಗೆ ಅವರ ಆದ್ಯತೆಯ ಭಾಷೆಯಲ್ಲಿ ಸಂಪರ್ಕ ಸಾಧಿಸಿ"
+  "connect_with_your_customers_in_their_preferred_language": " ನಿಮ್ಮ ಗ್ರಾಹಕರೊಂದಿಗೆ ಅವರ ಆದ್ಯತೆಯ ಭಾಷೆಯಲ್ಲಿ ಸಂಪರ್ಕ ಸಾಧಿಸಿ"
 }

@@ -9,9 +9,9 @@
   "enter_language_code": "कोड दर्ज करें",
   "enter_language_regex": "भाषा रेगेक्स दर्ज करें",
   "enter_native_name": "मूल नाम दर्ज करें",
-  "enter_currency_symbol": "जैसे ",
-  "enter_iso_code": "जैसे ",
-  "enter_fractional_unit": "जैसे ",
-  "enter_number_to_basic": "जैसे ",
+  "enter_currency_symbol": "जैसे ₹, $, £",
+  "enter_iso_code": "जैसे INR, USD ,GBP",
+  "enter_fractional_unit": "जैसे paisa, cent",
+  "enter_number_to_basic": "जैसे 100",
   "enter_code": "कोड दर्ज करें"
 }

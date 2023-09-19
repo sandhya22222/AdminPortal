@@ -9,9 +9,9 @@
   "enter_language_code": "ಕೋಡ್ ನಮೂದಿಸಿ",
   "enter_language_regex": "ಭಾಷೆಯ ರಿಜೆಕ್ಸ್ ಅನ್ನು ನಮೂದಿಸಿ",
   "enter_native_name": "ಸ್ಥಳೀಯ ಹೆಸರನ್ನು ನಮೂದಿಸಿ",
-  "enter_currency_symbol": "ಉದಾ. ",
-  "enter_iso_code": "ಉದಾ. ",
-  "enter_fractional_unit": "ಉದಾ. ",
-  "enter_number_to_basic": "ಉದಾ. ",
+  "enter_currency_symbol": "ಉದಾ. ₹, $, £",
+  "enter_iso_code": "ಉದಾ. INR, USD ,GBP",
+  "enter_fractional_unit": "ಉದಾ. paisa, cent",
+  "enter_number_to_basic": "ಉದಾ. 100",
   "enter_code": "ಕೋಡ್ ನಮೂದಿಸಿ"
 }

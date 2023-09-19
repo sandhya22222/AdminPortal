@@ -7,7 +7,7 @@
   "maximum_of": " அதிகபட்சம் ",
   "characters": "பாத்திரங்கள்",
   "please_enter_the_valid_email_address": "சரியான மின்னஞ்சல் முகவரியை உள்ளிடவும்",
-  "username_must_contain_minimum_of ": "பயனர்பெயரில் குறைந்தபட்சம் இருக்க வேண்டும் ",
+  "username_must_contain_minimum_of": "பயனர்பெயரில் குறைந்தபட்சம் இருக்க வேண்டும் ",
   "password_must_contain_minimum_of": "கடவுச்சொல்லில் குறைந்தபட்சம் இருக்க வேண்டும்",
   "password_error_message": "எழுத்துக்கள் மற்றும் குறைந்தது ஒரு பெரிய எழுத்து, ஒரு சிறிய எழுத்து, ஒரு எண் மற்றும் ஒரு சிறப்பு எழுத்து ஆகியவை அடங்கும்",
   "store_created_successfully": "ஸ்டோர் வெற்றிகரமாக உருவாக்கப்பட்டது",
@@ -24,13 +24,13 @@
   "store_logo_info": "இந்த லோகோ ஸ்டோரின் லோகோவாகப் பயன்படுத்தப்படும்",
   "banner_logo_info": "இந்த படங்கள் கடையின் முன்பக்கத்தின் கொணர்வியில் பயன்படுத்தப்படும்",
   "please_enter_valid_hexadecimal_code": "சரியான பதினொரு பதின்ம நிறக் குறியீட்டை உள்ளிடவும்",
-  "ex_#ffffff_for_white_#000000_for_black": "ex.",
+  "ex_ffffff_for_white_000000_for_black": "ex.",
   "reset_to_the_original_value": "அசல் மதிப்பிற்கு மீட்டமைக்கவும்",
   "store_activation_confirmation": "ஸ்டோர் செயல்படுத்தல் உறுதிப்படுத்தல்",
   "store_active_confirmation_message": "பெரிய செய்தி! ",
   "store_deactivation_confirmation": "ஸ்டோர் செயலிழக்க உறுதிப்படுத்தல்",
   "store_deactivation_confirmation_message": "உங்கள் கடையை செயலிழக்கச் செய்ய உள்ளீர்கள். ",
-  "please_provide_details_for_default_language.": "இயல்பு மொழிக்கான விவரங்களை வழங்கவும்.",
+  "please_provide_details_for_default_language": "இயல்பு மொழிக்கான விவரங்களை வழங்கவும்.",
   "language_with_invalid_inputs": "பன்மொழி தகவலில் தவறான உள்ளீடுகள்",
   "please_enter_the_values_for_the_mandatory_fields": "கட்டாய புலங்களுக்கான மதிப்புகளை உள்ளிடவும்",
   "language_must_contain_minimum_of": "மொழியில் குறைந்தபட்சம் இருக்க வேண்டும்",
@@ -49,5 +49,5 @@
   "upload_success": "பதிவேற்றம் செய்யப்பட்டது!",
   "upload_success_message": "வாழ்த்துகள்! ",
   "choose_download_format": "உங்களுக்கு விருப்பமான பதிவிறக்க வடிவமைப்பைத் தேர்வு செய்யவும்",
-  " connect_with_your_customers_in_their_preferred_language": " உங்கள் வாடிக்கையாளர்களை அவர்கள் விரும்பும் மொழியில் இணைக்கவும்"
+  "connect_with_your_customers_in_their_preferred_language": " உங்கள் வாடிக்கையாளர்களை அவர்கள் விரும்பும் மொழியில் இணைக்கவும்"
 }
