@@ -22,6 +22,7 @@ import StoreModal from "../../components/storeModal/StoreModal";
 import { TiDelete } from "react-icons/ti";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import "./StoreImages.css";
+import MarketplaceToaster from "../../util/marketplaceToaster";
 const { Title } = Typography;
 const { Content } = Layout;
 const { Image } = Skeleton;
@@ -196,27 +197,25 @@ const StoreImages = ({
     }
   };
 
+  console.log("getImageData in Store images component", getImageData);
+
   useEffect(() => {
     if (getImageData && getImageData !== undefined) {
       if (type === "store_logo") {
         let temp = getImageData && getImageData.store_logo_path;
         if (temp !== null) {
           findAllWithoutPageStoreAbsoluteImagesApi(temp);
-          // let mediaData = [...deleteStoreImage];
-          // console.log("mediaData425", mediaData);
-          // mediaData.push({ type: "store_logo", path: temp });
-          // setDeleteStoreImage(mediaData);
         } else {
           setImagePathShow();
         }
+      }
+      if (type === "banner_images") {
+        // findAllWithoutPageStoreBannerImageApi();
       }
       if (type === "customer_logo") {
         let temp = getImageData && getImageData.customer_logo_path;
         if (temp !== null) {
           findAllWithoutPageStoreAbsoluteImagesApi(temp);
-          // let mediaData = [...deleteStoreImage];
-          // mediaData.push({ type: "customer_logo", path: temp });
-          // setDeleteStoreImage(mediaData);
         } else {
           setImagePathShow();
         }
@@ -225,10 +224,6 @@ const StoreImages = ({
         let temp = getImageData && getImageData.cart_logo_path;
         if (temp !== null) {
           findAllWithoutPageStoreAbsoluteImagesApi(temp);
-          // let mediaData = [...deleteStoreImage];
-          // console.log("mediaData123", mediaData);
-          // mediaData.push({ type: "cart_logo", path: temp });
-          // setDeleteStoreImage(mediaData);
         } else {
           setImagePathShow();
         }
@@ -237,9 +232,6 @@ const StoreImages = ({
         let temp = getImageData && getImageData.search_logo_path;
         if (temp !== null) {
           findAllWithoutPageStoreAbsoluteImagesApi(temp);
-          // let mediaData = [...deleteStoreImage];
-          // mediaData.push({ type: "search_logo", path: temp });
-          // setDeleteStoreImage(mediaData);
         } else {
           setImagePathShow();
         }
@@ -248,16 +240,10 @@ const StoreImages = ({
         let temp = getImageData && getImageData.wishlist_logo_path;
         if (temp !== null) {
           findAllWithoutPageStoreAbsoluteImagesApi(temp);
-          // let mediaData = [...deleteStoreImage];
-          // mediaData.push({ type: "wishlist_logo", path: temp });
-          // setDeleteStoreImage(mediaData);
         } else {
           setImagePathShow();
         }
       }
-    }
-    if (type === "banner_images") {
-      // findAllWithoutPageStoreBannerImageApi();
     }
     selectedImageArrayOfObject = [];
   }, [getImageData]);
@@ -346,13 +332,7 @@ const StoreImages = ({
     MarketplaceServices.remove(storeDeleteImagesAPI, dataObject)
       .then((response) => {
         console.log("response from delete===>", response);
-        if (response.status === 200 || response.status === 201) {
-          toast(`${response.data.message}`, {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "success",
-            autoClose: 10000,
-          });
-        }
+        MarketplaceToaster.showToast(response);
         if (type === "banner_images") {
           //remove from setBannerAbsoluteImage
           bannerAbsoluteImage.splice(imageIndex, 1);
@@ -377,19 +357,7 @@ const StoreImages = ({
       .catch((error) => {
         // disabling spinner
         setIsImageDeleting(false);
-        if (error && error.response && error.response.status === 401) {
-          toast("Session expired", {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
-        } else {
-          toast(`${error.response.data.message}`, {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
-        }
+        MarketplaceToaster.showToast(error.response);
       });
   };
 
@@ -403,7 +371,7 @@ const StoreImages = ({
     setBannerImagesLength(bannerAbsoluteImage && bannerAbsoluteImage.length);
   }, [bannerAbsoluteImage]);
 
-  console.log("bannerImagesLength", bannerImagesLength);
+  
   return (
     <Content className=" mb-2">
       <StoreModal
@@ -517,7 +485,7 @@ const StoreImages = ({
                 icon={<UploadOutlined className="-translate-y-1" />}
                 className="font-semibold"
               >
-                 {t("labels:click_to_upload")}(Max: {BannerImagesUploadLength})
+                {t("labels:click_to_upload")}(Max: {BannerImagesUploadLength})
               </Button>
             </Upload>
           )}
@@ -593,7 +561,8 @@ const StoreImages = ({
                     icon={<UploadOutlined className="-translate-y-1" />}
                     className="font-semibold"
                   >
-                    {t("labels:click_to_upload")}(Max: {BannerImagesUploadLength})
+                    {t("labels:click_to_upload")}(Max:{" "}
+                    {BannerImagesUploadLength})
                   </Button>
                 </Upload>
                 <Modal

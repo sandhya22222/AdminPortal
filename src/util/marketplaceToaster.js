@@ -15,6 +15,7 @@ const showToast = (object) => {
       autoClose: getToastTimeoutDuration(errorType.toUpperCase()),
     });
   } catch (error) {
+    console.log("error from toast", error);
     toast("Please try again after a while. Something went wrong", {
       type: "error",
       autoClose: false,
