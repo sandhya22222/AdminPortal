@@ -1,0 +1,17 @@
+{
+  "enter_store_name": "ನಿಮ್ಮ ಅಂಗಡಿಯ ಹೆಸರನ್ನು ನಮೂದಿಸಿ",
+  "enter_username": "ನಿಮ್ಮ ಬಳಕೆದಾರ ಹೆಸರು ನಮೂದಿಸಿ",
+  "enter_password": "ನಿಮ್ಮ ಗುಪ್ತಪದವನ್ನು ನಮೂದಿಸಿ",
+  "enter_first_name": "ನಿಮ್ಮ ಮೊದಲ ಹೆಸರನ್ನು ನಮೂದಿಸಿ",
+  "enter_last_name": "ನಿಮ್ಮ ಕೊನೆಯ ಹೆಸರನ್ನು ನಮೂದಿಸಿ",
+  "enter_email": "ನಿಮ್ಮ ಇಮೇಲ್ ನಮೂದಿಸಿ",
+  "enter_language_name": "ಭಾಷೆಯ ಹೆಸರನ್ನು ನಮೂದಿಸಿ",
+  "enter_language_code": "ಕೋಡ್ ನಮೂದಿಸಿ",
+  "enter_language_regex": "ಭಾಷೆಯ ರಿಜೆಕ್ಸ್ ಅನ್ನು ನಮೂದಿಸಿ",
+  "enter_native_name": "ಸ್ಥಳೀಯ ಹೆಸರನ್ನು ನಮೂದಿಸಿ",
+  "enter_currency_symbol": "ಉದಾ. ",
+  "enter_iso_code": "ಉದಾ. ",
+  "enter_fractional_unit": "ಉದಾ. ",
+  "enter_number_to_basic": "ಉದಾ. ",
+  "enter_code": "ಕೋಡ್ ನಮೂದಿಸಿ"
+}
