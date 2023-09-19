@@ -8,6 +8,8 @@ import util from "../../util/common";
 import { useNavigate } from "react-router-dom";
 const titleMinLength = process.env.REACT_APP_TITLE_MIN_LENGTH;
 const titleMaxLength = process.env.REACT_APP_TITLE_MAX_LENGTH;
+const languageCodeMinLength = process.env.REACT_APP_LANGUAGE_CODE_MIN_LENGTH;
+const languageCodeMaxLength = process.env.REACT_APP_LANGUAGE_CODE_MAX_LENGTH;
 const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API;
 
 const LanguageForm = ({
@@ -180,8 +182,10 @@ const LanguageForm = ({
       MarketplaceToaster.showToast(
         util.getToastObject(
           `${t(
-            "messages:language_code_must_contain_minimum_of_2_maximum_of_5_characters"
-          )}`,
+            "messages:language_code_must_contain_minimum_of"
+          )} ${languageCodeMinLength}, ${t(
+            "messages:maximum_of"
+          )} ${languageCodeMaxLength} ${t("messages:characters")}`,
           "error"
         )
       );
@@ -231,7 +235,6 @@ const LanguageForm = ({
       });
   };
 
-  console.log("languageCode", languageCode);
   useEffect(() => {
     window.scrollTo(0, 0);
     if (languageCode !== undefined && languageCode !== null) {
@@ -293,8 +296,8 @@ const LanguageForm = ({
               <Input
                 placeholder={t("placeholders:enter_code")}
                 value={txtLanguageCode}
-                minLength={2}
-                maxLength={5}
+                minLength={languageCodeMinLength}
+                maxLength={languageCodeMaxLength}
                 className={`${
                   isEditLanguageCodeFieldEmpty
                     ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
@@ -338,12 +341,8 @@ const LanguageForm = ({
               }
             }}
           >
-            <Radio.Button value="LTR">
-              {t("labels:left_to_right")}
-            </Radio.Button>
-            <Radio.Button value="RTL">
-              {t("labels:right_to_left")}
-            </Radio.Button>
+            <Radio.Button value="LTR">{t("labels:left_to_right")}</Radio.Button>
+            <Radio.Button value="RTL">{t("labels:right_to_left")}</Radio.Button>
           </Radio.Group>
         </Content>
         {(txtLanguageCode === "" && txtLanguage === "") ||

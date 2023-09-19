@@ -196,27 +196,25 @@ const StoreImages = ({
     }
   };
 
+  console.log("getImageData in Store images component", getImageData);
+
   useEffect(() => {
     if (getImageData && getImageData !== undefined) {
       if (type === "store_logo") {
         let temp = getImageData && getImageData.store_logo_path;
         if (temp !== null) {
           findAllWithoutPageStoreAbsoluteImagesApi(temp);
-          // let mediaData = [...deleteStoreImage];
-          // console.log("mediaData425", mediaData);
-          // mediaData.push({ type: "store_logo", path: temp });
-          // setDeleteStoreImage(mediaData);
         } else {
           setImagePathShow();
         }
+      }
+      if (type === "banner_images") {
+        // findAllWithoutPageStoreBannerImageApi();
       }
       if (type === "customer_logo") {
         let temp = getImageData && getImageData.customer_logo_path;
         if (temp !== null) {
           findAllWithoutPageStoreAbsoluteImagesApi(temp);
-          // let mediaData = [...deleteStoreImage];
-          // mediaData.push({ type: "customer_logo", path: temp });
-          // setDeleteStoreImage(mediaData);
         } else {
           setImagePathShow();
         }
@@ -225,10 +223,6 @@ const StoreImages = ({
         let temp = getImageData && getImageData.cart_logo_path;
         if (temp !== null) {
           findAllWithoutPageStoreAbsoluteImagesApi(temp);
-          // let mediaData = [...deleteStoreImage];
-          // console.log("mediaData123", mediaData);
-          // mediaData.push({ type: "cart_logo", path: temp });
-          // setDeleteStoreImage(mediaData);
         } else {
           setImagePathShow();
         }
@@ -237,9 +231,6 @@ const StoreImages = ({
         let temp = getImageData && getImageData.search_logo_path;
         if (temp !== null) {
           findAllWithoutPageStoreAbsoluteImagesApi(temp);
-          // let mediaData = [...deleteStoreImage];
-          // mediaData.push({ type: "search_logo", path: temp });
-          // setDeleteStoreImage(mediaData);
         } else {
           setImagePathShow();
         }
@@ -248,16 +239,10 @@ const StoreImages = ({
         let temp = getImageData && getImageData.wishlist_logo_path;
         if (temp !== null) {
           findAllWithoutPageStoreAbsoluteImagesApi(temp);
-          // let mediaData = [...deleteStoreImage];
-          // mediaData.push({ type: "wishlist_logo", path: temp });
-          // setDeleteStoreImage(mediaData);
         } else {
           setImagePathShow();
         }
       }
-    }
-    if (type === "banner_images") {
-      // findAllWithoutPageStoreBannerImageApi();
     }
     selectedImageArrayOfObject = [];
   }, [getImageData]);
@@ -517,7 +502,7 @@ const StoreImages = ({
                 icon={<UploadOutlined className="-translate-y-1" />}
                 className="font-semibold"
               >
-                 {t("labels:click_to_upload")}(Max: {BannerImagesUploadLength})
+                {t("labels:click_to_upload")}(Max: {BannerImagesUploadLength})
               </Button>
             </Upload>
           )}
@@ -593,7 +578,8 @@ const StoreImages = ({
                     icon={<UploadOutlined className="-translate-y-1" />}
                     className="font-semibold"
                   >
-                    {t("labels:click_to_upload")}(Max: {BannerImagesUploadLength})
+                    {t("labels:click_to_upload")}(Max:{" "}
+                    {BannerImagesUploadLength})
                   </Button>
                 </Upload>
                 <Modal

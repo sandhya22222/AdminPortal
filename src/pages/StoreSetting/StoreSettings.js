@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
+  Button,
+  Col,
+  Divider,
+  Input,
+  InputNumber,
   Layout,
   Row,
-  Col,
-  Typography,
-  Input,
-  Button,
-  Spin,
   Space,
+  Spin,
   Tooltip,
-  Divider,
-  InputNumber,
+  Typography,
 } from "antd";
+import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
@@ -19,25 +20,24 @@ import {
   EyeOutlined,
   UndoOutlined,
 } from "@ant-design/icons";
-import { useTranslation } from "react-i18next";
-import useAuthorization from "../../hooks/useAuthorization";
+
+import HeaderForTitle from "../../components/header/HeaderForTitle";
 import StoreModal from "../../components/storeModal/StoreModal";
-import StoreImages from "./StoreImages";
+import useAuthorization from "../../hooks/useAuthorization";
+import { usePageTitle } from "../../hooks/usePageTitle";
+import MarketplaceServices from "../../services/axios/MarketplaceServices";
+import util from "../../util/common";
+import MarketplaceToaster from "../../util/marketplaceToaster";
 import Status from "../Stores/Status";
 import Preview from "./Preview";
-import MarketplaceServices from "../../services/axios/MarketplaceServices";
-import HeaderForTitle from "../../components/header/HeaderForTitle";
-import { usePageTitle } from "../../hooks/usePageTitle";
-import MarketplaceToaster from "../../util/marketplaceToaster";
-import util from "../../util/common";
+import StoreImages from "./StoreImages";
+
 const { Content } = Layout;
-const { Title, Text } = Typography;
-const { TextArea } = Input;
+const { Title } = Typography;
+
 const storeSettingAPI = process.env.REACT_APP_STORE_FRONT_SETTINGS_API;
 const storeAPI = process.env.REACT_APP_STORE_API;
 const storeImagesAPI = process.env.REACT_APP_STORE_IMAGES_API;
-const storeAbsoluteImgesAPI =
-  process.env.REACT_APP_STORE_ABSOLUTE_STORE_IMAGES_API;
 const storeBannerImageAPI = process.env.REACT_APP_STORE_BANNER_IMAGES_API;
 
 const StoreSettings = () => {
@@ -45,6 +45,7 @@ const StoreSettings = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const search = useLocation().search;
+
   const id = new URLSearchParams(search).get("id");
   const authorizationHeader = useAuthorization();
 
@@ -120,8 +121,7 @@ const StoreSettings = () => {
   const [imageOfStoreFooterSettings, setImageOfStoreFooterSettings] =
     useState();
   const [bannerAbsoluteImage, setBannerAbsoluteImage] = useState([]);
-  const [updateBannerImage, setUpdateBannerImage] = useState([]);
-  // const [isEditStoreSetting, setIsEditStoreSetting] = useState([]);
+
   const [colorCodeValidation, setColorCodeValidation] = useState({
     pageBgColorValidation: false,
     pageTextColorValidation: false,
@@ -138,197 +138,198 @@ const StoreSettings = () => {
   });
   const [onChangeValues, setOnChangeValues] = useState(false);
   const [imageChangeValues, setImageChangeValues] = useState(false);
-  let sampleobject = {};
+
   //! get call of  getStoreSettingApi
   const findAllWithoutPageStoreSettingApi = (storeId) => {
-    // axios
-    //   .get(
-    //     storeSettingAPI,
-    //     {
-    //       params: {
-    //         "store-id": storeId,
-    //       },
-    //     },
-    //     authorizationHeader
-    //   )
     MarketplaceServices.findAllWithoutPage(storeSettingAPI, {
       store_id: storeId,
     })
       .then(function (response) {
         console.log(
           "Get response of Store setting--->",
-          response.data.store_settings_data[0]
+          response.data.response_body.store_settings_data[0]
         );
         setCopyImageOfStoreSettingsCurrency(
-          response.data.store_settings_data[0].store_currency[0]
+          response.data.response_body.store_settings_data[0].store_currency[0]
         );
         setImageOfStoreSettingsCurrency(
-          response.data.store_settings_data[0].store_currency[0]
+          response.data.response_body.store_settings_data[0].store_currency[0]
         );
         setCopyImageOfStoreSettingsPageTheme(
-          response.data.store_settings_data[0].store_page_settings[0]
+          response.data.response_body.store_settings_data[0]
+            .store_page_settings[0]
         );
         setImageOfStoreSettingsPageTheme(
-          response.data.store_settings_data[0].store_page_settings[0]
+          response.data.response_body.store_settings_data[0]
+            .store_page_settings[0]
         );
         setCopyImageOfStoreHeaderSetting(
-          response.data.store_settings_data[0].store_header_settings[0]
+          response.data.response_body.store_settings_data[0]
+            .store_header_settings[0]
         );
         setImageOfStoreHeaderSettings(
-          response.data.store_settings_data[0].store_header_settings[0]
+          response.data.response_body.store_settings_data[0]
+            .store_header_settings[0]
         );
         setCopyImageOfStoreFooterSetting(
-          response.data.store_settings_data[0].store_footer_settings[0]
+          response.data.response_body.store_settings_data[0]
+            .store_footer_settings[0]
         );
         setImageOfStoreFooterSettings(
-          response.data.store_settings_data[0].store_footer_settings[0]
+          response.data.response_body.store_settings_data[0]
+            .store_footer_settings[0]
         );
         setCurrencySymbol(
-          response.data.store_settings_data[0].store_currency[0].symbol
+          response.data.response_body.store_settings_data[0].store_currency[0]
+            .symbol
         );
         setCurrencyIsoCode(
-          response.data.store_settings_data[0].store_currency[0].iso_code
+          response.data.response_body.store_settings_data[0].store_currency[0]
+            .iso_code
         );
         setFractionalUnit(
-          response.data.store_settings_data[0].store_currency[0].fractional_unit
+          response.data.response_body.store_settings_data[0].store_currency[0]
+            .fractional_unit
         );
         setNumberToBasic(
-          response.data.store_settings_data[0].store_currency[0].number_to_basic
+          response.data.response_body.store_settings_data[0].store_currency[0]
+            .number_to_basic
         );
         setPageBackgroundColor(
-          response.data.store_settings_data[0].store_page_settings[0].bg_color
+          response.data.response_body.store_settings_data[0]
+            .store_page_settings[0].bg_color
         );
         setPageBgColor(
-          response.data.store_settings_data[0].store_page_settings[0].bg_color
+          response.data.response_body.store_settings_data[0]
+            .store_page_settings[0].bg_color
         );
         setForeGroundColor(
-          response.data.store_settings_data[0].store_page_settings[0].fg_color
+          response.data.response_body.store_settings_data[0]
+            .store_page_settings[0].fg_color
         );
         setPageFgColor(
-          response.data.store_settings_data[0].store_page_settings[0].fg_color
+          response.data.response_body.store_settings_data[0]
+            .store_page_settings[0].fg_color
         );
         setButtonPrimaryBackgroundColor(
-          response.data.store_settings_data[0].store_page_settings[0]
-            .btn_primary_bg_color
+          response.data.response_body.store_settings_data[0]
+            .store_page_settings[0].btn_primary_bg_color
         );
         setbtnPrimaryBgColor(
-          response.data.store_settings_data[0].store_page_settings[0]
-            .btn_primary_bg_color
+          response.data.response_body.store_settings_data[0]
+            .store_page_settings[0].btn_primary_bg_color
         );
         setButtonPrimaryForegroundColor(
-          response.data.store_settings_data[0].store_page_settings[0]
-            .btn_primary_fg_color
+          response.data.response_body.store_settings_data[0]
+            .store_page_settings[0].btn_primary_fg_color
         );
         setbtnPrimaryFgColor(
-          response.data.store_settings_data[0].store_page_settings[0]
-            .btn_primary_fg_color
+          response.data.response_body.store_settings_data[0]
+            .store_page_settings[0].btn_primary_fg_color
         );
         setButtonSecondaryBackgroundColor(
-          response.data.store_settings_data[0].store_page_settings[0]
-            .btn_secondary_bg_color
+          response.data.response_body.store_settings_data[0]
+            .store_page_settings[0].btn_secondary_bg_color
         );
         setbtnSecondaryBgColor(
-          response.data.store_settings_data[0].store_page_settings[0]
-            .btn_secondary_bg_color
+          response.data.response_body.store_settings_data[0]
+            .store_page_settings[0].btn_secondary_bg_color
         );
         setButtonSecondaryForegroundColor(
-          response.data.store_settings_data[0].store_page_settings[0]
-            .btn_secondary_fg_color
+          response.data.response_body.store_settings_data[0]
+            .store_page_settings[0].btn_secondary_fg_color
         );
         setbtnSecondaryFgColor(
-          response.data.store_settings_data[0].store_page_settings[0]
-            .btn_secondary_fg_color
+          response.data.response_body.store_settings_data[0]
+            .store_page_settings[0].btn_secondary_fg_color
         );
         setButtonTeritaryBackgroundColor(
-          response.data.store_settings_data[0].store_page_settings[0]
-            .btn_tertiary_bg_color
+          response.data.response_body.store_settings_data[0]
+            .store_page_settings[0].btn_tertiary_bg_color
         );
         setbtnTeritaryBgColor(
-          response.data.store_settings_data[0].store_page_settings[0]
-            .btn_tertiary_bg_color
+          response.data.response_body.store_settings_data[0]
+            .store_page_settings[0].btn_tertiary_bg_color
         );
         setButtonTeritaryForegroundColor(
-          response.data.store_settings_data[0].store_page_settings[0]
-            .btn_tertiary_fg_color
+          response.data.response_body.store_settings_data[0]
+            .store_page_settings[0].btn_tertiary_fg_color
         );
         setbtnTeritaryFgColor(
-          response.data.store_settings_data[0].store_page_settings[0]
-            .btn_tertiary_fg_color
+          response.data.response_body.store_settings_data[0]
+            .store_page_settings[0].btn_tertiary_fg_color
         );
         setHeaderBackgroundColor(
-          response.data.store_settings_data[0].store_header_settings[0].bg_color
+          response.data.response_body.store_settings_data[0]
+            .store_header_settings[0].bg_color
         );
         setHeaderBgColor(
-          response.data.store_settings_data[0].store_header_settings[0].bg_color
+          response.data.response_body.store_settings_data[0]
+            .store_header_settings[0].bg_color
         );
         setHeaderForegroundColor(
-          response.data.store_settings_data[0].store_header_settings[0].fg_color
+          response.data.response_body.store_settings_data[0]
+            .store_header_settings[0].fg_color
         );
         setHeaderFgColor(
-          response.data.store_settings_data[0].store_header_settings[0].fg_color
+          response.data.response_body.store_settings_data[0]
+            .store_header_settings[0].fg_color
         );
         setFooterBackgroundColor(
-          response.data.store_settings_data[0].store_footer_settings[0].bg_color
+          response.data.response_body.store_settings_data[0]
+            .store_footer_settings[0].bg_color
         );
         setFooterBgColor(
-          response.data.store_settings_data[0].store_footer_settings[0].bg_color
+          response.data.response_body.store_settings_data[0]
+            .store_footer_settings[0].bg_color
         );
         setFooterForegroundColor(
-          response.data.store_settings_data[0].store_footer_settings[0].fg_color
+          response.data.response_body.store_settings_data[0]
+            .store_footer_settings[0].fg_color
         );
         setFooterFgColor(
-          response.data.store_settings_data[0].store_footer_settings[0].fg_color
+          response.data.response_body.store_settings_data[0]
+            .store_footer_settings[0].fg_color
         );
       })
       .catch((error) => {
-        console.log("errorresponse--->", error.response);
-        if (error && error.response && error.response.status === 401) {
-          toast("Session expired", {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
-        } else {
-          if (error.response === undefined) {
-            setCurrencySymbol("");
-            setCurrencyIsoCode("");
-            setFractionalUnit("");
-            setNumberToBasic("");
-            setPageBackgroundColor("#EBEBEB");
-            setButtonPrimaryBackgroundColor("#000000");
-            setButtonSecondaryBackgroundColor("#000000");
-            setButtonTeritaryBackgroundColor("#000000");
-            setButtonPrimaryForegroundColor("#000000");
-            setButtonSecondaryForegroundColor("#000000");
-            setButtonTeritaryForegroundColor("#000000");
-            setForeGroundColor("#333333");
-            setFooterBackgroundColor("#000000");
-            setFooterForegroundColor("#000000");
-            setHeaderForegroundColor("#000000");
-            setHeaderBackgroundColor("#000000");
-          }
+        console.log("error response from store settings API", error);
+        if (error.response === undefined) {
+          setCurrencySymbol("");
+          setCurrencyIsoCode("");
+          setFractionalUnit("");
+          setNumberToBasic("");
+          setPageBackgroundColor("#EBEBEB");
+          setButtonPrimaryBackgroundColor("#000000");
+          setButtonSecondaryBackgroundColor("#000000");
+          setButtonTeritaryBackgroundColor("#000000");
+          setButtonPrimaryForegroundColor("#000000");
+          setButtonSecondaryForegroundColor("#000000");
+          setButtonTeritaryForegroundColor("#000000");
+          setForeGroundColor("#333333");
+          setFooterBackgroundColor("#000000");
+          setFooterForegroundColor("#000000");
+          setHeaderForegroundColor("#000000");
+          setHeaderBackgroundColor("#000000");
         }
       });
   };
 
   //! get call of store API
   const findAllStoreApi = () => {
-    // setIsLoading(true);
-    // axios
-    //   .get(storeAPI, {
-    //     params: {
-    //       "page-number": -1,
-    //     },
-    //   })
     MarketplaceServices.findAll(storeAPI)
       .then(function (response) {
         console.log(
           "Server Response from getStoreApi Function: ",
-          response.data.data
+          response.data.response_body
         );
-        setStoreData(response.data.data);
-        if (response && response.data.data && response.data.data.length > 0) {
-          let selectedStore = response.data.data.filter(
+        setStoreData(response.data.response_body.data);
+        if (
+          response &&
+          response.data.response_body &&
+          response.data.response_body.data.length > 0
+        ) {
+          let selectedStore = response.data.response_body.data.filter(
             (element) => element.store_uuid === id
           );
           if (selectedStore.length > 0) {
@@ -339,28 +340,9 @@ const StoreSettings = () => {
       })
       .catch((error) => {
         console.log("Server error from getStoreApi Function ", error.response);
-        if (error && error.response && error.response.status === 401) {
-          toast("Session expired", {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
-        }
       });
   };
 
-  // useEffect(() => {
-  //   if (storeData && storeData.length > 0) {
-  //     var storeApiData =
-  //       storeData &&
-  //       storeData.length > 0 &&
-  //       storeData.filter((element) => element.store_uuid === id);
-  //     if (storeApiData && storeApiData.length > 0) {
-  //       setStoreName(storeApiData[0].name);
-  //       setChangeSwitchStatus(storeApiData[0].status);
-  //     }
-  //   }
-  // }, [storeData]);
   //! post call for store settings
   const saveStoreSettingsCall = () => {
     const postBody = {
@@ -399,153 +381,140 @@ const StoreSettings = () => {
       ],
     };
     setIsLoading(true);
-    // axios
-    //   .post(storeSettingAPI, postBody, authorizationHeader)
     MarketplaceServices.save(storeSettingAPI, postBody)
       .then((response) => {
-        if (sampleobject["settings"] === "contentSettings") {
-          toast(`Store settings saved successfully`, {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "success",
-            autoClose: 10000,
-          });
-          // if (Object.keys(sampleobject).length === 2) {
-          //   toast("Media and store settings saved successfully", {
-          //     position: toast.POSITION.TOP_RIGHT,
-          //     type: "success",
-          //   });
-          // } else {
-          //   if (Object.keys(sampleobject).length > 0) {
-          //     if (sampleobject["settings"] === "contentSettings") {
-          //       toast("Store settings saved successfully", {
-          //         position: toast.POSITION.TOP_RIGHT,
-          //         type: "success",
-          //       });
-          //     }
-          //   }
-          // } else {
-          //   if (Object.keys(sampleobject).length > 0) {
-          //     if (sampleobject["settings"] === "contentSettings") {
-          //       toast("Store settings saved successfully", {
-          //         position: toast.POSITION.TOP_RIGHT,
-          //         type: "success",
-          //         autoClose: 10000,
-          //       });
-          //     }
-          //   }
-        }
-        // toast("Store Settings Created Successfully.", {
-        //   position: toast.POSITION.TOP_RIGHT,
-        //   type: "success",
-        // });
-        setIsLoading(false);
         console.log(
           "Server Success Response From storeSettingPostCall",
-          response.data
+          response.data.response_body
         );
-        setCopyImageOfStoreSettingsCurrency(response.data.store_currency[0]);
-        setImageOfStoreSettingsCurrency(response.data.store_currency[0]);
+        MarketplaceToaster.showToast(response);
+        setIsLoading(false);
+        setCopyImageOfStoreSettingsCurrency(
+          response.data.response_body.store_currency[0]
+        );
+        setImageOfStoreSettingsCurrency(
+          response.data.response_body.store_currency[0]
+        );
         setCopyImageOfStoreSettingsPageTheme(
-          response.data.store_page_settings[0]
+          response.data.response_body.store_page_settings[0]
         );
-        setImageOfStoreSettingsPageTheme(response.data.store_page_settings[0]);
+        setImageOfStoreSettingsPageTheme(
+          response.data.response_body.store_page_settings[0]
+        );
         setCopyImageOfStoreHeaderSetting(
-          response.data.store_header_settings[0]
+          response.data.response_body.store_header_settings[0]
         );
-        setImageOfStoreHeaderSettings(response.data.store_header_settings[0]);
+        setImageOfStoreHeaderSettings(
+          response.data.response_body.store_header_settings[0]
+        );
         setCopyImageOfStoreFooterSetting(
-          response.data.store_footer_settings[0]
+          response.data.response_body.store_footer_settings[0]
         );
-        setImageOfStoreFooterSettings(response.data.store_footer_settings[0]);
-        setCurrencySymbol(response.data.store_currency[0].symbol);
-        setCurrencyIsoCode(response.data.store_currency[0].iso_code);
-        setFractionalUnit(response.data.store_currency[0].fractional_unit);
-        setNumberToBasic(response.data.store_currency[0].number_to_basic);
-        setPageBackgroundColor(response.data.store_page_settings[0].bg_color);
-        setPageBgColor(response.data.store_page_settings[0].bg_color);
-        setForeGroundColor(response.data.store_page_settings[0].fg_color);
-        setPageFgColor(response.data.store_page_settings[0].fg_color);
+        setImageOfStoreFooterSettings(
+          response.data.response_body.store_footer_settings[0]
+        );
+        setCurrencySymbol(response.data.response_body.store_currency[0].symbol);
+        setCurrencyIsoCode(
+          response.data.response_body.store_currency[0].iso_code
+        );
+        setFractionalUnit(
+          response.data.response_body.store_currency[0].fractional_unit
+        );
+        setNumberToBasic(
+          response.data.response_body.store_currency[0].number_to_basic
+        );
+        setPageBackgroundColor(
+          response.data.response_body.store_page_settings[0].bg_color
+        );
+        setPageBgColor(
+          response.data.response_body.store_page_settings[0].bg_color
+        );
+        setForeGroundColor(
+          response.data.response_body.store_page_settings[0].fg_color
+        );
+        setPageFgColor(
+          response.data.response_body.store_page_settings[0].fg_color
+        );
         setButtonPrimaryBackgroundColor(
-          response.data.store_page_settings[0].btn_primary_bg_color
+          response.data.response_body.store_page_settings[0]
+            .btn_primary_bg_color
         );
         setbtnPrimaryBgColor(
-          response.data.store_page_settings[0].btn_primary_bg_color
+          response.data.response_body.store_page_settings[0]
+            .btn_primary_bg_color
         );
         setButtonPrimaryForegroundColor(
-          response.data.store_page_settings[0].btn_primary_fg_color
+          response.data.response_body.store_page_settings[0]
+            .btn_primary_fg_color
         );
         setbtnPrimaryFgColor(
-          response.data.store_page_settings[0].btn_primary_fg_color
+          response.data.response_body.store_page_settings[0]
+            .btn_primary_fg_color
         );
         setButtonSecondaryBackgroundColor(
-          response.data.store_page_settings[0].btn_secondary_bg_color
+          response.data.response_body.store_page_settings[0]
+            .btn_secondary_bg_color
         );
         setbtnSecondaryBgColor(
-          response.data.store_page_settings[0].btn_secondary_bg_color
+          response.data.response_body.store_page_settings[0]
+            .btn_secondary_bg_color
         );
         setButtonSecondaryForegroundColor(
-          response.data.store_page_settings[0].btn_secondary_fg_color
+          response.data.response_body.store_page_settings[0]
+            .btn_secondary_fg_color
         );
         setbtnSecondaryFgColor(
-          response.data.store_page_settings[0].btn_secondary_fg_color
+          response.data.response_body.store_page_settings[0]
+            .btn_secondary_fg_color
         );
         setButtonTeritaryBackgroundColor(
-          response.data.store_page_settings[0].btn_tertiary_bg_color
+          response.data.response_body.store_page_settings[0]
+            .btn_tertiary_bg_color
         );
         setbtnTeritaryBgColor(
-          response.data.store_page_settings[0].btn_tertiary_bg_color
+          response.data.response_body.store_page_settings[0]
+            .btn_tertiary_bg_color
         );
         setButtonTeritaryForegroundColor(
-          response.data.store_page_settings[0].btn_tertiary_fg_color
+          response.data.response_body.store_page_settings[0]
+            .btn_tertiary_fg_color
         );
         setbtnTeritaryFgColor(
-          response.data.store_page_settings[0].btn_tertiary_fg_color
+          response.data.response_body.store_page_settings[0]
+            .btn_tertiary_fg_color
         );
         setHeaderBackgroundColor(
-          response.data.store_header_settings[0].bg_color
+          response.data.response_body.store_header_settings[0].bg_color
         );
-        setHeaderBgColor(response.data.store_header_settings[0].bg_color);
+        setHeaderBgColor(
+          response.data.response_body.store_header_settings[0].bg_color
+        );
         setHeaderForegroundColor(
-          response.data.store_header_settings[0].fg_color
+          response.data.response_body.store_header_settings[0].fg_color
         );
-        setHeaderFgColor(response.data.store_header_settings[0].fg_color);
+        setHeaderFgColor(
+          response.data.response_body.store_header_settings[0].fg_color
+        );
         setFooterBackgroundColor(
-          response.data.store_footer_settings[0].bg_color
+          response.data.response_body.store_footer_settings[0].bg_color
         );
-        setFooterBgColor(response.data.store_footer_settings[0].bg_color);
+        setFooterBgColor(
+          response.data.response_body.store_footer_settings[0].bg_color
+        );
         setFooterForegroundColor(
-          response.data.store_footer_settings[0].fg_color
+          response.data.response_body.store_footer_settings[0].fg_color
         );
-        setFooterFgColor(response.data.store_footer_settings[0].fg_color);
+        setFooterFgColor(
+          response.data.response_body.store_footer_settings[0].fg_color
+        );
       })
       .catch((error) => {
+        console.log("Error Response From storeSettingPostCall", error.response);
         setIsLoading(false);
-        if (error && error.response && error.response.status === 401) {
-          toast("Session expired", {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
-        } else {
-          if (error.response) {
-            toast(`${error.response.statusText}`, {
-              position: toast.POSITION.TOP_RIGHT,
-              type: "error",
-              autoClose: 10000,
-            });
-          } else {
-            toast(`${t("messages:something_went_wrong")}`, {
-              position: toast.POSITION.TOP_RIGHT,
-              type: "error",
-              autoClose: 10000,
-            });
-          }
-        }
-        console.log(error.response);
-        // setInValidName(true)
-        // onClose();
+        MarketplaceToaster.showToast(error.response);
       });
   };
+
   //! validations of store settings API
   const validatePostStoreSetting = () => {
     let count = 4;
@@ -560,11 +529,6 @@ const StoreSettings = () => {
       setInValidCurrencyIsoCode(true);
       setInValidFractionalUnit(true);
       setInValidNumberToBasic(true);
-      // toast("Please provide values for the mandatory fields", {
-      //   position: toast.POSITION.TOP_RIGHT,
-      //   type: "error",
-      //   autoClose: 10000,
-      // });
       MarketplaceToaster.showToast(
         util.getToastObject(
           `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
@@ -872,72 +836,7 @@ const StoreSettings = () => {
       MarketplaceToaster.showToast(
         util.getToastObject(`${t("messages:no_changes_were_detected")}`, "info")
       );
-    }
-    //else if (
-    //   (imageOfStoreSettingsCurrency && imageOfStoreSettingsCurrency.symbol) ===
-    //     (copyImageOfStoreSettingsCurrency &&
-    //       copyImageOfStoreSettingsCurrency.symbol) &&
-    //   (imageOfStoreSettingsCurrency &&
-    //     imageOfStoreSettingsCurrency.iso_code) ===
-    //     (copyImageOfStoreSettingsCurrency &&
-    //       copyImageOfStoreSettingsCurrency.iso_code) &&
-    //   (imageOfStoreSettingsCurrency &&
-    //     imageOfStoreSettingsCurrency.fractional_unit) ===
-    //     (copyImageOfStoreSettingsCurrency &&
-    //       copyImageOfStoreSettingsCurrency.fractional_unit) &&
-    //   (imageOfStoreSettingsCurrency &&
-    //     imageOfStoreSettingsCurrency.number_to_basic) ===
-    //     (copyImageOfStoreSettingsCurrency &&
-    //       copyImageOfStoreSettingsCurrency.number_to_basic) &&
-    //   (imageOfStoreSettingsPageTheme &&
-    //     imageOfStoreSettingsPageTheme.bg_color) ===
-    //     (copyImageOfStoreSettingsPageTheme &&
-    //       copyImageOfStoreSettingsPageTheme.bg_color) &&
-    //   (imageOfStoreSettingsPageTheme &&
-    //     imageOfStoreSettingsPageTheme.btn_primary_bg_color) ===
-    //     (copyImageOfStoreSettingsPageTheme &&
-    //       copyImageOfStoreSettingsPageTheme.btn_primary_bg_color) &&
-    //   (imageOfStoreSettingsPageTheme &&
-    //     imageOfStoreSettingsPageTheme.btn_primary_fg_color) ===
-    //     (copyImageOfStoreSettingsPageTheme &&
-    //       copyImageOfStoreSettingsPageTheme.btn_primary_fg_color) &&
-    //   (imageOfStoreSettingsPageTheme &&
-    //     imageOfStoreSettingsPageTheme.btn_secondary_bg_color) ===
-    //     (copyImageOfStoreSettingsPageTheme &&
-    //       copyImageOfStoreSettingsPageTheme.btn_secondary_bg_color) &&
-    //   (imageOfStoreSettingsPageTheme &&
-    //     imageOfStoreSettingsPageTheme.btn_secondary_fg_color) ===
-    //     (copyImageOfStoreSettingsPageTheme &&
-    //       copyImageOfStoreSettingsPageTheme.btn_secondary_fg_color) &&
-    //   (imageOfStoreSettingsPageTheme &&
-    //     imageOfStoreSettingsPageTheme.btn_tertiary_bg_color) ===
-    //     (copyImageOfStoreSettingsPageTheme &&
-    //       copyImageOfStoreSettingsPageTheme.btn_tertiary_bg_color) &&
-    //   (imageOfStoreSettingsPageTheme &&
-    //     imageOfStoreSettingsPageTheme.btn_tertiary_fg_color) ===
-    //     (copyImageOfStoreSettingsPageTheme &&
-    //       copyImageOfStoreSettingsPageTheme.btn_tertiary_fg_color) &&
-    //   (imageOfStoreSettingsPageTheme &&
-    //     imageOfStoreSettingsPageTheme.fg_color) ===
-    //     (copyImageOfStoreSettingsPageTheme &&
-    //       copyImageOfStoreSettingsPageTheme.fg_color) &&
-    //   (imageOfStoreHeaderSettings && imageOfStoreHeaderSettings.bg_color) ===
-    //     (copyImageOfStoreHeaderSetting &&
-    //       copyImageOfStoreHeaderSetting.bg_color) &&
-    //   (imageOfStoreHeaderSettings && imageOfStoreHeaderSettings.fg_color) ===
-    //     (copyImageOfStoreHeaderSetting &&
-    //       copyImageOfStoreHeaderSetting.fg_color) &&
-    //   (imageOfStoreFooterSettings && imageOfStoreFooterSettings.bg_color) ===
-    //     (copyImageOfStoreFooterSetting &&
-    //       copyImageOfStoreFooterSetting.bg_color) &&
-    //   (imageOfStoreFooterSettings && imageOfStoreFooterSettings.fg_color) ===
-    //     (copyImageOfStoreFooterSetting &&
-    //       copyImageOfStoreFooterSetting.fg_color) &&
-    //   isEditStoreSetting
-    // ) {
-    //   count--;
-    // }
-    else if (
+    } else if (
       colorCodeValidation.pageBgColorValidation === true ||
       colorCodeValidation.pageTextColorValidation === true ||
       colorCodeValidation.primaryBgValidation === true ||
@@ -957,73 +856,34 @@ const StoreSettings = () => {
         autoClose: 10000,
       });
     } else if (count === 4) {
-      // let temp = [...isEditStoreSetting];
-      // console.log("isEditStoreSetting456", temp);
-      // temp.push({ id: 2 });
-      // setIsEditStoreSetting(temp);
-      sampleobject["settings"] = "contentSettings";
       saveStoreSettingsCall();
     }
   };
 
   const openModal = () => {
     setIsModalOpen(true);
-    // setValidStoreLogo(false);
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
-  const storeLogoModal = () => {
-    if (
-      storeId === "Choose Store" ||
-      storeId === "" ||
-      storeId === undefined ||
-      storeId === null
-    ) {
-      setInValidStoreData(true);
-      toast("Please select the store", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-      });
-    } else {
-      openModal();
-    }
-  };
-
-  console.log("numberToBasic", inValidNumberToBasic);
   //! get call of store images
   const findAllWithoutPageStoreImagesApi = (storeId) => {
-    // axios
-    //   .get(
-    //     storeImagesAPI,
-    //     {
-    //       params: {
-    //         "store-id": storeId,
-    //       },
-    //     },
-    //     authorizationHeader
-    //   )
     MarketplaceServices.findAllWithoutPage(storeImagesAPI, {
       store_id: storeId,
     })
       .then(function (response) {
-        console.log("Get response of Store setting Images--->", response.data);
-        // setGetImageData([response.data]);
+        console.log(
+          "Get response of Store setting Images--->",
+          response.data.response_body
+        );
         let data = [];
-        data.push(response.data);
+        data.push(response.data.response_body);
         setGetImageData(data);
       })
       .catch((error) => {
-        console.log("errorresponse from images--->", error);
-        if (error && error.response && error.response.status === 401) {
-          toast("Session expired", {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
-        }
+        console.log("error response from images--->", error);
         setGetImageData([]);
       });
   };
@@ -1052,79 +912,27 @@ const StoreSettings = () => {
       }
       formData.append("store_id", id);
     }
-    // axios
-    //   .post(
-    //     storeImagesAPI,
-    //     formData,
-    //     {
-    //       headers: { "Content-Type": "multipart/form-data" },
-    //     },
-    //     authorizationHeader
-    //   )
     setIsUpLoading(true);
-    MarketplaceServices.save(
-      storeImagesAPI,
-      formData
-      //   {
-      //   headers: { "Content-Type": "multipart/form-data" },
-      // }
-    )
+    MarketplaceServices.save(storeImagesAPI, formData)
       .then((response) => {
-        if (
-          Object.keys(sampleobject).length > 0 &&
-          Object.keys(sampleobject).length !== 2
-        ) {
-          if (sampleobject["images"] === "images") {
-            toast("Images saved successfully", {
-              position: toast.POSITION.TOP_RIGHT,
-              type: "success",
-              autoClose: 10000,
-            });
-          }
-        }
-        setIsUpLoading(false);
-        setIsLoading(false);
         console.log(
           "Server Success Response From storeImagePostCall",
-          response.data
+          response.data.response_body
         );
-        setGetImageData([response.data]);
+        MarketplaceToaster.showToast(response);
+        setIsUpLoading(false);
+        setIsLoading(false);
+        setGetImageData([response.data.response_body]);
         setImagesUpload([]);
-        // findAllWithoutPageStoreImagesApi(id);
       })
       .catch((error) => {
+        console.log("Error response from store images post call", error);
         setIsUpLoading(false);
-        if (error && error.response && error.response.status === 401) {
-          toast("Session expired", {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
-        } else {
-          if (error.response) {
-            toast(`${error.response.data.message}`, {
-              position: toast.POSITION.TOP_RIGHT,
-              type: "error",
-              autoClose: 10000,
-            });
-          } else if (error && error.response && error.response.status === 400) {
-            toast(`${error.response.data.message}`, {
-              position: toast.POSITION.TOP_RIGHT,
-              type: "error",
-              autoClose: 10000,
-            });
-          } else {
-            toast(`${t("messages:something_went_wrong")}`, {
-              position: toast.POSITION.TOP_RIGHT,
-              type: "error",
-              autoClose: 10000,
-            });
-          }
-        }
-        console.log(error.response.data);
+        MarketplaceToaster.showToast(error.response);
         setIsLoading(false);
       });
   };
+
   useEffect(() => {
     if (getImageData && getImageData.length > 0) {
       findAllWithoutPageStoreBannerImageApi(id);
@@ -1134,7 +942,7 @@ const StoreSettings = () => {
   //!put call of store images
   const updateStoreLogoImageCall = () => {
     const formData = new FormData();
-    imagesUpload.filter((ele) => typeof ele.imageValue.status === "undefined");
+    // imagesUpload.filter((ele) => typeof ele.imageValue.status === "undefined");
     if (imagesUpload && imagesUpload.length > 0) {
       for (var i = 0; i < imagesUpload.length; i++) {
         if (imagesUpload[i].type == "store_logo") {
@@ -1144,37 +952,6 @@ const StoreSettings = () => {
           for (var j = 0; j < localBannerImagesUpload.length; j++) {
             formData.append("banner_images", localBannerImagesUpload[j]);
           }
-          // if (updateBannerImage && updateBannerImage.length > 0) {
-          //   updateBannerImage.push(imagesUpload[i].imageValue);
-          //   for (var i = 0; i < updateBannerImage.length; i++) {
-          //     formData.append("banner_images", updateBannerImage[i]);
-          //   }
-          // } else {
-          // debugger;
-          // console.log("localBannerImagesUpload", localBannerImagesUpload);
-          // let removedItem = localBannerImagesUpload.filter(
-          //   (ele) => ele.status === "removed"
-          // );
-          // console.log("removedItem", removedItem);
-          // if (removedItem.length > 0) {
-          //   //Remove removed items from main array
-          //   for (var k = 0; k < localBannerImagesUpload.length; k++) {
-          //     var currentItemUid = localBannerImagesUpload[k].uid;
-          //   }
-          //   let itemToIgnore = removedItem.filter(
-          //     (element) => element.uid === currentItemUid
-          //   );
-          //   console.log("itemToIgnore", itemToIgnore);
-          //   if (itemToIgnore.length === 0) {
-          //     for (var j = 0; j < localBannerImagesUpload.length; j++) {
-          //       formData.append("banner_images", localBannerImagesUpload[j]);
-          //     }
-          //   }
-          // } else {
-          //   for (var j = 0; j < localBannerImagesUpload.length; j++) {
-          //     formData.append("banner_images", localBannerImagesUpload[j]);
-          //   }
-          // }
         } else if (imagesUpload[i].type == "search_logo") {
           formData.append("search_logo", imagesUpload[i].imageValue);
         } else if (imagesUpload[i].type == "customer_logo") {
@@ -1187,115 +964,42 @@ const StoreSettings = () => {
       }
       formData.append("store_id", id);
     }
-    // axios
-    //   .put(
-    //     storeImagesAPI,
-    //     formData,
-    //     {
-    //       headers: { "Content-Type": "multipart/form-data" },
-    //     },
-    //     authorizationHeader
-    //   )
     setIsUpLoading(true);
-    MarketplaceServices.update(
-      storeImagesAPI,
-      formData
-      //   {
-      //   headers: { "Content-Type": "multipart/form-data" },
-      // }
-    )
+    MarketplaceServices.update(storeImagesAPI, formData)
       .then((response) => {
-        if (
-          Object.keys(sampleobject).length > 0 &&
-          Object.keys(sampleobject).length !== 2
-        ) {
-          if (sampleobject["images"] === "images") {
-            toast(`${t("messages:images_saved_successfully")}`, {
-              position: toast.POSITION.TOP_RIGHT,
-              type: "success",
-              autoClose: 10000,
-            });
-          }
-        }
-        setGetImageData([response.data]);
+        console.log(
+          "API endpoint",
+          storeImagesAPI,
+          "Server Success Response From storeImagePutCall",
+          response
+        );
+        MarketplaceToaster.showToast(
+          util.getToastObject(`Store images updated successfully`, "success")
+        );
+        setGetImageData([response.data.response_body]);
         setImagesUpload([]);
-        // !TODO: Update response is not , backend is giving null for previously updated images So we are doing get call here again.
-        // findAllWithoutPageStoreImagesApi(id);
-        //window.location.reload();
         setIsUpLoading(false);
         setIsLoading(false);
         setImageChangeValues(false);
-        console.log(
-          "Server Success Response From storeImagePutCall",
-          response.data
-        );
-        // setImagesUpload([]);
       })
       .catch((error) => {
+        console.log("error response from the store images put call", error);
+        // MarketplaceToaster.showToast(error.response);
         setIsUpLoading(false);
-        console.log(error.response);
         setIsLoading(false);
-        if (error && error.response && error.response.status === 401) {
-          toast("Session expired", {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
-        } else {
-          if (error.response) {
-            toast(`${error.response.data.message}`, {
-              position: toast.POSITION.TOP_RIGHT,
-              type: "error",
-              autoClose: 10000,
-            });
-          } else if (error && error.response && error.response.status === 400) {
-            toast(`${error.response.data.message}`, {
-              position: toast.POSITION.TOP_RIGHT,
-              type: "error",
-              autoClose: 10000,
-            });
-          } else {
-            toast(`${t("messages:something_went_wrong")}`, {
-              position: toast.POSITION.TOP_RIGHT,
-              type: "error",
-              autoClose: 10000,
-            });
-          }
-        }
       });
   };
 
   const postImageOnClickSave = () => {
-    // let temp = [...isEditStoreSetting];
-    // temp.push({ id: 1 });
-    // setIsEditStoreSetting(temp);
-    sampleobject["images"] = "images";
     if (getImageData && getImageData.length > 0) {
       updateStoreLogoImageCall();
     } else {
-      // let count = 1;
-      // if (imagesUpload && imagesUpload.length === 0) {
-      //   count--;
-      //   setValidStoreLogo(true);
-      //   toast("Please upload the store logo", {
-      //     position: toast.POSITION.TOP_RIGHT,
-      //     type: "error",
-      //   });
-      // }
-      // if (count === 1) {
       saveStoreLogoImageCall();
-      // }
     }
   };
+
+  //! get call for store banner images
   const findAllWithoutPageStoreBannerImageApi = (storeId) => {
-    // setIsLoading(true);
-    // axios
-    //   .get(storeBannerImageAPI, {
-    //     params: {
-    //       "store-id": storeId,
-    //     },
-    //     authorizationHeader,
-    //   })
     MarketplaceServices.findAllWithoutPage(storeBannerImageAPI, {
       store_id: storeId,
     })
@@ -1304,15 +1008,7 @@ const StoreSettings = () => {
           "Server Response from getstoreBannerImageApi Function: ",
           response.data
         );
-        // if (response.data.length > 0) {
-        //   let temp = [];
-        //   for (var i = 0; i < response.data.length; i++) {
-        //     temp.push(response.data[i].path);
-        //   }
-        //   setUpdateBannerImage(temp);
-        // }
         setBannerAbsoluteImage(response.data);
-        // setStoreData(response.data.data);
       })
       .catch((error) => {
         if (error && error.response && error.response.status === 401) {
@@ -1332,62 +1028,8 @@ const StoreSettings = () => {
     if (id) {
       findAllWithoutPageStoreSettingApi(id);
       findAllWithoutPageStoreImagesApi(id);
-      // findAllWithoutPageStoreBannerImageApi(id);
     }
   }, []);
-
-  // const handleStoreChange = (value) => {
-  //   if (value) {
-  //     getStoreSettingApi(value);
-  //     findAllWithoutPageStoreImagesApi(value);
-  //   }
-  //   setstoreId(value);
-  //   setInValidStoreData(false);
-  // };
-
-  // const onChange = (checked) => {
-  //   // console.log(`switch to ${checked}`);
-  //   setChangeSwitchStatus (checked)
-  // };
-
-  const storeSettingsHeader = () => {
-    return (
-      <>
-        <Row justify={"space-between"} className="!w-[80%] !mt-[60px]">
-          <Col>
-            <Content className=" text-right !ml-2 flex items-center ">
-              <Link to="/dashboard/store">
-                <ArrowLeftOutlined
-                  role={"button"}
-                  className={"text-black text-lg -translate-y-1 ml-2"}
-                />
-              </Link>
-              <Title level={3} className=" ml-3 inline-block  !font-normal">
-                {storeName}
-              </Title>
-            </Content>
-          </Col>
-
-          <Col>
-            <Content className="text-right  flex items-center">
-              {/* <Switch
-                className="bg-gray-400"
-                checked={changeSwitchStatus === 1 ? true : false}
-              /> */}
-              <Status
-                storeId={id}
-                storeStatus={changeSwitchStatus === 1 ? true : false}
-                storeApiData={storeData}
-              />
-              {/* <Content className="pl-1 ">
-                {changeSwitchStatus === 1 ? "Active" : "Inactive"}
-              </Content> */}
-            </Content>
-          </Col>
-        </Row>
-      </>
-    );
-  };
 
   const numberToBasicLimit = (e) => {
     const { key, keyCode } = e;
@@ -1409,21 +1051,6 @@ const StoreSettings = () => {
     }
   };
 
-  const validateRegionCode = () => {
-    if (regionCode !== undefined && regionCode !== null && regionCode !== "") {
-      let temp = [...addCodes];
-      temp.push(regionCode);
-      setAddCodes(temp);
-      setRegionCode("");
-    } else {
-      setRegionCode("");
-    }
-  };
-
-  const log = (e) => {
-    console.log(e);
-  };
-  console.log("imageChangeValues", imageChangeValues);
   return (
     <Content>
       <HeaderForTitle
@@ -1452,115 +1079,6 @@ const StoreSettings = () => {
         }
       />
       <Content className="p-3 mt-[6.2rem]">
-        {/* <Spin tip="Please wait!" size="large" spinning={isLoading}> */}
-        {/* <Content className="bg-white mt-2 p-3"> */}
-        {/* <span className="text-red-600 text-sm !text-center">*</span>
-          <label className="text-[16px] mb-2 ml-1 font-bold">Store</label>
-          <Content>
-            <Select
-              allowClear
-              placeholder={"Choose Store"}
-              value={storeId}
-              onChange={handleStoreChange}
-              className={`${
-                inValidStoreData
-                  ? "!border-red-400 !border-solid !border-[0.5px] focus:border-red-400 hover:border-red-400 w-[33%]"
-                  : "w-[33%]"
-              }`}
-            >
-              {storeData &&
-                storeData.length > 0 &&
-                storeData.map((e) => (
-                  <Select.Option value={e.id} id={e.id} key={e.id}>
-                    {e.name}
-                  </Select.Option>
-                ))}
-            </Select>
-            <Button className="float-right" onClick={() => storeLogoModal()}>
-              + Store media
-            </Button>
-            <StoreModal
-              // closeModal="!overflow-y-auto !h-96"
-              isVisible={isModalOpen}
-              okButtonText={"Save"}
-              title={"Store Images"}
-              width={900}
-              cancelButtonText={"Cancel"}
-              okCallback={() => {
-                postImageOnClickSave();
-              }}
-              cancelCallback={() => closeModal()}
-              isSpin={false}
-            >
-              <Row>
-                <Col>
-                  <StoreImages
-                    title={"Store Logo"}
-                    type={"store_logo"}
-                    storeId={storeId}
-                    imagesUpload={imagesUpload}
-                    setImagesUpload={setImagesUpload}
-                    getImageData={getImageData}
-                    isSingleUpload={true}
-                    validStoreLogo={validStoreLogo}
-                    setValidStoreLogo={setValidStoreLogo}
-                  />
-                </Col>
-                <Col>
-                  <StoreImages
-                    title={"Search Logo"}
-                    type={"search_logo"}
-                    storeId={storeId}
-                    imagesUpload={imagesUpload}
-                    getImageData={getImageData}
-                    setImagesUpload={setImagesUpload}
-                    isSingleUpload={true}
-                  />
-                </Col>
-                <Col>
-                  <StoreImages
-                    title={"Customer Logo"}
-                    type={"customer_logo"}
-                    storeId={storeId}
-                    imagesUpload={imagesUpload}
-                    getImageData={getImageData}
-                    setImagesUpload={setImagesUpload}
-                    isSingleUpload={true}
-                  />
-                </Col>
-                <Col>
-                  <StoreImages
-                    title={"Cart Logo"}
-                    type={"cart_logo"}
-                    storeId={storeId}
-                    imagesUpload={imagesUpload}
-                    getImageData={getImageData}
-                    setImagesUpload={setImagesUpload}
-                    isSingleUpload={true}
-                  />
-                </Col>
-                <Col>
-                  <StoreImages
-                    title={"Wishlist Logo"}
-                    type={"wishlist_logo"}
-                    storeId={storeId}
-                    imagesUpload={imagesUpload}
-                    getImageData={getImageData}
-                    setImagesUpload={setImagesUpload}
-                    isSingleUpload={true}
-                  />
-                </Col>
-              </Row>
-              <StoreImages
-                title={"Banner Logo"}
-                type={"banner_images"}
-                storeId={storeId}
-                imagesUpload={imagesUpload}
-                setImagesUpload={setImagesUpload}
-                isSingleUpload={false}
-              />
-            </StoreModal>
-          </Content> */}
         <Spin tip="Please wait!" size="large" spinning={isUpLoading}>
           <Content className="bg-white p-3 !rounded-md">
             <label className="text-[20px] mb-2 font-bold">
@@ -1582,58 +1100,6 @@ const StoreSettings = () => {
                   setImageChangeValues={setImageChangeValues}
                 />
               </Col>
-              {/* <Col className="!ml-10">
-                <StoreImages
-                  title={`${t("stores:Search-Logo")}`}
-                  type={"search_logo"}
-                  storeId={id}
-                  imagesUpload={imagesUpload}
-                  getImageData={getImageData && getImageData[0]}
-                  setImagesUpload={setImagesUpload}
-                  isSingleUpload={true}
-                  InfoCircleText={`${t("stores:Search-Logo-Info")}`}
-                  setImageChangeValues={setImageChangeValues}
-                />
-              </Col>
-              <Col className="!ml-10">
-                <StoreImages
-                  title={`${t("stores:Customer-Logo")}`}
-                  type={"customer_logo"}
-                  storeId={id}
-                  imagesUpload={imagesUpload}
-                  getImageData={getImageData && getImageData[0]}
-                  setImagesUpload={setImagesUpload}
-                  isSingleUpload={true}
-                  InfoCircleText={`${t("stores:Customer-Logo-info")}`}
-                  setImageChangeValues={setImageChangeValues}
-                />
-              </Col>
-              <Col className="!ml-10">
-                <StoreImages
-                  title={`${t("stores:Cart-Logo")}`}
-                  type={"cart_logo"}
-                  storeId={id}
-                  imagesUpload={imagesUpload}
-                  getImageData={getImageData && getImageData[0]}
-                  setImagesUpload={setImagesUpload}
-                  isSingleUpload={true}
-                  InfoCircleText={`${t("stores:Cart-Logo-info")}`}
-                  setImageChangeValues={setImageChangeValues}
-                />
-              </Col>
-              <Col className="!ml-10">
-                <StoreImages
-                  title={`${t("stores:Wishlist-Logo")}`}
-                  type={"wishlist_logo"}
-                  storeId={id}
-                  imagesUpload={imagesUpload}
-                  getImageData={getImageData && getImageData[0]}
-                  setImagesUpload={setImagesUpload}
-                  isSingleUpload={true}
-                  InfoCircleText={`${t("stores:Wishlist-Logo-Info")}`}
-                  setImageChangeValues={setImageChangeValues}
-                />
-              </Col> */}
               {/* <StoreMedia
                 title={`${t("stores:Store-Logo")}`}
                 type={"store_logo"}
@@ -1662,7 +1128,6 @@ const StoreSettings = () => {
               <Row>
                 <Col>
                   <Button
-                    // className="app-btn-primary"
                     className={
                       imageChangeValues ? "app-btn-primary" : "!opacity-75"
                     }
@@ -1792,8 +1257,6 @@ const StoreSettings = () => {
                 }`}
               />
             </Col>
-            {/* </Row>
-          <Row className="mt-4"> */}
             <Col span={4} className="gutter-row">
               <span className="text-red-600 text-sm !text-center">*</span>
               <label className="text-[13px] mb-2 ml-1">
@@ -1871,49 +1334,6 @@ const StoreSettings = () => {
               />
             </Col>
           </Row>
-
-          {/* <Content className="bg-white mt-2 p-3 ">
-          <label className="text-[20px] mb-2 mt-4 font-bold">Region Code</label>
-          <Content className="flex">
-            <Input
-              placeholder="Enter region code here"
-              className="w-64 "
-              onChange={(e) => setRegionCode(e.target.value)}
-            />
-            <Button className="ml-1 " onClick={() => validateRegionCode()}>
-              + Add
-            </Button>
-          </Content>
-          <Content
-            className="border-solid border-2 !max-h-[900px] mt-2 p-1"
-            style={{
-              height: 120,
-            }}
-          >
-            <Content>
-              <div className="p-1 ml">Codes</div>
-              <div
-                className="text-sky-500 float-right cursor-pointer text-lg mt-[-29px]"
-                onClick={() => {
-                  setAddCodes([]);
-                }}
-              >
-                clear
-              </div>
-            </Content>
-            <Content className="mt-2 -translate-y-0.4">
-              {addCodes &&
-                addCodes.length > 0 &&
-                addCodes.map((ele) => {
-                  return (
-                    <Tag closable onClose={log}>
-                      {ele}
-                    </Tag>
-                  );
-                })}
-            </Content>
-          </Content>
-        </Content> */}
           <Content className="">
             <Content className="">
               <Row className="!mb-4">
@@ -2036,25 +1456,12 @@ const StoreSettings = () => {
                           </Tooltip>
                         }
                       />
-                      {/* <Input
-                      addonAfter={
-                        <Tooltip title="Reset to the original value">
-                          <UndoOutlined
-                            onClick={() => {
-                              setPageBackgroundColor(pageBgColor);
-                            }}
-                          />
-                        </Tooltip>
-                      }
-                      defaultValue="100%"
-                      className="w-24"
-                    /> */}
                     </Space.Compact>
                   </Content>
                   {colorCodeValidation.pageBgColorValidation === true ? (
                     <p className="text-red-600 text-sm">
                       {t("messages:please_enter_valid_hexadecimal_code")} <br />
-                      {t("messages:ex_#ffffff_for_white_#000000_for_black")}
+                      {t("messages:ex_ffffff_for_white_000000_for_black")}
                     </p>
                   ) : null}
                 </Col>
@@ -2127,78 +1534,17 @@ const StoreSettings = () => {
                           </Tooltip>
                         }
                       />
-                      {/* <Input
-                      addonAfter={
-                        <Tooltip title="Reset to the original value">
-                          <UndoOutlined
-                            onClick={() => {
-                              setForeGroundColor(pageFgColor);
-                            }}
-                          />
-                        </Tooltip>
-                      }
-                      defaultValue="100%"
-                      className="w-24"
-                    /> */}
                     </Space.Compact>
                   </Content>
                   {colorCodeValidation.pageTextColorValidation === true ? (
                     <p className="text-red-600 text-sm">
                       {t("messages:please_enter_valid_hexadecimal_code")} <br />
-                      {t("messages:ex_#ffffff_for_white_#000000_for_black")}
+                      {t("messages:ex_ffffff_for_white_000000_for_black")}
                     </p>
                   ) : null}
                 </Col>
               </Row>
               <Row className="mt-4">
-                {/* <Col span={8} className="mr-2">
-                <Button
-                  className="float-right mb-1"
-                  onClick={() => {
-                    setButtonPrimaryBackgroundColor(btnPrimaryBgColor);
-                  }}
-                >
-                  Reset
-                </Button>
-
-                <label className="text-[13px] mb-2 ml-1">
-                  Button Primary Background Color
-                </label>
-
-                <Input
-                  placeholder="Enter header background color"
-                  maxLength={255}
-                  minLength={1}
-                  value={buttonPrimaryBackgroundColor}
-                  onChange={(e) => {
-                    setButtonPrimaryBackgroundColor(e.target.value);
-                  }}
-                  type="color"
-                />
-              </Col>
-              <Col span={8} className="mr-2">
-                <Button
-                  className="float-right mb-1"
-                  onClick={() => {
-                    setButtonSecondaryBackgroundColor(btnSecondaryBgColor);
-                  }}
-                >
-                  Reset
-                </Button>
-                <label className="text-[13px] mb-2 ml-1">
-                  Button Secondary Background Color
-                </label>
-                <Input
-                  placeholder="Enter header background color"
-                  maxLength={255}
-                  minLength={1}
-                  value={buttonSecondaryBackgroundColor}
-                  onChange={(e) => {
-                    setButtonSecondaryBackgroundColor(e.target.value);
-                  }}
-                  type="color"
-                />
-              </Col> */}
                 <Col span={8} className="mr-2 ">
                   <label className="text-[13px] mb-2 ml-1 select-none">
                     {t("labels:primary_button_background_color")}
@@ -2271,27 +1617,12 @@ const StoreSettings = () => {
                           </Tooltip>
                         }
                       />
-                      {/* <Input
-                      addonAfter={
-                        <Tooltip title="Reset to the original value">
-                          <UndoOutlined
-                            onClick={() => {
-                              setButtonPrimaryBackgroundColor(
-                                btnPrimaryBgColor
-                              );
-                            }}
-                          />
-                        </Tooltip>
-                      }
-                      defaultValue="100%"
-                      className="w-24"
-                    /> */}
                     </Space.Compact>
                   </Content>
                   {colorCodeValidation.primaryBgValidation === true ? (
                     <p className="text-red-600 text-sm">
                       {t("messages:please_enter_valid_hexadecimal_code")} <br />
-                      {t("messages:ex_#ffffff_for_white_#000000_for_black")}
+                      {t("messages:ex_ffffff_for_white_000000_for_black")}
                     </p>
                   ) : null}
                 </Col>
@@ -2367,27 +1698,12 @@ const StoreSettings = () => {
                           </Tooltip>
                         }
                       />
-                      {/* <Input
-                      addonAfter={
-                        <Tooltip title="Reset to the original value">
-                          <UndoOutlined
-                            onClick={() => {
-                              setButtonSecondaryBackgroundColor(
-                                btnSecondaryBgColor
-                              );
-                            }}
-                          />
-                        </Tooltip>
-                      }
-                      defaultValue="100%"
-                      className="w-24"
-                    /> */}
                     </Space.Compact>
                   </Content>
                   {colorCodeValidation.secondaryBgValidation === true ? (
                     <p className="text-red-600 text-sm">
                       {t("messages:please_enter_valid_hexadecimal_code")} <br />
-                      {t("messages:ex_#ffffff_for_white_#000000_for_black")}
+                      {t("messages:ex_ffffff_for_white_000000_for_black")}
                     </p>
                   ) : null}
                 </Col>
@@ -2462,80 +1778,17 @@ const StoreSettings = () => {
                           </Tooltip>
                         }
                       />
-                      {/* <Input
-                      addonAfter={
-                        <Tooltip title="Reset to the original value">
-                          <UndoOutlined
-                            onClick={() => {
-                              setButtonTeritaryBackgroundColor(
-                                btnTeritaryBgColor
-                              );
-                            }}
-                          />
-                        </Tooltip>
-                      }
-                      defaultValue="100%"
-                      className="w-24"
-                    /> */}
                     </Space.Compact>
                   </Content>
                   {colorCodeValidation.tertiaryBgValidation === true ? (
                     <p className="text-red-600 text-sm">
                       {t("messages:please_enter_valid_hexadecimal_code")} <br />
-                      {t("messages:ex_#ffffff_for_white_#000000_for_black")}
+                      {t("messages:ex_ffffff_for_white_000000_for_black")}
                     </p>
                   ) : null}
                 </Col>
               </Row>
               <Row className="mt-4">
-                {/* <Col span={8} className="mr-2">
-                <Button
-                  className="float-right mb-1"
-                  onClick={() => {
-                    setButtonTeritaryBackgroundColor(btnTeritaryBgColor);
-                  }}
-                >
-                  Reset
-                </Button>
-                <label className="text-[13px] mb-2 ml-1">
-                  Button Teritary Background Color
-                </label>
-
-                <Input
-                  placeholder="Enter header background color"
-                  maxLength={255}
-                  minLength={1}
-                  value={buttonTeritaryBackgroundColor}
-                  onChange={(e) => {
-                    setButtonTeritaryBackgroundColor(e.target.value);
-                  }}
-                  type="color"
-                />
-              </Col>
-              <Col span={8} className="mr-2">
-                <Button
-                  className="float-right mb-1"
-                  onClick={() => {
-                    setButtonPrimaryForegroundColor(btnPrimaryFgColor);
-                  }}
-                >
-                  Reset
-                </Button>
-                <label className="text-[13px] mb-2 ml-1">
-                  Button Primary Foreground Color
-                </label>
-
-                <Input
-                  placeholder="Enter header background color"
-                  maxLength={255}
-                  minLength={1}
-                  value={buttonPrimaryForegroundColor}
-                  onChange={(e) => {
-                    setButtonPrimaryForegroundColor(e.target.value);
-                  }}
-                  type="color"
-                />
-              </Col> */}
                 <Col span={8} className="mr-2 ">
                   <label className="text-[13px] mb-2 ml-1 select-none">
                     {t("labels:primary_button_text_color")}
@@ -2608,27 +1861,12 @@ const StoreSettings = () => {
                           </Tooltip>
                         }
                       />
-                      {/* <Input
-                      addonAfter={
-                        <Tooltip title="Reset to the original value">
-                          <UndoOutlined
-                            onClick={() => {
-                              setButtonTeritaryBackgroundColor(
-                                btnTeritaryBgColor
-                              );
-                            }}
-                          />
-                        </Tooltip>
-                      }
-                      defaultValue="100%"
-                      className="w-24"
-                    /> */}
                     </Space.Compact>
                   </Content>
                   {colorCodeValidation.primaryTextValidation === true ? (
                     <p className="text-red-600 text-sm">
                       {t("messages:please_enter_valid_hexadecimal_code")} <br />
-                      {t("messages:ex_#ffffff_for_white_#000000_for_black")}
+                      {t("messages:ex_ffffff_for_white_000000_for_black")}
                     </p>
                   ) : null}
                 </Col>
@@ -2704,27 +1942,12 @@ const StoreSettings = () => {
                           </Tooltip>
                         }
                       />
-                      {/* <Input
-                      addonAfter={
-                        <Tooltip title="Reset to the original value">
-                          <UndoOutlined
-                            onClick={() => {
-                              setButtonPrimaryForegroundColor(
-                                btnPrimaryFgColor
-                              );
-                            }}
-                          />
-                        </Tooltip>
-                      }
-                      defaultValue="100%"
-                      className="w-24"
-                    /> */}
                     </Space.Compact>
                   </Content>
                   {colorCodeValidation.secondaryTextValidation === true ? (
                     <p className="text-red-600 text-sm">
                       {t("messages:please_enter_valid_hexadecimal_code")} <br />
-                      {t("messages:ex_#ffffff_for_white_#000000_for_black")}
+                      {t("messages:ex_ffffff_for_white_000000_for_black")}
                     </p>
                   ) : null}
                 </Col>
@@ -2800,82 +2023,16 @@ const StoreSettings = () => {
                           </Tooltip>
                         }
                       />
-                      {/* <Input
-                      addonAfter={
-                        <Tooltip title="Reset to the original value">
-                          <UndoOutlined
-                            onClick={() => {
-                              setButtonTeritaryForegroundColor(
-                                btnTeritaryFgColor
-                              );
-                            }}
-                          />
-                        </Tooltip>
-                      }
-                      defaultValue="100%"
-                      className="w-24"
-                    /> */}
                     </Space.Compact>
                   </Content>
                   {colorCodeValidation.tertiaryTextValidation === true ? (
                     <p className="text-red-600 text-sm">
                       {t("messages:please_enter_valid_hexadecimal_code")} <br />
-                      {t("messages:ex_#ffffff_for_white_#000000_for_black")}
+                      {t("messages:ex_ffffff_for_white_000000_for_black")}
                     </p>
                   ) : null}
                 </Col>
               </Row>
-              {/* <Row className="mt-4">
-              <Col span={8} className="mr-2">
-                <Button
-                  className="float-right mb-1"
-                  onClick={() => {
-                    setButtonSecondaryForegroundColor(btnSecondaryFgColor);
-                  }}
-                >
-                  Reset
-                </Button>
-                <label className="text-[13px] mb-2 ml-1">
-                  Button Secondary Foreground Color
-                </label>
-
-                <Input
-                  placeholder="Enter header background color"
-                  maxLength={255}
-                  minLength={1}
-                  value={buttonSecondaryForegroundColor}
-                  onChange={(e) => {
-                    setButtonSecondaryForegroundColor(e.target.value);
-                  }}
-                  type="color"
-                />
-              </Col>
-              <Col span={8} className="mr-2">
-                <Button
-                  className="float-right mb-1"
-                  onClick={() => {
-                    setButtonTeritaryForegroundColor(btnTeritaryFgColor);
-                  }}
-                >
-                  Reset
-                </Button>
-
-                <label className="text-[13px] mb-2 ml-1">
-                  Button Teritary Foreground Color
-                </label>
-
-                <Input
-                  placeholder="Enter header background color"
-                  maxLength={255}
-                  minLength={1}
-                  value={buttonTeritaryForegroundColor}
-                  onChange={(e) => {
-                    setButtonTeritaryForegroundColor(e.target.value);
-                  }}
-                  type="color"
-                />
-              </Col>
-            </Row> */}
             </Content>
             <Content>
               <label className="text-[20px] mb-2 mt-4 font-bold select-none">
@@ -2952,25 +2109,12 @@ const StoreSettings = () => {
                           </Tooltip>
                         }
                       />
-                      {/* <Input
-                      addonAfter={
-                        <Tooltip title="Reset to the original value">
-                          <UndoOutlined
-                            onClick={() => {
-                              setHeaderBackgroundColor(headerBgColor);
-                            }}
-                          />
-                        </Tooltip>
-                      }
-                      defaultValue="100%"
-                      className="w-24"
-                    /> */}
                     </Space.Compact>
                   </Content>
                   {colorCodeValidation.headerBgValidation === true ? (
                     <p className="text-red-600 text-sm">
                       {t("messages:please_enter_valid_hexadecimal_code")} <br />
-                      {t("messages:ex_#ffffff_for_white_#000000_for_black")}
+                      {t("messages:ex_ffffff_for_white_000000_for_black")}
                     </p>
                   ) : null}
                 </Col>
@@ -3001,7 +2145,6 @@ const StoreSettings = () => {
                           setHeaderForegroundColor(e.target.value);
                           setOnChangeValues(true);
                         }
-                        // setHeaderForegroundColor(e.target.value);
                         let temp = { ...copyImageOfStoreHeaderSetting };
                         temp["fg_color"] = e.target.value;
                         setCopyImageOfStoreHeaderSetting(temp);
@@ -3046,25 +2189,12 @@ const StoreSettings = () => {
                           </Tooltip>
                         }
                       />
-                      {/* <Input
-                      addonAfter={
-                        <Tooltip title="Reset to the original value">
-                          <UndoOutlined
-                            onClick={() => {
-                              setHeaderForegroundColor(headerFgColor);
-                            }}
-                          />
-                        </Tooltip>
-                      }
-                      defaultValue="100%"
-                      className="w-24"
-                    /> */}
                     </Space.Compact>
                   </Content>
                   {colorCodeValidation.headerTextValidation === true ? (
                     <p className="text-red-600 text-sm">
                       {t("messages:please_enter_valid_hexadecimal_code")} <br />
-                      {t("messages:ex_#ffffff_for_white_#000000_for_black")}
+                      {t("messages:ex_ffffff_for_white_000000_for_black")}
                     </p>
                   ) : null}
                 </Col>
@@ -3144,25 +2274,12 @@ const StoreSettings = () => {
                           </Tooltip>
                         }
                       />
-                      {/* <Input
-                      addonAfter={
-                        <Tooltip title="Reset to the original value">
-                          <UndoOutlined
-                            onClick={() => {
-                              setFooterBackgroundColor(headerFgColor);
-                            }}
-                          />
-                        </Tooltip>
-                      }
-                      defaultValue="100%"
-                      className="w-24"
-                    /> */}
                     </Space.Compact>
                   </Content>
                   {colorCodeValidation.footerBgValidation === true ? (
                     <p className="text-red-600 text-sm">
                       {t("messages:please_enter_valid_hexadecimal_code")} <br />
-                      {t("messages:ex_#ffffff_for_white_#000000_for_black")}
+                      {t("messages:ex_ffffff_for_white_000000_for_black")}
                     </p>
                   ) : null}
                 </Col>
@@ -3190,7 +2307,6 @@ const StoreSettings = () => {
                           setFooterForegroundColor(e.target.value);
                           setOnChangeValues(true);
                         }
-                        // setFooterForegroundColor(e.target.value);
                         let temp = { ...copyImageOfStoreFooterSetting };
                         temp["fg_color"] = e.target.value;
                         setCopyImageOfStoreFooterSetting(temp);
@@ -3235,25 +2351,12 @@ const StoreSettings = () => {
                           </Tooltip>
                         }
                       />
-                      {/* <Input
-                      addonAfter={
-                        <Tooltip title="Reset to the original value">
-                          <UndoOutlined
-                            onClick={() => {
-                              setFooterForegroundColor(footerFgColor);
-                            }}
-                          />
-                        </Tooltip>
-                      }
-                      defaultValue="100%"
-                      className="w-24"
-                    /> */}
                     </Space.Compact>
                   </Content>
                   {colorCodeValidation.footerTextValidation === true ? (
                     <p className="text-red-600 text-sm">
                       {t("messages:please_enter_valid_hexadecimal_code")} <br />
-                      {t("messages:ex_#ffffff_for_white_#000000_for_black")}
+                      {t("messages:ex_ffffff_for_white_000000_for_black")}
                     </p>
                   ) : null}
                 </Col>
@@ -3263,16 +2366,12 @@ const StoreSettings = () => {
               <Row>
                 <Col>
                   <Button
-                    // className="app-btn-primary"
                     className={
                       onChangeValues ? "app-btn-primary " : "!opacity-75"
                     }
                     disabled={!onChangeValues}
                     onClick={() => {
                       validatePostStoreSetting();
-                      // if (imagesUpload && imagesUpload.length > 0) {
-                      //   postImageOnClickSave();
-                      // }
                     }}
                   >
                     {t("labels:save")}
@@ -3280,7 +2379,6 @@ const StoreSettings = () => {
                 </Col>
                 <Col className="pl-2">
                   <Button
-                    // className=" app-btn-secondary"
                     className={
                       onChangeValues === true
                         ? "app-btn-secondary "
@@ -3289,23 +2387,6 @@ const StoreSettings = () => {
                     disabled={!onChangeValues}
                     onClick={() => {
                       navigate("/dashboard/store");
-                      // setFractionalUnit("");
-                      // setNumberToBasic("");
-                      // setCurrencyIsoCode("");
-                      // setCurrencySymbol("");
-                      // setPageBackgroundColor("#EBEBEB");
-                      // setButtonPrimaryBackgroundColor("#000000");
-                      // setButtonSecondaryBackgroundColor("#000000");
-                      // setButtonTeritaryBackgroundColor("#000000");
-                      // setButtonPrimaryForegroundColor("#000000");
-                      // setButtonSecondaryForegroundColor("#000000");
-                      // setButtonTeritaryForegroundColor("#000000");
-                      // setForeGroundColor("#333333");
-                      // setFooterBackgroundColor("#000000");
-                      // setFooterForegroundColor("#000000");
-                      // setHeaderForegroundColor("#000000");
-                      // setHeaderBackgroundColor("#000000");
-                      // setImagesUpload([]);
                     }}
                   >
                     {t("labels:discard")}
@@ -3316,7 +2397,6 @@ const StoreSettings = () => {
           </Content>
         </Content>
       </Content>
-      {/* </Spin> */}
     </Content>
   );
 };
