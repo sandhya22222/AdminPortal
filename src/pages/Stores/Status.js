@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import StoreModal from "../../components/storeModal/StoreModal";
 import useAuthorization from "../../hooks/useAuthorization";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
+import MarketplaceToaster from "../../util/marketplaceToaster";
 const storeEditStatusAPI = process.env.REACT_APP_STORE_STATUS_API;
 
 function Status({
@@ -48,17 +49,6 @@ function Status({
     };
     // Enabling spinner
     setIsLoading(true);
-    // axios
-    //   .put(
-    //     storeEditStatusAPI,
-    //     reqbody,
-    //     {
-    //       params: {
-    //         "store-id": parseInt(storeId),
-    //       },
-    //     },
-    //     authorizationHeader
-    //   )
     MarketplaceServices.update(storeEditStatusAPI, reqbody, {
       store_id: storeId,
     })
@@ -66,26 +56,7 @@ function Status({
         setSwitchStatus(changeSwitchStatus);
         closeModal();
         setIsLoading(false);
-        if (response.data) {
-          toast(`${response.data.message}`, {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "success",
-            autoClose: 10000,
-          });
-        }
-        // if (switchStatus === false) {
-        //   toast("Store status changed successfully", {
-        //     position: toast.POSITION.TOP_RIGHT,
-        //     type: "success",
-        //     autoClose: 10000,
-        //   });
-        // } else {
-        //   toast("Store status changed successfully", {
-        //     position: toast.POSITION.TOP_RIGHT,
-        //     type: "success",
-        //     autoClose: 10000,
-        //   });
-        // }
+        MarketplaceToaster.showToast(response);
         console.log(
           "Selected content",
           selectedTabTableContent,
@@ -158,25 +129,7 @@ function Status({
       .catch((error) => {
         setIsLoading(false);
         closeModal();
-        if (error && error.response && error.response.status === 401) {
-          toast("Session expired", {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
-        } else {
-          if (error.response && error.response.message) {
-            toast(error.response.data.message, {
-              type: "error",
-              autoClose: 10000,
-            });
-          } else {
-            toast("Sorry, failed to update the store status", {
-              type: "error",
-              autoClose: 10000,
-            });
-          }
-        }
+        MarketplaceToaster.showToast(error.response);
         console.log("Error from the status response ===>", error.response);
       });
   };

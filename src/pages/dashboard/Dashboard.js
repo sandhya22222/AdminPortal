@@ -25,6 +25,7 @@ import util from "../../util/common";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
 import { useAuth } from "react-oidc-context";
 import { useTranslation } from "react-i18next";
+import MarketplaceToaster from "../../util/marketplaceToaster";
 
 const storeAdminDashboardAPI =
   process.env.REACT_APP_STORE_ADMIN_DASHBOARD_DATA_API;
@@ -61,20 +62,17 @@ const Dashboard = () => {
   const getDashBoardData = () => {
     MarketplaceServices.findAllWithoutPage(storeAdminDashboardAPI, null, true)
       .then(function (response) {
-        setDashboardData(response.data);
+        console.log(
+          "Dashboard APi success response data",
+          response.data.response_body
+        );
+        setDashboardData(response.data.response_body);
         setDashboardDataLoading(false);
         setDashboardDataNetWorkError(false);
       })
       .catch((error) => {
         setDashboardDataLoading(false);
         setDashboardDataNetWorkError(true);
-        if (error && error.response && error.response.status === 401) {
-          toast("Session expired", {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
-        }
       });
   };
 

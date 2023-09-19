@@ -498,20 +498,7 @@ const Stores = () => {
 
   //!get call for stores
   const findByPageStoreApi = (pageNumber, pageLimit, storeStatus) => {
-    // setIsLoading(true);
-    // axios
-    //   .get(
-    //     storeAPI,
-    //     {
-    //       params: {
-    //         // store_id: parseInt(storeId),
-    //         "page-number": pageNumber,
-    //         "page-limit": pageLimit,
-    //         status: storeStatus ? storeStatus : null,
-    //       },
-    //     },
-    //     authorizationHeader
-    //   )
+    setIsLoading(true);
     MarketplaceServices.findByPage(
       storeAPI,
       {
@@ -524,25 +511,25 @@ const Stores = () => {
       .then(function (response) {
         setActiveCount({
           totalStores:
-            response.data.active_stores + response.data.inactive_stores,
-          activeStores: response.data.active_stores,
-          inactiveStores: response.data.inactive_stores,
+            response.data.response_body.active_stores +
+            response.data.response_body.inactive_stores,
+          activeStores: response.data.response_body.active_stores,
+          inactiveStores: response.data.response_body.inactive_stores,
         });
         // setInactiveCount(response.data.inactive_stores);
         setIsNetworkError(false);
         setIsLoading(false);
         console.log(
           "Server Response from findByPageStoreApi Function: ",
-          response.data.data
+          response.data.response_body
         );
-        console.log("storeStatus", storeStatus);
         // setStoreApiData(response.data.data);
         //TODO: Remove line 303,304 and setStoreApiData(response.data)
         // let allStoresData = response.data;
         // allStoresData = { ...allStoresData, count: 22 };
-        setStoreApiData(response.data.data);
+        setStoreApiData(response.data.response_body.data);
         setIsPaginationDataLoaded(false);
-        setCountForStore(response.data.count);
+        setCountForStore(response.data.response_body.count);
       })
       .catch((error) => {
         setIsLoading(false);
@@ -899,210 +886,6 @@ const Stores = () => {
     if (count === 4) {
       saveStoreData();
     }
-    //  else  {
-    //   let count = 4;
-    //   if (
-    //     name.trim() === "" ||
-    //     name.trim() === null ||
-    //     name.trim() === undefined
-    //   ) {
-    //     setInValidName(true);
-    //   }
-    //   //   if (
-    //   //     name.trim() === "" ||
-    //   //     name.trim() === null ||
-    //   //     name.trim() === undefined
-    //   //   ) {
-    //   //     setInValidName(true);
-    //   //   }
-    //   // }
-    //   // if (
-    //   //   name.trim() === "" ||
-    //   //   name.trim() === null ||
-    //   //   name.trim() === undefined
-    //   // ) {
-    //   //   setInValidName(true);
-    //   //   count--;
-    //   //   toast(`${t("stores:Please-enter-the-store-name")}`, {
-    //   //     position: toast.POSITION.TOP_RIGHT,
-    //   //     type: "error",
-    //   //     autoClose: 10000,
-    //   //   });
-    //   // }
-    //   // const patternName = /^[A-Za-z]+$/;
-    //   if (
-    //     name &&
-    //     validator.isLength(name.trim(), {
-    //       min: titleMinLength,
-    //       max: titleMaxLength,
-    //     }) === false
-    //   ) {
-    //     setInValidName(true);
-    //     count--;
-    //     toast(
-    //       `Store name must contain minimum of ${titleMinLength}, maximum of ${titleMaxLength} characters`,
-    //       {
-    //         position: toast.POSITION.TOP_RIGHT,
-    //         type: "error",
-    //         autoClose: 10000,
-    //       }
-    //     );
-    //   }
-
-    //   if (
-    //     (storeEmail && validator.isEmail(storeEmail) === false) ||
-    //     validator.isLength(storeEmail.trim(), {
-    //       min: emailMinLength,
-    //       max: emailMaxLength,
-    //     }) === false
-    //   ) {
-    //     setInValidEmail(true);
-    //     count--;
-    //     toast(`${t("stores:Please-enter-the-valid-email-address")}`, {
-    //       position: toast.POSITION.TOP_RIGHT,
-    //       type: "error",
-    //       autoClose: 10000,
-    //     });
-    //   }
-
-    //   // const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{12,50}$/i;
-    //   // if (storeEmail && regex.test(storeEmail.trim()) === false) {
-    //   //   count--;
-    //   //   setInValidEmail(true);
-    //   //   toast(`${t("stores:Please-enter-the-valid-email-address")}`, {
-    //   //     position: toast.POSITION.TOP_RIGHT,
-    //   //     type: "error",
-    //   //     autoClose: 10000,
-    //   //   });
-    //   // }
-    //   // if (
-    //   //   storeEmail.trim() === "" ||
-    //   //   storeEmail.trim() === null ||
-    //   //   storeEmail.trim() === undefined
-    //   // ) {
-    //   //   count--;
-    //   //   setInValidEmail(true);
-    //   //   toast(`${t("stores:Please-enter-the-valid-email-address")}`, {
-    //   //     position: toast.POSITION.TOP_RIGHT,
-    //   //     type: "error",
-    //   //     autoClose: 10000,
-    //   //   });
-    //   // }
-    //   // if (
-    //   //   storeUserName.trim() === "" ||
-    //   //   storeUserName.trim() === null ||
-    //   //   storeUserName.trim() === undefined
-    //   // ) {
-    //   //   setInValidUserName(true);
-    //   //   count--;
-    //   //   toast(`${t("stores:Please-enter-the-username")}`, {
-    //   //     position: toast.POSITION.TOP_RIGHT,
-    //   //     type: "error",
-    //   //     autoClose: 10000,
-    //   //   });
-    //   // }
-    //   // /^[a-zA-Z0-9_ ]{6,15}$/
-    //   // const userRegex = /^[A-Za-z0-9_\- ]+$/;
-    //   // if (storeUserName && userRegex.test(storeUserName.trim()) === false) {
-    //   //   count--;
-    //   //   setInValidUserName(true);
-    //   //   toast(`${t("stores:Validation-Error-Message2")}`, {
-    //   //     position: toast.POSITION.TOP_RIGHT,
-    //   //     type: "error",
-    //   //     autoClose: 10000,
-    //   //   });
-    //   // }
-
-    //   if (
-    //     storeUserName &&
-    //     validator.isLength(storeUserName.trim(), {
-    //       min: titleMinLength,
-    //       max: titleMaxLength,
-    //     }) === false
-    //   ) {
-    //     setInValidUserName(true);
-    //     count--;
-    //     toast(
-    //       `Username must contain minimum of ${titleMinLength}, maximum of ${titleMaxLength} characters`,
-    //       {
-    //         position: toast.POSITION.TOP_RIGHT,
-    //         type: "error",
-    //         autoClose: 10000,
-    //       }
-    //     );
-    //   }
-
-    //   // if (
-    //   //   storePassword &&
-    //   //   validator.isLength(storePassword.trim(), {
-    //   //     min: passwordMinLength,
-    //   //     max: passwordMaxLength,
-    //   //   }) === false
-    //   // ) {
-    //   //   setInValidPassword(true);
-    //   //   count--;
-    //   //   toast(
-    //   //     `Password must contain minimum of ${passwordMinLength}, maximum of ${passwordMaxLength} characters`,
-    //   //     {
-    //   //       position: toast.POSITION.TOP_RIGHT,
-    //   //       type: "error",
-    //   //       autoClose: 10000,
-    //   //     }
-    //   //   );
-    //   // }
-
-    //   // if (storeUserName && storeUserName.length < 6) {
-    //   //   setInValidUserName(true);
-    //   //   count--;
-    //   //   toast("Username must contain minimum 6 characters", {
-    //   //     position: toast.POSITION.TOP_RIGHT,
-    //   //     type: "error",
-    //   //   });
-    //   // }
-    //   // if (
-    //   //   storePassword.trim() === "" ||
-    //   //   storePassword.trim() === null ||
-    //   //   storePassword.trim() === undefined
-    //   // ) {
-    //   //   setInValidPassword(true);
-    //   //   count--;
-    //   //   toast(`${t("stores:Please-enter-the-password")}`, {
-    //   //     position: toast.POSITION.TOP_RIGHT,
-    //   //     type: "error",
-    //   //     autoClose: 10000,
-    //   //   });
-    //   // }
-    //   const pattern =
-    //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!_%*?&])[A-Za-z\d@$!_%*?&]{6,15}$/;
-    //   const isValidPassword = pattern.test(storePassword);
-
-    //   if (storePassword && pattern.test(storePassword) === false) {
-    //     setInValidPassword(true);
-    //     count--;
-    //     toast(`${t("stores:Validation-Error-Message1")}`, {
-    //       position: toast.POSITION.TOP_RIGHT,
-    //       type: "error",
-    //       autoClose: 10000,
-    //     });
-    //   }
-    //   // if (storePassword && storePassword.length < 6) {
-    //   //   setInValidPassword(true);
-    //   //   toast("Password must contain minimum 6 characters", {
-    //   //     position: toast.POSITION.TOP_RIGHT,
-    //   //     type: "error",
-    //   //   });
-    //   // }
-    //   if (
-    //     count === 4 &&
-    //     !showStoreErrorMessage
-    //     // name !== "" &&
-    //     // storeEmail !== "" &&
-    //     // storeUserName !== "" &&
-    //     // storePassword !== ""
-    //   ) {
-    //     saveStoreData();
-    //   }
-    // }
   };
   //! post call for stores
   const saveStoreData = () => {
@@ -1113,51 +896,22 @@ const Stores = () => {
       password: storePassword.trim(),
     };
     setIsUpLoading(true);
-    // axios
-    //   .post(storeAPI, postBody, authorizationHeader)
     MarketplaceServices.save(storeAPI, postBody)
       .then((response) => {
-        toast(`${t("messages:store_created_successfully")}`, {
-          position: toast.POSITION.TOP_RIGHT,
-          type: "success",
-          autoClose: 10000,
-        });
+        MarketplaceToaster.showToast(response);
         setIsUpLoading(false);
-        // window.location.reload(true);
         onClose();
         setName("");
         setStoreEmail("");
         setStoreUserName("");
         setStorePassword("");
-        console.log("Server Success Response From stores", response.data);
-        setPostData(response.data);
+        console.log("Server Success Response From stores", response.data.response_body);
+        setPostData(response.data.response_body);
       })
       .catch((error) => {
         setIsUpLoading(false);
-        if (error && error.response && error.response.status === 401) {
-          toast("Session expired", {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
-        } else {
-          if (error.response) {
-            toast(`${error.response.data.message}`, {
-              position: toast.POSITION.TOP_RIGHT,
-              type: "error",
-              autoClose: 10000,
-            });
-          } else {
-            toast(`${t("messages:something_went_wrong")}`, {
-              position: toast.POSITION.TOP_RIGHT,
-              type: "error",
-              autoClose: 10000,
-            });
-          }
-        }
-        console.log("Error respose from the store post call", error.response);
-        // setInValidName(true)
-        // onClose();
+        MarketplaceToaster.showToast(error.response);
+        console.log("Error response from the store post call", error.response);
       });
   };
   //!put call for stores
@@ -1168,22 +922,12 @@ const Stores = () => {
     setIsUpLoading(true);
     console.log("editStoreData() Endpoint:", storeAPI, putObject);
     console.log("editStoreData() putBody:", putObject);
-    // axios
-    //   .put(
-    //     storeAPI,
-    //     putObject,
-    //     {
-    //       params: {
-    //         store_id: parseInt(storeEditId),
-    //       },
-    //     },
-    //     authorizationHeader
-    //   )
     MarketplaceServices.update(storeAPI, putObject, {
       store_id: storeEditId,
     })
       .then((response) => {
         console.log("put response", response.data, storeApiData);
+        MarketplaceToaster.showToast(response);
         setIsUpLoading(false);
         let copyofStoreAPIData = [...storeApiData];
         copyofStoreAPIData.forEach((obj) => {
@@ -1194,29 +938,10 @@ const Stores = () => {
         setStoreApiData(copyofStoreAPIData);
         setServerStoreName(response.data.name);
         onClose();
-        if (response.status === 200 || response.status === 201) {
-          toast(`${t("messages:store_updated_successfully")}`, {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "success",
-            autoClose: 10000,
-          });
-        }
       })
       .catch((error) => {
         setIsUpLoading(false);
-        if (error.response.status === 400) {
-          toast(`Please enter the valid store name`, {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
-        } else {
-          toast(`${t("messages:something_went_wrong")}`, {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
-        }
+        MarketplaceToaster.showToast(error.response);
       });
   };
 
@@ -1304,35 +1029,29 @@ const Stores = () => {
     MarketplaceServices.remove(storeAPI, { store_id: deleteStoreID })
       .then((response) => {
         console.log("response from delete===>", response, deleteStoreID);
-        if (response.status === 200 || response.status === 201) {
-          setIsDeleteStoreModalOpen(false);
-          let removedData = storeApiData.filter(
-            ({ store_uuid }) => store_uuid !== deleteStoreID
-          );
-          let storeStatus = storeApiData.filter(
-            ({ store_uuid }) => store_uuid === deleteStoreID
-          );
-          if (storeStatus && storeStatus.length > 0) {
-            let totalStoresCounts = { ...activeCount };
-            if (storeStatus && storeStatus.status === 1) {
-              totalStoresCounts["activeStores"] = activeCount.activeCount - 1;
-              totalStoresCounts["totalStores"] = activeCount.totalStores - 1;
-              setActiveCount(totalStoresCounts);
-            } else {
-              totalStoresCounts["inactiveStores"] =
-                activeCount.inactiveStores - 1;
-              totalStoresCounts["totalStores"] = activeCount.totalStores - 1;
-              setActiveCount(totalStoresCounts);
-            }
+        setIsDeleteStoreModalOpen(false);
+        let removedData = storeApiData.filter(
+          ({ store_uuid }) => store_uuid !== deleteStoreID
+        );
+        let storeStatus = storeApiData.filter(
+          ({ store_uuid }) => store_uuid === deleteStoreID
+        );
+        if (storeStatus && storeStatus.length > 0) {
+          let totalStoresCounts = { ...activeCount };
+          if (storeStatus && storeStatus.status === 1) {
+            totalStoresCounts["activeStores"] = activeCount.activeCount - 1;
+            totalStoresCounts["totalStores"] = activeCount.totalStores - 1;
+            setActiveCount(totalStoresCounts);
+          } else {
+            totalStoresCounts["inactiveStores"] =
+              activeCount.inactiveStores - 1;
+            totalStoresCounts["totalStores"] = activeCount.totalStores - 1;
+            setActiveCount(totalStoresCounts);
           }
-          setStoreApiData(removedData);
-          setCountForStore(countForStore - 1);
-          toast(`${t("messages:store_deleted_successfully")}`, {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "success",
-            autoClose: 10000,
-          });
         }
+        setStoreApiData(removedData);
+        setCountForStore(countForStore - 1);
+        MarketplaceToaster.showToast(response);
         // disabling spinner
         setIsStoreDeleting(false);
       })
@@ -1340,27 +1059,7 @@ const Stores = () => {
         // disabling spinner
         setIsStoreDeleting(false);
         console.log("response from delete===>", error.response.data);
-        if (error && error.response && error.response.status === 401) {
-          toast("Session expired", {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
-        } else {
-          if (error.response) {
-            toast(`${error.response.data.message}`, {
-              position: toast.POSITION.TOP_RIGHT,
-              type: "error",
-              autoClose: 10000,
-            });
-          } else {
-            toast(`${t("messages:something_went_wrong")}`, {
-              position: toast.POSITION.TOP_RIGHT,
-              type: "error",
-              autoClose: 10000,
-            });
-          }
-        }
+       MarketplaceToaster.showToast(error.response)
       });
   };
 
