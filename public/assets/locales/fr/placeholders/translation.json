@@ -1,0 +1,17 @@
+{
+  "enter_store_name": "Entrez le nom de votre magasin",
+  "enter_username": "Entrez votre nom d'utilisateur",
+  "enter_password": "Tapez votre mot de passe",
+  "enter_first_name": "Entrez votre prénom",
+  "enter_last_name": "Entrez votre nom de famille",
+  "enter_email": "Entrer votre Email",
+  "enter_language_name": "Entrez le nom de la langue",
+  "enter_language_code": "Entrez le code",
+  "enter_language_regex": "Entrez l'expression régulière de langue",
+  "enter_native_name": "Entrez le nom natif",
+  "enter_currency_symbol": "Par exemple. ₹, $, £",
+  "enter_iso_code": "Par exemple. INR, USD ,GBP",
+  "enter_fractional_unit": "Par exemple. paisa, cent",
+  "enter_number_to_basic": "Par exemple. 100",
+  "enter_code": "Entrez le code"
+}

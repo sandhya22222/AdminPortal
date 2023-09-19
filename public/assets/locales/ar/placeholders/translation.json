@@ -1,0 +1,17 @@
+{
+  "enter_store_name": "أدخل اسم متجرك",
+  "enter_username": "أدخل اسم المستخدم الخاص بك",
+  "enter_password": "ادخل رقمك السري",
+  "enter_first_name": "أدخل اسمك الأول",
+  "enter_last_name": "أدخل اسمك الأخير",
+  "enter_email": "أدخل بريدك الإلكتروني",
+  "enter_language_name": "أدخل اسم اللغة",
+  "enter_language_code": "ادخل الرمز",
+  "enter_language_regex": "أدخل التعبير العادي للغة",
+  "enter_native_name": "أدخل الاسم الأصلي",
+  "enter_currency_symbol": "على سبيل المثال. ₹، دولار، جنيه استرليني",
+  "enter_iso_code": "على سبيل المثال روبية هندية، دولار أمريكي، جنيه استرليني",
+  "enter_fractional_unit": "على سبيل المثال. بيزا، سنت",
+  "enter_number_to_basic": "على سبيل المثال. 100",
+  "enter_code": "ادخل الرمز"
+}
