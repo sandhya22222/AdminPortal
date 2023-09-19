@@ -22,6 +22,7 @@ import StoreModal from "../../components/storeModal/StoreModal";
 import { TiDelete } from "react-icons/ti";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import "./StoreImages.css";
+import MarketplaceToaster from "../../util/marketplaceToaster";
 const { Title } = Typography;
 const { Content } = Layout;
 const { Image } = Skeleton;
@@ -331,13 +332,7 @@ const StoreImages = ({
     MarketplaceServices.remove(storeDeleteImagesAPI, dataObject)
       .then((response) => {
         console.log("response from delete===>", response);
-        if (response.status === 200 || response.status === 201) {
-          toast(`${response.data.message}`, {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "success",
-            autoClose: 10000,
-          });
-        }
+        MarketplaceToaster.showToast(response);
         if (type === "banner_images") {
           //remove from setBannerAbsoluteImage
           bannerAbsoluteImage.splice(imageIndex, 1);
@@ -362,19 +357,7 @@ const StoreImages = ({
       .catch((error) => {
         // disabling spinner
         setIsImageDeleting(false);
-        if (error && error.response && error.response.status === 401) {
-          toast("Session expired", {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
-        } else {
-          toast(`${error.response.data.message}`, {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
-        }
+        MarketplaceToaster.showToast(error.response);
       });
   };
 
@@ -388,7 +371,7 @@ const StoreImages = ({
     setBannerImagesLength(bannerAbsoluteImage && bannerAbsoluteImage.length);
   }, [bannerAbsoluteImage]);
 
-  console.log("bannerImagesLength", bannerImagesLength);
+  
   return (
     <Content className=" mb-2">
       <StoreModal

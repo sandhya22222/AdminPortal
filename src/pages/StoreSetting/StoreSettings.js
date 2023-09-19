@@ -973,9 +973,7 @@ const StoreSettings = () => {
           "Server Success Response From storeImagePutCall",
           response
         );
-        MarketplaceToaster.showToast(
-          util.getToastObject(`Store images updated successfully`, "success")
-        );
+        MarketplaceToaster.showToast(response);
         setGetImageData([response.data.response_body]);
         setImagesUpload([]);
         setIsUpLoading(false);
@@ -984,7 +982,7 @@ const StoreSettings = () => {
       })
       .catch((error) => {
         console.log("error response from the store images put call", error);
-        // MarketplaceToaster.showToast(error.response);
+        MarketplaceToaster.showToast(error.response);
         setIsUpLoading(false);
         setIsLoading(false);
       });
@@ -1006,19 +1004,12 @@ const StoreSettings = () => {
       .then(function (response) {
         console.log(
           "Server Response from getstoreBannerImageApi Function: ",
-          response.data
+          response.data.response_body
         );
-        setBannerAbsoluteImage(response.data);
+        setBannerAbsoluteImage(response.data.response_body);
       })
       .catch((error) => {
-        if (error && error.response && error.response.status === 401) {
-          toast("Session expired", {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
-        }
-        console.log("Server error from getStoreApi Function ", error.response);
+        console.log("Server error from banner images  Function ", error.response);
       });
   };
 
