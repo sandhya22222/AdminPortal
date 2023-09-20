@@ -313,7 +313,7 @@ const Language = () => {
           "Server Response from DocumentTemplateDownload Function: ",
           response.data
         );
-        const fileURL = window.URL.createObjectURL(response.data.response_body);
+        const fileURL = window.URL.createObjectURL(response.data);
         let alink = document.createElement("a");
         alink.href = fileURL;
         alink.download = "key_value_format.csv";

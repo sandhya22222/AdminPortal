@@ -905,7 +905,10 @@ const Stores = () => {
         setStoreEmail("");
         setStoreUserName("");
         setStorePassword("");
-        console.log("Server Success Response From stores", response.data.response_body);
+        console.log(
+          "Server Success Response From stores",
+          response.data.response_body
+        );
         setPostData(response.data.response_body);
       })
       .catch((error) => {
@@ -1029,6 +1032,7 @@ const Stores = () => {
     MarketplaceServices.remove(storeAPI, { store_id: deleteStoreID })
       .then((response) => {
         console.log("response from delete===>", response, deleteStoreID);
+        MarketplaceToaster.showToast(response);
         setIsDeleteStoreModalOpen(false);
         let removedData = storeApiData.filter(
           ({ store_uuid }) => store_uuid !== deleteStoreID
@@ -1051,7 +1055,7 @@ const Stores = () => {
         }
         setStoreApiData(removedData);
         setCountForStore(countForStore - 1);
-        MarketplaceToaster.showToast(response);
+
         // disabling spinner
         setIsStoreDeleting(false);
       })
@@ -1059,7 +1063,7 @@ const Stores = () => {
         // disabling spinner
         setIsStoreDeleting(false);
         console.log("response from delete===>", error.response.data);
-       MarketplaceToaster.showToast(error.response)
+        MarketplaceToaster.showToast(error.response);
       });
   };
 
