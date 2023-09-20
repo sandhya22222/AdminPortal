@@ -87,36 +87,31 @@ function LanguageDocUpload({ langCode }) {
         setIsSpinning(false);
         console.log(
           "Server Response from DocumentTemplateDownload Function: ",
+          LanguageDownloadApiCsv,
           response.data
         );
-        const fileURL = window.URL.createObjectURL(response.data.response_body);
+        const fileURL = window.URL.createObjectURL(response.data);
         let alink = document.createElement("a");
         alink.href = fileURL;
         alink.download = "key_value_format.csv";
         alink.click();
         setChooseDownloadModalVisible(false);
-        // let successBody = {
-        //   message: "Download successful",
-        //   errorType: "success",
-        // };
-        // MarketplaceToaster.showToast("", successBody);
         MarketplaceToaster.showToast(
-          util.getToastObject("Download successful", "success")
+          util.getToastObject(t("messages:download_successful"), "success")
         );
       })
       .catch((error) => {
         setIsSpinning(false);
-        // let errorBody = {
-        //   message: "Unable to download this format",
-        //   errorType: "error",
-        // };
-        // MarketplaceToaster.showToast("", errorBody);
-        MarketplaceToaster.showToast(
-          util.getToastObject("Unable to download this format", "error")
-        );
         console.log(
-          "Server error from DocumentTemplateDownload Function ",
-          error.response
+          "Error server Response from DocumentTemplateDownload Function:  ",
+          LanguageDownloadApiCsv,
+          error
+        );
+        MarketplaceToaster.showToast(
+          util.getToastObject(
+            t("messages:unable_to_download_this_format"),
+            "error"
+          )
         );
       });
   };
@@ -132,35 +127,28 @@ function LanguageDocUpload({ langCode }) {
           "Server Response from DocumentTemplateDownload Function: ",
           response.data
         );
-        // let successBody = {
-        //     message: "Download successful",
-        //     errorType: "success",
-        //   };
-        // MarketplaceToaster.showToast("", successBody);
-        MarketplaceToaster.showToast(
-          util.getToastObject("Download successful", "success")
-        );
-        const fileURL = window.URL.createObjectURL(response.data.response_body);
+        const fileURL = window.URL.createObjectURL(response.data);
         let alink = document.createElement("a");
         alink.href = fileURL;
         alink.download = "key_value_format.zip";
         alink.click();
         setChooseDownloadModalVisible(false);
+        MarketplaceToaster.showToast(
+          util.getToastObject(t("messages:download_successful"), "success")
+        );
       })
       .catch((error) => {
-        setIsSpinning(false);
-        // let errorBody = {
-        //   message: "Unable to download this format",
-        //   errorType: "error",
-        // };
-        // MarketplaceToaster.showToast("", errorBody);
-        MarketplaceToaster.showToast(
-          util.getToastObject("Unable to download this format", "error")
-        );
         console.log(
           "Server error from DocumentTemplateDownload Function ",
-          error.response
+          error
         );
+        MarketplaceToaster.showToast(
+          util.getToastObject(
+            t("messages:unable_to_download_this_format"),
+            "error"
+          )
+        );
+        setIsSpinning(false);
       });
   };
 
