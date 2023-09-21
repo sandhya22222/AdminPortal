@@ -3,6 +3,17 @@ import Cookies from "js-cookie";
 const storeName = process.env.REACT_APP_STORE_NAME;
 const baseURL = process.env.REACT_APP_BASE_URL;
 
+const setUserSelectedLngCode = (value) => {
+  window.localStorage.setItem("mpaplng", value);
+  Cookies.set("mpaplng", value);
+};
+
+const getReduxPersistRoot = () => {
+  let reduxPersistRoot = window.localStorage.getItem("persist:root");
+  if (reduxPersistRoot) return JSON.parse(reduxPersistRoot);
+  else return null;
+};
+
 const hasKeyCloakData = () => {
   if (window.sessionStorage.getItem("keycloakData")) {
     return true;
@@ -51,6 +62,51 @@ const getSelectedLanguageCode = () => {
   return userSelectedLang;
 };
 
+const getUserSelectedLngCode = () => {
+  try {
+    const cookieLngCode = Cookies.get("mpaplng");
+    const localStorageLngCode = window.localStorage.getItem("mpaplng");
+    if (cookieLngCode) return cookieLngCode;
+    else if (localStorageLngCode) return localStorageLngCode;
+    else {
+      const allStoreLngs = getReduxPersistRoot();
+      let defaultStoreLng = allStoreLngs && allStoreLngs.reducerDefaultLanguage;
+      defaultStoreLng =
+        defaultStoreLng && JSON.parse(defaultStoreLng).defaultLanguage;
+
+      let userSelectedLng =
+        allStoreLngs && allStoreLngs.reducerSelectedLanguage;
+      // allStoreLngs && JSON.parse(allStoreLngs).reducerSelectedLanguage;
+      userSelectedLng =
+        userSelectedLng && JSON.parse(userSelectedLng).selectedLanguage;
+
+      if (userSelectedLng) {
+        if (userSelectedLng.language_code) {
+          setUserSelectedLngCode(userSelectedLng.language_code);
+          return userSelectedLng.language_code;
+        } else {
+          setUserSelectedLngCode("en");
+          return "en";
+        }
+      } else if (defaultStoreLng) {
+        if (defaultStoreLng.language_code) {
+          setUserSelectedLngCode(defaultStoreLng.language_code);
+          return defaultStoreLng.language_code;
+        } else {
+          setUserSelectedLngCode("en");
+          return "en";
+        }
+      } else {
+        setUserSelectedLngCode("en");
+        return "en";
+      }
+    }
+  } catch (error) {
+    setUserSelectedLngCode("en");
+    return "en";
+  }
+};
+
 const getRealmName = () => {
   if (hasKeyCloakData) {
     const keyCloakData = JSON.parse(
@@ -79,6 +135,30 @@ const getToastObject = (message, type) => {
   return toastObject;
 };
 
+const getStoreSupportedLngs = () => {
+  let storeSupportedLngs = ["en"];
+  try {
+    const reduxPersistRoot = util.getReduxPersistRoot();
+    let storeLngs = reduxPersistRoot && reduxPersistRoot.reducerStoreLanguage;
+    storeLngs = storeLngs && JSON.parse(storeLngs).storeLanguage;
+    console.log("supportedLngs", storeLngs);
+
+    if (storeLngs && storeLngs.length > 0) {
+      storeSupportedLngs = [];
+      storeLngs.forEach((element) => {
+        if (element.language_code) {
+          storeSupportedLngs.push(element.language_code);
+        }
+      });
+    }
+
+    return storeSupportedLngs;
+  } catch (error) {
+    return storeSupportedLngs;
+  }
+};
+
+
 const util = {
   hasKeyCloakData,
   hasUserLoggedIn,
@@ -92,6 +172,9 @@ const util = {
   getRealmName,
   getImageAbsolutePath,
   getToastObject,
+  getStoreSupportedLngs,
+  getReduxPersistRoot,
+  getUserSelectedLngCode
 };
 
 export default util;

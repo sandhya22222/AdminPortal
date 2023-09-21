@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
 import { getGenerateDateAndTime } from "../../util/util";
+import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { usePageTitle } from "../../hooks/usePageTitle";
 const { Content } = Layout;
@@ -14,7 +15,7 @@ const storeUsersAPI = process.env.REACT_APP_USERS_API;
 
 const UserProfile = () => {
   usePageTitle("Profile");
-
+  const { t } = useTranslation();
   const [storeUsersData, setStoreUsersData] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [isNetworkError, setIsNetworkError] = useState(false);
@@ -70,7 +71,7 @@ const UserProfile = () => {
         title={
           <Content className="">
             <Title level={3} className="!font-normal">
-              Profile
+              {t("labels:profile")}
             </Title>
           </Content>
         }

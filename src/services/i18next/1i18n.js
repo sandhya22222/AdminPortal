@@ -1,6 +1,7 @@
 import i18next from "i18next";
 import { initReactI18next } from "react-i18next";
 import HttpApi from "i18next-http-backend";
+import util from "../../util/common";
 import LanguageDetector from "i18next-browser-languagedetector";
 import Cookies from "js-cookie";
 
@@ -30,9 +31,9 @@ defaultLngCode =
 
 //* Set default language for the application in the cookie if user preference is not available.
 //! Setting Current language Code for Application
-let currentLanguageCode = Cookies.get("dmaplng");
+let currentLanguageCode = Cookies.get("mpaplng");
 if (currentLanguageCode === undefined) {
-  Cookies.set("dmaplng", defaultLngCode);
+  Cookies.set("mpaplng", defaultLngCode);
   currentLanguageCode = defaultLngCode;
 }
 
@@ -83,17 +84,18 @@ i18next
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    supportedLngs: supportedLngsArr,
+    supportedLngs: util.getStoreSupportedLngs(),
     // supportedLngs: ['en', 'hi', 'kn'],
     fallbackLng: defaultLngCode,
     debug: false,
+    whitelist: util.getStoreSupportedLngs(), // array with whitelisted languages
     // Options for language detector
     detection: {
       // TODO after commenting this order lang change from url is working(remove this comment)
       order: ["path", "localStorage", "cookie", "htmlTag"],
       // order: ["path", "localStorage", "cookie", "htmlTag"],
-      lookupCookie: "dmaplng",
-      lookupLocalStorage: "dmaplng",
+      lookupCookie: "mpaplng",
+      lookupLocalStorage: "mpaplng",
       lookupQuerystring: "lang",
       lookupFromPathIndex: "lang",
       caches: ["cookie", "localStorage"],

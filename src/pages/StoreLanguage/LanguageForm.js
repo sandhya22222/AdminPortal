@@ -249,8 +249,8 @@ const LanguageForm = ({
   return (
     <Content>
       <Spin tip={t("labels:please_wait")} size="large" spinning={isLoading}>
-        <Row>
-          <Col span={8} className="pr-2 mb-3">
+        <Row className="gap-2">
+          <Col span={8} className=" mb-3">
             <Content className="">
               <span className="text-red-600 text-sm !text-center">*</span>
               <label className="text-[13px] mb-2 ml-1">
@@ -287,7 +287,7 @@ const LanguageForm = ({
               />
             </Content>
           </Col>
-          <Col span={3} className="pl-2 mb-3">
+          <Col span={3} className=" mb-3">
             <Content className="">
               <span className="text-red-600 text-sm text-center">*</span>
               <label className="text-[13px] mb-2 ml-1">
@@ -350,7 +350,7 @@ const LanguageForm = ({
         (txtLanguage === defaultTxtLanguage &&
           txtLanguageCode === defaultTxtLanguageCode &&
           scriptDirection === defaultScriptDirection) ? null : (
-          <Row>
+          <Row className="gap-2">
             <Col>
               <Button
                 className={"app-btn-primary !mt-5"}
@@ -376,7 +376,7 @@ const LanguageForm = ({
                   : `${t("labels:save")}`}
               </Button>
             </Col>
-            <Col className="pl-2">
+            <Col className="">
               <Button
                 onClick={() => {
                   if (languageCode === undefined || languageCode === null) {

@@ -1,4 +1,4 @@
-import { Layout, Typography, Button } from "antd";
+import { Layout, Typography, Button, Row } from "antd";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeftOutlined } from "@ant-design/icons";
@@ -43,18 +43,25 @@ function HeaderForTitle({
   return (
     <Content className="">
       <Content className="fixed !h-auto top-[3.0rem] z-10 bg-white flex justify-between headerWidth !px-5 pt-3 pb-1">
-        <Content className={`${showArrowIcon === true ? "flex items-center" : ""}`}>
+        <Content
+          className={`${
+            showArrowIcon === true ? "flex items-center gap-2" : ""
+          }`}
+        >
           {showArrowIcon === true ? (
             <ArrowLeftOutlined
-              className="mr-4"
+              className="-translate-y-1"
               onClick={handleNavigationBack}
             />
           ) : null}
 
           {/* <Title level={4} className="!m-0 !p-0 !font-semibold"> */}
+          <Row className="w-full">
             {title}
-          {/* </Title> */}
-          {titleContent}
+            <Content className="flex !justify-end w-[20%]">
+              {titleContent}
+            </Content>
+          </Row>
         </Content>
         {showArrowIcon === true ? (
           <>

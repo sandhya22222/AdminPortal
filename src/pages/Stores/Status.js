@@ -169,7 +169,7 @@ function Status({
         )}
         {/* </Content> */}
       </StoreModal>
-      <Row>
+      <Row className="gap-1">
         <Col>
           <Space direction="vertical">
             <Switch
@@ -182,7 +182,7 @@ function Status({
             />
           </Space>
         </Col>
-        <div className="pl-1">
+        <div className="">
           {switchStatus ? `${t("labels:active")}` : `${t("labels:inactive")}`}
         </div>
       </Row>
