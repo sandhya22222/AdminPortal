@@ -1182,10 +1182,10 @@ const StoreSettings = () => {
             }}
           >
             <Col span={4} className="gutter-row">
-              <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">
+              <label className="text-[13px] mb-2 ml-1 input-label-color">
                 {t("labels:symbol")}
               </label>
+              <span className="mandatory-symbol-color text-sm !text-center ml-1">*</span>
               <Input
                 placeholder={t("placeholders:enter_currency_symbol")}
                 className={`${
@@ -1219,10 +1219,10 @@ const StoreSettings = () => {
               />
             </Col>
             <Col span={4} className="gutter-row">
-              <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">
+              <label className="text-[13px] mb-2 ml-1 input-label-color">
                 {t("labels:iso_code")}
               </label>
+              <span className="mandatory-symbol-color text-sm ml-1 !text-center">*</span>
               <Input
                 placeholder={t("placeholders:enter_iso_code")}
                 value={currencyIsoCode}
@@ -1254,10 +1254,10 @@ const StoreSettings = () => {
               />
             </Col>
             <Col span={4} className="gutter-row">
-              <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">
+              <label className="text-[13px] mb-2 ml-1 input-label-color">
                 {t("labels:fractional_unit")}
               </label>
+              <span className="mandatory-symbol-color text-sm ml-1 !text-center">*</span>
               <Input
                 placeholder={t("placeholders:enter_fractional_unit")}
                 value={fractionalUnit}
@@ -1289,10 +1289,10 @@ const StoreSettings = () => {
             </Col>
             <Col span={4} className="gutter-row">
               {" "}
-              <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">
+              <label className="text-[13px] mb-2 ml-1 input-label-color">
                 {t("labels:number_to_basic")}
               </label>
+              <span className="mandatory-symbol-color text-sm !text-center ml-1">*</span>
               <InputNumber
                 placeholder={t("placeholders:enter_number_to_basic")}
                 value={numberToBasic}
@@ -1379,7 +1379,7 @@ const StoreSettings = () => {
               <Divider className="!my-4" />
               <Row className="mt-2">
                 <Col span={8} className="mr-2 ">
-                  <label className="text-[13px] mb-2 ml-1 select-none">
+                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
                     {t("labels:background_color")}
                   </label>
                   <Content className="flex gap-2">
@@ -1458,7 +1458,7 @@ const StoreSettings = () => {
                   ) : null}
                 </Col>
                 <Col span={8} className="ml-1">
-                  <label className="text-[13px] mb-2 ml-1 select-none">
+                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
                     {t("labels:text_color")}
                   </label>
                   <Content className="flex gap-2">
@@ -1538,7 +1538,7 @@ const StoreSettings = () => {
               </Row>
               <Row className="mt-4">
                 <Col span={8} className="mr-2 ">
-                  <label className="text-[13px] mb-2 ml-1 select-none">
+                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
                     {t("labels:primary_button_background_color")}
                   </label>
                   <Content className="flex gap-2">
@@ -1619,7 +1619,7 @@ const StoreSettings = () => {
                   ) : null}
                 </Col>
                 <Col span={8} className="ml-1">
-                  <label className="text-[13px] mb-2 ml-1 select-none">
+                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
                     {t("labels:secondary_button_background_color")}
                   </label>
                   <Content className="flex gap-2">
@@ -1700,7 +1700,7 @@ const StoreSettings = () => {
                   ) : null}
                 </Col>
                 <Col span={7} className="ml-2">
-                  <label className="text-[13px] mb-2 ml-1 select-none">
+                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
                     {t("labels:tertiary_button_background_color")}
                   </label>
                   <Content className="flex gap-2">
@@ -1782,7 +1782,7 @@ const StoreSettings = () => {
               </Row>
               <Row className="mt-4">
                 <Col span={8} className="mr-2 ">
-                  <label className="text-[13px] mb-2 ml-1 select-none">
+                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
                     {t("labels:primary_button_text_color")}
                   </label>
                   <Content className="flex gap-2">
@@ -1862,8 +1862,8 @@ const StoreSettings = () => {
                     </p>
                   ) : null}
                 </Col>
-                <Col span={8} className="ml-1">
-                  <label className="text-[13px] mb-2 ml-1 select-none">
+                <Col span={8} className="ml-1"> 
+                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
                     {t("labels:secondary_button_text_color")}
                   </label>
                   <Content className="flex gap-2">
@@ -1944,7 +1944,7 @@ const StoreSettings = () => {
                   ) : null}
                 </Col>
                 <Col span={7} className="ml-2">
-                  <label className="text-[13px] mb-2 ml-1 select-none">
+                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
                     {t("labels:tertiary_button_text_color")}
                   </label>
                   <Content className="flex gap-2">
@@ -2032,7 +2032,7 @@ const StoreSettings = () => {
               </label>
               <Row className="mt-2">
                 <Col span={8} className="mr-2 ">
-                  <label className="text-[13px] mb-2 ml-1 select-none">
+                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
                     {t("labels:background_color")}
                   </label>
                   <Content className="flex gap-2">
@@ -2111,7 +2111,7 @@ const StoreSettings = () => {
                   ) : null}
                 </Col>
                 <Col span={8} className="ml-1">
-                  <label className="text-[13px] mb-2 ml-1 select-none">
+                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
                     {" "}
                     {t("labels:text_color")}
                   </label>
@@ -2198,7 +2198,7 @@ const StoreSettings = () => {
               </label>
               <Row className="mt-2">
                 <Col span={8} className="mr-2 ">
-                  <label className="text-[13px] mb-2 ml-1 select-none">
+                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
                     {t("labels:background_color")}
                   </label>
                   <Content className="flex gap-2">
@@ -2276,7 +2276,7 @@ const StoreSettings = () => {
                   ) : null}
                 </Col>
                 <Col span={8} className="ml-1">
-                  <label className="text-[13px] mb-2 ml-1 select-none">
+                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
                     {t("labels:text_color")}
                   </label>
                   <Content className="flex gap-2">
