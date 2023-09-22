@@ -102,7 +102,7 @@ const Dashboard = () => {
             userSelectedLanguage &&
             userSelectedLanguage.writing_script_direction?.toLowerCase();
           // Cookies.set("mpaplng", defaultLanguage.language_code);
-          localStorage.setItem("mpaplng", defaultLanguage.language_code);
+          // localStorage.setItem("mpaplng", defaultLanguage.language_code);
         }
         if (util.getUserSelectedLngCode()) {
           const alreadySelectedLanguage = storeLanguages.find(
