@@ -102,6 +102,7 @@ const Header2 = () => {
   };
 
   const handleLanguageClick = (e) => {
+    Cookies.set("mpaplng", e.key);
     localStorage.setItem("mpaplng", e.key);
     setStoreSelectedLngCode(e.key);
     dispatch(
@@ -109,9 +110,6 @@ const Header2 = () => {
         storeLanguages.find((item) => item.language_code === e.key)
       )
     );
-    document.body.style.direction = util
-      .getSelectedLanguageDirection()
-      ?.toLowerCase();
     navigate(0);
   };
 
