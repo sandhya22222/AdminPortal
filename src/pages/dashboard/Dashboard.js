@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Layout, Typography, Skeleton, Image } from "antd";
 import { useNavigate } from "react-router-dom";
-
+import Cookies from "js-cookie";
 import { Profit, Positive, Payment } from "../../constants/media";
 import { toast } from "react-toastify";
 
