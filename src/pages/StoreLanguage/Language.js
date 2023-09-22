@@ -188,20 +188,28 @@ const Language = () => {
         return (
           <Col className="whitespace-nowrap !text-center">
             <Tooltip title="Edit Language">
-              <img
-                src={EditIcon}
-                alt="Edit Icon"
-                className=" !w-[12px] !text-center !text-sm cursor-pointer"
-                onClick={() => {
-                  navigate(
-                    `/dashboard/language/language-settings?k=${record.id}&n=${
-                      record.language
-                    }&c=${record.language_code}&s=${record.status}&d=${
-                      record.is_default === false ? 0 : 1
-                    }`
-                  );
-                }}
-              />
+              <Button
+                type="text"
+                className="app-btn-text"
+                onClick={() => findAllSupportDocumentTemplateDownload(1, "en")}
+              >
+                <Content className=" flex justify-center align-items-center">
+                  <img
+                    src={EditIcon}
+                    alt="Edit Icon"
+                    className=" !w-[12px] !text-center !text-sm cursor-pointer"
+                    onClick={() => {
+                      navigate(
+                        `/dashboard/language/language-settings?k=${
+                          record.id
+                        }&n=${record.language}&c=${record.language_code}&s=${
+                          record.status
+                        }&d=${record.is_default === false ? 0 : 1}`
+                      );
+                    }}
+                  />
+                </Content>
+              </Button>
             </Tooltip>
           </Col>
         );

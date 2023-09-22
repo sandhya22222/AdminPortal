@@ -1,31 +1,66 @@
 .app-btn-primary {
-  /* background-color: #1677ff !important; */
   background-color: var(--mp-primary-color) !important;
-  color: var(--mp-primary-text-color) !important;
   border-color: var(--mp-primary-border-color) !important;
+  border-radius: 6px !important;
+  color: var(--mp-primary-text-color) !important;
   height: unset !important;
 }
 .app-btn-primary:hover {
   background-color: var(--mp-primary-color-h) !important;
   border-color: var(--mp-primary-border-color-h) !important ;
+  color: var(--mp-primary-text-color-h) !important;
+  border-radius: 6px !important;
+  height: unset !important;
 }
+
 .app-btn-secondary {
   background-color: var(--mp-secondary-color) !important;
+  border-radius: 6px !important;
   color: var(--mp-secondary-text-color) !important;
   height: unset !important;
 }
 .app-btn-secondary:hover {
   border-color: var(--mp-secondary-border-color-h) !important;
+  border-radius: 6px !important;
   color: var(--mp-secondary-text-color-h) !important;
-}
-
-.app-btn-reject{
-  background-color: var(--mp-danger-color) !important;
-  color: var( --mp-danger-text-color) !important;
   height: unset !important;
 }
 
-.app-btn-reject:hover{
+.app-btn-text {
+  align-items: center !important;
+  color: var(--mp-secondary-text-color) !important;
+  display: flex !important;
+  height: 32px !important;
+  justify-content: center !important;
+  padding: 4px !important;
+  width: 32px !important;
+}
+.app-btn-text:hover {
+  align-items: center !important;
+  color: var(--mp-secondary-border-color-h) !important;
+  display: flex !important;
+  height: 32px !important;
+  justify-content: center !important;
+  padding: 4px !important;
+  width: 32px !important;
+}
+
+.app-btn-link {
+  color: var(--mp-primary-color) !important;
+}
+.app-btn-link:hover {
+  color: var(--mp-primary-color-h) !important;
+}
+
+.app-btn-reject {
+  background-color: var(--mp-danger-color) !important;
+  border-radius: 6px !important;
+  color: var(--mp-danger-text-color) !important;
+  height: unset !important;
+}
+.app-btn-reject:hover {
   border: var(--mp-danger-color-h) !important;
+  border-radius: 6px !important;
   border-color: var(--mp-danger-border-color-h) !important ;
+  height: unset !important;
 }
