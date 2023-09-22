@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { Layout, Typography, Skeleton, Image } from "antd";
 import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
 import { Profit, Positive, Payment } from "../../constants/media";
 import { toast } from "react-toastify";
 
@@ -102,7 +101,7 @@ const Dashboard = () => {
           document.body.style.direction =
             userSelectedLanguage &&
             userSelectedLanguage.writing_script_direction?.toLowerCase();
-          Cookies.set("mpaplng", defaultLanguage.language_code);
+          // Cookies.set("mpaplng", defaultLanguage.language_code);
           localStorage.setItem("mpaplng", defaultLanguage.language_code);
         }
         if (util.getUserSelectedLngCode()) {
