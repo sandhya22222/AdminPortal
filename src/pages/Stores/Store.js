@@ -326,35 +326,44 @@ const Stores = () => {
                 }}
               />
             </Tooltip> */}
-
-            <Link
-              to={{
-                pathname: "storesetting",
-                search: `?id=${record.id}&page=${
-                  searchParams.get("page") ? searchParams.get("page") : 1
-                }&limit=${
-                  searchParams.get("limit")
-                    ? searchParams.get("limit")
-                    : pageLimit
-                }`,
-              }}
-              // className=" pl-[10px] font-semibold app-table-data-title"
+            <Button
+              className="app-btn-text flex align-items-center justify-center"
+              type="text"
             >
-              <Tooltip title={t("labels:store_settings")}>
-                <MdSettings className=" text-black !text-xl ml-2" />
-              </Tooltip>
-            </Link>
+              <Link
+                to={{
+                  pathname: "storesetting",
+                  search: `?id=${record.id}&page=${
+                    searchParams.get("page") ? searchParams.get("page") : 1
+                  }&limit=${
+                    searchParams.get("limit")
+                      ? searchParams.get("limit")
+                      : pageLimit
+                  }`,
+                }}
+                // className=" pl-[10px] font-semibold app-table-data-title"
+              >
+                <Tooltip title={t("labels:store_settings")}>
+                  <MdSettings className="text-[var(--mp-primary-border-color)] hover:text-[var(--mp-primary-border-color-h)] !text-xl" />
+                </Tooltip>
+              </Link>
+            </Button>
 
             {record.status === "InActive" ? (
-              <Tooltip title={t("labels:delete_store")}>
-                <img
-                  src={DeleteIcon}
-                  className="!text-xl ml-4 cursor-pointer"
-                  onClick={() => {
-                    openDeleteModal(record.id);
-                  }}
-                />
-              </Tooltip>
+              <Button
+                className="app-btn-text flex align-items-center ml-2 justify-center"
+                type="text"
+              >
+                <Tooltip title={t("labels:delete_store")}>
+                  <img
+                    src={DeleteIcon}
+                    className="!text-xl cursor-pointer"
+                    onClick={() => {
+                      openDeleteModal(record.id);
+                    }}
+                  />
+                </Tooltip>
+              </Button>
             ) : null}
           </Content>
         );
@@ -1140,11 +1149,12 @@ const Stores = () => {
                         size="large"
                         spinning={isUpLoading}
                       >
-                        <span className="text-red-600 text-sm">*</span>
-                        <label className="text-[13px] mb-2 ml-1">
+                       
+                        <label className="text-[13px] mb-2 ml-1 input-label-color" id="labStNam">
                           {t("labels:store_name")}
                           {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
                         </label>
+                        <span className="mandatory-symbol-color text-sm ml-1">*</span>
                         <Input
                           placeholder={t("placeholders:enter_store_name")}
                           value={name}
@@ -1193,10 +1203,11 @@ const Stores = () => {
                         <Divider orientation="left" orientationMargin="0">
                           {t("labels:store_administrator_details")}
                         </Divider>
-                        <span className="text-red-600 text-sm">*</span>
-                        <label className="text-[13px] mb-2 ml-1">
+                     
+                        <label className="text-[13px] mb-2 ml-1 input-label-color" id="labStEmail">
                           {t("labels:email")}
                         </label>
+                        <span className="mandatory-symbol-color text-sm ml-1">*</span>
                         <Input
                           placeholder={t("placeholders:enter_email")}
                           value={storeEmail}
@@ -1218,10 +1229,11 @@ const Stores = () => {
                             setStoreEmail(trimmedUpdate);
                           }}
                         />
-                        <span className="text-red-600 text-sm">*</span>
-                        <label className="text-[13px] mb-2 ml-1">
+                    
+                        <label className="text-[13px] mb-2 ml-1 input-label-color" id="labStUseName">
                           {t("labels:username")}
                         </label>
+                        <span className="mandatory-symbol-color text-sm ml-1">*</span>
                         <Input
                           placeholder={t("placeholders:enter_username")}
                           value={storeUserName}
@@ -1257,10 +1269,11 @@ const Stores = () => {
                             setStoreUserName(trimmedUpdate);
                           }}
                         />
-                        <span className="text-red-600 text-sm">*</span>
-                        <label className="text-[13px] mb-2 ml-1">
+                       
+                        <label className="text-[13px] mb-2 ml-1 input-label-color" id="labStPwd">
                           {t("labels:password")}
                         </label>
+                        <span className="mandatory-symbol-color text-sm ml-1">*</span>
                         <Input.Password
                           placeholder={t("placeholders:enter_password")}
                           value={storePassword}
@@ -1329,11 +1342,12 @@ const Stores = () => {
                         size="large"
                         spinning={isUpLoading}
                       >
-                        <span className="text-red-600 text-sm">*</span>
-                        <label className="text-[13px] mb-2 ml-1">
+                       
+                        <label className="text-[13px] mb-2 ml-1 input-label-color" id="labStNam">
                           Store Name
                           {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
                         </label>
+                        <span className="mandatory-symbol-color text-sm ml-1">*</span>
                         <Input
                           value={editName}
                           placeholder={t("placeholders:enter_store_name")}
@@ -1373,11 +1387,11 @@ const Stores = () => {
                         <Divider orientation="left" orientationMargin="0">
                           {t("labels:store_administrator_details")}
                         </Divider>
-                        <span className="text-red-600 text-sm">*</span>
-                        <label className="text-[13px] mb-2 ml-1">
+                        <label className="text-[13px] mb-2 ml-1 input-label-color" id="labStEmail">
                           {" "}
                           {t("labels:email")}
                         </label>
+                        <span className="mandatory-symbol-color text-sm ml-1">*</span>
                         <Input
                           placeholder={t("placeholders:enter_email")}
                           value={storeEditEmail}
@@ -1404,10 +1418,10 @@ const Stores = () => {
                             }
                           }}
                         />
-                        <span className="text-red-600 text-sm">*</span>
-                        <label className="text-[13px] mb-2 ml-1">
-                          Username
+                        <label className="text-[13px] mb-2 ml-1 input-label-color" id="labStUseName">
+                          Username 
                         </label>
+                        <span className="mandatory-symbol-color text-sm ml-1">*</span>
                         <Input
                           placeholder={t("placeholders:enter_username")}
                           value={storeEditUserName}
@@ -1440,11 +1454,11 @@ const Stores = () => {
                             setStoreEditUserName(trimmedUpdate);
                           }}
                         />
-                        <span className="text-red-600 text-sm">*</span>
-                        <label className="text-[13px] mb-2 ml-1">
+                        <label className="text-[13px] mb-2 ml-1 .input-label-color" id="labStPwd">
                           Password
                           {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
                         </label>
+                        <span className="mandatory-symbol-color text-sm ml-1">*</span>
                         <Input.Password
                           placeholder={t("placeholders:enter_password")}
                           value={storeEditPassword}

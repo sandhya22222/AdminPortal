@@ -252,10 +252,10 @@ const LanguageForm = ({
         <Row className="gap-2">
           <Col span={8} className=" mb-3">
             <Content className="">
-              <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">
+              <label className="text-[13px] mb-2 ml-1 input-label-color">
                 {t("labels:language")}
               </label>
+              <span className="mandatory-symbol-color text-sm !text-center ml-1">*</span>
               <Input
                 placeholder={t("placeholders:enter_language_name")}
                 value={txtLanguage}
@@ -289,10 +289,10 @@ const LanguageForm = ({
           </Col>
           <Col span={3} className=" mb-3">
             <Content className="">
-              <span className="text-red-600 text-sm text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">
+              <label className="text-[13px] mb-2 ml-1 input-label-color">
                 {t("labels:language_code")}
               </label>
+              <span className="mandatory-symbol-color text-sm text-center ml-1">*</span>
               <Input
                 placeholder={t("placeholders:enter_code")}
                 value={txtLanguageCode}
@@ -327,7 +327,7 @@ const LanguageForm = ({
           </Col>
         </Row>
         <Content className="w-[50%] ">
-          <label className="text-[13px] !mb-2">
+          <label className="text-[13px] !mb-2 input-label-color">
             {t("labels:script_direction")}
           </label>
           <Radio.Group

@@ -54,3 +54,19 @@
 .ant-pagination-options-size-changer  .ant-select-dropdown {
   z-index: unset !important;
 }
+
+.input-label-color {
+  color: var(--mp-input-field-label-color) !important;
+}
+
+.ant-input{
+  color: var(--mp-input-field-value-color) !important;
+}
+
+::placeholder {
+  color: var(--mp-input-field-placeholder-color) !important; 
+}
+
+.mandatory-symbol-color {
+  color: var(--mp-mandatory-symbol-color) !important; 
+}

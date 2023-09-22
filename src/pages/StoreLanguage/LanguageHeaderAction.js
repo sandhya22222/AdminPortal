@@ -194,7 +194,7 @@ function LanguageHeaderAction({
       <Content className="!flex items-center !justify-start gap-2">
         <Content className="">
           <Space direction="horizontal">
-            <Typography className="pr-2">
+            <Typography className="pr-2 input-label-color">
               {" "}
               {t("labels:status_label")}{" "}
             </Typography>
