@@ -190,103 +190,62 @@ function LanguageHeaderAction({
   };
 
   return (
-    <Content className="text-right !flex items-center !justify-end">
-      <Content className="flex mr-2">
-        <Content>
-          <StoreModal
-            isVisible={isModalOpen}
-            okButtonText={t("labels:yes")}
-            title={
-              changeSwitchStatus ? t("labels:success") : t("labels:warning")
-            }
-            cancelButtonText={t("labels:cancel")}
-            okCallback={() => updateLanguageStatus()}
-            cancelCallback={() => closeModal()}
-            isSpin={isLoading}
-            hideCloseButton={false}
-          >
-            {changeSwitchStatus ? (
-              <div>
-                <p>{t("messages:language_activation_confirmation")}</p>
-                <p>{t("messages:language_activation_confirmation_message")}</p>
-              </div>
-            ) : (
-              <div>
-                <p>{t("messages:language_deactivation_confirmation")}</p>
-                <p>
-                  {t("messages:language_deactivation_confirmation_message")}
-                </p>
-              </div>
-            )}
-          </StoreModal>
-          <Content className="inline-flex items-center">
+    <Content className="flex">
+      <Content className="!flex items-center !justify-start gap-2">
+        <Content className="">
+          <Space direction="horizontal">
             <Typography className="pr-2">
               {" "}
               {t("labels:status_label")}{" "}
             </Typography>
-            <Space direction="vertical">
-              <Switch
-                className={
-                  switchStatus === true ? "!bg-green-500" : "!bg-gray-400"
-                }
-                checked={switchStatus}
-                onChange={onChange}
-                onClick={() => {
-                  openModal(switchStatus);
-                }}
-                disabled={isMakeAsDefault}
-                checkedChildren={"Active"}
-                unCheckedChildren={"Inactive"}
+            <Switch
+              className={
+                switchStatus === true ? "!bg-green-500" : "!bg-gray-400"
+              }
+              checked={switchStatus}
+              onChange={onChange}
+              onClick={() => {
+                openModal(switchStatus);
+              }}
+              disabled={isMakeAsDefault}
+              checkedChildren={"Active"}
+              unCheckedChildren={"Inactive"}
+            />
+          </Space>
+        </Content>
+        <Content className="">
+          <Space direction="horizontal">
+            <Checkbox
+              className=""
+              checked={isMakeAsDefault}
+              onChange={(e) => {
+                openLanguageDefaultWaringModal(e.target.checked);
+              }}
+              disabled={switchStatus & !isMakeAsDefault ? false : true}
+            ></Checkbox>
+            <Typography> {t("labels:default_language_label")}</Typography>
+          </Space>
+        </Content>
+        <Content>
+          {!isMakeAsDefault ? (
+            <Button
+              className="bg-[#FF4D4F] text-white !flex ml-2 !justify-items-center !items-center"
+              onClick={() => {
+                openDeleteModal(languageId);
+              }}
+            >
+              <img
+                src={crossIcon}
+                alt="plusIconWithAddLanguage"
+                className="!flex !mr-2 !items-center"
               />
-            </Space>
-          </Content>
+              <div className="mr-[10px]">
+                {t("labels:remove_language_label")}
+              </div>
+            </Button>
+          ) : null}
         </Content>
       </Content>
-      <Content className="mx-2 contents">
-        <Checkbox
-          className="pr-2"
-          checked={isMakeAsDefault}
-          onChange={(e) => {
-            openLanguageDefaultWaringModal(e.target.checked);
-          }}
-          disabled={switchStatus & !isMakeAsDefault ? false : true}
-        ></Checkbox>
-        <Typography> {t("labels:default_language_label")}</Typography>
-        <StoreModal
-          isVisible={warningLanguageDefaultModal}
-          okButtonText={t("labels:yes")}
-          cancelButtonText={t("labels:cancel")}
-          title={t("labels:warning")}
-          okCallback={() => makeAsDefaultLanguage()}
-          cancelCallback={() => {
-            closeLanguageDefaultWaringModal();
-            setIsMakeAsDefault(false);
-          }}
-          isSpin={isLoading}
-          hideCloseButton={false}
-        >
-          {
-            <div>
-              <p>{t("messages:default_language_warning_msg")}</p>
-            </div>
-          }
-        </StoreModal>
-      </Content>
-      {!isMakeAsDefault ? (
-        <Button
-          className="bg-[#FF4D4F] text-white !flex ml-2 !justify-items-center !items-center"
-          onClick={() => {
-            openDeleteModal(languageId);
-          }}
-        >
-          <img
-            src={crossIcon}
-            alt="plusIconWithAddLanguage"
-            className="!flex !mr-2 !items-center"
-          />
-          <div className="mr-[10px]">{t("labels:remove_language_label")}</div>
-        </Button>
-      ) : null}
       <StoreModal
         isVisible={isDeleteLanguageModalOpen}
         okButtonText={t("labels:yes")}
@@ -331,6 +290,47 @@ function LanguageHeaderAction({
             </Button>
           </Content>
         </Content>
+      </StoreModal>
+      <StoreModal
+        isVisible={isModalOpen}
+        okButtonText={t("labels:yes")}
+        title={changeSwitchStatus ? t("labels:success") : t("labels:warning")}
+        cancelButtonText={t("labels:cancel")}
+        okCallback={() => updateLanguageStatus()}
+        cancelCallback={() => closeModal()}
+        isSpin={isLoading}
+        hideCloseButton={false}
+      >
+        {changeSwitchStatus ? (
+          <div>
+            <p>{t("messages:language_activation_confirmation")}</p>
+            <p>{t("messages:language_activation_confirmation_message")}</p>
+          </div>
+        ) : (
+          <div>
+            <p>{t("messages:language_deactivation_confirmation")}</p>
+            <p>{t("messages:language_deactivation_confirmation_message")}</p>
+          </div>
+        )}
+      </StoreModal>
+      <StoreModal
+        isVisible={warningLanguageDefaultModal}
+        okButtonText={t("labels:yes")}
+        cancelButtonText={t("labels:cancel")}
+        title={t("labels:warning")}
+        okCallback={() => makeAsDefaultLanguage()}
+        cancelCallback={() => {
+          closeLanguageDefaultWaringModal();
+          setIsMakeAsDefault(false);
+        }}
+        isSpin={isLoading}
+        hideCloseButton={false}
+      >
+        {
+          <div>
+            <p>{t("messages:default_language_warning_msg")}</p>
+          </div>
+        }
       </StoreModal>
     </Content>
   );

@@ -7,6 +7,7 @@ import { Profit, Positive, Payment } from "../../constants/media";
 import { toast } from "react-toastify";
 
 import { MdStore } from "react-icons/md";
+import { useDispatch } from "react-redux";
 
 //! Import CSS libraries
 
@@ -19,17 +20,22 @@ import { usePageTitle } from "../../hooks/usePageTitle";
 //! Import user defined CSS
 import "./dashboard.css";
 
-//! Get all required details from .env file
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import util from "../../util/common";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
 import { useAuth } from "react-oidc-context";
 import { useTranslation } from "react-i18next";
 import MarketplaceToaster from "../../util/marketplaceToaster";
-
+import {
+  fnSelectedLanguage,
+  fnStoreLanguage,
+  fnDefaultLanguage,
+} from "../../services/redux/actions/ActionStoreLanguage";
+//! Get all required details from .env file
 const storeAdminDashboardAPI =
   process.env.REACT_APP_STORE_ADMIN_DASHBOARD_DATA_API;
 const currencySymbol = process.env.REACT_APP_CURRENCY_SYMBOL;
+const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API;
 // const auth = getAuth.toLowerCase() === "true";
 
 //! Destructure the components
@@ -38,6 +44,7 @@ const { Content } = Layout;
 
 const Dashboard = () => {
   const auth = useAuth();
+  const dispatch = useDispatch();
   usePageTitle("Dashboard");
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -57,6 +64,7 @@ const Dashboard = () => {
       getDashBoardData();
     }
     window.scrollTo(0, 0);
+    findAllLanguages();
   }, []);
 
   const getDashBoardData = () => {
@@ -73,6 +81,43 @@ const Dashboard = () => {
       .catch((error) => {
         setDashboardDataLoading(false);
         setDashboardDataNetWorkError(true);
+      });
+  };
+
+  const findAllLanguages = () => {
+    MarketplaceServices.findAll(languageAPI, { "language-status": 1 }, false)
+      .then((response) => {
+        console.log(
+          "Server response from findAllStoreLanguages",
+          response.data.response_body
+        );
+        const storeLanguages = response.data.response_body;
+        const defaultLanguage = storeLanguages.find((item) => item.is_default);
+        dispatch(fnStoreLanguage(storeLanguages));
+        dispatch(fnDefaultLanguage(defaultLanguage));
+        const userSelectedLanguageCode = util.getUserSelectedLngCode();
+        if (userSelectedLanguageCode === undefined) {
+          const userSelectedLanguage = defaultLanguage;
+          dispatch(fnSelectedLanguage(userSelectedLanguage));
+          document.body.style.direction =
+            userSelectedLanguage &&
+            userSelectedLanguage.writing_script_direction?.toLowerCase();
+          Cookies.set("mpaplng", defaultLanguage.language_code);
+          localStorage.setItem("mpaplng", defaultLanguage.language_code);
+        }
+        if (util.getUserSelectedLngCode()) {
+          const alreadySelectedLanguage = storeLanguages.find(
+            (item) => item.language_code === util.getUserSelectedLngCode()
+          );
+          dispatch(fnSelectedLanguage(alreadySelectedLanguage));
+          document.body.style.direction =
+            alreadySelectedLanguage &&
+            alreadySelectedLanguage.writing_script_direction?.toLowerCase();
+        }
+        // dispatch(fnSelectedLanguage(defaultLanguage));
+      })
+      .catch((error) => {
+        console.log("error-->", error.response);
       });
   };
 
@@ -142,8 +187,8 @@ const Dashboard = () => {
           </Content>
         ) : (
           <Content>
-            <Content className="flex">
-              <Content className="p-3 w-[7%] mr-4 shadow-sm rounded-md justify-center !bg-[var(--mp-bright-color)]">
+            <Content className="flex gap-3">
+              <Content className="p-3 w-[7%]  shadow-sm rounded-md justify-center !bg-[var(--mp-bright-color)]">
                 <Content className="flex mb-3">
                   <Content className="flex items-center">
                     <Title
@@ -201,7 +246,7 @@ const Dashboard = () => {
                   </Content>
                 </Content>
               </Content>
-              <Content className="p-3 w-[26%] mr-4 shadow-sm rounded-md justify-center !bg-[var(--mp-bright-color)]">
+              <Content className="p-3 w-[26%] shadow-sm rounded-md justify-center !bg-[var(--mp-bright-color)]">
                 <Content className="flex items-center">
                   <Content className="flex-1 w-[50%]">
                     <Content className="!inline-block w-[40%]">

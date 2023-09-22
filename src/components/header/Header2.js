@@ -49,14 +49,15 @@ const Header2 = () => {
   );
 
   const [storeSelectedLngCode, setStoreSelectedLngCode] = useState(
-    selectedLanguage && selectedLanguage.dm_language_code
+    selectedLanguage && selectedLanguage.language_code
   );
+
   const languageItems = [];
   if (storeLanguages && storeLanguages.length > 1) {
     storeLanguages.forEach((element) => {
       const languageItem = {};
-      languageItem["key"] = element.dm_language_code;
-      languageItem["label"] = element.language_name;
+      languageItem["key"] = element.language_code;
+      languageItem["label"] = element.language;
       languageItems.push(languageItem);
     });
   }
@@ -101,21 +102,19 @@ const Header2 = () => {
   };
 
   const handleLanguageClick = (e) => {
-    Cookies.set("dmaplng", e.key);
-    localStorage.setItem("dmaplng", e.key);
+    Cookies.set("mpaplng", e.key);
+    localStorage.setItem("mpaplng", e.key);
     setStoreSelectedLngCode(e.key);
     dispatch(
       fnSelectedLanguage(
-        storeLanguages.find((item) => item.dm_language_code === e.key)
+        storeLanguages.find((item) => item.language_code === e.key)
       )
     );
     navigate(0);
   };
 
   useEffect(() => {
-    setStoreSelectedLngCode(
-      selectedLanguage && selectedLanguage.dm_language_code
-    );
+    setStoreSelectedLngCode(selectedLanguage && selectedLanguage.language_code);
   }, [selectedLanguage]);
 
   return (
@@ -169,8 +168,8 @@ const Header2 = () => {
               //   </Paragraph>
               // </Tooltip>
             )}
-            {/* Display language dropdown only if store has more than 1 language. */}
-            {/* {auth.isAuthenticated && languageItems.length > 0 ? (
+            {/* Display language dropdown only if store has more than 1 language.  */}
+            {languageItems.length > 0 ? (
               <Dropdown
                 menu={{
                   items: languageItems,
@@ -182,12 +181,15 @@ const Header2 = () => {
                 className="header-text-color cursor-pointer ml-3"
               >
                 <Paragraph className="inline-block mb-0">
-                  <TranslationOutlined className=" header-text-color text-base headerIcon !h-[24px]" />
+                  <TranslationOutlined
+                    className=" header-text-color text-base headerIcon !h-[24px]"
+                    style={{ fontSize: "24px" }}
+                  />
                 </Paragraph>
               </Dropdown>
             ) : (
               <></>
-            )} */}
+            )}
           </Content>
         </Content>
       </Header>
