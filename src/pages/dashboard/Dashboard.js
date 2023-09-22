@@ -1,6 +1,6 @@
 //! Import libraries & components
 import React, { useEffect, useState } from "react";
-import { Layout, Typography, Skeleton, Image } from "antd";
+import { Layout, Typography, Skeleton, Image, Button } from "antd";
 import { useNavigate } from "react-router-dom";
 
 import { Profit, Positive, Payment } from "../../constants/media";
@@ -204,12 +204,14 @@ const Dashboard = () => {
                     </Text>
                   </Content>
                   <Content className="flex flex-row-reverse items-center">
-                    <Link
-                      className="!text-[var(--mp-link-color)] float-right font-semibold"
-                      onClick={() => navigate("/dashboard/store")}
-                    >
-                      {t("labels:view_all")}
-                    </Link>
+                    <Button className="app-btn-link" type="link">
+                      <Link
+                        className="float-right app-btn-link font-semibold"
+                        onClick={() => navigate("/dashboard/store")}
+                      >
+                        {t("labels:view_all")}
+                      </Link>
+                    </Button>
                   </Content>
                 </Content>
                 <Content className="flex">

@@ -326,35 +326,44 @@ const Stores = () => {
                 }}
               />
             </Tooltip> */}
-
-            <Link
-              to={{
-                pathname: "storesetting",
-                search: `?id=${record.id}&page=${
-                  searchParams.get("page") ? searchParams.get("page") : 1
-                }&limit=${
-                  searchParams.get("limit")
-                    ? searchParams.get("limit")
-                    : pageLimit
-                }`,
-              }}
-              // className=" pl-[10px] font-semibold app-table-data-title"
+            <Button
+              className="app-btn-text flex align-items-center justify-center"
+              type="text"
             >
-              <Tooltip title={t("labels:store_settings")}>
-                <MdSettings className=" text-black !text-xl ml-2" />
-              </Tooltip>
-            </Link>
+              <Link
+                to={{
+                  pathname: "storesetting",
+                  search: `?id=${record.id}&page=${
+                    searchParams.get("page") ? searchParams.get("page") : 1
+                  }&limit=${
+                    searchParams.get("limit")
+                      ? searchParams.get("limit")
+                      : pageLimit
+                  }`,
+                }}
+                // className=" pl-[10px] font-semibold app-table-data-title"
+              >
+                <Tooltip title={t("labels:store_settings")}>
+                  <MdSettings className="text-[var(--mp-primary-border-color)] hover:text-[var(--mp-primary-border-color-h)] !text-xl" />
+                </Tooltip>
+              </Link>
+            </Button>
 
             {record.status === "InActive" ? (
-              <Tooltip title={t("labels:delete_store")}>
-                <img
-                  src={DeleteIcon}
-                  className="!text-xl ml-4 cursor-pointer"
-                  onClick={() => {
-                    openDeleteModal(record.id);
-                  }}
-                />
-              </Tooltip>
+              <Button
+                className="app-btn-text flex align-items-center ml-2 justify-center"
+                type="text"
+              >
+                <Tooltip title={t("labels:delete_store")}>
+                  <img
+                    src={DeleteIcon}
+                    className="!text-xl cursor-pointer"
+                    onClick={() => {
+                      openDeleteModal(record.id);
+                    }}
+                  />
+                </Tooltip>
+              </Button>
             ) : null}
           </Content>
         );
