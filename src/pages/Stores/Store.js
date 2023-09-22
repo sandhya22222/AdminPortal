@@ -1149,11 +1149,12 @@ const Stores = () => {
                         size="large"
                         spinning={isUpLoading}
                       >
-                        <span className="text-red-600 text-sm">*</span>
-                        <label className="text-[13px] mb-2 ml-1">
+                       
+                        <label className="text-[13px] mb-2 ml-1 input-label-color" id="labStNam">
                           {t("labels:store_name")}
                           {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
                         </label>
+                        <span className="mandatory-symbol-color text-sm ml-1">*</span>
                         <Input
                           placeholder={t("placeholders:enter_store_name")}
                           value={name}
@@ -1202,10 +1203,11 @@ const Stores = () => {
                         <Divider orientation="left" orientationMargin="0">
                           {t("labels:store_administrator_details")}
                         </Divider>
-                        <span className="text-red-600 text-sm">*</span>
-                        <label className="text-[13px] mb-2 ml-1">
+                     
+                        <label className="text-[13px] mb-2 ml-1 input-label-color" id="labStEmail">
                           {t("labels:email")}
                         </label>
+                        <span className="mandatory-symbol-color text-sm ml-1">*</span>
                         <Input
                           placeholder={t("placeholders:enter_email")}
                           value={storeEmail}
@@ -1227,10 +1229,11 @@ const Stores = () => {
                             setStoreEmail(trimmedUpdate);
                           }}
                         />
-                        <span className="text-red-600 text-sm">*</span>
-                        <label className="text-[13px] mb-2 ml-1">
+                    
+                        <label className="text-[13px] mb-2 ml-1 input-label-color" id="labStUseName">
                           {t("labels:username")}
                         </label>
+                        <span className="mandatory-symbol-color text-sm ml-1">*</span>
                         <Input
                           placeholder={t("placeholders:enter_username")}
                           value={storeUserName}
@@ -1266,10 +1269,11 @@ const Stores = () => {
                             setStoreUserName(trimmedUpdate);
                           }}
                         />
-                        <span className="text-red-600 text-sm">*</span>
-                        <label className="text-[13px] mb-2 ml-1">
+                       
+                        <label className="text-[13px] mb-2 ml-1 input-label-color" id="labStPwd">
                           {t("labels:password")}
                         </label>
+                        <span className="mandatory-symbol-color text-sm ml-1">*</span>
                         <Input.Password
                           placeholder={t("placeholders:enter_password")}
                           value={storePassword}
@@ -1338,11 +1342,12 @@ const Stores = () => {
                         size="large"
                         spinning={isUpLoading}
                       >
-                        <span className="text-red-600 text-sm">*</span>
-                        <label className="text-[13px] mb-2 ml-1">
+                       
+                        <label className="text-[13px] mb-2 ml-1 input-label-color" id="labStNam">
                           Store Name
                           {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
                         </label>
+                        <span className="mandatory-symbol-color text-sm ml-1">*</span>
                         <Input
                           value={editName}
                           placeholder={t("placeholders:enter_store_name")}
@@ -1382,11 +1387,11 @@ const Stores = () => {
                         <Divider orientation="left" orientationMargin="0">
                           {t("labels:store_administrator_details")}
                         </Divider>
-                        <span className="text-red-600 text-sm">*</span>
-                        <label className="text-[13px] mb-2 ml-1">
+                        <label className="text-[13px] mb-2 ml-1 input-label-color" id="labStEmail">
                           {" "}
                           {t("labels:email")}
                         </label>
+                        <span className="mandatory-symbol-color text-sm ml-1">*</span>
                         <Input
                           placeholder={t("placeholders:enter_email")}
                           value={storeEditEmail}
@@ -1413,10 +1418,10 @@ const Stores = () => {
                             }
                           }}
                         />
-                        <span className="text-red-600 text-sm">*</span>
-                        <label className="text-[13px] mb-2 ml-1">
-                          Username
+                        <label className="text-[13px] mb-2 ml-1 input-label-color" id="labStUseName">
+                          Username 
                         </label>
+                        <span className="mandatory-symbol-color text-sm ml-1">*</span>
                         <Input
                           placeholder={t("placeholders:enter_username")}
                           value={storeEditUserName}
@@ -1449,11 +1454,11 @@ const Stores = () => {
                             setStoreEditUserName(trimmedUpdate);
                           }}
                         />
-                        <span className="text-red-600 text-sm">*</span>
-                        <label className="text-[13px] mb-2 ml-1">
+                        <label className="text-[13px] mb-2 ml-1 .input-label-color" id="labStPwd">
                           Password
                           {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
                         </label>
+                        <span className="mandatory-symbol-color text-sm ml-1">*</span>
                         <Input.Password
                           placeholder={t("placeholders:enter_password")}
                           value={storeEditPassword}

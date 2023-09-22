@@ -1,6 +1,10 @@
 :root {
   --mp-brand-color: #0246bb;
   --mp-brand-color-h: #3367cd;
+  --mp-input-field-label-color:#8C8C8C;
+  --mp-input-field-placeholder-color:#BFBFBF;
+  --mp-input-field-value-color:#262626;
+  --mp-mandatory-symbol-color: #ff4d4f;
 
   --mp-primary-color: #4a2d73;
   --mp-primary-color-h: #7d3192;
