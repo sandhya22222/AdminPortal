@@ -65,7 +65,7 @@ const Language = () => {
       title: `${t("labels:language")}`,
       dataIndex: "language",
       key: "language",
-      width: "30%",
+      width: "25%",
       ellipsis: true,
       render: (text, record) => {
         return (
@@ -120,7 +120,7 @@ const Language = () => {
       dataIndex: "writing_script_direction",
       key: "writing_script_direction",
       ellipsis: true,
-      width: "15%",
+      width: "20%",
       render: (text, record) => {
         return (
           <>
