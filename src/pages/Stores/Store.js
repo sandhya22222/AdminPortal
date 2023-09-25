@@ -1319,7 +1319,7 @@ const Stores = () => {
                             validateStorePostField();
                           }}
                         >
-                          {t("labels:Save")}
+                          {t("labels:save")}
                         </Button>
                       </Spin>
                     </>

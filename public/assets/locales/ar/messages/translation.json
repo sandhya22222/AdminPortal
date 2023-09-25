@@ -49,5 +49,7 @@
   "upload_success": "تم الرفع بنجاح!",
   "upload_success_message": "تهانينا! ",
   "choose_download_format": "اختر تنسيق التنزيل المفضل لديك",
-  "connect_with_your_customers_in_their_preferred_language": " تواصل مع عملائك بلغتهم المفضلة"
+  "connect_with_your_customers_in_their_preferred_language": " تواصل مع عملائك بلغتهم المفضلة",
+  "unable_to_download_this_format":"غير قادر على تحميل هذا التنسيق",
+  "download_successful":"تم التنزيل بنجاح"
 }

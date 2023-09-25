@@ -84,5 +84,10 @@
   "credits": "الاعتمادات",
   "support_document": "وثيقة الدعم",
   "code": "شفرة",
-  "payment_types": "أنواع الدفع"
+  "payment_types": "أنواع الدفع",
+  "default":"تقصير",
+  "download_document":"تنزيل المستند",
+  "download_support_document_template":"قم بتنزيل نموذج مستند الدعم",
+  "cash_on_delivery":"الدفع عند الاستلام",
+  "online_payment":"الدفع الالكتروني"
 }
