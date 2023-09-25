@@ -9,17 +9,22 @@ import { PersistGate } from "redux-persist/integration/react";
 import "./services/i18next/1i18n";
 
 import { AuthProvider } from "react-oidc-context";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 import "bootstrap/dist/js/bootstrap.min.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import "./core-ui/index.css";
+import { StrictMode } from "react";
+
+const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 //! Get all required details from .env file
 const authority = process.env.REACT_APP_AUTHORITY;
 let clientId = process.env.REACT_APP_CLIENT_ID;
+let realm = process.env.REACT_APP_REALM;
 const clientSecret = process.env.REACT_APP_CLIENT_SECRET;
 const redirectUri = process.env.REACT_APP_REDIRECT_URI;
 const postLogoutRedirectUri = process.env.REACT_APP_POST_LOGOUT_REDIRECT_URI;
@@ -35,11 +40,21 @@ const oidcConfig = {
   },
 };
 
+const keycloakData = {
+  realmName: realm,
+  clientId: clientId,
+};
+sessionStorage.setItem("keycloakData", JSON.stringify(keycloakData));
+
 root.render(
   <AuthProvider {...oidcConfig}>
     <Provider store={Store}>
       <PersistGate loading={null} persistor={Persistor}>
-        <App />
+        <StrictMode>
+          <QueryClientProvider client={queryClient}>
+            <App />
+          </QueryClientProvider>
+        </StrictMode>
       </PersistGate>
     </Provider>
   </AuthProvider>

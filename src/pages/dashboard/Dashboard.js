@@ -1,12 +1,15 @@
 //! Import libraries & components
 import React, { useEffect, useState } from "react";
-import { Layout, Typography, Skeleton, Image } from "antd";
+import { Layout, Typography, Skeleton, Image, Table, Tag, Tooltip } from "antd";
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios";
 import { Profit, Positive, Payment } from "../../constants/media";
 import { toast } from "react-toastify";
 
 import { MdStore } from "react-icons/md";
+import { Tabs } from "antd";
+import { StarTwoTone, ReloadOutlined } from "@ant-design/icons";
+import { useQuery } from "react-query";
 
 //! Import CSS libraries
 
@@ -26,10 +29,19 @@ import HeaderForTitle from "../../components/header/HeaderForTitle";
 import { useAuth } from "react-oidc-context";
 import { useTranslation } from "react-i18next";
 import MarketplaceToaster from "../../util/marketplaceToaster";
+const instance = axios.create();
 
 const storeAdminDashboardAPI =
   process.env.REACT_APP_STORE_ADMIN_DASHBOARD_DATA_API;
 const currencySymbol = process.env.REACT_APP_CURRENCY_SYMBOL;
+
+const dm4sightBaseURL = process.env.REACT_APP_4SIGHT_BASE_URL;
+const dm4sightGetWidgetIdAPI = process.env.REACT_APP_4SIGHT_GETWIDGETID_API;
+const dm4sightGetGraphDataAPI = process.env.REACT_APP_4SIGHT_GETGRAPHDATA_API;
+const dm4sightGetDetailsByQueryAPI =
+  process.env.REACT_APP_4SIGHT_GETDETAILSBYQUERY_API;
+const dm4sightClientID = process.env.REACT_APP_4SIGHT_CLIENT_ID;
+
 // const auth = getAuth.toLowerCase() === "true";
 
 //! Destructure the components
@@ -45,6 +57,31 @@ const Dashboard = () => {
   const [dashboardDataLoading, setDashboardDataLoading] = useState(true);
   const [dashboardDataNetWorkError, setDashboardDataNetWorkError] =
     useState(false);
+
+  const [fetchTopProductsData, setFetchTopProductsData] = useState(true);
+  const [fetchTopStoresData, setFetchTopStoresData] = useState(false);
+  const [fetchTopVendorsData, setFetchTopVendorsData] = useState(false);
+  const [fetchProductTypesData, setFetchProductTypesData] = useState(false);
+  const [refetcher, setRefetcher] = useState();
+
+  const [updatedTimeState, setUpdatedTimeState] = useState("products");
+  const [updatedTimes, setUpdatedTimes] = useState({
+    products: undefined,
+    stores: undefined,
+    vendors: undefined,
+    types: undefined,
+  });
+
+  let keyCLoak = sessionStorage.getItem("keycloakData");
+  keyCLoak = JSON.parse(keyCLoak);
+
+  const dm4sightHeaders = {
+    headers: {
+      token: sessionStorage.getItem("access_token"),
+      realmname: keyCLoak.realmName,
+      dmClientId: dm4sightClientID,
+    },
+  };
 
   useEffect(() => {
     if (auth && auth.user && auth.user?.access_token) {
@@ -75,6 +112,869 @@ const Dashboard = () => {
         setDashboardDataNetWorkError(true);
       });
   };
+
+  const getTopProductsData = async () => {
+    const topProductsPayload = {
+      names: ["top_products_ap", "common_query_ap"],
+    };
+
+    try {
+      const resWidgetIDs = await instance.post(
+        dm4sightBaseURL + dm4sightGetWidgetIdAPI,
+        topProductsPayload,
+        dm4sightHeaders
+      );
+
+      const widgetIds = resWidgetIDs.data.widget_details.data.map(
+        (ele) => ele.id
+      );
+      const topProductID = widgetIds[0];
+
+      const resProducts = await instance.post(
+        dm4sightBaseURL + dm4sightGetGraphDataAPI + `?widgetId=${topProductID}`,
+        {},
+        dm4sightHeaders
+      );
+
+      const productNames = resProducts.data.data.data[0]
+        .slice(0, 5)
+        .map((ele) => ele.name);
+
+      const storeIds = resProducts.data.data.data[0]
+        .slice(0, 5)
+        .map((ele) => ele.min_store_id);
+      const vendorIds = resProducts.data.data.data[0]
+        .slice(0, 5)
+        .map((ele) => ele.min_vendor_id);
+
+      const queryID = widgetIds[1];
+      // QUERY TO FETCH VENDORNAME,STORENAME using storeids and vendorids taken from resProducts
+      const resQuery = await instance.post(
+        dm4sightBaseURL + dm4sightGetDetailsByQueryAPI + `?id=${queryID}`,
+        {
+          query: "",
+          query_type: "store_and_vendor_names",
+          store_ids: storeIds,
+          vendor_ids: vendorIds,
+          product_names: [],
+        },
+        dm4sightHeaders
+      );
+
+      const resTypeQuery = await instance.post(
+        dm4sightBaseURL + dm4sightGetDetailsByQueryAPI + `?id=${queryID}`,
+
+        {
+          query: "",
+          query_type: "product_name_type",
+          store_ids: [],
+          vendor_ids: [],
+          product_names: productNames,
+        },
+
+        dm4sightHeaders
+      );
+
+      const resCurrencies = await instance.post(
+        dm4sightBaseURL + dm4sightGetDetailsByQueryAPI + `?id=${topProductID}`,
+        {
+          query: "",
+          query_type: "currency",
+          store_ids: storeIds,
+          vendor_ids: [],
+          product_names: [],
+        },
+
+        dm4sightHeaders
+      );
+
+      // Add 'product_type' and 'order_placed' key to the 'resProducts' array based on 'id' and 'min_store_id'
+      const updatedResProducts = resProducts.data.data.data[0].map(
+        (product) => {
+          const matchingType = resTypeQuery.data.data[0].find(
+            (type) => type.name === product.name
+          );
+          if (matchingType) {
+            return {
+              ...product,
+              product_type: matchingType.name0 ? matchingType.name0 : "Unknown",
+              order_placed: matchingType.order_placed
+                ? matchingType.order_placed
+                : "null",
+            };
+          }
+          return product;
+        }
+      );
+
+      const storeNameAdded = updatedResProducts.map((obj) => {
+        const correspondingData = resQuery.data.data[0].find(
+          (data) => data.store_id === obj.min_store_id
+        );
+        return {
+          ...obj,
+          store_name: correspondingData
+            ? correspondingData.name0
+            : "Unknown Store",
+          vendor_name: correspondingData
+            ? correspondingData.name
+            : "Unknown Vendor",
+        };
+      });
+
+      // Add 'symbol' key to the 'updated' array based on 'id' and 'min_store_id'
+      let symbolAdded = storeNameAdded.map((item) => {
+        const matchingCurrency = resCurrencies.data.data[0].find(
+          (currency) => currency.id === item.min_store_id
+        );
+        if (matchingCurrency) {
+          item.symbol = matchingCurrency.symbol;
+        }
+        return item;
+      });
+      const currentDate = new Date();
+      const currentTime = currentDate.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+
+      setRefetcher(null);
+      setUpdatedTimes({
+        ...updatedTimes,
+        products: currentTime,
+      });
+      return symbolAdded;
+    } catch (error) {
+      throw new Error("Error fetching top products data");
+    }
+  };
+
+  const getTopStoresData = async () => {
+    const payload = {
+      names: ["top_stores_ap", "common_query_ap"],
+    };
+
+    try {
+      const resWidgetIDs = await instance.post(
+        dm4sightBaseURL + dm4sightGetWidgetIdAPI,
+        payload,
+        dm4sightHeaders
+      );
+
+      const widgetIds = resWidgetIDs.data.widget_details.data.map(
+        (ele) => ele.id
+      );
+      let topStoresID = widgetIds[0];
+      let queryID = widgetIds[1];
+
+      const topStoresUrl =
+        dm4sightBaseURL + dm4sightGetGraphDataAPI + `?widgetId=${topStoresID}`;
+
+      const resStore = await instance.post(topStoresUrl, {}, dm4sightHeaders);
+
+      const storeIds = resStore.data.data.data[0]
+        .slice(0, 5)
+        .map((ele) => ele.store_id);
+      const nullRemovedStoreIds = storeIds.filter((value) => value !== null);
+
+      const resQuery = await instance.post(
+        dm4sightBaseURL + dm4sightGetDetailsByQueryAPI + `?id=${queryID}`,
+        {
+          query: "",
+          query_type: "currency",
+          store_ids: nullRemovedStoreIds,
+          vendor_ids: [],
+          product_names: [],
+        },
+        dm4sightHeaders
+      );
+
+      // combine resStore & resQuery data - add respective storenames and currencies(from resquery)
+      const storeNameAdded = resStore.data.data.data[0]
+        .slice(0, 5)
+        .map((obj) => {
+          const correspondingData = resQuery.data.data[0].find(
+            (data) => data.id === obj.store_id
+          );
+
+          console.log("correspondingData", correspondingData);
+
+          return {
+            ...obj,
+            symbol: correspondingData ? correspondingData.symbol : "",
+            store_name: correspondingData
+              ? correspondingData.name
+              : "Unknown Store",
+          };
+        });
+
+      console.log("str", storeNameAdded);
+
+      const currentDate = new Date();
+      const currentTime = currentDate.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      setRefetcher(null);
+      setUpdatedTimes({
+        ...updatedTimes,
+        stores: currentTime,
+      });
+      return storeNameAdded;
+    } catch (error) {
+      throw new Error("Error fetching top stores data");
+    }
+  };
+
+  const getTopVendorsData = async () => {
+    const payload = {
+      names: ["top_vendors_ap", "common_query_ap"],
+    };
+
+    try {
+      const resWidgetIDs = await instance.post(
+        dm4sightBaseURL + dm4sightGetWidgetIdAPI,
+        payload,
+        dm4sightHeaders
+      );
+
+      const widgetIds = resWidgetIDs.data.widget_details.data.map(
+        (ele) => ele.id
+      );
+      let topVendorsID = widgetIds[0];
+      let queryID = widgetIds[1];
+      const topVendorsUrl =
+        dm4sightBaseURL + dm4sightGetGraphDataAPI + `?widgetId=${topVendorsID}`;
+
+      const resVendors = await instance.post(
+        topVendorsUrl,
+        {},
+        dm4sightHeaders
+      );
+
+      const storeIds = resVendors.data.data.data[0]
+        .slice(0, 5)
+        .map((ele) => ele.min_store_id);
+      const nullRemovedStoreIds = storeIds.filter((value) => value !== null);
+
+      const resQuery = await instance.post(
+        dm4sightBaseURL + dm4sightGetDetailsByQueryAPI + `?id=${queryID}`,
+        {
+          query: "",
+          query_type: "currency",
+          store_ids: nullRemovedStoreIds,
+          vendor_ids: [],
+          product_names: [],
+        },
+        dm4sightHeaders
+      );
+
+      const storeNameAdded = resVendors.data.data.data[0]
+        .slice(0, 5)
+        .map((obj) => {
+          const correspondingData = resQuery.data.data[0].find(
+            (data) => data.id === obj.min_store_id
+          );
+          return {
+            ...obj,
+            symbol: correspondingData ? correspondingData.symbol : "",
+            store_name: correspondingData
+              ? correspondingData.name
+              : "Unknown Store",
+          };
+        });
+
+      console.log("stna", storeNameAdded);
+      const currentDate = new Date();
+      const currentTime = currentDate.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      setRefetcher(null);
+      setUpdatedTimes({
+        ...updatedTimes,
+        vendors: currentTime,
+      });
+      return storeNameAdded;
+    } catch (error) {
+      throw new Error("Error fetching top vendors data");
+    }
+  };
+
+  const getProductTypesData = async () => {
+    try {
+      const resProdType = await instance.post(
+        dm4sightBaseURL + dm4sightGetDetailsByQueryAPI,
+        {
+          query: "",
+          query_type: "product_type",
+          store_ids: [],
+          vendor_ids: [],
+          product_names: [],
+        },
+        dm4sightHeaders
+      );
+      const currentDate = new Date();
+      const currentTime = currentDate.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      setRefetcher(null);
+      setUpdatedTimes({
+        ...updatedTimes,
+        types: currentTime,
+      });
+      return resProdType.data.data[0];
+    } catch (error) {
+      throw new Error("Error fetching product types data");
+    }
+  };
+
+  const {
+    data: topProductsData,
+    isLoading: isLoadingProducts,
+    isFetching: isFetchingProducts,
+    isFetched: isFetchedProducts,
+    // isError,
+    // error,
+    refetch: refetchProducts,
+    isRefetching: isRefetchingProducts,
+  } = useQuery("topProductsData", getTopProductsData, {
+    enabled: !!fetchTopProductsData && !!dashboardData,
+  });
+
+  const {
+    data: topStoresData,
+    isLoading: isLoadingStores,
+    isFetching: isFetchingStores,
+    isFetched: isFetchedStores,
+    // isError,
+    // error,
+    refetch: refetchStores,
+    isRefetching: isRefetchingStores,
+  } = useQuery("topStoresData", getTopStoresData, {
+    enabled: !!fetchTopStoresData,
+  });
+
+  const {
+    data: topVendorsData,
+    isLoading: isLoadingVendors,
+    isFetching: isFetchingVendors,
+    isFetched: isFetchedVendors,
+    // isError,
+    // error,
+    refetch: refetchVendors,
+    isRefetching: isRefetchingVendors,
+  } = useQuery("topVendorsData", getTopVendorsData, {
+    enabled: !!fetchTopVendorsData,
+  });
+
+  const {
+    data: productTypesData,
+    isLoading: isLoadingProductTypes,
+    isFetching: isFetchingProductTypes,
+    isFetched: isFetchedProductTypes,
+    // isError,
+    // error,
+    refetch: refetchTypes,
+    isRefetching: isRefetchingProductTypes,
+  } = useQuery("productTypesData", getProductTypesData, {
+    enabled: !!fetchProductTypesData,
+  });
+
+  let productDataSource = topProductsData?.map((item, index) => {
+    return {
+      key: index,
+      rank: (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <div>{index + 1}</div>
+          {index === 0 ? (
+            <div role="img" aria-label="star">
+              <StarTwoTone
+                twoToneColor="#FAAD14"
+                style={{
+                  fontSize: "large",
+                  marginLeft: "7px",
+                  display: "flex",
+                }}
+              />
+            </div>
+          ) : (
+            ""
+          )}
+        </div>
+      ),
+
+      name: (
+        <Tooltip title={item.name}>
+          <div className="flex items-center gap-2">
+            <Image
+              style={{ minWidth: "32px" }}
+              preview={false}
+              width={32}
+              height={32}
+              src={process.env.REACT_APP_BASE_URL + item.min_image}
+              fallback="data:image/png;base64,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"
+            />
+
+            {item.name.length > 30 ? `${item.name.slice(0, 20)}...` : item.name}
+          </div>
+        </Tooltip>
+      ),
+      store: (
+        <Tooltip title={item.store_name ? item.store_name : "null"}>
+          <span className="flex items-center gap-2">
+            {/* <Image
+              className="rounded-full"
+              preview={false}
+              width={32}
+              height={32}
+              src=""
+              fallback="data:image/png;base64,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"
+            /> */}
+            {item.store_name && item.store_name.length > 20
+              ? `${item.store_name.slice(0, 20)}...`
+              : item.store_name
+              ? item.store_name
+              : "null"}
+          </span>
+        </Tooltip>
+      ),
+      vendor: (
+        <Tooltip title={item.vendor_name ? item.vendor_name : "null"}>
+          <span>
+            {item.vendor_name && item.vendor_name.length > 20
+              ? `${item.vendor_name.slice(0, 20)}...`
+              : item.vendor_name
+              ? item.vendor_name
+              : "null"}
+          </span>
+        </Tooltip>
+      ),
+      product_type: (
+        <Tag color="magenta">
+          {item.product_type ? item.product_type.split(" ")[0] : "null"}
+        </Tag>
+      ),
+      units: item.order_placed ? item.order_placed : "null",
+      sales: (
+        <span style={{ color: "#52C41A" }}>{`${
+          item.symbol ? item.symbol : ""
+        }${item.sum_amount.toFixed(2)}`}</span>
+      ),
+    };
+  });
+
+  let storeDataSource = topStoresData?.map((item, index) => {
+    return {
+      key: index,
+      rank: (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <div>{index + 1}</div>
+          {index === 0 ? (
+            <div role="img" aria-label="star">
+              <StarTwoTone
+                twoToneColor="#FAAD14"
+                style={{
+                  fontSize: "large",
+                  marginLeft: "7px",
+                  display: "flex",
+                }}
+              />
+            </div>
+          ) : (
+            ""
+          )}
+        </div>
+      ),
+
+      name: (
+        <Tooltip title={item.store_name}>
+          <span className="flex items-center gap-2">
+            {/* <Image
+              className="rounded-full"
+              preview={false}
+              width={32}
+              height={32}
+              src=""
+              // fallback="data:image/png;base64,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"
+            /> */}
+            {item.store_name && item.store_name.length > 20
+              ? `${item.store_name.slice(0, 20)}...`
+              : item.store_name
+              ? item.store_name
+              : "null"}
+          </span>
+        </Tooltip>
+      ),
+
+      product_type: <Tag color="magenta">Physical</Tag>,
+      units: item.sum_quantity,
+      sales: (
+        <span style={{ color: "#52C41A" }}>{`${
+          item.symbol
+        } ${item.sum_amount.toFixed(2)}`}</span>
+      ),
+    };
+  });
+
+  let vendorDataSource = topVendorsData?.map((item, index) => {
+    return {
+      key: index,
+      rank: (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <div>{index + 1}</div>
+          {index === 0 ? (
+            <div role="img" aria-label="star">
+              <StarTwoTone
+                twoToneColor="#FAAD14"
+                style={{
+                  fontSize: "large",
+                  marginLeft: "7px",
+                  display: "flex",
+                }}
+              />
+            </div>
+          ) : (
+            ""
+          )}
+        </div>
+      ),
+
+      name: (
+        <Tooltip title={item.vendor_name}>
+          <span>
+            {item.vendor_name && item.vendor_name.length > 20
+              ? `${item.min_store_id.slice(0, 20)}...`
+              : item.vendor_name
+              ? item.vendor_name
+              : "null"}
+          </span>
+        </Tooltip>
+      ),
+      store: (
+        <Tooltip title={item.store_name ? item.store_name : "null"}>
+          <span>
+            {item.store_name && item.store_name.length > 20
+              ? `${item.min_store_id.slice(0, 20)}...`
+              : item.store_name
+              ? item.store_name
+              : "null"}
+          </span>
+        </Tooltip>
+      ),
+
+      units: item.sum_quantity,
+      sales: (
+        <span style={{ color: "#52C41A" }}>{`${
+          item.symbol
+        } ${item.sum_amount.toFixed(2)}`}</span>
+      ),
+    };
+  });
+
+  let productTypeDataSource = productTypesData?.map((item, index) => {
+    return {
+      key: index,
+      rank: (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <div>{index + 1}</div>
+          {index === 0 ? (
+            <div role="img" aria-label="star">
+              <StarTwoTone
+                twoToneColor="#FAAD14"
+                style={{
+                  fontSize: "large",
+                  marginLeft: "7px",
+                  display: "flex",
+                }}
+              />
+            </div>
+          ) : (
+            ""
+          )}
+        </div>
+      ),
+
+      product_type: <span>{item.name}</span>,
+
+      units: item.order_placed,
+    };
+  });
+
+  const productColumns = [
+    {
+      title: "Rank",
+      dataIndex: "rank",
+      key: "rank",
+    },
+    {
+      title: "Product Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Store",
+      dataIndex: "store",
+      key: "store",
+    },
+    {
+      title: "Vendor",
+      dataIndex: "vendor",
+      key: "vendor",
+    },
+    {
+      title: "Product Type",
+      dataIndex: "product_type",
+      key: "product_type",
+    },
+    {
+      title: "Units Sold",
+      dataIndex: "units",
+      key: "units",
+    },
+    {
+      title: "Sales",
+      dataIndex: "sales",
+      key: "sales",
+    },
+  ];
+
+  const storeColumns = [
+    {
+      title: "Rank",
+      dataIndex: "rank",
+      key: "rank",
+    },
+    {
+      title: "Store Name",
+      dataIndex: "name",
+      key: "name",
+    },
+
+    {
+      title: "Units",
+      dataIndex: "units",
+      key: "units",
+      width: "25%",
+    },
+    {
+      title: "Sales",
+      dataIndex: "sales",
+      key: "sales",
+      width: "25%",
+    },
+  ];
+
+  const vendorColumns = [
+    {
+      title: "Rank",
+      dataIndex: "rank",
+      key: "rank",
+    },
+    {
+      title: "Vendor Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Store",
+      dataIndex: "store",
+      key: "store",
+    },
+
+    {
+      title: "Units",
+      dataIndex: "units",
+      key: "units",
+    },
+    {
+      title: "Sales",
+      dataIndex: "sales",
+      key: "sales",
+      width: "25%",
+    },
+  ];
+
+  const productTypeColumns = [
+    {
+      title: "Rank",
+      dataIndex: "rank",
+      key: "rank",
+    },
+
+    {
+      title: "Product Type",
+      dataIndex: "product_type",
+      key: "product_type",
+    },
+    {
+      title: "Units",
+      dataIndex: "units",
+      key: "units",
+      width: "25%",
+    },
+  ];
+
+  const items = [
+    {
+      key: "1",
+      label: `Products`,
+      children: (
+        <Content>
+          {!isFetchedProducts || refetcher === "products" ? (
+            <Skeleton
+              className="p-3"
+              active
+              paragraph={{
+                rows: 6,
+              }}
+            ></Skeleton>
+          ) : (
+            productDataSource?.length > 0 && (
+              <Table
+                responsive
+                dataSource={productDataSource}
+                columns={productColumns}
+                pagination={false}
+              />
+            )
+          )}
+        </Content>
+      ),
+    },
+    {
+      key: "2",
+      label: `Stores`,
+      children: (
+        <Content>
+          {!isFetchedStores || refetcher === "stores" ? (
+            <Skeleton
+              className="p-3"
+              active
+              paragraph={{
+                rows: 6,
+              }}
+            ></Skeleton>
+          ) : (
+            storeDataSource?.length > 0 && (
+              <Table
+                dataSource={storeDataSource}
+                columns={storeColumns}
+                pagination={false}
+              />
+            )
+          )}
+        </Content>
+      ),
+    },
+    {
+      key: "3",
+      label: `Vendors`,
+      children: (
+        <Content>
+          {!isFetchedVendors || refetcher === "vendors" ? (
+            <Skeleton
+              className="p-3"
+              active
+              paragraph={{
+                rows: 6,
+              }}
+            ></Skeleton>
+          ) : (
+            vendorDataSource?.length > 0 && (
+              <Table
+                dataSource={vendorDataSource}
+                columns={vendorColumns}
+                pagination={false}
+              />
+            )
+          )}
+        </Content>
+      ),
+    },
+    {
+      key: "4",
+      label: `Product Type`,
+      children: (
+        <Content>
+          {!isFetchedProductTypes || refetcher === "types" ? (
+            <Skeleton
+              className="p-3"
+              active
+              paragraph={{
+                rows: 6,
+              }}
+            ></Skeleton>
+          ) : (
+            productTypeDataSource?.length > 0 && (
+              <Table
+                dataSource={productTypeDataSource}
+                columns={productTypeColumns}
+                pagination={false}
+              />
+            )
+          )}
+        </Content>
+      ),
+    },
+  ];
+
+  useEffect(() => {
+    console.log(
+      "isFetched",
+      isFetchedProducts,
+      isFetchedStores,
+      isFetchedVendors,
+      isFetchedProductTypes
+    );
+    console.log(
+      "refetching",
+      isRefetchingProducts,
+      isRefetchingStores,
+      isRefetchingVendors,
+      isRefetchingProductTypes
+    );
+  });
+
+  const renderUpdatedTime = (state, time, refetchFunction) => {
+    if (state && time) {
+      return (
+        <div className="flex items-center ml-2 mt-1">
+          <Text className="text-zinc-400"> Last Update</Text>
+          <Text className="ml-1"> Today, {time}</Text>
+          <div className="border border-gray-400 inline-flex p-1 ml-2">
+            <ReloadOutlined onClick={refetchFunction} />
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  useEffect(() => {
+    console.log("upd", updatedTimes);
+  });
 
   return (
     <Content className="mb-2">
@@ -318,6 +1218,64 @@ const Dashboard = () => {
                     </Title>
                   </Content>
                 </Content>
+              </Content>
+            </Content>
+
+            <Content className="flex justify-between !mt-6">
+              <Content className=" bg-[#ffff] p-3  shadow-sm rounded-md justify-center">
+                <div className="flex items-center">
+                  <Title level={4} className="!m-0 !text-black">
+                    Ranking{" "}
+                    <span>
+                      <Text type="secondary"> (Previous month)</Text>
+                    </span>
+                  </Title>
+                  {updatedTimeState === "products"
+                    ? renderUpdatedTime(
+                        "products",
+                        updatedTimes.products,
+                        refetchProducts
+                      )
+                    : updatedTimeState === "stores"
+                    ? renderUpdatedTime(
+                        "stores",
+                        updatedTimes.stores,
+                        refetchStores
+                      )
+                    : updatedTimeState === "vendors"
+                    ? renderUpdatedTime(
+                        "vendors",
+                        updatedTimes.vendors,
+                        refetchVendors
+                      )
+                    : updatedTimeState === "types"
+                    ? renderUpdatedTime(
+                        "types",
+                        updatedTimes.types,
+                        refetchTypes
+                      )
+                    : null}
+                </div>
+
+                <Tabs
+                  defaultActiveKey="1"
+                  items={items}
+                  onChange={(key) => {
+                    if (key == 1) {
+                      setUpdatedTimeState("products");
+                      setFetchTopProductsData(true);
+                    } else if (key == 2) {
+                      setFetchTopStoresData(true);
+                      setUpdatedTimeState("stores");
+                    } else if (key == 3) {
+                      setFetchTopVendorsData(true);
+                      setUpdatedTimeState("vendors");
+                    } else if (key == 4) {
+                      setFetchProductTypesData(true);
+                      setUpdatedTimeState("types");
+                    }
+                  }}
+                />
               </Content>
             </Content>
 
