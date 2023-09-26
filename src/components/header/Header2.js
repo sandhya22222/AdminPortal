@@ -120,16 +120,16 @@ const Header2 = () => {
   return (
     <Content>
       <Header className="fixed z-20 top-0 p-0 !h-12 w-full bg-white drop-shadow-md">
-        <Content className="px-3 !py-2 !h-12 flex !justify-between ">
+        <Content className="px-3 !py-2 !h-12 flex !justify-between align-center ">
           {/* Left content which displays brand logo and other stuffs */}
           <Content className="!inline-block text-left self-center">
             <a href="/dashboard">
-              <Image
-                // width={180}
+              <img
+                //width={180}
                 height={32}
                 preview={false}
                 src={marketPlaceLogo}
-                className="antImage"
+                className=""
               />
             </a>
           </Content>
