@@ -181,8 +181,9 @@ function LanguageDocUpload({ langCode }) {
           </Dragger>
         </Spin>
         {/* {uploadSuccess ? ( */}
-        <Content
-          className="mt-2 inline-flex cursor-pointer gap-1"
+        <Button
+          type="text"
+          className="app-btn-text cursor-pointer gap-1 mt-2"
           onClick={() => setChooseDownloadModalVisible(true)}
         >
           <img
@@ -190,10 +191,8 @@ function LanguageDocUpload({ langCode }) {
             alt="download icon"
             className="!text-xs !w-[10px] !items-center"
           />
-          <div className="text-[#0246bb] !ml-[8px]">
-            {t("messages:download_current_document")}
-          </div>
-        </Content>
+          {t("messages:download_current_document")}
+        </Button>
         {/* ) : (
                     ""
                 )} */}

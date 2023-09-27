@@ -123,7 +123,7 @@ const Header2 = () => {
   return (
     <Content>
       <Header className="fixed z-20 top-0 p-0 !h-12 w-full bg-white drop-shadow-md">
-        <Content className="px-3 !py-2 !h-12 flex !justify-between align-center ">
+        <Content className="px-3 !py-2 !h-12 flex !justify-between  items-center">
           {/* Left content which displays brand logo and other stuffs */}
           <Content className="!inline-block text-left self-center">
             <a href="/dashboard">
@@ -139,9 +139,9 @@ const Header2 = () => {
           {/* Center content to display any item if required */}
           <Content className="!inline-block text-center self-center"></Content>
           {/* Right content to display user menus, login icon, language icon and other stuffs */}
-          <Content className="!inline-block text-right self-center">
+          <Content className="flex flex-row justify-end items-center gap-2">
             {/* Display user dropdown if user is logged in otherwise display login icon */}
-            {auth.isAuthenticated ? (
+            {auth.isAuthenticated && (
               <Dropdown
                 menu={{
                   items: userItems,
@@ -157,22 +157,13 @@ const Header2 = () => {
                     src={AdminIcon}
                     className="!h-8 absolute bottom-[-2px] left-[-30px]"
                   /> */}
-                  <Content className="ml-2 mr-1 !flex !items-center">
-                    <Text className="text-lg text-slate-600 pr-1">Admin</Text>
-                    <DownOutlined className="text-xs text-slate-600" />
-                  </Content>
+                  <Text className="text-lg text-slate-600 pr-1">Admin</Text>
+                  <DownOutlined className="text-xs text-slate-600" />
                 </Paragraph>
               </Dropdown>
-            ) : (
-              <></>
-              // <Tooltip title="Login">
-              //   <Paragraph className="inline-block mb-0 cursor-pointer">
-              //     <LoginOutlined className="text-base text-slate-600" />
-              //   </Paragraph>
-              // </Tooltip>
             )}
             {/* Display language dropdown only if store has more than 1 language.  */}
-            {languageItems.length > 0 ? (
+            {languageItems && languageItems.length > 0 && (
               <Dropdown
                 menu={{
                   items: languageItems,
@@ -181,17 +172,15 @@ const Header2 = () => {
                   onClick: handleLanguageClick,
                 }}
                 arrow
-                className="header-text-color cursor-pointer ml-3"
+                className="header-text-color cursor-pointer"
               >
-                <Paragraph className="inline-block mb-0">
+                <Paragraph className="!mb-0">
                   <TranslationOutlined
-                    className=" header-text-color text-base headerIcon !h-[24px]"
+                    className="header-text-color"
                     style={{ fontSize: "24px" }}
                   />
                 </Paragraph>
               </Dropdown>
-            ) : (
-              <></>
             )}
           </Content>
         </Content>
