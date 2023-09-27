@@ -159,9 +159,9 @@ const Language = () => {
       width: "20%",
       render: (text, record) => {
         return (
-          <Content className="flex whitespace-nowrap align-middle">
-            <Content
-              className="whitespace-nowrap flex align-middle gap-1 cursor-pointer"
+          <Button
+            type="text"
+              className="app-btn-text gap-1"
               onClick={() => {
                 findAllSupportDocumentTemplateDownload(2, record.language_code);
               }}
@@ -170,11 +170,8 @@ const Language = () => {
                 src={DownloadIcon}
                 className="!text-xs !w-[10px]  !items-center"
               />
-              <div className="text-[#0246bb] ">
-                {t("labels:download_document")}
-              </div>
-            </Content>
-          </Content>
+            {t("labels:download_document")}
+          </Button>
         );
       },
     },
@@ -190,23 +187,22 @@ const Language = () => {
             <Tooltip title="Edit Language">
               <Button
                 type="text"
-                className="app-btn-text"
-                onClick={() => findAllSupportDocumentTemplateDownload(1, "en")}
+                className="app-btn-icon"
+                onClick={() => {
+                  navigate(
+                    `/dashboard/language/language-settings?k=${record.id}&n=${
+                      record.language
+                    }&c=${record.language_code}&s=${record.status}&d=${
+                      record.is_default === false ? 0 : 1
+                    }`
+                  );
+                }}
               >
                 <Content className=" flex justify-center align-items-center">
                   <img
                     src={EditIcon}
                     alt="Edit Icon"
                     className=" !w-[12px] !text-center !text-sm cursor-pointer"
-                    onClick={() => {
-                      navigate(
-                        `/dashboard/language/language-settings?k=${
-                          record.id
-                        }&n=${record.language}&c=${record.language_code}&s=${
-                          record.status
-                        }&d=${record.is_default === false ? 0 : 1}`
-                      );
-                    }}
                   />
                 </Content>
               </Button>
