@@ -349,7 +349,7 @@ const Stores = () => {
               </Link>
             </Button>
 
-            {record.status === "InActive" ? (
+            {/* {record.status === "InActive" ? (
               <Button
                 className="app-btn-text flex align-items-center ml-2 justify-center"
                 type="text"
@@ -364,7 +364,7 @@ const Stores = () => {
                   />
                 </Tooltip>
               </Button>
-            ) : null}
+            ) : null} */}
           </Content>
         );
       },
@@ -1319,7 +1319,7 @@ const Stores = () => {
                             validateStorePostField();
                           }}
                         >
-                          {t("labels:Save")}
+                          {t("labels:save")}
                         </Button>
                       </Spin>
                     </>

@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { Layout, Typography, Skeleton, Image, Button } from "antd";
 import { useNavigate } from "react-router-dom";
-
 import { Profit, Positive, Payment } from "../../constants/media";
 import { toast } from "react-toastify";
 

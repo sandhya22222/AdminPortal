@@ -29,27 +29,6 @@ const hasUserLoggedIn = () => {
   return false;
 };
 
-const getSelectedLanguageDirection = () => {
-  try {
-    const allStoreLngs = getReduxPersistRoot();
-    let defaultStoreLng = allStoreLngs && allStoreLngs.reducerDefaultLanguage;
-    defaultStoreLng =
-      defaultStoreLng && JSON.parse(defaultStoreLng).defaultLanguage;
-    let userSelectedLng = allStoreLngs && allStoreLngs.reducerSelectedLanguage;
-    userSelectedLng =
-      userSelectedLng && JSON.parse(userSelectedLng).selectedLanguage;
-    if (userSelectedLng) {
-      return userSelectedLng.writing_script_direction;
-    } else if (defaultStoreLng) {
-      return defaultStoreLng.writing_script_direction;
-    } else {
-      return "LTR";
-    }
-  } catch (error) {
-    return "LTR";
-  }
-};
-
 const logoutUser = () => {
   sessionStorage.clear();
   window.location = "/";
@@ -128,6 +107,27 @@ const getUserSelectedLngCode = () => {
   }
 };
 
+const getSelectedLanguageDirection = () => {
+  try {
+    const allStoreLngs = getReduxPersistRoot();
+    let defaultStoreLng = allStoreLngs && allStoreLngs.reducerDefaultLanguage;
+    defaultStoreLng =
+      defaultStoreLng && JSON.parse(defaultStoreLng).defaultLanguage;
+    let userSelectedLng = allStoreLngs && allStoreLngs.reducerSelectedLanguage;
+    userSelectedLng =
+      userSelectedLng && JSON.parse(userSelectedLng).selectedLanguage;
+    if (userSelectedLng) {
+      return userSelectedLng.writing_script_direction;
+    } else if (defaultStoreLng) {
+      return defaultStoreLng.writing_script_direction;
+    } else {
+      return "LTR";
+    }
+  } catch (error) {
+    return "LTR";
+  }
+};
+
 const getRealmName = () => {
   if (hasKeyCloakData) {
     const keyCloakData = JSON.parse(
@@ -194,8 +194,8 @@ const util = {
   getToastObject,
   getStoreSupportedLngs,
   getReduxPersistRoot,
-  getUserSelectedLngCode,
   getSelectedLanguageDirection,
+  getUserSelectedLngCode,
 };
 
 export default util;

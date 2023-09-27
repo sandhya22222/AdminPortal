@@ -29,6 +29,9 @@ defaultLngCode =
 defaultLngCode =
   defaultLngCode && defaultLngCode[0] && defaultLngCode[0].dm_language_code;
 
+document.body.style.direction = util
+  .getSelectedLanguageDirection()
+  ?.toLowerCase();
 //* Set default language for the application in the cookie if user preference is not available.
 //! Setting Current language Code for Application
 let currentLanguageCode = Cookies.get("mpaplng");
@@ -105,7 +108,7 @@ i18next
     backend: {
       loadPath: "/assets/locales/{{lng}}/{{ns}}/translation.json",
     },
-    ns: ["common", "placeholders", "messages", "labels", "languages"],
+    ns: ["placeholders", "messages", "labels"],
   });
 
 export default i18next;
