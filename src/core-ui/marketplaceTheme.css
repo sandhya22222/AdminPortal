@@ -4,7 +4,11 @@
   --mp-input-field-label-color: #8c8c8c;
   --mp-input-field-placeholder-color: #bfbfbf;
   --mp-input-field-value-color: #262626;
+  --mp-input-field-hover-color: #7d3192;
+  --mp-input-field-focused-color: #7d3192;
+  --mp-input-field-outer-glow-color: #fae9ff;
   --mp-mandatory-symbol-color: #ff4d4f;
+  
 
   --mp-primary-background-color: #4a2d73;
   --mp-primary-background-color-d: #f5f5f5;
