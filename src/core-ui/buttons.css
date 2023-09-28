@@ -174,13 +174,28 @@
 }
 
 .app-btn-danger {
-  color: var(--mp-danger-primary-color) !important;
+  background-color: var(--mp-danger-primary-background-color) !important;
+  border: 1px solid var(--mp-danger-primary-border-color) !important;
+  border-color: var(--mp-danger-primary-border-color) !important;
   border-radius: 6px !important;
+  color: var(--mp-danger-primary-text-color) !important;
+  height: unset !important;
 }
-
 .app-btn-danger:hover {
-  color: var(--mp-danger-primary-color-h) !important;
+  background-color: var(--mp-danger-primary-color-h) !important;
+  border: 1px solid var(--mp-danger-primary-border-color-h) !important;
+  border-color: var(--mp-danger-primary-border-color-h) !important;
   border-radius: 6px !important;
+  color: var(--mp-danger-primary-text-color-h) !important;
+  height: unset !important;
+}
+.app-btn-danger:disabled {
+  background-color: var(--mp-danger-primary-background-color-d) !important;
+  border: 1px solid var(--mp-danger-primary-border-color-d) !important;
+  border-color: var(--mp-danger-primary-border-color-d);
+  border-radius: 6px !important;
+  color: var(--mp-danger-primary-text-color-d) !important;
+  height: unset !important;
 }
 
 .app-btn-approve {
