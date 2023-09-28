@@ -327,7 +327,7 @@ const Stores = () => {
               />
             </Tooltip> */}
             <Button
-              className="app-btn-text flex align-items-center justify-center"
+              className="app-btn-icon flex align-items-center justify-center"
               type="text"
             >
               <Link

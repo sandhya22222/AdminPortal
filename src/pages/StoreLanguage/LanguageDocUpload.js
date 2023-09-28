@@ -357,6 +357,49 @@ function LanguageDocUpload({ langCode }) {
           </Content>
         </Content>
       </Content>
+      <Content className="my-3 w-[40%]">
+        <Spin spinning={isSpinning} tip="Please wait">
+          <Dragger
+            beforeUpload={() => {
+              return false;
+            }}
+            afterUpload={() => {
+              return false;
+            }}
+            showUploadList={false}
+            disabled={langCode != undefined ? false : true}
+            accept=".csv"
+            maxCount={1}
+            onChange={(e) => handleFileChange(e.file)}
+            className="app-btn-secondary"
+          >
+            <p className="ant-upload-drag-icon">
+              <InboxOutlined />
+            </p>
+            <p className="ant-upload-text">{t("messages:drag_message")}</p>
+            {/* <p className="ant-upload-text mx-2">
+              Upload your file here or drag and drop the file here
+            </p> */}
+            <p className="ant-upload-hint p-2">{t("messages:drag_info")}</p>
+          </Dragger>
+        </Spin>
+        {/* {uploadSuccess ? ( */}
+        <Button
+          type="text"
+          className="app-btn-text cursor-pointer gap-1 mt-2"
+          onClick={() => setChooseDownloadModalVisible(true)}
+        >
+          <img
+            src={DownloadIcon}
+            alt="download icon"
+            className="!text-xs !w-[10px] !items-center"
+          />
+          {t("messages:download_current_document")}
+        </Button>
+        {/* ) : (
+                    ""
+                )} */}
+      </Content>
 
       <Content className=" mt-4 !flex gap-4">
         <>
