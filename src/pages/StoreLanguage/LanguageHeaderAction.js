@@ -190,62 +190,60 @@ function LanguageHeaderAction({
   };
 
   return (
-    <Content className="flex">
-      <Content className="!flex items-center !justify-start gap-2">
-        <Content className="">
-          <Space direction="horizontal">
-            <Typography className="pr-2 input-label-color">
-              {" "}
-              {t("labels:status_label")}{" "}
-            </Typography>
-            <Switch
-              className={
-                switchStatus === true ? "!bg-green-500" : "!bg-gray-400"
-              }
-              checked={switchStatus}
-              onChange={onChange}
-              onClick={() => {
-                openModal(switchStatus);
-              }}
-              disabled={isMakeAsDefault}
-              checkedChildren={"Active"}
-              unCheckedChildren={"Inactive"}
-            />
-          </Space>
-        </Content>
-        <Content className="">
-          <Space direction="horizontal">
-            <Checkbox
-              className=""
-              checked={isMakeAsDefault}
-              onChange={(e) => {
-                openLanguageDefaultWaringModal(e.target.checked);
-              }}
-              disabled={switchStatus & !isMakeAsDefault ? false : true}
-            ></Checkbox>
-            <Typography> {t("labels:default_language_label")}</Typography>
-          </Space>
-        </Content>
-        <Content>
-          {!isMakeAsDefault ? (
-            <Button
-              className="bg-[#FF4D4F] text-white !flex ml-2 !justify-items-center !items-center"
-              onClick={() => {
-                openDeleteModal(languageId);
-              }}
-            >
-              <img
-                src={crossIcon}
-                alt="plusIconWithAddLanguage"
-                className="!flex !mr-2 !items-center"
-              />
-              <div className="mr-[10px]">
-                {t("labels:remove_language_label")}
-              </div>
-            </Button>
-          ) : null}
-        </Content>
+    <Content className="!flex gap-3">
+      {/* This content is related to language status */}
+      <Content className="">
+        <Space direction="horizontal">
+          <Typography className="pr-2 input-label-color">
+            {" "}
+            {t("labels:status_label")}{" "}
+          </Typography>
+          <Switch
+            className={switchStatus === true ? "!bg-green-500" : "!bg-gray-400"}
+            checked={switchStatus}
+            onChange={onChange}
+            onClick={() => {
+              openModal(switchStatus);
+            }}
+            disabled={isMakeAsDefault}
+            checkedChildren={"Active"}
+            unCheckedChildren={"Inactive"}
+          />
+        </Space>
       </Content>
+      {/* This content is related to language checkbox default language */}
+      <Content className="">
+        <Space direction="horizontal">
+          <Checkbox
+            className=""
+            checked={isMakeAsDefault}
+            onChange={(e) => {
+              openLanguageDefaultWaringModal(e.target.checked);
+            }}
+            disabled={switchStatus & !isMakeAsDefault ? false : true}
+          ></Checkbox>
+          <Typography> {t("labels:default_language_label")}</Typography>
+        </Space>
+      </Content>
+      {/* This content is related to language remove */}
+      <Content>
+        {!isMakeAsDefault ? (
+          <Button
+            className="bg-[#FF4D4F] text-white !flex ml-2 !justify-items-center !items-center"
+            onClick={() => {
+              openDeleteModal(languageId);
+            }}
+          >
+            <img
+              src={crossIcon}
+              alt="plusIconWithAddLanguage"
+              className="!flex !mr-2 !items-center"
+            />
+            <div className="mr-[10px]">{t("labels:remove_language_label")}</div>
+          </Button>
+        ) : null}
+      </Content>
+
       <StoreModal
         isVisible={isDeleteLanguageModalOpen}
         okButtonText={t("labels:yes")}
