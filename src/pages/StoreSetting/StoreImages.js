@@ -481,9 +481,9 @@ const StoreImages = ({
                 disabled={
                   bannerImagesLength < BannerImagesUploadLength ? false : true
                 }
-                icon={<UploadOutlined className="-translate-y-1" />}
-                className="font-semibold"
+                className="font-semibold app-btn-secondary flex justify-center items-center"
               >
+                <UploadOutlined className="" />
                 {t("labels:click_to_upload")}(Max: {BannerImagesUploadLength})
               </Button>
             </Upload>

@@ -129,10 +129,9 @@ const Header2 = () => {
             <a href="/dashboard">
               <img
                 //width={180}
-                height={32}
                 preview={false}
                 src={marketPlaceLogo}
-                className=""
+                className="!h-[32px]"
               />
             </a>
           </Content>
