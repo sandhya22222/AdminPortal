@@ -1102,97 +1102,110 @@ const Stores = () => {
           </div>
         }
       </StoreModal>
-      <Content className="mb-3">
+      <Content className="">
         <HeaderForTitle
           title={
-            <>
-              <Content className="flex ">
-                <Content className="flex self-center !gap-x-[800px]">
-                  <Content className="">
-                    <Title level={3} className="!font-normal">
-                      {t("labels:stores")}
-                    </Title>
-                  </Content>
-                  <Content className="">
-                    <Button className="app-btn-primary" onClick={showAddDrawer}>
-                      {t("labels:add_store")}
-                    </Button>
-                  </Content>
-                </Content>
-                <Drawer
-                  title={
-                    drawerAction && drawerAction === "post"
-                      ? `${t("labels:add_store")}`
-                      : `${t("labels:edit_store")}`
+            <Title level={3} className="!font-normal">
+              {t("labels:stores")}
+            </Title>
+          }
+          titleContent={
+            <Button
+              className="app-btn-primary !h-8 !hover:h-[32px]"
+              onClick={showAddDrawer}
+            >
+              {t("labels:add_store")}
+            </Button>
+          }
+          headerContent={
+            !isLoading && (
+              <Content className="!h-10 !mt-7">
+                <DmTabAntDesign
+                  tabData={storeTabData}
+                  handleTabChangeFunction={handleTabChangeStore}
+                  activeKey={
+                    // searchParams.get("tab") ? searchParams.get("tab") : "0"
+                    tab_id === null ? "0" : String(tab_id)
+                    // String(tab_id)
                   }
-                  placement="right"
-                  onClose={onClose}
-                  open={open}
-                  width={"40%"}
+                  // totalItemsCount={countForStore}
+                  tabType={"line"}
+                  tabBarPosition={"top"}
+                />
+              </Content>
+            )
+          }
+        />
+        <Drawer
+          title={
+            drawerAction && drawerAction === "post"
+              ? `${t("labels:add_store")}`
+              : `${t("labels:edit_store")}`
+          }
+          placement="right"
+          onClose={onClose}
+          open={open}
+          width={"40%"}
+        >
+          {drawerAction && drawerAction === "post" ? (
+            <>
+              <Row>
+                <Col span={1} className="flex items-start mt-[3px]">
+                  <MdInfo className="!text-[var(--mp-brand-color-h)] text-[16px]" />
+                </Col>
+                <Col span={23} className="align-center mb-3">
+                  <Text className=" mr-1 font-bold"> {t("labels:note")}: </Text>
+                  <Text>{t("messages:add_store_description")}</Text>
+                </Col>
+              </Row>
+              <Spin
+                tip={t("labels:please_wait")}
+                size="large"
+                spinning={isUpLoading}
+              >
+                <label
+                  className="text-[13px] mb-2 ml-1 input-label-color"
+                  id="labStNam"
                 >
-                  {drawerAction && drawerAction === "post" ? (
-                    <>
-                      <Row>
-                        <Col span={1} className="flex items-start mt-[3px]">
-                          <MdInfo className="!text-[var(--mp-brand-color-h)] text-[16px]" />
-                        </Col>
-                        <Col span={23} className="align-center mb-3">
-                          <Text className=" mr-1 font-bold">
-                            {" "}
-                            {t("labels:note")}:{" "}
-                          </Text>
-                          <Text>{t("messages:add_store_description")}</Text>
-                        </Col>
-                      </Row>
-                      <Spin
-                        tip={t("labels:please_wait")}
-                        size="large"
-                        spinning={isUpLoading}
-                      >
-                       
-                        <label className="text-[13px] mb-2 ml-1 input-label-color" id="labStNam">
-                          {t("labels:store_name")}
-                          {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
-                        </label>
-                        <span className="mandatory-symbol-color text-sm ml-1">*</span>
-                        <Input
-                          placeholder={t("placeholders:enter_store_name")}
-                          value={name}
-                          minLength={storeNameMinLength}
-                          maxLength={storeNameMaxLength}
-                          className={`${
-                            inValidName
-                              ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-[0.5rem]"
-                              : "mb-[0.5rem]"
-                          }`}
-                          onChange={(e) => {
-                            // const alphaWithSpacesRegex = /^[A-Za-z\s]+$/;
-                            const alphaWithoutSpaces = /^[a-zA-Z0-9]+$/;
-                            if (
-                              e.target.value !== "" &&
-                              validator.matches(
-                                e.target.value,
-                                alphaWithoutSpaces
-                              )
-                            ) {
-                              // setShowStoreErrorMessage(true);
-                              setName(e.target.value);
-                              setOnChangeValues(true);
-                            } else if (e.target.value === "") {
-                              setName(e.target.value);
-                              // setShowStoreErrorMessage(false);
-                              setOnChangeValues(true);
-                            }
-                            setInValidName(false);
-                          }}
-                          onBlur={() => {
-                            const trimmed = name.trim();
-                            const trimmedUpdate = trimmed.replace(/\s+/g, " ");
-                            setName(trimmedUpdate);
-                          }}
-                        />
+                  {t("labels:store_name")}
+                  {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
+                </label>
+                <span className="mandatory-symbol-color text-sm ml-1">*</span>
+                <Input
+                  placeholder={t("placeholders:enter_store_name")}
+                  value={name}
+                  minLength={storeNameMinLength}
+                  maxLength={storeNameMaxLength}
+                  className={`${
+                    inValidName
+                      ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-[0.5rem]"
+                      : "mb-[0.5rem]"
+                  }`}
+                  onChange={(e) => {
+                    // const alphaWithSpacesRegex = /^[A-Za-z\s]+$/;
+                    const alphaWithoutSpaces = /^[a-zA-Z0-9]+$/;
+                    if (
+                      e.target.value !== "" &&
+                      validator.matches(e.target.value, alphaWithoutSpaces)
+                    ) {
+                      // setShowStoreErrorMessage(true);
+                      setName(e.target.value);
+                      setOnChangeValues(true);
+                    } else if (e.target.value === "") {
+                      setName(e.target.value);
+                      // setShowStoreErrorMessage(false);
+                      setOnChangeValues(true);
+                    }
+                    setInValidName(false);
+                  }}
+                  onBlur={() => {
+                    const trimmed = name.trim();
+                    const trimmedUpdate = trimmed.replace(/\s+/g, " ");
+                    setName(trimmedUpdate);
+                  }}
+                />
 
-                        {/* {showStoreErrorMessage === true ? (
+                {/* {showStoreErrorMessage === true ? (
                             <p className="text-red-600 text-sm">
                               {t(
                                 "stores:Please-enter-alphabetic-characters-only"
@@ -1200,317 +1213,301 @@ const Stores = () => {
                             </p>
                           ) : null} */}
 
-                        <Divider orientation="left" orientationMargin="0">
-                          {t("labels:store_administrator_details")}
-                        </Divider>
-                     
-                        <label className="text-[13px] mb-2 ml-1 input-label-color" id="labStEmail">
-                          {t("labels:email")}
-                        </label>
-                        <span className="mandatory-symbol-color text-sm ml-1">*</span>
-                        <Input
-                          placeholder={t("placeholders:enter_email")}
-                          value={storeEmail}
-                          minLength={emailMinLength}
-                          maxLength={emailMaxLength}
-                          className={`${
-                            inValidEmail
-                              ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-6"
-                              : "mb-6"
-                          }`}
-                          onChange={(e) => {
-                            setStoreEmail(e.target.value);
-                            setInValidEmail(false);
-                            setOnChangeValues(true);
-                          }}
-                          onBlur={() => {
-                            const trimmed = storeEmail.trim();
-                            const trimmedUpdate = trimmed.replace(/\s+/g, " ");
-                            setStoreEmail(trimmedUpdate);
-                          }}
-                        />
-                    
-                        <label className="text-[13px] mb-2 ml-1 input-label-color" id="labStUseName">
-                          {t("labels:username")}
-                        </label>
-                        <span className="mandatory-symbol-color text-sm ml-1">*</span>
-                        <Input
-                          placeholder={t("placeholders:enter_username")}
-                          value={storeUserName}
-                          minLength={userNameMinLength}
-                          maxLength={userNameMaxLength}
-                          // suffix={`${storeUserName.length}/15`}
-                          className={`${
-                            inValidUserName
-                              ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-6"
-                              : "mb-6"
-                          }`}
-                          prefix={
-                            <UserOutlined className="site-form-item-icon" />
-                          }
-                          onChange={(e) => {
-                            const regex = /^[A-Za-z0-9_\- ]+$/;
-                            if (
-                              e.target.value !== "" &&
-                              validator.matches(e.target.value, regex)
-                            ) {
-                              setInValidUserName(false);
-                              setStoreUserName(e.target.value);
-                              setOnChangeValues(true);
-                            } else if (e.target.value === "") {
-                              setStoreUserName(e.target.value);
-                              setOnChangeValues(true);
-                            }
-                            setOnChangeValues(true);
-                          }}
-                          onBlur={() => {
-                            const trimmed = storeUserName.trim();
-                            const trimmedUpdate = trimmed.replace(/\s+/g, " ");
-                            setStoreUserName(trimmedUpdate);
-                          }}
-                        />
-                       
-                        <label className="text-[13px] mb-2 ml-1 input-label-color" id="labStPwd">
-                          {t("labels:password")}
-                        </label>
-                        <span className="mandatory-symbol-color text-sm ml-1">*</span>
-                        <Input.Password
-                          placeholder={t("placeholders:enter_password")}
-                          value={storePassword}
-                          minLength={passwordMinLength}
-                          maxLength={passwordMaxLength}
-                          className={`${
-                            inValidPassword
-                              ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-10"
-                              : "mb-10"
-                          }`}
-                          onChange={(e) => {
-                            const value = e.target.value;
-                            // if (value && value.length < 15) {
-                            setStorePassword(e.target.value);
-                            setInValidPassword(false);
-                            setOnChangeValues(true);
-                            // }
-                            // else if (value && value.length >= 15) {
-                            //   toast(
-                            //     "Password should allow only 15 characters",
-                            //     {
-                            //       position: toast.POSITION.TOP_RIGHT,
-                            //       type: "warning",
-                            //     }
-                            //   );
-                            // } else
-                            // if (e.target.value === "") {
-                            //   setStorePassword(e.target.value);
-                            // }
-                          }}
-                          onKeyDown={handleKeyDown}
-                          onBlur={() => {
-                            const trimmed = storePassword.trim();
-                            setStorePassword(trimmed);
-                          }}
-                        />
-                        <Button
-                          className={
-                            onChangeValues ? "app-btn-primary" : "!opacity-75"
-                          }
-                          disabled={!onChangeValues}
-                          onClick={() => {
-                            validateStorePostField();
-                          }}
-                        >
-                          {t("labels:save")}
-                        </Button>
-                      </Spin>
-                    </>
-                  ) : (
-                    <>
-                      <Row>
-                        <Col span={1} className="flex items-start mt-[3px]">
-                          <MdInfo className="!text-[var(--mp-brand-color-h)] text-[16px]" />
-                        </Col>
-                        <Col span={23} className="align-center mb-3">
-                          <Text className=" mr-1 font-bold">
-                            {" "}
-                            {t("labels:note")}:
-                          </Text>
-                          <Text>{t("messages:edit_store_description")}</Text>
-                        </Col>
-                      </Row>
-                      <Spin
-                        tip={t("labels:please_wait")}
-                        size="large"
-                        spinning={isUpLoading}
-                      >
-                       
-                        <label className="text-[13px] mb-2 ml-1 input-label-color" id="labStNam">
-                          Store Name
-                          {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
-                        </label>
-                        <span className="mandatory-symbol-color text-sm ml-1">*</span>
-                        <Input
-                          value={editName}
-                          placeholder={t("placeholders:enter_store_name")}
-                          className={`${
-                            inValidEditName
-                              ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 mb-6"
-                              : "mb-6"
-                          }`}
-                          minLength={storeNameMinLength}
-                          maxLength={storeNameMaxLength}
-                          onChange={(e) => {
-                            // const alphaWithSpacesRegex = /^[A-Za-z\s]+$/;
-                            const alphaWithoutSpaces = /^[a-zA-Z0-9]+$/;
-                            if (
-                              e.target.value !== "" &&
-                              validator.matches(
-                                e.target.value,
-                                alphaWithoutSpaces
-                              )
-                            ) {
-                              // setShowStoreErrorMessage(true);
-                              setEditName(e.target.value);
-                              setOnChangeEditValues(true);
-                              setInValidEditName(false);
-                            } else if (e.target.value === "") {
-                              setEditName(e.target.value);
-                              // setShowStoreErrorMessage(false);
-                              setOnChangeEditValues(true);
-                            }
-                          }}
-                          onBlur={() => {
-                            const trimmed = editName.trim();
-                            const trimmedUpdate = trimmed.replace(/\s+/g, " ");
-                            setEditName(trimmedUpdate);
-                          }}
-                        />
-                        <Divider orientation="left" orientationMargin="0">
-                          {t("labels:store_administrator_details")}
-                        </Divider>
-                        <label className="text-[13px] mb-2 ml-1 input-label-color" id="labStEmail">
-                          {" "}
-                          {t("labels:email")}
-                        </label>
-                        <span className="mandatory-symbol-color text-sm ml-1">*</span>
-                        <Input
-                          placeholder={t("placeholders:enter_email")}
-                          value={storeEditEmail}
-                          maxLength={30}
-                          disabled
-                          className="mb-6"
-                          onChange={(e) => {
-                            // handleEmailChange(e);
-                            const { value } = e.target;
-                            const regex = /^[a-zA-Z0-9_.-@]*$/;
-                            if (regex.test(value)) {
-                              setStoreEditEmail(value);
-                              setOnChangeEditValues(true);
-                            } else {
-                              toast(
-                                `${t(
-                                  "stores:Please enter the valid email address"
-                                )}`,
-                                {
-                                  position: toast.POSITION.TOP_RIGHT,
-                                  type: "warning",
-                                }
-                              );
-                            }
-                          }}
-                        />
-                        <label className="text-[13px] mb-2 ml-1 input-label-color" id="labStUseName">
-                          Username 
-                        </label>
-                        <span className="mandatory-symbol-color text-sm ml-1">*</span>
-                        <Input
-                          placeholder={t("placeholders:enter_username")}
-                          value={storeEditUserName}
-                          maxLength={10}
-                          className="mb-6"
-                          prefix={
-                            <UserOutlined className="site-form-item-icon" />
-                          }
-                          suffix={`${storeEditUserName.length}/10`}
-                          disabled
-                          onChange={(e) => {
-                            const { value } = e.target;
-                            const regex = /^[a-zA-Z0-9_-]*$/; // only allow letters and numbers
-                            if (regex.test(value)) {
-                              setStoreEditUserName(value);
-                              setOnChangeEditValues(true);
-                            } else {
-                              toast(
-                                "Please enter only alphabets, numbers, underscore, and hyphen.",
-                                {
-                                  position: toast.POSITION.TOP_RIGHT,
-                                  type: "warning",
-                                }
-                              );
-                            }
-                          }}
-                          onBlur={() => {
-                            const trimmed = storeEditUserName.trim();
-                            const trimmedUpdate = trimmed.replace(/\s+/g, " ");
-                            setStoreEditUserName(trimmedUpdate);
-                          }}
-                        />
-                        <label className="text-[13px] mb-2 ml-1 .input-label-color" id="labStPwd">
-                          Password
-                          {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
-                        </label>
-                        <span className="mandatory-symbol-color text-sm ml-1">*</span>
-                        <Input.Password
-                          placeholder={t("placeholders:enter_password")}
-                          value={storeEditPassword}
-                          maxLength={6}
-                          disabled
-                          className="mb-10"
-                          onChange={(e) => {
-                            setStoreEditPassword(e.target.value);
-                            setOnChangeEditValues(true);
-                          }}
-                        />
-                        <Button
-                          className={
-                            onChangeEditValues
-                              ? "app-btn-primary"
-                              : "!opacity-75"
-                          }
-                          onClick={() => {
-                            validateStorePutField();
-                          }}
-                          disabled={!onChangeEditValues}
-                        >
-                          {t("labels:update")}
-                        </Button>
-                      </Spin>
-                    </>
-                  )}
-                </Drawer>
-              </Content>
-              {!isLoading && (
-                <Content className="!h-10">
-                  <DmTabAntDesign
-                    tabData={storeTabData}
-                    handleTabChangeFunction={handleTabChangeStore}
-                    activeKey={
-                      // searchParams.get("tab") ? searchParams.get("tab") : "0"
-                      tab_id === null ? "0" : String(tab_id)
-                      // String(tab_id)
+                <Divider orientation="left" orientationMargin="0">
+                  {t("labels:store_administrator_details")}
+                </Divider>
+
+                <label
+                  className="text-[13px] mb-2 ml-1 input-label-color"
+                  id="labStEmail"
+                >
+                  {t("labels:email")}
+                </label>
+                <span className="mandatory-symbol-color text-sm ml-1">*</span>
+                <Input
+                  placeholder={t("placeholders:enter_email")}
+                  value={storeEmail}
+                  minLength={emailMinLength}
+                  maxLength={emailMaxLength}
+                  className={`${
+                    inValidEmail
+                      ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-6"
+                      : "mb-6"
+                  }`}
+                  onChange={(e) => {
+                    setStoreEmail(e.target.value);
+                    setInValidEmail(false);
+                    setOnChangeValues(true);
+                  }}
+                  onBlur={() => {
+                    const trimmed = storeEmail.trim();
+                    const trimmedUpdate = trimmed.replace(/\s+/g, " ");
+                    setStoreEmail(trimmedUpdate);
+                  }}
+                />
+
+                <label
+                  className="text-[13px] mb-2 ml-1 input-label-color"
+                  id="labStUseName"
+                >
+                  {t("labels:username")}
+                </label>
+                <span className="mandatory-symbol-color text-sm ml-1">*</span>
+                <Input
+                  placeholder={t("placeholders:enter_username")}
+                  value={storeUserName}
+                  minLength={userNameMinLength}
+                  maxLength={userNameMaxLength}
+                  // suffix={`${storeUserName.length}/15`}
+                  className={`${
+                    inValidUserName
+                      ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-6"
+                      : "mb-6"
+                  }`}
+                  prefix={<UserOutlined className="site-form-item-icon" />}
+                  onChange={(e) => {
+                    const regex = /^[A-Za-z0-9_\- ]+$/;
+                    if (
+                      e.target.value !== "" &&
+                      validator.matches(e.target.value, regex)
+                    ) {
+                      setInValidUserName(false);
+                      setStoreUserName(e.target.value);
+                      setOnChangeValues(true);
+                    } else if (e.target.value === "") {
+                      setStoreUserName(e.target.value);
+                      setOnChangeValues(true);
                     }
-                    // totalItemsCount={countForStore}
-                    tabType={"line"}
-                    tabBarPosition={"top"}
-                  />
-                </Content>
-              )}
+                    setOnChangeValues(true);
+                  }}
+                  onBlur={() => {
+                    const trimmed = storeUserName.trim();
+                    const trimmedUpdate = trimmed.replace(/\s+/g, " ");
+                    setStoreUserName(trimmedUpdate);
+                  }}
+                />
+
+                <label
+                  className="text-[13px] mb-2 ml-1 input-label-color"
+                  id="labStPwd"
+                >
+                  {t("labels:password")}
+                </label>
+                <span className="mandatory-symbol-color text-sm ml-1">*</span>
+                <Input.Password
+                  placeholder={t("placeholders:enter_password")}
+                  value={storePassword}
+                  minLength={passwordMinLength}
+                  maxLength={passwordMaxLength}
+                  className={`${
+                    inValidPassword
+                      ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-10"
+                      : "mb-10"
+                  }`}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    // if (value && value.length < 15) {
+                    setStorePassword(e.target.value);
+                    setInValidPassword(false);
+                    setOnChangeValues(true);
+                    // }
+                    // else if (value && value.length >= 15) {
+                    //   toast(
+                    //     "Password should allow only 15 characters",
+                    //     {
+                    //       position: toast.POSITION.TOP_RIGHT,
+                    //       type: "warning",
+                    //     }
+                    //   );
+                    // } else
+                    // if (e.target.value === "") {
+                    //   setStorePassword(e.target.value);
+                    // }
+                  }}
+                  onKeyDown={handleKeyDown}
+                  onBlur={() => {
+                    const trimmed = storePassword.trim();
+                    setStorePassword(trimmed);
+                  }}
+                />
+                <Button
+                  className={onChangeValues ? "app-btn-primary" : "!opacity-75"}
+                  disabled={!onChangeValues}
+                  onClick={() => {
+                    validateStorePostField();
+                  }}
+                >
+                  {t("labels:save")}
+                </Button>
+              </Spin>
             </>
-          }
-        />
+          ) : (
+            <>
+              <Row>
+                <Col span={1} className="flex items-start mt-[3px]">
+                  <MdInfo className="!text-[var(--mp-brand-color-h)] text-[16px]" />
+                </Col>
+                <Col span={23} className="align-center mb-3">
+                  <Text className=" mr-1 font-bold"> {t("labels:note")}:</Text>
+                  <Text>{t("messages:edit_store_description")}</Text>
+                </Col>
+              </Row>
+              <Spin
+                tip={t("labels:please_wait")}
+                size="large"
+                spinning={isUpLoading}
+              >
+                <label
+                  className="text-[13px] mb-2 ml-1 input-label-color"
+                  id="labStNam"
+                >
+                  Store Name
+                  {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
+                </label>
+                <span className="mandatory-symbol-color text-sm ml-1">*</span>
+                <Input
+                  value={editName}
+                  placeholder={t("placeholders:enter_store_name")}
+                  className={`${
+                    inValidEditName
+                      ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 mb-6"
+                      : "mb-6"
+                  }`}
+                  minLength={storeNameMinLength}
+                  maxLength={storeNameMaxLength}
+                  onChange={(e) => {
+                    // const alphaWithSpacesRegex = /^[A-Za-z\s]+$/;
+                    const alphaWithoutSpaces = /^[a-zA-Z0-9]+$/;
+                    if (
+                      e.target.value !== "" &&
+                      validator.matches(e.target.value, alphaWithoutSpaces)
+                    ) {
+                      // setShowStoreErrorMessage(true);
+                      setEditName(e.target.value);
+                      setOnChangeEditValues(true);
+                      setInValidEditName(false);
+                    } else if (e.target.value === "") {
+                      setEditName(e.target.value);
+                      // setShowStoreErrorMessage(false);
+                      setOnChangeEditValues(true);
+                    }
+                  }}
+                  onBlur={() => {
+                    const trimmed = editName.trim();
+                    const trimmedUpdate = trimmed.replace(/\s+/g, " ");
+                    setEditName(trimmedUpdate);
+                  }}
+                />
+                <Divider orientation="left" orientationMargin="0">
+                  {t("labels:store_administrator_details")}
+                </Divider>
+                <label
+                  className="text-[13px] mb-2 ml-1 input-label-color"
+                  id="labStEmail"
+                >
+                  {" "}
+                  {t("labels:email")}
+                </label>
+                <span className="mandatory-symbol-color text-sm ml-1">*</span>
+                <Input
+                  placeholder={t("placeholders:enter_email")}
+                  value={storeEditEmail}
+                  maxLength={30}
+                  disabled
+                  className="mb-6"
+                  onChange={(e) => {
+                    // handleEmailChange(e);
+                    const { value } = e.target;
+                    const regex = /^[a-zA-Z0-9_.-@]*$/;
+                    if (regex.test(value)) {
+                      setStoreEditEmail(value);
+                      setOnChangeEditValues(true);
+                    } else {
+                      toast(
+                        `${t("stores:Please enter the valid email address")}`,
+                        {
+                          position: toast.POSITION.TOP_RIGHT,
+                          type: "warning",
+                        }
+                      );
+                    }
+                  }}
+                />
+                <label
+                  className="text-[13px] mb-2 ml-1 input-label-color"
+                  id="labStUseName"
+                >
+                  Username
+                </label>
+                <span className="mandatory-symbol-color text-sm ml-1">*</span>
+                <Input
+                  placeholder={t("placeholders:enter_username")}
+                  value={storeEditUserName}
+                  maxLength={10}
+                  className="mb-6"
+                  prefix={<UserOutlined className="site-form-item-icon" />}
+                  suffix={`${storeEditUserName.length}/10`}
+                  disabled
+                  onChange={(e) => {
+                    const { value } = e.target;
+                    const regex = /^[a-zA-Z0-9_-]*$/; // only allow letters and numbers
+                    if (regex.test(value)) {
+                      setStoreEditUserName(value);
+                      setOnChangeEditValues(true);
+                    } else {
+                      toast(
+                        "Please enter only alphabets, numbers, underscore, and hyphen.",
+                        {
+                          position: toast.POSITION.TOP_RIGHT,
+                          type: "warning",
+                        }
+                      );
+                    }
+                  }}
+                  onBlur={() => {
+                    const trimmed = storeEditUserName.trim();
+                    const trimmedUpdate = trimmed.replace(/\s+/g, " ");
+                    setStoreEditUserName(trimmedUpdate);
+                  }}
+                />
+                <label
+                  className="text-[13px] mb-2 ml-1 .input-label-color"
+                  id="labStPwd"
+                >
+                  Password
+                  {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
+                </label>
+                <span className="mandatory-symbol-color text-sm ml-1">*</span>
+                <Input.Password
+                  placeholder={t("placeholders:enter_password")}
+                  value={storeEditPassword}
+                  maxLength={6}
+                  disabled
+                  className="mb-10"
+                  onChange={(e) => {
+                    setStoreEditPassword(e.target.value);
+                    setOnChangeEditValues(true);
+                  }}
+                />
+                <Button
+                  className={
+                    onChangeEditValues ? "app-btn-primary" : "!opacity-75"
+                  }
+                  onClick={() => {
+                    validateStorePutField();
+                  }}
+                  disabled={!onChangeEditValues}
+                >
+                  {t("labels:update")}
+                </Button>
+              </Spin>
+            </>
+          )}
+        </Drawer>
       </Content>
-      <Content className="!p-3 !mt-[8.0rem]">
+      <Content className="!p-3">
         {isLoading ? (
-          <Content className="bg-white p-3 !rounded-md">
+          <Content className="bg-white p-3 !rounded-md mt-[2.0rem]">
             <Skeleton
               active
               paragraph={{
@@ -1524,21 +1521,7 @@ const Stores = () => {
             {t("messages:store_network_error")}
           </Content>
         ) : (
-          <Content className="!mt-[1.7rem]">
-            {/* <Content className="px-3">
-              <DmTabAntDesign
-                tabData={storeTabData}
-                handleTabChangeFunction={handleTabChangeStore}
-                activeKey={
-                  // searchParams.get("tab") ? searchParams.get("tab") : "0"
-                  tab_id === null ? "0" : String(tab_id)
-                  // String(tab_id)
-                }
-                // totalItemsCount={countForStore}
-                tabType={"line"}
-                tabBarPosition={"top"}
-              />
-            </Content> */}
+          <Content className="">
             <Content>
               {storeApiData && storeApiData.length > 0 ? (
                 <DynamicTable tableComponentData={tablePropsData} />

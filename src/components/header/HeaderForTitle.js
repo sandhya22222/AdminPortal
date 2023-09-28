@@ -56,11 +56,11 @@ function HeaderForTitle({
           ) : null}
 
           {/* <Title level={4} className="!m-0 !p-0 !font-semibold"> */}
-          <Row className="w-full">
-            {title}
-            <Content className="flex !justify-end w-[20%]">
+          <Row className="w-full !items-center">
+            <Content className="w-[30%] flex justify-start">{title}</Content>
+            <div className="flex justify-end">
               {titleContent}
-            </Content>
+            </div>
           </Row>
         </Content>
         {showArrowIcon === true ? (

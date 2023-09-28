@@ -8,6 +8,8 @@ import {
   Tag,
   Tooltip,
   Typography,
+  Dropdown,
+  Space,
 } from "antd";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -25,7 +27,7 @@ import {
   EditIcon,
   plusIcon,
   starIcon,
-  tableDropDownArrow,
+  DropdownIcon,
 } from "../../constants/media";
 import { usePageTitle } from "../../hooks/usePageTitle";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
@@ -38,6 +40,8 @@ const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API;
 const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE);
 const LanguageDownloadAPI =
   process.env.REACT_APP_DOWNLOAD_LANGUAGE_TRANSLATION_CSV;
+const downloadBackendKeysAPI =
+  process.env.REACT_APP_DOWNLOAD_ADMIN_BACKEND_MESSAGE_DETAILS;
 const Language = () => {
   const { t } = useTranslation();
   usePageTitle("Languages");
@@ -216,6 +220,17 @@ const Language = () => {
     },
   ];
 
+  const items = [
+    {
+      key: 1,
+      label: `${t("labels:get_frontend_support_template")}`,
+    },
+    {
+      key: 2,
+      label: `${t("labels:get_backend_support_template")}`,
+    },
+  ];
+
   let tempArray = [];
   {
     languageData &&
@@ -372,6 +387,40 @@ const Language = () => {
     window.scrollTo(0, 0);
   }, [searchParams]);
 
+  const downloadBEKeysFile = () => {
+    // setIsSpinningForBEUpload(true);
+    MarketplaceServices.findMedia(downloadBackendKeysAPI, {
+      "is-format": 1,
+    })
+      .then(function (response) {
+        // setIsSpinningForBEUpload(false);
+        console.log(
+          "Server Response from DocumentTemplateDownload Function: ",
+          response.data
+        );
+        const fileURL = window.URL.createObjectURL(response.data);
+        let alink = document.createElement("a");
+        alink.href = fileURL;
+        alink.download = "message_format.csv";
+        alink.click();
+      })
+      .catch((error) => {
+        // setIsSpinningForBEUpload(false);
+        console.log(
+          "Server error from DocumentTemplateDownload Function ",
+          error.response
+        );
+      });
+  };
+
+  const handleOnclickForDownloadDocument = (e) => {
+    {
+      e.key == 1
+        ? findAllSupportDocumentTemplateDownload(1, null)
+        : downloadBEKeysFile();
+    }
+  };
+
   return (
     <Content>
       <Content>
@@ -384,8 +433,8 @@ const Language = () => {
             </Content>
           }
           titleContent={
-            <Content className=" !flex items-center !justify-end gap-2">
-              <Button
+            <Content className=" !flex items-center !justify-end gap-3">
+              {/* <Button
                 className="app-btn-secondary"
                 onClick={() => findAllSupportDocumentTemplateDownload(1, "en")}
               >
@@ -397,7 +446,20 @@ const Language = () => {
 
                   {t("labels:download_support_document_template")}
                 </Content>
-              </Button>
+              </Button> */}
+              <Dropdown
+                menu={{
+                  items,
+                  onClick: handleOnclickForDownloadDocument,
+                }}
+              >
+                <a onClick={(e) => e.preventDefault()}>
+                  <Space>
+                    {t("labels:download_support_document_template")}
+                    <img src={DropdownIcon} className="!w-3" />
+                  </Space>
+                </a>
+              </Dropdown>
               <Button
                 className="app-btn-primary flex align-items-center"
                 onClick={() =>
