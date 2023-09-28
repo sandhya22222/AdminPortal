@@ -147,13 +147,13 @@ function LanguageDocUpload({ langCode }) {
         alink.click();
 
         MarketplaceToaster.showToast(
-          util.getToastObject("Download successful", "success")
+          util.getToastObject(t("messages:download_successful"), "success")
         );
       })
       .catch((error) => {
         // setIsSpinningForBEUpload(false);
         MarketplaceToaster.showToast(
-          util.getToastObject("Unable to download this format", "error")
+          util.getToastObject(t("messages:unable_to_download_this_format"), "error")
         );
         console.log(
           "Server error from DocumentTemplateDownload Function ",
@@ -261,7 +261,7 @@ function LanguageDocUpload({ langCode }) {
         alink.click();
 
         MarketplaceToaster.showToast(
-          util.getToastObject("Download successful", "success")
+          util.getToastObject(t("messages:download_successful"), "success")
         );
       })
       .catch((error) => {
@@ -271,7 +271,7 @@ function LanguageDocUpload({ langCode }) {
           error.response
         );
         MarketplaceToaster.showToast(
-          util.getToastObject("Unable to download this format", "error")
+          util.getToastObject(`${t("messages:unable_to_download_this_format")}`, "error")
         );
       });
   };
