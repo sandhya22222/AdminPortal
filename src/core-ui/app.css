@@ -70,3 +70,21 @@
 .mandatory-symbol-color {
   color: var(--mp-mandatory-symbol-color) !important; 
 }
+
+.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover{
+  border-color: var(--mp-input-field-hover-color) !important; 
+}
+
+.ant-input-affix-wrapper:hover{
+  border-color: var(--mp-input-field-hover-color) !important; 
+}
+
+.ant-input-affix-wrapper-focused{
+  border-color: var(--mp-input-field-focused-color) !important; 
+  box-shadow: -1px 0px 6px 0px var(--mp-input-field-outer-glow-color) !important;
+}
+
+.ant-input:focus{
+  border-color: var(--mp-input-field-focused-color) !important; 
+  box-shadow: -1px 0px 6px 0px var(--mp-input-field-outer-glow-color) !important;
+}
