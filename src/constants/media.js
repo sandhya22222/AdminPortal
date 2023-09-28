@@ -30,6 +30,9 @@ import codeJsonIcon from "../assets/images/common/codeJsonIcon.svg";
 import crossIcon from "../assets/images/common/crossIcon.svg";
 import starIcon from "../assets/images/common/starIcon.svg";
 import globeIcon from "../assets/images/common/globeIcon.svg";
+import FrontEndKeysDownloadIcon from "../assets/images/common/FrontEndKeysDownloadIcon.svg";
+import BackendKeysDownloadIcon from "../assets/images/common/BackendKeysDownloadIcon.svg";
+import DropdownIcon from "../assets/images/common/DropdownIcon.svg"
 export {
   AppStoreLogo,
   PlayStoreLogo,
@@ -63,4 +66,7 @@ export {
   crossIcon,
   starIcon,
   globeIcon,
+  FrontEndKeysDownloadIcon,
+  BackendKeysDownloadIcon,
+  DropdownIcon
 };
