@@ -27,7 +27,7 @@ import Language from "./pages/StoreLanguage/Language";
 import LanguageSettings from "./pages/StoreLanguage/LanguageSettings";
 import { LoadingOutlined } from "@ant-design/icons";
 import LogOut from "./components/LogOut";
-
+import util from "./util/common";
 import { useAuth } from "react-oidc-context";
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 
@@ -70,7 +70,18 @@ const App = () => {
   return (
     <Suspense fallback={<LoadingMarkup />}>
       <Router>
-        <ToastContainer />
+        <ToastContainer
+          rtl={
+            util.getSelectedLanguageDirection()?.toUpperCase() === "RTL"
+              ? true
+              : false
+          }
+          position={
+            util.getSelectedLanguageDirection()?.toUpperCase() === "RTL"
+              ? "top-left"
+              : "top-right"
+          }
+        />
         <Header2 />
         <Container fluid className="p-0 bg-[#F4F4F4] text-[#393939]">
           <Routes>

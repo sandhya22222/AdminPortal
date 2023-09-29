@@ -1142,7 +1142,11 @@ const Stores = () => {
               ? `${t("labels:add_store")}`
               : `${t("labels:edit_store")}`
           }
-          placement="right"
+          placement={
+            util.getSelectedLanguageDirection()?.toUpperCase() === "RTL"
+              ? "left"
+              : "right"
+          }
           onClose={onClose}
           open={open}
           width={"40%"}

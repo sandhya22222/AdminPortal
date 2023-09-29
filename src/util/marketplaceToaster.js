@@ -10,7 +10,7 @@ const showToast = (object) => {
     const errorType = object.data.error_type;
 
     toast(message, {
-      position: toast.POSITION.TOP_RIGHT,
+      // position: toast.POSITION.TOP_RIGHT,
       type: errorType.toLowerCase(),
       autoClose: getToastTimeoutDuration(errorType.toUpperCase()),
     });

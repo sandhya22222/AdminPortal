@@ -357,8 +357,8 @@ function LanguageDocUpload({ langCode }) {
           </Content>
         </Content>
       </Content>
-      <Content className="my-3 w-[40%]">
-        <Spin spinning={isSpinning} tip="Please wait">
+      {/* <Content className="my-3 w-[40%]">
+        {/* <Spin spinning={isSpinning} tip="Please wait">
           <Dragger
             beforeUpload={() => {
               return false;
@@ -379,12 +379,12 @@ function LanguageDocUpload({ langCode }) {
             <p className="ant-upload-text">{t("messages:drag_message")}</p>
             {/* <p className="ant-upload-text mx-2">
               Upload your file here or drag and drop the file here
-            </p> */}
+            </p> *
             <p className="ant-upload-hint p-2">{t("messages:drag_info")}</p>
           </Dragger>
-        </Spin>
+        </Spin> */}
         {/* {uploadSuccess ? ( */}
-        <Button
+        {/* <Button
           type="text"
           className="app-btn-text cursor-pointer gap-1 mt-2"
           onClick={() => setChooseDownloadModalVisible(true)}
@@ -395,11 +395,11 @@ function LanguageDocUpload({ langCode }) {
             className="!text-xs !w-[10px] !items-center"
           />
           {t("messages:download_current_document")}
-        </Button>
+        </Button> */}
         {/* ) : (
                     ""
-                )} */}
-      </Content>
+                )} 
+      </Content> */}
 
       <Content className=" mt-4 !flex gap-4">
         <>
