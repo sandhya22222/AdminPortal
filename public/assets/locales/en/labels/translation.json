@@ -93,5 +93,6 @@
     "frontend_keys":"Frontend Keys",
     "backend_keys":"Backend Keys",
     "get_frontend_support_template" :"Get Frontend Support Template",
-    "get_backend_support_template" :"Get Backend Support Template"
+    "get_backend_support_template" :"Get Backend Support Template",
+    "admin":"Admin"
 }

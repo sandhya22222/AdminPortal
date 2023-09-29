@@ -1049,19 +1049,24 @@ const StoreSettings = () => {
     <Content>
       <HeaderForTitle
         title={
-          <Content className="flex">
-            <Content className="flex self-center gap-2">
-              <Link to="/dashboard/store">
-                <ArrowLeftOutlined
-                  role={"button"}
-                  className={"text-black text-lg "}
-                />
-              </Link>
-              <Title level={3} className="!font-normal !mb-0">
-                {storeName}
-              </Title>
-            </Content>
+          <Content>
+            <Title level={3} className="!font-normal !mb-0">
+              {storeName}
+            </Title>
           </Content>
+          // <Content className="flex">
+          //   <Content className="flex self-center gap-2">
+          //     <Link to="/dashboard/store">
+          //       <ArrowLeftOutlined
+          //         role={"button"}
+          //         className={"text-black text-lg "}
+          //       />
+          //     </Link>
+          //     <Title level={3} className="!font-normal !mb-0">
+          //       {storeName}
+          //     </Title>
+          //   </Content>
+          // </Content>
         }
         titleContent={
           <Content className="text-right flex flex-row-reverse items-center">
@@ -1073,6 +1078,9 @@ const StoreSettings = () => {
             />
           </Content>
         }
+        backNavigationPath={`/dashboard/store`}
+        showArrowIcon={true}
+        showButtons={false}
       />
       <Content className="p-3 mt-[6.2rem]">
         <Spin tip="Please wait!" size="large" spinning={isUpLoading}>
@@ -1185,7 +1193,9 @@ const StoreSettings = () => {
               <label className="text-[13px] mb-2 ml-1 input-label-color">
                 {t("labels:symbol")}
               </label>
-              <span className="mandatory-symbol-color text-sm !text-center ml-1">*</span>
+              <span className="mandatory-symbol-color text-sm !text-center ml-1">
+                *
+              </span>
               <Input
                 placeholder={t("placeholders:enter_currency_symbol")}
                 className={`${
@@ -1222,7 +1232,9 @@ const StoreSettings = () => {
               <label className="text-[13px] mb-2 ml-1 input-label-color">
                 {t("labels:iso_code")}
               </label>
-              <span className="mandatory-symbol-color text-sm ml-1 !text-center">*</span>
+              <span className="mandatory-symbol-color text-sm ml-1 !text-center">
+                *
+              </span>
               <Input
                 placeholder={t("placeholders:enter_iso_code")}
                 value={currencyIsoCode}
@@ -1257,7 +1269,9 @@ const StoreSettings = () => {
               <label className="text-[13px] mb-2 ml-1 input-label-color">
                 {t("labels:fractional_unit")}
               </label>
-              <span className="mandatory-symbol-color text-sm ml-1 !text-center">*</span>
+              <span className="mandatory-symbol-color text-sm ml-1 !text-center">
+                *
+              </span>
               <Input
                 placeholder={t("placeholders:enter_fractional_unit")}
                 value={fractionalUnit}
@@ -1292,7 +1306,9 @@ const StoreSettings = () => {
               <label className="text-[13px] mb-2 ml-1 input-label-color">
                 {t("labels:number_to_basic")}
               </label>
-              <span className="mandatory-symbol-color text-sm !text-center ml-1">*</span>
+              <span className="mandatory-symbol-color text-sm !text-center ml-1">
+                *
+              </span>
               <InputNumber
                 placeholder={t("placeholders:enter_number_to_basic")}
                 value={numberToBasic}
@@ -1862,7 +1878,7 @@ const StoreSettings = () => {
                     </p>
                   ) : null}
                 </Col>
-                <Col span={8} className="ml-1"> 
+                <Col span={8} className="ml-1">
                   <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
                     {t("labels:secondary_button_text_color")}
                   </label>

@@ -156,7 +156,9 @@ const Header2 = () => {
                     src={AdminIcon}
                     className="!h-8 absolute bottom-[-2px] left-[-30px]"
                   /> */}
-                  <Text className="text-lg text-slate-600 pr-1">Admin</Text>
+                  <Text className="text-lg text-slate-600 pr-1">
+                    {t("labels:Admin")}
+                  </Text>
                   <DownOutlined className="text-xs text-slate-600" />
                 </Paragraph>
               </Dropdown>
