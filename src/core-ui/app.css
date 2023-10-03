@@ -47,9 +47,7 @@
   color: var(--mp-brand-color) !important;
 }
 
-.ant-tooltip {
-  z-index: 5 !important;
-}
+
 
 .ant-pagination-options-size-changer .ant-select-dropdown {
   z-index: unset !important;
