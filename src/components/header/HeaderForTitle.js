@@ -69,12 +69,12 @@ function HeaderForTitle({
               selectedLanguageFromReduxState?.writing_script_direction
             ).toUpperCase() === "RTL" ? (
               <ArrowRightOutlined
-                className="!text-xl ml-2 -translate-y-1"
+                className="!text-xl ml-2 "
                 onClick={handleNavigationBack}
               />
             ) : (
               <ArrowLeftOutlined
-                className=" !text-xl mr-2 -translate-y-1"
+                className=" !text-xl mr-2 "
                 onClick={handleNavigationBack}
               />
             )
