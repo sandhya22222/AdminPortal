@@ -94,5 +94,11 @@
     "backend_keys":"Backend Keys",
     "get_frontend_support_template" :"Get Frontend Support Template",
     "get_backend_support_template" :"Get Backend Support Template",
-    "admin":"Admin"
+    "admin":"Admin",
+    "header_content_of_the_page":"Header content of the page",
+    "main_content_of_the_page":"Main content of the page",
+    "button1":"Button1",
+    "button2":"Button2",
+    "button3":"Button3",
+    "footer_content_of_the_page":"Footer content of the page"
 }

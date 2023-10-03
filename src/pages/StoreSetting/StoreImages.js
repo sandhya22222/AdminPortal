@@ -375,9 +375,9 @@ const StoreImages = ({
     <Content className=" mb-2">
       <StoreModal
         isVisible={isDeleteImageModalOpen}
-        okButtonText={"Yes"}
-        cancelButtonText={"Cancel"}
-        title={"Warning"}
+        okButtonText={t("labels:yes")}
+        cancelButtonText={t("labels:cancel")}
+        title={t("labels:warning")}
         okCallback={() => removeMedia()}
         cancelCallback={() => closeDeleteModal()}
         isSpin={isImageDeleting}
@@ -385,8 +385,8 @@ const StoreImages = ({
       >
         {
           <div>
-            <p>{`Confirm image Deletion`}</p>
-            <p>{`Are you absolutely sure you want to delete the image? This action cannot be undone.`}</p>
+            <p>{t("messages:confirm_image_deletion")}</p>
+            <p>{t("messages:delete_confirmation_message")}</p>
           </div>
         }
       </StoreModal>

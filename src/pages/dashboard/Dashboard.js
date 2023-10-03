@@ -1,13 +1,13 @@
 //! Import libraries & components
 import React, { useEffect, useState } from "react";
-import { Layout, Typography, Skeleton, Image, Button } from "antd";
+import { Layout, Typography, Skeleton, Image, Button, Tabs } from "antd";
 import { useNavigate } from "react-router-dom";
 import { Profit, Positive, Payment } from "../../constants/media";
 import { toast } from "react-toastify";
-
+import axios from "axios";
 import { MdStore } from "react-icons/md";
 import { useDispatch } from "react-redux";
-
+import { useQuery } from "react-query";
 //! Import CSS libraries
 
 //! Import user defined services
@@ -26,7 +26,11 @@ import { useAuth } from "react-oidc-context";
 import { useTranslation } from "react-i18next";
 import MarketplaceToaster from "../../util/marketplaceToaster";
 
-
+import {
+  fnSelectedLanguage,
+  fnStoreLanguage,
+  fnDefaultLanguage,
+} from "../../services/redux/actions/ActionStoreLanguage";
 const instance = axios.create();
 //! Get all required details from .env file
 const storeAdminDashboardAPI =
@@ -39,13 +43,7 @@ const dm4sightGetGraphDataAPI = process.env.REACT_APP_4SIGHT_GETGRAPHDATA_API;
 const dm4sightGetDetailsByQueryAPI =
   process.env.REACT_APP_4SIGHT_GETDETAILSBYQUERY_API;
 const dm4sightClientID = process.env.REACT_APP_4SIGHT_CLIENT_ID;
-
-import {
-  fnSelectedLanguage,
-  fnStoreLanguage,
-  fnDefaultLanguage,
-} from "../../services/redux/actions/ActionStoreLanguage";
-
+const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API;
 // const auth = getAuth.toLowerCase() === "true";
 
 //! Destructure the components
