@@ -3,6 +3,10 @@ import Cookies from "js-cookie";
 const storeName = process.env.REACT_APP_STORE_NAME;
 const baseURL = process.env.REACT_APP_BASE_URL;
 
+const isDev = () => {
+  return process.env.NODE_ENV === "development" ? true : false;
+};
+
 const setUserSelectedLngCode = (value) => {
   window.localStorage.setItem("mpaplng", value);
   Cookies.set("mpaplng", value);
@@ -179,7 +183,27 @@ const getStoreSupportedLngs = () => {
   }
 };
 
+const getStoreDefaultLngCode = () => {
+  try {
+    const allStoreLngs = getReduxPersistRoot();
+    let defaultStoreLng = allStoreLngs && allStoreLngs.reducerDefaultLanguage;
+    defaultStoreLng =
+      defaultStoreLng && JSON.parse(defaultStoreLng).defaultLanguage;
+
+    if (defaultStoreLng) {
+      if (defaultStoreLng.language_code) {
+        return defaultStoreLng.language_code;
+      } else {
+        return "en";
+      }
+    } else return "en";
+  } catch (error) {
+    return "en";
+  }
+};
+
 const util = {
+  isDev,
   hasKeyCloakData,
   hasUserLoggedIn,
   logoutUser,
@@ -196,6 +220,7 @@ const util = {
   getReduxPersistRoot,
   getSelectedLanguageDirection,
   getUserSelectedLngCode,
+  getStoreDefaultLngCode
 };
 
 export default util;

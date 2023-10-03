@@ -77,7 +77,7 @@ const Language = () => {
             <Tooltip title={record.language}>
               <Text
                 className={`mx-2 ${
-                  record.is_default ? "!max-w-[215px]" : "!max-w-[290px]"
+                  record.is_default ? "!max-w-[200px]" : "!max-w-[200px]"
                 } `}
                 ellipsis={true}
               >

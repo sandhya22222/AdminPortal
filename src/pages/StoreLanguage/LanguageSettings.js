@@ -1,4 +1,4 @@
-import { Divider, Layout, Typography } from "antd";
+import { Divider, Layout, Typography, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
@@ -27,31 +27,39 @@ function LanguageSettings() {
   }, [searchParams]);
   return (
     <Content className="pt-1">
-      <Content>
+      <Content className="!z-20">
         <HeaderForTitle
           title={
-            <Content className="">
-              {/* <Content> */}
-              {/**
-               * Below is the part responsible for displaying the title of the page in a header.
-               * If @languageName is there, which means it is a edit page so it will display the languageName for the edit page.
-               * If @languageName is undefined or null means it is a add page.So it will show "Add a language"
-               */}
-              <Title level={3} className="!font-normal">
+            // {/* <Content> */}
+            // {/**
+            //  * Below is the part responsible for displaying the title of the page in a header.
+            //  * If @languageName is there, which means it is a edit page so it will display the languageName for the edit page.
+            //  * If @languageName is undefined or null means it is a add page.So it will show "Add a language"
+            //  */}
+            <Tooltip
+              title={languageName}
+              overlayStyle={{ zIndex: 11, position: "fixed" }}
+              placement="bottom"
+            >
+              <Title
+                level={3}
+                className="!font-normal max-w-[300px]"
+                ellipsis={true}
+              >
                 {languageName &&
                 languageName !== undefined &&
                 languageName !== null
                   ? languageName
                   : `${t("labels:add_language")}`}
               </Title>
-              {/**
-               * Here below we can render the right side part of the header which renders the status and to delete the language
-               * @languageId -> It is the ID of the language.
-               * @languageCode -> It is the language code.
-               * @languageStatus -> It is the status of the language.
-               */}
-              {/* </Content> */}
-            </Content>
+            </Tooltip>
+            // {/**
+            //  * Here below we can render the right side part of the header which renders the status and to delete the language
+            //  * @languageId -> It is the ID of the language.
+            //  * @languageCode -> It is the language code.
+            //  * @languageStatus -> It is the status of the language.
+            //  */}
+            //  </Content>
           }
           titleContent={
             languageId && languageCode && languageStatus !== null ? (
@@ -64,9 +72,6 @@ function LanguageSettings() {
             ) : null
           }
           backNavigationPath={`/dashboard/language`}
-          // ?${MarketplaceAppConfig.getStore(
-          //   ""
-          // )}
           showArrowIcon={true}
           showButtons={false}
         />
