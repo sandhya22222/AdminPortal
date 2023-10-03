@@ -371,7 +371,6 @@ const StoreImages = ({
     setBannerImagesLength(bannerAbsoluteImage && bannerAbsoluteImage.length);
   }, [bannerAbsoluteImage]);
 
-  
   return (
     <Content className=" mb-2">
       <StoreModal
@@ -391,8 +390,8 @@ const StoreImages = ({
           </div>
         }
       </StoreModal>
-      <Content className="flex !mb-3">
-        <Title level={5} className="mr-1">
+      <Content className="flex !mb-3 gap-1">
+        <Title level={5} className="">
           {title}
         </Title>
         <Content className=" items-end  ">
@@ -482,9 +481,9 @@ const StoreImages = ({
                 disabled={
                   bannerImagesLength < BannerImagesUploadLength ? false : true
                 }
-                icon={<UploadOutlined className="-translate-y-1" />}
-                className="font-semibold"
+                className="font-semibold app-btn-secondary flex justify-center items-center"
               >
+                <UploadOutlined className="" />
                 {t("labels:click_to_upload")}(Max: {BannerImagesUploadLength})
               </Button>
             </Upload>

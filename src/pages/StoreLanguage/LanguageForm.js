@@ -173,8 +173,8 @@ const LanguageForm = ({
       );
     } else if (
       validator.isLength(txtLanguageCode.trim(), {
-        min: 2,
-        max: 5,
+        min: languageCodeMinLength,
+        max: languageCodeMaxLength,
       }) === false
     ) {
       validValues--;
@@ -249,13 +249,15 @@ const LanguageForm = ({
   return (
     <Content>
       <Spin tip={t("labels:please_wait")} size="large" spinning={isLoading}>
-        <Row>
-          <Col span={8} className="pr-2 mb-3">
+        <Row className="gap-3">
+          <Col span={8} className=" mb-3">
             <Content className="">
-              <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">
+              <label className="text-[13px] mb-2 ml-1 input-label-color">
                 {t("labels:language")}
               </label>
+              <span className="mandatory-symbol-color text-sm !text-center ml-1">
+                *
+              </span>
               <Input
                 placeholder={t("placeholders:enter_language_name")}
                 value={txtLanguage}
@@ -287,12 +289,14 @@ const LanguageForm = ({
               />
             </Content>
           </Col>
-          <Col span={3} className="pl-2 mb-3">
+          <Col span={3} className=" mb-3">
             <Content className="">
-              <span className="text-red-600 text-sm text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">
+              <label className="text-[13px] mb-2 ml-1 input-label-color">
                 {t("labels:language_code")}
               </label>
+              <span className="mandatory-symbol-color text-sm text-center ml-1">
+                *
+              </span>
               <Input
                 placeholder={t("placeholders:enter_code")}
                 value={txtLanguageCode}
@@ -325,32 +329,39 @@ const LanguageForm = ({
               />
             </Content>
           </Col>
+          <Col className=" mb-3">
+            <Content className="">
+              <label className="text-[13px] !mb-2 input-label-color">
+                {t("labels:script_direction")}
+              </label>
+              <Radio.Group
+                optionType="button"
+                style={{ display: "flex" }}
+                value={scriptDirection}
+                onChange={(e) => {
+                  handleScriptDirectionChange(e.target.value);
+                  if (e.target.value !== defaultScriptDirection) {
+                    setOnChangeValues(true);
+                  }
+                }}
+              >
+                <Radio.Button value="LTR">
+                  {t("labels:left_to_right")}
+                </Radio.Button>
+                <Radio.Button value="RTL">
+                  {t("labels:right_to_left")}
+                </Radio.Button>
+              </Radio.Group>
+            </Content>
+          </Col>
         </Row>
-        <Content className="w-[50%] ">
-          <label className="text-[13px] !mb-2">
-            {t("labels:script_direction")}
-          </label>
-          <Radio.Group
-            optionType="button"
-            style={{ display: "flex" }}
-            value={scriptDirection}
-            onChange={(e) => {
-              handleScriptDirectionChange(e.target.value);
-              if (e.target.value !== defaultScriptDirection) {
-                setOnChangeValues(true);
-              }
-            }}
-          >
-            <Radio.Button value="LTR">{t("labels:left_to_right")}</Radio.Button>
-            <Radio.Button value="RTL">{t("labels:right_to_left")}</Radio.Button>
-          </Radio.Group>
-        </Content>
+
         {(txtLanguageCode === "" && txtLanguage === "") ||
         onChangeValues === false ||
         (txtLanguage === defaultTxtLanguage &&
           txtLanguageCode === defaultTxtLanguageCode &&
           scriptDirection === defaultScriptDirection) ? null : (
-          <Row>
+          <Row className="gap-2">
             <Col>
               <Button
                 className={"app-btn-primary !mt-5"}
@@ -376,7 +387,7 @@ const LanguageForm = ({
                   : `${t("labels:save")}`}
               </Button>
             </Col>
-            <Col className="pl-2">
+            <Col className="">
               <Button
                 onClick={() => {
                   if (languageCode === undefined || languageCode === null) {

@@ -1009,7 +1009,10 @@ const StoreSettings = () => {
         setBannerAbsoluteImage(response.data.response_body);
       })
       .catch((error) => {
-        console.log("Server error from banner images  Function ", error.response);
+        console.log(
+          "Server error from banner images  Function ",
+          error.response
+        );
       });
   };
 
@@ -1046,28 +1049,38 @@ const StoreSettings = () => {
     <Content>
       <HeaderForTitle
         title={
-          <Content className="flex">
-            <Content className="flex text-left self-center items-center pr-3">
-              <Link to="/dashboard/store">
-                <ArrowLeftOutlined
-                  role={"button"}
-                  className={"text-black text-lg -translate-y-1"}
-                />
-              </Link>
-              <Title level={3} className="!font-normal mb-0 ml-4">
-                {storeName}
-              </Title>
-            </Content>
-            <Content className="text-right flex flex-row-reverse items-center">
-              <Status
-                storeId={id}
-                storeStatus={changeSwitchStatus === 1 ? true : false}
-                storeApiData={storeData}
-                className="!inline-block"
-              />
-            </Content>
+          <Content>
+            <Title level={3} className="!font-normal !mb-0">
+              {storeName}
+            </Title>
+          </Content>
+          // <Content className="flex">
+          //   <Content className="flex self-center gap-2">
+          //     <Link to="/dashboard/store">
+          //       <ArrowLeftOutlined
+          //         role={"button"}
+          //         className={"text-black text-lg "}
+          //       />
+          //     </Link>
+          //     <Title level={3} className="!font-normal !mb-0">
+          //       {storeName}
+          //     </Title>
+          //   </Content>
+          // </Content>
+        }
+        titleContent={
+          <Content className="text-right flex flex-row-reverse items-center">
+            <Status
+              storeId={id}
+              storeStatus={changeSwitchStatus === 1 ? true : false}
+              storeApiData={storeData}
+              className="!inline-block"
+            />
           </Content>
         }
+        backNavigationPath={`/dashboard/store`}
+        showArrowIcon={true}
+        showButtons={false}
       />
       <Content className="p-3 mt-[6.2rem]">
         <Spin tip="Please wait!" size="large" spinning={isUpLoading}>
@@ -1116,7 +1129,7 @@ const StoreSettings = () => {
               setGetImageData={setGetImageData}
             /> */}
             <Content className="mt-4">
-              <Row>
+              <Row className="gap-2">
                 <Col>
                   <Button
                     className={
@@ -1144,7 +1157,7 @@ const StoreSettings = () => {
                     {t("labels:save")}
                   </Button>
                 </Col>
-                <Col className="pl-2">
+                <Col className="">
                   <Button
                     // className=" app-btn-secondary"
                     className={
@@ -1177,10 +1190,12 @@ const StoreSettings = () => {
             }}
           >
             <Col span={4} className="gutter-row">
-              <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">
+              <label className="text-[13px] mb-2 ml-1 input-label-color">
                 {t("labels:symbol")}
               </label>
+              <span className="mandatory-symbol-color text-sm !text-center ml-1">
+                *
+              </span>
               <Input
                 placeholder={t("placeholders:enter_currency_symbol")}
                 className={`${
@@ -1214,10 +1229,12 @@ const StoreSettings = () => {
               />
             </Col>
             <Col span={4} className="gutter-row">
-              <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">
+              <label className="text-[13px] mb-2 ml-1 input-label-color">
                 {t("labels:iso_code")}
               </label>
+              <span className="mandatory-symbol-color text-sm ml-1 !text-center">
+                *
+              </span>
               <Input
                 placeholder={t("placeholders:enter_iso_code")}
                 value={currencyIsoCode}
@@ -1249,10 +1266,12 @@ const StoreSettings = () => {
               />
             </Col>
             <Col span={4} className="gutter-row">
-              <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">
+              <label className="text-[13px] mb-2 ml-1 input-label-color">
                 {t("labels:fractional_unit")}
               </label>
+              <span className="mandatory-symbol-color text-sm ml-1 !text-center">
+                *
+              </span>
               <Input
                 placeholder={t("placeholders:enter_fractional_unit")}
                 value={fractionalUnit}
@@ -1284,10 +1303,12 @@ const StoreSettings = () => {
             </Col>
             <Col span={4} className="gutter-row">
               {" "}
-              <span className="text-red-600 text-sm !text-center">*</span>
-              <label className="text-[13px] mb-2 ml-1">
+              <label className="text-[13px] mb-2 ml-1 input-label-color">
                 {t("labels:number_to_basic")}
               </label>
+              <span className="mandatory-symbol-color text-sm !text-center ml-1">
+                *
+              </span>
               <InputNumber
                 placeholder={t("placeholders:enter_number_to_basic")}
                 value={numberToBasic}
@@ -1328,60 +1349,56 @@ const StoreSettings = () => {
           <Content className="">
             <Content className="">
               <Row className="!mb-4">
-                <label className="text-[20px]  mt-2 font-bold select-none">
-                  {t("labels:page_theme")}
-                </label>
-                <Content className="text-right">
-                  <Button className="!text-right" onClick={() => openModal()}>
+                <Content className="flex justify-between w-full">
+                  <label className="text-[20px]  mt-2 font-bold select-none">
+                    {t("labels:page_theme")}
+                  </label>
+                  <Button className="" onClick={() => openModal()}>
                     <EyeOutlined className="!text-center -translate-y-0.5" />{" "}
                     {t("labels:preview")}
                   </Button>
-                  <StoreModal
-                    isVisible={isModalOpen}
-                    title={`${t("labels:sample_preview_page_for_store_front")}`}
-                    width={1000}
-                    cancelCallback={() => closeModal()}
-                    isSpin={false}
-                    className="!h-96"
-                    // hideCloseButton={false}
-                  >
-                    <Preview
-                      headerBackgroundColor={headerBackgroundColor}
-                      headerForegroundColor={headerForegroundColor}
-                      footerBackgroundColor={footerBackgroundColor}
-                      footerForegroundColor={footerForegroundColor}
-                      pageBackgroundColor={pageBackgroundColor}
-                      foreGroundColor={foreGroundColor}
-                      buttonPrimaryBackgroundColor={
-                        buttonPrimaryBackgroundColor
-                      }
-                      buttonSecondaryBackgroundColor={
-                        buttonSecondaryBackgroundColor
-                      }
-                      buttonTeritaryBackgroundColor={
-                        buttonTeritaryBackgroundColor
-                      }
-                      buttonPrimaryForegroundColor={
-                        buttonPrimaryForegroundColor
-                      }
-                      buttonSecondaryForegroundColor={
-                        buttonSecondaryForegroundColor
-                      }
-                      buttonTeritaryForegroundColor={
-                        buttonTeritaryForegroundColor
-                      }
-                      getImageData={getImageData}
-                    />
-                  </StoreModal>
                 </Content>
+                <StoreModal
+                  isVisible={isModalOpen}
+                  title={`${t("labels:sample_preview_page_for_store_front")}`}
+                  width={1000}
+                  cancelCallback={() => closeModal()}
+                  isSpin={false}
+                  className="!h-96"
+                  // hideCloseButton={false}
+                >
+                  <Preview
+                    headerBackgroundColor={headerBackgroundColor}
+                    headerForegroundColor={headerForegroundColor}
+                    footerBackgroundColor={footerBackgroundColor}
+                    footerForegroundColor={footerForegroundColor}
+                    pageBackgroundColor={pageBackgroundColor}
+                    foreGroundColor={foreGroundColor}
+                    buttonPrimaryBackgroundColor={buttonPrimaryBackgroundColor}
+                    buttonSecondaryBackgroundColor={
+                      buttonSecondaryBackgroundColor
+                    }
+                    buttonTeritaryBackgroundColor={
+                      buttonTeritaryBackgroundColor
+                    }
+                    buttonPrimaryForegroundColor={buttonPrimaryForegroundColor}
+                    buttonSecondaryForegroundColor={
+                      buttonSecondaryForegroundColor
+                    }
+                    buttonTeritaryForegroundColor={
+                      buttonTeritaryForegroundColor
+                    }
+                    getImageData={getImageData}
+                  />
+                </StoreModal>
               </Row>
               <Divider className="!my-4" />
               <Row className="mt-2">
                 <Col span={8} className="mr-2 ">
-                  <label className="text-[13px] mb-2 ml-1 select-none">
+                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
                     {t("labels:background_color")}
                   </label>
-                  <Content className="flex">
+                  <Content className="flex gap-2">
                     <Input
                       type="color"
                       value={pageBackgroundColor}
@@ -1407,7 +1424,7 @@ const StoreSettings = () => {
                       }}
                       className="w-9 p-0"
                     />
-                    <Space.Compact className="ml-2">
+                    <Space.Compact className="">
                       <Input
                         value={pageBackgroundColor}
                         maxLength={7}
@@ -1457,10 +1474,10 @@ const StoreSettings = () => {
                   ) : null}
                 </Col>
                 <Col span={8} className="ml-1">
-                  <label className="text-[13px] mb-2 ml-1 select-none">
+                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
                     {t("labels:text_color")}
                   </label>
-                  <Content className="flex">
+                  <Content className="flex gap-2">
                     <Input
                       type="color"
                       value={foreGroundColor}
@@ -1486,7 +1503,7 @@ const StoreSettings = () => {
                       }}
                       className="w-9 p-0"
                     />
-                    <Space.Compact className="ml-2">
+                    <Space.Compact className="">
                       <Input
                         value={foreGroundColor}
                         className="w-[150px]"
@@ -1537,10 +1554,10 @@ const StoreSettings = () => {
               </Row>
               <Row className="mt-4">
                 <Col span={8} className="mr-2 ">
-                  <label className="text-[13px] mb-2 ml-1 select-none">
+                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
                     {t("labels:primary_button_background_color")}
                   </label>
-                  <Content className="flex">
+                  <Content className="flex gap-2">
                     <Input
                       type="color"
                       className="w-9 p-0"
@@ -1566,7 +1583,7 @@ const StoreSettings = () => {
                         setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
                     />
-                    <Space.Compact className="ml-2">
+                    <Space.Compact className="">
                       <Input
                         value={buttonPrimaryBackgroundColor}
                         maxLength={7}
@@ -1618,10 +1635,10 @@ const StoreSettings = () => {
                   ) : null}
                 </Col>
                 <Col span={8} className="ml-1">
-                  <label className="text-[13px] mb-2 ml-1 select-none">
+                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
                     {t("labels:secondary_button_background_color")}
                   </label>
-                  <Content className="flex">
+                  <Content className="flex gap-2">
                     <Input
                       type="color"
                       className="w-9 p-0"
@@ -1647,7 +1664,7 @@ const StoreSettings = () => {
                         setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
                     />
-                    <Space.Compact className="ml-2">
+                    <Space.Compact className="">
                       <Input
                         value={buttonSecondaryBackgroundColor}
                         className="w-[150px]"
@@ -1699,10 +1716,10 @@ const StoreSettings = () => {
                   ) : null}
                 </Col>
                 <Col span={7} className="ml-2">
-                  <label className="text-[13px] mb-2 ml-1 select-none">
+                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
                     {t("labels:tertiary_button_background_color")}
                   </label>
-                  <Content className="flex">
+                  <Content className="flex gap-2">
                     <Input
                       type="color"
                       className="w-9 p-0"
@@ -1728,7 +1745,7 @@ const StoreSettings = () => {
                         setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
                     />
-                    <Space.Compact className="ml-2">
+                    <Space.Compact className="">
                       <Input
                         value={buttonTeritaryBackgroundColor}
                         className="w-[150px]"
@@ -1781,10 +1798,10 @@ const StoreSettings = () => {
               </Row>
               <Row className="mt-4">
                 <Col span={8} className="mr-2 ">
-                  <label className="text-[13px] mb-2 ml-1 select-none">
+                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
                     {t("labels:primary_button_text_color")}
                   </label>
-                  <Content className="flex">
+                  <Content className="flex gap-2">
                     <Input
                       type="color"
                       className="w-9 p-0"
@@ -1810,7 +1827,7 @@ const StoreSettings = () => {
                         setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
                     />
-                    <Space.Compact className="ml-2">
+                    <Space.Compact className="">
                       <Input
                         value={buttonPrimaryForegroundColor}
                         maxLength={7}
@@ -1862,10 +1879,10 @@ const StoreSettings = () => {
                   ) : null}
                 </Col>
                 <Col span={8} className="ml-1">
-                  <label className="text-[13px] mb-2 ml-1 select-none">
+                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
                     {t("labels:secondary_button_text_color")}
                   </label>
-                  <Content className="flex">
+                  <Content className="flex gap-2">
                     <Input
                       type="color"
                       className="w-9 p-0"
@@ -1891,7 +1908,7 @@ const StoreSettings = () => {
                         setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
                     />
-                    <Space.Compact className="ml-2">
+                    <Space.Compact className="">
                       <Input
                         value={buttonSecondaryForegroundColor}
                         maxLength={7}
@@ -1943,10 +1960,10 @@ const StoreSettings = () => {
                   ) : null}
                 </Col>
                 <Col span={7} className="ml-2">
-                  <label className="text-[13px] mb-2 ml-1 select-none">
+                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
                     {t("labels:tertiary_button_text_color")}
                   </label>
-                  <Content className="flex">
+                  <Content className="flex gap-2">
                     <Input
                       type="color"
                       className="w-9 p-0"
@@ -1973,7 +1990,7 @@ const StoreSettings = () => {
                         setCopyImageOfStoreSettingsPageTheme(temp);
                       }}
                     />
-                    <Space.Compact className="ml-2">
+                    <Space.Compact className="">
                       <Input
                         value={buttonTeritaryForegroundColor}
                         onChange={(e) => {
@@ -2031,10 +2048,10 @@ const StoreSettings = () => {
               </label>
               <Row className="mt-2">
                 <Col span={8} className="mr-2 ">
-                  <label className="text-[13px] mb-2 ml-1 select-none">
+                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
                     {t("labels:background_color")}
                   </label>
-                  <Content className="flex">
+                  <Content className="flex gap-2">
                     <Input
                       type="color"
                       className="w-9 p-0"
@@ -2060,7 +2077,7 @@ const StoreSettings = () => {
                         setCopyImageOfStoreHeaderSetting(temp);
                       }}
                     />
-                    <Space.Compact className="ml-2">
+                    <Space.Compact className="">
                       <Input
                         value={headerBackgroundColor}
                         maxLength={7}
@@ -2110,11 +2127,11 @@ const StoreSettings = () => {
                   ) : null}
                 </Col>
                 <Col span={8} className="ml-1">
-                  <label className="text-[13px] mb-2 ml-1 select-none">
+                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
                     {" "}
                     {t("labels:text_color")}
                   </label>
-                  <Content className="flex">
+                  <Content className="flex gap-2">
                     <Input
                       type="color"
                       className="w-9 p-0"
@@ -2141,7 +2158,7 @@ const StoreSettings = () => {
                         setCopyImageOfStoreHeaderSetting(temp);
                       }}
                     />
-                    <Space.Compact className="ml-2">
+                    <Space.Compact className="">
                       <Input
                         value={headerForegroundColor}
                         className="w-[150px]"
@@ -2197,10 +2214,10 @@ const StoreSettings = () => {
               </label>
               <Row className="mt-2">
                 <Col span={8} className="mr-2 ">
-                  <label className="text-[13px] mb-2 ml-1 select-none">
+                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
                     {t("labels:background_color")}
                   </label>
-                  <Content className="flex">
+                  <Content className="flex gap-2">
                     <Input
                       type="color"
                       className="w-9 p-0"
@@ -2226,7 +2243,7 @@ const StoreSettings = () => {
                         setCopyImageOfStoreFooterSetting(temp);
                       }}
                     />
-                    <Space.Compact className="ml-2">
+                    <Space.Compact className="">
                       <Input
                         value={footerBackgroundColor}
                         className="w-[150px]"
@@ -2275,10 +2292,10 @@ const StoreSettings = () => {
                   ) : null}
                 </Col>
                 <Col span={8} className="ml-1">
-                  <label className="text-[13px] mb-2 ml-1 select-none">
+                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
                     {t("labels:text_color")}
                   </label>
-                  <Content className="flex">
+                  <Content className="flex gap-2">
                     <Input
                       type="color"
                       className="w-9 p-0"
@@ -2303,7 +2320,7 @@ const StoreSettings = () => {
                         setCopyImageOfStoreFooterSetting(temp);
                       }}
                     />
-                    <Space.Compact className="ml-2">
+                    <Space.Compact className="">
                       <Input
                         value={footerForegroundColor}
                         className="w-[150px]"
@@ -2354,7 +2371,7 @@ const StoreSettings = () => {
               </Row>
             </Content>
             <Content className="mt-4">
-              <Row>
+              <Row className="gap-2">
                 <Col>
                   <Button
                     className={
@@ -2368,7 +2385,7 @@ const StoreSettings = () => {
                     {t("labels:save")}
                   </Button>
                 </Col>
-                <Col className="pl-2">
+                <Col className="">
                   <Button
                     className={
                       onChangeValues === true

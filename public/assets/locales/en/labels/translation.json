@@ -84,5 +84,15 @@
     "credits":"Credits",
     "support_document":"Support Document",
     "code":"Code",
-    "payment_types":"Payment Types"
+    "payment_types":"Payment Types",
+    "default":"Default",
+    "download_document":"Download Document",
+    "download_support_document_template":"Download Support Document Template",
+    "cash_on_delivery":"Cash On Delivery",
+    "online_payment":"Online Payment",
+    "frontend_keys":"Frontend Keys",
+    "backend_keys":"Backend Keys",
+    "get_frontend_support_template" :"Get Frontend Support Template",
+    "get_backend_support_template" :"Get Backend Support Template",
+    "admin":"Admin"
 }

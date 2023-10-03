@@ -34,7 +34,7 @@
     "language_with_invalid_inputs": "Invalid inputs in multilingual information",
     "please_enter_the_values_for_the_mandatory_fields":"Please enter the values for the mandatory fields",
     "language_must_contain_minimum_of":"Language must contain minimum of",
-    "language_code_must_contain_minimum_of":"Language code must contain minimum of 2, maximum of 5 characters",
+    "language_code_must_contain_minimum_of":"Language code must contain minimum of",
     "language_activation_confirmation": "Language Activation Confirmation",
     "language_activation_confirmation_message": "Great news! You are about to activate your Language. Are you sure you would like to proceed ?",
     "language_deactivation_confirmation": "Language Deactivation Confirmation",
@@ -51,5 +51,8 @@
     "choose_download_format":"Choose Your Preferred Download Format",
     "connect_with_your_customers_in_their_preferred_language":"Connect with your customers in their preferred language",
     "unable_to_download_this_format":"Unable to download this format",
-    "download_successful":"Download successful"
+    "download_successful":"Download successful",
+    "document_description":"Please upload a language support document containing translated values, and will use it to update the respective portals with the new language content.",
+    "frontend_document":"Front-end keys refer to a set of values specially intended for use within the user interface (UI) of the application.",
+    "backend_document":"Backend keys encompass a collection of values that are exclusively intended for use within the backend infrastructure of the application."
 }

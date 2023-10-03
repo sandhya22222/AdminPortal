@@ -1,31 +1,223 @@
+:root {
+  --primary-button-bg-color: #4a2d73;
+  --primary-button-bg-color-h: #7d3192;
+  --primary-button-text-color: white;
+  --secondary-button-bg-color: #ffffff;
+  --secondary-button-text-color: #1f1f1f;
+  --button-danger-bg-color: #ff4d4f;
+  --button-danger-text-color: white;
+}
+
 .app-btn-primary {
-  /* background-color: #1677ff !important; */
-  background-color: var(--mp-primary-color) !important;
-  color: var(--mp-primary-text-color) !important;
+  background-color: var(--mp-primary-background-color) !important;
+  border: 1px solid var(--mp-primary-border-color) !important;
   border-color: var(--mp-primary-border-color) !important;
+  border-radius: 6px !important;
+  color: var(--primary-button-text-color) !important;
   height: unset !important;
 }
 .app-btn-primary:hover {
   background-color: var(--mp-primary-color-h) !important;
-  border-color: var(--mp-primary-border-color-h) !important ;
+  border: 1px solid var(--mp-primary-border-color-h) !important;
+  border-color: var(--mp-primary-border-color-h) !important;
+  border-radius: 6px !important;
+  color: var(--mp-primary-text-color-h) !important;
+  height: unset !important;
 }
+.app-btn-primary:disabled {
+  background-color: var(--mp-primary-background-color-d) !important;
+  border: 1px solid var(--mp-primary-border-color-d) !important;
+  border-color: var(--mp-primary-border-color-d);
+  border-radius: 6px !important;
+  color: var(--mp-primary-text-color-d) !important;
+  height: unset !important;
+}
+
 .app-btn-secondary {
-  background-color: var(--mp-secondary-color) !important;
+  background-color: var(--mp-secondary-background-color) !important;
+  border-color: var(--mp-secondary-border-color) !important;
+  border-radius: 6px !important;
   color: var(--mp-secondary-text-color) !important;
   height: unset !important;
 }
 .app-btn-secondary:hover {
+  background-color: var(--mp-secondary-background-color-h) !important;
   border-color: var(--mp-secondary-border-color-h) !important;
-  color: var(--mp-secondary-text-color-h) !important;
+  border-radius: 6px !important;
+  color: var(--mp-secondary-border-color-h) !important;
+  height: unset !important;
 }
-
-.app-btn-reject{
-  background-color: var(--mp-danger-color) !important;
-  color: var( --mp-danger-text-color) !important;
+.app-btn-secondary:disabled {
+  background-color: var(--mp-secondary-background-color-d) !important;
+  border: 1px solid var(--mp-secondary-border-color-d) !important;
+  border-color: var(--mp-secondary-border-color-d);
+  border-radius: 6px !important;
+  color: var(--mp-secondary-text-color-d) !important;
   height: unset !important;
 }
 
-.app-btn-reject:hover{
-  border: var(--mp-danger-color-h) !important;
-  border-color: var(--mp-danger-border-color-h) !important ;
+.app-btn-secondary-small {
+  background-color: var(--mp-secondary-background-color) !important;
+  border-radius: 6px !important;
+  color: var(--mp-secondary-text-color) !important;
+  font-size: 14px !important;
+  height: unset !important;
+}
+.app-btn-secondary-small:hover {
+  background-color: var(--mp-secondary-background-color-h) !important;
+  border-color: var(--mp-secondary-border-color-h) !important;
+  border-radius: 6px !important;
+  color: var(--mp-secondary-text-color-h) !important;
+  font-size: 14px !important;
+  height: unset !important;
+}
+.app-btn-secondary-round {
+  background-color: var(--mp-secondary-background-color) !important;
+  border-radius: 9999px !important ;
+  color: var(--mp-secondary-text-color) !important;
+  height: unset !important;
+}
+.app-btn-secondary-round:hover {
+  background-color: var(--mp-secondary-background-color-h) !important;
+  border-color: var(--mp-secondary-border-color-h) !important;
+  border-radius: 9999px !important;
+  color: var(--mp-secondary-text-color-h) !important;
+  height: unset !important;
+}
+
+.app-btn-dashed {
+  background-color: var(--mp-secondary-background-color) !important;
+  border-radius: 6px !important;
+  border-style: dashed !important;
+  color: var(--mp-secondary-text-color) !important;
+  height: unset !important;
+}
+.app-btn-dashed:hover {
+  background-color: var(--mp-secondary-background-color-h) !important;
+  border-color: var(--mp-secondary-border-color-h) !important;
+  border-radius: 6px !important;
+  border-style: dashed !important;
+  color: var(--mp-secondary-text-color-h) !important;
+  height: unset !important;
+}
+
+.ant-btn.ant-btn-sm {
+  background-color: var(--mp-primary-color) !important;
+  border-radius: 4px;
+  font-size: 14px;
+  height: 24px;
+  padding: 0px 7px;
+}
+.ant-btn.ant-btn-sm:hover {
+  background-color: var(--mp-primary-color-h) !important;
+  border-radius: 4px;
+  font-size: 14px;
+  height: 24px;
+  padding: 0px 7px;
+}
+
+.app-btn-icon {
+  align-items: center !important;
+  color: var(--mp-primary-color) !important;
+  display: flex !important;
+  height: 32px !important;
+  justify-content: center !important;
+  padding: 4px !important;
+  width: 32px !important;
+}
+.app-btn-icon:hover {
+  align-items: center !important;
+  color: var(--mp-primary-color-h) !important;
+  display: flex !important;
+  height: 32px !important;
+  justify-content: center !important;
+  padding: 4px !important;
+  width: 32px !important;
+}
+
+.app-btn-text {
+  align-items: center !important;
+  color: var(--mp-primary-color) !important;
+  display: flex !important;
+  height: 32px !important;
+  padding: 4px !important;
+  justify-content: center !important;
+}
+.app-btn-text:hover {
+  align-items: center !important;
+  color: var(--mp-primary-color-h) !important;
+  display: flex !important;
+  height: 32px !important;
+  padding: 4px !important;
+  justify-content: center !important;
+}
+
+.app-btn-link {
+  color: var(--mp-primary-color) !important;
+}
+.app-btn-link:hover {
+  color: var(--mp-primary-color-h) !important;
+}
+
+.app-delete-icon {
+  color: var(--mp-danger-primary-color) !important;
+}
+.app-delete-icon:hover {
+  color: var(--mp-danger-primary-color-h) !important;
+}
+
+.app-btn-reject {
+  color: var(--mp-danger-primary-color) !important;
+}
+.app-btn-reject:hover {
+  color: var(--mp-danger-primary-color-h) !important;
+}
+
+.app-btn-danger {
+  background-color: var(--mp-danger-primary-background-color) !important;
+  border: 1px solid var(--mp-danger-primary-border-color) !important;
+  border-color: var(--mp-danger-primary-border-color) !important;
+  border-radius: 6px !important;
+  color: var(--mp-danger-primary-text-color) !important;
+  height: unset !important;
+}
+.app-btn-danger:hover {
+  background-color: var(--mp-danger-primary-color-h) !important;
+  border: 1px solid var(--mp-danger-primary-border-color-h) !important;
+  border-color: var(--mp-danger-primary-border-color-h) !important;
+  border-radius: 6px !important;
+  color: var(--mp-danger-primary-text-color-h) !important;
+  height: unset !important;
+}
+.app-btn-danger:disabled {
+  background-color: var(--mp-danger-primary-background-color-d) !important;
+  border: 1px solid var(--mp-danger-primary-border-color-d) !important;
+  border-color: var(--mp-danger-primary-border-color-d);
+  border-radius: 6px !important;
+  color: var(--mp-danger-primary-text-color-d) !important;
+  height: unset !important;
+}
+
+.app-btn-approve {
+  background-color: #00c3b3 !important;
+  color: #f6f6f6 !important;
+  border: 1px solid#00C3B3 !important;
+  border-radius: 6px !important;
+  height: unset !important;
+}
+
+.app-btn-review {
+  background-color: #f6f6f6 !important;
+  color: #393939 !important;
+  border: 1px solid #393939 !important;
+  border-radius: 6px !important;
+  height: unset !important;
+}
+
+.app-btn-gray {
+  background-color: #393939 !important;
+  color: #ffffff !important;
+  border: 1px solid #393939 !important;
+  border-radius: 6px !important;
+  height: unset !important;
 }

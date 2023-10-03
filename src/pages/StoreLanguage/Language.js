@@ -8,6 +8,8 @@ import {
   Tag,
   Tooltip,
   Typography,
+  Dropdown,
+  Space,
 } from "antd";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -25,7 +27,7 @@ import {
   EditIcon,
   plusIcon,
   starIcon,
-  tableDropDownArrow,
+  DropdownIcon,
 } from "../../constants/media";
 import { usePageTitle } from "../../hooks/usePageTitle";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
@@ -38,6 +40,8 @@ const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API;
 const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE);
 const LanguageDownloadAPI =
   process.env.REACT_APP_DOWNLOAD_LANGUAGE_TRANSLATION_CSV;
+const downloadBackendKeysAPI =
+  process.env.REACT_APP_DOWNLOAD_ADMIN_BACKEND_MESSAGE_DETAILS;
 const Language = () => {
   const { t } = useTranslation();
   usePageTitle("Languages");
@@ -65,14 +69,14 @@ const Language = () => {
       title: `${t("labels:language")}`,
       dataIndex: "language",
       key: "language",
-      width: "30%",
+      width: "25%",
       ellipsis: true,
       render: (text, record) => {
         return (
           <Content className="inline-block">
             <Tooltip title={record.language}>
               <Text
-                className={`mr-2 ${
+                className={`mx-2 ${
                   record.is_default ? "!max-w-[215px]" : "!max-w-[290px]"
                 } `}
                 ellipsis={true}
@@ -86,7 +90,7 @@ const Language = () => {
                 className="inline-flex items-center"
                 color="#FB8500"
               >
-                Default
+                {t("labels:default")}
               </Tag>
             ) : (
               ""
@@ -120,14 +124,14 @@ const Language = () => {
       dataIndex: "writing_script_direction",
       key: "writing_script_direction",
       ellipsis: true,
-      width: "15%",
+      width: "20%",
       render: (text, record) => {
         return (
           <>
             {record.writing_script_direction === "LTR" ? (
-              <Tag color="success">Left To Right</Tag>
+              <Tag color="success">{t("labels:left_to_right")}</Tag>
             ) : (
-              <Tag color="warning">Right To Left</Tag>
+              <Tag color="warning">{t("labels:right_to_left")}</Tag>
             )}
           </>
         );
@@ -143,9 +147,9 @@ const Language = () => {
           <>
             <Text>
               {record.status == 2 ? (
-                <Badge status="default" text="In Active" />
+                <Badge status="default" text={t("labels:inactive")} />
               ) : (
-                <Badge status="success" text="Active" />
+                <Badge status="success" text={t("labels:active")} />
               )}
             </Text>
           </>
@@ -159,37 +163,19 @@ const Language = () => {
       width: "20%",
       render: (text, record) => {
         return (
-          <Content className="flex whitespace-nowrap align-middle">
-            {record.lang_support_docs_path !== null ? (
-              <Content
-                className="whitespace-nowrap flex align-middle cursor-pointer"
-                onClick={() => {
-                  findAllSupportDocumentTemplateDownload(
-                    2,
-                    record.language_code
-                  );
-                }}
-              >
-                <img
-                  src={DownloadIcon}
-                  className="!text-xs !w-[10px] mr-1 !items-center"
-                />
-                <div className="text-[#0246bb] !ml-[8px]">
-                  Download Document
-                </div>
-              </Content>
-            ) : (
-              <Content className="whitespace-nowrap flex align-middle cursor-not-allowed">
-                <img
-                  src={DownloadIconDisable}
-                  className="!text-xs !w-3 mr-1 !items-center"
-                />
-                <div className="text-[#cbd5e1] !ml-[10px]">
-                  Download Document
-                </div>
-              </Content>
-            )}
-          </Content>
+          <Button
+            type="text"
+              className="app-btn-text gap-1"
+              onClick={() => {
+                findAllSupportDocumentTemplateDownload(2, record.language_code);
+              }}
+            >
+              <img
+                src={DownloadIcon}
+                className="!text-xs !w-[10px]  !items-center"
+              />
+            {t("labels:download_document")}
+          </Button>
         );
       },
     },
@@ -203,10 +189,9 @@ const Language = () => {
         return (
           <Col className="whitespace-nowrap !text-center">
             <Tooltip title="Edit Language">
-              <img
-                src={EditIcon}
-                alt="Edit Icon"
-                className=" !w-[12px] !text-center !text-sm cursor-pointer"
+              <Button
+                type="text"
+                className="app-btn-icon"
                 onClick={() => {
                   navigate(
                     `/dashboard/language/language-settings?k=${record.id}&n=${
@@ -216,11 +201,30 @@ const Language = () => {
                     }`
                   );
                 }}
-              />
+              >
+                <Content className=" flex justify-center align-items-center">
+                  <img
+                    src={EditIcon}
+                    alt="Edit Icon"
+                    className=" !w-[12px] !text-center !text-sm cursor-pointer"
+                  />
+                </Content>
+              </Button>
             </Tooltip>
           </Col>
         );
       },
+    },
+  ];
+
+  const items = [
+    {
+      key: 1,
+      label: `${t("labels:get_frontend_support_template")}`,
+    },
+    {
+      key: 2,
+      label: `${t("labels:get_backend_support_template")}`,
     },
   ];
 
@@ -380,52 +384,92 @@ const Language = () => {
     window.scrollTo(0, 0);
   }, [searchParams]);
 
+  const downloadBEKeysFile = () => {
+    // setIsSpinningForBEUpload(true);
+    MarketplaceServices.findMedia(downloadBackendKeysAPI, {
+      "is-format": 1,
+    })
+      .then(function (response) {
+        // setIsSpinningForBEUpload(false);
+        console.log(
+          "Server Response from DocumentTemplateDownload Function: ",
+          response.data
+        );
+        const fileURL = window.URL.createObjectURL(response.data);
+        let alink = document.createElement("a");
+        alink.href = fileURL;
+        alink.download = "message_format.csv";
+        alink.click();
+      })
+      .catch((error) => {
+        // setIsSpinningForBEUpload(false);
+        console.log(
+          "Server error from DocumentTemplateDownload Function ",
+          error.response
+        );
+      });
+  };
+
+  const handleOnclickForDownloadDocument = (e) => {
+    {
+      e.key == 1
+        ? findAllSupportDocumentTemplateDownload(1, null)
+        : downloadBEKeysFile();
+    }
+  };
+
   return (
     <Content>
       <Content>
         <HeaderForTitle
           title={
-            <Content className="flex">
-              <Content className="!w-[80%]">
-                <Title level={3} className="!font-normal">
-                  {t("labels:Languages")}
-                </Title>
-              </Content>
-              <Content className="!w-[20%] text-right">
-                <>
-                  <Content className="!flex !justify-end">
-                    <Button
-                      className="app-btn-secondary mr-2 !flex !justify-items-center"
-                      onClick={() =>
-                        findAllSupportDocumentTemplateDownload(1, "en")
-                      }
-                    >
-                      <img
-                        src={tableDropDownArrow}
-                        className="!text-xs !w-4 my-1 mr-1 !items-center"
-                      />
-                      <div className=" !mr-[10px]">
-                        Download Support Document Template
-                      </div>
-                    </Button>
-                    <Button
-                      className="app-btn-primary !flex !justify-items-center"
-                      onClick={() =>
-                        navigate("/dashboard/language/language-settings")
-                      }
-                    >
-                      <img
-                        src={plusIcon}
-                        alt="plusIconWithAddLanguage"
-                        className="!text-xs !w-3 my-1 mr-2 !items-center"
-                      />
-                      <div className="mr-[10px]">
-                        {t("labels:add_language")}
-                      </div>
-                    </Button>
-                  </Content>
-                </>
-              </Content>
+            <Content className="">
+              <Title level={3} className="!font-normal">
+                {t("labels:Languages")}
+              </Title>
+            </Content>
+          }
+          titleContent={
+            <Content className=" !flex items-center !justify-end gap-3">
+              {/* <Button
+                className="app-btn-secondary"
+                onClick={() => findAllSupportDocumentTemplateDownload(1, "en")}
+              >
+                <Content className=" flex gap-2">
+                  <img
+                    src={tableDropDownArrow}
+                    className=" !w-4 !items-center"
+                  />
+
+                  {t("labels:download_support_document_template")}
+                </Content>
+              </Button> */}
+              <Dropdown
+                menu={{
+                  items,
+                  onClick: handleOnclickForDownloadDocument,
+                }}
+              >
+                <a onClick={(e) => e.preventDefault()}>
+                  <Space>
+                    {t("labels:download_support_document_template")}
+                    <img src={DropdownIcon} className="!w-3" />
+                  </Space>
+                </a>
+              </Dropdown>
+              <Button
+                className="app-btn-primary flex align-items-center"
+                onClick={() =>
+                  navigate("/dashboard/language/language-settings")
+                }
+              >
+                <img
+                  src={plusIcon}
+                  alt="plusIconWithAddLanguage"
+                  className=" !w-3 mr-2 items-center"
+                />
+                <div className="mr-[10px]">{t("labels:add_language")}</div>
+              </Button>
             </Content>
           }
         />

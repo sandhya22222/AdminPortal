@@ -49,14 +49,15 @@ const Header2 = () => {
   );
 
   const [storeSelectedLngCode, setStoreSelectedLngCode] = useState(
-    selectedLanguage && selectedLanguage.dm_language_code
+    selectedLanguage && selectedLanguage.language_code
   );
+
   const languageItems = [];
   if (storeLanguages && storeLanguages.length > 1) {
     storeLanguages.forEach((element) => {
       const languageItem = {};
-      languageItem["key"] = element.dm_language_code;
-      languageItem["label"] = element.language_name;
+      languageItem["key"] = element.language_code;
+      languageItem["label"] = element.language;
       languageItems.push(languageItem);
     });
   }
@@ -101,45 +102,45 @@ const Header2 = () => {
   };
 
   const handleLanguageClick = (e) => {
-    Cookies.set("dmaplng", e.key);
-    localStorage.setItem("dmaplng", e.key);
+    // Cookies.set("mpaplng", e.key);
+    localStorage.setItem("mpaplng", e.key);
     setStoreSelectedLngCode(e.key);
     dispatch(
       fnSelectedLanguage(
-        storeLanguages.find((item) => item.dm_language_code === e.key)
+        storeLanguages.find((item) => item.language_code === e.key)
       )
     );
+    document.body.style.direction = util
+      .getSelectedLanguageDirection()
+      ?.toLowerCase();
     navigate(0);
   };
 
   useEffect(() => {
-    setStoreSelectedLngCode(
-      selectedLanguage && selectedLanguage.dm_language_code
-    );
+    setStoreSelectedLngCode(selectedLanguage && selectedLanguage.language_code);
   }, [selectedLanguage]);
 
   return (
     <Content>
       <Header className="fixed z-20 top-0 p-0 !h-12 w-full bg-white drop-shadow-md">
-        <Content className="px-3 !py-2 !h-12 flex !justify-between ">
+        <Content className="px-3 !py-2 !h-12 flex !justify-between  items-center">
           {/* Left content which displays brand logo and other stuffs */}
           <Content className="!inline-block text-left self-center">
             <a href="/dashboard">
-              <Image
-                // width={180}
-                height={32}
+              <img
+                //width={180}
                 preview={false}
                 src={marketPlaceLogo}
-                className="antImage"
+                className="!h-[32px]"
               />
             </a>
           </Content>
           {/* Center content to display any item if required */}
           <Content className="!inline-block text-center self-center"></Content>
           {/* Right content to display user menus, login icon, language icon and other stuffs */}
-          <Content className="!inline-block text-right self-center">
+          <Content className="flex flex-row justify-end items-center gap-2">
             {/* Display user dropdown if user is logged in otherwise display login icon */}
-            {auth.isAuthenticated ? (
+            {auth.isAuthenticated && (
               <Dropdown
                 menu={{
                   items: userItems,
@@ -155,22 +156,15 @@ const Header2 = () => {
                     src={AdminIcon}
                     className="!h-8 absolute bottom-[-2px] left-[-30px]"
                   /> */}
-                  <Content className="ml-2 mr-1 !flex !items-center">
-                    <Text className="text-lg text-slate-600 pr-1">Admin</Text>
-                    <DownOutlined className="text-xs text-slate-600" />
-                  </Content>
+                  <Text className="text-lg text-slate-600 pr-1">
+                    {t("labels:Admin")}
+                  </Text>
+                  <DownOutlined className="text-xs text-slate-600" />
                 </Paragraph>
               </Dropdown>
-            ) : (
-              <></>
-              // <Tooltip title="Login">
-              //   <Paragraph className="inline-block mb-0 cursor-pointer">
-              //     <LoginOutlined className="text-base text-slate-600" />
-              //   </Paragraph>
-              // </Tooltip>
             )}
-            {/* Display language dropdown only if store has more than 1 language. */}
-            {/* {auth.isAuthenticated && languageItems.length > 0 ? (
+            {/* Display language dropdown only if store has more than 1 language.  */}
+            {languageItems && languageItems.length > 0 && (
               <Dropdown
                 menu={{
                   items: languageItems,
@@ -179,15 +173,16 @@ const Header2 = () => {
                   onClick: handleLanguageClick,
                 }}
                 arrow
-                className="header-text-color cursor-pointer ml-3"
+                className="header-text-color cursor-pointer"
               >
-                <Paragraph className="inline-block mb-0">
-                  <TranslationOutlined className=" header-text-color text-base headerIcon !h-[24px]" />
+                <Paragraph className="!mb-0">
+                  <TranslationOutlined
+                    className="header-text-color"
+                    style={{ fontSize: "24px" }}
+                  />
                 </Paragraph>
               </Dropdown>
-            ) : (
-              <></>
-            )} */}
+            )}
           </Content>
         </Content>
       </Header>

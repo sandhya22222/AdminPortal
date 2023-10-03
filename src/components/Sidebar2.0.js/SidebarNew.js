@@ -194,16 +194,16 @@ const SidebarNew = () => {
                 ))}
               </Menu>
             </Spin>
-            <Divider
-              width={50}
-              style={{
-                background: "#FFFFFF",
-                opacity: "0.55",
-                alignSelf: "stretch",
-                margin: "0px",
-                marginTop: "50px",
-              }}
-            />
+            <Content className="justify-center self-center px-[8px] items-center">
+              <Divider
+                style={{
+                  background: "#FFFFFF",
+                  opacity: "0.55",
+                  margin: "0px",
+                  marginTop: "50px",
+                }}
+              />
+            </Content>
             <Button
               type="text"
               icon={

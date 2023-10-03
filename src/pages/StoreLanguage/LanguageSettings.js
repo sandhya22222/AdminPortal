@@ -42,7 +42,7 @@ function LanguageSettings() {
                 languageName !== undefined &&
                 languageName !== null
                   ? languageName
-                  : "Add Language"}
+                  : `${t("labels:add_language")}`}
               </Title>
               {/**
                * Here below we can render the right side part of the header which renders the status and to delete the language
@@ -74,7 +74,7 @@ function LanguageSettings() {
       <Content className="p-3 mt-[7rem] !min-h-screen">
         <Content className="!bg-white">
           <Title level={4} className="p-3 !m-0">
-            Language Details
+            {t("labels:language_details")}
           </Title>
           <Divider className="!m-0" />
           <Content className="p-3">

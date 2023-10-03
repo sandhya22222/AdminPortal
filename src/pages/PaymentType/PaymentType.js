@@ -8,31 +8,6 @@ import { useTranslation } from "react-i18next";
 const { Content } = Layout;
 const { Title } = Typography;
 
-const paymentTypesData = [
-  {
-    count: 3,
-    page_number: 1,
-    page_limit: 20,
-    data: [
-      {
-        id: 1,
-        payment_type: "Cash On Delivery",
-        is_payment_gateway: false,
-      },
-      {
-        id: 2,
-        payment_type: "Online Payment",
-        is_payment_gateway: true,
-      },
-      // {
-      //   id: 3,
-      //   payment_type: "Purchase Order",
-      //   is_payment_gateway: true,
-      // },
-    ],
-  },
-];
-
 const PaymentType = () => {
   usePageTitle("Payment Type");
   const { t } = useTranslation();
@@ -49,6 +24,31 @@ const PaymentType = () => {
       render: (text, record) => {
         return <>{record.name}</>;
       },
+    },
+  ];
+
+  const paymentTypesData = [
+    {
+      count: 3,
+      page_number: 1,
+      page_limit: 20,
+      data: [
+        {
+          id: 1,
+          payment_type: `${t("labels:cash_on_delivery")}`,
+          is_payment_gateway: false,
+        },
+        {
+          id: 2,
+          payment_type: `${t("labels:online_payment")}`,
+          is_payment_gateway: true,
+        },
+        // {
+        //   id: 3,
+        //   payment_type: "Purchase Order",
+        //   is_payment_gateway: true,
+        // },
+      ],
     },
   ];
 
