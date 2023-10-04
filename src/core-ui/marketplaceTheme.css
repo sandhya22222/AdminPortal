@@ -9,7 +9,6 @@
   --mp-input-field-focused-color: #7d3192;
   --mp-input-field-outer-glow-color: #fae9ff;
   --mp-mandatory-symbol-color: #ff4d4f;
-  
 
   --mp-steps-process-background-color: #fae9ff;
 
@@ -69,6 +68,7 @@
   --mp-danger-secondary-text-color-d: #d9d9d9;
   --mp-danger-secondary-text-color-h: #ff7875;
 
+  --mp-danger-color: #ff4d4f;
   --mp-success-color: #0246bb;
   --mp-success-color-h: #0246bb;
   --mp-warning-color: #0246bb;

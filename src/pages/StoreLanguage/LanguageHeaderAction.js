@@ -190,7 +190,7 @@ function LanguageHeaderAction({
   };
 
   return (
-    <Content className="!flex gap-3">
+    <Content className="!flex gap-3 items-center">
       {/* This content is related to language status */}
       <Content className="">
         <Space direction="horizontal">
@@ -229,7 +229,7 @@ function LanguageHeaderAction({
       <Content>
         {!isMakeAsDefault ? (
           <Button
-            className="bg-[#FF4D4F] text-white !flex ml-2 !justify-items-center !items-center"
+            className="app-btn-danger  flex gap-2 !justify-items-center !items-center"
             onClick={() => {
               openDeleteModal(languageId);
             }}
@@ -237,9 +237,9 @@ function LanguageHeaderAction({
             <img
               src={crossIcon}
               alt="plusIconWithAddLanguage"
-              className="!flex !mr-2 !items-center"
+              className=""
             />
-            <div className="mr-[10px]">{t("labels:remove_language_label")}</div>
+            <div className="">{t("labels:remove_language_label")}</div>
           </Button>
         ) : null}
       </Content>
