@@ -1,12 +1,26 @@
 //! Import libraries & components
 import React, { useEffect, useState } from "react";
-import { Layout, Typography, Skeleton, Image, Button } from "antd";
+import {
+  Layout,
+  Typography,
+  Skeleton,
+  Image,
+  Button,
+  Table,
+  Tag,
+  Tooltip,
+  Tabs,
+} from "antd";
 import { useNavigate } from "react-router-dom";
 import { Profit, Positive, Payment } from "../../constants/media";
 import { toast } from "react-toastify";
 
 import { MdStore } from "react-icons/md";
 import { useDispatch } from "react-redux";
+
+import axios from "axios";
+import { StarTwoTone, ReloadOutlined } from "@ant-design/icons";
+import { useQuery } from "react-query";
 
 //! Import CSS libraries
 
@@ -25,13 +39,17 @@ import HeaderForTitle from "../../components/header/HeaderForTitle";
 import { useAuth } from "react-oidc-context";
 import { useTranslation } from "react-i18next";
 import MarketplaceToaster from "../../util/marketplaceToaster";
+import {
+  fnSelectedLanguage,
+  fnStoreLanguage,
+  fnDefaultLanguage,
+} from "../../services/redux/actions/ActionStoreLanguage";
 
-
-const instance = axios.create();
 //! Get all required details from .env file
 const storeAdminDashboardAPI =
   process.env.REACT_APP_STORE_ADMIN_DASHBOARD_DATA_API;
 const currencySymbol = process.env.REACT_APP_CURRENCY_SYMBOL;
+const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API;
 
 const dm4sightBaseURL = process.env.REACT_APP_4SIGHT_BASE_URL;
 const dm4sightGetWidgetIdAPI = process.env.REACT_APP_4SIGHT_GETWIDGETID_API;
@@ -40,17 +58,12 @@ const dm4sightGetDetailsByQueryAPI =
   process.env.REACT_APP_4SIGHT_GETDETAILSBYQUERY_API;
 const dm4sightClientID = process.env.REACT_APP_4SIGHT_CLIENT_ID;
 
-import {
-  fnSelectedLanguage,
-  fnStoreLanguage,
-  fnDefaultLanguage,
-} from "../../services/redux/actions/ActionStoreLanguage";
-
 // const auth = getAuth.toLowerCase() === "true";
 
 //! Destructure the components
 const { Title, Text, Link } = Typography;
 const { Content } = Layout;
+const instance = axios.create();
 
 const Dashboard = () => {
   const auth = useAuth();
