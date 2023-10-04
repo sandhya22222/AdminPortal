@@ -82,6 +82,14 @@
   background-color: var(--mp-primary-color) !important;
 }
 
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+  border-color: var(--mp-primary-color) !important;
+  color: var(--mp-primary-color) !important;
+}
+
+.ant-radio-button-wrapper:hover {
+  color: var(--mp-brand-color-h) !important;
+}
 .ant-menu-item-selected {
   background-color: var(--mp-sidebar-menu-selected) !important;
 }
