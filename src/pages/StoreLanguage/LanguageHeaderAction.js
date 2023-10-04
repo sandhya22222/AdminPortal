@@ -18,6 +18,8 @@ import MarketplaceServices from "../../services/axios/MarketplaceServices";
 // import MarketplaceAppConfig from "../../util/MarketplaceMutlitenancy";
 import MarketplaceToaster from "../../util/marketplaceToaster";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { fnStoreLanguage } from "../../services/redux/actions/ActionStoreLanguage";
 const { Content } = Layout;
 const { Title, Text } = Typography;
 const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API;
@@ -29,8 +31,13 @@ function LanguageHeaderAction({
   languageStatus,
   languageDefault,
 }) {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
+
+  const availableLanguages = useSelector(
+    (state) => state.reducerStoreLanguage.storeLanguage
+  );
   const [isDeleteLanguageModalOpen, setIsDeleteLanguageModalOpen] =
     useState(false);
   const [islanguageDeleting, setIslanguageDeleting] = useState(false);
@@ -85,6 +92,32 @@ function LanguageHeaderAction({
       language_id: languageId,
     })
       .then((response) => {
+        if (response.data && response.data.response_body) {
+          if (
+            parseInt(response.data && response.data.response_body[0].status) ===
+            1
+          ) {
+            availableLanguages.push(response.data.response_body[0]);
+            dispatch(fnStoreLanguage(availableLanguages));
+          } else if (
+            parseInt(response.data && response.data.response_body[0].status) ===
+            2
+          ) {
+            dispatch(
+              fnStoreLanguage(
+                availableLanguages &&
+                  availableLanguages.length > 0 &&
+                  availableLanguages.filter(
+                    (ele) =>
+                      parseInt(ele.id) !==
+                      parseInt(
+                        response.data && response.data.response_body[0].id
+                      )
+                  )
+              )
+            );
+          }
+        }
         setSwitchStatus(changeSwitchStatus);
         closeModal();
         setIsLoading(false);
