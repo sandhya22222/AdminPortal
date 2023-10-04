@@ -79,21 +79,8 @@ const Header2 = () => {
   ];
 
   const handleMenuClick = (e) => {
-    // console.log("click", e);
     if (e.key === "logout") {
-      // const refreshToken = sessionStorage.getItem("refresh_token");
-      // MarketplaceServices.save(umsBaseUrl + logoutAPI, {
-      //   refresh_token: refreshToken,
-      // })
-      //   .then((response) => {
-      //     // util.logoutUser();
-      //     // sessionStorage.clear();
-      //     // window.location = "/";
-      //   })
-      //   .catch((error) => {})
-      //   .finally(() => {
-      //     util.logoutUser();
-      //   });
+      util.removeIsAuthorized();
       void auth.signoutRedirect();
     }
     if (e.key === "profile") {
@@ -103,7 +90,8 @@ const Header2 = () => {
 
   const handleLanguageClick = (e) => {
     // Cookies.set("mpaplng", e.key);
-    localStorage.setItem("mpaplng", e.key);
+    // localStorage.setItem("mpaplng", e.key);
+    util.setUserSelectedLngCode(e.key);
     setStoreSelectedLngCode(e.key);
     dispatch(
       fnSelectedLanguage(
@@ -149,7 +137,8 @@ const Header2 = () => {
                 placement="bottom"
                 arrow
                 trigger={["click"]}
-                className="cursor-pointer"
+                className="cursor-pointer header-text-color"
+                overlayStyle={{ position: "fixed", zIndex: 20 }}
               >
                 <Paragraph className="inline-block !mb-0 relative">
                   {/* <Avatar
@@ -171,11 +160,18 @@ const Header2 = () => {
                   selectable: true,
                   defaultSelectedKeys: [storeSelectedLngCode],
                   onClick: handleLanguageClick,
+                  style: { width: 150, overflowX: "auto", display: "grid" },
                 }}
+                // style={{ whiteSpace: "nowrap" }}
+                trigger={["click"]}
                 arrow
                 className="header-text-color cursor-pointer"
+                overlayStyle={{
+                  position: "fixed",
+                  zIndex: 20,
+                }}
               >
-                <Paragraph className="!mb-0">
+                <Paragraph className="!mb-0 ">
                   <TranslationOutlined
                     className="header-text-color"
                     style={{ fontSize: "24px" }}
