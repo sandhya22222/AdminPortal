@@ -203,6 +203,17 @@ function LanguageHeaderAction({
           setIsDeleteLanguageModalOpen(false);
         }
         setShowSuccessModal(true);
+        console.log("availableLanguages", availableLanguages);
+        let copyAvailableLanguage = [...availableLanguages];
+
+        let filteredDeleteData =
+          copyAvailableLanguage &&
+          copyAvailableLanguage.length > 0 &&
+          copyAvailableLanguage.filter(
+            (ele) => parseInt(ele.id) !== parseInt(languageId)
+          );
+        dispatch(fnStoreLanguage(filteredDeleteData));
+        console.log("delete response", filteredDeleteData);
         // disabling spinner
         setIslanguageDeleting(false);
         MarketplaceToaster.showToast(response);
@@ -267,11 +278,7 @@ function LanguageHeaderAction({
               openDeleteModal(languageId);
             }}
           >
-            <img
-              src={crossIcon}
-              alt="plusIconWithAddLanguage"
-              className=""
-            />
+            <img src={crossIcon} alt="plusIconWithAddLanguage" className="" />
             <div className="">{t("labels:remove_language_label")}</div>
           </Button>
         ) : null}

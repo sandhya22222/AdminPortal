@@ -9,10 +9,10 @@ const findAll = (baseURL, pathParams, isLngSpecific) => {
 
   let configParams = {};
   configParams["page-number"] = -1;
-
-  if (isLngSpecific) {
-    configParams["language-code"] = util.getSelectedLanguageCode();
-  }
+  configParams["language-code"] = util.getUserSelectedLngCode();
+  // if (isLngSpecific) {
+  //   configParams["language-code"] = util.getUserSelectedLngCode();
+  // }
 
   if (pathParams !== null) {
     configParams = { ...pathParams, ...configParams };
@@ -26,10 +26,11 @@ const findAllWithoutPage = (baseURL, pathParams, isLngSpecific) => {
   //If requiredLngRecord is true, set selected language by default
 
   let configParams = {};
+  configParams["language-code"] = util.getUserSelectedLngCode();
 
-  if (isLngSpecific) {
-    configParams["language-code"] = util.getSelectedLanguageCode();
-  }
+  // if (isLngSpecific) {
+  //   configParams["language-code"] = util.getUserSelectedLngCode();
+  // }
 
   if (pathParams !== null) {
     configParams = { ...pathParams, ...configParams };
@@ -60,10 +61,11 @@ const findByPage = (baseURL, pathParams, page, limit, isLngSpecific) => {
   let configParams = {};
   configParams["page-number"] = page;
   configParams["page-limit"] = limit;
+  configParams["language-code"] = util.getUserSelectedLngCode();
 
-  if (isLngSpecific) {
-    configParams["language-code"] = util.getSelectedLanguageCode();
-  }
+  // if (isLngSpecific) {
+  //   configParams["language-code"] = util.getUserSelectedLngCode();
+  // }
 
   if (pathParams !== null) {
     configParams = { ...pathParams, ...configParams };
@@ -73,20 +75,33 @@ const findByPage = (baseURL, pathParams, page, limit, isLngSpecific) => {
 };
 
 const save = (baseURL, requestBody, pathParams) => {
-  return http.post(baseURL, requestBody, { params: pathParams });
+  let configParams = {};
+  configParams["language-code"] = util.getUserSelectedLngCode();
+  if (pathParams !== null) configParams = { ...pathParams, ...configParams };
+
+  return http.post(baseURL, requestBody, { params: configParams });
 };
 
 const update = (baseURL, requestBody, pathParams) => {
-  const configRequest = {};
+  let configParams = {};
+  configParams["language-code"] = util.getUserSelectedLngCode();
+  if (pathParams !== null) configParams = { ...pathParams, ...configParams };
 
-  return http.put(baseURL, requestBody, { params: pathParams });
+  return http.put(baseURL, requestBody, { params: configParams });
 };
 
 const remove = (baseURL, pathParams) => {
-  return http.delete(baseURL, { params: pathParams });
+  let configParams = {};
+  configParams["language-code"] = util.getUserSelectedLngCode();
+  if (pathParams !== null) configParams = { ...pathParams, ...configParams };
+
+  return http.delete(baseURL, { params: configParams });
 };
 
 const removeAll = (baseURL) => {
+  let configParams = {};
+  configParams["language-code"] = util.getUserSelectedLngCode();
+
   return http.delete(baseURL);
 };
 

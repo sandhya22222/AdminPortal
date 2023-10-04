@@ -160,7 +160,14 @@ const Header2 = () => {
                   selectable: true,
                   defaultSelectedKeys: [storeSelectedLngCode],
                   onClick: handleLanguageClick,
-                  style: { width: 150, overflowX: "auto", display: "grid" },
+                  style: {
+                    width: 150,
+                    height: 200,
+                    // lineHeight: 100,
+                    overflow: "auto",
+                    display: "grid",
+                    // listHeight: 130,
+                  },
                 }}
                 // style={{ whiteSpace: "nowrap" }}
                 trigger={["click"]}
