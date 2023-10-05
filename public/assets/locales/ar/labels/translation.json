@@ -93,5 +93,11 @@
   "frontend_keys":"مفاتيح الواجهة الأمامية",
   "backend_keys":"مفاتيح الخلفية",
   "get_frontend_support_template" :"احصل على قالب دعم الواجهة الأمامية",
-  "get_backend_support_template" :"احصل على قالب دعم الواجهة الخلفية"
+  "get_backend_support_template" :"احصل على قالب دعم الواجهة الخلفية",
+  "header_content_of_the_page":"محتوى رأس الصفحة",
+  "main_content_of_the_page":"المحتوى الرئيسي للصفحة",
+  "button1":"زر +1",
+  "button2":"زر2",
+  "button3":"زر3",
+  "footer_content_of_the_page":"محتوى تذييل الصفحة"
 }

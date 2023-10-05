@@ -327,7 +327,7 @@ function LanguageDocUpload({ langCode }) {
                 }
               >
                 <Button
-                  className={"flex items-center"}
+                  className={"app-btn-secondary flex items-center"}
                   icon={<UploadOutlined />}
                   disabled={
                     langCode !== undefined && langCode !== null ? false : true
@@ -338,8 +338,9 @@ function LanguageDocUpload({ langCode }) {
               </Upload>
             </Spin>
             {/* {uploadSuccess ? ( */}
-            <Content
-              className="mt-2 inline-flex cursor-pointer gap-1"
+            <Button
+              type="text"
+              className="mt-2 app-btn-text flex items-center cursor-pointer gap-1"
               onClick={() => setChooseDownloadModalVisible(true)}
             >
               <img
@@ -347,10 +348,8 @@ function LanguageDocUpload({ langCode }) {
                 alt="download icon"
                 className="!text-xs !w-[10px] !items-center"
               />
-              <div className="text-[#0246bb] !ml-[8px]">
-                {t("messages:download_current_document")}
-              </div>
-            </Content>
+              {t("messages:download_current_document")}
+            </Button>
             {/* ) : (
               ""
             )} */}
@@ -440,7 +439,7 @@ function LanguageDocUpload({ langCode }) {
                 className="app-btn-secondary"
               >
                 <Button
-                  className={"flex items-center"}
+                  className={"app-btn-secondary flex items-center"}
                   icon={<UploadOutlined />}
                   disabled={
                     langCode !== undefined && langCode !== null ? false : true
@@ -450,19 +449,18 @@ function LanguageDocUpload({ langCode }) {
                 </Button>
               </Upload>
             </Spin>
-            <Content
-              className="mt-2 inline-flex cursor-pointer gap-1"
+            <Button
+              type="text"
+              className="mt-2 app-btn-text cursor-pointer gap-1"
               onClick={() => downloadBEKeysFile(2, langCode)}
             >
               <img
                 src={DownloadIcon}
                 alt="download icon"
-                className="!text-xs !w-[10px] !items-center"
+                className="!text-xs !w-[10px] flex items-center"
               />
-              <div className="text-[#0246bb] !ml-[8px]">
-                {t("messages:download_current_document")}
-              </div>
-            </Content>
+              {t("messages:download_current_document")}
+            </Button>
           </Content>
         </Content>
       </Content>

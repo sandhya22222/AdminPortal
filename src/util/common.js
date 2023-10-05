@@ -3,9 +3,12 @@ import Cookies from "js-cookie";
 const storeName = process.env.REACT_APP_STORE_NAME;
 const baseURL = process.env.REACT_APP_BASE_URL;
 
-const setUserSelectedLngCode = (value) => {
-  window.localStorage.setItem("mpaplng", value);
-  Cookies.set("mpaplng", value);
+const isDev = () => {
+  return process.env.NODE_ENV === "development" ? true : false;
+};
+
+const getPermissionData = () => {
+  return window.sessionStorage.getItem("permissions_data");
 };
 
 const getReduxPersistRoot = () => {
@@ -34,30 +37,10 @@ const logoutUser = () => {
   window.location = "/";
 };
 
-const getAuthToken = () => {
-  return window.sessionStorage.getItem("access_token");
-};
-
-const getRefreshToken = () => {
-  return window.sessionStorage.getItem("refresh_token");
-};
-
-const setAuthToken = (authToken) => {
-  window.sessionStorage.setItem("access_token", authToken);
-};
-
-const setRefreshToken = (refreshToken) => {
-  window.sessionStorage.setItem("refresh_token", refreshToken);
-};
-
-const setIsLoggedIn = (value) => {
-  window.sessionStorage.setItem("is_loggedIn", value);
-};
-
 const getSelectedLanguageCode = () => {
-  let userSelectedLang = Cookies.get("dmsmplng");
+  let userSelectedLang = Cookies.get("mpaplng");
   if (userSelectedLang === undefined) {
-    userSelectedLang = localStorage.getItem("dmsmplng");
+    userSelectedLang = localStorage.getItem("mpaplng");
   }
   return userSelectedLang;
 };
@@ -79,7 +62,7 @@ const getUserSelectedLngCode = () => {
       // allStoreLngs && JSON.parse(allStoreLngs).reducerSelectedLanguage;
       userSelectedLng =
         userSelectedLng && JSON.parse(userSelectedLng).selectedLanguage;
-
+      console.log("userSelectedLng", userSelectedLng);
       if (userSelectedLng) {
         if (userSelectedLng.language_code) {
           setUserSelectedLngCode(userSelectedLng.language_code);
@@ -105,6 +88,40 @@ const getUserSelectedLngCode = () => {
     setUserSelectedLngCode("en");
     return "en";
   }
+};
+
+/**
+ * Setter Functions
+ */
+
+const setAuthToken = (authToken) => {
+  window.sessionStorage.setItem("access_token", authToken);
+};
+
+const setRefreshToken = (refreshToken) => {
+  window.sessionStorage.setItem("refresh_token", refreshToken);
+};
+
+const setIsLoggedIn = (value) => {
+  window.sessionStorage.setItem("is_loggedIn", value);
+};
+
+const setClient = (value) => {
+  window.sessionStorage.setItem("client", value);
+};
+
+const setPermissionData = (value) => {
+  window.sessionStorage.setItem("permissions_data", value);
+};
+
+const setIsAuthorized = (value) => {
+  window.sessionStorage.setItem("isAuthorized", value);
+};
+
+const setUserSelectedLngCode = (value) => {
+  console.log("value1234", value);
+  window.localStorage.setItem("mpaplng", value);
+  Cookies.set("mpaplng", value);
 };
 
 const getSelectedLanguageDirection = () => {
@@ -179,7 +196,51 @@ const getStoreSupportedLngs = () => {
   }
 };
 
+const getStoreDefaultLngCode = () => {
+  try {
+    const allStoreLngs = getReduxPersistRoot();
+    let defaultStoreLng = allStoreLngs && allStoreLngs.reducerDefaultLanguage;
+    defaultStoreLng =
+      defaultStoreLng && JSON.parse(defaultStoreLng).defaultLanguage;
+
+    if (defaultStoreLng) {
+      if (defaultStoreLng.language_code) {
+        return defaultStoreLng.language_code;
+      } else {
+        return "en";
+      }
+    } else return "en";
+  } catch (error) {
+    return "en";
+  }
+};
+
+/**
+ * Getter Functions
+ */
+
+const getAuthToken = () => {
+  return window.sessionStorage.getItem("access_token");
+};
+
+const getRefreshToken = () => {
+  return window.sessionStorage.getItem("refresh_token");
+};
+
+/**
+ * Remove Functions
+ */
+
+const removeIsAuthorized = () => {
+  window.sessionStorage.removeItem("isAuthorized");
+};
+
+const removeAuthToken = () => {
+  window.sessionStorage.removeItem("access_token");
+};
+
 const util = {
+  isDev,
   hasKeyCloakData,
   hasUserLoggedIn,
   logoutUser,
@@ -196,6 +257,14 @@ const util = {
   getReduxPersistRoot,
   getSelectedLanguageDirection,
   getUserSelectedLngCode,
+  getStoreDefaultLngCode,
+  removeIsAuthorized,
+  removeAuthToken,
+  setClient,
+  setPermissionData,
+  setIsAuthorized,
+  getPermissionData,
+  setUserSelectedLngCode,
 };
 
 export default util;

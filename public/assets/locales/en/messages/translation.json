@@ -54,5 +54,7 @@
     "download_successful":"Download successful",
     "document_description":"Please upload a language support document containing translated values, and will use it to update the respective portals with the new language content.",
     "frontend_document":"Front-end keys refer to a set of values specially intended for use within the user interface (UI) of the application.",
-    "backend_document":"Backend keys encompass a collection of values that are exclusively intended for use within the backend infrastructure of the application."
+    "backend_document":"Backend keys encompass a collection of values that are exclusively intended for use within the backend infrastructure of the application.",
+    "delete_confirmation_message":"Are you absolutely sure you want to delete the image? This action cannot be undone.",
+    "confirm_image_deletion":"Confirm Image Deletion"
 }

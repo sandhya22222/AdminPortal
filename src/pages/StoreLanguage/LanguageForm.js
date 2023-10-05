@@ -1,7 +1,9 @@
 import { Button, Col, Input, Layout, Radio, Row, Typography, Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
 import validator from "validator";
+import { fnStoreLanguage } from "../../services/redux/actions/ActionStoreLanguage";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import MarketplaceToaster from "../../util/marketplaceToaster";
 import util from "../../util/common";
@@ -21,6 +23,7 @@ const LanguageForm = ({
   languageName,
 }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [txtLanguage, setTxtLanguage] = useState("");
   const [txtLanguageCode, setTxtLanguageCode] = useState("");
   const [scriptDirection, setScriptDirection] = useState("LTR");
@@ -36,6 +39,10 @@ const LanguageForm = ({
 
   const { t } = useTranslation();
   const { Content } = Layout;
+
+  const availableLanguages = useSelector(
+    (state) => state.reducerStoreLanguage.storeLanguage
+  );
 
   //! Language post function
   const handleServerCall = () => {
@@ -85,7 +92,6 @@ const LanguageForm = ({
                 "Language API put call response",
                 res.data.response_body[0]
               );
-              MarketplaceToaster.showToast(res);
               if (res.status === 201) {
                 if (res.data) {
                   MarketplaceToaster.showToast(res);
@@ -115,7 +121,7 @@ const LanguageForm = ({
             .catch((error) => {
               // disabling spinner
               setIsLoading(false);
-              console.log("error response of put language API", error.response);
+              console.log("error response of put language API", error);
 
               MarketplaceToaster.showToast(error.response);
             });
@@ -210,7 +216,14 @@ const LanguageForm = ({
           "server Success response from language get API call",
           response.data
         );
+
         let serverLanguageData = response.data.response_body;
+        let filteredServerLangData =
+          serverLanguageData &&
+          serverLanguageData.length > 0 &&
+          serverLanguageData.filter((ele) => parseInt(ele.status) === 1);
+        dispatch(fnStoreLanguage(filteredServerLangData));
+
         if (serverLanguageData && serverLanguageData.length > 0) {
           const filteredLanguageData = serverLanguageData.filter(
             (ele) => ele.language_code === languageCode

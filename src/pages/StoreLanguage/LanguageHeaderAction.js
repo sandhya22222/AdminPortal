@@ -18,6 +18,8 @@ import MarketplaceServices from "../../services/axios/MarketplaceServices";
 // import MarketplaceAppConfig from "../../util/MarketplaceMutlitenancy";
 import MarketplaceToaster from "../../util/marketplaceToaster";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { fnStoreLanguage } from "../../services/redux/actions/ActionStoreLanguage";
 const { Content } = Layout;
 const { Title, Text } = Typography;
 const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API;
@@ -29,8 +31,13 @@ function LanguageHeaderAction({
   languageStatus,
   languageDefault,
 }) {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
+
+  const availableLanguages = useSelector(
+    (state) => state.reducerStoreLanguage.storeLanguage
+  );
   const [isDeleteLanguageModalOpen, setIsDeleteLanguageModalOpen] =
     useState(false);
   const [islanguageDeleting, setIslanguageDeleting] = useState(false);
@@ -85,6 +92,32 @@ function LanguageHeaderAction({
       language_id: languageId,
     })
       .then((response) => {
+        if (response.data && response.data.response_body) {
+          if (
+            parseInt(response.data && response.data.response_body[0].status) ===
+            1
+          ) {
+            availableLanguages.push(response.data.response_body[0]);
+            dispatch(fnStoreLanguage(availableLanguages));
+          } else if (
+            parseInt(response.data && response.data.response_body[0].status) ===
+            2
+          ) {
+            dispatch(
+              fnStoreLanguage(
+                availableLanguages &&
+                  availableLanguages.length > 0 &&
+                  availableLanguages.filter(
+                    (ele) =>
+                      parseInt(ele.id) !==
+                      parseInt(
+                        response.data && response.data.response_body[0].id
+                      )
+                  )
+              )
+            );
+          }
+        }
         setSwitchStatus(changeSwitchStatus);
         closeModal();
         setIsLoading(false);
@@ -170,6 +203,17 @@ function LanguageHeaderAction({
           setIsDeleteLanguageModalOpen(false);
         }
         setShowSuccessModal(true);
+        console.log("availableLanguages", availableLanguages);
+        let copyAvailableLanguage = [...availableLanguages];
+
+        let filteredDeleteData =
+          copyAvailableLanguage &&
+          copyAvailableLanguage.length > 0 &&
+          copyAvailableLanguage.filter(
+            (ele) => parseInt(ele.id) !== parseInt(languageId)
+          );
+        dispatch(fnStoreLanguage(filteredDeleteData));
+        console.log("delete response", filteredDeleteData);
         // disabling spinner
         setIslanguageDeleting(false);
         MarketplaceToaster.showToast(response);
@@ -190,7 +234,7 @@ function LanguageHeaderAction({
   };
 
   return (
-    <Content className="!flex gap-3">
+    <Content className="!flex gap-3 items-center">
       {/* This content is related to language status */}
       <Content className="">
         <Space direction="horizontal">
@@ -229,17 +273,13 @@ function LanguageHeaderAction({
       <Content>
         {!isMakeAsDefault ? (
           <Button
-            className="bg-[#FF4D4F] text-white !flex ml-2 !justify-items-center !items-center"
+            className="app-btn-danger  flex gap-2 !justify-items-center !items-center"
             onClick={() => {
               openDeleteModal(languageId);
             }}
           >
-            <img
-              src={crossIcon}
-              alt="plusIconWithAddLanguage"
-              className="!flex !mr-2 !items-center"
-            />
-            <div className="mr-[10px]">{t("labels:remove_language_label")}</div>
+            <img src={crossIcon} alt="plusIconWithAddLanguage" className="" />
+            <div className="">{t("labels:remove_language_label")}</div>
           </Button>
         ) : null}
       </Content>

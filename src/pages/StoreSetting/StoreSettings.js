@@ -59,7 +59,7 @@ const StoreSettings = () => {
   const [inValidCurrencyIsoCode, setInValidCurrencyIsoCode] = useState(false);
   const [fractionalUnit, setFractionalUnit] = useState("");
   const [inValidFractionalUnit, setInValidFractionalUnit] = useState(false);
-  const [numberToBasic, setNumberToBasic] = useState("");
+  const [numberToBasic, setNumberToBasic] = useState(null);
   const [inValidNumberToBasic, setInValidNumberToBasic] = useState(false);
   const [pageBackgroundColor, setPageBackgroundColor] = useState("#EBEBEB");
   const [pageBgColor, setPageBgColor] = useState("#EBEBEB");
@@ -298,7 +298,7 @@ const StoreSettings = () => {
           setCurrencySymbol("");
           setCurrencyIsoCode("");
           setFractionalUnit("");
-          setNumberToBasic("");
+          setNumberToBasic(null);
           setPageBackgroundColor("#EBEBEB");
           setButtonPrimaryBackgroundColor("#000000");
           setButtonSecondaryBackgroundColor("#000000");
@@ -587,7 +587,7 @@ const StoreSettings = () => {
       currencySymbol === "" &&
       currencyIsoCode == "" &&
       fractionalUnit === "" &&
-      numberToBasic !== ""
+      numberToBasic !== null
     ) {
       count--;
       setInValidFractionalUnit(true);
@@ -603,7 +603,7 @@ const StoreSettings = () => {
       currencySymbol === "" &&
       currencyIsoCode === "" &&
       fractionalUnit !== "" &&
-      numberToBasic !== ""
+      numberToBasic !== null
     ) {
       count--;
       setInValidCurrencySymbol(true);
@@ -618,7 +618,7 @@ const StoreSettings = () => {
       currencySymbol === "" &&
       currencyIsoCode !== "" &&
       fractionalUnit === "" &&
-      numberToBasic !== ""
+      numberToBasic !== null
     ) {
       count--;
       setInValidCurrencySymbol(true);
@@ -648,7 +648,7 @@ const StoreSettings = () => {
       currencySymbol === "" &&
       currencyIsoCode === "" &&
       fractionalUnit !== "" &&
-      numberToBasic !== ""
+      numberToBasic !== null
     ) {
       count--;
       setInValidCurrencySymbol(true);
@@ -663,7 +663,7 @@ const StoreSettings = () => {
       currencySymbol !== "" &&
       currencyIsoCode === "" &&
       fractionalUnit === "" &&
-      numberToBasic !== ""
+      numberToBasic !== null
     ) {
       count--;
       setInValidCurrencyIsoCode(true);
@@ -693,7 +693,7 @@ const StoreSettings = () => {
       currencySymbol === "" &&
       currencyIsoCode !== "" &&
       fractionalUnit === "" &&
-      numberToBasic !== ""
+      numberToBasic !== null
     ) {
       count--;
       setInValidCurrencySymbol(true);

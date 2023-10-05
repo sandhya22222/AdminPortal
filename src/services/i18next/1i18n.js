@@ -1,120 +1,91 @@
-import i18next from "i18next";
+import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import HttpApi from "i18next-http-backend";
-import util from "../../util/common";
 import LanguageDetector from "i18next-browser-languagedetector";
-import Cookies from "js-cookie";
+import Backend from "i18next-http-backend";
+import util from "../../util/common";
 
-//! Reading Redux Data From LocalStorage since we can't use UseSelector Here
-const reduxPersistData = localStorage.getItem("persist:root");
-// console.log("reduxPersistData", reduxPersistData);
+const localesURL = process.env.REACT_APP_LOCALES_URL;
 
-//! getting supported languages from .env file
-// const supportedLngs = JSON.parse(process.env.REACT_APP_SUPPORTED_LNGS);
-
-//! All the supporting languages Store can be Displayed
-let supportedLngs =
-  reduxPersistData && JSON.parse(reduxPersistData).reducerStoreLanguage;
-supportedLngs = supportedLngs && JSON.parse(supportedLngs).storeLanguage;
-
-//!Setting Default Language Code for Application
-let defaultLngCode =
-  reduxPersistData && JSON.parse(reduxPersistData).reducerStoreLanguage;
-// console.log("defaultLngCode1", defaultLngCode);
-defaultLngCode = defaultLngCode && JSON.parse(defaultLngCode).storeLanguage;
-// console.log("defaultLngCode2", defaultLngCode);
-defaultLngCode =
-  defaultLngCode && defaultLngCode.filter((element) => element.is_default);
-// console.log("defaultLngCode3", defaultLngCode);
-defaultLngCode =
-  defaultLngCode && defaultLngCode[0] && defaultLngCode[0].dm_language_code;
+//! Disable all consoles when deployed in production
+console.log("PROFILE:", process.env.NODE_ENV);
+if (!util.isDev()) {
+  console.log = () => {};
+  console.error = () => {};
+  console.debug = () => {};
+  console.info = () => {};
+  console.warn = () => {};
+  console.trace = () => {};
+}
 
 document.body.style.direction = util
   .getSelectedLanguageDirection()
   ?.toLowerCase();
-//* Set default language for the application in the cookie if user preference is not available.
-//! Setting Current language Code for Application
-let currentLanguageCode = Cookies.get("mpaplng");
-if (currentLanguageCode === undefined) {
-  Cookies.set("mpaplng", defaultLngCode);
-  currentLanguageCode = defaultLngCode;
-}
 
-if (currentLanguageCode === undefined) {
-  currentLanguageCode = defaultLngCode;
-  // const supportedLngsArr = [];
-  // supportedLngs.forEach((element) => {
-  //   supportedLngsArr.push(element.iso_code);
-  // });
+// let storeName;
+// try {
+//   const searchParams = new URLSearchParams(window.location.search);
+//   const response = await fetch(configS3URL);
+//   const appConfig = await response.json();
 
-  // let currentLanguageCodeCopy =
-  //   JSON.parse(reduxPersistData).reducerSelectedLanguage;
-  // currentLanguageCodeCopy = JSON.parse(currentLanguageCodeCopy)
-  //   .selectedLanguage[0].language_code;
+//   storeName = util.getStoreName(appConfig, searchParams);
+// } catch (error) {
+//   //Redirect to Error Page
+//   console.log("APPLICATION CONFIGURATION NOT FOUND2");
+// }
 
-  // let defaultLngCodeCopy = JSON.parse(reduxPersistData).reducerDefaultLanguage;
-  // defaultLngCodeCopy =
-  //   JSON.parse(defaultLngCodeCopy).defaultLanguage[0].language_code;
-}
+const getCurrentHost = util.isDev()
+  ? "/assets/locales/{{lng}}/{{ns}}/translation.json"
+  : localesURL;
 
-let supportedLngsArr = [];
-supportedLngs &&
-  supportedLngs.forEach((element) => {
-    supportedLngsArr.push(element.dm_language_code);
-  });
-
-// console.log("supportedLngs from i18n.js", supportedLngs);
-// console.log("currentLanguageCode from i18n.js", currentLanguageCode);
-// console.log("defaultLngCodeCopy from i18n.js", defaultLngCode);
-// console.log("supportedLngsArrCopy from i18n.js", supportedLngsArr);
-//  ['en', 'hi', 'kn']
-
-//! if there is no supportedLngsArr and defaultLngCode from Redux then
-//! setting english to byDefault
-if (supportedLngsArr.length === 0) {
-  supportedLngsArr = ["en"];
-}
-
-if (defaultLngCode === undefined || defaultLngCode === null) {
-  defaultLngCode = "en";
-}
-
-// console.log("defaultLngCodeFinal", defaultLngCode);
-// console.log("supportedLngsArrCopy from i18n.js", supportedLngsArr);
-
-i18next
-  .use(HttpApi)
-  .use(LanguageDetector)
+i18n
+  .use(Backend)
+  .use(new LanguageDetector(null, { lookupLocalStorage: "mpaplng" }))
   .use(initReactI18next)
   .init({
     supportedLngs: util.getStoreSupportedLngs(),
-    // supportedLngs: ['en', 'hi', 'kn'],
-    fallbackLng: defaultLngCode,
-    debug: false,
+    fallbackLng: util.getStoreDefaultLngCode(),
+    debug: true,
+    returnEmptyString: false,
+
     whitelist: util.getStoreSupportedLngs(), // array with whitelisted languages
-    // Options for language detector
-    detection: {
-      // TODO after commenting this order lang change from url is working(remove this comment)
-      order: ["path", "localStorage", "cookie", "htmlTag"],
-      // order: ["path", "localStorage", "cookie", "htmlTag"],
-      lookupCookie: "mpaplng",
-      lookupLocalStorage: "mpaplng",
-      lookupQuerystring: "lang",
-      lookupFromPathIndex: "lang",
-      caches: ["cookie", "localStorage"],
-      // caches: [],
-    },
-    react: { useSuspense: false },
+    nonExplicitWhitelist: false,
+    load: "all", // | currentOnly | languageOnly
+    preload: [util.getStoreDefaultLngCode(), util.getUserSelectedLngCode()], // array with preload languages
+
+    // order and from where user language should be detected
+    order: [
+      "querystring",
+      "cookie",
+      "localStorage",
+      "sessionStorage",
+      "navigator",
+      "htmlTag",
+      "path",
+      "subdomain",
+    ],
+
+    // keys or params to lookup language from
+    lookupQuerystring: "lng",
+    lookupCookie: "lng",
+    lookupLocalStorage: "lng",
+    lookupSessionStorage: "lng",
+    lookupFromPathIndex: 0,
+    lookupFromSubdomainIndex: 0,
+
+    // cache user language on
+    caches: ["localStorage", "cookie"],
+    excludeCacheFor: ["cimode"], // languages to not persist (cookie, localStorage)
+
+    // optional set cookie options, reference:[MDN Set-Cookie docs]
+    cookieOptions: { path: "/", sameSite: "strict" },
+    react: { useSuspense: true },
     backend: {
-      loadPath: "/assets/locales/{{lng}}/{{ns}}/translation.json",
+      loadPath: getCurrentHost,
     },
     ns: ["placeholders", "messages", "labels"],
+    interpolation: {
+      escapeValue: false,
+    },
   });
 
-export default i18next;
-
-// i18next.changeLanguage()
-// lng:document.querySelector('html').lang,
-// checkWhitelist: true,
-
-// 'NamespacesConsumer' (imported as 'NamespacesConsumer') was not found in 'react-i18next'
+export default i18n;

@@ -6,15 +6,15 @@ import {
   Skeleton,
   Image,
   Button,
+  Tabs,
+  Tooltip,
   Table,
   Tag,
-  Tooltip,
-  Tabs,
 } from "antd";
 import { useNavigate } from "react-router-dom";
 import { Profit, Positive, Payment } from "../../constants/media";
 import { toast } from "react-toastify";
-
+import axios from "axios";
 import { MdStore } from "react-icons/md";
 import { useDispatch } from "react-redux";
 
@@ -45,11 +45,15 @@ import {
   fnDefaultLanguage,
 } from "../../services/redux/actions/ActionStoreLanguage";
 
+import {
+  fnSelectedLanguage,
+  fnStoreLanguage,
+  fnDefaultLanguage,
+} from "../../services/redux/actions/ActionStoreLanguage";
 //! Get all required details from .env file
 const storeAdminDashboardAPI =
   process.env.REACT_APP_STORE_ADMIN_DASHBOARD_DATA_API;
 const currencySymbol = process.env.REACT_APP_CURRENCY_SYMBOL;
-const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API;
 
 const dm4sightBaseURL = process.env.REACT_APP_4SIGHT_BASE_URL;
 const dm4sightGetWidgetIdAPI = process.env.REACT_APP_4SIGHT_GETWIDGETID_API;
@@ -59,6 +63,9 @@ const dm4sightGetDetailsByQueryAPI =
 const dm4sightClientID = process.env.REACT_APP_4SIGHT_CLIENT_ID;
 const dm4sightEnabled = process.env.REACT_APP_4SIGHT_DATA_ENABLED;
 
+const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API;
+const getPermissionsUrl = process.env.REACT_APP_PERMISSIONS;
+const umsBaseUrl = process.env.REACT_APP_USM_BASE_URL;
 // const auth = getAuth.toLowerCase() === "true";
 
 //! Destructure the components
@@ -82,7 +89,10 @@ const Dashboard = () => {
   const [fetchTopVendorsData, setFetchTopVendorsData] = useState(false);
   const [fetchProductTypesData, setFetchProductTypesData] = useState(false);
   const [refetcher, setRefetcher] = useState();
-
+  const [permissionValue, setGetPermissionsData] = useState(
+    util.getPermissionData() || []
+  );
+  const [spinLoading, setSpinLoading] = useState(true);
   const [updatedTimeState, setUpdatedTimeState] = useState("products");
   const [updatedTimes, setUpdatedTimes] = useState({
     products: undefined,
@@ -103,9 +113,31 @@ const Dashboard = () => {
     },
   };
 
+  const getPermissions = () => {
+    let baseurl = `${umsBaseUrl}${getPermissionsUrl}`;
+    MarketplaceServices.findAll(baseurl, null, false)
+      .then((res) => {
+        console.log("get access token res", res);
+        setGetPermissionsData(res.data);
+        setSpinLoading(false);
+        util.setPermissionData(res.data);
+      })
+      .catch((err) => {
+        console.log("get access token err", err);
+        // if (err && err.response && err.response.status === 401) {
+        //   makeHttpRequestForRefreshToken();
+        // }
+      });
+  };
+
   useEffect(() => {
     if (auth && auth.user && auth.user?.access_token) {
       util.setAuthToken(auth.user?.access_token);
+      util.setIsAuthorized(true);
+      getPermissions(auth.isAuthenticated);
+    } else {
+      util.removeAuthToken();
+      util.removeIsAuthorized();
     }
   }, [auth]);
 
@@ -1007,8 +1039,7 @@ const Dashboard = () => {
         );
         const storeLanguages = response.data.response_body;
         const defaultLanguage = storeLanguages.find((item) => item.is_default);
-        dispatch(fnStoreLanguage(storeLanguages));
-        dispatch(fnDefaultLanguage(defaultLanguage));
+
         const userSelectedLanguageCode = util.getUserSelectedLngCode();
         if (userSelectedLanguageCode === undefined) {
           const userSelectedLanguage = defaultLanguage;
@@ -1028,6 +1059,8 @@ const Dashboard = () => {
             alreadySelectedLanguage &&
             alreadySelectedLanguage.writing_script_direction?.toLowerCase();
         }
+        dispatch(fnStoreLanguage(storeLanguages));
+        dispatch(fnDefaultLanguage(defaultLanguage));
         // dispatch(fnSelectedLanguage(defaultLanguage));
       })
       .catch((error) => {
