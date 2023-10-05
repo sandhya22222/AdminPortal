@@ -57,6 +57,7 @@ const dm4sightGetGraphDataAPI = process.env.REACT_APP_4SIGHT_GETGRAPHDATA_API;
 const dm4sightGetDetailsByQueryAPI =
   process.env.REACT_APP_4SIGHT_GETDETAILSBYQUERY_API;
 const dm4sightClientID = process.env.REACT_APP_4SIGHT_CLIENT_ID;
+const dm4sightEnabled = process.env.REACT_APP_4SIGHT_DATA_ENABLED;
 
 // const auth = getAuth.toLowerCase() === "true";
 
@@ -98,6 +99,7 @@ const Dashboard = () => {
       token: sessionStorage.getItem("access_token"),
       realmname: keyCLoak.realmName,
       dmClientId: dm4sightClientID,
+      client: "admin",
     },
   };
 
@@ -459,7 +461,8 @@ const Dashboard = () => {
     refetch: refetchProducts,
     isRefetching: isRefetchingProducts,
   } = useQuery("topProductsData", getTopProductsData, {
-    enabled: !!fetchTopProductsData && !!dashboardData,
+    enabled:
+      !!fetchTopProductsData && !!dashboardData && dm4sightEnabled === "true",
   });
 
   const {
@@ -1279,7 +1282,10 @@ const Dashboard = () => {
               </Content>
             </Content>
 
-            <Content className="flex justify-between !mt-6">
+            <Content
+              hidden={dm4sightEnabled === "true" ? false : true}
+              className="flex justify-between !mt-6"
+            >
               <Content className=" bg-[#ffff] p-3  shadow-sm rounded-md justify-center">
                 <div className="flex items-center">
                   <Title level={4} className="!m-0 !text-black">
