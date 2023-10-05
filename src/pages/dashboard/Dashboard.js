@@ -17,8 +17,11 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { MdStore } from "react-icons/md";
 import { useDispatch } from "react-redux";
+
+import axios from "axios";
+import { StarTwoTone, ReloadOutlined } from "@ant-design/icons";
 import { useQuery } from "react-query";
-import { ReloadOutlined, StarTwoTone } from "@ant-design/icons";
+
 //! Import CSS libraries
 
 //! Import user defined services
@@ -36,13 +39,17 @@ import HeaderForTitle from "../../components/header/HeaderForTitle";
 import { useAuth } from "react-oidc-context";
 import { useTranslation } from "react-i18next";
 import MarketplaceToaster from "../../util/marketplaceToaster";
+import {
+  fnSelectedLanguage,
+  fnStoreLanguage,
+  fnDefaultLanguage,
+} from "../../services/redux/actions/ActionStoreLanguage";
 
 import {
   fnSelectedLanguage,
   fnStoreLanguage,
   fnDefaultLanguage,
 } from "../../services/redux/actions/ActionStoreLanguage";
-const instance = axios.create();
 //! Get all required details from .env file
 const storeAdminDashboardAPI =
   process.env.REACT_APP_STORE_ADMIN_DASHBOARD_DATA_API;
@@ -54,6 +61,8 @@ const dm4sightGetGraphDataAPI = process.env.REACT_APP_4SIGHT_GETGRAPHDATA_API;
 const dm4sightGetDetailsByQueryAPI =
   process.env.REACT_APP_4SIGHT_GETDETAILSBYQUERY_API;
 const dm4sightClientID = process.env.REACT_APP_4SIGHT_CLIENT_ID;
+const dm4sightEnabled = process.env.REACT_APP_4SIGHT_DATA_ENABLED;
+
 const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API;
 const getPermissionsUrl = process.env.REACT_APP_PERMISSIONS;
 const umsBaseUrl = process.env.REACT_APP_USM_BASE_URL;
@@ -62,6 +71,7 @@ const umsBaseUrl = process.env.REACT_APP_USM_BASE_URL;
 //! Destructure the components
 const { Title, Text, Link } = Typography;
 const { Content } = Layout;
+const instance = axios.create();
 
 const Dashboard = () => {
   const auth = useAuth();
@@ -99,6 +109,7 @@ const Dashboard = () => {
       token: sessionStorage.getItem("access_token"),
       realmname: keyCLoak.realmName,
       dmClientId: dm4sightClientID,
+      client: "admin",
     },
   };
 
@@ -482,7 +493,8 @@ const Dashboard = () => {
     refetch: refetchProducts,
     isRefetching: isRefetchingProducts,
   } = useQuery("topProductsData", getTopProductsData, {
-    enabled: !!fetchTopProductsData && !!dashboardData,
+    enabled:
+      !!fetchTopProductsData && !!dashboardData && dm4sightEnabled === "true",
   });
 
   const {
@@ -1303,7 +1315,10 @@ const Dashboard = () => {
               </Content>
             </Content>
 
-            <Content className="flex justify-between !mt-6">
+            <Content
+              hidden={dm4sightEnabled === "true" ? false : true}
+              className="flex justify-between !mt-6"
+            >
               <Content className=" bg-[#ffff] p-3  shadow-sm rounded-md justify-center">
                 <div className="flex items-center">
                   <Title level={4} className="!m-0 !text-black">
