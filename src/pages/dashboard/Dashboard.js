@@ -97,11 +97,12 @@ const Dashboard = () => {
 
   let keyCLoak = sessionStorage.getItem("keycloakData");
   keyCLoak = JSON.parse(keyCLoak);
+  let realmName = keyCLoak.clientId.replace(/-client$/, "");
 
   const dm4sightHeaders = {
     headers: {
       token: sessionStorage.getItem("access_token"),
-      realmname: keyCLoak.realmName,
+      realmname: realmName,
       dmClientId: dm4sightClientID,
       client: "admin",
     },
