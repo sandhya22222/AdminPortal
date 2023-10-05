@@ -37,6 +37,7 @@ const logoutAPI = process.env.REACT_APP_LOGOUT;
 const Header2 = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const { Text } = Typography;
   const auth = useAuth();
   const navigate = useNavigate();
 
@@ -57,7 +58,17 @@ const Header2 = () => {
     storeLanguages.forEach((element) => {
       const languageItem = {};
       languageItem["key"] = element.language_code;
-      languageItem["label"] = element.language;
+      languageItem["label"] = (
+        <Tooltip
+          title={element.language}
+          overlayStyle={{ position: "fixed" }}
+          placement="left"
+        >
+          <div className="!font-normal max-w-[100px] text-ellipsis overflow-hidden">
+            {element.language}
+          </div>
+        </Tooltip>
+      );
       languageItems.push(languageItem);
     });
   }
@@ -160,16 +171,8 @@ const Header2 = () => {
                   selectable: true,
                   defaultSelectedKeys: [storeSelectedLngCode],
                   onClick: handleLanguageClick,
-                  style: {
-                    width: 150,
-                    height: 200,
-                    // lineHeight: 100,
-                    overflow: "auto",
-                    display: "grid",
-                    // listHeight: 130,
-                  },
+                  style: { maxHeight: 200, overflowY: "auto" },
                 }}
-                // style={{ whiteSpace: "nowrap" }}
                 trigger={["click"]}
                 arrow
                 className="header-text-color cursor-pointer"

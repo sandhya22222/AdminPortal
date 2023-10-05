@@ -77,9 +77,7 @@ function LanguageDocUpload({ langCode }) {
       })
       .catch((error) => {
         setIsSpinning(false);
-        MarketplaceToaster.showToast(
-          util.getToastObject("Unable to upload the file", "error")
-        );
+        MarketplaceToaster.showToast(error.response);
       });
   };
 
@@ -111,9 +109,7 @@ function LanguageDocUpload({ langCode }) {
       })
       .catch((error) => {
         setIsSpinningForBEUpload(false);
-        MarketplaceToaster.showToast(
-          util.getToastObject("Unable to upload the file", "error")
-        );
+        MarketplaceToaster.showToast(error.response);
       });
   };
 
@@ -153,7 +149,10 @@ function LanguageDocUpload({ langCode }) {
       .catch((error) => {
         // setIsSpinningForBEUpload(false);
         MarketplaceToaster.showToast(
-          util.getToastObject(t("messages:unable_to_download_this_format"), "error")
+          util.getToastObject(
+            t("messages:unable_to_download_this_format"),
+            "error"
+          )
         );
         console.log(
           "Server error from DocumentTemplateDownload Function ",
@@ -271,7 +270,10 @@ function LanguageDocUpload({ langCode }) {
           error.response
         );
         MarketplaceToaster.showToast(
-          util.getToastObject(`${t("messages:unable_to_download_this_format")}`, "error")
+          util.getToastObject(
+            `${t("messages:unable_to_download_this_format")}`,
+            "error"
+          )
         );
       });
   };
@@ -382,8 +384,8 @@ function LanguageDocUpload({ langCode }) {
             <p className="ant-upload-hint p-2">{t("messages:drag_info")}</p>
           </Dragger>
         </Spin> */}
-        {/* {uploadSuccess ? ( */}
-        {/* <Button
+      {/* {uploadSuccess ? ( */}
+      {/* <Button
           type="text"
           className="app-btn-text cursor-pointer gap-1 mt-2"
           onClick={() => setChooseDownloadModalVisible(true)}
@@ -395,7 +397,7 @@ function LanguageDocUpload({ langCode }) {
           />
           {t("messages:download_current_document")}
         </Button> */}
-        {/* ) : (
+      {/* ) : (
                     ""
                 )} 
       </Content> */}
@@ -519,9 +521,9 @@ function LanguageDocUpload({ langCode }) {
         <Content className="flex flex-col justify-center items-center">
           <CheckCircleFilled className=" text-[#52c41a] text-[80px]" />
           <Title level={3} className="!mt-5 !mb-0">
-            {t("labels:uploaded_successfully")}
+            {t("messages:upload_success")}
           </Title>
-          <Text>{t("labels:upload_success_message")}</Text>
+          <Text>{t("messages:upload_success_message")}</Text>
           <Content className="mt-3">
             <Button
               className="app-btn-primary mr-2"
