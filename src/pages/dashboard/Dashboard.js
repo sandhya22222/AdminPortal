@@ -14,7 +14,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import { Profit, Positive, Payment } from "../../constants/media";
 import { toast } from "react-toastify";
-import axios from "axios";
 import { MdStore } from "react-icons/md";
 import { useDispatch } from "react-redux";
 
