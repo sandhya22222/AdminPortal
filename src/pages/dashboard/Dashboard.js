@@ -14,7 +14,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import { Profit, Positive, Payment } from "../../constants/media";
 import { toast } from "react-toastify";
-import axios from "axios";
 import { MdStore } from "react-icons/md";
 import { useDispatch } from "react-redux";
 
@@ -45,11 +44,6 @@ import {
   fnDefaultLanguage,
 } from "../../services/redux/actions/ActionStoreLanguage";
 
-import {
-  fnSelectedLanguage,
-  fnStoreLanguage,
-  fnDefaultLanguage,
-} from "../../services/redux/actions/ActionStoreLanguage";
 //! Get all required details from .env file
 const storeAdminDashboardAPI =
   process.env.REACT_APP_STORE_ADMIN_DASHBOARD_DATA_API;
