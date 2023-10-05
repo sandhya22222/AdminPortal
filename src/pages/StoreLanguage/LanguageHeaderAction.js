@@ -19,7 +19,11 @@ import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import MarketplaceToaster from "../../util/marketplaceToaster";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { fnStoreLanguage } from "../../services/redux/actions/ActionStoreLanguage";
+import {
+  fnStoreLanguage,
+  fnSelectedLanguage,
+} from "../../services/redux/actions/ActionStoreLanguage";
+import util from "../../util/common";
 const { Content } = Layout;
 const { Title, Text } = Typography;
 const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API;
@@ -37,6 +41,10 @@ function LanguageHeaderAction({
 
   const availableLanguages = useSelector(
     (state) => state.reducerStoreLanguage.storeLanguage
+  );
+
+  const selectedLanguage = useSelector(
+    (state) => state.reducerSelectedLanguage.selectedLanguage
   );
   const [isDeleteLanguageModalOpen, setIsDeleteLanguageModalOpen] =
     useState(false);
@@ -116,6 +124,29 @@ function LanguageHeaderAction({
                   )
               )
             );
+            if (
+              selectedLanguage &&
+              selectedLanguage.language_code ===
+                response.data.response_body[0].language_code
+            ) {
+              dispatch(
+                fnSelectedLanguage(
+                  availableLanguages &&
+                    availableLanguages.length > 0 &&
+                    availableLanguages.filter((ele) => ele.is_default)[0]
+                )
+              );
+
+              util.setUserSelectedLngCode(
+                availableLanguages &&
+                  availableLanguages.length > 0 &&
+                  availableLanguages.filter((ele) => ele.is_default)[0]
+                    .language_code
+              );
+              setTimeout(function () {
+                navigate(0);
+              }, 2000);
+            }
           }
         }
         setSwitchStatus(changeSwitchStatus);
@@ -130,12 +161,6 @@ function LanguageHeaderAction({
         });
         // let successBody = {message: response.data.response_message, errorType: "success"}
         MarketplaceToaster.showToast(response);
-        // MarketplaceToaster.showToast(response)
-        // toast(response.data.response_body.message, {
-        //     position: toast.POSITION.TOP_RIGHT,
-        //     type: "success",
-        //     autoClose: 10000,
-        // });
       })
       .catch((error) => {
         setIsLoading(false);

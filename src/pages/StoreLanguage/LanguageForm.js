@@ -39,11 +39,6 @@ const LanguageForm = ({
 
   const { t } = useTranslation();
   const { Content } = Layout;
-
-  const availableLanguages = useSelector(
-    (state) => state.reducerStoreLanguage.storeLanguage
-  );
-
   //! Language post function
   const handleServerCall = () => {
     const postBody = {};
@@ -59,7 +54,7 @@ const LanguageForm = ({
               MarketplaceToaster.showToast(res);
               if (res.status === 201) {
                 if (res.data) {
-                  MarketplaceToaster.showToast(res);
+                  // MarketplaceToaster.showToast(res);
                   setOnChangeValues(false);
                   navigate(
                     `/dashboard/language/language-settings?k=${
