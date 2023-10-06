@@ -773,37 +773,37 @@ const Dashboard = () => {
 
   const productColumns = [
     {
-      title: "Rank",
+      title: t("labels:rank"),
       dataIndex: "rank",
       key: "rank",
     },
     {
-      title: "Product Name",
+      title: t("labels:product_name"),
       dataIndex: "name",
       key: "name",
     },
     {
-      title: "Store",
+      title: t("labels:store"),
       dataIndex: "store",
       key: "store",
     },
     {
-      title: "Vendor",
+      title: t("labels:vendor"),
       dataIndex: "vendor",
       key: "vendor",
     },
     {
-      title: "Product Type",
+      title: t("labels:product_type"),
       dataIndex: "product_type",
       key: "product_type",
     },
     {
-      title: "Units Sold",
+      title: t("labels:units_sold"),
       dataIndex: "units",
       key: "units",
     },
     {
-      title: "Sales",
+      title: t("labels:sales"),
       dataIndex: "sales",
       key: "sales",
     },
@@ -888,7 +888,7 @@ const Dashboard = () => {
   const items = [
     {
       key: "1",
-      label: `Products`,
+      label: t("labels:products"),
       children: (
         <Content>
           {!isFetchedProducts || refetcher === "products" ? (
@@ -914,7 +914,7 @@ const Dashboard = () => {
     },
     {
       key: "2",
-      label: `Stores`,
+      label: t("labels:stores"),
       children: (
         <Content>
           {!isFetchedStores || refetcher === "stores" ? (
@@ -939,7 +939,7 @@ const Dashboard = () => {
     },
     {
       key: "3",
-      label: `Vendors`,
+      label: t("labels:vendors"),
       children: (
         <Content>
           {!isFetchedVendors || refetcher === "vendors" ? (
@@ -964,7 +964,7 @@ const Dashboard = () => {
     },
     {
       key: "4",
-      label: `Product Type`,
+      label: t("labels:product_type"),
       children: (
         <Content>
           {!isFetchedProductTypes || refetcher === "types" ? (
@@ -1010,8 +1010,10 @@ const Dashboard = () => {
     if (state && time) {
       return (
         <div className="flex items-center ml-2 mt-1">
-          <Text className="text-zinc-400"> Last Update</Text>
-          <Text className="ml-1"> Today, {time}</Text>
+          <Text className="text-zinc-400"> {t("labels:last_update")}</Text>
+          <Text className="ml-1">
+            {t("labels:today")}, {time}
+          </Text>
           <div className="border border-gray-400 inline-flex p-1 ml-2">
             <ReloadOutlined onClick={refetchFunction} />
           </div>
@@ -1020,10 +1022,6 @@ const Dashboard = () => {
     }
     return null;
   };
-
-  useEffect(() => {
-    console.log("upd", updatedTimes);
-  });
 
   const findAllLanguages = () => {
     MarketplaceServices.findAll(languageAPI, { "language-status": 1 }, false)
@@ -1317,9 +1315,13 @@ const Dashboard = () => {
               <Content className=" bg-[#ffff] p-3  shadow-sm rounded-md justify-center">
                 <div className="flex items-center">
                   <Title level={4} className="!m-0 !text-black">
-                    Ranking{" "}
+                    {t("labels:ranking")}{" "}
                     <span>
-                      <Text type="secondary"> (Previous month)</Text>
+                      <Text type="secondary">
+                        {"("}
+                        {t("labels:previous_month")}
+                        {")"}
+                      </Text>
                     </span>
                   </Title>
                   {updatedTimeState === "products"
