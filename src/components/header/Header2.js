@@ -169,7 +169,7 @@ const Header2 = () => {
             {multilingualFunctionalityEnabled === "true" &&
             auth.isAuthenticated &&
             languageItems &&
-            languageItems.length > 0 ? (
+            languageItems.length > 1 ? (
               <Dropdown
                 menu={{
                   items: languageItems,
