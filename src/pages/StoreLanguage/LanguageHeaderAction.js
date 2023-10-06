@@ -100,6 +100,8 @@ function LanguageHeaderAction({
       language_id: languageId,
     })
       .then((response) => {
+        MarketplaceToaster.showToast(response);
+        console.log("success response from the status", response.data);
         if (response.data && response.data.response_body) {
           if (
             parseInt(response.data && response.data.response_body[0].status) ===
@@ -160,12 +162,12 @@ function LanguageHeaderAction({
           d: searchParams.get("d"),
         });
         // let successBody = {message: response.data.response_message, errorType: "success"}
-        MarketplaceToaster.showToast(response);
       })
       .catch((error) => {
+        console.log("error from the status", error);
+        MarketplaceToaster.showToast(error.response);
         setIsLoading(false);
         closeModal();
-        MarketplaceToaster.showToast(error.response);
       });
   };
 
