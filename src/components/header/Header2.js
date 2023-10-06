@@ -33,6 +33,8 @@ const { Text, Paragraph } = Typography;
 
 const umsBaseUrl = process.env.REACT_APP_USM_BASE_URL;
 const logoutAPI = process.env.REACT_APP_LOGOUT;
+const multilingualFunctionalityEnabled =
+  process.env.REACT_APP_IS_MULTILINGUAL_ENABLED;
 
 const Header2 = () => {
   const { t } = useTranslation();
@@ -164,7 +166,10 @@ const Header2 = () => {
               </Dropdown>
             )}
             {/* Display language dropdown only if store has more than 1 language.  */}
-            {languageItems && languageItems.length > 0 && (
+            {multilingualFunctionalityEnabled === "true" &&
+            auth.isAuthenticated &&
+            languageItems &&
+            languageItems.length > 0 ? (
               <Dropdown
                 menu={{
                   items: languageItems,
@@ -188,6 +193,8 @@ const Header2 = () => {
                   />
                 </Paragraph>
               </Dropdown>
+            ) : (
+              <></>
             )}
           </Content>
         </Content>
