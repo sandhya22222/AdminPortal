@@ -490,6 +490,10 @@ const Dashboard = () => {
   } = useQuery("topProductsData", getTopProductsData, {
     enabled:
       !!fetchTopProductsData && !!dashboardData && dm4sightEnabled === "true",
+    retry: false,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    retry: false,
   });
 
   const {
@@ -503,6 +507,9 @@ const Dashboard = () => {
     isRefetching: isRefetchingStores,
   } = useQuery("topStoresData", getTopStoresData, {
     enabled: !!fetchTopStoresData,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    retry: false,
   });
 
   const {
@@ -516,6 +523,7 @@ const Dashboard = () => {
     isRefetching: isRefetchingVendors,
   } = useQuery("topVendorsData", getTopVendorsData, {
     enabled: !!fetchTopVendorsData,
+    retry: false,
   });
 
   const {
@@ -529,6 +537,7 @@ const Dashboard = () => {
     isRefetching: isRefetchingProductTypes,
   } = useQuery("productTypesData", getProductTypesData, {
     enabled: !!fetchProductTypesData,
+    retry: false,
   });
 
   let productDataSource = topProductsData?.map((item, index) => {
