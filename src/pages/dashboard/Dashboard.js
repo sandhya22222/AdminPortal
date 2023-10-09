@@ -10,6 +10,7 @@ import {
   Tooltip,
   Table,
   Tag,
+  Empty,
 } from "antd";
 import { useNavigate } from "react-router-dom";
 import { Profit, Positive, Payment } from "../../constants/media";
@@ -917,7 +918,7 @@ const Dashboard = () => {
                 rows: 6,
               }}
             ></Skeleton>
-          ) : (
+          ) : productDataSource ? (
             productDataSource?.length > 0 && (
               <Table
                 responsive
@@ -926,6 +927,10 @@ const Dashboard = () => {
                 pagination={false}
               />
             )
+          ) : (
+            <Content className="mt-5">
+              <Empty />
+            </Content>
           )}
         </Content>
       ),
@@ -943,7 +948,7 @@ const Dashboard = () => {
                 rows: 6,
               }}
             ></Skeleton>
-          ) : (
+          ) : storeDataSource ? (
             storeDataSource?.length > 0 && (
               <Table
                 dataSource={storeDataSource}
@@ -951,6 +956,10 @@ const Dashboard = () => {
                 pagination={false}
               />
             )
+          ) : (
+            <Content className="mt-5">
+              <Empty />
+            </Content>
           )}
         </Content>
       ),
@@ -968,7 +977,7 @@ const Dashboard = () => {
                 rows: 6,
               }}
             ></Skeleton>
-          ) : (
+          ) : vendorDataSource ? (
             vendorDataSource?.length > 0 && (
               <Table
                 dataSource={vendorDataSource}
@@ -976,6 +985,10 @@ const Dashboard = () => {
                 pagination={false}
               />
             )
+          ) : (
+            <Content className="mt-5">
+              <Empty />
+            </Content>
           )}
         </Content>
       ),
@@ -993,7 +1006,7 @@ const Dashboard = () => {
                 rows: 6,
               }}
             ></Skeleton>
-          ) : (
+          ) : productTypeDataSource ? (
             productTypeDataSource?.length > 0 && (
               <Table
                 dataSource={productTypeDataSource}
@@ -1001,6 +1014,10 @@ const Dashboard = () => {
                 pagination={false}
               />
             )
+          ) : (
+            <Content className="mt-5">
+              <Empty />
+            </Content>
           )}
         </Content>
       ),
