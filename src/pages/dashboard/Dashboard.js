@@ -188,12 +188,21 @@ const Dashboard = () => {
         .slice(0, 5)
         .map((ele) => ele.name);
 
-      const storeIds = resProducts.data.data.data[0]
-        .slice(0, 5)
-        .map((ele) => ele.min_store_id);
-      const vendorIds = resProducts.data.data.data[0]
-        .slice(0, 5)
-        .map((ele) => ele.min_vendor_id);
+      const storeIds = [
+        ...new Set(
+          resProducts.data.data.data[0]
+            .slice(0, 5)
+            .map((ele) => ele.min_store_id)
+        ),
+      ];
+
+      const vendorIds = [
+        ...new Set(
+          resProducts.data.data.data[0]
+            .slice(0, 5)
+            .map((ele) => ele.min_vendor_id)
+        ),
+      ];
 
       const queryID = widgetIds[1];
       // QUERY TO FETCH VENDORNAME,STORENAME using storeids and vendorids taken from resProducts
@@ -1024,7 +1033,12 @@ const Dashboard = () => {
             {t("labels:today")}, {time}
           </Text>
           <div className="border border-gray-400 inline-flex p-1 ml-2">
-            <ReloadOutlined onClick={refetchFunction} />
+            <ReloadOutlined
+              onClick={() => {
+                refetchFunction();
+                setRefetcher(state);
+              }}
+            />
           </div>
         </div>
       );
