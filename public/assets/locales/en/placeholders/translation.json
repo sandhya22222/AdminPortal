@@ -12,6 +12,5 @@
     "enter_currency_symbol":"E.g. ₹, $, £",
     "enter_iso_code":"E.g. INR, USD ,GBP",
     "enter_fractional_unit":"E.g. paisa, cent",
-    "enter_number_to_basic":"E.g. 100",
-    "enter_code":"Enter Code"
+    "enter_number_to_basic":"E.g. 100"
 }

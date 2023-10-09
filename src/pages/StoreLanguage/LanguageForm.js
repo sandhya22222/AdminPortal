@@ -306,7 +306,7 @@ const LanguageForm = ({
                 *
               </span>
               <Input
-                placeholder={t("placeholders:enter_code")}
+                placeholder={t("placeholders:enter_language_code")}
                 value={txtLanguageCode}
                 minLength={languageCodeMinLength}
                 maxLength={languageCodeMaxLength}
