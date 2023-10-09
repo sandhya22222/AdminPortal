@@ -129,7 +129,7 @@ const Dashboard = () => {
     if (auth && auth.user && auth.user?.access_token) {
       util.setAuthToken(auth.user?.access_token);
       util.setIsAuthorized(true);
-      getPermissions(auth.isAuthenticated);
+      // getPermissions(auth.isAuthenticated);
     } else {
       util.removeAuthToken();
       util.removeIsAuthorized();
