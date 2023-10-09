@@ -102,7 +102,7 @@ const Dashboard = () => {
 
   const dm4sightHeaders = {
     headers: {
-      token: sessionStorage.getItem("access_token"),
+      token: auth.user && auth.user?.access_token,
       realmname: realmName,
       dmClientId: dm4sightClientID,
       client: "admin",
