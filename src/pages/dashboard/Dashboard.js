@@ -1240,7 +1240,7 @@ const Dashboard = () => {
                       />
                     </Content>
                     <Content className="!inline-block w-[60%]">
-                      <Text className="!text-[#00000073] text-md mb-2 !font-medium">
+                      <Text className="mb-2 font-semibold text-lg">
                         {t("labels:total_revenue")}
                       </Text>
                       <Title
@@ -1254,7 +1254,7 @@ const Dashboard = () => {
                           ? parseInt(dashboardData.store_revenue.total_amount)
                           : 0}
                       </Title>
-                      <Text className="!text-[#000000D9] text-sm">
+                      <Text className="font-semibold text-lg">
                         {t("labels:monthly_revenue")}
                       </Text>
                       <Title level={5} className="!text-[#7CB305] mt-0">
@@ -1281,7 +1281,7 @@ const Dashboard = () => {
                       />
                     </Content>
                     <Content className="!inline-block w-[60%]">
-                      <Text className="!text-[#00000073] text-md mb-2 !font-medium">
+                      <Text className="font-semibold text-lg mb-2" >
                         {t("labels:total_profit")}
                       </Text>
                       <Title
