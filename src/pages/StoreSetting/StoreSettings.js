@@ -91,14 +91,12 @@ const StoreSettings = () => {
   const [headerBgColor, setHeaderBgColor] = useState("#000000");
   const [headerForegroundColor, setHeaderForegroundColor] = useState("#000000");
   const [headerFgColor, setHeaderFgColor] = useState("#000000");
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [imagesUpload, setImagesUpload] = useState([]);
   const [getImageData, setGetImageData] = useState([]);
   const [validStoreLogo, setValidStoreLogo] = useState(false);
   const [changeSwitchStatus, setChangeSwitchStatus] = useState("");
-  const [addCodes, setAddCodes] = useState([]);
-  const [regionCode, setRegionCode] = useState("");
   const [isUpLoading, setIsUpLoading] = useState(false);
   const [
     copyImageOfStoreSettingsCurrency,
@@ -1175,260 +1173,238 @@ const StoreSettings = () => {
             </Content>
           </Content>
         </Spin>
-        <Content className="bg-white mt-3 p-3 rounded-lg">
-          <label className="text-[20px] font-bold !text-center">
-            {t("labels:currency")}
-          </label>
-          <Divider className="!my-4" />
-          <Row
-            className="mt-2"
-            gutter={{
-              xs: 8,
-              sm: 16,
-              md: 24,
-              lg: 32,
-            }}
-          >
-            <Col span={4} className="gutter-row">
-              <label className="text-[13px] mb-2 ml-1 input-label-color">
-                {t("labels:symbol")}
-              </label>
-              <span className="mandatory-symbol-color text-sm !text-center ml-1">
-                *
-              </span>
-              <Input
-                placeholder={t("placeholders:enter_currency_symbol")}
-                className={`${
-                  inValidCurrencySymbol
-                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
-                    : ""
-                }`}
-                // defaultValue={storeSettingData.store_currency["symbol"]}
-                value={currencySymbol}
-                maxLength={3}
-                onChange={(e) => {
-                  const regex = /^[A-Za-z $£€¥₹]*$/;
-                  const inputValue = e.target.value.replace(/\!/g, "");
+        <Spin tip="Please wait!" size="large" spinning={isLoading}>
+          <Content className="bg-white mt-3 p-3 rounded-lg">
+            <label className="text-[20px] font-bold !text-center">
+              {t("labels:currency")}
+            </label>
+            <Divider className="!my-4" />
+            <Row
+              className="mt-2"
+              gutter={{
+                xs: 8,
+                sm: 16,
+                md: 24,
+                lg: 32,
+              }}
+            >
+              <Col span={4} className="gutter-row">
+                <label className="text-[13px] mb-2 ml-1 input-label-color">
+                  {t("labels:symbol")}
+                </label>
+                <span className="mandatory-symbol-color text-sm !text-center ml-1">
+                  *
+                </span>
+                <Input
+                  placeholder={t("placeholders:enter_currency_symbol")}
+                  className={`${
+                    inValidCurrencySymbol
+                      ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
+                      : ""
+                  }`}
+                  // defaultValue={storeSettingData.store_currency["symbol"]}
+                  value={currencySymbol}
+                  maxLength={3}
+                  onChange={(e) => {
+                    const regex = /^[A-Za-z $£€¥₹]*$/;
+                    const inputValue = e.target.value.replace(/\!/g, "");
 
-                  if (regex.test(inputValue) || inputValue === "") {
-                    setCurrencySymbol(inputValue);
-                    setOnChangeValues(true);
-                    setInValidCurrencySymbol(false);
-                    let temp = { ...copyImageOfStoreSettingsCurrency };
-                    temp["symbol"] = inputValue;
-                    setCopyImageOfStoreSettingsCurrency(temp);
-                  } else {
-                    setInValidCurrencySymbol(true);
-                  }
-                }}
-                onBlur={() => {
-                  const trimmed = currencySymbol.trim();
-                  const trimmedUpdate = trimmed.replace(/\s+/g, " ");
-                  setCurrencySymbol(trimmedUpdate);
-                }}
-              />
-            </Col>
-            <Col span={4} className="gutter-row">
-              <label className="text-[13px] mb-2 ml-1 input-label-color">
-                {t("labels:iso_code")}
-              </label>
-              <span className="mandatory-symbol-color text-sm ml-1 !text-center">
-                *
-              </span>
-              <Input
-                placeholder={t("placeholders:enter_iso_code")}
-                value={currencyIsoCode}
-                maxLength={3}
-                onChange={(e) => {
-                  const regex = /^[A-Za-z]*$/;
-                  if (regex.test(e.target.value)) {
-                    setCurrencyIsoCode(e.target.value);
-                    setInValidCurrencyIsoCode(false);
-                    setOnChangeValues(true);
-                    let temp = { ...copyImageOfStoreSettingsCurrency };
-                    temp["iso_code"] = e.target.value;
-                    setCopyImageOfStoreSettingsCurrency(temp);
-                  } else {
-                    // setCurrencyIsoCode("");
-                    setInValidCurrencyIsoCode(true);
-                  }
-                }}
-                onBlur={() => {
-                  const trimmed = currencyIsoCode.trim();
-                  const trimmedUpdate = trimmed.replace(/\s+/g, " ");
-                  setCurrencyIsoCode(trimmedUpdate);
-                }}
-                className={`${
-                  inValidCurrencyIsoCode
-                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
-                    : ""
-                }`}
-              />
-            </Col>
-            <Col span={4} className="gutter-row">
-              <label className="text-[13px] mb-2 ml-1 input-label-color">
-                {t("labels:fractional_unit")}
-              </label>
-              <span className="mandatory-symbol-color text-sm ml-1 !text-center">
-                *
-              </span>
-              <Input
-                placeholder={t("placeholders:enter_fractional_unit")}
-                value={fractionalUnit}
-                maxLength={10}
-                onChange={(e) => {
-                  const regex = /^[A-Za-z]*$/;
-                  if (regex.test(e.target.value)) {
-                    setFractionalUnit(e.target.value);
-                    setInValidFractionalUnit(false);
-                    setOnChangeValues(true);
-                    let temp = { ...copyImageOfStoreSettingsCurrency };
-                    temp["fractional_unit"] = e.target.value;
-                    setCopyImageOfStoreSettingsCurrency(temp);
-                  } else {
-                    setInValidFractionalUnit(true);
-                  }
-                }}
-                onBlur={() => {
-                  const trimmed = fractionalUnit.trim();
-                  const trimmedUpdate = trimmed.replace(/\s+/g, " ");
-                  setFractionalUnit(trimmedUpdate);
-                }}
-                className={`${
-                  inValidFractionalUnit
-                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
-                    : ""
-                }`}
-              />
-            </Col>
-            <Col span={4} className="gutter-row">
-              {" "}
-              <label className="text-[13px] mb-2 ml-1 input-label-color">
-                {t("labels:number_to_basic")}
-              </label>
-              <span className="mandatory-symbol-color text-sm !text-center ml-1">
-                *
-              </span>
-              <InputNumber
-                placeholder={t("placeholders:enter_number_to_basic")}
-                value={numberToBasic}
-                // type="number"
-                min={1}
-                minLength={1}
-                maxLength={99999}
-                max={99999}
-                onChange={(e) => {
-                  // setNumberToBasic(e);
-                  if (e !== "" && e !== null && e !== undefined) {
-                    setNumberToBasic(e);
-                    setOnChangeValues(true);
-                  } else {
-                    setNumberToBasic(e);
-                    // setInValidNumberToBasic(true);
-                  }
-                  setInValidNumberToBasic(false);
+                    if (regex.test(inputValue) || inputValue === "") {
+                      setCurrencySymbol(inputValue);
+                      setOnChangeValues(true);
+                      setInValidCurrencySymbol(false);
+                      let temp = { ...copyImageOfStoreSettingsCurrency };
+                      temp["symbol"] = inputValue;
+                      setCopyImageOfStoreSettingsCurrency(temp);
+                    } else {
+                      setInValidCurrencySymbol(true);
+                    }
+                  }}
+                  onBlur={() => {
+                    const trimmed = currencySymbol.trim();
+                    const trimmedUpdate = trimmed.replace(/\s+/g, " ");
+                    setCurrencySymbol(trimmedUpdate);
+                  }}
+                />
+              </Col>
+              <Col span={4} className="gutter-row">
+                <label className="text-[13px] mb-2 ml-1 input-label-color">
+                  {t("labels:iso_code")}
+                </label>
+                <span className="mandatory-symbol-color text-sm ml-1 !text-center">
+                  *
+                </span>
+                <Input
+                  placeholder={t("placeholders:enter_iso_code")}
+                  value={currencyIsoCode}
+                  maxLength={3}
+                  onChange={(e) => {
+                    const regex = /^[A-Za-z]*$/;
+                    if (regex.test(e.target.value)) {
+                      setCurrencyIsoCode(e.target.value);
+                      setInValidCurrencyIsoCode(false);
+                      setOnChangeValues(true);
+                      let temp = { ...copyImageOfStoreSettingsCurrency };
+                      temp["iso_code"] = e.target.value;
+                      setCopyImageOfStoreSettingsCurrency(temp);
+                    } else {
+                      // setCurrencyIsoCode("");
+                      setInValidCurrencyIsoCode(true);
+                    }
+                  }}
+                  onBlur={() => {
+                    const trimmed = currencyIsoCode.trim();
+                    const trimmedUpdate = trimmed.replace(/\s+/g, " ");
+                    setCurrencyIsoCode(trimmedUpdate);
+                  }}
+                  className={`${
+                    inValidCurrencyIsoCode
+                      ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
+                      : ""
+                  }`}
+                />
+              </Col>
+              <Col span={4} className="gutter-row">
+                <label className="text-[13px] mb-2 ml-1 input-label-color">
+                  {t("labels:fractional_unit")}
+                </label>
+                <span className="mandatory-symbol-color text-sm ml-1 !text-center">
+                  *
+                </span>
+                <Input
+                  placeholder={t("placeholders:enter_fractional_unit")}
+                  value={fractionalUnit}
+                  maxLength={10}
+                  onChange={(e) => {
+                    const regex = /^[A-Za-z]*$/;
+                    if (regex.test(e.target.value)) {
+                      setFractionalUnit(e.target.value);
+                      setInValidFractionalUnit(false);
+                      setOnChangeValues(true);
+                      let temp = { ...copyImageOfStoreSettingsCurrency };
+                      temp["fractional_unit"] = e.target.value;
+                      setCopyImageOfStoreSettingsCurrency(temp);
+                    } else {
+                      setInValidFractionalUnit(true);
+                    }
+                  }}
+                  onBlur={() => {
+                    const trimmed = fractionalUnit.trim();
+                    const trimmedUpdate = trimmed.replace(/\s+/g, " ");
+                    setFractionalUnit(trimmedUpdate);
+                  }}
+                  className={`${
+                    inValidFractionalUnit
+                      ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
+                      : ""
+                  }`}
+                />
+              </Col>
+              <Col span={4} className="gutter-row">
+                {" "}
+                <label className="text-[13px] mb-2 ml-1 input-label-color">
+                  {t("labels:number_to_basic")}
+                </label>
+                <span className="mandatory-symbol-color text-sm !text-center ml-1">
+                  *
+                </span>
+                <InputNumber
+                  placeholder={t("placeholders:enter_number_to_basic")}
+                  value={numberToBasic}
+                  // type="number"
+                  min={1}
+                  minLength={1}
+                  maxLength={99999}
+                  max={99999}
+                  onChange={(e) => {
+                    // setNumberToBasic(e);
+                    if (e !== "" && e !== null && e !== undefined) {
+                      setNumberToBasic(e);
+                      setOnChangeValues(true);
+                    } else {
+                      setNumberToBasic(e);
+                      // setInValidNumberToBasic(true);
+                    }
+                    setInValidNumberToBasic(false);
 
-                  let temp = { ...copyImageOfStoreSettingsCurrency };
-                  temp["number_to_basic"] = e;
-                  setCopyImageOfStoreSettingsCurrency(temp);
-                }}
-                onBlur={() => {
-                  const trimmed = numberToBasic.trim();
-                  const trimmedUpdate = trimmed.replace(/\s+/g, " ");
-                  setNumberToBasic(trimmedUpdate);
-                }}
-                onKeyDown={numberToBasicLimit}
-                className={`${
-                  inValidNumberToBasic
-                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
-                    : ""
-                }`}
-              />
-            </Col>
-          </Row>
-          <Content className="">
+                    let temp = { ...copyImageOfStoreSettingsCurrency };
+                    temp["number_to_basic"] = e;
+                    setCopyImageOfStoreSettingsCurrency(temp);
+                  }}
+                  onBlur={() => {
+                    const trimmed = numberToBasic.trim();
+                    const trimmedUpdate = trimmed.replace(/\s+/g, " ");
+                    setNumberToBasic(trimmedUpdate);
+                  }}
+                  onKeyDown={numberToBasicLimit}
+                  className={`${
+                    inValidNumberToBasic
+                      ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
+                      : ""
+                  }`}
+                />
+              </Col>
+            </Row>
             <Content className="">
-              <Row className="!mb-4">
-                <Content className="flex justify-between w-full">
-                  <label className="text-[20px]  mt-2 font-bold select-none">
-                    {t("labels:page_theme")}
-                  </label>
-                  <Button className="" onClick={() => openModal()}>
-                    <EyeOutlined className="!text-center -translate-y-0.5" />{" "}
-                    {t("labels:preview")}
-                  </Button>
-                </Content>
-                <StoreModal
-                  isVisible={isModalOpen}
-                  title={`${t("labels:sample_preview_page_for_store_front")}`}
-                  width={1000}
-                  cancelCallback={() => closeModal()}
-                  isSpin={false}
-                  className="!h-96"
-                  // hideCloseButton={false}
-                >
-                  <Preview
-                    headerBackgroundColor={headerBackgroundColor}
-                    headerForegroundColor={headerForegroundColor}
-                    footerBackgroundColor={footerBackgroundColor}
-                    footerForegroundColor={footerForegroundColor}
-                    pageBackgroundColor={pageBackgroundColor}
-                    foreGroundColor={foreGroundColor}
-                    buttonPrimaryBackgroundColor={buttonPrimaryBackgroundColor}
-                    buttonSecondaryBackgroundColor={
-                      buttonSecondaryBackgroundColor
-                    }
-                    buttonTeritaryBackgroundColor={
-                      buttonTeritaryBackgroundColor
-                    }
-                    buttonPrimaryForegroundColor={buttonPrimaryForegroundColor}
-                    buttonSecondaryForegroundColor={
-                      buttonSecondaryForegroundColor
-                    }
-                    buttonTeritaryForegroundColor={
-                      buttonTeritaryForegroundColor
-                    }
-                    getImageData={getImageData}
-                  />
-                </StoreModal>
-              </Row>
-              <Divider className="!my-4" />
-              <Row className="mt-2">
-                <Col span={8} className="mr-2 ">
-                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
-                    {t("labels:background_color")}
-                  </label>
-                  <Content className="flex gap-2">
-                    <Input
-                      type="color"
-                      value={pageBackgroundColor}
-                      onChange={(e) => {
-                        const patternName = /^#([A-Fa-f0-9]{6})$/;
-                        if (patternName.test(e.target.value) === false) {
-                          let temp = { ...colorCodeValidation };
-                          temp["pageBgColorValidation"] = true;
-                          setColorCodeValidation(temp);
-                          setPageBackgroundColor(e.target.value);
-                          setOnChangeValues(true);
-                        } else {
-                          let temp = { ...colorCodeValidation };
-                          temp["pageBgColorValidation"] = false;
-                          setColorCodeValidation(temp);
-                          setPageBackgroundColor(e.target.value);
-                          setOnChangeValues(true);
-                        }
-                        // setPageBackgroundColor(e.target.value);
-                        let temp = { ...copyImageOfStoreSettingsPageTheme };
-                        temp["bg_color"] = e.target.value;
-                        setCopyImageOfStoreSettingsPageTheme(temp);
-                      }}
-                      className="w-9 p-0"
+              <Content className="">
+                <Row className="!mb-4">
+                  <Content className="flex justify-between w-full">
+                    <label className="text-[20px]  mt-2 font-bold select-none">
+                      {t("labels:page_theme")}
+                    </label>
+                    <Button className="" onClick={() => openModal()}>
+                      <EyeOutlined className="!text-center -translate-y-0.5" />{" "}
+                      {t("labels:preview")}
+                    </Button>
+                  </Content>
+                  <StoreModal
+                    isVisible={isModalOpen}
+                    title={`${t("labels:sample_preview_page_for_store_front")}`}
+                    width={1000}
+                    cancelCallback={() => closeModal()}
+                    isSpin={false}
+                    className="!h-96"
+                    // hideCloseButton={false}
+                  >
+                    <Preview
+                      headerBackgroundColor={headerBackgroundColor}
+                      headerForegroundColor={headerForegroundColor}
+                      footerBackgroundColor={footerBackgroundColor}
+                      footerForegroundColor={footerForegroundColor}
+                      pageBackgroundColor={pageBackgroundColor}
+                      foreGroundColor={foreGroundColor}
+                      buttonPrimaryBackgroundColor={
+                        buttonPrimaryBackgroundColor
+                      }
+                      buttonSecondaryBackgroundColor={
+                        buttonSecondaryBackgroundColor
+                      }
+                      buttonTeritaryBackgroundColor={
+                        buttonTeritaryBackgroundColor
+                      }
+                      buttonPrimaryForegroundColor={
+                        buttonPrimaryForegroundColor
+                      }
+                      buttonSecondaryForegroundColor={
+                        buttonSecondaryForegroundColor
+                      }
+                      buttonTeritaryForegroundColor={
+                        buttonTeritaryForegroundColor
+                      }
+                      getImageData={getImageData}
                     />
-                    <Space.Compact className="">
+                  </StoreModal>
+                </Row>
+                <Divider className="!my-4" />
+                <Row className="mt-2">
+                  <Col span={8} className="mr-2 ">
+                    <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
+                      {t("labels:background_color")}
+                    </label>
+                    <Content className="flex gap-2">
                       <Input
+                        type="color"
                         value={pageBackgroundColor}
-                        maxLength={7}
-                        className="w-[150px]"
                         onChange={(e) => {
                           const patternName = /^#([A-Fa-f0-9]{6})$/;
                           if (patternName.test(e.target.value) === false) {
@@ -1449,64 +1425,66 @@ const StoreSettings = () => {
                           temp["bg_color"] = e.target.value;
                           setCopyImageOfStoreSettingsPageTheme(temp);
                         }}
-                        addonAfter={
-                          <Tooltip
-                            title={t("messages:reset_to_the_original_value")}
-                          >
-                            <UndoOutlined
-                              onClick={() => {
-                                setPageBackgroundColor(pageBgColor);
-                                let temp = { ...colorCodeValidation };
-                                temp["pageBgColorValidation"] = false;
-                                setColorCodeValidation(temp);
-                              }}
-                            />
-                          </Tooltip>
-                        }
+                        className="w-9 p-0"
                       />
-                    </Space.Compact>
-                  </Content>
-                  {colorCodeValidation.pageBgColorValidation === true ? (
-                    <p className="text-red-600 text-sm">
-                      {t("messages:please_enter_valid_hexadecimal_code")} <br />
-                      {t("messages:ex_ffffff_for_white_000000_for_black")}
-                    </p>
-                  ) : null}
-                </Col>
-                <Col span={8} className="ml-1">
-                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
-                    {t("labels:text_color")}
-                  </label>
-                  <Content className="flex gap-2">
-                    <Input
-                      type="color"
-                      value={foreGroundColor}
-                      onChange={(e) => {
-                        const patternName = /^#([A-Fa-f0-9]{6})$/;
-                        if (patternName.test(e.target.value) === false) {
-                          let temp = { ...colorCodeValidation };
-                          temp["pageTextColorValidation"] = true;
-                          setColorCodeValidation(temp);
-                          setForeGroundColor(e.target.value);
-                          setOnChangeValues(true);
-                        } else {
-                          let temp = { ...colorCodeValidation };
-                          temp["pageTextColorValidation"] = false;
-                          setColorCodeValidation(temp);
-                          setForeGroundColor(e.target.value);
-                          setOnChangeValues(true);
-                        }
-                        // setForeGroundColor(e.target.value);
-                        let temp = { ...copyImageOfStoreSettingsPageTheme };
-                        temp["fg_color"] = e.target.value;
-                        setCopyImageOfStoreSettingsPageTheme(temp);
-                      }}
-                      className="w-9 p-0"
-                    />
-                    <Space.Compact className="">
+                      <Space.Compact className="">
+                        <Input
+                          value={pageBackgroundColor}
+                          maxLength={7}
+                          className="w-[150px]"
+                          onChange={(e) => {
+                            const patternName = /^#([A-Fa-f0-9]{6})$/;
+                            if (patternName.test(e.target.value) === false) {
+                              let temp = { ...colorCodeValidation };
+                              temp["pageBgColorValidation"] = true;
+                              setColorCodeValidation(temp);
+                              setPageBackgroundColor(e.target.value);
+                              setOnChangeValues(true);
+                            } else {
+                              let temp = { ...colorCodeValidation };
+                              temp["pageBgColorValidation"] = false;
+                              setColorCodeValidation(temp);
+                              setPageBackgroundColor(e.target.value);
+                              setOnChangeValues(true);
+                            }
+                            // setPageBackgroundColor(e.target.value);
+                            let temp = { ...copyImageOfStoreSettingsPageTheme };
+                            temp["bg_color"] = e.target.value;
+                            setCopyImageOfStoreSettingsPageTheme(temp);
+                          }}
+                          addonAfter={
+                            <Tooltip
+                              title={t("messages:reset_to_the_original_value")}
+                            >
+                              <UndoOutlined
+                                onClick={() => {
+                                  setPageBackgroundColor(pageBgColor);
+                                  let temp = { ...colorCodeValidation };
+                                  temp["pageBgColorValidation"] = false;
+                                  setColorCodeValidation(temp);
+                                }}
+                              />
+                            </Tooltip>
+                          }
+                        />
+                      </Space.Compact>
+                    </Content>
+                    {colorCodeValidation.pageBgColorValidation === true ? (
+                      <p className="text-red-600 text-sm">
+                        {t("messages:please_enter_valid_hexadecimal_code")}{" "}
+                        <br />
+                        {t("messages:ex_ffffff_for_white_000000_for_black")}
+                      </p>
+                    ) : null}
+                  </Col>
+                  <Col span={8} className="ml-1">
+                    <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
+                      {t("labels:text_color")}
+                    </label>
+                    <Content className="flex gap-2">
                       <Input
+                        type="color"
                         value={foreGroundColor}
-                        className="w-[150px]"
                         onChange={(e) => {
                           const patternName = /^#([A-Fa-f0-9]{6})$/;
                           if (patternName.test(e.target.value) === false) {
@@ -1527,67 +1505,68 @@ const StoreSettings = () => {
                           temp["fg_color"] = e.target.value;
                           setCopyImageOfStoreSettingsPageTheme(temp);
                         }}
-                        addonAfter={
-                          <Tooltip
-                            title={t("messages:reset_to_the_original_value")}
-                          >
-                            <UndoOutlined
-                              onClick={() => {
-                                let temp = { ...colorCodeValidation };
-                                temp["pageTextColorValidation"] = false;
-                                setColorCodeValidation(temp);
-                                setForeGroundColor(pageFgColor);
-                              }}
-                            />
-                          </Tooltip>
-                        }
+                        className="w-9 p-0"
                       />
-                    </Space.Compact>
-                  </Content>
-                  {colorCodeValidation.pageTextColorValidation === true ? (
-                    <p className="text-red-600 text-sm">
-                      {t("messages:please_enter_valid_hexadecimal_code")} <br />
-                      {t("messages:ex_ffffff_for_white_000000_for_black")}
-                    </p>
-                  ) : null}
-                </Col>
-              </Row>
-              <Row className="mt-4">
-                <Col span={8} className="mr-2 ">
-                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
-                    {t("labels:primary_button_background_color")}
-                  </label>
-                  <Content className="flex gap-2">
-                    <Input
-                      type="color"
-                      className="w-9 p-0"
-                      value={buttonPrimaryBackgroundColor}
-                      onChange={(e) => {
-                        const patternName = /^#([A-Fa-f0-9]{6})$/;
-                        if (patternName.test(e.target.value) === false) {
-                          let temp = { ...colorCodeValidation };
-                          temp["primaryBgValidation"] = true;
-                          setColorCodeValidation(temp);
-                          setButtonPrimaryBackgroundColor(e.target.value);
-                          setOnChangeValues(true);
-                        } else {
-                          let temp = { ...colorCodeValidation };
-                          temp["primaryBgValidation"] = false;
-                          setColorCodeValidation(temp);
-                          setButtonPrimaryBackgroundColor(e.target.value);
-                          setOnChangeValues(true);
-                        }
-                        // setButtonPrimaryBackgroundColor(e.target.value);
-                        let temp = { ...copyImageOfStoreSettingsPageTheme };
-                        temp["btn_primary_bg_color"] = e.target.value;
-                        setCopyImageOfStoreSettingsPageTheme(temp);
-                      }}
-                    />
-                    <Space.Compact className="">
+                      <Space.Compact className="">
+                        <Input
+                          value={foreGroundColor}
+                          className="w-[150px]"
+                          onChange={(e) => {
+                            const patternName = /^#([A-Fa-f0-9]{6})$/;
+                            if (patternName.test(e.target.value) === false) {
+                              let temp = { ...colorCodeValidation };
+                              temp["pageTextColorValidation"] = true;
+                              setColorCodeValidation(temp);
+                              setForeGroundColor(e.target.value);
+                              setOnChangeValues(true);
+                            } else {
+                              let temp = { ...colorCodeValidation };
+                              temp["pageTextColorValidation"] = false;
+                              setColorCodeValidation(temp);
+                              setForeGroundColor(e.target.value);
+                              setOnChangeValues(true);
+                            }
+                            // setForeGroundColor(e.target.value);
+                            let temp = { ...copyImageOfStoreSettingsPageTheme };
+                            temp["fg_color"] = e.target.value;
+                            setCopyImageOfStoreSettingsPageTheme(temp);
+                          }}
+                          addonAfter={
+                            <Tooltip
+                              title={t("messages:reset_to_the_original_value")}
+                            >
+                              <UndoOutlined
+                                onClick={() => {
+                                  let temp = { ...colorCodeValidation };
+                                  temp["pageTextColorValidation"] = false;
+                                  setColorCodeValidation(temp);
+                                  setForeGroundColor(pageFgColor);
+                                }}
+                              />
+                            </Tooltip>
+                          }
+                        />
+                      </Space.Compact>
+                    </Content>
+                    {colorCodeValidation.pageTextColorValidation === true ? (
+                      <p className="text-red-600 text-sm">
+                        {t("messages:please_enter_valid_hexadecimal_code")}{" "}
+                        <br />
+                        {t("messages:ex_ffffff_for_white_000000_for_black")}
+                      </p>
+                    ) : null}
+                  </Col>
+                </Row>
+                <Row className="mt-4">
+                  <Col span={8} className="mr-2 ">
+                    <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
+                      {t("labels:primary_button_background_color")}
+                    </label>
+                    <Content className="flex gap-2">
                       <Input
+                        type="color"
+                        className="w-9 p-0"
                         value={buttonPrimaryBackgroundColor}
-                        maxLength={7}
-                        className="w-[150px]"
                         onChange={(e) => {
                           const patternName = /^#([A-Fa-f0-9]{6})$/;
                           if (patternName.test(e.target.value) === false) {
@@ -1608,66 +1587,68 @@ const StoreSettings = () => {
                           temp["btn_primary_bg_color"] = e.target.value;
                           setCopyImageOfStoreSettingsPageTheme(temp);
                         }}
-                        addonAfter={
-                          <Tooltip
-                            title={t("messages:reset_to_the_original_value")}
-                          >
-                            <UndoOutlined
-                              onClick={() => {
-                                setButtonPrimaryBackgroundColor(
-                                  btnPrimaryBgColor
-                                );
-                                let temp = { ...colorCodeValidation };
-                                temp["primaryBgValidation"] = false;
-                                setColorCodeValidation(temp);
-                              }}
-                            />
-                          </Tooltip>
-                        }
                       />
-                    </Space.Compact>
-                  </Content>
-                  {colorCodeValidation.primaryBgValidation === true ? (
-                    <p className="text-red-600 text-sm">
-                      {t("messages:please_enter_valid_hexadecimal_code")} <br />
-                      {t("messages:ex_ffffff_for_white_000000_for_black")}
-                    </p>
-                  ) : null}
-                </Col>
-                <Col span={8} className="ml-1">
-                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
-                    {t("labels:secondary_button_background_color")}
-                  </label>
-                  <Content className="flex gap-2">
-                    <Input
-                      type="color"
-                      className="w-9 p-0"
-                      value={buttonSecondaryBackgroundColor}
-                      onChange={(e) => {
-                        const patternName = /^#([A-Fa-f0-9]{6})$/;
-                        if (patternName.test(e.target.value) === false) {
-                          let temp = { ...colorCodeValidation };
-                          temp["secondaryBgValidation"] = true;
-                          setColorCodeValidation(temp);
-                          setButtonSecondaryBackgroundColor(e.target.value);
-                          setOnChangeValues(true);
-                        } else {
-                          let temp = { ...colorCodeValidation };
-                          temp["secondaryBgValidation"] = false;
-                          setColorCodeValidation(temp);
-                          setButtonSecondaryBackgroundColor(e.target.value);
-                          setOnChangeValues(true);
-                        }
-                        // setButtonSecondaryBackgroundColor(e.target.value);
-                        let temp = { ...copyImageOfStoreSettingsPageTheme };
-                        temp["btn_secondary_bg_color"] = e.target.value;
-                        setCopyImageOfStoreSettingsPageTheme(temp);
-                      }}
-                    />
-                    <Space.Compact className="">
+                      <Space.Compact className="">
+                        <Input
+                          value={buttonPrimaryBackgroundColor}
+                          maxLength={7}
+                          className="w-[150px]"
+                          onChange={(e) => {
+                            const patternName = /^#([A-Fa-f0-9]{6})$/;
+                            if (patternName.test(e.target.value) === false) {
+                              let temp = { ...colorCodeValidation };
+                              temp["primaryBgValidation"] = true;
+                              setColorCodeValidation(temp);
+                              setButtonPrimaryBackgroundColor(e.target.value);
+                              setOnChangeValues(true);
+                            } else {
+                              let temp = { ...colorCodeValidation };
+                              temp["primaryBgValidation"] = false;
+                              setColorCodeValidation(temp);
+                              setButtonPrimaryBackgroundColor(e.target.value);
+                              setOnChangeValues(true);
+                            }
+                            // setButtonPrimaryBackgroundColor(e.target.value);
+                            let temp = { ...copyImageOfStoreSettingsPageTheme };
+                            temp["btn_primary_bg_color"] = e.target.value;
+                            setCopyImageOfStoreSettingsPageTheme(temp);
+                          }}
+                          addonAfter={
+                            <Tooltip
+                              title={t("messages:reset_to_the_original_value")}
+                            >
+                              <UndoOutlined
+                                onClick={() => {
+                                  setButtonPrimaryBackgroundColor(
+                                    btnPrimaryBgColor
+                                  );
+                                  let temp = { ...colorCodeValidation };
+                                  temp["primaryBgValidation"] = false;
+                                  setColorCodeValidation(temp);
+                                }}
+                              />
+                            </Tooltip>
+                          }
+                        />
+                      </Space.Compact>
+                    </Content>
+                    {colorCodeValidation.primaryBgValidation === true ? (
+                      <p className="text-red-600 text-sm">
+                        {t("messages:please_enter_valid_hexadecimal_code")}{" "}
+                        <br />
+                        {t("messages:ex_ffffff_for_white_000000_for_black")}
+                      </p>
+                    ) : null}
+                  </Col>
+                  <Col span={8} className="ml-1">
+                    <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
+                      {t("labels:secondary_button_background_color")}
+                    </label>
+                    <Content className="flex gap-2">
                       <Input
+                        type="color"
+                        className="w-9 p-0"
                         value={buttonSecondaryBackgroundColor}
-                        className="w-[150px]"
                         onChange={(e) => {
                           const patternName = /^#([A-Fa-f0-9]{6})$/;
                           if (patternName.test(e.target.value) === false) {
@@ -1683,72 +1664,73 @@ const StoreSettings = () => {
                             setButtonSecondaryBackgroundColor(e.target.value);
                             setOnChangeValues(true);
                           }
-
                           // setButtonSecondaryBackgroundColor(e.target.value);
                           let temp = { ...copyImageOfStoreSettingsPageTheme };
                           temp["btn_secondary_bg_color"] = e.target.value;
                           setCopyImageOfStoreSettingsPageTheme(temp);
                         }}
-                        addonAfter={
-                          <Tooltip
-                            title={t("messages:reset_to_the_original_value")}
-                          >
-                            <UndoOutlined
-                              onClick={() => {
-                                setButtonSecondaryBackgroundColor(
-                                  btnSecondaryBgColor
-                                );
-                                let temp = { ...colorCodeValidation };
-                                temp["secondaryBgValidation"] = false;
-                                setColorCodeValidation(temp);
-                              }}
-                            />
-                          </Tooltip>
-                        }
                       />
-                    </Space.Compact>
-                  </Content>
-                  {colorCodeValidation.secondaryBgValidation === true ? (
-                    <p className="text-red-600 text-sm">
-                      {t("messages:please_enter_valid_hexadecimal_code")} <br />
-                      {t("messages:ex_ffffff_for_white_000000_for_black")}
-                    </p>
-                  ) : null}
-                </Col>
-                <Col span={7} className="ml-2">
-                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
-                    {t("labels:tertiary_button_background_color")}
-                  </label>
-                  <Content className="flex gap-2">
-                    <Input
-                      type="color"
-                      className="w-9 p-0"
-                      value={buttonTeritaryBackgroundColor}
-                      onChange={(e) => {
-                        const patternName = /^#([A-Fa-f0-9]{6})$/;
-                        if (patternName.test(e.target.value) === false) {
-                          let temp = { ...colorCodeValidation };
-                          temp["tertiaryBgValidation"] = true;
-                          setColorCodeValidation(temp);
-                          setButtonTeritaryBackgroundColor(e.target.value);
-                          setOnChangeValues(true);
-                        } else {
-                          let temp = { ...colorCodeValidation };
-                          temp["tertiaryBgValidation"] = false;
-                          setColorCodeValidation(temp);
-                          setButtonTeritaryBackgroundColor(e.target.value);
-                          setOnChangeValues(true);
-                        }
-                        // setButtonTeritaryBackgroundColor(e.target.value);
-                        let temp = { ...copyImageOfStoreSettingsPageTheme };
-                        temp["btn_tertiary_bg_color"] = e.target.value;
-                        setCopyImageOfStoreSettingsPageTheme(temp);
-                      }}
-                    />
-                    <Space.Compact className="">
+                      <Space.Compact className="">
+                        <Input
+                          value={buttonSecondaryBackgroundColor}
+                          className="w-[150px]"
+                          onChange={(e) => {
+                            const patternName = /^#([A-Fa-f0-9]{6})$/;
+                            if (patternName.test(e.target.value) === false) {
+                              let temp = { ...colorCodeValidation };
+                              temp["secondaryBgValidation"] = true;
+                              setColorCodeValidation(temp);
+                              setButtonSecondaryBackgroundColor(e.target.value);
+                              setOnChangeValues(true);
+                            } else {
+                              let temp = { ...colorCodeValidation };
+                              temp["secondaryBgValidation"] = false;
+                              setColorCodeValidation(temp);
+                              setButtonSecondaryBackgroundColor(e.target.value);
+                              setOnChangeValues(true);
+                            }
+
+                            // setButtonSecondaryBackgroundColor(e.target.value);
+                            let temp = { ...copyImageOfStoreSettingsPageTheme };
+                            temp["btn_secondary_bg_color"] = e.target.value;
+                            setCopyImageOfStoreSettingsPageTheme(temp);
+                          }}
+                          addonAfter={
+                            <Tooltip
+                              title={t("messages:reset_to_the_original_value")}
+                            >
+                              <UndoOutlined
+                                onClick={() => {
+                                  setButtonSecondaryBackgroundColor(
+                                    btnSecondaryBgColor
+                                  );
+                                  let temp = { ...colorCodeValidation };
+                                  temp["secondaryBgValidation"] = false;
+                                  setColorCodeValidation(temp);
+                                }}
+                              />
+                            </Tooltip>
+                          }
+                        />
+                      </Space.Compact>
+                    </Content>
+                    {colorCodeValidation.secondaryBgValidation === true ? (
+                      <p className="text-red-600 text-sm">
+                        {t("messages:please_enter_valid_hexadecimal_code")}{" "}
+                        <br />
+                        {t("messages:ex_ffffff_for_white_000000_for_black")}
+                      </p>
+                    ) : null}
+                  </Col>
+                  <Col span={7} className="ml-2">
+                    <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
+                      {t("labels:tertiary_button_background_color")}
+                    </label>
+                    <Content className="flex gap-2">
                       <Input
+                        type="color"
+                        className="w-9 p-0"
                         value={buttonTeritaryBackgroundColor}
-                        className="w-[150px]"
                         onChange={(e) => {
                           const patternName = /^#([A-Fa-f0-9]{6})$/;
                           if (patternName.test(e.target.value) === false) {
@@ -1769,69 +1751,69 @@ const StoreSettings = () => {
                           temp["btn_tertiary_bg_color"] = e.target.value;
                           setCopyImageOfStoreSettingsPageTheme(temp);
                         }}
-                        addonAfter={
-                          <Tooltip
-                            title={t("messages:reset_to_the_original_value")}
-                          >
-                            <UndoOutlined
-                              onClick={() => {
-                                setButtonTeritaryBackgroundColor(
-                                  btnTeritaryBgColor
-                                );
-                                let temp = { ...colorCodeValidation };
-                                temp["tertiaryBgValidation"] = false;
-                                setColorCodeValidation(temp);
-                              }}
-                            />
-                          </Tooltip>
-                        }
                       />
-                    </Space.Compact>
-                  </Content>
-                  {colorCodeValidation.tertiaryBgValidation === true ? (
-                    <p className="text-red-600 text-sm">
-                      {t("messages:please_enter_valid_hexadecimal_code")} <br />
-                      {t("messages:ex_ffffff_for_white_000000_for_black")}
-                    </p>
-                  ) : null}
-                </Col>
-              </Row>
-              <Row className="mt-4">
-                <Col span={8} className="mr-2 ">
-                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
-                    {t("labels:primary_button_text_color")}
-                  </label>
-                  <Content className="flex gap-2">
-                    <Input
-                      type="color"
-                      className="w-9 p-0"
-                      value={buttonPrimaryForegroundColor}
-                      onChange={(e) => {
-                        const patternName = /^#([A-Fa-f0-9]{6})$/;
-                        if (patternName.test(e.target.value) === false) {
-                          let temp = { ...colorCodeValidation };
-                          temp["primaryTextValidation"] = true;
-                          setColorCodeValidation(temp);
-                          setButtonPrimaryForegroundColor(e.target.value);
-                          setOnChangeValues(true);
-                        } else {
-                          let temp = { ...colorCodeValidation };
-                          temp["primaryTextValidation"] = false;
-                          setColorCodeValidation(temp);
-                          setButtonPrimaryForegroundColor(e.target.value);
-                          setOnChangeValues(true);
-                        }
-                        // setButtonPrimaryForegroundColor(e.target.value);
-                        let temp = { ...copyImageOfStoreSettingsPageTheme };
-                        temp["btn_primary_fg_color"] = e.target.value;
-                        setCopyImageOfStoreSettingsPageTheme(temp);
-                      }}
-                    />
-                    <Space.Compact className="">
+                      <Space.Compact className="">
+                        <Input
+                          value={buttonTeritaryBackgroundColor}
+                          className="w-[150px]"
+                          onChange={(e) => {
+                            const patternName = /^#([A-Fa-f0-9]{6})$/;
+                            if (patternName.test(e.target.value) === false) {
+                              let temp = { ...colorCodeValidation };
+                              temp["tertiaryBgValidation"] = true;
+                              setColorCodeValidation(temp);
+                              setButtonTeritaryBackgroundColor(e.target.value);
+                              setOnChangeValues(true);
+                            } else {
+                              let temp = { ...colorCodeValidation };
+                              temp["tertiaryBgValidation"] = false;
+                              setColorCodeValidation(temp);
+                              setButtonTeritaryBackgroundColor(e.target.value);
+                              setOnChangeValues(true);
+                            }
+                            // setButtonTeritaryBackgroundColor(e.target.value);
+                            let temp = { ...copyImageOfStoreSettingsPageTheme };
+                            temp["btn_tertiary_bg_color"] = e.target.value;
+                            setCopyImageOfStoreSettingsPageTheme(temp);
+                          }}
+                          addonAfter={
+                            <Tooltip
+                              title={t("messages:reset_to_the_original_value")}
+                            >
+                              <UndoOutlined
+                                onClick={() => {
+                                  setButtonTeritaryBackgroundColor(
+                                    btnTeritaryBgColor
+                                  );
+                                  let temp = { ...colorCodeValidation };
+                                  temp["tertiaryBgValidation"] = false;
+                                  setColorCodeValidation(temp);
+                                }}
+                              />
+                            </Tooltip>
+                          }
+                        />
+                      </Space.Compact>
+                    </Content>
+                    {colorCodeValidation.tertiaryBgValidation === true ? (
+                      <p className="text-red-600 text-sm">
+                        {t("messages:please_enter_valid_hexadecimal_code")}{" "}
+                        <br />
+                        {t("messages:ex_ffffff_for_white_000000_for_black")}
+                      </p>
+                    ) : null}
+                  </Col>
+                </Row>
+                <Row className="mt-4">
+                  <Col span={8} className="mr-2 ">
+                    <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
+                      {t("labels:primary_button_text_color")}
+                    </label>
+                    <Content className="flex gap-2">
                       <Input
+                        type="color"
+                        className="w-9 p-0"
                         value={buttonPrimaryForegroundColor}
-                        maxLength={7}
-                        className="w-[150px]"
                         onChange={(e) => {
                           const patternName = /^#([A-Fa-f0-9]{6})$/;
                           if (patternName.test(e.target.value) === false) {
@@ -1852,67 +1834,68 @@ const StoreSettings = () => {
                           temp["btn_primary_fg_color"] = e.target.value;
                           setCopyImageOfStoreSettingsPageTheme(temp);
                         }}
-                        addonAfter={
-                          <Tooltip
-                            title={t("messages:reset_to_the_original_value")}
-                          >
-                            <UndoOutlined
-                              onClick={() => {
-                                setButtonPrimaryForegroundColor(
-                                  btnPrimaryFgColor
-                                );
-                                let temp = { ...colorCodeValidation };
-                                temp["primaryTextValidation"] = false;
-                                setColorCodeValidation(temp);
-                              }}
-                            />
-                          </Tooltip>
-                        }
                       />
-                    </Space.Compact>
-                  </Content>
-                  {colorCodeValidation.primaryTextValidation === true ? (
-                    <p className="text-red-600 text-sm">
-                      {t("messages:please_enter_valid_hexadecimal_code")} <br />
-                      {t("messages:ex_ffffff_for_white_000000_for_black")}
-                    </p>
-                  ) : null}
-                </Col>
-                <Col span={8} className="ml-1">
-                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
-                    {t("labels:secondary_button_text_color")}
-                  </label>
-                  <Content className="flex gap-2">
-                    <Input
-                      type="color"
-                      className="w-9 p-0"
-                      value={buttonSecondaryForegroundColor}
-                      onChange={(e) => {
-                        const patternName = /^#([A-Fa-f0-9]{6})$/;
-                        if (patternName.test(e.target.value) === false) {
-                          let temp = { ...colorCodeValidation };
-                          temp["secondaryTextValidation"] = true;
-                          setColorCodeValidation(temp);
-                          setButtonSecondaryForegroundColor(e.target.value);
-                          setOnChangeValues(true);
-                        } else {
-                          let temp = { ...colorCodeValidation };
-                          temp["secondaryTextValidation"] = false;
-                          setColorCodeValidation(temp);
-                          setButtonSecondaryForegroundColor(e.target.value);
-                          setOnChangeValues(true);
-                        }
-                        // setButtonSecondaryForegroundColor(e.target.value);
-                        let temp = { ...copyImageOfStoreSettingsPageTheme };
-                        temp["btn_secondary_fg_color"] = e.target.value;
-                        setCopyImageOfStoreSettingsPageTheme(temp);
-                      }}
-                    />
-                    <Space.Compact className="">
+                      <Space.Compact className="">
+                        <Input
+                          value={buttonPrimaryForegroundColor}
+                          maxLength={7}
+                          className="w-[150px]"
+                          onChange={(e) => {
+                            const patternName = /^#([A-Fa-f0-9]{6})$/;
+                            if (patternName.test(e.target.value) === false) {
+                              let temp = { ...colorCodeValidation };
+                              temp["primaryTextValidation"] = true;
+                              setColorCodeValidation(temp);
+                              setButtonPrimaryForegroundColor(e.target.value);
+                              setOnChangeValues(true);
+                            } else {
+                              let temp = { ...colorCodeValidation };
+                              temp["primaryTextValidation"] = false;
+                              setColorCodeValidation(temp);
+                              setButtonPrimaryForegroundColor(e.target.value);
+                              setOnChangeValues(true);
+                            }
+                            // setButtonPrimaryForegroundColor(e.target.value);
+                            let temp = { ...copyImageOfStoreSettingsPageTheme };
+                            temp["btn_primary_fg_color"] = e.target.value;
+                            setCopyImageOfStoreSettingsPageTheme(temp);
+                          }}
+                          addonAfter={
+                            <Tooltip
+                              title={t("messages:reset_to_the_original_value")}
+                            >
+                              <UndoOutlined
+                                onClick={() => {
+                                  setButtonPrimaryForegroundColor(
+                                    btnPrimaryFgColor
+                                  );
+                                  let temp = { ...colorCodeValidation };
+                                  temp["primaryTextValidation"] = false;
+                                  setColorCodeValidation(temp);
+                                }}
+                              />
+                            </Tooltip>
+                          }
+                        />
+                      </Space.Compact>
+                    </Content>
+                    {colorCodeValidation.primaryTextValidation === true ? (
+                      <p className="text-red-600 text-sm">
+                        {t("messages:please_enter_valid_hexadecimal_code")}{" "}
+                        <br />
+                        {t("messages:ex_ffffff_for_white_000000_for_black")}
+                      </p>
+                    ) : null}
+                  </Col>
+                  <Col span={8} className="ml-1">
+                    <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
+                      {t("labels:secondary_button_text_color")}
+                    </label>
+                    <Content className="flex gap-2">
                       <Input
+                        type="color"
+                        className="w-9 p-0"
                         value={buttonSecondaryForegroundColor}
-                        maxLength={7}
-                        className="w-[150px]"
                         onChange={(e) => {
                           const patternName = /^#([A-Fa-f0-9]{6})$/;
                           if (patternName.test(e.target.value) === false) {
@@ -1933,65 +1916,68 @@ const StoreSettings = () => {
                           temp["btn_secondary_fg_color"] = e.target.value;
                           setCopyImageOfStoreSettingsPageTheme(temp);
                         }}
-                        addonAfter={
-                          <Tooltip
-                            title={t("messages:reset_to_the_original_value")}
-                          >
-                            <UndoOutlined
-                              onClick={() => {
-                                setButtonSecondaryForegroundColor(
-                                  btnSecondaryFgColor
-                                );
-                                let temp = { ...colorCodeValidation };
-                                temp["secondaryTextValidation"] = false;
-                                setColorCodeValidation(temp);
-                              }}
-                            />
-                          </Tooltip>
-                        }
                       />
-                    </Space.Compact>
-                  </Content>
-                  {colorCodeValidation.secondaryTextValidation === true ? (
-                    <p className="text-red-600 text-sm">
-                      {t("messages:please_enter_valid_hexadecimal_code")} <br />
-                      {t("messages:ex_ffffff_for_white_000000_for_black")}
-                    </p>
-                  ) : null}
-                </Col>
-                <Col span={7} className="ml-2">
-                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
-                    {t("labels:tertiary_button_text_color")}
-                  </label>
-                  <Content className="flex gap-2">
-                    <Input
-                      type="color"
-                      className="w-9 p-0"
-                      maxLength={7}
-                      value={buttonTeritaryForegroundColor}
-                      onChange={(e) => {
-                        const patternName = /^#([A-Fa-f0-9]{6})$/;
-                        if (patternName.test(e.target.value) === false) {
-                          let temp = { ...colorCodeValidation };
-                          temp["tertiaryTextValidation"] = true;
-                          setColorCodeValidation(temp);
-                          setButtonTeritaryForegroundColor(e.target.value);
-                          setOnChangeValues(true);
-                        } else {
-                          let temp = { ...colorCodeValidation };
-                          temp["tertiaryTextValidation"] = false;
-                          setColorCodeValidation(temp);
-                          setButtonTeritaryForegroundColor(e.target.value);
-                          setOnChangeValues(true);
-                        }
-                        // setButtonTeritaryForegroundColor(e.target.value);
-                        let temp = { ...copyImageOfStoreSettingsPageTheme };
-                        temp["btn_tertiary_fg_color"] = e.target.value;
-                        setCopyImageOfStoreSettingsPageTheme(temp);
-                      }}
-                    />
-                    <Space.Compact className="">
+                      <Space.Compact className="">
+                        <Input
+                          value={buttonSecondaryForegroundColor}
+                          maxLength={7}
+                          className="w-[150px]"
+                          onChange={(e) => {
+                            const patternName = /^#([A-Fa-f0-9]{6})$/;
+                            if (patternName.test(e.target.value) === false) {
+                              let temp = { ...colorCodeValidation };
+                              temp["secondaryTextValidation"] = true;
+                              setColorCodeValidation(temp);
+                              setButtonSecondaryForegroundColor(e.target.value);
+                              setOnChangeValues(true);
+                            } else {
+                              let temp = { ...colorCodeValidation };
+                              temp["secondaryTextValidation"] = false;
+                              setColorCodeValidation(temp);
+                              setButtonSecondaryForegroundColor(e.target.value);
+                              setOnChangeValues(true);
+                            }
+                            // setButtonSecondaryForegroundColor(e.target.value);
+                            let temp = { ...copyImageOfStoreSettingsPageTheme };
+                            temp["btn_secondary_fg_color"] = e.target.value;
+                            setCopyImageOfStoreSettingsPageTheme(temp);
+                          }}
+                          addonAfter={
+                            <Tooltip
+                              title={t("messages:reset_to_the_original_value")}
+                            >
+                              <UndoOutlined
+                                onClick={() => {
+                                  setButtonSecondaryForegroundColor(
+                                    btnSecondaryFgColor
+                                  );
+                                  let temp = { ...colorCodeValidation };
+                                  temp["secondaryTextValidation"] = false;
+                                  setColorCodeValidation(temp);
+                                }}
+                              />
+                            </Tooltip>
+                          }
+                        />
+                      </Space.Compact>
+                    </Content>
+                    {colorCodeValidation.secondaryTextValidation === true ? (
+                      <p className="text-red-600 text-sm">
+                        {t("messages:please_enter_valid_hexadecimal_code")}{" "}
+                        <br />
+                        {t("messages:ex_ffffff_for_white_000000_for_black")}
+                      </p>
+                    ) : null}
+                  </Col>
+                  <Col span={7} className="ml-2">
+                    <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
+                      {t("labels:tertiary_button_text_color")}
+                    </label>
+                    <Content className="flex gap-2">
                       <Input
+                        type="color"
+                        className="w-9 p-0"
+                        maxLength={7}
                         value={buttonTeritaryForegroundColor}
                         onChange={(e) => {
                           const patternName = /^#([A-Fa-f0-9]{6})$/;
@@ -2013,75 +1999,74 @@ const StoreSettings = () => {
                           temp["btn_tertiary_fg_color"] = e.target.value;
                           setCopyImageOfStoreSettingsPageTheme(temp);
                         }}
-                        className="w-[150px]"
-                        addonAfter={
-                          <Tooltip
-                            title={t("messages:reset_to_the_original_value")}
-                          >
-                            <UndoOutlined
-                              onClick={() => {
-                                setButtonTeritaryForegroundColor(
-                                  btnTeritaryFgColor
-                                );
-                                let temp = { ...colorCodeValidation };
-                                temp["tertiaryTextValidation"] = false;
-                                setColorCodeValidation(temp);
-                              }}
-                            />
-                          </Tooltip>
-                        }
                       />
-                    </Space.Compact>
-                  </Content>
-                  {colorCodeValidation.tertiaryTextValidation === true ? (
-                    <p className="text-red-600 text-sm">
-                      {t("messages:please_enter_valid_hexadecimal_code")} <br />
-                      {t("messages:ex_ffffff_for_white_000000_for_black")}
-                    </p>
-                  ) : null}
-                </Col>
-              </Row>
-            </Content>
-            <Content>
-              <label className="text-[20px] mb-2 mt-4 font-bold select-none">
-                {t("labels:store_header_setting")}
-              </label>
-              <Row className="mt-2">
-                <Col span={8} className="mr-2 ">
-                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
-                    {t("labels:background_color")}
-                  </label>
-                  <Content className="flex gap-2">
-                    <Input
-                      type="color"
-                      className="w-9 p-0"
-                      value={headerBackgroundColor}
-                      onChange={(e) => {
-                        const patternName = /^#([A-Fa-f0-9]{6})$/;
-                        if (patternName.test(e.target.value) === false) {
-                          let temp = { ...colorCodeValidation };
-                          temp["headerBgValidation"] = true;
-                          setColorCodeValidation(temp);
-                          setHeaderBackgroundColor(e.target.value);
-                          setOnChangeValues(true);
-                        } else {
-                          let temp = { ...colorCodeValidation };
-                          temp["headerBgValidation"] = false;
-                          setColorCodeValidation(temp);
-                          setHeaderBackgroundColor(e.target.value);
-                          setOnChangeValues(true);
-                        }
-                        // setHeaderBackgroundColor(e.target.value);
-                        let temp = { ...copyImageOfStoreHeaderSetting };
-                        temp["bg_color"] = e.target.value;
-                        setCopyImageOfStoreHeaderSetting(temp);
-                      }}
-                    />
-                    <Space.Compact className="">
+                      <Space.Compact className="">
+                        <Input
+                          value={buttonTeritaryForegroundColor}
+                          onChange={(e) => {
+                            const patternName = /^#([A-Fa-f0-9]{6})$/;
+                            if (patternName.test(e.target.value) === false) {
+                              let temp = { ...colorCodeValidation };
+                              temp["tertiaryTextValidation"] = true;
+                              setColorCodeValidation(temp);
+                              setButtonTeritaryForegroundColor(e.target.value);
+                              setOnChangeValues(true);
+                            } else {
+                              let temp = { ...colorCodeValidation };
+                              temp["tertiaryTextValidation"] = false;
+                              setColorCodeValidation(temp);
+                              setButtonTeritaryForegroundColor(e.target.value);
+                              setOnChangeValues(true);
+                            }
+                            // setButtonTeritaryForegroundColor(e.target.value);
+                            let temp = { ...copyImageOfStoreSettingsPageTheme };
+                            temp["btn_tertiary_fg_color"] = e.target.value;
+                            setCopyImageOfStoreSettingsPageTheme(temp);
+                          }}
+                          className="w-[150px]"
+                          addonAfter={
+                            <Tooltip
+                              title={t("messages:reset_to_the_original_value")}
+                            >
+                              <UndoOutlined
+                                onClick={() => {
+                                  setButtonTeritaryForegroundColor(
+                                    btnTeritaryFgColor
+                                  );
+                                  let temp = { ...colorCodeValidation };
+                                  temp["tertiaryTextValidation"] = false;
+                                  setColorCodeValidation(temp);
+                                }}
+                              />
+                            </Tooltip>
+                          }
+                        />
+                      </Space.Compact>
+                    </Content>
+                    {colorCodeValidation.tertiaryTextValidation === true ? (
+                      <p className="text-red-600 text-sm">
+                        {t("messages:please_enter_valid_hexadecimal_code")}{" "}
+                        <br />
+                        {t("messages:ex_ffffff_for_white_000000_for_black")}
+                      </p>
+                    ) : null}
+                  </Col>
+                </Row>
+              </Content>
+              <Content>
+                <label className="text-[20px] mb-2 mt-4 font-bold select-none">
+                  {t("labels:store_header_setting")}
+                </label>
+                <Row className="mt-2">
+                  <Col span={8} className="mr-2 ">
+                    <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
+                      {t("labels:background_color")}
+                    </label>
+                    <Content className="flex gap-2">
                       <Input
+                        type="color"
+                        className="w-9 p-0"
                         value={headerBackgroundColor}
-                        maxLength={7}
-                        className="w-[150px]"
                         onChange={(e) => {
                           const patternName = /^#([A-Fa-f0-9]{6})$/;
                           if (patternName.test(e.target.value) === false) {
@@ -2102,66 +2087,69 @@ const StoreSettings = () => {
                           temp["bg_color"] = e.target.value;
                           setCopyImageOfStoreHeaderSetting(temp);
                         }}
-                        addonAfter={
-                          <Tooltip
-                            title={t("messages:reset_to_the_original_value")}
-                          >
-                            <UndoOutlined
-                              onClick={() => {
-                                setHeaderBackgroundColor(headerBgColor);
-                                let temp = { ...colorCodeValidation };
-                                temp["headerBgValidation"] = false;
-                                setColorCodeValidation(temp);
-                              }}
-                            />
-                          </Tooltip>
-                        }
                       />
-                    </Space.Compact>
-                  </Content>
-                  {colorCodeValidation.headerBgValidation === true ? (
-                    <p className="text-red-600 text-sm">
-                      {t("messages:please_enter_valid_hexadecimal_code")} <br />
-                      {t("messages:ex_ffffff_for_white_000000_for_black")}
-                    </p>
-                  ) : null}
-                </Col>
-                <Col span={8} className="ml-1">
-                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
-                    {" "}
-                    {t("labels:text_color")}
-                  </label>
-                  <Content className="flex gap-2">
-                    <Input
-                      type="color"
-                      className="w-9 p-0"
-                      maxLength={255}
-                      minLength={1}
-                      value={headerForegroundColor}
-                      onChange={(e) => {
-                        const patternName = /^#([A-Fa-f0-9]{6})$/;
-                        if (patternName.test(e.target.value) === false) {
-                          let temp = { ...colorCodeValidation };
-                          temp["headerTextValidation"] = true;
-                          setColorCodeValidation(temp);
-                          setHeaderForegroundColor(e.target.value);
-                          setOnChangeValues(true);
-                        } else {
-                          let temp = { ...colorCodeValidation };
-                          temp["headerTextValidation"] = false;
-                          setColorCodeValidation(temp);
-                          setHeaderForegroundColor(e.target.value);
-                          setOnChangeValues(true);
-                        }
-                        let temp = { ...copyImageOfStoreHeaderSetting };
-                        temp["fg_color"] = e.target.value;
-                        setCopyImageOfStoreHeaderSetting(temp);
-                      }}
-                    />
-                    <Space.Compact className="">
+                      <Space.Compact className="">
+                        <Input
+                          value={headerBackgroundColor}
+                          maxLength={7}
+                          className="w-[150px]"
+                          onChange={(e) => {
+                            const patternName = /^#([A-Fa-f0-9]{6})$/;
+                            if (patternName.test(e.target.value) === false) {
+                              let temp = { ...colorCodeValidation };
+                              temp["headerBgValidation"] = true;
+                              setColorCodeValidation(temp);
+                              setHeaderBackgroundColor(e.target.value);
+                              setOnChangeValues(true);
+                            } else {
+                              let temp = { ...colorCodeValidation };
+                              temp["headerBgValidation"] = false;
+                              setColorCodeValidation(temp);
+                              setHeaderBackgroundColor(e.target.value);
+                              setOnChangeValues(true);
+                            }
+                            // setHeaderBackgroundColor(e.target.value);
+                            let temp = { ...copyImageOfStoreHeaderSetting };
+                            temp["bg_color"] = e.target.value;
+                            setCopyImageOfStoreHeaderSetting(temp);
+                          }}
+                          addonAfter={
+                            <Tooltip
+                              title={t("messages:reset_to_the_original_value")}
+                            >
+                              <UndoOutlined
+                                onClick={() => {
+                                  setHeaderBackgroundColor(headerBgColor);
+                                  let temp = { ...colorCodeValidation };
+                                  temp["headerBgValidation"] = false;
+                                  setColorCodeValidation(temp);
+                                }}
+                              />
+                            </Tooltip>
+                          }
+                        />
+                      </Space.Compact>
+                    </Content>
+                    {colorCodeValidation.headerBgValidation === true ? (
+                      <p className="text-red-600 text-sm">
+                        {t("messages:please_enter_valid_hexadecimal_code")}{" "}
+                        <br />
+                        {t("messages:ex_ffffff_for_white_000000_for_black")}
+                      </p>
+                    ) : null}
+                  </Col>
+                  <Col span={8} className="ml-1">
+                    <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
+                      {" "}
+                      {t("labels:text_color")}
+                    </label>
+                    <Content className="flex gap-2">
                       <Input
+                        type="color"
+                        className="w-9 p-0"
+                        maxLength={255}
+                        minLength={1}
                         value={headerForegroundColor}
-                        className="w-[150px]"
                         onChange={(e) => {
                           const patternName = /^#([A-Fa-f0-9]{6})$/;
                           if (patternName.test(e.target.value) === false) {
@@ -2177,76 +2165,76 @@ const StoreSettings = () => {
                             setHeaderForegroundColor(e.target.value);
                             setOnChangeValues(true);
                           }
-                          // setHeaderForegroundColor(e.target.value);
                           let temp = { ...copyImageOfStoreHeaderSetting };
                           temp["fg_color"] = e.target.value;
                           setCopyImageOfStoreHeaderSetting(temp);
                         }}
-                        addonAfter={
-                          <Tooltip
-                            title={t("messages:reset_to_the_original_value")}
-                          >
-                            <UndoOutlined
-                              onClick={() => {
-                                setHeaderForegroundColor(headerFgColor);
-                                let temp = { ...colorCodeValidation };
-                                temp["headerTextValidation"] = false;
-                                setColorCodeValidation(temp);
-                              }}
-                            />
-                          </Tooltip>
-                        }
                       />
-                    </Space.Compact>
-                  </Content>
-                  {colorCodeValidation.headerTextValidation === true ? (
-                    <p className="text-red-600 text-sm">
-                      {t("messages:please_enter_valid_hexadecimal_code")} <br />
-                      {t("messages:ex_ffffff_for_white_000000_for_black")}
-                    </p>
-                  ) : null}
-                </Col>
-              </Row>
-            </Content>
-            <Content>
-              <label className="text-[20px] mb-2 mt-4 font-bold select-none">
-                {t("labels:store_footer_setting")}
-              </label>
-              <Row className="mt-2">
-                <Col span={8} className="mr-2 ">
-                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
-                    {t("labels:background_color")}
-                  </label>
-                  <Content className="flex gap-2">
-                    <Input
-                      type="color"
-                      className="w-9 p-0"
-                      value={footerBackgroundColor}
-                      onChange={(e) => {
-                        const patternName = /^#([A-Fa-f0-9]{6})$/;
-                        if (patternName.test(e.target.value) === false) {
-                          let temp = { ...colorCodeValidation };
-                          temp["footerBgValidation"] = true;
-                          setColorCodeValidation(temp);
-                          setFooterBackgroundColor(e.target.value);
-                          setOnChangeValues(true);
-                        } else {
-                          let temp = { ...colorCodeValidation };
-                          temp["footerBgValidation"] = false;
-                          setColorCodeValidation(temp);
-                          setFooterBackgroundColor(e.target.value);
-                          setOnChangeValues(true);
-                        }
-                        // setFooterBackgroundColor(e.target.value);
-                        let temp = { ...copyImageOfStoreFooterSetting };
-                        temp["bg_color"] = e.target.value;
-                        setCopyImageOfStoreFooterSetting(temp);
-                      }}
-                    />
-                    <Space.Compact className="">
+                      <Space.Compact className="">
+                        <Input
+                          value={headerForegroundColor}
+                          className="w-[150px]"
+                          onChange={(e) => {
+                            const patternName = /^#([A-Fa-f0-9]{6})$/;
+                            if (patternName.test(e.target.value) === false) {
+                              let temp = { ...colorCodeValidation };
+                              temp["headerTextValidation"] = true;
+                              setColorCodeValidation(temp);
+                              setHeaderForegroundColor(e.target.value);
+                              setOnChangeValues(true);
+                            } else {
+                              let temp = { ...colorCodeValidation };
+                              temp["headerTextValidation"] = false;
+                              setColorCodeValidation(temp);
+                              setHeaderForegroundColor(e.target.value);
+                              setOnChangeValues(true);
+                            }
+                            // setHeaderForegroundColor(e.target.value);
+                            let temp = { ...copyImageOfStoreHeaderSetting };
+                            temp["fg_color"] = e.target.value;
+                            setCopyImageOfStoreHeaderSetting(temp);
+                          }}
+                          addonAfter={
+                            <Tooltip
+                              title={t("messages:reset_to_the_original_value")}
+                            >
+                              <UndoOutlined
+                                onClick={() => {
+                                  setHeaderForegroundColor(headerFgColor);
+                                  let temp = { ...colorCodeValidation };
+                                  temp["headerTextValidation"] = false;
+                                  setColorCodeValidation(temp);
+                                }}
+                              />
+                            </Tooltip>
+                          }
+                        />
+                      </Space.Compact>
+                    </Content>
+                    {colorCodeValidation.headerTextValidation === true ? (
+                      <p className="text-red-600 text-sm">
+                        {t("messages:please_enter_valid_hexadecimal_code")}{" "}
+                        <br />
+                        {t("messages:ex_ffffff_for_white_000000_for_black")}
+                      </p>
+                    ) : null}
+                  </Col>
+                </Row>
+              </Content>
+              <Content>
+                <label className="text-[20px] mb-2 mt-4 font-bold select-none">
+                  {t("labels:store_footer_setting")}
+                </label>
+                <Row className="mt-2">
+                  <Col span={8} className="mr-2 ">
+                    <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
+                      {t("labels:background_color")}
+                    </label>
+                    <Content className="flex gap-2">
                       <Input
+                        type="color"
+                        className="w-9 p-0"
                         value={footerBackgroundColor}
-                        className="w-[150px]"
                         onChange={(e) => {
                           const patternName = /^#([A-Fa-f0-9]{6})$/;
                           if (patternName.test(e.target.value) === false) {
@@ -2267,63 +2255,65 @@ const StoreSettings = () => {
                           temp["bg_color"] = e.target.value;
                           setCopyImageOfStoreFooterSetting(temp);
                         }}
-                        addonAfter={
-                          <Tooltip
-                            title={t("messages:reset_to_the_original_value")}
-                          >
-                            <UndoOutlined
-                              onClick={() => {
-                                setFooterBackgroundColor(headerFgColor);
-                                let temp = { ...colorCodeValidation };
-                                temp["footerBgValidation"] = false;
-                                setColorCodeValidation(temp);
-                              }}
-                            />
-                          </Tooltip>
-                        }
                       />
-                    </Space.Compact>
-                  </Content>
-                  {colorCodeValidation.footerBgValidation === true ? (
-                    <p className="text-red-600 text-sm">
-                      {t("messages:please_enter_valid_hexadecimal_code")} <br />
-                      {t("messages:ex_ffffff_for_white_000000_for_black")}
-                    </p>
-                  ) : null}
-                </Col>
-                <Col span={8} className="ml-1">
-                  <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
-                    {t("labels:text_color")}
-                  </label>
-                  <Content className="flex gap-2">
-                    <Input
-                      type="color"
-                      className="w-9 p-0"
-                      value={footerForegroundColor}
-                      onChange={(e) => {
-                        const patternName = /^#([A-Fa-f0-9]{6})$/;
-                        if (patternName.test(e.target.value) === false) {
-                          let temp = { ...colorCodeValidation };
-                          temp["footerTextValidation"] = true;
-                          setColorCodeValidation(temp);
-                          setFooterForegroundColor(e.target.value);
-                          setOnChangeValues(true);
-                        } else {
-                          let temp = { ...colorCodeValidation };
-                          temp["footerTextValidation"] = false;
-                          setColorCodeValidation(temp);
-                          setFooterForegroundColor(e.target.value);
-                          setOnChangeValues(true);
-                        }
-                        let temp = { ...copyImageOfStoreFooterSetting };
-                        temp["fg_color"] = e.target.value;
-                        setCopyImageOfStoreFooterSetting(temp);
-                      }}
-                    />
-                    <Space.Compact className="">
+                      <Space.Compact className="">
+                        <Input
+                          value={footerBackgroundColor}
+                          className="w-[150px]"
+                          onChange={(e) => {
+                            const patternName = /^#([A-Fa-f0-9]{6})$/;
+                            if (patternName.test(e.target.value) === false) {
+                              let temp = { ...colorCodeValidation };
+                              temp["footerBgValidation"] = true;
+                              setColorCodeValidation(temp);
+                              setFooterBackgroundColor(e.target.value);
+                              setOnChangeValues(true);
+                            } else {
+                              let temp = { ...colorCodeValidation };
+                              temp["footerBgValidation"] = false;
+                              setColorCodeValidation(temp);
+                              setFooterBackgroundColor(e.target.value);
+                              setOnChangeValues(true);
+                            }
+                            // setFooterBackgroundColor(e.target.value);
+                            let temp = { ...copyImageOfStoreFooterSetting };
+                            temp["bg_color"] = e.target.value;
+                            setCopyImageOfStoreFooterSetting(temp);
+                          }}
+                          addonAfter={
+                            <Tooltip
+                              title={t("messages:reset_to_the_original_value")}
+                            >
+                              <UndoOutlined
+                                onClick={() => {
+                                  setFooterBackgroundColor(headerFgColor);
+                                  let temp = { ...colorCodeValidation };
+                                  temp["footerBgValidation"] = false;
+                                  setColorCodeValidation(temp);
+                                }}
+                              />
+                            </Tooltip>
+                          }
+                        />
+                      </Space.Compact>
+                    </Content>
+                    {colorCodeValidation.footerBgValidation === true ? (
+                      <p className="text-red-600 text-sm">
+                        {t("messages:please_enter_valid_hexadecimal_code")}{" "}
+                        <br />
+                        {t("messages:ex_ffffff_for_white_000000_for_black")}
+                      </p>
+                    ) : null}
+                  </Col>
+                  <Col span={8} className="ml-1">
+                    <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
+                      {t("labels:text_color")}
+                    </label>
+                    <Content className="flex gap-2">
                       <Input
+                        type="color"
+                        className="w-9 p-0"
                         value={footerForegroundColor}
-                        className="w-[150px]"
                         onChange={(e) => {
                           const patternName = /^#([A-Fa-f0-9]{6})$/;
                           if (patternName.test(e.target.value) === false) {
@@ -2339,71 +2329,97 @@ const StoreSettings = () => {
                             setFooterForegroundColor(e.target.value);
                             setOnChangeValues(true);
                           }
-                          // setFooterForegroundColor(e.target.value);
                           let temp = { ...copyImageOfStoreFooterSetting };
                           temp["fg_color"] = e.target.value;
                           setCopyImageOfStoreFooterSetting(temp);
                         }}
-                        addonAfter={
-                          <Tooltip
-                            title={t("messages:reset_to_the_original_value")}
-                          >
-                            <UndoOutlined
-                              onClick={() => {
-                                setFooterForegroundColor(footerFgColor);
-                                let temp = { ...colorCodeValidation };
-                                temp["footerTextValidation"] = false;
-                                setColorCodeValidation(temp);
-                              }}
-                            />
-                          </Tooltip>
-                        }
                       />
-                    </Space.Compact>
-                  </Content>
-                  {colorCodeValidation.footerTextValidation === true ? (
-                    <p className="text-red-600 text-sm">
-                      {t("messages:please_enter_valid_hexadecimal_code")} <br />
-                      {t("messages:ex_ffffff_for_white_000000_for_black")}
-                    </p>
-                  ) : null}
-                </Col>
-              </Row>
-            </Content>
-            <Content className="mt-4">
-              <Row className="gap-2">
-                <Col>
-                  <Button
-                    className={
-                      onChangeValues ? "app-btn-primary " : "!opacity-75"
-                    }
-                    disabled={!onChangeValues}
-                    onClick={() => {
-                      validatePostStoreSetting();
-                    }}
-                  >
-                    {t("labels:save")}
-                  </Button>
-                </Col>
-                <Col className="">
-                  <Button
-                    className={
-                      onChangeValues === true
-                        ? "app-btn-secondary "
-                        : "!opacity-75"
-                    }
-                    disabled={!onChangeValues}
-                    onClick={() => {
-                      navigate("/dashboard/store");
-                    }}
-                  >
-                    {t("labels:discard")}
-                  </Button>
-                </Col>
-              </Row>
+                      <Space.Compact className="">
+                        <Input
+                          value={footerForegroundColor}
+                          className="w-[150px]"
+                          onChange={(e) => {
+                            const patternName = /^#([A-Fa-f0-9]{6})$/;
+                            if (patternName.test(e.target.value) === false) {
+                              let temp = { ...colorCodeValidation };
+                              temp["footerTextValidation"] = true;
+                              setColorCodeValidation(temp);
+                              setFooterForegroundColor(e.target.value);
+                              setOnChangeValues(true);
+                            } else {
+                              let temp = { ...colorCodeValidation };
+                              temp["footerTextValidation"] = false;
+                              setColorCodeValidation(temp);
+                              setFooterForegroundColor(e.target.value);
+                              setOnChangeValues(true);
+                            }
+                            // setFooterForegroundColor(e.target.value);
+                            let temp = { ...copyImageOfStoreFooterSetting };
+                            temp["fg_color"] = e.target.value;
+                            setCopyImageOfStoreFooterSetting(temp);
+                          }}
+                          addonAfter={
+                            <Tooltip
+                              title={t("messages:reset_to_the_original_value")}
+                            >
+                              <UndoOutlined
+                                onClick={() => {
+                                  setFooterForegroundColor(footerFgColor);
+                                  let temp = { ...colorCodeValidation };
+                                  temp["footerTextValidation"] = false;
+                                  setColorCodeValidation(temp);
+                                }}
+                              />
+                            </Tooltip>
+                          }
+                        />
+                      </Space.Compact>
+                    </Content>
+                    {colorCodeValidation.footerTextValidation === true ? (
+                      <p className="text-red-600 text-sm">
+                        {t("messages:please_enter_valid_hexadecimal_code")}{" "}
+                        <br />
+                        {t("messages:ex_ffffff_for_white_000000_for_black")}
+                      </p>
+                    ) : null}
+                  </Col>
+                </Row>
+              </Content>
+              <Content className="mt-4">
+                <Row className="gap-2">
+                  <Col>
+                    <Button
+                      className={
+                        onChangeValues ? "app-btn-primary " : "!opacity-75"
+                      }
+                      disabled={!onChangeValues}
+                      onClick={() => {
+                        validatePostStoreSetting();
+                      }}
+                    >
+                      {t("labels:save")}
+                    </Button>
+                  </Col>
+                  <Col className="">
+                    <Button
+                      className={
+                        onChangeValues === true
+                          ? "app-btn-secondary "
+                          : "!opacity-75"
+                      }
+                      disabled={!onChangeValues}
+                      onClick={() => {
+                        navigate("/dashboard/store");
+                      }}
+                    >
+                      {t("labels:discard")}
+                    </Button>
+                  </Col>
+                </Row>
+              </Content>
             </Content>
           </Content>
-        </Content>
+        </Spin>
       </Content>
     </Content>
   );
