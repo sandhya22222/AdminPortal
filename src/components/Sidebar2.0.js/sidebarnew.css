@@ -17,3 +17,8 @@
 .ant-menu .ant-menu-item .ant-menu-item-icon {
   min-width: 20px !important;
 }
+
+.ant-menu-vertical >.ant-menu-item {
+  height: 49px !important;
+  line-height: 12px !important;
+}
