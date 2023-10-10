@@ -139,7 +139,13 @@ const Stores = () => {
       tabId: 1,
       tabIcon: <MdBusiness className="!text-2xl " />,
       tabTitle: (
-        <div className="flex gap-2 mr-5">
+        <div
+          className={
+            util.getSelectedLanguageDirection()?.toUpperCase() === "RTL"
+              ? "flex gap-2 mr-5"
+              : "flex gap-2"
+          }
+        >
           <div className="">{t("labels:active")}</div>
           <div className="rounded-full bg-[#E2F1FC] !px-2 flex justify-center ">
             {activeCount && activeCount.activeStores}

@@ -203,7 +203,7 @@ const StoreImages = ({
     if (getImageData && getImageData !== undefined) {
       if (type === "store_logo") {
         let temp = getImageData && getImageData.store_logo_path;
-        if (temp !== null) {
+        if (temp !== null && temp !== undefined) {
           findAllWithoutPageStoreAbsoluteImagesApi(temp);
         } else {
           setImagePathShow();
@@ -395,7 +395,7 @@ const StoreImages = ({
           {title}
         </Title>
         <Content className=" items-end  ">
-          <Tooltip title={InfoCircleText} className="">
+          <Tooltip title={InfoCircleText} overlayStyle={{ zIndex: 11 }}>
             <InfoCircleOutlined className="!text-[var(--mp-brand-color-h)]" />
           </Tooltip>
         </Content>
