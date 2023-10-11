@@ -129,9 +129,9 @@ const Stores = () => {
       tabTitle: (
         <div className="flex gap-2 ">
           <div className="">{t("labels:all")}</div>
-          <div className="rounded-full bg-[#E2F1FC] !px-2  flex justify-center">
+          {/* <div className="rounded-full bg-[#E2F1FC] !px-2  flex justify-center">
             {activeCount && activeCount.totalStores}
-          </div>{" "}
+          </div>{" "} */}
         </div>
       ),
     },
@@ -147,9 +147,9 @@ const Stores = () => {
           }
         >
           <div className="">{t("labels:active")}</div>
-          <div className="rounded-full bg-[#E2F1FC] !px-2 flex justify-center ">
+          {/* <div className="rounded-full bg-[#E2F1FC] !px-2 flex justify-center ">
             {activeCount && activeCount.activeStores}
-          </div>{" "}
+          </div>{" "} */}
         </div>
       ),
     },
@@ -159,9 +159,9 @@ const Stores = () => {
       tabTitle: (
         <div className="flex gap-2">
           <div className="">{t("labels:inactive")}</div>
-          <div className="rounded-full bg-[#E2F1FC] !px-2 flex justify-center ">
+          {/* <div className="rounded-full bg-[#E2F1FC] !px-2 flex justify-center ">
             {activeCount && activeCount.inactiveStores}
-          </div>{" "}
+          </div>{" "} */}
         </div>
       ),
     },
