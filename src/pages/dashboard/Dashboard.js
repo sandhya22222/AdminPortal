@@ -301,7 +301,11 @@ const Dashboard = () => {
         ...updatedTimes,
         products: currentTime,
       });
-      return symbolAdded;
+      if (symbolAdded) {
+        return symbolAdded;
+      } else {
+        return [];
+      }
     } catch (error) {
       throw new Error("Error fetching top products data");
     }
@@ -378,7 +382,11 @@ const Dashboard = () => {
         ...updatedTimes,
         stores: currentTime,
       });
-      return storeNameAdded;
+      if (storeNameAdded) {
+        return storeNameAdded;
+      } else {
+        return [];
+      }
     } catch (error) {
       throw new Error("Error fetching top stores data");
     }
@@ -453,7 +461,11 @@ const Dashboard = () => {
         ...updatedTimes,
         vendors: currentTime,
       });
-      return storeNameAdded;
+      if (storeNameAdded) {
+        return storeNameAdded;
+      } else {
+        return [];
+      }
     } catch (error) {
       throw new Error("Error fetching top vendors data");
     }
@@ -472,6 +484,7 @@ const Dashboard = () => {
         },
         dm4sightHeaders
       );
+
       const currentDate = new Date();
       const currentTime = currentDate.toLocaleTimeString([], {
         hour: "2-digit",
@@ -482,7 +495,12 @@ const Dashboard = () => {
         ...updatedTimes,
         types: currentTime,
       });
-      return resProdType.data.data[0];
+
+      if (resProdType.data.data) {
+        return resProdType.data.data[0];
+      } else {
+        return [];
+      }
     } catch (error) {
       throw new Error("Error fetching product types data");
     }
@@ -500,7 +518,6 @@ const Dashboard = () => {
   } = useQuery("topProductsData", getTopProductsData, {
     enabled:
       !!fetchTopProductsData && !!dashboardData && dm4sightEnabled === "true",
-    retry: false,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     retry: false,
@@ -904,6 +921,11 @@ const Dashboard = () => {
     },
   ];
 
+  useEffect(() => {
+    console.log("productDataSource", productDataSource);
+    console.log("productTypeDataSource", productTypeDataSource);
+  });
+
   const items = [
     {
       key: "1",
@@ -918,15 +940,13 @@ const Dashboard = () => {
                 rows: 6,
               }}
             ></Skeleton>
-          ) : productDataSource ? (
-            productDataSource?.length > 0 && (
-              <Table
-                responsive
-                dataSource={productDataSource}
-                columns={productColumns}
-                pagination={false}
-              />
-            )
+          ) : productDataSource?.length > 0 ? (
+            <Table
+              responsive
+              dataSource={productDataSource}
+              columns={productColumns}
+              pagination={false}
+            />
           ) : (
             <Content className="mt-5">
               <Empty />
@@ -948,14 +968,12 @@ const Dashboard = () => {
                 rows: 6,
               }}
             ></Skeleton>
-          ) : storeDataSource ? (
-            storeDataSource?.length > 0 && (
-              <Table
-                dataSource={storeDataSource}
-                columns={storeColumns}
-                pagination={false}
-              />
-            )
+          ) : storeDataSource?.length > 0 ? (
+            <Table
+              dataSource={storeDataSource}
+              columns={storeColumns}
+              pagination={false}
+            />
           ) : (
             <Content className="mt-5">
               <Empty />
@@ -977,14 +995,12 @@ const Dashboard = () => {
                 rows: 6,
               }}
             ></Skeleton>
-          ) : vendorDataSource ? (
-            vendorDataSource?.length > 0 && (
-              <Table
-                dataSource={vendorDataSource}
-                columns={vendorColumns}
-                pagination={false}
-              />
-            )
+          ) : vendorDataSource?.length > 0 ? (
+            <Table
+              dataSource={vendorDataSource}
+              columns={vendorColumns}
+              pagination={false}
+            />
           ) : (
             <Content className="mt-5">
               <Empty />
@@ -1006,14 +1022,12 @@ const Dashboard = () => {
                 rows: 6,
               }}
             ></Skeleton>
-          ) : productTypeDataSource ? (
-            productTypeDataSource?.length > 0 && (
-              <Table
-                dataSource={productTypeDataSource}
-                columns={productTypeColumns}
-                pagination={false}
-              />
-            )
+          ) : productTypeDataSource?.length > 0 ? (
+            <Table
+              dataSource={productTypeDataSource}
+              columns={productTypeColumns}
+              pagination={false}
+            />
           ) : (
             <Content className="mt-5">
               <Empty />
