@@ -985,9 +985,9 @@ const StoreSettings = () => {
         setIsLoading(false);
       });
   };
-
+  
   const postImageOnClickSave = () => {
-    if (getImageData && getImageData.length > 0) {
+    if (Object.keys(getImageData[0]).length > 0) {
       updateStoreLogoImageCall();
     } else {
       saveStoreLogoImageCall();
