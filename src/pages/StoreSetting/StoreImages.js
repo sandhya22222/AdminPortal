@@ -395,7 +395,11 @@ const StoreImages = ({
           {title}
         </Title>
         <Content className=" items-end  ">
-          <Tooltip title={InfoCircleText} overlayStyle={{ zIndex: 11 }}>
+          <Tooltip
+            title={InfoCircleText}
+            overlayStyle={{ zIndex: 11, position: "fixed" }}
+            placement="topLeft"
+          >
             <InfoCircleOutlined className="!text-[var(--mp-brand-color-h)]" />
           </Tooltip>
         </Content>
