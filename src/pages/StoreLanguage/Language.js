@@ -31,6 +31,7 @@ import {
 } from "../../constants/media";
 import { usePageTitle } from "../../hooks/usePageTitle";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
+import { DownOutlined } from "@ant-design/icons";
 
 import LanguageBanner from "./LanguageBanner";
 const { Title, Text, Paragraph } = Typography;
@@ -449,11 +450,15 @@ const Language = () => {
                   items,
                   onClick: handleOnclickForDownloadDocument,
                 }}
+                className="app-btn-link"
+                placement="bottomRight"
+                arrow
               >
                 <a onClick={(e) => e.preventDefault()}>
                   <Space>
                     {t("labels:download_support_document_template")}
-                    <img src={DropdownIcon} className="!w-3" />
+                    {/* <img src={DropdownIcon} className="!w-3" /> */}
+                    <DownOutlined className="!ml-[4px]" />
                   </Space>
                 </a>
               </Dropdown>
