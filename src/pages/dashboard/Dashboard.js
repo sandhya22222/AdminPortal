@@ -1098,14 +1098,44 @@ const Dashboard = () => {
           // localStorage.setItem("mpaplng", defaultLanguage.language_code);
         }
         if (util.getUserSelectedLngCode()) {
-          const alreadySelectedLanguage = storeLanguages.find(
-            (item) => item.language_code === util.getUserSelectedLngCode()
-          );
-          dispatch(fnSelectedLanguage(alreadySelectedLanguage));
-          document.body.style.direction =
-            alreadySelectedLanguage &&
-            alreadySelectedLanguage.writing_script_direction?.toLowerCase();
+          let selectedLanguagePresentOrNot =
+            storeLanguages &&
+            storeLanguages.length > 0 &&
+            storeLanguages.filter(
+              (ele) => ele.language_code === util.getUserSelectedLngCode()
+            );
+          if (
+            selectedLanguagePresentOrNot &&
+            selectedLanguagePresentOrNot.length > 0
+          ) {
+            const alreadySelectedLanguage = storeLanguages.find(
+              (item) => item.language_code === util.getUserSelectedLngCode()
+            );
+            dispatch(fnSelectedLanguage(alreadySelectedLanguage));
+            document.body.style.direction =
+              alreadySelectedLanguage &&
+              alreadySelectedLanguage.writing_script_direction?.toLowerCase();
+          } else {
+            const defaultLanguageSelectedLanguage = defaultLanguage;
+            console.log(
+              "testInDahsboardSelectedLangInHeader#",
+              defaultLanguageSelectedLanguage
+            );
+            dispatch(fnSelectedLanguage(defaultLanguageSelectedLanguage));
+            util.setUserSelectedLngCode(
+              defaultLanguageSelectedLanguage.language_code
+            );
+            document.body.style.direction =
+            defaultLanguageSelectedLanguage &&
+            defaultLanguageSelectedLanguage.writing_script_direction?.toLowerCase();
+
+            // setDependencyForPageRefreshForInvalidSelectedLanguage(true);
+            setTimeout(function () {
+              navigate(0);
+            }, 2000);
+          }
         }
+
         dispatch(fnStoreLanguage(storeLanguages));
         dispatch(fnDefaultLanguage(defaultLanguage));
         // dispatch(fnSelectedLanguage(defaultLanguage));
