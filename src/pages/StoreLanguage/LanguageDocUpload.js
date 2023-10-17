@@ -42,6 +42,7 @@ function LanguageDocUpload({ langCode }) {
   const [isSpinning, setIsSpinning] = useState(false);
   const [isBEKeysUploadModalOpen, setIsBEKeysUploadModalOpen] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [uploadBEKeysSuccess, setUploadSBEKeySuccess] = useState(false);
 
   const [isSpinningForBEUpload, setIsSpinningForBEUpload] = useState(false);
 
@@ -106,6 +107,7 @@ function LanguageDocUpload({ langCode }) {
         console.log("success response for backend keys upload", response);
         setIsSpinningForBEUpload(false);
         setIsBEKeysUploadModalOpen(true);
+        setUploadSBEKeySuccess(true);
       })
       .catch((error) => {
         setIsSpinningForBEUpload(false);
@@ -339,11 +341,15 @@ function LanguageDocUpload({ langCode }) {
                 </Button>
               </Upload>
             </Spin>
-            {/* {uploadSuccess ? ( */}
             <Button
               type="text"
-              className="mt-2 app-btn-text flex items-center cursor-pointer gap-1"
+              className={`mt-2 app-btn-text flex items-center cursor-pointer gap-1 ${
+                langCode !== undefined && langCode !== null ? "" : "!opacity-25"
+              }`}
               onClick={() => setChooseDownloadModalVisible(true)}
+              disabled={
+                langCode !== undefined && langCode !== null ? false : true
+              }
             >
               <img
                 src={DownloadIcon}
@@ -352,56 +358,9 @@ function LanguageDocUpload({ langCode }) {
               />
               {t("messages:download_current_document")}
             </Button>
-            {/* ) : (
-              ""
-            )} */}
           </Content>
         </Content>
       </Content>
-      {/* <Content className="my-3 w-[40%]">
-        {/* <Spin spinning={isSpinning} tip="Please wait">
-          <Dragger
-            beforeUpload={() => {
-              return false;
-            }}
-            afterUpload={() => {
-              return false;
-            }}
-            showUploadList={false}
-            disabled={langCode != undefined ? false : true}
-            accept=".csv"
-            maxCount={1}
-            onChange={(e) => handleFileChange(e.file)}
-            className="app-btn-secondary"
-          >
-            <p className="ant-upload-drag-icon">
-              <InboxOutlined />
-            </p>
-            <p className="ant-upload-text">{t("messages:drag_message")}</p>
-            {/* <p className="ant-upload-text mx-2">
-              Upload your file here or drag and drop the file here
-            </p> *
-            <p className="ant-upload-hint p-2">{t("messages:drag_info")}</p>
-          </Dragger>
-        </Spin> */}
-      {/* {uploadSuccess ? ( */}
-      {/* <Button
-          type="text"
-          className="app-btn-text cursor-pointer gap-1 mt-2"
-          onClick={() => setChooseDownloadModalVisible(true)}
-        >
-          <img
-            src={DownloadIcon}
-            alt="download icon"
-            className="!text-xs !w-[10px] !items-center"
-          />
-          {t("messages:download_current_document")}
-        </Button> */}
-      {/* ) : (
-                    ""
-                )} 
-      </Content> */}
-
       <Content className=" mt-4 !flex gap-4">
         <>
           <img src={BackendKeysDownloadIcon} className="w-[8%] h-[8%] mt-2" />
@@ -453,8 +412,13 @@ function LanguageDocUpload({ langCode }) {
             </Spin>
             <Button
               type="text"
-              className="mt-2 app-btn-text cursor-pointer gap-1"
+              className={`mt-2 app-btn-text cursor-pointer gap-1 ${
+                langCode !== undefined && langCode !== null ? "" : "!opacity-25"
+              }`}
               onClick={() => downloadBEKeysFile(2, langCode)}
+              disabled={
+                langCode !== undefined && langCode !== null ? false : true
+              }
             >
               <img
                 src={DownloadIcon}
@@ -466,7 +430,6 @@ function LanguageDocUpload({ langCode }) {
           </Content>
         </Content>
       </Content>
-
       <StoreModal
         isVisible={showSuccessModal}
         // title={t("approvals:Approval-Request-Submission")}
