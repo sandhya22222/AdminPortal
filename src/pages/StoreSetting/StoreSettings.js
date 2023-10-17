@@ -1352,8 +1352,8 @@ const StoreSettings = () => {
                     <label className="text-[20px]  mt-2 font-bold select-none">
                       {t("labels:page_theme")}
                     </label>
-                    <Button className="" onClick={() => openModal()}>
-                      <EyeOutlined className="!text-center -translate-y-0.5" />{" "}
+                    <Button className="app-btn-secondary flex justify-center items-center" onClick={() => openModal()}>
+                      <EyeOutlined className="" />{" "}
                       {t("labels:preview")}
                     </Button>
                   </Content>
