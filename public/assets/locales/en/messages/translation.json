@@ -57,5 +57,6 @@
     "backend_document":"Backend keys encompass a collection of values that are exclusively intended for use within the backend infrastructure of the application.",
     "delete_confirmation_message":"Are you absolutely sure you want to delete the image? This action cannot be undone.",
     "confirm_image_deletion":"Confirm Image Deletion",
-    "language_description":"Enhancing your store with multilingual translations can boost cross-border conversions by an impressive average of 13%, and it's a quick and cost-free process that only takes minutes to complete. Know more"
+    "language_description":"Enhancing your store with multilingual translations can boost cross-border conversions by an impressive average of 13%, and it's a quick and cost-free process that only takes minutes to complete. Know more",
+    "profile_description":" Unfortunately, we were unable to retrieve your profile information. Please try again later."
 }
