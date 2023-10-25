@@ -29,7 +29,7 @@ const UserProfile = () => {
         setIsNetworkError(false);
         console.log(
           "get from  store user server response-----> ",
-          response.data.createdTimestamp
+          response.data
         );
         setStoreUsersData(response.data);
         setIsLoading(false);
