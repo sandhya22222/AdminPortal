@@ -116,7 +116,7 @@
   "rank": "Rank",
   "logout":"Logout",
   "role":"Role",
-  "firstName":"First Name",
-  "lastName":"Last Name",
+  "first_name":"First Name",
+  "last_name":"Last Name",
   "onboarded_on":"Onboarded On"
 }
