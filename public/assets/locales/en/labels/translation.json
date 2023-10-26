@@ -113,5 +113,10 @@
   "vendor": "Vendor",
   "store": "Store",
   "product_name": "Product Name",
-  "rank": "Rank"
+  "rank": "Rank",
+  "logout":"Logout",
+  "role":"Role",
+  "first_name":"First Name",
+  "last_name":"Last Name",
+  "onboarded_on":"Onboarded On"
 }

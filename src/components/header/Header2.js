@@ -78,13 +78,13 @@ const Header2 = () => {
   const userItems = [
     // Todo: Commenting for now, will implement once the details are ready
     {
-      label: "Profile",
+      label: `${t("labels:profile")}`,
       key: "profile",
       icon: <UserOutlined />,
       // disabled: true,
     },
     {
-      label: "Logout",
+      label: `${t("labels:logout")}`,
       key: "logout",
       icon: <LogoutOutlined />,
       danger: true,
@@ -159,7 +159,7 @@ const Header2 = () => {
                     className="!h-8 absolute bottom-[-2px] left-[-30px]"
                   /> */}
                   <Text className="text-lg text-slate-600 pr-1">
-                    {t("labels:Admin")}
+                    {t("labels:admin")}
                   </Text>
                   <DownOutlined className="text-xs text-slate-600" />
                 </Paragraph>
