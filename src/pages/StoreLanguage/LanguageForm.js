@@ -107,10 +107,10 @@ const LanguageForm = ({
                       res.data.response_body[0].is_default === false ? 0 : 1
                     }`
                   );
-                  let updatedScriptDirection = { ...selectedLanguage };
-                  updatedScriptDirection.writing_script_direction =
-                    res.data.response_body[0].writing_script_direction;
-                  dispatch(fnSelectedLanguage(updatedScriptDirection));
+                  // let updatedScriptDirection = { ...selectedLanguage };
+                  // updatedScriptDirection.writing_script_direction =
+                  //   res.data.response_body[0].writing_script_direction;
+                  // dispatch(fnSelectedLanguage(updatedScriptDirection));
                   setLanguageName(res.data.response_body[0].language);
                   setDefaultScriptDirection(
                     res.data.response_body[0].writing_script_direction
@@ -268,11 +268,11 @@ const LanguageForm = ({
     }
   }, [languageCode, languageName]);
 
-  useEffect(() => {
-    document.body.style.direction = util
-      .getSelectedLanguageDirection()
-      ?.toLowerCase();
-  }, [selectedLanguage]);
+  // useEffect(() => {
+  //   document.body.style.direction = util
+  //     .getSelectedLanguageDirection()
+  //     ?.toLowerCase();
+  // }, [selectedLanguage]);
 
   return (
     <Content>

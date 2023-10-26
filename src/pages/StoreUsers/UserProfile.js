@@ -126,7 +126,7 @@ const UserProfile = () => {
                   </Row>
                   <Row className="mb-2">
                     <label className="text-md font-medium">
-                      {t("labels:firstName")}:{" "}
+                      {t("labels:first_name")}:{" "}
                       {(storeUsersData && storeUsersData.firstName === "") ||
                       (storeUsersData && storeUsersData.firstName === undefined)
                         ? "NA"
@@ -135,7 +135,7 @@ const UserProfile = () => {
                   </Row>
                   <Row className=" mb-2">
                     <label className="text-md font-medium">
-                      {t("labels:lastName")}:{" "}
+                      {t("labels:last_name")}:{" "}
                       {(storeUsersData && storeUsersData.lastName === "") ||
                       (storeUsersData && storeUsersData.lastName === undefined)
                         ? "NA"
