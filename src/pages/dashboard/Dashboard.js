@@ -142,7 +142,7 @@ const Dashboard = () => {
       getDashBoardData();
     }
     window.scrollTo(0, 0);
-    findAllLanguages();
+    // findAllLanguages();
   }, []);
 
   const getDashBoardData = () => {

@@ -16,7 +16,11 @@ import "./header2.css";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 //! Import user defined services
 import { fnUserLoggedInInfo } from "../../services/redux/actions/ActionsUser";
-import { fnSelectedLanguage } from "../../services/redux/actions/ActionStoreLanguage";
+import {
+  fnSelectedLanguage,
+  fnStoreLanguage,
+  fnDefaultLanguage,
+} from "../../services/redux/actions/ActionStoreLanguage";
 import {
   BrandLogo,
   AdminIcon,
@@ -35,6 +39,7 @@ const umsBaseUrl = process.env.REACT_APP_USM_BASE_URL;
 const logoutAPI = process.env.REACT_APP_LOGOUT;
 const multilingualFunctionalityEnabled =
   process.env.REACT_APP_IS_MULTILINGUAL_ENABLED;
+const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API;
 
 const Header2 = () => {
   const { t } = useTranslation();
@@ -117,6 +122,77 @@ const Header2 = () => {
     navigate(0);
   };
 
+  const findAllLanguages = () => {
+    MarketplaceServices.findAll(languageAPI, { "language-status": 1 }, false)
+      .then((response) => {
+        console.log(
+          "Server response from findAllStoreLanguages",
+          response.data.response_body
+        );
+        const storeLanguages = response.data.response_body;
+        const defaultLanguage = storeLanguages.find((item) => item.is_default);
+
+        const userSelectedLanguageCode = util.getUserSelectedLngCode();
+        if (userSelectedLanguageCode === undefined) {
+          const userSelectedLanguage = defaultLanguage;
+          dispatch(fnSelectedLanguage(userSelectedLanguage));
+          document.body.style.direction =
+            userSelectedLanguage &&
+            userSelectedLanguage.writing_script_direction?.toLowerCase();
+          // Cookies.set("mpaplng", defaultLanguage.language_code);
+          // localStorage.setItem("mpaplng", defaultLanguage.language_code);
+        }
+        if (util.getUserSelectedLngCode()) {
+          let selectedLanguagePresentOrNot =
+            storeLanguages &&
+            storeLanguages.length > 0 &&
+            storeLanguages.filter(
+              (ele) => ele.language_code === util.getUserSelectedLngCode()
+            );
+          if (
+            selectedLanguagePresentOrNot &&
+            selectedLanguagePresentOrNot.length > 0
+          ) {
+            const alreadySelectedLanguage = storeLanguages.find(
+              (item) => item.language_code === util.getUserSelectedLngCode()
+            );
+            dispatch(fnSelectedLanguage(alreadySelectedLanguage));
+            document.body.style.direction =
+              alreadySelectedLanguage &&
+              alreadySelectedLanguage.writing_script_direction?.toLowerCase();
+          } else {
+            const defaultLanguageSelectedLanguage = defaultLanguage;
+            console.log(
+              "testInDahsboardSelectedLangInHeader#",
+              defaultLanguageSelectedLanguage
+            );
+            dispatch(fnSelectedLanguage(defaultLanguageSelectedLanguage));
+            util.setUserSelectedLngCode(
+              defaultLanguageSelectedLanguage.language_code
+            );
+            document.body.style.direction =
+              defaultLanguageSelectedLanguage &&
+              defaultLanguageSelectedLanguage.writing_script_direction?.toLowerCase();
+
+            // setDependencyForPageRefreshForInvalidSelectedLanguage(true);
+            setTimeout(function () {
+              navigate(0);
+            }, 2000);
+          }
+        }
+
+        dispatch(fnStoreLanguage(storeLanguages));
+        dispatch(fnDefaultLanguage(defaultLanguage));
+        // dispatch(fnSelectedLanguage(defaultLanguage));
+      })
+      .catch((error) => {
+        console.log("error-->", error.response);
+      });
+  };
+
+  useEffect(() => {
+    findAllLanguages();
+  }, []);
   useEffect(() => {
     setStoreSelectedLngCode(selectedLanguage && selectedLanguage.language_code);
   }, [selectedLanguage]);
