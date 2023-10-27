@@ -63,6 +63,7 @@ function LanguageHeaderAction({
   const [warningLanguageDefaultModal, setWarningLanguageDefaultModal] =
     useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [languageReload, setLanguageReload] = useState();
   useEffect(() => {
     setSwitchStatus(languageStatus == 2 ? false : true);
   }, [languageStatus]);
@@ -241,6 +242,15 @@ function LanguageHeaderAction({
           );
         dispatch(fnStoreLanguage(filteredDeleteData));
         console.log("delete response", filteredDeleteData);
+        let defaultData =
+          filteredDeleteData &&
+          filteredDeleteData.length > 0 &&
+          filteredDeleteData.filter((ele) => ele.is_default)[0];
+        if (selectedLanguage && selectedLanguage.id === parseInt(languageId)) {
+          setLanguageReload(defaultData.id);
+          dispatch(fnSelectedLanguage(defaultData));
+          util.setUserSelectedLngCode(defaultData.language_code);
+        }
         // disabling spinner
         setIslanguageDeleting(false);
         MarketplaceToaster.showToast(response);
@@ -250,13 +260,6 @@ function LanguageHeaderAction({
         setIslanguageDeleting(false);
         // console.log("response from delete===>", error.response);
         MarketplaceToaster.showToast(error.response);
-        // let errorBody = {message: "Deletion unsuccessful, please try again later", errorType: "error"}
-        // MarketplaceToaster.showToast("", errorBody);
-        // toast("Deletion unsuccessful, please try again later", {
-        //     position: toast.POSITION.TOP_RIGHT,
-        //     type: "error",
-        //     autoClose: 10000,
-        // });
       });
   };
 
@@ -344,12 +347,20 @@ function LanguageHeaderAction({
           <Content className="mt-3">
             <Button
               className="app-btn-primary"
-              onClick={() =>
-                navigate(
-                  `/dashboard/language`
-                  //   ?${MarketplaceAppConfig.getStore("")}
-                )
-              }
+              onClick={() => {
+                // navigate(
+                //   `/dashboard/language`
+                //   //   ?${MarketplaceAppConfig.getStore("")}
+                // );
+                if (
+                  (selectedLanguage && selectedLanguage.id) ===
+                  parseInt(languageReload)
+                ) {
+                  window.location.href = "/dashboard/language";
+                } else {
+                  navigate(`/dashboard/language`);
+                }
+              }}
             >
               {t("labels:close")}
             </Button>
