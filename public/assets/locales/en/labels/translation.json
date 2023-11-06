@@ -118,5 +118,7 @@
   "role":"Role",
   "first_name":"First Name",
   "last_name":"Last Name",
-  "onboarded_on":"Onboarded On"
+  "onboarded_on":"Onboarded On",
+  "max":"Max",
+  "upload":"Upload"
 }
