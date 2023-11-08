@@ -113,5 +113,7 @@
   "vendor": "Vendor",
   "store": "Store",
   "product_name": "Product Name",
-  "rank": "Rank"
+  "rank": "Rank",
+  "units": "Units",
+  "vendor_name": "Vendor Name"
 }
