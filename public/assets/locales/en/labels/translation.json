@@ -114,6 +114,8 @@
   "store": "Store",
   "product_name": "Product Name",
   "rank": "Rank",
+  "units": "Units",
+  "vendor_name": "Vendor Name",
   "logout":"Logout",
   "role":"Role",
   "first_name":"First Name",

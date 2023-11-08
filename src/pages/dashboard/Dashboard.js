@@ -847,24 +847,24 @@ const Dashboard = () => {
 
   const storeColumns = [
     {
-      title: "Rank",
+      title: t("labels:rank"),
       dataIndex: "rank",
       key: "rank",
     },
     {
-      title: "Store Name",
+      title: t("labels:store_name"),
       dataIndex: "name",
       key: "name",
     },
 
     {
-      title: "Units",
+      title: t("labels:units"),
       dataIndex: "units",
       key: "units",
       width: "25%",
     },
     {
-      title: "Sales",
+      title: t("labels:sales"),
       dataIndex: "sales",
       key: "sales",
       width: "25%",
@@ -873,28 +873,28 @@ const Dashboard = () => {
 
   const vendorColumns = [
     {
-      title: "Rank",
+      title: t("labels:rank"),
       dataIndex: "rank",
       key: "rank",
     },
     {
-      title: "Vendor Name",
+      title: t("labels:vendor_name"),
       dataIndex: "name",
       key: "name",
     },
     {
-      title: "Store",
+      title: t("labels:store"),
       dataIndex: "store",
       key: "store",
     },
 
     {
-      title: "Units",
+      title: t("labels:units"),
       dataIndex: "units",
       key: "units",
     },
     {
-      title: "Sales",
+      title: t("labels:sales"),
       dataIndex: "sales",
       key: "sales",
       width: "25%",
@@ -903,18 +903,18 @@ const Dashboard = () => {
 
   const productTypeColumns = [
     {
-      title: "Rank",
+      title: t("labels:rank"),
       dataIndex: "rank",
       key: "rank",
     },
 
     {
-      title: "Product Type",
+      title: t("labels:product_type"),
       dataIndex: "product_type",
       key: "product_type",
     },
     {
-      title: "Units",
+      title: t("labels:units"),
       dataIndex: "units",
       key: "units",
       width: "25%",
@@ -1126,8 +1126,8 @@ const Dashboard = () => {
               defaultLanguageSelectedLanguage.language_code
             );
             document.body.style.direction =
-            defaultLanguageSelectedLanguage &&
-            defaultLanguageSelectedLanguage.writing_script_direction?.toLowerCase();
+              defaultLanguageSelectedLanguage &&
+              defaultLanguageSelectedLanguage.writing_script_direction?.toLowerCase();
 
             // setDependencyForPageRefreshForInvalidSelectedLanguage(true);
             setTimeout(function () {
