@@ -3,7 +3,10 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import validator from "validator";
-import { fnStoreLanguage } from "../../services/redux/actions/ActionStoreLanguage";
+import {
+  fnStoreLanguage,
+  fnSelectedLanguage,
+} from "../../services/redux/actions/ActionStoreLanguage";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import MarketplaceToaster from "../../util/marketplaceToaster";
 import util from "../../util/common";
@@ -24,6 +27,11 @@ const LanguageForm = ({
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const selectedLanguage = useSelector(
+    (state) => state.reducerSelectedLanguage.selectedLanguage
+  );
+
   const [txtLanguage, setTxtLanguage] = useState("");
   const [txtLanguageCode, setTxtLanguageCode] = useState("");
   const [scriptDirection, setScriptDirection] = useState("LTR");
@@ -89,7 +97,6 @@ const LanguageForm = ({
               );
               if (res.status === 201) {
                 if (res.data) {
-                  MarketplaceToaster.showToast(res);
                   navigate(
                     `/dashboard/language/language-settings?k=${
                       res.data.response_body[0].id
@@ -99,6 +106,26 @@ const LanguageForm = ({
                       res.data.response_body[0].is_default === false ? 0 : 1
                     }`
                   );
+                  if (
+                    selectedLanguage &&
+                    selectedLanguage.language_code ===
+                      res.data.response_body[0].language_code
+                  ) {
+                    let updatedScriptDirection = { ...selectedLanguage };
+                    updatedScriptDirection.writing_script_direction =
+                      res.data.response_body[0].writing_script_direction;
+                    dispatch(fnSelectedLanguage(updatedScriptDirection));
+                    if (
+                      selectedLanguage &&
+                      selectedLanguage.writing_script_direction !==
+                        res.data.response_body[0].writing_script_direction
+                    ) {
+                      setTimeout(function () {
+                        navigate(0);
+                      }, 500);
+                    }
+                  }
+
                   setLanguageName(res.data.response_body[0].language);
                   setDefaultScriptDirection(
                     res.data.response_body[0].writing_script_direction
@@ -107,6 +134,7 @@ const LanguageForm = ({
                   setDefaultTxtLanguageCode(
                     res.data.response_body[0].language_code
                   );
+                  MarketplaceToaster.showToast(res);
                 }
                 setOnChangeValues(false);
                 // disabling spinner
@@ -217,6 +245,7 @@ const LanguageForm = ({
           serverLanguageData &&
           serverLanguageData.length > 0 &&
           serverLanguageData.filter((ele) => parseInt(ele.status) === 1);
+        console.log("filteredServerLangData", filteredServerLangData);
         dispatch(fnStoreLanguage(filteredServerLangData));
 
         if (serverLanguageData && serverLanguageData.length > 0) {

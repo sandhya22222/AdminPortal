@@ -35,12 +35,12 @@
     "please_enter_the_values_for_the_mandatory_fields":"Please enter the values for the mandatory fields",
     "language_must_contain_minimum_of":"Language must contain minimum of",
     "language_code_must_contain_minimum_of":"Language code must contain minimum of",
-    "language_activation_confirmation": "Language Activation Confirmation",
-    "language_activation_confirmation_message": "Great news! You are about to activate your Language. Are you sure you would like to proceed ?",
-    "language_deactivation_confirmation": "Language Deactivation Confirmation",
-    "language_deactivation_confirmation_message": "You are about to deactivate your Language. Are you sure you would like to proceed ?",
+    "language_activation_confirmation": "Language activation confirmation",
+    "language_activation_confirmation_message": "Great news! You are about to activate your language. Are you sure you would like to proceed ?",
+    "language_deactivation_confirmation": "Language deactivation confirmation",
+    "language_deactivation_confirmation_message": "You are about to deactivate your language. Are you sure you would like to proceed ?",
     "default_language_warning_msg": "Are you sure want to mark the language as default ?",
-    "remove_language_confirmation":"Confirm Language Deletion",
+    "remove_language_confirmation":"Confirm language deletion",
     "remove_language_confirmation_message":"Are you absolutely sure you want to delete the language? This action cannot be undone",
     "language_deleted_successfully":"Successfully Deleted!",
     "download_current_document":"Download The Current Document",
@@ -57,5 +57,6 @@
     "backend_document":"Backend keys encompass a collection of values that are exclusively intended for use within the backend infrastructure of the application.",
     "delete_confirmation_message":"Are you absolutely sure you want to delete the image? This action cannot be undone.",
     "confirm_image_deletion":"Confirm Image Deletion",
-    "language_description":"Enhancing your store with multilingual translations can boost cross-border conversions by an impressive average of 13%, and it's a quick and cost-free process that only takes minutes to complete. Know more"
+    "language_description":"Enhancing your store with multilingual translations can boost cross-border conversions by an impressive average of 13%, and it's a quick and cost-free process that only takes minutes to complete. Know more",
+    "profile_description":"Unfortunately, we were unable to retrieve your profile information. Please try again later."
 }

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Avatar, Layout, Typography, Row, Skeleton } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import moment from "moment";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
 import { getGenerateDateAndTime } from "../../util/util";
@@ -92,8 +93,7 @@ const UserProfile = () => {
         ) : isNetworkError ? (
           <Content className="!text-center !p-6">
             <Content className="inline-block shadow-sm  bg-[#FFFFFF] !rounded-md px-8 py-10 w-[500px]">
-              Unfortunately, we were unable to retrieve your profile
-              information. Please try again later.
+              {t("messages:profile_description")}
             </Content>
           </Content>
         ) : (
@@ -115,7 +115,7 @@ const UserProfile = () => {
                 <Content className="flex flex-col items-center">
                   <Row className="mb-2">
                     <label className="text-md font-medium">
-                      Role:{" "}
+                      {t("labels:role")}:{" "}
                       {(storeUsersData &&
                         storeUsersData.roles[0].name === "") ||
                       (storeUsersData &&
@@ -126,7 +126,7 @@ const UserProfile = () => {
                   </Row>
                   <Row className="mb-2">
                     <label className="text-md font-medium">
-                      First Name:{" "}
+                      {t("labels:first_name")}:{" "}
                       {(storeUsersData && storeUsersData.firstName === "") ||
                       (storeUsersData && storeUsersData.firstName === undefined)
                         ? "NA"
@@ -135,7 +135,7 @@ const UserProfile = () => {
                   </Row>
                   <Row className=" mb-2">
                     <label className="text-md font-medium">
-                      Last Name:{" "}
+                      {t("labels:last_name")}:{" "}
                       {(storeUsersData && storeUsersData.lastName === "") ||
                       (storeUsersData && storeUsersData.lastName === undefined)
                         ? "NA"
@@ -144,11 +144,14 @@ const UserProfile = () => {
                   </Row>
                   <Row className="">
                     <label className="text-md font-medium">
-                      Onboarded On:{" "}
-                      {getGenerateDateAndTime(
+                      {t("labels:onboarded_on")}:{" "}
+                      {/* {getGenerateDateAndTime(
                         storeUsersData && storeUsersData.createdTimestamp,
                         "D MMMM YYYY"
-                      )}
+                      )} */}
+                      {moment
+                        .unix(storeUsersData && storeUsersData.createdTimestamp)
+                        .format("D MMMM YYYY")}
                     </label>
                   </Row>
                 </Content>

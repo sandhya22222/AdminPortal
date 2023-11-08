@@ -78,7 +78,7 @@ const StoreImages = ({
           marginTop: 8,
         }}
       >
-        Upload
+        {t("labels:upload")}
       </div>
     </div>
   );
@@ -373,23 +373,6 @@ const StoreImages = ({
 
   return (
     <Content className=" mb-2">
-      <StoreModal
-        isVisible={isDeleteImageModalOpen}
-        okButtonText={t("labels:yes")}
-        cancelButtonText={t("labels:cancel")}
-        title={t("labels:warning")}
-        okCallback={() => removeMedia()}
-        cancelCallback={() => closeDeleteModal()}
-        isSpin={isImageDeleting}
-        hideCloseButton={false}
-      >
-        {
-          <div>
-            <p>{t("messages:confirm_image_deletion")}</p>
-            <p>{t("messages:delete_confirmation_message")}</p>
-          </div>
-        }
-      </StoreModal>
       <Content className="flex !mb-3 gap-1">
         <Title level={5} className="">
           {title}
@@ -488,7 +471,8 @@ const StoreImages = ({
                 className="font-semibold app-btn-secondary flex justify-center items-center"
               >
                 <UploadOutlined className="" />
-                {t("labels:click_to_upload")}(Max: {BannerImagesUploadLength})
+                {t("labels:click_to_upload")}({t("labels:max")}:{" "}
+                {BannerImagesUploadLength})
               </Button>
             </Upload>
           )}
@@ -564,7 +548,7 @@ const StoreImages = ({
                     className="font-semibold app-btn-secondary flex justify-center items-center"
                   >
                     <UploadOutlined className="" />
-                    {t("labels:click_to_upload")}(Max:{" "}
+                    {t("labels:click_to_upload")}({t("labels:max")}:{" "}
                     {BannerImagesUploadLength})
                   </Button>
                 </Upload>
@@ -587,6 +571,23 @@ const StoreImages = ({
           </Content>
         </>
       )}
+      <StoreModal
+        isVisible={isDeleteImageModalOpen}
+        okButtonText={t("labels:yes")}
+        cancelButtonText={t("labels:cancel")}
+        title={t("labels:warning")}
+        okCallback={() => removeMedia()}
+        cancelCallback={() => closeDeleteModal()}
+        isSpin={isImageDeleting}
+        hideCloseButton={false}
+      >
+        {
+          <div>
+            <p>{t("messages:confirm_image_deletion")}</p>
+            <p>{t("messages:delete_confirmation_message")}</p>
+          </div>
+        }
+      </StoreModal>
     </Content>
   );
 };
