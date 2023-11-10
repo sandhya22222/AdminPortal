@@ -97,9 +97,9 @@ const UserProfile = () => {
             </Content>
           </Content>
         ) : (
-          <Content className="!text-center !p-6">
+          <Content className="!text-center !p-6 !mx-[17rem]">
             <Content className="inline-block">
-              <Content className="shadow-sm  bg-[#FFFFFF] !rounded-md flex flex-col items-center px-8 py-10 w-[500px]">
+              <Content className="shadow-sm  bg-[#FFFFFF] !rounded-2xl flex flex-col items-center px-8 py-10 w-[500px]">
                 {/* <Row className="mb-2">
                   <Avatar size={104} icon={<UserOutlined />} />
                 </Row>
