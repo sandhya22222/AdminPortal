@@ -48,7 +48,7 @@ const languageSupportDocTemplateDownload =
 const languageAbsoluteDocumentDownload =
   process.env.REACT_APP_LANGUAGE_ABSOLUTE_DOCUMENT_DOWNLOAD;
 const Language = () => {
-  usePageTitle("Languages");
+  usePageTitle(t("labels:languages"));
   const authorizationHeader = useAuthorization();
   const params = useParams();
 
