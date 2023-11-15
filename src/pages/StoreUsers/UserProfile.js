@@ -31,9 +31,9 @@ const UserProfile = () => {
           "get from  store user server response-----> ",
           response.data
         );
-        setStoreUsersData(response.data);
+        setStoreUsersData(response.data.response_body);
         setIsLoading(false);
-        const email = response.data.email;
+        const email = response.data.response_body.email;
         const emailHide =
           email &&
           email.replace(
