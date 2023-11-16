@@ -24,12 +24,15 @@
   border-color: var(--mp-brand-color) !important;
 }
 
+/* .ant-select-selector {
+  border-color: var(--mp-brand-color) !important;
+} */
 .ant-select-selector:hover {
   border-color: var(--mp-brand-color) !important;
 }
 
 .ant-select-item-option-selected {
-  background-color: var(--mp-light-color) !important;
+  background-color: var(--mp-input-field-outer-glow-color)!important;
 }
 .ant-select-dropdown {
   z-index: 1 !important;

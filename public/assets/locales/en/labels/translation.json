@@ -122,5 +122,6 @@
   "last_name":"Last Name",
   "onboarded_on":"Onboarded On",
   "max":"Max",
-  "upload":"Upload"
+  "upload":"Upload",
+  "admin_portal":"Admin Portal"
 }

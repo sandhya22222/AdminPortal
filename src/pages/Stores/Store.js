@@ -63,7 +63,7 @@ const userNameMaxLength = process.env.REACT_APP_USERNAME_MAX_LENGTH;
 
 const Stores = () => {
   const { t } = useTranslation();
-  usePageTitle("Stores");
+  usePageTitle(t("labels:stores"));
 
   const params = useParams();
   const navigate = useNavigate();
