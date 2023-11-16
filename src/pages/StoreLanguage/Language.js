@@ -70,7 +70,7 @@ const Language = () => {
       title: `${t("labels:language")}`,
       dataIndex: "language",
       key: "language",
-      width: "25%",
+      width: "20%",
       ellipsis: true,
       render: (text, record) => {
         return (
@@ -78,7 +78,7 @@ const Language = () => {
             <Tooltip title={record.language}>
               <Text
                 className={`mx-2 ${
-                  record.is_default ? "!max-w-[200px]" : "!max-w-[200px]"
+                  record.is_default ? "!max-w-[150px]" : "!max-w-[150px]"
                 } `}
                 ellipsis={true}
               >
@@ -142,7 +142,7 @@ const Language = () => {
       title: `${t("labels:status")}`,
       dataIndex: "status",
       key: "status",
-      width: "15%",
+      width: "12%",
       render: (text, record) => {
         return (
           <>
@@ -161,20 +161,20 @@ const Language = () => {
       title: `${t("labels:support_document")}`,
       dataIndex: "lang_support_docs",
       key: "lang_support_docs",
-      width: "20%",
+      width: "28%",
       render: (text, record) => {
         return (
           <Button
             type="text"
-              className="app-btn-text gap-1"
-              onClick={() => {
-                findAllSupportDocumentTemplateDownload(2, record.language_code);
-              }}
-            >
-              <img
-                src={DownloadIcon}
-                className="!text-xs !w-[10px]  !items-center"
-              />
+            className="app-btn-text gap-1"
+            onClick={() => {
+              findAllSupportDocumentTemplateDownload(2, record.language_code);
+            }}
+          >
+            <img
+              src={DownloadIcon}
+              className="!text-xs !w-[10px]  !items-center"
+            />
             {t("labels:download_document")}
           </Button>
         );
@@ -189,7 +189,7 @@ const Language = () => {
       render: (text, record) => {
         return (
           <Col className="whitespace-nowrap !text-center">
-            <Tooltip title="Edit Language">
+            <Tooltip title={t("labels:edit_language")}>
               <Button
                 type="text"
                 className="app-btn-icon"
