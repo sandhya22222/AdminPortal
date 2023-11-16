@@ -31,9 +31,9 @@ const UserProfile = () => {
           "get from  store user server response-----> ",
           response.data
         );
-        setStoreUsersData(response.data);
+        setStoreUsersData(response.data.response_body);
         setIsLoading(false);
-        const email = response.data.email;
+        const email = response.data.response_body.email;
         const emailHide =
           email &&
           email.replace(
@@ -117,11 +117,11 @@ const UserProfile = () => {
                     <label className="text-md font-medium">
                       {t("labels:role")}:{" "}
                       {(storeUsersData &&
-                        storeUsersData.roles[0].name === "") ||
+                        storeUsersData.roles[0]?.name === "") ||
                       (storeUsersData &&
-                        storeUsersData.roles[0].name === undefined)
+                        storeUsersData.roles[0]?.name === undefined)
                         ? "NA"
-                        : storeUsersData && storeUsersData.roles[0].name}
+                        : storeUsersData && storeUsersData.roles[0]?.name}
                     </label>
                   </Row>
                   <Row className="mb-2">
