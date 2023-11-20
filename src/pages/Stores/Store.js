@@ -345,7 +345,7 @@ const Stores = () => {
                     searchParams.get("limit")
                       ? searchParams.get("limit")
                       : pageLimit
-                  }`,
+                  }&storeId=${record.storeId}`,
                 }}
                 // className=" pl-[10px] font-semibold app-table-data-title"
               >
@@ -417,6 +417,7 @@ const Stores = () => {
     filteredData &&
       filteredData.length > 0 &&
       filteredData.map((element, index) => {
+        var storeActualId = element.id;
         var storeId = element.store_uuid;
         var storeName = element.name;
         var createdOn = element.created_on;
@@ -428,6 +429,7 @@ const Stores = () => {
             id: storeId,
             created_on: createdOn,
             status: statusForStores[storeStatus],
+            storeId: storeActualId
           });
       });
     setSelectedTabTableContent(tempArray);

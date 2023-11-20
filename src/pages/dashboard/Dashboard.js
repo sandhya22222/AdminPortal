@@ -90,10 +90,10 @@ const Dashboard = () => {
   const [spinLoading, setSpinLoading] = useState(true);
   const [updatedTimeState, setUpdatedTimeState] = useState("products");
   const [updatedTimes, setUpdatedTimes] = useState({
-    products: undefined,
-    stores: undefined,
-    vendors: undefined,
-    types: undefined,
+    products: sessionStorage.getItem("updated_time_products") || undefined,
+    stores: sessionStorage.getItem("updated_time_stores") || undefined,
+    vendors: sessionStorage.getItem("updated_time_vendors") || undefined,
+    types: sessionStorage.getItem("updated_time_types") || undefined,
   });
 
   let keyCLoak = sessionStorage.getItem("keycloakData");
@@ -219,6 +219,14 @@ const Dashboard = () => {
         dm4sightHeaders
       );
 
+      console.log("productNames", productNames);
+
+      const topProductsFormatted = `(${productNames
+        ?.map((obj) => `'${obj.replaceAll("'", "''")}'`)
+        .join(",")})`;
+
+      console.log(" productNames topProductsFormatted", topProductsFormatted);
+
       const resTypeQuery = await instance.post(
         dm4sightBaseURL + dm4sightGetDetailsByQueryAPI + `?id=${queryID}`,
 
@@ -227,7 +235,7 @@ const Dashboard = () => {
           query_type: "product_name_type",
           store_ids: [],
           vendor_ids: [],
-          product_names: productNames,
+          product_names: topProductsFormatted,
         },
 
         dm4sightHeaders
@@ -301,6 +309,7 @@ const Dashboard = () => {
         ...updatedTimes,
         products: currentTime,
       });
+      sessionStorage.setItem("updated_time_products", currentTime);
       if (symbolAdded) {
         return symbolAdded;
       } else {
@@ -382,6 +391,8 @@ const Dashboard = () => {
         ...updatedTimes,
         stores: currentTime,
       });
+      sessionStorage.setItem("updated_time_stores", currentTime);
+
       if (storeNameAdded) {
         return storeNameAdded;
       } else {
@@ -461,6 +472,8 @@ const Dashboard = () => {
         ...updatedTimes,
         vendors: currentTime,
       });
+      sessionStorage.setItem("updated_time_vendors", currentTime);
+
       if (storeNameAdded) {
         return storeNameAdded;
       } else {
@@ -495,6 +508,7 @@ const Dashboard = () => {
         ...updatedTimes,
         types: currentTime,
       });
+      sessionStorage.setItem("updated_time_types", currentTime);
 
       if (resProdType.data.data) {
         return resProdType.data.data[0];
@@ -1436,21 +1450,25 @@ const Dashboard = () => {
                 </div>
 
                 <Tabs
-                  defaultActiveKey="1"
+                  defaultActiveKey={sessionStorage.getItem("currentTab")}
                   items={items}
                   onChange={(key) => {
                     if (key == 1) {
                       setUpdatedTimeState("products");
+                      sessionStorage.setItem("currentTab", 1);
                       setFetchTopProductsData(true);
                     } else if (key == 2) {
                       setFetchTopStoresData(true);
                       setUpdatedTimeState("stores");
+                      sessionStorage.setItem("currentTab", 2);
                     } else if (key == 3) {
                       setFetchTopVendorsData(true);
                       setUpdatedTimeState("vendors");
+                      sessionStorage.setItem("currentTab", 3);
                     } else if (key == 4) {
                       setFetchProductTypesData(true);
                       setUpdatedTimeState("types");
+                      sessionStorage.setItem("currentTab", 4);
                     }
                   }}
                 />

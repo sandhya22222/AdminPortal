@@ -39,6 +39,7 @@ const storeSettingAPI = process.env.REACT_APP_STORE_FRONT_SETTINGS_API;
 const storeAPI = process.env.REACT_APP_STORE_API;
 const storeImagesAPI = process.env.REACT_APP_STORE_IMAGES_API;
 const storeBannerImageAPI = process.env.REACT_APP_STORE_BANNER_IMAGES_API;
+const storeLimitAPI = process.env.REACT_APP_STORE_LIMIT;
 
 const StoreSettings = () => {
   usePageTitle("Store Settings");
@@ -47,6 +48,7 @@ const StoreSettings = () => {
   const search = useLocation().search;
 
   const id = new URLSearchParams(search).get("id");
+  const storeIdFromUrl = new URLSearchParams(search).get("storeId");
   const authorizationHeader = useAuthorization();
 
   const [storeData, setStoreData] = useState();
@@ -136,6 +138,19 @@ const StoreSettings = () => {
   });
   const [onChangeValues, setOnChangeValues] = useState(false);
   const [imageChangeValues, setImageChangeValues] = useState(false);
+  let defaultDataLimitValues = {
+    vendor_limit: 0,
+    customer_limit: 0,
+    product_limit: 0,
+    order_limit_per_day: 0,
+    langauge_limit: 0,
+    product_template_limit: 0,
+    store_users_limit: 0,
+    vendor_users_limit: 0
+  }
+  const [storeDataLimitValues, setStoreDataLimitValues] = useState(defaultDataLimitValues);
+  const [isStoreDataLimitChanged, setIsStoreDataLimitChanged] = useState(false);
+  const [isStoreDataLimitSaving, setIsStoreDataLimitSaving] = useState(false);
 
   //! get call of  getStoreSettingApi
   const findAllWithoutPageStoreSettingApi = (storeId) => {
@@ -512,6 +527,74 @@ const StoreSettings = () => {
         MarketplaceToaster.showToast(error.response);
       });
   };
+
+    //! get call of store limit API
+  const findAllStoreLimit = () => {
+    MarketplaceServices.findAll(storeLimitAPI)
+    .then(function (response) {
+      console.log(
+        "Server Response from store limit API: ",
+        response.data.response_body
+      );
+      if (
+        response &&
+        response.data.response_body &&
+        response.data.response_body.data.length > 0
+      ) {
+        let selectedStoreDataLimit = response.data.response_body.data.filter(
+          (element) => element.store == storeIdFromUrl
+        );
+        if (selectedStoreDataLimit.length > 0) {
+          setStoreDataLimitValues(selectedStoreDataLimit[0]);
+        }
+      }
+    })
+    .catch((error) => {
+      console.log("Server error from store limit API ", error.response);
+    });
+  }
+
+  //! Post call for the store data limit api
+  const saveStoreDataLimit = ()=>{
+    const postBody = {
+      vendor_limit: storeDataLimitValues.vendor_limit == "" ? 0 : parseInt(storeDataLimitValues.vendor_limit),
+      customer_limit: storeDataLimitValues.customer_limit == "" ? 0 : parseInt(storeDataLimitValues.customer_limit),
+      product_limit: storeDataLimitValues.product_limit == "" ? 0 : parseInt(storeDataLimitValues.product_limit),
+      order_limit_per_day: storeDataLimitValues.order_limit_per_day == "" ? 0 : parseInt(storeDataLimitValues.order_limit_per_day),
+      langauge_limit: storeDataLimitValues.langauge_limit == "" ? 0 : parseInt(storeDataLimitValues.langauge_limit),
+      product_template_limit: storeDataLimitValues.product_template_limit == "" ? 0 : parseInt(storeDataLimitValues.product_template_limit),
+      store_users_limit: storeDataLimitValues.store_users_limit == "" ? 0 : parseInt(storeDataLimitValues.store_users_limit),
+      vendor_users_limit: storeDataLimitValues.vendor_users_limit == "" ? 0 : parseInt(storeDataLimitValues.vendor_users_limit),
+      store: storeIdFromUrl
+    }
+    setIsStoreDataLimitSaving(true);
+    MarketplaceServices.save(storeLimitAPI, postBody)
+    .then((response) => {
+      console.log(
+        "Server Success Response From store data limit",
+        response.data.response_body
+      );
+      MarketplaceToaster.showToast(response);
+      let responseData = response.data.response_body;
+      setIsStoreDataLimitSaving(false);
+      let copyofStoreDataLimitValue = {...storeDataLimitValues};
+      copyofStoreDataLimitValue.vendor_limit = responseData.vendor_limit;
+      copyofStoreDataLimitValue.customer_limit = responseData.customer_limit;
+      copyofStoreDataLimitValue.product_limit = responseData.product_limit;
+      copyofStoreDataLimitValue.order_limit_per_day = responseData.order_limit_per_day;
+      copyofStoreDataLimitValue.langauge_limit = responseData.langauge_limit;
+      copyofStoreDataLimitValue.product_template_limit = responseData.product_template_limit;
+      copyofStoreDataLimitValue.store_users_limit = responseData.store_users_limit;
+      copyofStoreDataLimitValue.vendor_users_limit = responseData.vendor_users_limit;
+      setStoreDataLimitValues(copyofStoreDataLimitValue);
+      setIsStoreDataLimitChanged(false);
+    })
+    .catch((error) => {
+      console.log("Error Response From storeSettingPostCall", error.response);
+      setIsLoading(false);
+      MarketplaceToaster.showToast(error.response);
+    });
+};
 
   //! validations of store settings API
   const validatePostStoreSetting = () => {
@@ -1016,6 +1099,7 @@ const StoreSettings = () => {
 
   useEffect(() => {
     findAllStoreApi();
+    findAllStoreLimit();
     window.scroll(0, 0);
     if (id) {
       findAllWithoutPageStoreSettingApi(id);
@@ -1173,6 +1257,246 @@ const StoreSettings = () => {
             </Content>
           </Content>
         </Spin>
+        <Spin tip="Please wait!" size="large" spinning={isStoreDataLimitSaving}>
+          <Content className="bg-white mt-3 p-3 !rounded-md">
+            <label className="text-[20px] mb-2 font-bold">
+              {t("labels:thershold_limit")}
+            </label>
+            <Row gutter={{
+                xs: 8,
+                sm: 16,
+                md: 24,
+                lg: 32,
+              }}>
+              <Col span={4} className="gutter-row">
+              <label className="text-[13px] mb-2 ml-1 input-label-color">
+                  {t("labels:vendor_limit")}
+                </label>
+                <Input
+                  placeholder={"Unlimited"}
+                  // defaultValue={storeSettingData.store_currency["symbol"]}
+                  value={storeDataLimitValues.vendor_limit > 0 ? storeDataLimitValues.vendor_limit : ""}
+                  onChange={(e) => {
+                    let number = /^[0-9]*$/.test(e.target.value);
+                    let copyofStoreDataLimitValue = {...storeDataLimitValues};
+                    // to allow only 10 digits
+                    if (number && e.target.value.length <= 10) {
+                      copyofStoreDataLimitValue.vendor_limit = e.target.value;
+                      setIsStoreDataLimitChanged(true);
+                      setStoreDataLimitValues(copyofStoreDataLimitValue);
+                    } else if (e.target.value === "") {
+                      copyofStoreDataLimitValue.vendor_limit = e.target.value;
+                      setStoreDataLimitValues(copyofStoreDataLimitValue);
+                    }
+                  }
+                }
+                />
+              </Col>
+              <Col span={4} className="gutter-row">
+              <label className="text-[13px] mb-2 ml-1 input-label-color">
+                  {t("labels:customer_limit")}
+                </label>
+                <Input
+                  placeholder={"Unlimited"}
+                  // defaultValue={storeSettingData.store_currency["symbol"]}
+                  value={storeDataLimitValues.customer_limit > 0 ? storeDataLimitValues.customer_limit : ""}
+                  onChange={(e) => {
+                    let number = /^[0-9]*$/.test(e.target.value);
+                    let copyofStoreDataLimitValue = {...storeDataLimitValues};
+                    // to allow only 10 digits
+                    if (number && e.target.value.length <= 10) {
+                      copyofStoreDataLimitValue.customer_limit = e.target.value;
+                      setIsStoreDataLimitChanged(true);
+                      setStoreDataLimitValues(copyofStoreDataLimitValue);
+                    } else if (e.target.value === "") {
+                      copyofStoreDataLimitValue.customer_limit = e.target.value;
+                      setStoreDataLimitValues(copyofStoreDataLimitValue);
+                    }
+                  }
+                }
+                />
+              </Col>
+              <Col span={4} className="gutter-row">
+              <label className="text-[13px] mb-2 ml-1 input-label-color">
+                  {t("labels:product_limit")}
+                </label>
+                <Input
+                  placeholder={"Unlimited"}
+                  // defaultValue={storeSettingData.store_currency["symbol"]}
+                  value={storeDataLimitValues.product_limit > 0 ? storeDataLimitValues.product_limit : ""}
+                  onChange={(e) => {
+                    let number = /^[0-9]*$/.test(e.target.value);
+                    let copyofStoreDataLimitValue = {...storeDataLimitValues};
+                    // to allow only 10 digits
+                    if (number && e.target.value.length <= 10) {
+                      copyofStoreDataLimitValue.product_limit = e.target.value;
+                      setIsStoreDataLimitChanged(true);
+                      setStoreDataLimitValues(copyofStoreDataLimitValue);
+                    } else if (e.target.value === "") {
+                      copyofStoreDataLimitValue.product_limit = e.target.value;
+                      setStoreDataLimitValues(copyofStoreDataLimitValue);
+                    }
+                  }
+                }
+                />
+              </Col>
+              <Col span={4} className="gutter-row">
+              <label className="text-[13px] mb-2 ml-1 input-label-color">
+                  {t("labels:order_limit_per_day")}
+                </label>
+                <Input
+                  placeholder={"Unlimited"}
+                  // defaultValue={storeSettingData.store_currency["symbol"]}
+                  value={storeDataLimitValues.order_limit_per_day > 0 ? storeDataLimitValues.order_limit_per_day : ""}
+                  onChange={(e) => {
+                    let number = /^[0-9]*$/.test(e.target.value);
+                    let copyofStoreDataLimitValue = {...storeDataLimitValues};
+                    // to allow only 10 digits
+                    if (number && e.target.value.length <= 10) {
+                      copyofStoreDataLimitValue.order_limit_per_day = e.target.value;
+                      setIsStoreDataLimitChanged(true);
+                      setStoreDataLimitValues(copyofStoreDataLimitValue);
+                    } else if (e.target.value === "") {
+                      copyofStoreDataLimitValue.order_limit_per_day = e.target.value;
+                      setStoreDataLimitValues(copyofStoreDataLimitValue);
+                    }
+                  }
+                }
+                />
+              </Col>
+              <Col span={4} className="gutter-row">
+              <label className="text-[13px] mb-2 ml-1 input-label-color">
+                  {t("labels:langauge_limit")}
+                </label>
+                <Input
+                  placeholder={"Unlimited"}
+                  // defaultValue={storeSettingData.store_currency["symbol"]}
+                  value={storeDataLimitValues.langauge_limit > 0 ? storeDataLimitValues.langauge_limit : ""}
+                   onChange={(e) => {
+                    let number = /^[0-9]*$/.test(e.target.value);
+                    let copyofStoreDataLimitValue = {...storeDataLimitValues};
+                    // to allow only 10 digits
+                    if (number && e.target.value.length <= 10) {
+                      copyofStoreDataLimitValue.langauge_limit = e.target.value;
+                      setIsStoreDataLimitChanged(true);
+                      setStoreDataLimitValues(copyofStoreDataLimitValue);
+                    } else if (e.target.value === "") {
+                      copyofStoreDataLimitValue.langauge_limit = e.target.value;
+                      setStoreDataLimitValues(copyofStoreDataLimitValue);
+                    }
+                  }
+                }
+                />
+              </Col>
+              <Col span={4} className="gutter-row">
+              <label className="text-[13px] mb-2 ml-1 input-label-color">
+                  {t("labels:product_template_limit")}
+                </label>
+                <Input
+                  placeholder={"Unlimited"}
+                  // defaultValue={storeSettingData.store_currency["symbol"]}
+                  value={storeDataLimitValues.product_template_limit > 0 ? storeDataLimitValues.product_template_limit : ""}
+                  onChange={(e) => {
+                    let number = /^[0-9]*$/.test(e.target.value);
+                    let copyofStoreDataLimitValue = {...storeDataLimitValues};
+                    // to allow only 10 digits
+                    if (number && e.target.value.length <= 10) {
+                      copyofStoreDataLimitValue.product_template_limit = e.target.value;
+                      setIsStoreDataLimitChanged(true);
+                      setStoreDataLimitValues(copyofStoreDataLimitValue);
+                    } else if (e.target.value === "") {
+                      copyofStoreDataLimitValue.product_template_limit = e.target.value;
+                      setStoreDataLimitValues(copyofStoreDataLimitValue);
+                    }
+                  }
+                }
+                />
+              </Col>
+              <Col span={4} className="gutter-row">
+              <label className="text-[13px] my-2 ml-1 input-label-color">
+                  {t("labels:store_users_limit")}
+                </label>
+                <Input
+                  placeholder={"Unlimited"}
+                  value={storeDataLimitValues.store_users_limit > 0 ? storeDataLimitValues.store_users_limit : ""}
+                  onChange={(e) => {
+                    let number = /^[0-9]*$/.test(e.target.value);
+                    let copyofStoreDataLimitValue = {...storeDataLimitValues};
+                    // to allow only 10 digits
+                    if (number && e.target.value.length <= 10) {
+                      copyofStoreDataLimitValue.store_users_limit = e.target.value;
+                      setIsStoreDataLimitChanged(true);
+                      setStoreDataLimitValues(copyofStoreDataLimitValue);
+                    } else if (e.target.value === "") {
+                      // setIsStoreDataLimitChanged(false);
+                      copyofStoreDataLimitValue.store_users_limit = e.target.value;
+                      setStoreDataLimitValues(copyofStoreDataLimitValue);
+                    }
+                  }
+                }
+                />
+              </Col>
+              <Col span={4} className="gutter-row">
+              <label className="text-[13px] my-2 ml-1 input-label-color">
+                  {t("labels:vendor_users_limit")}
+                </label>
+                <Input
+                  placeholder={"Unlimited"}
+                  // defaultValue={storeSettingData.store_currency["symbol"]}
+                  value={storeDataLimitValues.vendor_users_limit > 0 ? storeDataLimitValues.vendor_users_limit : ""}
+                  onChange={(e) => {
+                    let number = /^[0-9]*$/.test(e.target.value);
+                    let copyofStoreDataLimitValue = {...storeDataLimitValues};
+                    // to allow only 10 digits
+                    if (number && e.target.value.length <= 10) {
+                      copyofStoreDataLimitValue.vendor_users_limit = e.target.value;
+                      setIsStoreDataLimitChanged(true);
+                      setStoreDataLimitValues(copyofStoreDataLimitValue);
+                    } else if (e.target.value === "") {
+                      // setIsStoreDataLimitChanged(false);
+                      copyofStoreDataLimitValue.vendor_users_limit = e.target.value;
+                      setStoreDataLimitValues(copyofStoreDataLimitValue);
+                    }
+                  }
+                }
+                />
+              </Col>
+            </Row>
+            <Content className="mt-4">
+              <Row className="gap-2">
+                <Col>
+                  <Button
+                    className={
+                      isStoreDataLimitChanged ? "app-btn-primary" : "!opacity-75"
+                    }
+                    disabled={!isStoreDataLimitChanged}
+                    onClick={() => {
+                      saveStoreDataLimit()
+                    }}
+                  >
+                    {t("labels:save")}
+                  </Button>
+                </Col>
+                <Col className="">
+                  <Button
+                    // className=" app-btn-secondary"
+                    className={
+                      isStoreDataLimitChanged ? "app-btn-secondary" : "!opacity-75"
+                    }
+                    disabled={!isStoreDataLimitChanged}
+                    onClick={() => {
+                      navigate("/dashboard/store");
+                    }}
+                  >
+                    {t("labels:discard")}
+                  </Button>
+                </Col>
+              </Row>
+            </Content>
+          </Content>
+        </Spin>
+
+
         <Spin tip="Please wait!" size="large" spinning={isLoading}>
           <Content className="bg-white mt-3 p-3 rounded-lg">
             <label className="text-[20px] font-bold !text-center">

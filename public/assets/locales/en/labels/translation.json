@@ -123,5 +123,15 @@
   "onboarded_on":"Onboarded On",
   "max":"Max",
   "upload":"Upload",
-  "admin_portal":"Admin Portal"
+  "admin_portal":"Admin Portal",
+  "edit_language":"Edit Language",
+  "thershold_limit": "Threshold Limit",
+  "vendor_limit": "Vendor Limit",
+  "customer_limit": "Customer Limit",
+  "product_limit": "Product Limit",
+  "order_limit_per_day": "Order Limit Per Day",
+  "langauge_limit": "Langauge Limit",
+  "product_template_limit": "Product Template Limit",
+  "store_users_limit": "Store User Limit",
+  "vendor_users_limit": "Vendor User Limit"
 }

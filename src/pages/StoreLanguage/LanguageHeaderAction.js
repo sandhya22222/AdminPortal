@@ -280,8 +280,8 @@ function LanguageHeaderAction({
               openModal(switchStatus);
             }}
             disabled={isMakeAsDefault}
-            checkedChildren={"Active"}
-            unCheckedChildren={"Inactive"}
+            checkedChildren={t("labels:active")}
+            unCheckedChildren={t("labels:inactive")}
           />
         </Space>
       </Content>
