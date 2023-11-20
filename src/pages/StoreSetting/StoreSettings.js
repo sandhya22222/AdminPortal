@@ -528,17 +528,43 @@ const StoreSettings = () => {
       });
   };
 
+    //! get call of store limit API
+  const findAllStoreLimit = () => {
+    MarketplaceServices.findAll(storeLimitAPI)
+    .then(function (response) {
+      console.log(
+        "Server Response from store limit API: ",
+        response.data.response_body
+      );
+      if (
+        response &&
+        response.data.response_body &&
+        response.data.response_body.data.length > 0
+      ) {
+        let selectedStoreDataLimit = response.data.response_body.data.filter(
+          (element) => element.store == storeIdFromUrl
+        );
+        if (selectedStoreDataLimit.length > 0) {
+          setStoreDataLimitValues(selectedStoreDataLimit[0]);
+        }
+      }
+    })
+    .catch((error) => {
+      console.log("Server error from store limit API ", error.response);
+    });
+  }
+
   //! Post call for the store data limit api
   const saveStoreDataLimit = ()=>{
     const postBody = {
-      vendor_limit: storeDataLimitValues.vendor_limit,
-      customer_limit: storeDataLimitValues.customer_limit,
-      product_limit: storeDataLimitValues.product_limit,
-      order_limit_per_day: storeDataLimitValues.order_limit_per_day,
-      langauge_limit: storeDataLimitValues.langauge_limit,
-      product_template_limit: storeDataLimitValues.product_template_limit,
-      store_users_limit: storeDataLimitValues.store_users_limit,
-      vendor_users_limit: storeDataLimitValues.vendor_users_limit,
+      vendor_limit: storeDataLimitValues.vendor_limit == "" ? 0 : parseInt(storeDataLimitValues.vendor_limit),
+      customer_limit: storeDataLimitValues.customer_limit == "" ? 0 : parseInt(storeDataLimitValues.customer_limit),
+      product_limit: storeDataLimitValues.product_limit == "" ? 0 : parseInt(storeDataLimitValues.product_limit),
+      order_limit_per_day: storeDataLimitValues.order_limit_per_day == "" ? 0 : parseInt(storeDataLimitValues.order_limit_per_day),
+      langauge_limit: storeDataLimitValues.langauge_limit == "" ? 0 : parseInt(storeDataLimitValues.langauge_limit),
+      product_template_limit: storeDataLimitValues.product_template_limit == "" ? 0 : parseInt(storeDataLimitValues.product_template_limit),
+      store_users_limit: storeDataLimitValues.store_users_limit == "" ? 0 : parseInt(storeDataLimitValues.store_users_limit),
+      vendor_users_limit: storeDataLimitValues.vendor_users_limit == "" ? 0 : parseInt(storeDataLimitValues.vendor_users_limit),
       store: storeIdFromUrl
     }
     setIsStoreDataLimitSaving(true);
@@ -548,7 +574,6 @@ const StoreSettings = () => {
         "Server Success Response From store data limit",
         response.data.response_body
       );
-      debugger
       MarketplaceToaster.showToast(response);
       let responseData = response.data.response_body;
       setIsStoreDataLimitSaving(false);
@@ -562,6 +587,7 @@ const StoreSettings = () => {
       copyofStoreDataLimitValue.store_users_limit = responseData.store_users_limit;
       copyofStoreDataLimitValue.vendor_users_limit = responseData.vendor_users_limit;
       setStoreDataLimitValues(copyofStoreDataLimitValue);
+      setIsStoreDataLimitChanged(false);
     })
     .catch((error) => {
       console.log("Error Response From storeSettingPostCall", error.response);
@@ -1073,6 +1099,7 @@ const StoreSettings = () => {
 
   useEffect(() => {
     findAllStoreApi();
+    findAllStoreLimit();
     window.scroll(0, 0);
     if (id) {
       findAllWithoutPageStoreSettingApi(id);
