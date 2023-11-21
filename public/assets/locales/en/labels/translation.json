@@ -134,5 +134,18 @@
   "product_template_limit": "Product Template Limit",
   "store_users_limit": "Store User Limit",
   "vendor_users_limit": "Vendor User Limit",
+  "user_access_control":"User Access Control",
+  "ok":"Ok",
+  "delete":"Delete",
+  "edit":"Edit",
+  "roles": "Roles",
+  "users": "Users",
+  "user_access_control_note": "List Users and Roles Page",
+  "add_user":"Add User",
+  "add_role":"Add Role",
+  "user_name":"User Name",
+  "edit_user":"Edit user",
+  "role_name":"Role Name",
+  "select_a_role":"Select a role",
   "placeholder_unlimited": "Unlimited"
 }
