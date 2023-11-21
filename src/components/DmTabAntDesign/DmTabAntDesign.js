@@ -44,7 +44,7 @@ const DmTabAntDesign = ({
 }) => {
   return (
     <Tabs
-      defaultActiveKey={activeKey}
+      defaultActiveKey={defaultSelectedTabKey}
       onTabClick={handleTabChangeFunction}
       tabPosition={tabBarPosition}
       activeKey={activeKey}

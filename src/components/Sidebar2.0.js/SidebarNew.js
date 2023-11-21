@@ -89,6 +89,15 @@ const SidebarNew = () => {
       label: ` ${t("labels:profile")}`,
       navigate_to: "/dashboard/userprofile",
     },
+    {
+      key: "12",
+      icon: <img src={ProfileIcon} alt="userAccessControl" />,
+      inactive_icon: <img src={ProfileIcon} />,
+      label: `${t("labels:user_access_control")}`,
+      navigate_to: `/dashboard/user-access-control/list-user-roles`,
+      show_in_menu: true,
+      // children: [],
+    },
   ];
 
   const handlePageRefresh = (navigationPath) => {
@@ -123,6 +132,9 @@ const SidebarNew = () => {
         break;
       case "store":
         setSelectedItem("2");
+        break;
+      case "user-access-control":
+        setSelectedItem("12");
         break;
       default:
         setSelectedItem("1");
