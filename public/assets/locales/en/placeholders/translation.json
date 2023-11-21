@@ -12,5 +12,8 @@
     "enter_currency_symbol":"E.g. ₹, $, £",
     "enter_iso_code":"E.g. INR, USD ,GBP",
     "enter_fractional_unit":"E.g. paisa, cent",
-    "enter_number_to_basic":"E.g. 100"
+    "enter_number_to_basic":"E.g. 100",
+    "user_name_placeholder":"Enter user name",
+    "role_name_placeholder":"Enter role name",
+    "role_description_placeholder":"Enter role description"
 }

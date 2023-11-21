@@ -25,6 +25,9 @@ import Preview from "./pages/StoreSetting/Preview";
 import UserProfile from "./pages/StoreUsers/UserProfile";
 import Language from "./pages/StoreLanguage/Language";
 import LanguageSettings from "./pages/StoreLanguage/LanguageSettings";
+import UserAccessControl from "./pages/usersandroles/UserAccessControl";
+import CreateUsers from "./pages/usersandroles/CreateUsers";
+import CreateRoles from "./pages/usersandroles/CreateRoles";
 import { LoadingOutlined } from "@ant-design/icons";
 import LogOut from "./components/LogOut";
 import util from "./util/common";
@@ -114,6 +117,16 @@ const App = () => {
                   <Route path="preview" element={<Preview />} />
                   <Route path="paymenttype" element={<PaymentType />} />
                   <Route path="userprofile" element={<UserProfile />} />
+                  <Route path="user-access-control">
+                    <Route
+                      path="list-user-roles"
+                      element={<UserAccessControl />}
+                    />
+                    <Route path="add-user" element={<CreateUsers />} />
+                    <Route path="edit-user" element={<CreateUsers />} />
+                    <Route path="add-roles" element={<CreateRoles />} />
+                    <Route path="edit-roles" element={<CreateRoles />} />
+                  </Route>
                   <Route
                     path="onlinepaymentconnector"
                     element={<OnlinePaymentConnector />}

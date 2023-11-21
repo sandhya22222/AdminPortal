@@ -137,5 +137,18 @@
   "placeholder_unlimited": "Unlimited",
   "total_stores":"Total Stores",
   "active_stores":"Active Stores",
-  "inactive_sores":"Inactive Stores"
+  "inactive_sores":"Inactive Stores",
+  "user_access_control":"User Access Control",
+  "ok":"Ok",
+  "delete":"Delete",
+  "edit":"Edit",
+  "roles": "Roles",
+  "users": "Users",
+  "user_access_control_note": "List Users and Roles Page",
+  "add_user":"Add User",
+  "add_role":"Add Role",
+  "user_name":"User Name",
+  "edit_user":"Edit user",
+  "role_name":"Role Name",
+  "select_a_role":"Select a role"
 }
