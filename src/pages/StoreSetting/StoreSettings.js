@@ -1273,7 +1273,7 @@ const StoreSettings = () => {
                   {t("labels:vendor_limit")}
                 </label>
                 <Input
-                  placeholder={"Unlimited"}
+                  placeholder={t("labels:placeholder_unlimited")}
                   // defaultValue={storeSettingData.store_currency["symbol"]}
                   value={storeDataLimitValues.vendor_limit > 0 ? storeDataLimitValues.vendor_limit : ""}
                   onChange={(e) => {
@@ -1297,7 +1297,7 @@ const StoreSettings = () => {
                   {t("labels:customer_limit")}
                 </label>
                 <Input
-                  placeholder={"Unlimited"}
+                  placeholder={t("labels:placeholder_unlimited")}
                   // defaultValue={storeSettingData.store_currency["symbol"]}
                   value={storeDataLimitValues.customer_limit > 0 ? storeDataLimitValues.customer_limit : ""}
                   onChange={(e) => {
@@ -1321,7 +1321,7 @@ const StoreSettings = () => {
                   {t("labels:product_limit")}
                 </label>
                 <Input
-                  placeholder={"Unlimited"}
+                 placeholder={t("labels:placeholder_unlimited")}
                   // defaultValue={storeSettingData.store_currency["symbol"]}
                   value={storeDataLimitValues.product_limit > 0 ? storeDataLimitValues.product_limit : ""}
                   onChange={(e) => {
@@ -1345,7 +1345,7 @@ const StoreSettings = () => {
                   {t("labels:order_limit_per_day")}
                 </label>
                 <Input
-                  placeholder={"Unlimited"}
+                  placeholder={t("labels:placeholder_unlimited")}
                   // defaultValue={storeSettingData.store_currency["symbol"]}
                   value={storeDataLimitValues.order_limit_per_day > 0 ? storeDataLimitValues.order_limit_per_day : ""}
                   onChange={(e) => {
@@ -1369,7 +1369,7 @@ const StoreSettings = () => {
                   {t("labels:langauge_limit")}
                 </label>
                 <Input
-                  placeholder={"Unlimited"}
+                 placeholder={t("labels:placeholder_unlimited")}
                   // defaultValue={storeSettingData.store_currency["symbol"]}
                   value={storeDataLimitValues.langauge_limit > 0 ? storeDataLimitValues.langauge_limit : ""}
                    onChange={(e) => {
@@ -1393,7 +1393,7 @@ const StoreSettings = () => {
                   {t("labels:product_template_limit")}
                 </label>
                 <Input
-                  placeholder={"Unlimited"}
+                  placeholder={t("labels:placeholder_unlimited")}
                   // defaultValue={storeSettingData.store_currency["symbol"]}
                   value={storeDataLimitValues.product_template_limit > 0 ? storeDataLimitValues.product_template_limit : ""}
                   onChange={(e) => {
@@ -1417,7 +1417,7 @@ const StoreSettings = () => {
                   {t("labels:store_users_limit")}
                 </label>
                 <Input
-                  placeholder={"Unlimited"}
+                   placeholder={t("labels:placeholder_unlimited")}
                   value={storeDataLimitValues.store_users_limit > 0 ? storeDataLimitValues.store_users_limit : ""}
                   onChange={(e) => {
                     let number = /^[0-9]*$/.test(e.target.value);
@@ -1441,7 +1441,7 @@ const StoreSettings = () => {
                   {t("labels:vendor_users_limit")}
                 </label>
                 <Input
-                  placeholder={"Unlimited"}
+                  placeholder={t("labels:placeholder_unlimited")}
                   // defaultValue={storeSettingData.store_currency["symbol"]}
                   value={storeDataLimitValues.vendor_users_limit > 0 ? storeDataLimitValues.vendor_users_limit : ""}
                   onChange={(e) => {

@@ -133,5 +133,6 @@
   "langauge_limit": "Langauge Limit",
   "product_template_limit": "Product Template Limit",
   "store_users_limit": "Store User Limit",
-  "vendor_users_limit": "Vendor User Limit"
+  "vendor_users_limit": "Vendor User Limit",
+  "placeholder_unlimited": "Unlimited"
 }
