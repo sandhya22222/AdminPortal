@@ -146,5 +146,6 @@
   "user_name":"User Name",
   "edit_user":"Edit user",
   "role_name":"Role Name",
-  "select_a_role":"Select a role"
+  "select_a_role":"Select a role",
+  "placeholder_unlimited": "Unlimited"
 }
