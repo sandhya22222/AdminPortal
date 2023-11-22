@@ -1224,10 +1224,18 @@ const Dashboard = () => {
             {t("messages:dashboard_network_error")}
           </Content>
         ) : (
-          <Content>
-            <Content className="flex gap-3">
-              <Content className="p-3 w-[7%]  shadow-sm rounded-md justify-center !bg-[var(--mp-bright-color)]">
-                <Content className="flex mb-3">
+          <Content className="">
+            <div className="shadow-sm grid grid-cols-3 divide-x-2 !rounded-md !bg-[var(--mp-bright-color)]  divide-slate-100">
+              <div className=" p-3 !text-center">
+                <Title level={3} className="!text-[#4a2d73] !mb-0  !font-bold ">
+                  {dashboardData &&
+                    dashboardData.store_data &&
+                    dashboardData.store_data.total_count}
+                </Title>
+                <Text className=" text-[#a9a9a9] ml-2 !text-lg">
+                  {t("labels:total_stores")}
+                </Text>
+                {/* <Content className="flex mb-3">
                   <Content className="flex items-center">
                     <Title
                       level={3}
@@ -1284,10 +1292,18 @@ const Dashboard = () => {
                       </Title>
                     </Content>
                   </Content>
-                </Content>
-              </Content>
-              <Content className="p-3 w-[26%] shadow-sm rounded-md justify-center !bg-[var(--mp-bright-color)]">
-                <Content className="flex items-center">
+                </Content> */}
+              </div>
+              <div className="p-3 !text-center">
+                <Title level={3} className="!text-[#52c41a] !mb-0 !font-bold ">
+                  {dashboardData &&
+                    dashboardData.store_data &&
+                    dashboardData.store_data.active_stores}
+                </Title>
+                <Text className="!text-lg text-[#a9a9a9] ml-2">
+                  {t("labels:active_stores")}
+                </Text>
+                {/* <Content className="flex items-center">
                   <Content className="flex-1 w-[50%]">
                     <Content className="!inline-block w-[40%]">
                       <Image
@@ -1373,10 +1389,19 @@ const Dashboard = () => {
                       </Title>
                     </Content>
                   </Content>
-                </Content>
-              </Content>
-              <Content className="p-3 w-[7%] shadow-sm rounded-md justify-center !bg-[var(--mp-bright-color)]">
-                <Content className="flex items-center">
+                </Content> */}
+              </div>
+              <div className=" p-3 !text-center">
+                <Title level={3} className="!text-[#8c8c8c] !mb-0  !font-bold">
+                  {dashboardData &&
+                    dashboardData.store_data &&
+                    dashboardData.store_data.inactive_store}
+                </Title>
+                <Text className="text-[#a9a9a9] !text-lg ">
+                  {" "}
+                  {t("labels:inactive_sores")}
+                </Text>
+                {/* <Content className="flex items-center">
                   <Content className="flex-1 w-[40%]">
                     <Image
                       width={75}
@@ -1402,9 +1427,9 @@ const Dashboard = () => {
                       {dashboardData && dashboardData.total_products_last_month}
                     </Title>
                   </Content>
-                </Content>
-              </Content>
-            </Content>
+                </Content> */}
+              </div>
+            </div>
 
             <Content
               hidden={dm4sightEnabled === "true" ? false : true}
