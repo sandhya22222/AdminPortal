@@ -1268,7 +1268,7 @@ const StoreSettings = () => {
                 md: 24,
                 lg: 32,
               }}>
-              <Col span={4} className="gutter-row">
+              <Col span={6} className="gutter-row">
               <label className="text-[13px] mb-2 ml-1 input-label-color">
                   {t("labels:vendor_limit")}
                 </label>
@@ -1292,7 +1292,7 @@ const StoreSettings = () => {
                 }
                 />
               </Col>
-              <Col span={4} className="gutter-row">
+              <Col span={6} className="gutter-row">
               <label className="text-[13px] mb-2 ml-1 input-label-color">
                   {t("labels:customer_limit")}
                 </label>
@@ -1316,7 +1316,7 @@ const StoreSettings = () => {
                 }
                 />
               </Col>
-              <Col span={4} className="gutter-row">
+              <Col span={6} className="gutter-row">
               <label className="text-[13px] mb-2 ml-1 input-label-color">
                   {t("labels:product_limit")}
                 </label>
@@ -1340,7 +1340,7 @@ const StoreSettings = () => {
                 }
                 />
               </Col>
-              <Col span={4} className="gutter-row">
+              <Col span={6} className="gutter-row">
               <label className="text-[13px] mb-2 ml-1 input-label-color">
                   {t("labels:order_limit_per_day")}
                 </label>
@@ -1364,8 +1364,8 @@ const StoreSettings = () => {
                 }
                 />
               </Col>
-              <Col span={4} className="gutter-row">
-              <label className="text-[13px] mb-2 ml-1 input-label-color">
+              <Col span={6} className="gutter-row">
+              <label className="text-[13px] mt-5 mb-2 ml-1 input-label-color">
                   {t("labels:langauge_limit")}
                 </label>
                 <Input
@@ -1388,8 +1388,8 @@ const StoreSettings = () => {
                 }
                 />
               </Col>
-              <Col span={4} className="gutter-row">
-              <label className="text-[13px] mb-2 ml-1 input-label-color">
+              <Col span={6} className="gutter-row">
+              <label className="text-[13px] mt-5 mb-2 ml-1 input-label-color">
                   {t("labels:product_template_limit")}
                 </label>
                 <Input
@@ -1412,8 +1412,8 @@ const StoreSettings = () => {
                 }
                 />
               </Col>
-              <Col span={4} className="gutter-row">
-              <label className="text-[13px] my-2 ml-1 input-label-color">
+              <Col span={6} className="gutter-row">
+              <label className="text-[13px] mt-5 mb-2 ml-1 input-label-color">
                   {t("labels:store_users_limit")}
                 </label>
                 <Input
@@ -1436,8 +1436,8 @@ const StoreSettings = () => {
                 }
                 />
               </Col>
-              <Col span={4} className="gutter-row">
-              <label className="text-[13px] my-2 ml-1 input-label-color">
+              <Col span={6} className="gutter-row">
+              <label className="text-[13px] mt-5 mb-2 ml-1 input-label-color">
                   {t("labels:vendor_users_limit")}
                 </label>
                 <Input
