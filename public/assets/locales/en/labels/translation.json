@@ -135,6 +135,10 @@
   "store_users_limit": "Max allowed store users can be created",
   "vendor_users_limit": "Max allowed vendor user can be created per vendor",
   "user_access_control":"User Access Control",
+  "placeholder_unlimited": "Unlimited",
+  "total_stores":"Total Stores",
+  "active_stores":"Active Stores",
+  "inactive_sores":"Inactive Stores",
   "ok":"Ok",
   "delete":"Delete",
   "edit":"Edit",
@@ -146,6 +150,5 @@
   "user_name":"User Name",
   "edit_user":"Edit user",
   "role_name":"Role Name",
-  "select_a_role":"Select a role",
-  "placeholder_unlimited": "Unlimited"
+  "select_a_role":"Select a role"
 }
