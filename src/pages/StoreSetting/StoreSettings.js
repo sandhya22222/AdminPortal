@@ -591,7 +591,7 @@ const StoreSettings = () => {
     })
     .catch((error) => {
       console.log("Error Response From storeSettingPostCall", error.response);
-      setIsLoading(false);
+      setIsStoreDataLimitSaving(false);
       MarketplaceToaster.showToast(error.response);
     });
 };
