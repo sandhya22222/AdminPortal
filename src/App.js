@@ -32,6 +32,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import LogOut from "./components/LogOut";
 import util from "./util/common";
 import { useAuth } from "react-oidc-context";
+import StoreLimitComponent from "./pages/adminPlatform/StoreLimitComponent";
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 
 // const authFromEnv = process.env.REACT_APP_AUTH;
@@ -116,6 +117,7 @@ const App = () => {
                   />
                   <Route path="preview" element={<Preview />} />
                   <Route path="paymenttype" element={<PaymentType />} />
+                  <Route path="adminsettings" element={<StoreLimitComponent/>}/>
                   <Route path="userprofile" element={<UserProfile />} />
                   <Route path="user-access-control">
                     <Route
