@@ -20,6 +20,7 @@ import { useTranslation } from "react-i18next";
 
 //! Import user defined CSS
 import "./sidebarnew.css";
+import util from "../../util/common";
 
 //! Destructure the components
 const { Sider, Content } = Layout;
@@ -35,6 +36,10 @@ const SidebarNew = () => {
   const [openedItem, setOpenedItem] = useState([]);
   const [loadingEffect, setLoadingEffect] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
+
+    // get permissions from storage
+    const permissionValue = util.getPermissionData() || [];
+    // console.log("Permission value...", permissionValue)
 
   const { pathname } = useLocation();
 
@@ -98,6 +103,13 @@ const SidebarNew = () => {
       show_in_menu: true,
       // children: [],
     },
+    {
+      key: "7",
+      icon: <img src={Store} />,
+      inactive_icon: <img src={Store} />,
+      label: ` ${t("labels:admin_menu")}`,
+      navigate_to: "/dashboard/adminsettings",
+    },
   ];
 
   const handlePageRefresh = (navigationPath) => {
@@ -135,6 +147,12 @@ const SidebarNew = () => {
         break;
       case "user-access-control":
         setSelectedItem("12");
+        break;
+      case "user-access-control":
+        setSelectedItem("12");
+        break;
+      case "adminsettings":
+        setSelectedItem("7");
         break;
       default:
         setSelectedItem("1");

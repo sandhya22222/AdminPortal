@@ -59,7 +59,7 @@ const dm4sightClientID = process.env.REACT_APP_4SIGHT_CLIENT_ID;
 const dm4sightEnabled = process.env.REACT_APP_4SIGHT_DATA_ENABLED;
 
 const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API;
-const getPermissionsUrl = process.env.REACT_APP_PERMISSIONS;
+const getPermissionsUrl = process.env.REACT_APP_USER_PROFILE_API;
 const umsBaseUrl = process.env.REACT_APP_USM_BASE_URL;
 // const auth = getAuth.toLowerCase() === "true";
 
@@ -114,9 +114,13 @@ const Dashboard = () => {
     MarketplaceServices.findAll(baseurl, null, false)
       .then((res) => {
         console.log("get access token res", res);
-        setGetPermissionsData(res.data);
-        setSpinLoading(false);
-        util.setPermissionData(res.data);
+        // setGetPermissionsData(res.data);
+        // setSpinLoading(false);
+        var realmNameClient = res.data.response_body["realm-name"] + "-client";
+        util.setPermissionData(
+          res.data.response_body.resource_access[`${realmNameClient}`].roles
+        );
+        // util.setPermissionData(res.data);
       })
       .catch((err) => {
         console.log("get access token err", err);
@@ -130,7 +134,7 @@ const Dashboard = () => {
     if (auth && auth.user && auth.user?.access_token) {
       util.setAuthToken(auth.user?.access_token);
       util.setIsAuthorized(true);
-      // getPermissions(auth.isAuthenticated);
+      getPermissions();
     } else {
       util.removeAuthToken();
       util.removeIsAuthorized();

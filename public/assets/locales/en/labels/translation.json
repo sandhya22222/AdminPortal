@@ -153,5 +153,9 @@
   "select_a_role":"Select a role",
   "maximum_vendor_product_limit": "Default Maximum Vendor Product Limit",
   "maximum_vendor_product_template_limit": "Default Maximum Vendor Product Template Limit",
-  "default_vendor_commission": "Default Vendor Commission Percentage"
+  "default_vendor_commission": "Default Vendor Commission Percentage",
+  "admin_menu": "Admin",
+  "store_limit": "Store Limit",
+  "dm_language_limit": "Language Limit",
+  "admin_user_limit":"Admin User Limit"
 }
