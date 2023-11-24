@@ -150,5 +150,8 @@
   "user_name":"User Name",
   "edit_user":"Edit user",
   "role_name":"Role Name",
-  "select_a_role":"Select a role"
+  "select_a_role":"Select a role",
+  "maximum_vendor_product_limit": "Default Maximum Vendor Product Limit",
+  "maximum_vendor_product_template_limit": "Default Maximum Vendor Product Template Limit",
+  "default_vendor_commission": "Default Vendor Commission Percentage"
 }
