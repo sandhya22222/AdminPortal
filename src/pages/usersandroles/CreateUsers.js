@@ -26,6 +26,11 @@ const userAPI = process.env.REACT_APP_USERS_API;
 const groupsAPI = process.env.REACT_APP_GROUPS_API;
 const userNameMinLength = process.env.REACT_APP_USERNAME_MIN_LENGTH;
 const userNameMaxLength = process.env.REACT_APP_USERNAME_MAX_LENGTH;
+const passwordMinLength = process.env.REACT_APP_PASSWORD_MIN_LENGTH;
+const passwordMaxLength = process.env.REACT_APP_PASSWORD_MAX_LENGTH;
+const nameMinLength = process.env.REACT_APP_NAME_MIN_LENGTH;
+const nameMaxLength = process.env.REACT_APP_NAME_MAX_LENGTH;
+const emailMaxLength = process.env.REACT_APP_EMAIL_MAX_LENGTH;
 
 const { Title } = Typography;
 const { Content } = Layout;
@@ -43,69 +48,16 @@ const CreateUsers = () => {
   // const [selectType, setSelectType] = useState();
   const [groupsServerData, setGroupsServerData] = useState([]);
   const [userName, setUserName] = useState("");
-  const [realmName, setRealmName] = useState(sessionStorage.getItem("client"));
   const [emailId, setEmailId] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [userStatus, setUserStatus] = useState(false);
   const [invalidUserName, setInvalidUserName] = useState(false);
-  const [invalidRealName, setInvalidRealName] = useState(false);
   const [invalidEmailId, setInvalidEmailId] = useState(false);
   const [invalidPassword, setInValidPassword] = useState(false);
   const [roleSelectData, setRoleSelectData] = useState([]);
 
-  //static data showed in type select
-  // const typeSelectData = [
-  //   {
-  //     value: "store",
-  //     label: "Store",
-  //   },
-  //   {
-  //     value: "dmadmin",
-  //     label: "Dm admin",
-  //   },
-  //   {
-  //     value: "vendor",
-  //     label: "Vendor",
-  //   },
-  //   {
-  //     value: "customer ",
-  //     label: "Customer ",
-  //   },
-  // ];
-
-  //static data showed in role select
-  // const roleSelectData = [
-  //   {
-  //     value: "dmadmin",
-  //     label: "Dm admin",
-  //   },
-  //   {
-  //     value: "store-owner",
-  //     label: "Store owner",
-  //   },
-  //   {
-  //     value: "store-manager",
-  //     label: "Store manager",
-  //   },
-  //   {
-  //     value: "vendor-owner",
-  //     label: "Vendor owner",
-  //   },
-  //   {
-  //     value: "customer",
-  //     label: "Customer",
-  //   },
-  //   {
-  //     value: "store-approver",
-  //     label: "Store approver",
-  //   },
-  //   {
-  //     value: "vendor-manager",
-  //     label: "Vendor manager",
-  //   },
-  // ];
 
   //Get call of groups
   const findAllGroupLists = () => {
@@ -167,7 +119,6 @@ const CreateUsers = () => {
     const passwordRegex =
       /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{12,64}$/;
     const userNameRegex = /^[A-Za-z0-9_\- ]+$/;
-
     let count = 4;
     if (userName === "" && emailId === "" && password === "") {
       count--;
@@ -274,9 +225,9 @@ const CreateUsers = () => {
 
       MarketplaceToaster.showToast(
         util.getToastObject(
-          `${t("messages:password_must_contain_minimum_of")} ${12} ${t(
-            "messages:password_error_message"
-          )}`,
+          `${t(
+            "messages:password_must_contain_minimum_of"
+          )} ${passwordMinLength}  ${t("messages:password_error_message")}`,
           "error"
         )
       );
@@ -389,7 +340,15 @@ const CreateUsers = () => {
                     <Content>
                       <Input
                         value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
+                        onChange={(e) => {
+                          const { value } = e.target;
+                          const regex = /^[a-zA-Z]*$/; // only allow letters
+                          if (regex.test(value)) {
+                            setFirstName(e.target.value);
+                          }
+                        }}
+                        minLength={nameMinLength}
+                        maxLength={nameMaxLength}
                         placeholder={t("placeholders:enter_first_name")}
                       />
                     </Content>
@@ -403,8 +362,14 @@ const CreateUsers = () => {
                       <Input
                         value={lastName}
                         onChange={(e) => {
-                          setLastName(e.target.value);
+                          const { value } = e.target;
+                          const regex = /^[a-zA-Z]*$/; // only allow letters
+                          if (regex.test(value)) {
+                            setLastName(e.target.value);
+                          }
                         }}
+                        minLength={nameMinLength}
+                        maxLength={nameMaxLength}
                         placeholder={t("placeholders:enter_last_name")}
                       />
                     </Content>
@@ -428,6 +393,7 @@ const CreateUsers = () => {
                         setEmailId(e.target.value);
                         setInvalidEmailId(false);
                       }}
+                      maxLength={emailMaxLength}
                       placeholder={t("placeholders:enter_email")}
                     />
                   </Content>
@@ -450,6 +416,8 @@ const CreateUsers = () => {
                         setPassword(e.target.value);
                         setInValidPassword(false);
                       }}
+                      minLength={passwordMinLength}
+                      maxLength={passwordMaxLength}
                       placeholder={t("placeholders:enter_password")}
                     />
                   </Content>

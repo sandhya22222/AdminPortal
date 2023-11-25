@@ -129,7 +129,11 @@ const UserAccessControl = () => {
       key: "role",
       ellipsis: true,
       render: (text, record) => {
-        return <Content>{record.groups[0]?.name ? record.groups[0]?.name : "NA"}</Content>;
+        return (
+          <Content>
+            {record.groups[0]?.name ? record.groups[0]?.name : "NA"}
+          </Content>
+        );
       },
     },
     {
@@ -395,6 +399,15 @@ const UserAccessControl = () => {
       findAllUsersLists(parseInt(pageNumber), parseInt(pageLimit));
     }
   }, [searchParams]);
+  useEffect(() => {
+    setSearchParams({
+      tab: searchParams.get("tab") ? searchParams.get("tab") : 0,
+      page: searchParams.get("page") ? searchParams.get("page") : 1,
+      limit: searchParams.get("limit")
+        ? searchParams.get("limit")
+        : itemsPerPageFromEnv,
+    });
+  }, []);
 
   return (
     <Content>
@@ -440,16 +453,17 @@ const UserAccessControl = () => {
                   >
                     {t("labels:add_user")}
                   </Button>
-                ) : searchParams.get("tab") === "2" ? null : (
-                  <Button
-                    className="app-btn-primary !h-8 hover:!h-8"
-                    onClick={() =>
-                      navigate("/dashboard/user-access-control/add-user?")
-                    }
-                  >
-                    {t("labels:add_user")}
-                  </Button>
-                )}
+                ) : searchParams.get("tab") === "2" ? null : null}
+                {/* // (
+                //   <Button
+                //     className="app-btn-primary !h-8 hover:!h-8"
+                //     onClick={() =>
+                //       navigate("/dashboard/user-access-control/add-user?")
+                //     }
+                //   >
+                //     {t("labels:add_user")}
+                //   </Button>
+                // )} */}
               </>
               {/* : searchParams.get("tab") === "1" ? (
                   <Button
