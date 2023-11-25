@@ -56,8 +56,8 @@ const CreateUsers = () => {
   const [invalidUserName, setInvalidUserName] = useState(false);
   const [invalidEmailId, setInvalidEmailId] = useState(false);
   const [invalidPassword, setInValidPassword] = useState(false);
+  const [invalidRole, setInvalidRole] = useState(false);
   const [roleSelectData, setRoleSelectData] = useState([]);
-
 
   //Get call of groups
   const findAllGroupLists = () => {
@@ -120,75 +120,90 @@ const CreateUsers = () => {
       /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{12,64}$/;
     const userNameRegex = /^[A-Za-z0-9_\- ]+$/;
     let count = 4;
-    if (userName === "" && emailId === "" && password === "") {
+    if (
+      userName === "" ||
+      emailId === "" ||
+      password === "" ||
+      selectRole === undefined
+    ) {
       count--;
-      setInValidPassword(true);
-      setInvalidEmailId(true);
-      setInvalidUserName(true);
+      if (userName === "") {
+        setInValidPassword(true);
+      }
+      if (emailId === "") {
+        setInvalidEmailId(true);
+      }
+      if (userName === "") {
+        setInvalidUserName(true);
+      }
+      if (selectRole === undefined) {
+        setInvalidRole(true);
+      }
       MarketplaceToaster.showToast(
         util.getToastObject(
           `${t("messages:please_enter_the_values_for_the_mandatory_fields")}`,
           "error"
         )
       );
-    } else if (userName != "" && emailId === "" && password === "") {
-      count--;
-      setInValidPassword(true);
-      setInvalidEmailId(true);
-      MarketplaceToaster.showToast(
-        util.getToastObject(
-          `${t("messages:please_enter_the_values_for_the_mandatory_fields")}`,
-          "error"
-        )
-      );
-    } else if (userName != "" && emailId != "" && password === "") {
-      count--;
-      setInValidPassword(true);
-      MarketplaceToaster.showToast(
-        util.getToastObject(
-          `${t("messages:please_enter_the_values_for_the_mandatory_fields")}`,
-          "error"
-        )
-      );
-    } else if (userName != "" && emailId === "" && password != "") {
-      count--;
-      setInvalidEmailId(true);
-      MarketplaceToaster.showToast(
-        util.getToastObject(
-          `${t("messages:please_enter_the_values_for_the_mandatory_fields")}`,
-          "error"
-        )
-      );
-    } else if (userName === "" && emailId != "" && password != "") {
-      count--;
-      setInvalidUserName(true);
-      MarketplaceToaster.showToast(
-        util.getToastObject(
-          `${t("messages:please_enter_the_values_for_the_mandatory_fields")}`,
-          "error"
-        )
-      );
-    } else if (userName === "" && emailId === "" && password != "") {
-      count--;
-      setInvalidUserName(true);
-      setInvalidEmailId(true);
-      MarketplaceToaster.showToast(
-        util.getToastObject(
-          `${t("messages:please_enter_the_values_for_the_mandatory_fields")}`,
-          "error"
-        )
-      );
-    } else if (userName === "" && emailId != "" && password === "") {
-      count--;
-      setInvalidUserName(true);
-      setInValidPassword(true);
-      MarketplaceToaster.showToast(
-        util.getToastObject(
-          `${t("messages:please_enter_the_values_for_the_mandatory_fields")}`,
-          "error"
-        )
-      );
-    } else if (userNameRegex.test(userName) === false) {
+    }
+    // else if (userName != "" && emailId === "" && password === "") {
+    //   count--;
+    //   setInValidPassword(true);
+    //   setInvalidEmailId(true);
+    //   MarketplaceToaster.showToast(
+    //     util.getToastObject(
+    //       `${t("messages:please_enter_the_values_for_the_mandatory_fields")}`,
+    //       "error"
+    //     )
+    //   );
+    // } else if (userName != "" && emailId != "" && password === "") {
+    //   count--;
+    //   setInValidPassword(true);
+    //   MarketplaceToaster.showToast(
+    //     util.getToastObject(
+    //       `${t("messages:please_enter_the_values_for_the_mandatory_fields")}`,
+    //       "error"
+    //     )
+    //   );
+    // } else if (userName != "" && emailId === "" && password != "") {
+    //   count--;
+    //   MarketplaceToaster.showToast(
+    //     util.getToastObject(
+    //       `${t("messages:please_enter_the_values_for_the_mandatory_fields")}`,
+    //       "error"
+    //     )
+    //   );
+    // } else if (userName === "" && emailId != "" && password != "") {
+    //   count--;
+    //   setInvalidUserName(true);
+    //   MarketplaceToaster.showToast(
+    //     util.getToastObject(
+    //       `${t("messages:please_enter_the_values_for_the_mandatory_fields")}`,
+    //       "error"
+    //     )
+    //   );
+    // } else if (userName === "" && emailId === "" && password != "") {
+    //   count--;
+    //   setInvalidUserName(true);
+    //   setInvalidEmailId(true);
+    //   MarketplaceToaster.showToast(
+    //     util.getToastObject(
+    //       `${t("messages:please_enter_the_values_for_the_mandatory_fields")}`,
+    //       "error"
+    //     )
+    //   );
+    // } else if (userName === "" && emailId != "" && password === "") {
+    //   count--;
+    //   setInvalidUserName(true);
+    //   setInValidPassword(true);
+    //   MarketplaceToaster.showToast(
+    //     util.getToastObject(
+    //       `${t("messages:please_enter_the_values_for_the_mandatory_fields")}`,
+    //       "error"
+    //     )
+    //   );
+    // }
+    else if (userNameRegex.test(userName) === false) {
       count--;
       setInvalidUserName(true);
       MarketplaceToaster.showToast(
@@ -241,6 +256,7 @@ const CreateUsers = () => {
   //handle change of role select
   const handleChangeRole = (value) => {
     setSelectRole(value);
+    setInvalidRole(false);
   };
 
   //handle change of type select
@@ -444,6 +460,7 @@ const CreateUsers = () => {
                   <Content className="pl-[4.2rem]">
                     <Typography className="input-label-color mb-2 flex gap-1">
                       {t("labels:role")}
+                      <span className="mandatory-symbol-color text-sm ">*</span>
                     </Typography>
                     <Content>
                       <Select
@@ -451,6 +468,11 @@ const CreateUsers = () => {
                           width: 665,
                         }}
                         allowClear
+                        // onClear={() => {
+                        //   console.log("cleared");
+                        //   setSelectRole("");
+                        // }}
+                        status={invalidRole ? "error" : ""}
                         placeholder={t("labels:select_a_role")}
                         value={selectRole}
                         onChange={handleChangeRole}
