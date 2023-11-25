@@ -146,7 +146,10 @@ const StoreSettings = () => {
     langauge_limit: 0,
     product_template_limit: 0,
     store_users_limit: 0,
-    vendor_users_limit: 0
+    vendor_users_limit: 0,
+    max_products_per_vendor:0,
+    max_templates_per_vendor:0,
+    default_store_commission:0
   }
   const [storeDataLimitValues, setStoreDataLimitValues] = useState(defaultDataLimitValues);
   const [isStoreDataLimitChanged, setIsStoreDataLimitChanged] = useState(false);
@@ -545,7 +548,11 @@ const StoreSettings = () => {
           (element) => element.store == storeIdFromUrl
         );
         if (selectedStoreDataLimit.length > 0) {
-          setStoreDataLimitValues(selectedStoreDataLimit[0]);
+          let selectedDataLimit = selectedStoreDataLimit[0];
+          selectedDataLimit.default_store_commission = selectedDataLimit.default_store_commission == null ? 0 : selectedDataLimit.default_store_commission;
+          selectedDataLimit.max_products_per_vendor = selectedDataLimit.max_products_per_vendor == null ? 0 : selectedDataLimit.max_products_per_vendor;
+          selectedDataLimit.max_templates_per_vendor = selectedDataLimit.max_templates_per_vendor == null ? 0 : selectedDataLimit.max_templates_per_vendor;
+          setStoreDataLimitValues(selectedDataLimit);
         }
       }
     })
@@ -565,6 +572,9 @@ const StoreSettings = () => {
       product_template_limit: storeDataLimitValues.product_template_limit == "" ? 0 : parseInt(storeDataLimitValues.product_template_limit),
       store_users_limit: storeDataLimitValues.store_users_limit == "" ? 0 : parseInt(storeDataLimitValues.store_users_limit),
       vendor_users_limit: storeDataLimitValues.vendor_users_limit == "" ? 0 : parseInt(storeDataLimitValues.vendor_users_limit),
+      max_products_per_vendor: storeDataLimitValues.max_products_per_vendor == "" ? 0 : parseInt(storeDataLimitValues.max_products_per_vendor),
+      max_templates_per_vendor: storeDataLimitValues.max_templates_per_vendor == "" ? 0 : parseInt(storeDataLimitValues.max_templates_per_vendor),
+      default_store_commission: storeDataLimitValues.default_store_commission == "" ? 0 : parseFloat(storeDataLimitValues.default_store_commission),
       store: storeIdFromUrl
     }
     setIsStoreDataLimitSaving(true);
@@ -586,12 +596,15 @@ const StoreSettings = () => {
       copyofStoreDataLimitValue.product_template_limit = responseData.product_template_limit;
       copyofStoreDataLimitValue.store_users_limit = responseData.store_users_limit;
       copyofStoreDataLimitValue.vendor_users_limit = responseData.vendor_users_limit;
+      copyofStoreDataLimitValue.max_products_per_vendor =  responseData.max_products_per_vendor;
+      copyofStoreDataLimitValue.max_templates_per_vendor =  responseData.max_templates_per_vendor;
+      copyofStoreDataLimitValue.default_store_commission =  responseData.default_store_commission;
       setStoreDataLimitValues(copyofStoreDataLimitValue);
       setIsStoreDataLimitChanged(false);
     })
     .catch((error) => {
       console.log("Error Response From storeSettingPostCall", error.response);
-      setIsLoading(false);
+      setIsStoreDataLimitSaving(false);
       MarketplaceToaster.showToast(error.response);
     });
 };
@@ -1460,6 +1473,76 @@ const StoreSettings = () => {
                   }
                 }
                 />
+              </Col>
+              <Col span={6} className="gutter-row">
+              <label className="text-[13px] mt-5 mb-2 ml-1 input-label-color">
+                  {t("labels:maximum_vendor_product_limit")}
+                </label>
+                <Input
+                  placeholder={t("labels:placeholder_unlimited")}
+                  // defaultValue={storeSettingData.store_currency["symbol"]}
+                  value={storeDataLimitValues.max_products_per_vendor > 0 ? storeDataLimitValues.max_products_per_vendor : ""}
+                  onChange={(e) => {
+                    let number = /^[0-9]*$/.test(e.target.value);
+                    let copyofStoreDataLimitValue = {...storeDataLimitValues};
+                    // to allow only 10 digits
+                    if (number && e.target.value.length <= 10) {
+                      copyofStoreDataLimitValue.max_products_per_vendor = e.target.value;
+                      setIsStoreDataLimitChanged(true);
+                      setStoreDataLimitValues(copyofStoreDataLimitValue);
+                    } else if (e.target.value === "") {
+                      // setIsStoreDataLimitChanged(false);
+                      copyofStoreDataLimitValue.max_products_per_vendor = e.target.value;
+                      setStoreDataLimitValues(copyofStoreDataLimitValue);
+                    }
+                  }
+                }
+                />
+              </Col>
+              <Col span={6} className="gutter-row">
+              <label className="text-[13px] mt-5 mb-2 ml-1 input-label-color">
+                  {t("labels:maximum_vendor_product_template_limit")}
+                </label>
+                <Input
+                  placeholder={t("labels:placeholder_unlimited")}
+                  // defaultValue={storeSettingData.store_currency["symbol"]}
+                  value={storeDataLimitValues.max_templates_per_vendor > 0 ? storeDataLimitValues.max_templates_per_vendor : ""}
+                  onChange={(e) => {
+                    let number = /^[0-9]*$/.test(e.target.value);
+                    let copyofStoreDataLimitValue = {...storeDataLimitValues};
+                    // to allow only 10 digits
+                    if (number && e.target.value.length <= 10) {
+                      copyofStoreDataLimitValue.max_templates_per_vendor = e.target.value;
+                      setIsStoreDataLimitChanged(true);
+                      setStoreDataLimitValues(copyofStoreDataLimitValue);
+                    } else if (e.target.value === "") {
+                      // setIsStoreDataLimitChanged(false);
+                      copyofStoreDataLimitValue.max_templates_per_vendor = e.target.value;
+                      setStoreDataLimitValues(copyofStoreDataLimitValue);
+                    }
+                  }
+                }
+                />
+              </Col>
+              <Col span={6} className="gutter-row">
+              <label className="text-[13px] mt-5 mb-2 ml-1 input-label-color">
+                  {t("labels:default_vendor_commission")}
+                </label>
+                <InputNumber
+                        className="w-[100%]"
+                        value={storeDataLimitValues.default_store_commission}
+                        min={0}
+                        max={100}
+                        step="0.1"
+                        formatter={(value) => `${value}%`}
+                        parser={(value) => value.replace("%", "")}
+                        onChange={(value) => {
+                          let copyofStoreDataLimitValue = {...storeDataLimitValues};
+                          copyofStoreDataLimitValue.default_store_commission = value;
+                          setStoreDataLimitValues(copyofStoreDataLimitValue);
+                          setIsStoreDataLimitChanged(true);
+                        }}
+                      />
               </Col>
             </Row>
             <Content className="mt-4">
