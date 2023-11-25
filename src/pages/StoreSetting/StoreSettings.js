@@ -42,10 +42,10 @@ const storeBannerImageAPI = process.env.REACT_APP_STORE_BANNER_IMAGES_API;
 const storeLimitAPI = process.env.REACT_APP_STORE_LIMIT;
 
 const StoreSettings = () => {
-  usePageTitle("Store Settings");
   const { t } = useTranslation();
   const navigate = useNavigate();
   const search = useLocation().search;
+  usePageTitle(t("labels:store_settings"));
 
   const id = new URLSearchParams(search).get("id");
   const storeIdFromUrl = new URLSearchParams(search).get("storeId");
@@ -147,11 +147,13 @@ const StoreSettings = () => {
     product_template_limit: 0,
     store_users_limit: 0,
     vendor_users_limit: 0,
-    max_products_per_vendor:0,
-    max_templates_per_vendor:0,
-    default_store_commission:0
-  }
-  const [storeDataLimitValues, setStoreDataLimitValues] = useState(defaultDataLimitValues);
+    max_products_per_vendor: 0,
+    max_templates_per_vendor: 0,
+    default_store_commission: 0,
+  };
+  const [storeDataLimitValues, setStoreDataLimitValues] = useState(
+    defaultDataLimitValues
+  );
   const [isStoreDataLimitChanged, setIsStoreDataLimitChanged] = useState(false);
   const [isStoreDataLimitSaving, setIsStoreDataLimitSaving] = useState(false);
 
@@ -531,83 +533,132 @@ const StoreSettings = () => {
       });
   };
 
-    //! get call of store limit API
+  //! get call of store limit API
   const findAllStoreLimit = () => {
     MarketplaceServices.findAll(storeLimitAPI)
-    .then(function (response) {
-      console.log(
-        "Server Response from store limit API: ",
-        response.data.response_body
-      );
-      if (
-        response &&
-        response.data.response_body &&
-        response.data.response_body.data.length > 0
-      ) {
-        let selectedStoreDataLimit = response.data.response_body.data.filter(
-          (element) => element.store == storeIdFromUrl
+      .then(function (response) {
+        console.log(
+          "Server Response from store limit API: ",
+          response.data.response_body
         );
-        if (selectedStoreDataLimit.length > 0) {
-          let selectedDataLimit = selectedStoreDataLimit[0];
-          selectedDataLimit.default_store_commission = selectedDataLimit.default_store_commission == null ? 0 : selectedDataLimit.default_store_commission;
-          selectedDataLimit.max_products_per_vendor = selectedDataLimit.max_products_per_vendor == null ? 0 : selectedDataLimit.max_products_per_vendor;
-          selectedDataLimit.max_templates_per_vendor = selectedDataLimit.max_templates_per_vendor == null ? 0 : selectedDataLimit.max_templates_per_vendor;
-          setStoreDataLimitValues(selectedDataLimit);
+        if (
+          response &&
+          response.data.response_body &&
+          response.data.response_body.data.length > 0
+        ) {
+          let selectedStoreDataLimit = response.data.response_body.data.filter(
+            (element) => element.store == storeIdFromUrl
+          );
+          if (selectedStoreDataLimit.length > 0) {
+            let selectedDataLimit = selectedStoreDataLimit[0];
+            selectedDataLimit.default_store_commission =
+              selectedDataLimit.default_store_commission == null
+                ? 0
+                : selectedDataLimit.default_store_commission;
+            selectedDataLimit.max_products_per_vendor =
+              selectedDataLimit.max_products_per_vendor == null
+                ? 0
+                : selectedDataLimit.max_products_per_vendor;
+            selectedDataLimit.max_templates_per_vendor =
+              selectedDataLimit.max_templates_per_vendor == null
+                ? 0
+                : selectedDataLimit.max_templates_per_vendor;
+            setStoreDataLimitValues(selectedDataLimit);
+          }
         }
-      }
-    })
-    .catch((error) => {
-      console.log("Server error from store limit API ", error.response);
-    });
-  }
+      })
+      .catch((error) => {
+        console.log("Server error from store limit API ", error.response);
+      });
+  };
 
   //! Post call for the store data limit api
-  const saveStoreDataLimit = ()=>{
+  const saveStoreDataLimit = () => {
     const postBody = {
-      vendor_limit: storeDataLimitValues.vendor_limit == "" ? 0 : parseInt(storeDataLimitValues.vendor_limit),
-      customer_limit: storeDataLimitValues.customer_limit == "" ? 0 : parseInt(storeDataLimitValues.customer_limit),
-      product_limit: storeDataLimitValues.product_limit == "" ? 0 : parseInt(storeDataLimitValues.product_limit),
-      order_limit_per_day: storeDataLimitValues.order_limit_per_day == "" ? 0 : parseInt(storeDataLimitValues.order_limit_per_day),
-      langauge_limit: storeDataLimitValues.langauge_limit == "" ? 0 : parseInt(storeDataLimitValues.langauge_limit),
-      product_template_limit: storeDataLimitValues.product_template_limit == "" ? 0 : parseInt(storeDataLimitValues.product_template_limit),
-      store_users_limit: storeDataLimitValues.store_users_limit == "" ? 0 : parseInt(storeDataLimitValues.store_users_limit),
-      vendor_users_limit: storeDataLimitValues.vendor_users_limit == "" ? 0 : parseInt(storeDataLimitValues.vendor_users_limit),
-      max_products_per_vendor: storeDataLimitValues.max_products_per_vendor == "" ? 0 : parseInt(storeDataLimitValues.max_products_per_vendor),
-      max_templates_per_vendor: storeDataLimitValues.max_templates_per_vendor == "" ? 0 : parseInt(storeDataLimitValues.max_templates_per_vendor),
-      default_store_commission: storeDataLimitValues.default_store_commission == "" ? 0 : parseFloat(storeDataLimitValues.default_store_commission),
-      store: storeIdFromUrl
-    }
+      vendor_limit:
+        storeDataLimitValues.vendor_limit == ""
+          ? 0
+          : parseInt(storeDataLimitValues.vendor_limit),
+      customer_limit:
+        storeDataLimitValues.customer_limit == ""
+          ? 0
+          : parseInt(storeDataLimitValues.customer_limit),
+      product_limit:
+        storeDataLimitValues.product_limit == ""
+          ? 0
+          : parseInt(storeDataLimitValues.product_limit),
+      order_limit_per_day:
+        storeDataLimitValues.order_limit_per_day == ""
+          ? 0
+          : parseInt(storeDataLimitValues.order_limit_per_day),
+      langauge_limit:
+        storeDataLimitValues.langauge_limit == ""
+          ? 0
+          : parseInt(storeDataLimitValues.langauge_limit),
+      product_template_limit:
+        storeDataLimitValues.product_template_limit == ""
+          ? 0
+          : parseInt(storeDataLimitValues.product_template_limit),
+      store_users_limit:
+        storeDataLimitValues.store_users_limit == ""
+          ? 0
+          : parseInt(storeDataLimitValues.store_users_limit),
+      vendor_users_limit:
+        storeDataLimitValues.vendor_users_limit == ""
+          ? 0
+          : parseInt(storeDataLimitValues.vendor_users_limit),
+      max_products_per_vendor:
+        storeDataLimitValues.max_products_per_vendor == ""
+          ? 0
+          : parseInt(storeDataLimitValues.max_products_per_vendor),
+      max_templates_per_vendor:
+        storeDataLimitValues.max_templates_per_vendor == ""
+          ? 0
+          : parseInt(storeDataLimitValues.max_templates_per_vendor),
+      default_store_commission:
+        storeDataLimitValues.default_store_commission == ""
+          ? 0
+          : parseFloat(storeDataLimitValues.default_store_commission),
+      store: storeIdFromUrl,
+    };
     setIsStoreDataLimitSaving(true);
     MarketplaceServices.save(storeLimitAPI, postBody)
-    .then((response) => {
-      console.log(
-        "Server Success Response From store data limit",
-        response.data.response_body
-      );
-      MarketplaceToaster.showToast(response);
-      let responseData = response.data.response_body;
-      setIsStoreDataLimitSaving(false);
-      let copyofStoreDataLimitValue = {...storeDataLimitValues};
-      copyofStoreDataLimitValue.vendor_limit = responseData.vendor_limit;
-      copyofStoreDataLimitValue.customer_limit = responseData.customer_limit;
-      copyofStoreDataLimitValue.product_limit = responseData.product_limit;
-      copyofStoreDataLimitValue.order_limit_per_day = responseData.order_limit_per_day;
-      copyofStoreDataLimitValue.langauge_limit = responseData.langauge_limit;
-      copyofStoreDataLimitValue.product_template_limit = responseData.product_template_limit;
-      copyofStoreDataLimitValue.store_users_limit = responseData.store_users_limit;
-      copyofStoreDataLimitValue.vendor_users_limit = responseData.vendor_users_limit;
-      copyofStoreDataLimitValue.max_products_per_vendor =  responseData.max_products_per_vendor;
-      copyofStoreDataLimitValue.max_templates_per_vendor =  responseData.max_templates_per_vendor;
-      copyofStoreDataLimitValue.default_store_commission =  responseData.default_store_commission;
-      setStoreDataLimitValues(copyofStoreDataLimitValue);
-      setIsStoreDataLimitChanged(false);
-    })
-    .catch((error) => {
-      console.log("Error Response From storeSettingPostCall", error.response);
-      setIsStoreDataLimitSaving(false);
-      MarketplaceToaster.showToast(error.response);
-    });
-};
+      .then((response) => {
+        console.log(
+          "Server Success Response From store data limit",
+          response.data.response_body
+        );
+        MarketplaceToaster.showToast(response);
+        let responseData = response.data.response_body;
+        setIsStoreDataLimitSaving(false);
+        let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+        copyofStoreDataLimitValue.vendor_limit = responseData.vendor_limit;
+        copyofStoreDataLimitValue.customer_limit = responseData.customer_limit;
+        copyofStoreDataLimitValue.product_limit = responseData.product_limit;
+        copyofStoreDataLimitValue.order_limit_per_day =
+          responseData.order_limit_per_day;
+        copyofStoreDataLimitValue.langauge_limit = responseData.langauge_limit;
+        copyofStoreDataLimitValue.product_template_limit =
+          responseData.product_template_limit;
+        copyofStoreDataLimitValue.store_users_limit =
+          responseData.store_users_limit;
+        copyofStoreDataLimitValue.vendor_users_limit =
+          responseData.vendor_users_limit;
+        copyofStoreDataLimitValue.max_products_per_vendor =
+          responseData.max_products_per_vendor;
+        copyofStoreDataLimitValue.max_templates_per_vendor =
+          responseData.max_templates_per_vendor;
+        copyofStoreDataLimitValue.default_store_commission =
+          responseData.default_store_commission;
+        setStoreDataLimitValues(copyofStoreDataLimitValue);
+        setIsStoreDataLimitChanged(false);
+      })
+      .catch((error) => {
+        console.log("Error Response From storeSettingPostCall", error.response);
+        setIsStoreDataLimitSaving(false);
+        MarketplaceToaster.showToast(error.response);
+      });
+  };
 
   //! validations of store settings API
   const validatePostStoreSetting = () => {
@@ -1081,7 +1132,7 @@ const StoreSettings = () => {
         setIsLoading(false);
       });
   };
-  
+
   const postImageOnClickSave = () => {
     if (Object.keys(getImageData[0]).length > 0) {
       updateStoreLogoImageCall();
@@ -1275,23 +1326,29 @@ const StoreSettings = () => {
             <label className="text-[20px] mb-2 font-bold">
               {t("labels:thershold_limit")}
             </label>
-            <Row gutter={{
+            <Row
+              gutter={{
                 xs: 8,
                 sm: 16,
                 md: 24,
                 lg: 32,
-              }}>
+              }}
+            >
               <Col span={6} className="gutter-row">
-              <label className="text-[13px] mb-2 ml-1 input-label-color">
+                <label className="text-[13px] mb-2 ml-1 input-label-color">
                   {t("labels:vendor_limit")}
                 </label>
                 <Input
                   placeholder={t("labels:placeholder_unlimited")}
                   // defaultValue={storeSettingData.store_currency["symbol"]}
-                  value={storeDataLimitValues.vendor_limit > 0 ? storeDataLimitValues.vendor_limit : ""}
+                  value={
+                    storeDataLimitValues.vendor_limit > 0
+                      ? storeDataLimitValues.vendor_limit
+                      : ""
+                  }
                   onChange={(e) => {
                     let number = /^[0-9]*$/.test(e.target.value);
-                    let copyofStoreDataLimitValue = {...storeDataLimitValues};
+                    let copyofStoreDataLimitValue = { ...storeDataLimitValues };
                     // to allow only 10 digits
                     if (number && e.target.value.length <= 10) {
                       copyofStoreDataLimitValue.vendor_limit = e.target.value;
@@ -1301,21 +1358,24 @@ const StoreSettings = () => {
                       copyofStoreDataLimitValue.vendor_limit = e.target.value;
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
                     }
-                  }
-                }
+                  }}
                 />
               </Col>
               <Col span={6} className="gutter-row">
-              <label className="text-[13px] mb-2 ml-1 input-label-color">
+                <label className="text-[13px] mb-2 ml-1 input-label-color">
                   {t("labels:customer_limit")}
                 </label>
                 <Input
                   placeholder={t("labels:placeholder_unlimited")}
                   // defaultValue={storeSettingData.store_currency["symbol"]}
-                  value={storeDataLimitValues.customer_limit > 0 ? storeDataLimitValues.customer_limit : ""}
+                  value={
+                    storeDataLimitValues.customer_limit > 0
+                      ? storeDataLimitValues.customer_limit
+                      : ""
+                  }
                   onChange={(e) => {
                     let number = /^[0-9]*$/.test(e.target.value);
-                    let copyofStoreDataLimitValue = {...storeDataLimitValues};
+                    let copyofStoreDataLimitValue = { ...storeDataLimitValues };
                     // to allow only 10 digits
                     if (number && e.target.value.length <= 10) {
                       copyofStoreDataLimitValue.customer_limit = e.target.value;
@@ -1325,21 +1385,24 @@ const StoreSettings = () => {
                       copyofStoreDataLimitValue.customer_limit = e.target.value;
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
                     }
-                  }
-                }
+                  }}
                 />
               </Col>
               <Col span={6} className="gutter-row">
-              <label className="text-[13px] mb-2 ml-1 input-label-color">
+                <label className="text-[13px] mb-2 ml-1 input-label-color">
                   {t("labels:product_limit")}
                 </label>
                 <Input
-                 placeholder={t("labels:placeholder_unlimited")}
+                  placeholder={t("labels:placeholder_unlimited")}
                   // defaultValue={storeSettingData.store_currency["symbol"]}
-                  value={storeDataLimitValues.product_limit > 0 ? storeDataLimitValues.product_limit : ""}
+                  value={
+                    storeDataLimitValues.product_limit > 0
+                      ? storeDataLimitValues.product_limit
+                      : ""
+                  }
                   onChange={(e) => {
                     let number = /^[0-9]*$/.test(e.target.value);
-                    let copyofStoreDataLimitValue = {...storeDataLimitValues};
+                    let copyofStoreDataLimitValue = { ...storeDataLimitValues };
                     // to allow only 10 digits
                     if (number && e.target.value.length <= 10) {
                       copyofStoreDataLimitValue.product_limit = e.target.value;
@@ -1349,45 +1412,53 @@ const StoreSettings = () => {
                       copyofStoreDataLimitValue.product_limit = e.target.value;
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
                     }
-                  }
-                }
+                  }}
                 />
               </Col>
               <Col span={6} className="gutter-row">
-              <label className="text-[13px] mb-2 ml-1 input-label-color">
+                <label className="text-[13px] mb-2 ml-1 input-label-color">
                   {t("labels:order_limit_per_day")}
                 </label>
                 <Input
                   placeholder={t("labels:placeholder_unlimited")}
                   // defaultValue={storeSettingData.store_currency["symbol"]}
-                  value={storeDataLimitValues.order_limit_per_day > 0 ? storeDataLimitValues.order_limit_per_day : ""}
+                  value={
+                    storeDataLimitValues.order_limit_per_day > 0
+                      ? storeDataLimitValues.order_limit_per_day
+                      : ""
+                  }
                   onChange={(e) => {
                     let number = /^[0-9]*$/.test(e.target.value);
-                    let copyofStoreDataLimitValue = {...storeDataLimitValues};
+                    let copyofStoreDataLimitValue = { ...storeDataLimitValues };
                     // to allow only 10 digits
                     if (number && e.target.value.length <= 10) {
-                      copyofStoreDataLimitValue.order_limit_per_day = e.target.value;
+                      copyofStoreDataLimitValue.order_limit_per_day =
+                        e.target.value;
                       setIsStoreDataLimitChanged(true);
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
                     } else if (e.target.value === "") {
-                      copyofStoreDataLimitValue.order_limit_per_day = e.target.value;
+                      copyofStoreDataLimitValue.order_limit_per_day =
+                        e.target.value;
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
                     }
-                  }
-                }
+                  }}
                 />
               </Col>
               <Col span={6} className="gutter-row">
-              <label className="text-[13px] mt-5 mb-2 ml-1 input-label-color">
+                <label className="text-[13px] mt-5 mb-2 ml-1 input-label-color">
                   {t("labels:langauge_limit")}
                 </label>
                 <Input
-                 placeholder={t("labels:placeholder_unlimited")}
+                  placeholder={t("labels:placeholder_unlimited")}
                   // defaultValue={storeSettingData.store_currency["symbol"]}
-                  value={storeDataLimitValues.langauge_limit > 0 ? storeDataLimitValues.langauge_limit : ""}
-                   onChange={(e) => {
+                  value={
+                    storeDataLimitValues.langauge_limit > 0
+                      ? storeDataLimitValues.langauge_limit
+                      : ""
+                  }
+                  onChange={(e) => {
                     let number = /^[0-9]*$/.test(e.target.value);
-                    let copyofStoreDataLimitValue = {...storeDataLimitValues};
+                    let copyofStoreDataLimitValue = { ...storeDataLimitValues };
                     // to allow only 10 digits
                     if (number && e.target.value.length <= 10) {
                       copyofStoreDataLimitValue.langauge_limit = e.target.value;
@@ -1397,152 +1468,176 @@ const StoreSettings = () => {
                       copyofStoreDataLimitValue.langauge_limit = e.target.value;
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
                     }
-                  }
-                }
+                  }}
                 />
               </Col>
               <Col span={6} className="gutter-row">
-              <label className="text-[13px] mt-5 mb-2 ml-1 input-label-color">
+                <label className="text-[13px] mt-5 mb-2 ml-1 input-label-color">
                   {t("labels:product_template_limit")}
                 </label>
                 <Input
                   placeholder={t("labels:placeholder_unlimited")}
                   // defaultValue={storeSettingData.store_currency["symbol"]}
-                  value={storeDataLimitValues.product_template_limit > 0 ? storeDataLimitValues.product_template_limit : ""}
+                  value={
+                    storeDataLimitValues.product_template_limit > 0
+                      ? storeDataLimitValues.product_template_limit
+                      : ""
+                  }
                   onChange={(e) => {
                     let number = /^[0-9]*$/.test(e.target.value);
-                    let copyofStoreDataLimitValue = {...storeDataLimitValues};
+                    let copyofStoreDataLimitValue = { ...storeDataLimitValues };
                     // to allow only 10 digits
                     if (number && e.target.value.length <= 10) {
-                      copyofStoreDataLimitValue.product_template_limit = e.target.value;
+                      copyofStoreDataLimitValue.product_template_limit =
+                        e.target.value;
                       setIsStoreDataLimitChanged(true);
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
                     } else if (e.target.value === "") {
-                      copyofStoreDataLimitValue.product_template_limit = e.target.value;
+                      copyofStoreDataLimitValue.product_template_limit =
+                        e.target.value;
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
                     }
-                  }
-                }
+                  }}
                 />
               </Col>
               <Col span={6} className="gutter-row">
-              <label className="text-[13px] mt-5 mb-2 ml-1 input-label-color">
+                <label className="text-[13px] mt-5 mb-2 ml-1 input-label-color">
                   {t("labels:store_users_limit")}
                 </label>
                 <Input
-                   placeholder={t("labels:placeholder_unlimited")}
-                  value={storeDataLimitValues.store_users_limit > 0 ? storeDataLimitValues.store_users_limit : ""}
+                  placeholder={t("labels:placeholder_unlimited")}
+                  value={
+                    storeDataLimitValues.store_users_limit > 0
+                      ? storeDataLimitValues.store_users_limit
+                      : ""
+                  }
                   onChange={(e) => {
                     let number = /^[0-9]*$/.test(e.target.value);
-                    let copyofStoreDataLimitValue = {...storeDataLimitValues};
+                    let copyofStoreDataLimitValue = { ...storeDataLimitValues };
                     // to allow only 10 digits
                     if (number && e.target.value.length <= 10) {
-                      copyofStoreDataLimitValue.store_users_limit = e.target.value;
+                      copyofStoreDataLimitValue.store_users_limit =
+                        e.target.value;
                       setIsStoreDataLimitChanged(true);
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
                     } else if (e.target.value === "") {
                       // setIsStoreDataLimitChanged(false);
-                      copyofStoreDataLimitValue.store_users_limit = e.target.value;
+                      copyofStoreDataLimitValue.store_users_limit =
+                        e.target.value;
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
                     }
-                  }
-                }
+                  }}
                 />
               </Col>
               <Col span={6} className="gutter-row">
-              <label className="text-[13px] mt-5 mb-2 ml-1 input-label-color">
+                <label className="text-[13px] mt-5 mb-2 ml-1 input-label-color">
                   {t("labels:vendor_users_limit")}
                 </label>
                 <Input
                   placeholder={t("labels:placeholder_unlimited")}
                   // defaultValue={storeSettingData.store_currency["symbol"]}
-                  value={storeDataLimitValues.vendor_users_limit > 0 ? storeDataLimitValues.vendor_users_limit : ""}
+                  value={
+                    storeDataLimitValues.vendor_users_limit > 0
+                      ? storeDataLimitValues.vendor_users_limit
+                      : ""
+                  }
                   onChange={(e) => {
                     let number = /^[0-9]*$/.test(e.target.value);
-                    let copyofStoreDataLimitValue = {...storeDataLimitValues};
+                    let copyofStoreDataLimitValue = { ...storeDataLimitValues };
                     // to allow only 10 digits
                     if (number && e.target.value.length <= 10) {
-                      copyofStoreDataLimitValue.vendor_users_limit = e.target.value;
+                      copyofStoreDataLimitValue.vendor_users_limit =
+                        e.target.value;
                       setIsStoreDataLimitChanged(true);
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
                     } else if (e.target.value === "") {
                       // setIsStoreDataLimitChanged(false);
-                      copyofStoreDataLimitValue.vendor_users_limit = e.target.value;
+                      copyofStoreDataLimitValue.vendor_users_limit =
+                        e.target.value;
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
                     }
-                  }
-                }
+                  }}
                 />
               </Col>
               <Col span={6} className="gutter-row">
-              <label className="text-[13px] mt-5 mb-2 ml-1 input-label-color">
+                <label className="text-[13px] mt-5 mb-2 ml-1 input-label-color">
                   {t("labels:maximum_vendor_product_limit")}
                 </label>
                 <Input
                   placeholder={t("labels:placeholder_unlimited")}
                   // defaultValue={storeSettingData.store_currency["symbol"]}
-                  value={storeDataLimitValues.max_products_per_vendor > 0 ? storeDataLimitValues.max_products_per_vendor : ""}
+                  value={
+                    storeDataLimitValues.max_products_per_vendor > 0
+                      ? storeDataLimitValues.max_products_per_vendor
+                      : ""
+                  }
                   onChange={(e) => {
                     let number = /^[0-9]*$/.test(e.target.value);
-                    let copyofStoreDataLimitValue = {...storeDataLimitValues};
+                    let copyofStoreDataLimitValue = { ...storeDataLimitValues };
                     // to allow only 10 digits
                     if (number && e.target.value.length <= 10) {
-                      copyofStoreDataLimitValue.max_products_per_vendor = e.target.value;
+                      copyofStoreDataLimitValue.max_products_per_vendor =
+                        e.target.value;
                       setIsStoreDataLimitChanged(true);
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
                     } else if (e.target.value === "") {
                       // setIsStoreDataLimitChanged(false);
-                      copyofStoreDataLimitValue.max_products_per_vendor = e.target.value;
+                      copyofStoreDataLimitValue.max_products_per_vendor =
+                        e.target.value;
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
                     }
-                  }
-                }
+                  }}
                 />
               </Col>
               <Col span={6} className="gutter-row">
-              <label className="text-[13px] mt-5 mb-2 ml-1 input-label-color">
+                <label className="text-[13px] mt-5 mb-2 ml-1 input-label-color">
                   {t("labels:maximum_vendor_product_template_limit")}
                 </label>
                 <Input
                   placeholder={t("labels:placeholder_unlimited")}
                   // defaultValue={storeSettingData.store_currency["symbol"]}
-                  value={storeDataLimitValues.max_templates_per_vendor > 0 ? storeDataLimitValues.max_templates_per_vendor : ""}
+                  value={
+                    storeDataLimitValues.max_templates_per_vendor > 0
+                      ? storeDataLimitValues.max_templates_per_vendor
+                      : ""
+                  }
                   onChange={(e) => {
                     let number = /^[0-9]*$/.test(e.target.value);
-                    let copyofStoreDataLimitValue = {...storeDataLimitValues};
+                    let copyofStoreDataLimitValue = { ...storeDataLimitValues };
                     // to allow only 10 digits
                     if (number && e.target.value.length <= 10) {
-                      copyofStoreDataLimitValue.max_templates_per_vendor = e.target.value;
+                      copyofStoreDataLimitValue.max_templates_per_vendor =
+                        e.target.value;
                       setIsStoreDataLimitChanged(true);
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
                     } else if (e.target.value === "") {
                       // setIsStoreDataLimitChanged(false);
-                      copyofStoreDataLimitValue.max_templates_per_vendor = e.target.value;
+                      copyofStoreDataLimitValue.max_templates_per_vendor =
+                        e.target.value;
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
                     }
-                  }
-                }
+                  }}
                 />
               </Col>
               <Col span={6} className="gutter-row">
-              <label className="text-[13px] mt-5 mb-2 ml-1 input-label-color">
+                <label className="text-[13px] mt-5 mb-2 ml-1 input-label-color">
                   {t("labels:default_vendor_commission")}
                 </label>
                 <InputNumber
-                        className="w-[100%]"
-                        value={storeDataLimitValues.default_store_commission}
-                        min={0}
-                        max={100}
-                        step="0.1"
-                        formatter={(value) => `${value}%`}
-                        parser={(value) => value.replace("%", "")}
-                        onChange={(value) => {
-                          let copyofStoreDataLimitValue = {...storeDataLimitValues};
-                          copyofStoreDataLimitValue.default_store_commission = value;
-                          setStoreDataLimitValues(copyofStoreDataLimitValue);
-                          setIsStoreDataLimitChanged(true);
-                        }}
-                      />
+                  className="w-[100%]"
+                  value={storeDataLimitValues.default_store_commission}
+                  min={0}
+                  max={100}
+                  step="0.1"
+                  formatter={(value) => `${value}%`}
+                  parser={(value) => value.replace("%", "")}
+                  onChange={(value) => {
+                    let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+                    copyofStoreDataLimitValue.default_store_commission = value;
+                    setStoreDataLimitValues(copyofStoreDataLimitValue);
+                    setIsStoreDataLimitChanged(true);
+                  }}
+                />
               </Col>
             </Row>
             <Content className="mt-4">
@@ -1550,11 +1645,13 @@ const StoreSettings = () => {
                 <Col>
                   <Button
                     className={
-                      isStoreDataLimitChanged ? "app-btn-primary" : "!opacity-75"
+                      isStoreDataLimitChanged
+                        ? "app-btn-primary"
+                        : "!opacity-75"
                     }
                     disabled={!isStoreDataLimitChanged}
                     onClick={() => {
-                      saveStoreDataLimit()
+                      saveStoreDataLimit();
                     }}
                   >
                     {t("labels:save")}
@@ -1564,7 +1661,9 @@ const StoreSettings = () => {
                   <Button
                     // className=" app-btn-secondary"
                     className={
-                      isStoreDataLimitChanged ? "app-btn-secondary" : "!opacity-75"
+                      isStoreDataLimitChanged
+                        ? "app-btn-secondary"
+                        : "!opacity-75"
                     }
                     disabled={!isStoreDataLimitChanged}
                     onClick={() => {
@@ -1578,7 +1677,6 @@ const StoreSettings = () => {
             </Content>
           </Content>
         </Spin>
-
 
         <Spin tip="Please wait!" size="large" spinning={isLoading}>
           <Content className="bg-white mt-3 p-3 rounded-lg">
@@ -1759,9 +1857,11 @@ const StoreSettings = () => {
                     <label className="text-[20px]  mt-2 font-bold select-none">
                       {t("labels:page_theme")}
                     </label>
-                    <Button className="app-btn-secondary flex justify-center items-center" onClick={() => openModal()}>
-                      <EyeOutlined className="" />{" "}
-                      {t("labels:preview")}
+                    <Button
+                      className="app-btn-secondary flex justify-center items-center"
+                      onClick={() => openModal()}
+                    >
+                      <EyeOutlined className="" /> {t("labels:preview")}
                     </Button>
                   </Content>
                   <StoreModal
@@ -1840,23 +1940,29 @@ const StoreSettings = () => {
                           maxLength={7}
                           className="w-[150px]"
                           onChange={(e) => {
+                            const inputValue = e.target.value;
+                            // Allow only numeric input
+                            const numericValue = inputValue
+                              .replace(/[^a-f0-9#]/gi, "")
+                              .substring(0, 7);
+                            setPageBackgroundColor(numericValue);
                             const patternName = /^#([A-Fa-f0-9]{6})$/;
-                            if (patternName.test(e.target.value) === false) {
+                            if (patternName.test(numericValue) === false) {
                               let temp = { ...colorCodeValidation };
                               temp["pageBgColorValidation"] = true;
                               setColorCodeValidation(temp);
-                              setPageBackgroundColor(e.target.value);
+                              setPageBackgroundColor(numericValue);
                               setOnChangeValues(true);
                             } else {
                               let temp = { ...colorCodeValidation };
                               temp["pageBgColorValidation"] = false;
                               setColorCodeValidation(temp);
-                              setPageBackgroundColor(e.target.value);
+                              setPageBackgroundColor(numericValue);
                               setOnChangeValues(true);
                             }
                             // setPageBackgroundColor(e.target.value);
                             let temp = { ...copyImageOfStoreSettingsPageTheme };
-                            temp["bg_color"] = e.target.value;
+                            temp["bg_color"] = numericValue;
                             setCopyImageOfStoreSettingsPageTheme(temp);
                           }}
                           addonAfter={
@@ -1917,25 +2023,32 @@ const StoreSettings = () => {
                       <Space.Compact className="">
                         <Input
                           value={foreGroundColor}
+                          maxLength={7}
                           className="w-[150px]"
                           onChange={(e) => {
+                            const inputValue = e.target.value;
+                            // Allow only numeric input
+                            const numericValue = inputValue
+                              .replace(/[^a-f0-9#]/gi, "")
+                              .substring(0, 7);
+                            setForeGroundColor(numericValue);
                             const patternName = /^#([A-Fa-f0-9]{6})$/;
-                            if (patternName.test(e.target.value) === false) {
+                            if (patternName.test(numericValue) === false) {
                               let temp = { ...colorCodeValidation };
                               temp["pageTextColorValidation"] = true;
                               setColorCodeValidation(temp);
-                              setForeGroundColor(e.target.value);
+                              setForeGroundColor(numericValue);
                               setOnChangeValues(true);
                             } else {
                               let temp = { ...colorCodeValidation };
                               temp["pageTextColorValidation"] = false;
                               setColorCodeValidation(temp);
-                              setForeGroundColor(e.target.value);
+                              setForeGroundColor(numericValue);
                               setOnChangeValues(true);
                             }
                             // setForeGroundColor(e.target.value);
                             let temp = { ...copyImageOfStoreSettingsPageTheme };
-                            temp["fg_color"] = e.target.value;
+                            temp["fg_color"] = numericValue;
                             setCopyImageOfStoreSettingsPageTheme(temp);
                           }}
                           addonAfter={
@@ -2001,23 +2114,29 @@ const StoreSettings = () => {
                           maxLength={7}
                           className="w-[150px]"
                           onChange={(e) => {
+                            const inputValue = e.target.value;
+                            // Allow only numeric input
+                            const numericValue = inputValue
+                              .replace(/[^a-f0-9#]/gi, "")
+                              .substring(0, 7);
+                            setButtonPrimaryBackgroundColor(numericValue);
                             const patternName = /^#([A-Fa-f0-9]{6})$/;
-                            if (patternName.test(e.target.value) === false) {
+                            if (patternName.test(numericValue) === false) {
                               let temp = { ...colorCodeValidation };
                               temp["primaryBgValidation"] = true;
                               setColorCodeValidation(temp);
-                              setButtonPrimaryBackgroundColor(e.target.value);
+                              setButtonPrimaryBackgroundColor(numericValue);
                               setOnChangeValues(true);
                             } else {
                               let temp = { ...colorCodeValidation };
                               temp["primaryBgValidation"] = false;
                               setColorCodeValidation(temp);
-                              setButtonPrimaryBackgroundColor(e.target.value);
+                              setButtonPrimaryBackgroundColor(numericValue);
                               setOnChangeValues(true);
                             }
                             // setButtonPrimaryBackgroundColor(e.target.value);
                             let temp = { ...copyImageOfStoreSettingsPageTheme };
-                            temp["btn_primary_bg_color"] = e.target.value;
+                            temp["btn_primary_bg_color"] = numericValue;
                             setCopyImageOfStoreSettingsPageTheme(temp);
                           }}
                           addonAfter={
@@ -2081,25 +2200,32 @@ const StoreSettings = () => {
                         <Input
                           value={buttonSecondaryBackgroundColor}
                           className="w-[150px]"
+                          maxLength={7}
                           onChange={(e) => {
+                            const inputValue = e.target.value;
+                            // Allow only numeric input
+                            const numericValue = inputValue
+                              .replace(/[^a-f0-9#]/gi, "")
+                              .substring(0, 7);
+                            setButtonSecondaryBackgroundColor(numericValue);
                             const patternName = /^#([A-Fa-f0-9]{6})$/;
-                            if (patternName.test(e.target.value) === false) {
+                            if (patternName.test(numericValue) === false) {
                               let temp = { ...colorCodeValidation };
                               temp["secondaryBgValidation"] = true;
                               setColorCodeValidation(temp);
-                              setButtonSecondaryBackgroundColor(e.target.value);
+                              setButtonSecondaryBackgroundColor(numericValue);
                               setOnChangeValues(true);
                             } else {
                               let temp = { ...colorCodeValidation };
                               temp["secondaryBgValidation"] = false;
                               setColorCodeValidation(temp);
-                              setButtonSecondaryBackgroundColor(e.target.value);
+                              setButtonSecondaryBackgroundColor(numericValue);
                               setOnChangeValues(true);
                             }
 
                             // setButtonSecondaryBackgroundColor(e.target.value);
                             let temp = { ...copyImageOfStoreSettingsPageTheme };
-                            temp["btn_secondary_bg_color"] = e.target.value;
+                            temp["btn_secondary_bg_color"] = numericValue;
                             setCopyImageOfStoreSettingsPageTheme(temp);
                           }}
                           addonAfter={
@@ -2163,24 +2289,31 @@ const StoreSettings = () => {
                         <Input
                           value={buttonTeritaryBackgroundColor}
                           className="w-[150px]"
+                          maxLength={7}
                           onChange={(e) => {
+                            const inputValue = e.target.value;
+                            // Allow only numeric input
+                            const numericValue = inputValue
+                              .replace(/[^a-f0-9#]/gi, "")
+                              .substring(0, 7);
+                            setButtonTeritaryBackgroundColor(numericValue);
                             const patternName = /^#([A-Fa-f0-9]{6})$/;
-                            if (patternName.test(e.target.value) === false) {
+                            if (patternName.test(numericValue) === false) {
                               let temp = { ...colorCodeValidation };
                               temp["tertiaryBgValidation"] = true;
                               setColorCodeValidation(temp);
-                              setButtonTeritaryBackgroundColor(e.target.value);
+                              setButtonTeritaryBackgroundColor(numericValue);
                               setOnChangeValues(true);
                             } else {
                               let temp = { ...colorCodeValidation };
                               temp["tertiaryBgValidation"] = false;
                               setColorCodeValidation(temp);
-                              setButtonTeritaryBackgroundColor(e.target.value);
+                              setButtonTeritaryBackgroundColor(numericValue);
                               setOnChangeValues(true);
                             }
                             // setButtonTeritaryBackgroundColor(e.target.value);
                             let temp = { ...copyImageOfStoreSettingsPageTheme };
-                            temp["btn_tertiary_bg_color"] = e.target.value;
+                            temp["btn_tertiary_bg_color"] = numericValue;
                             setCopyImageOfStoreSettingsPageTheme(temp);
                           }}
                           addonAfter={
@@ -2248,23 +2381,29 @@ const StoreSettings = () => {
                           maxLength={7}
                           className="w-[150px]"
                           onChange={(e) => {
+                            const inputValue = e.target.value;
+                            // Allow only numeric input
+                            const numericValue = inputValue
+                              .replace(/[^a-f0-9#]/gi, "")
+                              .substring(0, 7);
+                            setButtonPrimaryForegroundColor(numericValue);
                             const patternName = /^#([A-Fa-f0-9]{6})$/;
-                            if (patternName.test(e.target.value) === false) {
+                            if (patternName.test(numericValue) === false) {
                               let temp = { ...colorCodeValidation };
                               temp["primaryTextValidation"] = true;
                               setColorCodeValidation(temp);
-                              setButtonPrimaryForegroundColor(e.target.value);
+                              setButtonPrimaryForegroundColor(numericValue);
                               setOnChangeValues(true);
                             } else {
                               let temp = { ...colorCodeValidation };
                               temp["primaryTextValidation"] = false;
                               setColorCodeValidation(temp);
-                              setButtonPrimaryForegroundColor(e.target.value);
+                              setButtonPrimaryForegroundColor(numericValue);
                               setOnChangeValues(true);
                             }
                             // setButtonPrimaryForegroundColor(e.target.value);
                             let temp = { ...copyImageOfStoreSettingsPageTheme };
-                            temp["btn_primary_fg_color"] = e.target.value;
+                            temp["btn_primary_fg_color"] = numericValue;
                             setCopyImageOfStoreSettingsPageTheme(temp);
                           }}
                           addonAfter={
@@ -2330,23 +2469,29 @@ const StoreSettings = () => {
                           maxLength={7}
                           className="w-[150px]"
                           onChange={(e) => {
+                            const inputValue = e.target.value;
+                            // Allow only numeric input
+                            const numericValue = inputValue
+                              .replace(/[^a-f0-9#]/gi, "")
+                              .substring(0, 7);
+                            setButtonSecondaryForegroundColor(numericValue);
                             const patternName = /^#([A-Fa-f0-9]{6})$/;
-                            if (patternName.test(e.target.value) === false) {
+                            if (patternName.test(numericValue) === false) {
                               let temp = { ...colorCodeValidation };
                               temp["secondaryTextValidation"] = true;
                               setColorCodeValidation(temp);
-                              setButtonSecondaryForegroundColor(e.target.value);
+                              setButtonSecondaryForegroundColor(numericValue);
                               setOnChangeValues(true);
                             } else {
                               let temp = { ...colorCodeValidation };
                               temp["secondaryTextValidation"] = false;
                               setColorCodeValidation(temp);
-                              setButtonSecondaryForegroundColor(e.target.value);
+                              setButtonSecondaryForegroundColor(numericValue);
                               setOnChangeValues(true);
                             }
                             // setButtonSecondaryForegroundColor(e.target.value);
                             let temp = { ...copyImageOfStoreSettingsPageTheme };
-                            temp["btn_secondary_fg_color"] = e.target.value;
+                            temp["btn_secondary_fg_color"] = numericValue;
                             setCopyImageOfStoreSettingsPageTheme(temp);
                           }}
                           addonAfter={
@@ -2384,7 +2529,6 @@ const StoreSettings = () => {
                       <Input
                         type="color"
                         className="w-9 p-0"
-                        maxLength={7}
                         value={buttonTeritaryForegroundColor}
                         onChange={(e) => {
                           const patternName = /^#([A-Fa-f0-9]{6})$/;
@@ -2410,27 +2554,34 @@ const StoreSettings = () => {
                       <Space.Compact className="">
                         <Input
                           value={buttonTeritaryForegroundColor}
+                          maxLength={7}
+                          className="w-[150px]"
                           onChange={(e) => {
+                            const inputValue = e.target.value;
+                            // Allow only numeric input
+                            const numericValue = inputValue
+                              .replace(/[^a-f0-9#]/gi, "")
+                              .substring(0, 7);
+                            setButtonTeritaryForegroundColor(numericValue);
                             const patternName = /^#([A-Fa-f0-9]{6})$/;
-                            if (patternName.test(e.target.value) === false) {
+                            if (patternName.test(numericValue) === false) {
                               let temp = { ...colorCodeValidation };
                               temp["tertiaryTextValidation"] = true;
                               setColorCodeValidation(temp);
-                              setButtonTeritaryForegroundColor(e.target.value);
+                              setButtonTeritaryForegroundColor(numericValue);
                               setOnChangeValues(true);
                             } else {
                               let temp = { ...colorCodeValidation };
                               temp["tertiaryTextValidation"] = false;
                               setColorCodeValidation(temp);
-                              setButtonTeritaryForegroundColor(e.target.value);
+                              setButtonTeritaryForegroundColor(numericValue);
                               setOnChangeValues(true);
                             }
                             // setButtonTeritaryForegroundColor(e.target.value);
                             let temp = { ...copyImageOfStoreSettingsPageTheme };
-                            temp["btn_tertiary_fg_color"] = e.target.value;
+                            temp["btn_tertiary_fg_color"] = numericValue;
                             setCopyImageOfStoreSettingsPageTheme(temp);
                           }}
-                          className="w-[150px]"
                           addonAfter={
                             <Tooltip
                               title={t("messages:reset_to_the_original_value")}
@@ -2501,23 +2652,29 @@ const StoreSettings = () => {
                           maxLength={7}
                           className="w-[150px]"
                           onChange={(e) => {
+                            const inputValue = e.target.value;
+                            // Allow only numeric input
+                            const numericValue = inputValue
+                              .replace(/[^a-f0-9#]/gi, "")
+                              .substring(0, 7);
+                            setHeaderBackgroundColor(numericValue);
                             const patternName = /^#([A-Fa-f0-9]{6})$/;
-                            if (patternName.test(e.target.value) === false) {
+                            if (patternName.test(numericValue) === false) {
                               let temp = { ...colorCodeValidation };
                               temp["headerBgValidation"] = true;
                               setColorCodeValidation(temp);
-                              setHeaderBackgroundColor(e.target.value);
+                              setHeaderBackgroundColor(numericValue);
                               setOnChangeValues(true);
                             } else {
                               let temp = { ...colorCodeValidation };
                               temp["headerBgValidation"] = false;
                               setColorCodeValidation(temp);
-                              setHeaderBackgroundColor(e.target.value);
+                              setHeaderBackgroundColor(numericValue);
                               setOnChangeValues(true);
                             }
                             // setHeaderBackgroundColor(e.target.value);
                             let temp = { ...copyImageOfStoreHeaderSetting };
-                            temp["bg_color"] = e.target.value;
+                            temp["bg_color"] = numericValue;
                             setCopyImageOfStoreHeaderSetting(temp);
                           }}
                           addonAfter={
@@ -2554,8 +2711,6 @@ const StoreSettings = () => {
                       <Input
                         type="color"
                         className="w-9 p-0"
-                        maxLength={255}
-                        minLength={1}
                         value={headerForegroundColor}
                         onChange={(e) => {
                           const patternName = /^#([A-Fa-f0-9]{6})$/;
@@ -2581,24 +2736,31 @@ const StoreSettings = () => {
                         <Input
                           value={headerForegroundColor}
                           className="w-[150px]"
+                          maxLength={7}
                           onChange={(e) => {
+                            const inputValue = e.target.value;
+                            // Allow only numeric input
+                            const numericValue = inputValue
+                              .replace(/[^a-f0-9#]/gi, "")
+                              .substring(0, 7);
+                            setHeaderForegroundColor(numericValue);
                             const patternName = /^#([A-Fa-f0-9]{6})$/;
-                            if (patternName.test(e.target.value) === false) {
+                            if (patternName.test(numericValue) === false) {
                               let temp = { ...colorCodeValidation };
                               temp["headerTextValidation"] = true;
                               setColorCodeValidation(temp);
-                              setHeaderForegroundColor(e.target.value);
+                              setHeaderForegroundColor(numericValue);
                               setOnChangeValues(true);
                             } else {
                               let temp = { ...colorCodeValidation };
                               temp["headerTextValidation"] = false;
                               setColorCodeValidation(temp);
-                              setHeaderForegroundColor(e.target.value);
+                              setHeaderForegroundColor(numericValue);
                               setOnChangeValues(true);
                             }
                             // setHeaderForegroundColor(e.target.value);
                             let temp = { ...copyImageOfStoreHeaderSetting };
-                            temp["fg_color"] = e.target.value;
+                            temp["fg_color"] = numericValue;
                             setCopyImageOfStoreHeaderSetting(temp);
                           }}
                           addonAfter={
@@ -2667,24 +2829,31 @@ const StoreSettings = () => {
                         <Input
                           value={footerBackgroundColor}
                           className="w-[150px]"
+                          maxLength={7}
                           onChange={(e) => {
+                            const inputValue = e.target.value;
+                            // Allow only numeric input
+                            const numericValue = inputValue
+                              .replace(/[^a-f0-9#]/gi, "")
+                              .substring(0, 7);
+                            setFooterBackgroundColor(numericValue);
                             const patternName = /^#([A-Fa-f0-9]{6})$/;
-                            if (patternName.test(e.target.value) === false) {
+                            if (patternName.test(numericValue) === false) {
                               let temp = { ...colorCodeValidation };
                               temp["footerBgValidation"] = true;
                               setColorCodeValidation(temp);
-                              setFooterBackgroundColor(e.target.value);
+                              setFooterBackgroundColor(numericValue);
                               setOnChangeValues(true);
                             } else {
                               let temp = { ...colorCodeValidation };
                               temp["footerBgValidation"] = false;
                               setColorCodeValidation(temp);
-                              setFooterBackgroundColor(e.target.value);
+                              setFooterBackgroundColor(numericValue);
                               setOnChangeValues(true);
                             }
                             // setFooterBackgroundColor(e.target.value);
                             let temp = { ...copyImageOfStoreFooterSetting };
-                            temp["bg_color"] = e.target.value;
+                            temp["bg_color"] = numericValue;
                             setCopyImageOfStoreFooterSetting(temp);
                           }}
                           addonAfter={
@@ -2745,24 +2914,31 @@ const StoreSettings = () => {
                         <Input
                           value={footerForegroundColor}
                           className="w-[150px]"
+                          maxLength={7}
                           onChange={(e) => {
+                            const inputValue = e.target.value;
+                            // Allow only numeric input
+                            const numericValue = inputValue
+                              .replace(/[^a-f0-9#]/gi, "")
+                              .substring(0, 7);
+                            setFooterForegroundColor(numericValue);
                             const patternName = /^#([A-Fa-f0-9]{6})$/;
-                            if (patternName.test(e.target.value) === false) {
+                            if (patternName.test(numericValue) === false) {
                               let temp = { ...colorCodeValidation };
                               temp["footerTextValidation"] = true;
                               setColorCodeValidation(temp);
-                              setFooterForegroundColor(e.target.value);
+                              setFooterForegroundColor(numericValue);
                               setOnChangeValues(true);
                             } else {
                               let temp = { ...colorCodeValidation };
                               temp["footerTextValidation"] = false;
                               setColorCodeValidation(temp);
-                              setFooterForegroundColor(e.target.value);
+                              setFooterForegroundColor(numericValue);
                               setOnChangeValues(true);
                             }
                             // setFooterForegroundColor(e.target.value);
                             let temp = { ...copyImageOfStoreFooterSetting };
-                            temp["fg_color"] = e.target.value;
+                            temp["fg_color"] = numericValue;
                             setCopyImageOfStoreFooterSetting(temp);
                           }}
                           addonAfter={

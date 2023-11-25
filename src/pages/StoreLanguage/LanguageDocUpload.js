@@ -244,7 +244,7 @@ function LanguageDocUpload({ langCode }) {
 
   //! get call of get document template API
   const findAllSupportDocumentTemplateDownload = (isFormat, languageCode) => {
-    setIsSpinning(true);
+    // setIsSpinning(true);
     MarketplaceServices.findMedia(LanguageDownloadAPI, {
       "is-format": isFormat,
       language_code: languageCode,
