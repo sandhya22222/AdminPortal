@@ -1416,7 +1416,7 @@ const StoreSettings = () => {
                 />
               </Col>
               <Col span={6} className="gutter-row">
-                <label className="text-[13px] mb-2 ml-1 input-label-color">
+              <label className="text-[13px] mb-2 ml-1 input-label-color whitespace-nowrap">
                   {t("labels:order_limit_per_day")}
                 </label>
                 <Input

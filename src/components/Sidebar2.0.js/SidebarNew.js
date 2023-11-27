@@ -21,6 +21,7 @@ import { useTranslation } from "react-i18next";
 //! Import user defined CSS
 import "./sidebarnew.css";
 import util from "../../util/common";
+import { useAuth } from "react-oidc-context";
 
 //! Destructure the components
 const { Sider, Content } = Layout;
@@ -39,6 +40,7 @@ const SidebarNew = () => {
 
     // get permissions from storage
     const permissionValue = util.getPermissionData() || [];
+    const auth = useAuth();
     // console.log("Permission value...", permissionValue)
 
   const { pathname } = useLocation();
@@ -58,6 +60,7 @@ const SidebarNew = () => {
       inactive_icon: <img src={ViewDashboard} />,
       label: ` ${t("labels:dashboard")}`,
       navigate_to: "/dashboard",
+      show_in_menu: true,
       // children: [],
     },
     {
@@ -66,6 +69,7 @@ const SidebarNew = () => {
       inactive_icon: <img src={Store} />,
       label: ` ${t("labels:stores")}`,
       navigate_to: "/dashboard/store",
+      show_in_menu: true,
     },
     {
       key: "3",
@@ -73,6 +77,7 @@ const SidebarNew = () => {
       inactive_icon: <img src={TranslateIcon} />,
       label: ` ${t("labels:languages")}`,
       navigate_to: "/dashboard/language",
+      show_in_menu: true,
     },
     // {
     //   key: "4",
@@ -86,6 +91,7 @@ const SidebarNew = () => {
       inactive_icon: <img src={PaymentTypeIcon} />,
       label: ` ${t("labels:payment_type")}`,
       navigate_to: "/dashboard/paymenttype",
+      show_in_menu: true,
     },
     {
       key: "6",
@@ -93,6 +99,7 @@ const SidebarNew = () => {
       inactive_icon: <img src={ProfileIcon} />,
       label: ` ${t("labels:profile")}`,
       navigate_to: "/dashboard/userprofile",
+      show_in_menu: true,
     },
     {
       key: "12",
@@ -109,6 +116,13 @@ const SidebarNew = () => {
       inactive_icon: <img src={Store} />,
       label: ` ${t("labels:admin_menu")}`,
       navigate_to: "/dashboard/adminsettings",
+      show_in_menu: !auth.isAuthenticated ||
+      (auth.isAuthenticated &&
+        permissionValue &&
+        permissionValue.length > 0 &&
+        permissionValue.includes("UI-product-admin"))
+        ? true
+        : false,
     },
   ];
 
@@ -205,22 +219,23 @@ const SidebarNew = () => {
                 }}
               >
                 {myData.map((item) => (
-                  <Menu.Item
-                    icon={
-                      selectedItem === item.key ? item.icon : item.inactive_icon
-                    }
-                    key={item.key}
-                    // className="!bg-[var(--mp-brand-color)] !hover:bg-[var(--mp-brand-color)]"
-                    onClick={() => {
-                      navigate(item.navigate_to);
-                    }}
-                  >
-                    {selectedItem === item.key ? (
-                      <span className="font-semibold ">{item.label}</span>
-                    ) : (
-                      <span className="text-[#ffffffde]"> {item.label} </span>
-                    )}
-                  </Menu.Item>
+                  item.show_in_menu ?
+                    <Menu.Item
+                      icon={
+                        selectedItem === item.key ? item.icon : item.inactive_icon
+                      }
+                      key={item.key}
+                      // className="!bg-[var(--mp-brand-color)] !hover:bg-[var(--mp-brand-color)]"
+                      onClick={() => {
+                        navigate(item.navigate_to);
+                      }}
+                    >
+                      {selectedItem === item.key ? (
+                        <span className="font-semibold ">{item.label}</span>
+                      ) : (
+                        <span className="text-[#ffffffde]"> {item.label} </span>
+                      )}
+                    </Menu.Item> : null
                 ))}
               </Menu>
             </Spin>

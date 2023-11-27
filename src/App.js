@@ -33,14 +33,39 @@ import LogOut from "./components/LogOut";
 import util from "./util/common";
 import { useAuth } from "react-oidc-context";
 import StoreLimitComponent from "./pages/adminPlatform/StoreLimitComponent";
+import MarketplaceServices from "./services/axios/MarketplaceServices";
+import { useEffect } from "react";
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 
 // const authFromEnv = process.env.REACT_APP_AUTH;
+const getPermissionsUrl = process.env.REACT_APP_USER_PROFILE_API;
+const umsBaseUrl = process.env.REACT_APP_USM_BASE_URL;
 
 const { Content } = Layout;
 const App = () => {
   const auth = useAuth();
   useFavicon();
+
+  const getPermissions = () => {
+    let baseurl = `${umsBaseUrl}${getPermissionsUrl}`;
+    MarketplaceServices.findAll(baseurl, null, false)
+      .then((res) => {
+        console.log("get permission api res", res);
+        var realmNameClient = res.data.response_body["realm-name"] + "-client";
+        util.setPermissionData(
+          res.data.response_body.resource_access[`${realmNameClient}`].roles
+        );
+      })
+      .catch((err) => {
+        console.log("get permission api error", err);
+      });
+  };
+
+  useEffect(() => {
+    if (auth && auth.user && auth.user?.access_token) {
+      getPermissions();
+    }
+  }, [auth]);
 
   const antIcon = (
     <LoadingOutlined
@@ -71,6 +96,11 @@ const App = () => {
   if (auth.error) {
     return void auth.signoutRedirect();
   }
+
+  
+  
+
+
   return (
     <Suspense fallback={<LoadingMarkup />}>
       <Router>
