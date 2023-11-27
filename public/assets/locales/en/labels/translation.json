@@ -157,5 +157,10 @@
   "admin_menu": "Admin",
   "store_limit": "Store Limit",
   "dm_language_limit": "Language Limit",
-  "admin_user_limit":"Admin User Limit"
+  "admin_user_limit":"Admin User Limit",
+  "items": "items",
+  "next_page": "Next Page",
+  "prev_page": "Previous Page",
+  "page": "/ page",
+  "of":"of"
 }
