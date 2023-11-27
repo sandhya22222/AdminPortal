@@ -24,7 +24,7 @@
     "store_logo_info":"This logo will be used as Store's logo",
     "banner_logo_info":"These images will be used in the carousel of the store front",
     "please_enter_valid_hexadecimal_code":"Please enter valid Hexadecimal Color code",
-    "ex_ffffff_for_white_000000_for_black":"ex. #ffffff for white, #0000000 for black",
+    "ex_ffffff_for_white_000000_for_black":"ex. #ffffff for white, #000000 for black",
     "reset_to_the_original_value":"Reset to the original value",
     "store_activation_confirmation":"Store Activation Confirmation",
     "store_active_confirmation_message":"Great news! You are about to activate your store. Are you sure you would like to proceed?",
