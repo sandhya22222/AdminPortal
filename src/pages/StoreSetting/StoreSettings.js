@@ -53,8 +53,6 @@ const StoreSettings = () => {
 
   const [storeData, setStoreData] = useState();
   const [storeName, setStoreName] = useState();
-  const [inValidStoreData, setInValidStoreData] = useState(false);
-  const [storeId, setstoreId] = useState("Choose Store");
   const [currencySymbol, setCurrencySymbol] = useState("");
   const [inValidCurrencySymbol, setInValidCurrencySymbol] = useState(false);
   const [currencyIsoCode, setCurrencyIsoCode] = useState("");
