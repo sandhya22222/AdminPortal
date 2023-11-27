@@ -22,6 +22,7 @@ import DmPagination from "../../components/DmPagination/DmPagination";
 import CreateGroup from "./CreateGroup";
 import StoreModal from "../../components/storeModal/StoreModal";
 import MarketplaceToaster from "../../util/marketplaceToaster";
+import { EditIcon } from "../../constants/media";
 // import { DeleteIcon } from "../../constants/media";
 
 const { Content } = Layout;
@@ -142,7 +143,7 @@ const UserAccessControl = () => {
       key: "",
       render: (text, record) => {
         return (
-          <Content>
+          <Content className="flex items-center">
             <Button className="app-btn-icon" type="text">
               <Tooltip
                 placement="bottom"
@@ -166,6 +167,26 @@ const UserAccessControl = () => {
                 /> */}
               </Tooltip>
             </Button>
+            <Tooltip title={t("labels:edit_user")} className="ml-1">
+              <Button
+                type="text"
+                className="app-btn-icon"
+                onClick={() => {
+                  navigate(
+                    `/dashboard/user-access-control/edit-user?id=${record.id}`
+                  );
+                }}
+              >
+                <Content className=" flex justify-center align-items-center">
+                  <img
+                    src={EditIcon}
+                    alt="Edit Icon"
+                    className=" !w-[12px] !text-center !text-sm cursor-pointer pt-[5px]"
+                  />
+                </Content>
+              </Button>
+            </Tooltip>
+          
           </Content>
         );
       },
