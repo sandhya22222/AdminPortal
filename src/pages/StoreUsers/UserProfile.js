@@ -65,7 +65,6 @@ const UserProfile = () => {
     findAllWithoutPageStoreUsers();
     window.scroll(0, 0);
   }, []);
-
   return (
     <Content>
       <HeaderForTitle
@@ -114,14 +113,18 @@ const UserProfile = () => {
                 </Row>
                 <Content className="flex flex-col items-center">
                   <Row className="mb-2">
-                    <label className="text-md font-medium">
+                    <label className="text-md font-medium flex">
                       {t("labels:role")}:{" "}
                       {(storeUsersData &&
-                        storeUsersData.roles[0]?.name === "") ||
+                        storeUsersData.groups[0]?.name === "") ||
                       (storeUsersData &&
-                        storeUsersData.roles[0]?.name === undefined)
+                        storeUsersData.groups[0]?.name === undefined)
                         ? "NA"
-                        : storeUsersData && storeUsersData.roles[0]?.name}
+                        : storeUsersData &&
+                          storeUsersData.groups.length > 0 &&
+                          storeUsersData.groups.map((ele) => (
+                            <span className="ml-1">{ele.name}</span>
+                          ))}
                     </label>
                   </Row>
                   <Row className="mb-2">
