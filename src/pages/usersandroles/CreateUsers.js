@@ -10,9 +10,10 @@ import {
   Tooltip,
   Select,
   Switch,
+  Skeleton,
 } from "antd";
 
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
@@ -31,6 +32,7 @@ const passwordMaxLength = process.env.REACT_APP_PASSWORD_MAX_LENGTH;
 const nameMinLength = process.env.REACT_APP_NAME_MIN_LENGTH;
 const nameMaxLength = process.env.REACT_APP_NAME_MAX_LENGTH;
 const emailMaxLength = process.env.REACT_APP_EMAIL_MAX_LENGTH;
+const usersAllAPI = process.env.REACT_APP_USERS_ALL_API;
 
 const { Title } = Typography;
 const { Content } = Layout;
@@ -58,6 +60,8 @@ const CreateUsers = () => {
   const [invalidPassword, setInValidPassword] = useState(false);
   const [invalidRole, setInvalidRole] = useState(false);
   const [roleSelectData, setRoleSelectData] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [isUserDetailFetching, setIsUserDetailFetching] = useState(false);
 
   //Get call of groups
   const findAllGroupLists = () => {
@@ -253,6 +257,64 @@ const CreateUsers = () => {
     }
   };
 
+  //!Put call of user to server
+  const handlePutUsers = () => {
+    setIsLoading(true);
+    let dataObject = {};
+    if (firstName !== "") {
+      dataObject["firstname"] = firstName;
+    }
+    if (lastName !== "") {
+      dataObject["lastname"] = lastName;
+    }
+    dataObject["email"] = emailId;
+    dataObject["groups_mapping"] = selectRole;
+    MarketplaceServices.update(userAPI, dataObject, {
+      user_name: userName
+    })
+    .then(function (response) {
+      console.log("server response of user put call", response);
+      MarketplaceToaster.showToast(response);
+      setIsLoading(false);
+      // navigate(-1);
+    })
+    .catch((error) => {
+      console.log("server error response of user put call");
+      MarketplaceToaster.showToast(error.response);
+      setIsLoading(false);
+    });
+  }
+
+  const userFormValidationEdit = ()=>{
+    const emailRegex =
+    /^[A-Za-z\_]+[0-9]{0,64}@([A-Za-z\-]{3,255}\.)+[A-Za-z]{2,4}$/;
+    let count = 1;
+    if(emailId === ""){
+      count--;
+      if (emailId === "") {
+        setInvalidEmailId(true);
+      }
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_enter_the_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
+    }else if (emailRegex.test(emailId) === false) {
+      count--;
+      setInvalidEmailId(true);
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_enter_the_valid_email_address")}`,
+          "error"
+        )
+      );
+    }
+    if (count === 1) {
+      handlePutUsers();
+    }
+  }
+
   //handle change of role select
   const handleChangeRole = (value) => {
     setSelectRole(value);
@@ -284,12 +346,42 @@ const CreateUsers = () => {
     setRoleSelectData(roleDropdownArray);
   }, [groupsServerData]);
 
+    //Get call of users
+  const findAllUsersLists = (userId) => {
+    setIsUserDetailFetching(true);
+    MarketplaceServices.findAll(usersAllAPI, null, false)
+      .then(function (response) {
+        setIsUserDetailFetching(false);
+        if (response.data && response.data.response_body) {
+          let selectedUserDetails = response.data.response_body.filter(({ id }) => id == userId)
+          console.log(
+            "userslist get call response-->",
+            response.data.response_body, "userId", userId, selectedUserDetails
+          )
+          if (selectedUserDetails.length > 0) {
+            setUserName(selectedUserDetails[0].username);
+            setFirstName(selectedUserDetails[0].firstName);
+            setLastName(selectedUserDetails[0].lastName);
+            setEmailId(selectedUserDetails[0].email)
+            setSelectRole(selectedUserDetails[0].groups[0].name);
+          }
+        }
+      })
+      .catch(function (error) {
+        setIsUserDetailFetching(false);
+        console.log("userslist get error call response-->", error);
+      });
+  };
+
   //UseEffect to set page action edit or save
   useEffect(() => {
     var pathnameString = pathname
       .substring(pathname.lastIndexOf("/") + 1, pathname.length)
       .split("-");
     setPageAction(pathnameString[0]);
+    if(pathnameString[0] !== "add"){
+      findAllUsersLists(searchParams.get("id"));
+    }
     findAllGroupLists();
     window.scrollTo(0, 0);
   }, []);
@@ -322,6 +414,16 @@ const CreateUsers = () => {
         showButtons={pageAction === "edit" ? true : false}
       />
       <Content className="!min-h-screen mt-[6.7rem] p-3">
+        {isUserDetailFetching ?
+          <Content className="bg-white">
+            <Skeleton
+              active
+              paragraph={{
+                rows: 10,
+              }}
+              className="p-3"
+            ></Skeleton>
+          </Content> :
         <Spin tip={t("labels:please_wait")} size="large" spinning={isLoading}>
           <Content className="bg-white p-3">
             <Row>
@@ -339,6 +441,7 @@ const CreateUsers = () => {
                           : " border-solid border-[#C6C6C6]"
                       }`}
                       value={userName}
+                      disabled={pageAction !== "add" ? true : false}
                       onChange={(e) => {
                         setUserName(e.target.value);
                         setInvalidUserName(false);
@@ -428,6 +531,7 @@ const CreateUsers = () => {
                           : " border-solid border-[#C6C6C6]"
                       }`}
                       value={password}
+                      disabled={pageAction !== "add" ? true : false}
                       onChange={(e) => {
                         setPassword(e.target.value);
                         setInValidPassword(false);
@@ -446,6 +550,7 @@ const CreateUsers = () => {
                     </Typography>
                     <Content>
                       <Switch
+                        disabled={pageAction !== "add" ? true : false}
                         className={
                           userStatus === true ? "!bg-green-500" : "!bg-gray-400"
                         }
@@ -490,7 +595,7 @@ const CreateUsers = () => {
                     {t("labels:discard")}
                   </Button>
                   <Button
-                    onClick={userFormValidation}
+                    onClick={pageAction != "add" ? userFormValidationEdit : userFormValidation}
                     className={`app-btn-primary ml-2
                        `}
                   >
@@ -502,7 +607,7 @@ const CreateUsers = () => {
               </Col>
             </Row>
           </Content>
-        </Spin>
+        </Spin> }
       </Content>
     </Content>
   );
