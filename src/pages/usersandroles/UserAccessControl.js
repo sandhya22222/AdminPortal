@@ -32,6 +32,7 @@ const groupsAPI = process.env.REACT_APP_GROUPS_API;
 const usersAllAPI = process.env.REACT_APP_USERS_ALL_API;
 const userAPI = process.env.REACT_APP_USERS_API;
 const updateUserStatusAPI = process.env.REACT_APP_USER_STATUS_API;
+const currentUserDetailsAPI = process.env.REACT_APP_USER_PROFILE_API;
 
 const UserAccessControl = () => {
   const { t } = useTranslation();
@@ -54,6 +55,7 @@ const UserAccessControl = () => {
   const [showUserEnableDisableModal, setShowUserEnableDisableModal] =
     useState(false);
   const [selectedUserData, setSelectedUserData] = useState({});
+  const [currentUserDetailsAPIData, setCurrentUserDetailsAPIData] = useState();
 
   //!json data displaying for tabs
   const mainTabData = [
@@ -77,9 +79,27 @@ const UserAccessControl = () => {
       limit: itemsPerPageFromEnv,
     });
   };
+  const getCurrentUserDetails = () => {
+    MarketplaceServices.findAll(currentUserDetailsAPI, null, false)
+      .then((res) => {
+        console.log("get access token res", res);
+        setCurrentUserDetailsAPIData(res.data.response_body);
+      })
+      .catch((err) => {
+        console.log("get access token err", err);
+      });
+  };
 
   useEffect(() => {
     window.scroll(0, 0);
+    getCurrentUserDetails();
+    setSearchParams({
+      tab: searchParams.get("tab") ? searchParams.get("tab") : 0,
+      page: searchParams.get("page") ? searchParams.get("page") : 1,
+      limit: searchParams.get("limit")
+        ? searchParams.get("limit")
+        : itemsPerPageFromEnv,
+    });
   }, []);
 
   //!user table columns
@@ -131,7 +151,9 @@ const UserAccessControl = () => {
       render: (text, record) => {
         return (
           <Content>
-            {record.groups[0]?.name ? record.groups[0]?.name : "NA"}
+            {record.groups[0]?.name
+              ? String(record.groups[0]?.name).replaceAll("-", " ")
+              : "NA"}
           </Content>
         );
       },
@@ -143,29 +165,33 @@ const UserAccessControl = () => {
       render: (text, record) => {
         return (
           <Content>
-            <Button className="app-btn-icon" type="text">
-              <Tooltip
-                placement="bottom"
-                title={`${t("labels:delete")}` + ` ` + `${record.username}`}
-                overlayStyle={{ zIndex: 1 }}
-              >
-                {/* <DeleteIcon
+            {currentUserDetailsAPIData?.preferred_username ===
+              record?.username &&
+            currentUserDetailsAPIData?.email === record?.email ? null : (
+              <Button className="app-btn-icon" type="text">
+                <Tooltip
+                  placement="bottom"
+                  title={`${t("labels:delete")}` + ` ` + `${record.username}`}
+                  overlayStyle={{ zIndex: 1 }}
+                >
+                  {/* <DeleteIcon
                   className="app-delete-icon mt-[6px] cursor-pointer"
                   onClick={() => openUserDeleteModal(record.username)}
                 /> */}
-                <DeleteOutlined
-                  onClick={() => openUserDeleteModal(record.username)}
-                  // role={"button"}
-                  // className="app-delete-icon mt-[6px] cursor-pointer"
-                  className="text-base ml-[7px] anticon-delete-custom-border"
-                />
-                {/* <img
+                  <DeleteOutlined
+                    onClick={() => openUserDeleteModal(record.username)}
+                    // role={"button"}
+                    // className="app-delete-icon mt-[6px] cursor-pointer"
+                    className="text-base ml-[7px] anticon-delete-custom-border"
+                  />
+                  {/* <img
                   src={DeleteIcon}
                   className="!app-delete-icon mt-[6px] cursor-pointer"
                   alt="icon"
                 /> */}
-              </Tooltip>
-            </Button>
+                </Tooltip>
+              </Button>
+            )}
           </Content>
         );
       },
@@ -190,7 +216,7 @@ const UserAccessControl = () => {
       ellipsis: true,
 
       render: (text, record) => {
-        return <Content>{record.name}</Content>;
+        return <Content>{String(record.name).replaceAll("-", " ")}</Content>;
       },
     },
     // {
@@ -369,10 +395,11 @@ const UserAccessControl = () => {
           response.data.response_body
         );
         setServerDataCount(
-          response.data.response_body && response.data.response_body.length
+          response.data.response_body &&
+            response.data.response_body.users.length
         );
 
-        setUsersServerData(response.data.response_body);
+        setUsersServerData(response.data.response_body.users);
         setIsLoading(false);
         setIsNetworkError(false);
       })

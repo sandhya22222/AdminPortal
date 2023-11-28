@@ -276,7 +276,7 @@ const CreateUsers = () => {
       groupsServerData.length > 0 &&
       groupsServerData.map((element) => {
         roleObject = {};
-        roleObject.label = element.name;
+        roleObject.label = String(element.name).replaceAll("-", " ");
         roleObject.value = element.name;
         roleDropdownArray.push(roleObject);
       });

@@ -26,6 +26,7 @@ import util from "../../util/common";
 const { Sider, Content } = Layout;
 
 const antIcon = <LoadingOutlined className="text-[10px] hidden" spin />;
+const pageLimitFromENV = process.env.REACT_APP_ITEM_PER_PAGE;
 
 //! Global Variables
 
@@ -37,9 +38,9 @@ const SidebarNew = () => {
   const [loadingEffect, setLoadingEffect] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
 
-    // get permissions from storage
-    const permissionValue = util.getPermissionData() || [];
-    // console.log("Permission value...", permissionValue)
+  // get permissions from storage
+  const permissionValue = util.getPermissionData() || [];
+  // console.log("Permission value...", permissionValue)
 
   const { pathname } = useLocation();
 
@@ -99,7 +100,7 @@ const SidebarNew = () => {
       icon: <img src={ProfileIcon} alt="userAccessControl" />,
       inactive_icon: <img src={ProfileIcon} />,
       label: `${t("labels:user_access_control")}`,
-      navigate_to: `/dashboard/user-access-control/list-user-roles`,
+      navigate_to: `/dashboard/user-access-control/list-user-roles?tab=0&page=1&limit=${pageLimitFromENV}`,
       show_in_menu: true,
       // children: [],
     },
