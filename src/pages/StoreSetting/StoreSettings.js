@@ -53,8 +53,6 @@ const StoreSettings = () => {
 
   const [storeData, setStoreData] = useState();
   const [storeName, setStoreName] = useState();
-  const [inValidStoreData, setInValidStoreData] = useState(false);
-  const [storeId, setstoreId] = useState("Choose Store");
   const [currencySymbol, setCurrencySymbol] = useState("");
   const [inValidCurrencySymbol, setInValidCurrencySymbol] = useState(false);
   const [currencyIsoCode, setCurrencyIsoCode] = useState("");
@@ -156,6 +154,16 @@ const StoreSettings = () => {
   );
   const [isStoreDataLimitChanged, setIsStoreDataLimitChanged] = useState(false);
   const [isStoreDataLimitSaving, setIsStoreDataLimitSaving] = useState(false);
+  const [invalidVendorLimit, setInvalidVendorLimit] =  useState(false);
+  const [invalidCustomerLimit, setInvalidCustomerLimit] =  useState(false);
+  const [invalidProductLimit, setInvalidProductLimit] =  useState(false);
+  const [invalidOrderLimit, setInvalidOrderLimit] =  useState(false);
+  const [invalidLanguageLimit, setInvalidLanguageLimit] =  useState(false);
+  const [invalidProductTemplateLimit, setInvalidProductTemplateLimit] =  useState(false);
+  const [invalidStoreUserLimit, setInvalidStoreUserLimit] =  useState(false);
+  const [invalidVendorUserLimit, setInvalidVendorUserLimit] =  useState(false);
+  const [invalidMaxProductLimit, setInvalidMaxProductLimit] =  useState(false);
+  const [invalidMaxTemplateLimit, setInvalidMaxTemplateLimit] =  useState(false);
 
   //! get call of  getStoreSettingApi
   const findAllWithoutPageStoreSettingApi = (storeId) => {
@@ -332,6 +340,117 @@ const StoreSettings = () => {
         }
       });
   };
+
+  const storeLimitValidation = () => {
+    const maxLimit = 2147483647
+    let count = 10;
+    let copyofStoreDataLimitValue = {...storeDataLimitValues}
+     if (copyofStoreDataLimitValue.vendor_limit != "" && parseInt(copyofStoreDataLimitValue.vendor_limit) > maxLimit) {
+      count--;
+      setInvalidVendorLimit(true);
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:vendor_limit_error_message")}`,
+          // `Vendor limit should be less then 2147483647`,
+          "error"
+        )
+      );
+    }else if(copyofStoreDataLimitValue.customer_limit != "" && parseInt(copyofStoreDataLimitValue.customer_limit) > maxLimit){
+      count--;
+      setInvalidCustomerLimit(true);
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:customer_limit_error_message")}`,
+          // `Customer limit should be less then 2147483647`,
+          "error"
+        )
+      );
+    }else if(copyofStoreDataLimitValue.product_limit != "" && parseInt(copyofStoreDataLimitValue.product_limit) > maxLimit){
+      count--;
+      setInvalidProductLimit(true);
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:product_limit_error_message")}`,
+          // `Product limit should be less then 2147483647`,
+          "error"
+        )
+      );
+    }else if(copyofStoreDataLimitValue.order_limit_per_day != "" && parseInt(copyofStoreDataLimitValue.order_limit_per_day) > maxLimit){
+      count--;
+      setInvalidOrderLimit(true);
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:order_limit_error_message")}`,
+          // `Order limit should be less then 2147483647`,
+          "error"
+        )
+      );
+    }else if(copyofStoreDataLimitValue.langauge_limit != "" && parseInt(copyofStoreDataLimitValue.langauge_limit) > maxLimit){
+      count--;
+      setInvalidLanguageLimit(true);
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:language_limit_error_message")}`,
+          // `Language limit should be less then 2147483647`,
+          "error"
+        )
+      );
+    }else if(copyofStoreDataLimitValue.product_template_limit != "" && parseInt(copyofStoreDataLimitValue.product_template_limit) > maxLimit){
+      count--;
+      setInvalidProductTemplateLimit(true);
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:product_template_limit_error_message")}`,
+          // `Product template limit should be less then 2147483647`,
+          "error"
+        )
+      );
+    }else if(copyofStoreDataLimitValue.store_users_limit != "" && parseInt(copyofStoreDataLimitValue.store_users_limit) > maxLimit){
+      count--;
+      setInvalidStoreUserLimit(true);
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:store_user_limit_error_message")}`,
+          // `Store user limit should be less then 2147483647`,
+          "error"
+        )
+      );
+    }else if(copyofStoreDataLimitValue.vendor_users_limit != "" && parseInt(copyofStoreDataLimitValue.vendor_users_limit) > maxLimit){
+      count--;
+      setInvalidVendorUserLimit(true);
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:vendor_user_limit_error_message")}`,
+          // `Vendor user limit should be less then 2147483647`,
+          "error"
+        )
+      );
+    }else if(copyofStoreDataLimitValue.max_products_per_vendor != "" && parseInt(copyofStoreDataLimitValue.max_products_per_vendor) > maxLimit){
+      count--;
+      setInvalidMaxProductLimit(true);
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:max_product_limit_error_message")}`,
+          // `Max product per limit should be less then 2147483647`,
+          "error"
+        )
+      );
+    }else if(copyofStoreDataLimitValue.max_templates_per_vendor != "" && parseInt(copyofStoreDataLimitValue.max_templates_per_vendor) > maxLimit){
+      count--;
+      setInvalidMaxTemplateLimit(true);
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:max_product_template_limit_error_message")}`,
+          // `Max product template per limit should be less then 2147483647`,
+          "error"
+        )
+      );
+    }
+
+    if(count == 10){
+      saveStoreDataLimit()
+    }
+  }
 
   //! get call of store API
   const findAllStoreApi = () => {
@@ -1354,11 +1473,14 @@ const StoreSettings = () => {
                       copyofStoreDataLimitValue.vendor_limit = e.target.value;
                       setIsStoreDataLimitChanged(true);
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
+                      setInvalidVendorLimit(false);
                     } else if (e.target.value === "") {
                       copyofStoreDataLimitValue.vendor_limit = e.target.value;
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
+                      setInvalidVendorLimit(false);
                     }
                   }}
+                  status={invalidVendorLimit ? "error" : ""}
                 />
               </Col>
               <Col span={6} className="gutter-row">
@@ -1373,6 +1495,7 @@ const StoreSettings = () => {
                       ? storeDataLimitValues.customer_limit
                       : ""
                   }
+                  status={invalidCustomerLimit ? "error" : ""}
                   onChange={(e) => {
                     let number = /^[0-9]*$/.test(e.target.value);
                     let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1380,10 +1503,12 @@ const StoreSettings = () => {
                     if (number && e.target.value.length <= 10) {
                       copyofStoreDataLimitValue.customer_limit = e.target.value;
                       setIsStoreDataLimitChanged(true);
+                      setInvalidCustomerLimit(false)
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
                     } else if (e.target.value === "") {
                       copyofStoreDataLimitValue.customer_limit = e.target.value;
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
+                      setInvalidCustomerLimit(false)
                     }
                   }}
                 />
@@ -1400,6 +1525,7 @@ const StoreSettings = () => {
                       ? storeDataLimitValues.product_limit
                       : ""
                   }
+                  status={invalidProductLimit ? "error" : ""}
                   onChange={(e) => {
                     let number = /^[0-9]*$/.test(e.target.value);
                     let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1407,8 +1533,10 @@ const StoreSettings = () => {
                     if (number && e.target.value.length <= 10) {
                       copyofStoreDataLimitValue.product_limit = e.target.value;
                       setIsStoreDataLimitChanged(true);
+                      setInvalidProductLimit(false)
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
                     } else if (e.target.value === "") {
+                      setInvalidProductLimit(false)
                       copyofStoreDataLimitValue.product_limit = e.target.value;
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
                     }
@@ -1416,7 +1544,7 @@ const StoreSettings = () => {
                 />
               </Col>
               <Col span={6} className="gutter-row">
-                <label className="text-[13px] mb-2 ml-1 input-label-color">
+              <label className="text-[13px] mb-2 ml-1 input-label-color whitespace-nowrap">
                   {t("labels:order_limit_per_day")}
                 </label>
                 <Input
@@ -1427,6 +1555,7 @@ const StoreSettings = () => {
                       ? storeDataLimitValues.order_limit_per_day
                       : ""
                   }
+                  status={invalidOrderLimit ? "error" : ""}
                   onChange={(e) => {
                     let number = /^[0-9]*$/.test(e.target.value);
                     let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1436,10 +1565,12 @@ const StoreSettings = () => {
                         e.target.value;
                       setIsStoreDataLimitChanged(true);
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
+                      setInvalidOrderLimit(false);
                     } else if (e.target.value === "") {
                       copyofStoreDataLimitValue.order_limit_per_day =
                         e.target.value;
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
+                      setInvalidOrderLimit(false);
                     }
                   }}
                 />
@@ -1456,6 +1587,7 @@ const StoreSettings = () => {
                       ? storeDataLimitValues.langauge_limit
                       : ""
                   }
+                  status={invalidLanguageLimit ? "error" : ""}
                   onChange={(e) => {
                     let number = /^[0-9]*$/.test(e.target.value);
                     let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1464,9 +1596,11 @@ const StoreSettings = () => {
                       copyofStoreDataLimitValue.langauge_limit = e.target.value;
                       setIsStoreDataLimitChanged(true);
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
+                      setInvalidLanguageLimit(false);
                     } else if (e.target.value === "") {
                       copyofStoreDataLimitValue.langauge_limit = e.target.value;
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
+                      setInvalidLanguageLimit(false);
                     }
                   }}
                 />
@@ -1483,6 +1617,7 @@ const StoreSettings = () => {
                       ? storeDataLimitValues.product_template_limit
                       : ""
                   }
+                  status={invalidProductTemplateLimit ? "error" : ""}
                   onChange={(e) => {
                     let number = /^[0-9]*$/.test(e.target.value);
                     let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1492,10 +1627,12 @@ const StoreSettings = () => {
                         e.target.value;
                       setIsStoreDataLimitChanged(true);
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
+                      setInvalidProductTemplateLimit(false);
                     } else if (e.target.value === "") {
                       copyofStoreDataLimitValue.product_template_limit =
                         e.target.value;
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
+                      setInvalidProductTemplateLimit(false);
                     }
                   }}
                 />
@@ -1511,6 +1648,7 @@ const StoreSettings = () => {
                       ? storeDataLimitValues.store_users_limit
                       : ""
                   }
+                  status={invalidStoreUserLimit ? "error" : ""}
                   onChange={(e) => {
                     let number = /^[0-9]*$/.test(e.target.value);
                     let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1519,12 +1657,14 @@ const StoreSettings = () => {
                       copyofStoreDataLimitValue.store_users_limit =
                         e.target.value;
                       setIsStoreDataLimitChanged(true);
+                      setInvalidStoreUserLimit(false);
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
                     } else if (e.target.value === "") {
                       // setIsStoreDataLimitChanged(false);
                       copyofStoreDataLimitValue.store_users_limit =
                         e.target.value;
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
+                      setInvalidStoreUserLimit(false);
                     }
                   }}
                 />
@@ -1541,6 +1681,7 @@ const StoreSettings = () => {
                       ? storeDataLimitValues.vendor_users_limit
                       : ""
                   }
+                  status={invalidVendorUserLimit ? "error" : ""}
                   onChange={(e) => {
                     let number = /^[0-9]*$/.test(e.target.value);
                     let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1549,12 +1690,14 @@ const StoreSettings = () => {
                       copyofStoreDataLimitValue.vendor_users_limit =
                         e.target.value;
                       setIsStoreDataLimitChanged(true);
+                      setInvalidVendorUserLimit(false);
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
                     } else if (e.target.value === "") {
                       // setIsStoreDataLimitChanged(false);
                       copyofStoreDataLimitValue.vendor_users_limit =
                         e.target.value;
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
+                      setInvalidVendorUserLimit(false);
                     }
                   }}
                 />
@@ -1571,6 +1714,7 @@ const StoreSettings = () => {
                       ? storeDataLimitValues.max_products_per_vendor
                       : ""
                   }
+                  status={invalidMaxProductLimit ? "error" : ""}
                   onChange={(e) => {
                     let number = /^[0-9]*$/.test(e.target.value);
                     let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1580,11 +1724,13 @@ const StoreSettings = () => {
                         e.target.value;
                       setIsStoreDataLimitChanged(true);
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
+                      setInvalidMaxProductLimit(false);
                     } else if (e.target.value === "") {
                       // setIsStoreDataLimitChanged(false);
                       copyofStoreDataLimitValue.max_products_per_vendor =
                         e.target.value;
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
+                      setInvalidMaxProductLimit(false);
                     }
                   }}
                 />
@@ -1601,6 +1747,7 @@ const StoreSettings = () => {
                       ? storeDataLimitValues.max_templates_per_vendor
                       : ""
                   }
+                  status={invalidMaxTemplateLimit ? "error" : ""}
                   onChange={(e) => {
                     let number = /^[0-9]*$/.test(e.target.value);
                     let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1610,11 +1757,13 @@ const StoreSettings = () => {
                         e.target.value;
                       setIsStoreDataLimitChanged(true);
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
+                      setInvalidMaxTemplateLimit(false);
                     } else if (e.target.value === "") {
                       // setIsStoreDataLimitChanged(false);
                       copyofStoreDataLimitValue.max_templates_per_vendor =
                         e.target.value;
                       setStoreDataLimitValues(copyofStoreDataLimitValue);
+                      setInvalidMaxTemplateLimit(false)
                     }
                   }}
                 />
@@ -1651,7 +1800,7 @@ const StoreSettings = () => {
                     }
                     disabled={!isStoreDataLimitChanged}
                     onClick={() => {
-                      saveStoreDataLimit();
+                      storeLimitValidation();
                     }}
                   >
                     {t("labels:save")}

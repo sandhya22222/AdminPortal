@@ -22,6 +22,7 @@ import DmPagination from "../../components/DmPagination/DmPagination";
 import CreateGroup from "./CreateGroup";
 import StoreModal from "../../components/storeModal/StoreModal";
 import MarketplaceToaster from "../../util/marketplaceToaster";
+import { EditIcon } from "../../constants/media";
 // import { DeleteIcon } from "../../constants/media";
 
 const { Content } = Layout;
@@ -189,9 +190,28 @@ const UserAccessControl = () => {
                   className="!app-delete-icon mt-[6px] cursor-pointer"
                   alt="icon"
                 /> */}
-                </Tooltip>
+              </Tooltip>
+            </Button>)}
+            <Tooltip title={t("labels:edit_user")} className="ml-1">
+              <Button
+                type="text"
+                className="app-btn-icon"
+                onClick={() => {
+                  navigate(
+                    `/dashboard/user-access-control/edit-user?id=${record.id}`
+                  );
+                }}
+              >
+                <Content className=" flex justify-center align-items-center">
+                  <img
+                    src={EditIcon}
+                    alt="Edit Icon"
+                    className=" !w-[12px] !text-center !text-sm cursor-pointer pt-[5px]"
+                  />
+                </Content>
               </Button>
-            )}
+            </Tooltip>
+          
           </Content>
         );
       },
@@ -392,7 +412,7 @@ const UserAccessControl = () => {
       .then(function (response) {
         console.log(
           "userslist get call response-->",
-          response.data.response_body
+          response.data.response_body.users
         );
         setServerDataCount(
           response.data.response_body &&

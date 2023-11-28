@@ -113,20 +113,14 @@ const Dashboard = () => {
     let baseurl = `${umsBaseUrl}${getPermissionsUrl}`;
     MarketplaceServices.findAll(baseurl, null, false)
       .then((res) => {
-        console.log("get access token res", res);
-        // setGetPermissionsData(res.data);
-        // setSpinLoading(false);
+        console.log("get permission api res", res);
         var realmNameClient = res.data.response_body["realm-name"] + "-client";
         util.setPermissionData(
           res.data.response_body.resource_access[`${realmNameClient}`].roles
         );
-        // util.setPermissionData(res.data);
       })
       .catch((err) => {
-        console.log("get access token err", err);
-        // if (err && err.response && err.response.status === 401) {
-        //   makeHttpRequestForRefreshToken();
-        // }
+        console.log("get permission api error", err);
       });
   };
 
@@ -643,8 +637,8 @@ const Dashboard = () => {
             {item.store_name && item.store_name.length > 20
               ? `${item.store_name.slice(0, 20)}...`
               : item.store_name
-              ? item.store_name
-              : "null"}
+                ? item.store_name
+                : "null"}
           </span>
         </Tooltip>
       ),
@@ -654,8 +648,8 @@ const Dashboard = () => {
             {item.vendor_name && item.vendor_name.length > 20
               ? `${item.vendor_name.slice(0, 20)}...`
               : item.vendor_name
-              ? item.vendor_name
-              : "null"}
+                ? item.vendor_name
+                : "null"}
           </span>
         </Tooltip>
       ),
@@ -666,9 +660,8 @@ const Dashboard = () => {
       ),
       units: item.order_placed ? item.order_placed : "null",
       sales: (
-        <span style={{ color: "#52C41A" }}>{`${
-          item.symbol ? item.symbol : ""
-        }${item.sum_amount.toFixed(2)}`}</span>
+        <span style={{ color: "#52C41A" }}>{`${item.symbol ? item.symbol : ""
+          }${item.sum_amount.toFixed(2)}`}</span>
       ),
     };
   });
@@ -715,8 +708,8 @@ const Dashboard = () => {
             {item.store_name && item.store_name.length > 20
               ? `${item.store_name.slice(0, 20)}...`
               : item.store_name
-              ? item.store_name
-              : "null"}
+                ? item.store_name
+                : "null"}
           </span>
         </Tooltip>
       ),
@@ -724,9 +717,8 @@ const Dashboard = () => {
       product_type: <Tag color="magenta">Physical</Tag>,
       units: item.sum_quantity,
       sales: (
-        <span style={{ color: "#52C41A" }}>{`${
-          item.symbol
-        } ${item.sum_amount.toFixed(2)}`}</span>
+        <span style={{ color: "#52C41A" }}>{`${item.symbol
+          } ${item.sum_amount.toFixed(2)}`}</span>
       ),
     };
   });
@@ -765,8 +757,8 @@ const Dashboard = () => {
             {item.vendor_name && item.vendor_name.length > 20
               ? `${item.min_store_id.slice(0, 20)}...`
               : item.vendor_name
-              ? item.vendor_name
-              : "null"}
+                ? item.vendor_name
+                : "null"}
           </span>
         </Tooltip>
       ),
@@ -776,17 +768,16 @@ const Dashboard = () => {
             {item.store_name && item.store_name.length > 20
               ? `${item.min_store_id.slice(0, 20)}...`
               : item.store_name
-              ? item.store_name
-              : "null"}
+                ? item.store_name
+                : "null"}
           </span>
         </Tooltip>
       ),
 
       units: item.sum_quantity,
       sales: (
-        <span style={{ color: "#52C41A" }}>{`${
-          item.symbol
-        } ${item.sum_amount.toFixed(2)}`}</span>
+        <span style={{ color: "#52C41A" }}>{`${item.symbol
+          } ${item.sum_amount.toFixed(2)}`}</span>
       ),
     };
   });
@@ -1453,29 +1444,29 @@ const Dashboard = () => {
                   </Title>
                   {updatedTimeState === "products"
                     ? renderUpdatedTime(
-                        "products",
-                        updatedTimes.products,
-                        refetchProducts
-                      )
+                      "products",
+                      updatedTimes.products,
+                      refetchProducts
+                    )
                     : updatedTimeState === "stores"
-                    ? renderUpdatedTime(
+                      ? renderUpdatedTime(
                         "stores",
                         updatedTimes.stores,
                         refetchStores
                       )
-                    : updatedTimeState === "vendors"
-                    ? renderUpdatedTime(
-                        "vendors",
-                        updatedTimes.vendors,
-                        refetchVendors
-                      )
-                    : updatedTimeState === "types"
-                    ? renderUpdatedTime(
-                        "types",
-                        updatedTimes.types,
-                        refetchTypes
-                      )
-                    : null}
+                      : updatedTimeState === "vendors"
+                        ? renderUpdatedTime(
+                          "vendors",
+                          updatedTimes.vendors,
+                          refetchVendors
+                        )
+                        : updatedTimeState === "types"
+                          ? renderUpdatedTime(
+                            "types",
+                            updatedTimes.types,
+                            refetchTypes
+                          )
+                          : null}
                 </div>
 
                 <Tabs
