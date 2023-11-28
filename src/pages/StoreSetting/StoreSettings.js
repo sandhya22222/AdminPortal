@@ -350,7 +350,8 @@ const StoreSettings = () => {
       setInvalidVendorLimit(true);
       MarketplaceToaster.showToast(
         util.getToastObject(
-          `Vendor limit should be less then 2147483647`,
+          `${t("messages:vendor_limit_error_message")}`,
+          // `Vendor limit should be less then 2147483647`,
           "error"
         )
       );
@@ -359,7 +360,8 @@ const StoreSettings = () => {
       setInvalidCustomerLimit(true);
       MarketplaceToaster.showToast(
         util.getToastObject(
-          `Customer limit should be less then 2147483647`,
+          `${t("messages:customer_limit_error_message")}`,
+          // `Customer limit should be less then 2147483647`,
           "error"
         )
       );
@@ -368,7 +370,8 @@ const StoreSettings = () => {
       setInvalidProductLimit(true);
       MarketplaceToaster.showToast(
         util.getToastObject(
-          `Product limit should be less then 2147483647`,
+          `${t("messages:product_limit_error_message")}`,
+          // `Product limit should be less then 2147483647`,
           "error"
         )
       );
@@ -377,7 +380,8 @@ const StoreSettings = () => {
       setInvalidOrderLimit(true);
       MarketplaceToaster.showToast(
         util.getToastObject(
-          `Order limit should be less then 2147483647`,
+          `${t("messages:order_limit_error_message")}`,
+          // `Order limit should be less then 2147483647`,
           "error"
         )
       );
@@ -386,7 +390,8 @@ const StoreSettings = () => {
       setInvalidLanguageLimit(true);
       MarketplaceToaster.showToast(
         util.getToastObject(
-          `Language limit should be less then 2147483647`,
+          `${t("messages:language_limit_error_message")}`,
+          // `Language limit should be less then 2147483647`,
           "error"
         )
       );
@@ -395,7 +400,8 @@ const StoreSettings = () => {
       setInvalidProductTemplateLimit(true);
       MarketplaceToaster.showToast(
         util.getToastObject(
-          `Product template limit should be less then 2147483647`,
+          `${t("messages:product_template_limit_error_message")}`,
+          // `Product template limit should be less then 2147483647`,
           "error"
         )
       );
@@ -404,7 +410,8 @@ const StoreSettings = () => {
       setInvalidStoreUserLimit(true);
       MarketplaceToaster.showToast(
         util.getToastObject(
-          `Store user limit should be less then 2147483647`,
+          `${t("messages:store_user_limit_error_message")}`,
+          // `Store user limit should be less then 2147483647`,
           "error"
         )
       );
@@ -413,7 +420,8 @@ const StoreSettings = () => {
       setInvalidVendorUserLimit(true);
       MarketplaceToaster.showToast(
         util.getToastObject(
-          `Vendor user limit should be less then 2147483647`,
+          `${t("messages:vendor_user_limit_error_message")}`,
+          // `Vendor user limit should be less then 2147483647`,
           "error"
         )
       );
@@ -422,7 +430,8 @@ const StoreSettings = () => {
       setInvalidMaxProductLimit(true);
       MarketplaceToaster.showToast(
         util.getToastObject(
-          `Max product per limit should be less then 2147483647`,
+          `${t("messages:max_product_limit_error_message")}`,
+          // `Max product per limit should be less then 2147483647`,
           "error"
         )
       );
@@ -431,7 +440,8 @@ const StoreSettings = () => {
       setInvalidMaxTemplateLimit(true);
       MarketplaceToaster.showToast(
         util.getToastObject(
-          `Max product template per limit should be less then 2147483647`,
+          `${t("messages:max_product_template_limit_error_message")}`,
+          // `Max product template per limit should be less then 2147483647`,
           "error"
         )
       );
