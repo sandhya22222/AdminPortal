@@ -21,6 +21,7 @@ import {
   fnStoreLanguage,
   fnDefaultLanguage,
 } from "../../services/redux/actions/ActionStoreLanguage";
+import { fnUserProfileInfo } from "../../services/redux/actions/ActionUserProfile";
 import {
   BrandLogo,
   AdminIcon,
@@ -40,6 +41,7 @@ const logoutAPI = process.env.REACT_APP_LOGOUT;
 const multilingualFunctionalityEnabled =
   process.env.REACT_APP_IS_MULTILINGUAL_ENABLED;
 const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API;
+const storeUsersAPI = process.env.REACT_APP_USERS_API;
 
 const Header2 = () => {
   const { t } = useTranslation();
@@ -47,6 +49,8 @@ const Header2 = () => {
   const { Text } = Typography;
   const auth = useAuth();
   const navigate = useNavigate();
+
+  const [userName, setUserName] = useState();
 
   // const isUserLoggedIn = sessionStorage.getItem("is_loggedIn");
   const storeLanguages = useSelector(
@@ -59,7 +63,9 @@ const Header2 = () => {
   const [storeSelectedLngCode, setStoreSelectedLngCode] = useState(
     selectedLanguage && selectedLanguage.language_code
   );
-
+  const userProfileInfo = useSelector(
+    (state) => state.reducerUserProfileInfo.userProfileInfo
+  );
   const languageItems = [];
   if (storeLanguages && storeLanguages.length > 1) {
     storeLanguages.forEach((element) => {
@@ -190,8 +196,25 @@ const Header2 = () => {
       });
   };
 
+  const findAllWithoutPageStoreUsers = () => {
+    MarketplaceServices.findAllWithoutPage(storeUsersAPI, null, false)
+      .then(function (response) {
+        console.log(
+          "get from  store user server response-----> ",
+          response.data
+        );
+        setUserName(response.data.response_body.username);
+        const userName = response.data.response_body.username;
+        dispatch(fnUserProfileInfo(userName));
+      })
+      .catch((error) => {
+        console.log("error from store all users API ====>", error.response);
+      });
+  };
+
   useEffect(() => {
     findAllLanguages();
+    findAllWithoutPageStoreUsers();
   }, []);
   useEffect(() => {
     setStoreSelectedLngCode(selectedLanguage && selectedLanguage.language_code);
@@ -235,7 +258,7 @@ const Header2 = () => {
                     className="!h-8 absolute bottom-[-2px] left-[-30px]"
                   /> */}
                   <Text className="text-lg text-slate-600 pr-1">
-                    {t("labels:admin")}
+                  {userName ? userName : userProfileInfo}
                   </Text>
                   <DownOutlined className="text-xs text-slate-600" />
                 </Paragraph>
