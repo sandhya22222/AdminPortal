@@ -62,7 +62,8 @@ const CreateUsers = () => {
   const [roleSelectData, setRoleSelectData] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [isUserDetailFetching, setIsUserDetailFetching] = useState(false);
-
+  const [isUserDetailsEditted, setIsUserDetailsEditted] = useState(false);
+ 
   //Get call of groups
   const findAllGroupLists = () => {
     MarketplaceServices.findAll(groupsAPI, { is_marketplace_role: true }, true)
@@ -276,7 +277,7 @@ const CreateUsers = () => {
       console.log("server response of user put call", response);
       MarketplaceToaster.showToast(response);
       setIsLoading(false);
-      // navigate(-1);
+      navigate(-1);
     })
     .catch((error) => {
       console.log("server error response of user put call");
@@ -319,6 +320,9 @@ const CreateUsers = () => {
   const handleChangeRole = (value) => {
     setSelectRole(value);
     setInvalidRole(false);
+    if(pageAction != "add"){
+      setIsUserDetailsEditted(true)
+      }
   };
 
   //handle change of type select
@@ -352,11 +356,11 @@ const CreateUsers = () => {
     MarketplaceServices.findAll(usersAllAPI, null, false)
       .then(function (response) {
         setIsUserDetailFetching(false);
-        if (response.data && response.data.response_body) {
-          let selectedUserDetails = response.data.response_body.filter(({ id }) => id == userId)
+        if (response.data && response.data.response_body && response.data.response_body.users) {
+          let selectedUserDetails = response.data.response_body.users.filter(({ id }) => id == userId)
           console.log(
             "userslist get call response-->",
-            response.data.response_body, "userId", userId, selectedUserDetails
+            response.data.response_body.users, "userId", userId, selectedUserDetails
           )
           if (selectedUserDetails.length > 0) {
             setUserName(selectedUserDetails[0].username);
@@ -464,6 +468,9 @@ const CreateUsers = () => {
                           const regex = /^[a-zA-Z]*$/; // only allow letters
                           if (regex.test(value)) {
                             setFirstName(e.target.value);
+                            if(pageAction != "add"){
+                              setIsUserDetailsEditted(true)
+                              }
                           }
                         }}
                         minLength={nameMinLength}
@@ -485,6 +492,9 @@ const CreateUsers = () => {
                           const regex = /^[a-zA-Z]*$/; // only allow letters
                           if (regex.test(value)) {
                             setLastName(e.target.value);
+                            if(pageAction != "add"){
+                            setIsUserDetailsEditted(true)
+                            }
                           }
                         }}
                         minLength={nameMinLength}
@@ -511,6 +521,9 @@ const CreateUsers = () => {
                       onChange={(e) => {
                         setEmailId(e.target.value);
                         setInvalidEmailId(false);
+                        if(pageAction != "add"){
+                          setIsUserDetailsEditted(true)
+                          }
                       }}
                       maxLength={emailMaxLength}
                       placeholder={t("placeholders:enter_email")}
@@ -598,6 +611,7 @@ const CreateUsers = () => {
                     onClick={pageAction != "add" ? userFormValidationEdit : userFormValidation}
                     className={`app-btn-primary ml-2
                        `}
+                    disabled={pageAction != "add" ? !isUserDetailsEditted : false}
                   >
                     {pageAction === "edit"
                       ? t("labels:update")

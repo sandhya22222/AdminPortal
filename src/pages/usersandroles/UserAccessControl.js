@@ -387,13 +387,13 @@ const UserAccessControl = () => {
       .then(function (response) {
         console.log(
           "userslist get call response-->",
-          response.data.response_body
+          response.data.response_body.users
         );
         setServerDataCount(
-          response.data.response_body && response.data.response_body.length
+          response.data.response_body && response.data.response_body.users.length
         );
 
-        setUsersServerData(response.data.response_body);
+        setUsersServerData(response.data.response_body.users);
         setIsLoading(false);
         setIsNetworkError(false);
       })
