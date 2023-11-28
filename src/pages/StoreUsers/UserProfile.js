@@ -9,6 +9,7 @@ import { getGenerateDateAndTime } from "../../util/util";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { usePageTitle } from "../../hooks/usePageTitle";
+import util from "../../util/common";
 const { Content } = Layout;
 const { Text, Title } = Typography;
 
@@ -21,6 +22,7 @@ const UserProfile = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isNetworkError, setIsNetworkError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
+  const [langDirection, setLangDirection] = useState("ltr");
   const [hideEmail, setHideEmail] = useState("");
 
   const findAllWithoutPageStoreUsers = () => {
@@ -60,7 +62,11 @@ const UserProfile = () => {
         }
       });
   };
-
+  useEffect(() => {
+    if (util.getSelectedLanguageDirection()) {
+      setLangDirection(util.getSelectedLanguageDirection()?.toLowerCase());
+    }
+  }, [util.getSelectedLanguageDirection()]);
   useEffect(() => {
     findAllWithoutPageStoreUsers();
     window.scroll(0, 0);
@@ -113,49 +119,72 @@ const UserProfile = () => {
                 </Row>
                 <Content className="flex flex-col items-center">
                   <Row className="mb-2">
-                    <label className="text-md font-medium flex">
+                    <Content className="text-md font-medium flex text-right">
                       {t("labels:role")}:{" "}
-                      {(storeUsersData &&
-                        storeUsersData.groups[0]?.name === "") ||
-                      (storeUsersData &&
-                        storeUsersData.groups[0]?.name === undefined)
-                        ? "NA"
-                        : storeUsersData &&
-                          storeUsersData.groups.length > 0 &&
-                          storeUsersData.groups.map((ele) => (
-                            <span className="ml-1">{ele.name}</span>
-                          ))}
-                    </label>
+                    </Content>
+                    <Content
+                      className={`text-md font-medium ${
+                        langDirection === "rtl" ? "!mr-1" : ""
+                      }`}
+                    >
+                      {storeUsersData &&
+                        storeUsersData.groups.length > 0 &&
+                        storeUsersData.groups.map((ele) => (
+                          <span className="ml-1">
+                            {ele.name === "" || ele.name === undefined
+                              ? "NA"
+                              : ele.name}
+                          </span>
+                        ))}
+                    </Content>
                   </Row>
                   <Row className="mb-2">
-                    <label className="text-md font-medium">
+                    <Content className="text-md font-medium">
                       {t("labels:first_name")}:{" "}
+                    </Content>
+                    <Content
+                      className={`text-md font-medium ${
+                        langDirection === "rtl" ? "!mr-1" : "!ml-1"
+                      }`}
+                    >
                       {(storeUsersData && storeUsersData.firstName === "") ||
                       (storeUsersData && storeUsersData.firstName === undefined)
                         ? "NA"
                         : storeUsersData && storeUsersData.firstName}
-                    </label>
+                    </Content>
                   </Row>
                   <Row className=" mb-2">
-                    <label className="text-md font-medium">
+                    <Content className="text-md font-medium">
                       {t("labels:last_name")}:{" "}
+                    </Content>
+                    <Content
+                      className={`text-md font-medium ${
+                        langDirection === "rtl" ? "!mr-1" : "!ml-1"
+                      }`}
+                    >
                       {(storeUsersData && storeUsersData.lastName === "") ||
                       (storeUsersData && storeUsersData.lastName === undefined)
                         ? "NA"
                         : storeUsersData && storeUsersData.lastName}
-                    </label>
+                    </Content>
                   </Row>
                   <Row className="">
-                    <label className="text-md font-medium">
+                    <Content className="text-md font-medium">
                       {t("labels:onboarded_on")}:{" "}
                       {/* {getGenerateDateAndTime(
                         storeUsersData && storeUsersData.createdTimestamp,
                         "D MMMM YYYY"
                       )} */}
+                    </Content>
+                    <Content
+                      className={`text-md font-medium ${
+                        langDirection === "rtl" ? "!mr-1" : "!ml-1"
+                      }`}
+                    >
                       {moment
                         .unix(storeUsersData && storeUsersData.createdTimestamp)
                         .format("D MMMM YYYY")}
-                    </label>
+                    </Content>
                   </Row>
                 </Content>
               </Content>
