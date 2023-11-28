@@ -110,20 +110,20 @@ const SidebarNew = () => {
       show_in_menu: true,
       // children: [],
     },
-    {
-      key: "7",
-      icon: <img src={Store} />,
-      inactive_icon: <img src={Store} />,
-      label: ` ${t("labels:admin_menu")}`,
-      navigate_to: "/dashboard/adminsettings",
-      show_in_menu: !auth.isAuthenticated ||
-      (auth.isAuthenticated &&
-        permissionValue &&
-        permissionValue.length > 0 &&
-        permissionValue.includes("UI-product-admin"))
-        ? true
-        : false,
-    },
+    // {
+    //   key: "7",
+    //   icon: <img src={Store} />,
+    //   inactive_icon: <img src={Store} />,
+    //   label: ` ${t("labels:admin_menu")}`,
+    //   navigate_to: "/dashboard/adminsettings",
+    //   show_in_menu: !auth.isAuthenticated ||
+    //   (auth.isAuthenticated &&
+    //     permissionValue &&
+    //     permissionValue.length > 0 &&
+    //     permissionValue.includes("UI-product-admin"))
+    //     ? true
+    //     : false,
+    // },
   ];
 
   const handlePageRefresh = (navigationPath) => {
@@ -165,9 +165,9 @@ const SidebarNew = () => {
       case "user-access-control":
         setSelectedItem("12");
         break;
-      case "adminsettings":
-        setSelectedItem("7");
-        break;
+      // case "adminsettings":
+      //   setSelectedItem("7");
+      //   break;
       default:
         setSelectedItem("1");
         break;
