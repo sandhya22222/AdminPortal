@@ -1,6 +1,7 @@
 import { combineReducers } from "redux";
 import { ReducerUserLoggedInfo } from "./ReducerUser";
 import { ReducerAbsoluteStoreImageInfo } from "./ReducerStoreImages";
+import { ReducerUserProfileInfo } from "./ReducerUserProfile";
 import {
   ReducerStoreLanguage,
   ReducerSelectedLanguage,
@@ -13,6 +14,8 @@ const reducers = combineReducers({
   reducerStoreLanguage: ReducerStoreLanguage,
   reducerSelectedLanguage: ReducerSelectedLanguage,
   reducerDefaultLanguage: ReducerDefaultLanguage,
+  reducerUserProfileInfo: ReducerUserProfileInfo,
+
 });
 
 export default reducers;
