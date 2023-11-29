@@ -165,7 +165,7 @@ const UserAccessControl = () => {
       key: "",
       render: (text, record) => {
         return (
-          <Content>
+          <Content className="flex items-center">
             {currentUserDetailsAPIData?.preferred_username ===
               record?.username &&
             currentUserDetailsAPIData?.email === record?.email ? null : (
