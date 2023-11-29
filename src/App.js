@@ -34,6 +34,7 @@ import util from "./util/common";
 import { useAuth } from "react-oidc-context";
 import StoreLimitComponent from "./pages/adminPlatform/StoreLimitComponent";
 import MarketplaceServices from "./services/axios/MarketplaceServices";
+import NewDashboard from "./pages/NewDashboard/Newdashboard";
 import { useEffect } from "react";
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 
@@ -97,10 +98,6 @@ const App = () => {
     return void auth.signoutRedirect();
   }
 
-  
-  
-
-
   return (
     <Suspense fallback={<LoadingMarkup />}>
       <Router>
@@ -147,8 +144,13 @@ const App = () => {
                   />
                   <Route path="preview" element={<Preview />} />
                   <Route path="paymenttype" element={<PaymentType />} />
-                  <Route path="adminsettings" element={<StoreLimitComponent/>}/>
+                  <Route
+                    path="adminsettings"
+                    element={<StoreLimitComponent />}
+                  />
                   <Route path="userprofile" element={<UserProfile />} />
+                  <Route path="newDashboard" element={<NewDashboard />} />
+
                   <Route path="user-access-control">
                     <Route
                       path="list-user-roles"

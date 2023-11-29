@@ -12,6 +12,9 @@ import {
   Spin,
   Tooltip,
   Typography,
+  Radio,
+  Tabs,
+  Progress,
 } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import validator from "validator";
@@ -44,6 +47,8 @@ import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import Status from "./Status";
 import MarketplaceToaster from "../../util/marketplaceToaster";
 import util from "../../util/common";
+import { Table } from "reactstrap";
+import axios from "axios";
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
@@ -60,10 +65,15 @@ const storeNameMinLength = process.env.REACT_APP_STORE_NAME_MIN_LENGTH;
 const storeNameMaxLength = process.env.REACT_APP_STORE_NAME_MAX_LENGTH;
 const userNameMinLength = process.env.REACT_APP_USERNAME_MIN_LENGTH;
 const userNameMaxLength = process.env.REACT_APP_USERNAME_MAX_LENGTH;
+const storeLimitApi = process.env.REACT_APP_STORE_PLATFORM_LIMIT_API;
+
+const dm4sightAnalysisCountAPI =
+  process.env.REACT_APP_4SIGHT_GETANALYSISCOUNT_API;
 
 const Stores = () => {
   const { t } = useTranslation();
   usePageTitle(t("labels:stores"));
+  const instance = axios.create();
 
   const params = useParams();
   const navigate = useNavigate();
@@ -105,6 +115,8 @@ const Stores = () => {
   const [showStoreErrorMessage, setShowStoreErrorMessage] = useState(false);
   const [onChangeValues, setOnChangeValues] = useState(false);
   const [onChangeEditValues, setOnChangeEditValues] = useState(false);
+  const [currentTab, setCurrentTab] = useState(1);
+
   // const [currentPage, setCurrentPage] = useState(
   //   params.page ? params.page.slice(5, params.page.length) : 1
   // );
@@ -122,6 +134,33 @@ const Stores = () => {
     setSearchText(selectedKeys[0]);
     setSearchedColumn(dataIndex);
   };
+
+  const handleRadioChange = (e) => {
+    setValue(e.target.value);
+    setRadioValue(e.target.value);
+    setSearchParams({
+      tab: e.target.value,
+      page: 1,
+      limit: parseInt(searchParams.get("limit"))
+        ? parseInt(searchParams.get("limit"))
+        : pageLimit,
+    });
+    console.log("object status", e.target.value);
+  };
+
+  const [radioValue, setRadioValue] = useState(1);
+
+  const [value, setValue] = useState(tab_id ? tab_id : 0);
+  const onChange = (e) => {
+    console.log("radio checked", e.target.value);
+    setValue(e.target.value);
+    setRadioValue(e.target.value);
+  };
+
+  useEffect(() => {
+    console.log("tbid", tab_id);
+    setRadioValue(tab_id);
+  }, []);
   const storeTabData = [
     {
       tabId: 0,
@@ -252,6 +291,136 @@ const Stores = () => {
         text
       ),
   });
+
+  //! get call of store limit API
+  const findAllStoreLimit = () => {
+    MarketplaceServices.findAll("/ams/rest/v3/store-limit")
+      .then(function (response) {
+        console.log(
+          "Server Response from store limit API: ",
+          response.data.response_body[0]
+        );
+        console.log("rexxxx", response);
+        // setIsLoading(false);
+        // if (response && response.data.response_body) {
+        //   let storeLimitResponse = response.data.response_body[0];
+        //   let copyofStorelimit = { ...storeLimitValues };
+        //   copyofStorelimit.dm_language_limit =
+        //     storeLimitResponse.dm_language_limit;
+        //   copyofStorelimit.dm_user_limit = storeLimitResponse.dm_user_limit;
+        //   copyofStorelimit.store_limit = storeLimitResponse.store_limit;
+        //   setStoreLimitValues(copyofStorelimit);
+        // }
+      })
+      .catch((error) => {
+        // setIsLoading(false);
+        console.log("Server error from store limit API ", error.response);
+      });
+  };
+
+  const [storeLimitValues, setStoreLimitValues] = useState();
+  const [analysisCount, setAnalysisCount] = useState();
+  const dm4sightBaseURL = process.env.REACT_APP_4SIGHT_BASE_URL;
+
+  useEffect(() => {
+    if (currentTab == 2) {
+      console.log("storeLimitApi", storeLimitApi);
+      MarketplaceServices.findAll("/ams/rest/v3/store-limit")
+        .then(function (response) {
+          console.log(
+            "Server Response from store limit API: ",
+            response.data.response_body
+          );
+          console.log("rexxxx", response.data.response_body);
+          // setIsLoading(false);
+          // if (response && response.data.response_body) {
+          //   let storeLimitResponse = response.data.response_body[0];
+          //   let copyofStorelimit = { ...storeLimitValues };
+          //   copyofStorelimit.dm_language_limit =
+          //     storeLimitResponse.dm_language_limit;
+          //   copyofStorelimit.dm_user_limit = storeLimitResponse.dm_user_limit;
+          //   copyofStorelimit.store_limit = storeLimitResponse.store_limit;
+          setStoreLimitValues(response.data.response_body);
+
+          instance
+            .get(
+              dm4sightBaseURL + dm4sightAnalysisCountAPI
+              //   dm4sightHeaders
+            )
+            .then((res) => {
+              setAnalysisCount(res.data);
+              console.log("redddd", res);
+            });
+          // }
+        })
+        .catch((error) => {
+          // setIsLoading(false);
+          console.log("Server error from store limit API ", error.response);
+        });
+      // findAllStoreLimit();
+    }
+  }, [currentTab]);
+
+  const StoreTableColumnThreshold1 = [
+    {
+      // title: `${t("labels:name")}`,
+      title: "Limits",
+      dataIndex: "limits",
+      key: "limits",
+      width: "30%",
+      render: (text) => {
+        const [limitName, value] = text.split(",");
+        return (
+          <Content className="flex flex-col gap-2">
+            {limitName}
+            <Input className="w-24" value={value == "null" ? 0 : value} />
+          </Content>
+        );
+      },
+    },
+
+    {
+      title: "Stats",
+      dataIndex: "stats",
+      key: "stats",
+      width: "20%",
+
+      render: (text) => {
+        const [count, total] = text.split(" of ");
+        return (
+          <Content className="flex flex-col gap-2">
+            {count} of {total}
+            <Progress
+              strokeColor={"#4A2D73"}
+              className="w-24"
+              size="small"
+              percent={(count / total) * 100}
+              showInfo={false}
+            />
+          </Content>
+        );
+      },
+    },
+  ];
+
+  const StoreTableColumnThreshold2 = [
+    {
+      // title: `${t("labels:name")}`,
+      title: "Limits",
+      dataIndex: "limits",
+      key: "limits",
+      width: "30%",
+      render: (text) => {
+        const [limitName, value] = text.split(",");
+        return (
+          <Content className="flex flex-col gap-2">
+            {limitName}
+            <Input className="w-24" value={value == "null" ? 0 : value} />
+          </Content>
+        );
+      },
+    },
+  ];
 
   //! table columns
   const StoreTableColumn = [
@@ -429,11 +598,45 @@ const Stores = () => {
             id: storeId,
             created_on: createdOn,
             status: statusForStores[storeStatus],
-            storeId: storeActualId
+            storeId: storeActualId,
           });
       });
     setSelectedTabTableContent(tempArray);
   };
+
+  const getActiveInactiveData = () => {
+    instance
+      .get(
+        dm4sightBaseURL + dm4sightAnalysisCountAPI
+        //   dm4sightHeaders
+      )
+      .then((response) => {
+        console.log("resdooooo", response.data);
+
+        //   convert the response to table readable format
+
+        //   console.log(Object.entries(obj)); // [ ['foo', 'bar'], ['baz', 42] ]
+        // Object.entries converts key-value to array of key,value
+        //   key --> first value of Array
+        //   value ---> second value of array
+        // const transformedData = Object.entries(response.data.count_info).map(
+        //   ([key, value]) => ({
+        //     key: key,
+        //     store_name: value.name,
+        //     orders: value.count_order,
+        //     vendors: value.count_vendor,
+        //     products: value.count_product,
+        //     product_templates: value.count_template,
+        //   })
+        // );
+        // setTableData(transformedData);
+        // console.log(transformedData);
+      });
+  };
+
+  useEffect(() => {
+    getActiveInactiveData();
+  });
 
   //!this useEffect for tab(initial rendering)
   useEffect(() => {
@@ -469,6 +672,126 @@ const Stores = () => {
       sorting_data: [],
     },
   };
+
+  // const StoreTableColumnThreshold = [
+  //   {
+  //     // title: `${t("labels:name")}`,
+  //     title: "Limits",
+  //     dataIndex: "limits",
+  //     key: "limits",
+  //     width: "30%",
+  //   },
+  //   {
+  //     title: "Stats",
+  //     dataIndex: "stats",
+  //     key: "stats",
+  //     width: "20%",
+  //   },
+  // ];
+  const tablePropsThreshold1 = {
+    table_header: StoreTableColumnThreshold1,
+    table_content: [
+      {
+        key: "1",
+        limits: `Maximum Store Creation Limit,${storeLimitValues?.store_limit}`,
+        stats:
+          analysisCount?.store_count + " of " + storeLimitValues?.store_limit,
+      },
+      {
+        key: "2",
+        limits: `Maximum Language Activation Limit,${storeLimitValues?.dm_language_limit}`,
+        stats:
+          analysisCount?.lang_count +
+          " of " +
+          storeLimitValues?.dm_language_limit,
+      },
+      {
+        key: "3",
+        limits: `Maximum User Limit,${storeLimitValues?.dm_user_limit}`,
+        stats:
+          analysisCount?.user_count + " of " + storeLimitValues?.dm_user_limit,
+      },
+    ],
+    pagenationSettings: pagination,
+    search_settings: {
+      is_enabled: false,
+      search_title: "Search by name",
+      search_data: ["name"],
+    },
+    filter_settings: {
+      is_enabled: false,
+      filter_title: "Filter's",
+      filter_data: [],
+    },
+    sorting_settings: {
+      is_enabled: false,
+      sorting_title: "Sorting by",
+      sorting_data: [],
+    },
+  };
+
+  const tablePropsThreshold2 = {
+    table_header: StoreTableColumnThreshold2,
+    table_content: [
+      {
+        key: "1",
+        limits: `Maximum Vendor Onboarding Limit,${storeLimitValues?.vendor_limit}`,
+        stats: 6,
+      },
+      {
+        key: "2",
+        limits: `Maximum Customer Onboarding Limit,${storeLimitValues?.customer_limit}`,
+        stats: 6,
+      },
+      {
+        key: "3",
+        limits: `Maximum Product Limit,${storeLimitValues?.product_limit}`,
+        stats: 9,
+      },
+      {
+        key: "4",
+        limits: `Maximum Order Limit perday ,${storeLimitValues?.order_limit_per_day}`,
+        stats: 9,
+      },
+      {
+        key: "5",
+        limits: `Maximum Language Activation Limit,${storeLimitValues?.langauge_limit}`,
+        stats: 9,
+      },
+      {
+        key: "6",
+        limits: `Maximum Product Template Limit,${storeLimitValues?.product_template_limit}`,
+        stats: 9,
+      },
+      {
+        key: "7",
+        limits: `Maximum Store Users Limit,${storeLimitValues?.store_users_limit}`,
+        stats: 9,
+      },
+      {
+        key: "8",
+        limits: `Maximum Vendor Users Limit,${storeLimitValues?.vendor_users_limit}`,
+        stats: 9,
+      },
+    ],
+    pagenationSettings: pagination,
+    search_settings: {
+      is_enabled: false,
+      search_title: "Search by name",
+      search_data: ["name"],
+    },
+    filter_settings: {
+      is_enabled: false,
+      filter_title: "Filter's",
+      filter_data: [],
+    },
+    sorting_settings: {
+      is_enabled: false,
+      sorting_title: "Sorting by",
+      sorting_data: [],
+    },
+  };
+
   //! add drawer
   const showAddDrawer = () => {
     setOpen(true);
@@ -1091,6 +1414,39 @@ const Stores = () => {
     }
   };
 
+  const dataSource = [
+    {
+      key: "1",
+      name: "Mike",
+      age: 32,
+      address: "10 Downing Street",
+    },
+    {
+      key: "2",
+      name: "John",
+      age: 42,
+      address: "10 Downing Street",
+    },
+  ];
+
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Age",
+      dataIndex: "age",
+      key: "age",
+    },
+    {
+      title: "Address",
+      dataIndex: "address",
+      key: "address",
+    },
+  ];
+
   return (
     <Content className="">
       <StoreModal
@@ -1128,7 +1484,22 @@ const Stores = () => {
           headerContent={
             !isLoading && (
               <Content className="!h-10 !mt-7">
-                <DmTabAntDesign
+                <Tabs
+                  defaultActiveKey="1"
+                  items={[
+                    {
+                      key: "1",
+                      label: "My Stores",
+                    },
+                    {
+                      key: "2",
+                      label: "Threshold Configuration",
+                    },
+                  ]}
+                  onChange={(key) => setCurrentTab(key)}
+                />
+
+                {/* <DmTabAntDesign
                   tabData={storeTabData}
                   handleTabChangeFunction={handleTabChangeStore}
                   activeKey={
@@ -1139,7 +1510,7 @@ const Stores = () => {
                   // totalItemsCount={countForStore}
                   tabType={"line"}
                   tabBarPosition={"top"}
-                />
+                /> */}
               </Content>
             )
           }
@@ -1535,15 +1906,39 @@ const Stores = () => {
         ) : (
           <Content className="">
             <Content>
-              {storeApiData && storeApiData.length > 0 ? (
-                <DynamicTable tableComponentData={tablePropsData} />
+              {currentTab == 1 && storeApiData && storeApiData.length > 0 ? (
+                <Content className="bg-white ">
+                  <Radio.Group
+                    className="mt-3 mr-4 flex float-right"
+                    optionType="button"
+                    onChange={handleRadioChange}
+                    value={value}
+                  >
+                    <Radio value={0}>All</Radio>
+                    <Radio value={1}>Active</Radio>
+                    <Radio value={2}>Inactive</Radio>
+                  </Radio.Group>
+
+                  <DynamicTable tableComponentData={tablePropsData} />
+                </Content>
+              ) : currentTab == 2 ? (
+                <>
+                  <Content>
+                    <Title level={5}>Threshold 1</Title>
+                    <DynamicTable tableComponentData={tablePropsThreshold1} />
+                  </Content>
+                  <Content>
+                    <Title level={5}>Threshold 2</Title>
+                    <DynamicTable tableComponentData={tablePropsThreshold2} />
+                  </Content>
+                </>
               ) : (
                 <Content className="!mt-[1.7rem] !text-center bg-white p-3 !rounded-md">
                   {t("messages:no_data_available")}
                 </Content>
               )}
             </Content>
-            {countForStore && countForStore >= pageLimit ? (
+            {currentTab == 1 && countForStore && countForStore >= pageLimit ? (
               <Content className=" grid justify-items-end">
                 <DmPagination
                   currentPage={
