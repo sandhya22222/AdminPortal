@@ -121,7 +121,7 @@ const App = () => {
 
             {auth.isAuthenticated ? (
               <Route path="/dashboard" element={<SidebarNew />}>
-                <Route path="" element={<Dashboard />} />
+                <Route path="" element={<NewDashboard />} />
                 <>
                   {/* <Route path="language" element={<Language />} />
                   <Route
@@ -149,7 +149,7 @@ const App = () => {
                     element={<StoreLimitComponent />}
                   />
                   <Route path="userprofile" element={<UserProfile />} />
-                  <Route path="newDashboard" element={<NewDashboard />} />
+                  {/* <Route path="newDashboard" element={<NewDashboard />} /> */}
 
                   <Route path="user-access-control">
                     <Route
