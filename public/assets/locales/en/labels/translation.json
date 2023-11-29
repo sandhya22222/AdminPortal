@@ -162,5 +162,9 @@
   "next_page": "Next Page",
   "prev_page": "Previous Page",
   "page": "/ page",
-  "of":"of"
+  "of":"of",
+  "store_overview":"Store Overview",
+  "more":"More"
+
+
 }

@@ -73,5 +73,6 @@
     "store_user_limit_error_message": "Store user limit should be less then 2147483647",
     "vendor_user_limit_error_message": "Vendor user limit should be less then 2147483647",
     "max_product_limit_error_message": "Max product limit should be less then 2147483647",
-    "max_product_template_limit_error_message": "Max product template limit should be less then 2147483647"
+    "max_product_template_limit_error_message": "Max product template limit should be less then 2147483647",
+    "dashboard_welcome_message" :"Greetings and welcome to your administrative console where you can access and manage various features and settings for optimal control and optimization."
 }

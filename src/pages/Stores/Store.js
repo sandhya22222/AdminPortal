@@ -14,6 +14,7 @@ import {
   Typography,
   Radio,
   Tabs,
+  Progress,
 } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import validator from "validator";
@@ -360,7 +361,7 @@ const Stores = () => {
     }
   }, [currentTab]);
 
-  const StoreTableColumnThreshold = [
+  const StoreTableColumnThreshold1 = [
     {
       // title: `${t("labels:name")}`,
       title: "Limits",
@@ -368,20 +369,56 @@ const Stores = () => {
       key: "limits",
       width: "30%",
       render: (text) => {
-        const [value1, value2] = text.split(",");
+        const [limitName, value] = text.split(",");
         return (
-          <>
-            {value1}
-            <Input value={value2} />{" "}
-          </>
+          <Content className="flex flex-col gap-2">
+            {limitName}
+            <Input className="w-24" value={value == "null" ? 0 : value} />
+          </Content>
         );
       },
     },
+
     {
       title: "Stats",
       dataIndex: "stats",
       key: "stats",
       width: "20%",
+
+      render: (text) => {
+        const [count, total] = text.split(" of ");
+        return (
+          <Content className="flex flex-col gap-2">
+            {count} of {total}
+            <Progress
+              strokeColor={"#4A2D73"}
+              className="w-24"
+              size="small"
+              percent={(count / total) * 100}
+              showInfo={false}
+            />
+          </Content>
+        );
+      },
+    },
+  ];
+
+  const StoreTableColumnThreshold2 = [
+    {
+      // title: `${t("labels:name")}`,
+      title: "Limits",
+      dataIndex: "limits",
+      key: "limits",
+      width: "30%",
+      render: (text) => {
+        const [limitName, value] = text.split(",");
+        return (
+          <Content className="flex flex-col gap-2">
+            {limitName}
+            <Input className="w-24" value={value == "null" ? 0 : value} />
+          </Content>
+        );
+      },
     },
   ];
 
@@ -652,21 +689,17 @@ const Stores = () => {
   //   },
   // ];
   const tablePropsThreshold1 = {
-    table_header: StoreTableColumnThreshold,
+    table_header: StoreTableColumnThreshold1,
     table_content: [
-      // "store_limit": 23,
-      // "dm_language_limit": 11,
-      // "dm_user_limit": 12,
       {
         key: "1",
-        limits: `Maximum Store Limit,${storeLimitValues?.store_limit}`,
+        limits: `Maximum Store Creation Limit,${storeLimitValues?.store_limit}`,
         stats:
           analysisCount?.store_count + " of " + storeLimitValues?.store_limit,
-        input: storeLimitValues?.store_limit,
       },
       {
         key: "2",
-        limits: `Maximum Language Limit,${storeLimitValues?.dm_language_limit}`,
+        limits: `Maximum Language Activation Limit,${storeLimitValues?.dm_language_limit}`,
         stats:
           analysisCount?.lang_count +
           " of " +
@@ -698,36 +731,46 @@ const Stores = () => {
   };
 
   const tablePropsThreshold2 = {
-    table_header: StoreTableColumnThreshold,
+    table_header: StoreTableColumnThreshold2,
     table_content: [
       {
         key: "1",
-        limits: "Vendor Limit",
+        limits: `Maximum Vendor Onboarding Limit,${storeLimitValues?.vendor_limit}`,
         stats: 6,
       },
       {
         key: "2",
-        limits: "Customer Limit",
+        limits: `Maximum Customer Onboarding Limit,${storeLimitValues?.customer_limit}`,
         stats: 6,
       },
       {
         key: "3",
-        limits: "Product Limit",
+        limits: `Maximum Product Limit,${storeLimitValues?.product_limit}`,
         stats: 9,
       },
       {
         key: "4",
-        limits: "Order Limit Per day",
+        limits: `Maximum Order Limit perday ,${storeLimitValues?.order_limit_per_day}`,
         stats: 9,
       },
       {
         key: "5",
-        limits: "Language Limit",
+        limits: `Maximum Language Activation Limit,${storeLimitValues?.langauge_limit}`,
         stats: 9,
       },
       {
         key: "6",
-        limits: "Product Template Limit",
+        limits: `Maximum Product Template Limit,${storeLimitValues?.product_template_limit}`,
+        stats: 9,
+      },
+      {
+        key: "7",
+        limits: `Maximum Store Users Limit,${storeLimitValues?.store_users_limit}`,
+        stats: 9,
+      },
+      {
+        key: "8",
+        limits: `Maximum Vendor Users Limit,${storeLimitValues?.vendor_users_limit}`,
         stats: 9,
       },
     ],
@@ -1928,5 +1971,3 @@ const Stores = () => {
   );
 };
 export default Stores;
-
-// \src\pages\Stores\Store.js

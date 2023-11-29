@@ -107,6 +107,8 @@ const Newdashboard = () => {
   const [inActiveStoreCount, setInActiveStoreCount] = useState();
   const [tableData, setTableData] = useState([]);
 
+  const [storeLimitValues, setStoreLimitValues] = useState([]);
+
   let keyCLoak = sessionStorage.getItem("keycloakData");
   keyCLoak = JSON.parse(keyCLoak);
   let realmName = keyCLoak.clientId.replace(/-client$/, "");
@@ -119,6 +121,18 @@ const Newdashboard = () => {
       client: "admin",
     },
   };
+
+  useEffect(() => {
+    // console.log("storeLimitApi", storeLimitApi);
+    MarketplaceServices.findAll("/ams/rest/v3/store-limit")
+      .then(function (response) {
+        console.log("rexxxx", response.data.response_body);
+        setStoreLimitValues(response.data.response_body);
+      })
+      .catch((error) => {
+        console.log("Server error from store limit API ", error.response);
+      });
+  }, []);
 
   const getPermissions = () => {
     let baseurl = `${umsBaseUrl}${getPermissionsUrl}`;
@@ -1175,37 +1189,17 @@ const Newdashboard = () => {
       });
   };
 
-  const dataSource = [
-    {
-      key: "1",
-      store_name: "Mike",
-      orders: 32,
-      product_templates: "10 Downing Street",
-      product_templates: "Templaten Street",
-      products: "New product",
-      vendors: "newvendor",
-    },
-    {
-      key: "2",
-      store_name: "Tom",
-      orders: 76,
-      product_templates: "127 Henry Street",
-      product_templates: " NewTemplaten Street",
-      products: "Ol product",
-      vendors: " Ol newvendor",
-    },
-  ];
-
   const columns = [
     {
-      title: "Store Name",
+      title: t("labels:store_name"),
       dataIndex: "store_name",
       key: "store_name",
     },
     {
       title: (
         <span>
-          Orders <Text className="text-zinc-400"> (Last 7 days)</Text>
+          {t("labels:orders")}{" "}
+          <Text className="text-zinc-400"> (Last 7 days)</Text>
         </span>
       ),
       dataIndex: "orders",
@@ -1246,9 +1240,10 @@ const Newdashboard = () => {
                   Hello Loganathan B,
                 </Title>
                 <Text className="!text-sm mb-2 text-zinc-400 ">
-                  Greetings and welcome to your administrative console where you
+                  {t("messages:dashboard_welcome_message")}
+                  {/* Greetings and welcome to your administrative console where you
                   can access and manage various features and settings for
-                  optimal control and optimization.
+                  optimal control and optimization. */}
                 </Text>
               </Content>
               <Content className="!w-[20%] flex flex-col justify-center items-center">
@@ -1264,7 +1259,11 @@ const Newdashboard = () => {
                     </Title>
                     <Text level={5} className="text-zinc-400 !font-semibold ">
                       {" "}
-                      of 10 stores
+                      {t("labels:of")}{" "}
+                      {storeLimitValues?.store_limit
+                        ? storeLimitValues?.store_limit
+                        : 0}{" "}
+                      {t("labels:stores")}
                     </Text>
                   </Content>
                   <Progress
@@ -1272,7 +1271,9 @@ const Newdashboard = () => {
                     strokeColor={"#4A2D73"}
                     className="w-32 "
                     size="small"
-                    percent={50}
+                    percent={
+                      (activeStoreCount / storeLimitValues?.store_limit) * 100
+                    }
                     showInfo={false}
                   />
                 </Content>
@@ -1285,7 +1286,7 @@ const Newdashboard = () => {
                 <Content>
                   <Text className="!text-md mb-2 text-zinc-400 flex justify-left gap-1 items-center">
                     <Content class="w-2 h-2  bg-neutral-400 rounded-full"></Content>{" "}
-                    Inactive stores
+                    {t("labels:inactive_sores")}
                   </Text>
                   <Content className="flex items-center ml-2">
                     <Title class="text-zinc-400" level={2}>
@@ -1349,186 +1350,7 @@ const Newdashboard = () => {
           </Content>
         ) : (
           <Content>
-            <Content className="flex gap-3">
-              {/* <Content className="p-3 w-[7%]  shadow-sm rounded-md justify-center !bg-[var(--mp-bright-color)]">
-                <Content className="flex mb-3">
-                  <Content className="flex items-center">
-                    <Title
-                      level={3}
-                      className="!text-[#1A5692] mb-0 !font-semibold mt-0 !inline-block"
-                    >
-                      {dashboardData &&
-                        dashboardData.store_data &&
-                        dashboardData.store_data.total_count}
-                    </Title>
-                    <Text className="font-semibold text-lg ml-2">
-                      {t("labels:stores")}
-                    </Text>
-                  </Content>
-                  <Content className="flex flex-row-reverse items-center">
-                    <Button className="app-btn-link" type="link">
-                      <Link
-                        className="float-right app-btn-link font-semibold"
-                        onClick={() => navigate("/dashboard/store")}
-                      >
-                        {t("labels:view_all")}
-                      </Link>
-                    </Button>
-                  </Content>
-                </Content>
-                <Content className="flex">
-                  <Content className="flex">
-                    <Content className="!inline-block w-[40%]">
-                      <MdStore className="!text-5xl !inline-block !text-[#FCC32A]" />
-                    </Content>
-                    <Content className="!inline-block w-[60%]">
-                      <Text className="!text-[#8C8C8C] ml-3">
-                        {t("labels:active")}
-                      </Text>
-                      <Title level={5} className="!text-black mt-0 ml-3">
-                        {dashboardData &&
-                          dashboardData.store_data &&
-                          dashboardData.store_data.active_stores}
-                      </Title>
-                    </Content>
-                  </Content>
-                  <Content className="flex">
-                    <Content className="!inline-block w-[40%]">
-                      <MdStore className="!text-5xl !inline-block !text-[#8C8C8C]" />
-                    </Content>
-                    <Content className="!inline-block w-[60%]">
-                      <Text className="!text-[#8C8C8C] ml-3">
-                        {" "}
-                        {t("labels:inactive")}
-                      </Text>
-                      <Title level={5} className="!text-black mt-0 ml-3">
-                        {dashboardData &&
-                          dashboardData.store_data &&
-                          dashboardData.store_data.inactive_store}
-                      </Title>
-                    </Content>
-                  </Content>
-                </Content>
-              </Content> */}
-              {/* <Content className="p-3 w-[26%] shadow-sm rounded-md justify-center !bg-[var(--mp-bright-color)]">
-                <Content className="flex items-center">
-                  <Content className="flex-1 w-[50%]">
-                    <Content className="!inline-block w-[40%]">
-                      <Image
-                        width={75}
-                        preview={false}
-                        src={Positive}
-                        className="cursor-default"
-                      />
-                    </Content>
-                    <Content className="!inline-block w-[60%]">
-                      <Text className="!text-md mb-2 !font-semibold">
-                        {t("labels:total_revenue")}
-                      </Text>
-                      <Title
-                        level={3}
-                        className="!text-[#7CB305] mb-2 !font-semibold mt-0"
-                      >
-                        {currencySymbol}
-                        {dashboardData &&
-                        dashboardData.store_revenue &&
-                        dashboardData.store_revenue.total_amount !== null
-                          ? parseInt(dashboardData.store_revenue.total_amount)
-                          : 0}
-                      </Title>
-                      <Text className="!text-sm !font-semibold">
-                        {t("labels:monthly_revenue")}
-                      </Text>
-                      <Title level={5} className="!text-[#7CB305] mt-0">
-                        {currencySymbol}
-                        {dashboardData &&
-                        dashboardData.store_revenue &&
-                        dashboardData.store_revenue.total_amount_last_month !==
-                          null
-                          ? parseInt(
-                              dashboardData.store_revenue
-                                .total_amount_last_month
-                            )
-                          : 0}
-                      </Title>
-                    </Content>
-                  </Content>
-                  <Content className="flex-1 w-[50%]">
-                    <Content className="!inline-block w-[40%]">
-                      <Image
-                        width={75}
-                        preview={false}
-                        src={Profit}
-                        className="cursor-default"
-                      />
-                    </Content>
-                    <Content className="!inline-block w-[60%]">
-                      <Text className="!font-semibold text-md mb-2">
-                        {t("labels:total_profit")}
-                      </Text>
-                      <Title
-                        level={3}
-                        className="!text-[#7CB305] mb-2 !font-semibold mt-0"
-                      >
-                        {currencySymbol}
-                        {dashboardData &&
-                        dashboardData.store_revenue &&
-                        dashboardData.store_revenue.store_commision_amount !==
-                          null
-                          ? parseInt(
-                              dashboardData.store_revenue.store_commision_amount
-                            )
-                          : 0}
-                      </Title>
-                      <Text className="!font-semibold text-sm">
-                        {t("labels:monthly_profit")}
-                      </Text>
-                      <Title level={5} className="!text-[#7CB305] mt-0">
-                        {currencySymbol}
-                        {dashboardData &&
-                        dashboardData.store_revenue &&
-                        dashboardData.store_revenue
-                          .store_commision_last_month !== null
-                          ? parseInt(
-                              dashboardData.store_revenue
-                                .store_commision_last_month
-                            )
-                          : 0}
-                      </Title>
-                    </Content>
-                  </Content>
-                </Content>
-              </Content> */}
-              {/* <Content className="p-3 w-[7%] shadow-sm rounded-md justify-center !bg-[var(--mp-bright-color)]">
-                <Content className="flex items-center">
-                  <Content className="flex-1 w-[40%]">
-                    <Image
-                      width={75}
-                      preview={false}
-                      src={Payment}
-                      className="cursor-default"
-                    />
-                  </Content>
-                  <Content className="flex-1 w-[60%]">
-                    <Text className="!font-semibold text-md mb-2">
-                      {t("labels:total_products")}
-                    </Text>
-                    <Title
-                      level={3}
-                      className="!text-[#1A5692] mb-2 !font-semibold mt-0"
-                    >
-                      {dashboardData && dashboardData.total_products}
-                    </Title>
-                    <Text className="!font-semibold text-sm">
-                      {t("labels:last_30_days")}
-                    </Text>
-                    <Title level={5} className="!text-[#1A5692] mt-0">
-                      {dashboardData && dashboardData.total_products_last_month}
-                    </Title>
-                  </Content>
-                </Content>
-              </Content> */}
-            </Content>
+            <Content className="flex gap-3"></Content>
 
             <Content
               hidden={dm4sightEnabled === "true" ? false : true}
@@ -1537,10 +1359,9 @@ const Newdashboard = () => {
               <Content className="!w-[20%]  bg-[#ffff] p-4  shadow-sm rounded-md justify-center">
                 <Content className="flex items-center justify-between mb-1">
                   <Title level={4} className="!m-0  !text-black">
-                    {/* {t("labels:ranking")}{" "} */}
-                    Store Overview
+                    {t("labels:store_overview")}
                   </Title>
-                  <Button type="link">More</Button>
+                  <Button type="link">{t("labels:more")}</Button>
                 </Content>
                 <Divider className="w-10" />
                 <Content>
@@ -1550,116 +1371,8 @@ const Newdashboard = () => {
                     columns={columns}
                   />
                 </Content>
-                {/* <Tabs
-                  defaultActiveKey="1"
-                  items={items}
-                  onChange={(key) => {
-                    if (key == 1) {
-                      setUpdatedTimeState("products");
-                      setFetchTopProductsData(true);
-                    } else if (key == 2) {
-                      setFetchTopStoresData(true);
-                      setUpdatedTimeState("stores");
-                    } else if (key == 3) {
-                      setFetchTopVendorsData(true);
-                      setUpdatedTimeState("vendors");
-                    } else if (key == 4) {
-                      setFetchProductTypesData(true);
-                      setUpdatedTimeState("types");
-                    }
-                  }}
-                /> */}
               </Content>
             </Content>
-
-            {/* <Content className="flex justify-between !mt-6">
-              <Content className="bg-[#ffff] p-3 mr-5 shadow-sm rounded-md justify-center">
-                <Title level={3} className="!font-normal">
-                  Dashboard
-                </Title>
-                <Content>
-                  <Text level={2} className="!text-black !text-lg flex ">
-                    <img className="mr-2 !w-12" src={AdminIcon} />
-                    Hello Logonathan B, have a great day!
-                  </Text>
-                </Content>
-              </Content>
-              <Content className=" bg-[#ffff] p-3 mr-5 shadow-sm rounded-md">
-                <p className="!text-[#cdcdcd] text-lg ">
-                  Total sales this month
-                </p>
-                <Text className="text-xl !text-black">$ 126,560</Text>
-                <Divider plain />
-                <Text className="font-semibold"> Daily Sales $12,423</Text>
-              </Content>
-              <Content className=" bg-[#ffff] p-3 mr-5 shadow-sm rounded-md">
-                <div>
-                  <Text className="text-lg !text-[#cdcdcd]">Total Stores</Text>
-                </div>
-                <Text className="text-xl !text-black">
-                  {dashboardData &&
-                    dashboardData.store_data &&
-                    dashboardData.store_data.total_count}
-                </Text>
-                <Divider plain />
-                <Text className="text-[#7dc1ff]">View Storelist </Text>
-              </Content>
-            </Content> */}
-            {/* <Watermark content="Sample Data" fontSize={18}>
-              <Content className="mt-6">
-                <Content>
-                  <StoreGraph storeData={dashboardData.store_data} />
-                  <Content className="flex ">
-                    <Content className="!bg-white shadow-sm p-3 ">
-                      <Text className="!font-semibold text-lg">Ranking</Text>
-                      <Text className="text-slate-600"> (Previous Month)</Text>
-                      <Text
-                      className="cursor-pointer linkColor float-right font-semibold"
-                      onClick={() => navigate("/dashboard/store")}
-                    >
-                      View All
-                    </Text>
-                      <Content>
-                        <DmTabAntDesign
-                          tabType={"line"}
-                          tabBarPosition={"top"}
-                          tabData={storeTabData}
-                          handleTabChangeFunction={(value) => tabId(value)}
-                        />
-                        <Content>
-                          <DynamicTable tableComponentData={tablePropsData} />
-                        </Content>
-                        <Text
-                        className="cursor-pointer text-blue-400"
-                        onClick={() => navigate("/dashboard/store")}
-                      >
-                        Explore All Stores
-                      </Text>
-                      </Content>
-                    </Content>
-                  </Content>
-                </Content>
-                <Content className="bg-white !mt-6 p-2">
-                <div>
-                  <Text className="text-lg font-semibold p-2">
-                    Total Languages
-                  </Text>
-                </div>
-                <Text className="text-xl !text-black p-2">
-                  {dashboardData &&
-                    dashboardData.language_data &&
-                    dashboardData.language_data.total_count}
-                </Text>
-                <StoreGraph languageData={dashboardData.language_data} />
-                </Content>
-              </Content>
-            </Watermark> */}
-            {/* <Watermark content="Sample Data" fontSize={18}>
-              <Content className="p-3 shadow-sm bg-white !mt-6">
-                <SalesReportGraph />
-                <LanguageGraph languageData={dashboardData.language_data} />
-              </Content>
-            </Watermark> */}
           </Content>
         )}
       </Content>
@@ -1668,5 +1381,3 @@ const Newdashboard = () => {
 };
 
 export default Newdashboard;
-
-
