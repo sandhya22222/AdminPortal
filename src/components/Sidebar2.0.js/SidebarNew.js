@@ -39,10 +39,10 @@ const SidebarNew = () => {
   const [loadingEffect, setLoadingEffect] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
 
-    // get permissions from storage
-    const permissionValue = util.getPermissionData() || [];
-    const auth = useAuth();
-    // console.log("Permission value...", permissionValue)
+  // get permissions from storage
+  const permissionValue = util.getPermissionData() || [];
+  const auth = useAuth();
+  // console.log("Permission value...", permissionValue)
 
   const { pathname } = useLocation();
 
@@ -102,13 +102,27 @@ const SidebarNew = () => {
       navigate_to: "/dashboard/userprofile",
       show_in_menu: true,
     },
+    // {
+    //   key: "9",
+    //   icon: <img src={ViewDashboard} />,
+    //   inactive_icon: <img src={ViewDashboard} />,
+    //   label: ` ${t("labels:dashboard")}`,
+    //   navigate_to: "/dashboard/newDashboard",
+    //   show_in_menu: true,
+    // },
     {
       key: "12",
       icon: <img src={ProfileIcon} alt="userAccessControl" />,
       inactive_icon: <img src={ProfileIcon} />,
       label: `${t("labels:user_access_control")}`,
       navigate_to: `/dashboard/user-access-control/list-user-roles?tab=0&page=1&limit=${pageLimitFromENV}`,
-      show_in_menu: true,
+      show_in_menu:  !auth.isAuthenticated ||
+      (auth.isAuthenticated &&
+        permissionValue &&
+        permissionValue.length > 0 &&
+        permissionValue.includes("UI-user-access-control"))
+        ? true
+        : false,
       // children: [],
     },
     // {
@@ -219,11 +233,13 @@ const SidebarNew = () => {
                   // backgroundColor: "#7d3192",
                 }}
               >
-                {myData.map((item) => (
-                  item.show_in_menu ?
+                {myData.map((item) =>
+                  item.show_in_menu ? (
                     <Menu.Item
                       icon={
-                        selectedItem === item.key ? item.icon : item.inactive_icon
+                        selectedItem === item.key
+                          ? item.icon
+                          : item.inactive_icon
                       }
                       key={item.key}
                       // className="!bg-[var(--mp-brand-color)] !hover:bg-[var(--mp-brand-color)]"
@@ -236,8 +252,9 @@ const SidebarNew = () => {
                       ) : (
                         <span className="text-[#ffffffde]"> {item.label} </span>
                       )}
-                    </Menu.Item> : null
-                ))}
+                    </Menu.Item>
+                  ) : null
+                )}
               </Menu>
             </Spin>
             <Content className="justify-center self-center px-[8px] items-center">

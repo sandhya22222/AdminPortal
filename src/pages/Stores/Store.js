@@ -12,6 +12,10 @@ import {
   Spin,
   Tooltip,
   Typography,
+  Radio,
+  Tabs,
+  Progress,
+  InputNumber,
 } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import validator from "validator";
@@ -21,6 +25,7 @@ import {
   MdBusiness,
   MdDomainDisabled,
   MdSettings,
+  MdPlusOne,
 } from "react-icons/md";
 import {
   Link,
@@ -44,6 +49,9 @@ import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import Status from "./Status";
 import MarketplaceToaster from "../../util/marketplaceToaster";
 import util from "../../util/common";
+import { Table } from "reactstrap";
+import axios from "axios";
+import { useAuth } from "react-oidc-context";
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
@@ -60,10 +68,17 @@ const storeNameMinLength = process.env.REACT_APP_STORE_NAME_MIN_LENGTH;
 const storeNameMaxLength = process.env.REACT_APP_STORE_NAME_MAX_LENGTH;
 const userNameMinLength = process.env.REACT_APP_USERNAME_MIN_LENGTH;
 const userNameMaxLength = process.env.REACT_APP_USERNAME_MAX_LENGTH;
+const storeLimitApi = process.env.REACT_APP_STORE_PLATFORM_LIMIT_API;
+const dm4sightAnalysisCountAPI =
+  process.env.REACT_APP_4SIGHT_GETANALYSISCOUNT_API;
+const dm4sightClientID = process.env.REACT_APP_4SIGHT_CLIENT_ID;
+const dm4sightBaseURL = process.env.REACT_APP_4SIGHT_BASE_URL;
+const currentUserDetailsAPI = process.env.REACT_APP_USER_PROFILE_API;
 
 const Stores = () => {
   const { t } = useTranslation();
   usePageTitle(t("labels:stores"));
+  const instance = axios.create();
 
   const params = useParams();
   const navigate = useNavigate();
@@ -105,6 +120,11 @@ const Stores = () => {
   const [showStoreErrorMessage, setShowStoreErrorMessage] = useState(false);
   const [onChangeValues, setOnChangeValues] = useState(false);
   const [onChangeEditValues, setOnChangeEditValues] = useState(false);
+  const [currentTab, setCurrentTab] = useState(1);
+  const [storeLimitValues, setStoreLimitValues] = useState();
+  const [analysisCount, setAnalysisCount] = useState();
+  const [currentUserDetailsAPIData, setCurrentUserDetailsAPIData] = useState();
+
   // const [currentPage, setCurrentPage] = useState(
   //   params.page ? params.page.slice(5, params.page.length) : 1
   // );
@@ -116,12 +136,78 @@ const Stores = () => {
   const [searchedColumn, setSearchedColumn] = useState("");
   const [isStoreDeleting, setIsStoreDeleting] = useState(false);
   const [storeApiStatus, setStoreApiStatus] = useState();
+  const [superAdmin, setSuperAdmin] = useState(false);
   const searchInput = useRef(null);
+  const auth = useAuth();
+
+  let keyCLoak = sessionStorage.getItem("keycloakData");
+  keyCLoak = JSON.parse(keyCLoak);
+  let realmName = keyCLoak.clientId.replace(/-client$/, "");
+
+  const dm4sightHeaders = {
+    headers: {
+      token: auth.user && auth.user?.access_token,
+      realmname: realmName,
+      dmClientId: dm4sightClientID,
+      client: "admin",
+    },
+  };
+
+  const getCurrentUserDetails = () => {
+    MarketplaceServices.findAll(currentUserDetailsAPI, null, false)
+      .then((res) => {
+        console.log("get access token res", res);
+        if (
+          res.data.response_body.resource_access[
+            "dmadmin-client"
+          ].roles.includes("UI-product-admin")
+        ) {
+          setSuperAdmin(true);
+        }
+        console.log(
+          "dddddddddddddddddddddddddddddddddddddddd",
+          res.data.response_body.resource_access[
+            "dmadmin-client"
+          ].roles.includes("UI-product-admin")
+        );
+      })
+      .catch((err) => {
+        console.log("get access token err", err);
+      });
+  };
+
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
     setSearchedColumn(dataIndex);
   };
+
+  const handleRadioChange = (e) => {
+    setValue(e.target.value);
+    setRadioValue(e.target.value);
+    setSearchParams({
+      tab: e.target.value,
+      page: 1,
+      limit: parseInt(searchParams.get("limit"))
+        ? parseInt(searchParams.get("limit"))
+        : pageLimit,
+    });
+    console.log("object status", e.target.value);
+  };
+
+  const [radioValue, setRadioValue] = useState(1);
+
+  const [value, setValue] = useState(tab_id ? tab_id : 0);
+  const onChange = (e) => {
+    console.log("radio checked", e.target.value);
+    setValue(e.target.value);
+    setRadioValue(e.target.value);
+  };
+
+  useEffect(() => {
+    setRadioValue(tab_id);
+  }, []);
+
   const storeTabData = [
     {
       tabId: 0,
@@ -252,6 +338,126 @@ const Stores = () => {
         text
       ),
   });
+  useEffect(() => {
+    getCurrentUserDetails();
+  }, []);
+  useEffect(() => {
+    if (currentTab == 2) {
+      console.log("storeLimitApi", storeLimitApi);
+      MarketplaceServices.findAll(storeLimitApi)
+        .then(function (response) {
+          console.log(
+            "Server Response from store limit API: ",
+            response.data.response_body
+          );
+          setStoreLimitValues(response.data.response_body);
+        })
+        .catch((error) => {
+          // setIsLoading(false);
+          console.log("Server error from store limit API ", error.response);
+        });
+
+      instance
+        .get(dm4sightBaseURL + dm4sightAnalysisCountAPI, dm4sightHeaders)
+        .then((res) => {
+          setAnalysisCount(res.data);
+          console.log("redddd", res);
+        });
+    }
+  }, [currentTab]);
+
+  const StoreTableColumnThreshold1 = [
+    {
+      // title: `${t("labels:name")}`,
+      title: "Limits",
+      dataIndex: "limits",
+      key: "limits",
+      width: "30%",
+      render: (text) => {
+        const [limitName, limitValue, keyName] = text.split(",");
+        return (
+          <Content className="flex flex-col gap-2">
+            {limitName}
+            <Input
+              min={0}
+              type="number"
+              onChange={(e) => {
+                setValue(e.target.value);
+                updateValueByName(
+                  storeLimitValues,
+                  keyName,
+                  parseInt(e.target.value)
+                );
+              }}
+              disabled={!superAdmin}
+              className="w-28"
+              placeholder={limitValue == null ? "Unlimited" : ""}
+              value={limitValue == null || limitValue == 0 ? null : limitValue}
+            />
+          </Content>
+        );
+      },
+    },
+
+    {
+      title: "Stats",
+      dataIndex: "stats",
+      key: "stats",
+      width: "20%",
+
+      render: (text) => {
+        const [count, total] = text.split(" of ");
+        return (
+          <Content className="flex flex-col gap-2">
+            {count} of {total}
+            <Progress
+              strokeColor={"#4A2D73"}
+              className="w-24"
+              size="small"
+              percent={(count / total) * 100}
+              showInfo={false}
+            />
+          </Content>
+        );
+      },
+    },
+  ];
+
+  const StoreTableColumnThreshold2 = [
+    {
+      // title: `${t("labels:name")}`,
+      title: "Limits",
+      dataIndex: "limits",
+      key: "limits",
+      width: "30%",
+      render: (text) => {
+        const [limitName, limitValue, keyName] = text.split(",");
+        return (
+          <Content className="flex flex-col gap-2">
+            {limitName}
+            <Content>
+              <Input
+                type="number"
+                onChange={(e) => {
+                  setValue(e.target.value);
+                  updateValueByName(
+                    storeLimitValues,
+                    keyName,
+                    parseInt(e.target.value)
+                  );
+                }}
+                disabled={!superAdmin}
+                className="w-28"
+                min={0}
+                placeholder={limitValue == null ? "Unlimited" : ""}
+                value={limitValue > 0 ? limitValue : null}
+              />
+            </Content>
+          </Content>
+        );
+      },
+    },
+  ];
 
   //! table columns
   const StoreTableColumn = [
@@ -429,11 +635,42 @@ const Stores = () => {
             id: storeId,
             created_on: createdOn,
             status: statusForStores[storeStatus],
-            storeId: storeActualId
+            storeId: storeActualId,
           });
       });
     setSelectedTabTableContent(tempArray);
   };
+
+  // const getActiveInactiveData = () => {
+  //   // instance
+  //   //   .get(dm4sightBaseURL + dm4sightAnalysisCountAPI, dm4sightHeaders)
+  //     // .then((response) => {
+  //     //   console.log("resdooooo", response.data);
+
+  //       //   convert the response to table readable format
+
+  //       //   console.log(Object.entries(obj)); // [ ['foo', 'bar'], ['baz', 42] ]
+  //       // Object.entries converts key-value to array of key,value
+  //       //   key --> first value of Array
+  //       //   value ---> second value of array
+  //       // const transformedData = Object.entries(response.data.count_info).map(
+  //       //   ([key, value]) => ({
+  //       //     key: key,
+  //       //     store_name: value.name,
+  //       //     orders: value.count_order,
+  //       //     vendors: value.count_vendor,
+  //       //     products: value.count_product,
+  //       //     product_templates: value.count_template,
+  //       //   })
+  //       // );
+  //       // setTableData(transformedData);
+  //       // console.log(transformedData);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   getActiveInactiveData();
+  // });
 
   //!this useEffect for tab(initial rendering)
   useEffect(() => {
@@ -469,6 +706,142 @@ const Stores = () => {
       sorting_data: [],
     },
   };
+
+  // const StoreTableColumnThreshold = [
+  //   {
+  //     // title: `${t("labels:name")}`,
+  //     title: "Limits",
+  //     dataIndex: "limits",
+  //     key: "limits",
+  //     width: "30%",
+  //   },
+  //   {
+  //     title: "Stats",
+  //     dataIndex: "stats",
+  //     key: "stats",
+  //     width: "20%",
+  //   },
+  // ];
+  const tablePropsThreshold1 = {
+    table_header: StoreTableColumnThreshold1,
+    table_content: [
+      {
+        key: "1",
+        limits: `${t("labels:maximum_store_creation_limit")},${
+          storeLimitValues?.store_limit
+        },store_limit`,
+        stats:
+          analysisCount?.store_count + " of " + storeLimitValues?.store_limit,
+      },
+      {
+        key: "2",
+        limits: `${t("labels:maximum_language_activation_limit")},${
+          storeLimitValues?.dm_language_limit
+        },dm_language_limit`,
+        stats:
+          analysisCount?.lang_count +
+          " of " +
+          storeLimitValues?.dm_language_limit,
+      },
+      {
+        key: "3",
+        limits: `${t("labels:maximum_user_limit")},${
+          storeLimitValues?.dm_user_limit
+        },dm_user_limit`,
+        stats:
+          analysisCount?.user_count + " of " + storeLimitValues?.dm_user_limit,
+      },
+    ],
+    pagenationSettings: pagination,
+    search_settings: {
+      is_enabled: false,
+      search_title: "Search by name",
+      search_data: ["name"],
+    },
+    filter_settings: {
+      is_enabled: false,
+      filter_title: "Filter's",
+      filter_data: [],
+    },
+    sorting_settings: {
+      is_enabled: false,
+      sorting_title: "Sorting by",
+      sorting_data: [],
+    },
+  };
+
+  const tablePropsThreshold2 = {
+    table_header: StoreTableColumnThreshold2,
+    table_content: [
+      {
+        key: "1",
+
+        limits: `${t("labels:max_vendor_onboarding_limit")},${
+          storeLimitValues?.vendor_limit
+        },vendor_limit`,
+      },
+
+      {
+        key: "2",
+        limits: `${t("labels:max_customer_onboarding_limit")},${
+          storeLimitValues?.customer_limit
+        },customer_limit`,
+      },
+      {
+        key: "3",
+        limits: `${t("labels:max_product_limit")},${
+          storeLimitValues?.product_limit
+        },product_limit`,
+      },
+      {
+        key: "4",
+        limits: `${t("labels:max_order_limit")} ,${
+          storeLimitValues?.order_limit_per_day
+        },order_limit_per_day`,
+      },
+      {
+        key: "5",
+        limits: `${t("labels:max_language_limit")} ,${
+          storeLimitValues?.langauge_limit
+        },langauge_limit`,
+      },
+      {
+        key: "6",
+        limits: `${t("labels:max_product_template_limit")},${
+          storeLimitValues?.product_template_limit
+        },product_template_limit`,
+      },
+      {
+        key: "7",
+        limits: `${t("labels:max_store_user_limit")},${
+          storeLimitValues?.store_users_limit
+        },store_users_limit`,
+      },
+      {
+        key: "8",
+        limits: `${t("labels:max_vendor_user_limit")},${
+          storeLimitValues?.vendor_users_limit
+        },vendor_users_limit`,
+      },
+    ],
+    pagenationSettings: pagination,
+    search_settings: {
+      is_enabled: false,
+      search_title: "Search by name",
+      search_data: ["name"],
+    },
+    filter_settings: {
+      is_enabled: false,
+      filter_title: "Filter's",
+      filter_data: [],
+    },
+    sorting_settings: {
+      is_enabled: false,
+      sorting_title: "Sorting by",
+      sorting_data: [],
+    },
+  };
+
   //! add drawer
   const showAddDrawer = () => {
     setOpen(true);
@@ -965,6 +1338,29 @@ const Stores = () => {
       });
   };
 
+  // Function to update the value of an item based on its name
+  const updateValueByName = (data, itemName, newValue) => {
+    if (data.hasOwnProperty(itemName)) {
+      data[itemName] = newValue;
+    } else {
+      console.error(`Item with name '${itemName}' not found.`);
+    }
+  };
+
+  //! Post call for the store store limit api
+  const saveStoreLimit = () => {
+    const postBody = storeLimitValues;
+    MarketplaceServices.save(storeLimitApi, postBody)
+      .then((response) => {
+        console.log("response meeeeeeeeee", response);
+        MarketplaceToaster.showToast(response);
+      })
+      .catch((error) => {
+        console.log("Error Response From storelimit", error.response);
+        MarketplaceToaster.showToast(error.response);
+      });
+  };
+
   useEffect(() => {
     if (storeEditId) {
       var storeData =
@@ -1118,17 +1514,37 @@ const Stores = () => {
             </Title>
           }
           titleContent={
-            <Button
-              className="app-btn-primary !h-8 !hover:h-[32px]"
-              onClick={showAddDrawer}
-            >
-              {t("labels:add_store")}
-            </Button>
+            currentTab == 1 ? (
+              <Button
+                className="app-btn-primary !h-8 !hover:h-[32px]"
+                onClick={showAddDrawer}
+              >
+                {t("labels:add_store")}
+              </Button>
+            ) : null
           }
           headerContent={
             !isLoading && (
               <Content className="!h-10 !mt-7">
-                <DmTabAntDesign
+                <Tabs
+                  defaultActiveKey={currentTab}
+                  items={[
+                    {
+                      key: "1",
+                      label: "My Stores",
+                    },
+                    {
+                      key: "2",
+                      label: "Threshold Configuration",
+                    },
+                  ]}
+                  onChange={(key) => {
+                    setCurrentTab(key);
+                    sessionStorage.setItem("currentStoretab", key);
+                  }}
+                />
+
+                {/* <DmTabAntDesign
                   tabData={storeTabData}
                   handleTabChangeFunction={handleTabChangeStore}
                   activeKey={
@@ -1139,7 +1555,7 @@ const Stores = () => {
                   // totalItemsCount={countForStore}
                   tabType={"line"}
                   tabBarPosition={"top"}
-                />
+                /> */}
               </Content>
             )
           }
@@ -1535,15 +1951,48 @@ const Stores = () => {
         ) : (
           <Content className="">
             <Content>
-              {storeApiData && storeApiData.length > 0 ? (
-                <DynamicTable tableComponentData={tablePropsData} />
+              {currentTab == 1 && storeApiData && storeApiData.length > 0 ? (
+                <Content className="bg-white ">
+                  <Radio.Group
+                    className="mt-3 mr-4 flex float-right"
+                    optionType="button"
+                    onChange={handleRadioChange}
+                    value={value}
+                  >
+                    <Radio value={0}>All</Radio>
+                    <Radio value={1}>Active</Radio>
+                    <Radio value={2}>Inactive</Radio>
+                  </Radio.Group>
+
+                  <DynamicTable tableComponentData={tablePropsData} />
+                </Content>
+              ) : currentTab == 2 ? (
+                <>
+                  <Content>
+                    <Title level={5}>Account Restrictions</Title>
+                    <DynamicTable tableComponentData={tablePropsThreshold1} />
+                  </Content>
+                  <Content>
+                    <Title level={5}>Store Restrictions</Title>
+                    <DynamicTable tableComponentData={tablePropsThreshold2} />
+                  </Content>
+                  <Content className="flex gap-2">
+                    <Button
+                      className={"app-btn-primary"}
+                      onClick={saveStoreLimit}
+                    >
+                      Save
+                    </Button>
+                    {/* <Button onClick={{}}>Discard</Button> */}
+                  </Content>
+                </>
               ) : (
                 <Content className="!mt-[1.7rem] !text-center bg-white p-3 !rounded-md">
                   {t("messages:no_data_available")}
                 </Content>
               )}
             </Content>
-            {countForStore && countForStore >= pageLimit ? (
+            {currentTab == 1 && countForStore && countForStore >= pageLimit ? (
               <Content className=" grid justify-items-end">
                 <DmPagination
                   currentPage={
