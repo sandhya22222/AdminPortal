@@ -15,6 +15,7 @@ import {
   Radio,
   Tabs,
   Progress,
+  InputNumber,
 } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import validator from "validator";
@@ -24,6 +25,7 @@ import {
   MdBusiness,
   MdDomainDisabled,
   MdSettings,
+  MdPlusOne,
 } from "react-icons/md";
 import {
   Link,
@@ -49,6 +51,7 @@ import MarketplaceToaster from "../../util/marketplaceToaster";
 import util from "../../util/common";
 import { Table } from "reactstrap";
 import axios from "axios";
+import { useAuth } from "react-oidc-context";
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
@@ -66,9 +69,11 @@ const storeNameMaxLength = process.env.REACT_APP_STORE_NAME_MAX_LENGTH;
 const userNameMinLength = process.env.REACT_APP_USERNAME_MIN_LENGTH;
 const userNameMaxLength = process.env.REACT_APP_USERNAME_MAX_LENGTH;
 const storeLimitApi = process.env.REACT_APP_STORE_PLATFORM_LIMIT_API;
-
 const dm4sightAnalysisCountAPI =
   process.env.REACT_APP_4SIGHT_GETANALYSISCOUNT_API;
+const dm4sightClientID = process.env.REACT_APP_4SIGHT_CLIENT_ID;
+const dm4sightBaseURL = process.env.REACT_APP_4SIGHT_BASE_URL;
+const currentUserDetailsAPI = process.env.REACT_APP_USER_PROFILE_API;
 
 const Stores = () => {
   const { t } = useTranslation();
@@ -116,6 +121,9 @@ const Stores = () => {
   const [onChangeValues, setOnChangeValues] = useState(false);
   const [onChangeEditValues, setOnChangeEditValues] = useState(false);
   const [currentTab, setCurrentTab] = useState(1);
+  const [storeLimitValues, setStoreLimitValues] = useState();
+  const [analysisCount, setAnalysisCount] = useState();
+  const [currentUserDetailsAPIData, setCurrentUserDetailsAPIData] = useState();
 
   // const [currentPage, setCurrentPage] = useState(
   //   params.page ? params.page.slice(5, params.page.length) : 1
@@ -128,7 +136,46 @@ const Stores = () => {
   const [searchedColumn, setSearchedColumn] = useState("");
   const [isStoreDeleting, setIsStoreDeleting] = useState(false);
   const [storeApiStatus, setStoreApiStatus] = useState();
+  const [superAdmin, setSuperAdmin] = useState(false);
   const searchInput = useRef(null);
+  const auth = useAuth();
+
+  let keyCLoak = sessionStorage.getItem("keycloakData");
+  keyCLoak = JSON.parse(keyCLoak);
+  let realmName = keyCLoak.clientId.replace(/-client$/, "");
+
+  const dm4sightHeaders = {
+    headers: {
+      token: auth.user && auth.user?.access_token,
+      realmname: realmName,
+      dmClientId: dm4sightClientID,
+      client: "admin",
+    },
+  };
+
+  const getCurrentUserDetails = () => {
+    MarketplaceServices.findAll(currentUserDetailsAPI, null, false)
+      .then((res) => {
+        console.log("get access token res", res);
+        if (
+          res.data.response_body.resource_access[
+            "dmadmin-client"
+          ].roles.includes("UI-product-admin")
+        ) {
+          setSuperAdmin(true);
+        }
+        console.log(
+          "dddddddddddddddddddddddddddddddddddddddd",
+          res.data.response_body.resource_access[
+            "dmadmin-client"
+          ].roles.includes("UI-product-admin")
+        );
+      })
+      .catch((err) => {
+        console.log("get access token err", err);
+      });
+  };
+
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -158,9 +205,9 @@ const Stores = () => {
   };
 
   useEffect(() => {
-    console.log("tbid", tab_id);
     setRadioValue(tab_id);
   }, []);
+
   const storeTabData = [
     {
       tabId: 0,
@@ -291,73 +338,31 @@ const Stores = () => {
         text
       ),
   });
-
-  //! get call of store limit API
-  const findAllStoreLimit = () => {
-    MarketplaceServices.findAll("/ams/rest/v3/store-limit")
-      .then(function (response) {
-        console.log(
-          "Server Response from store limit API: ",
-          response.data.response_body[0]
-        );
-        console.log("rexxxx", response);
-        // setIsLoading(false);
-        // if (response && response.data.response_body) {
-        //   let storeLimitResponse = response.data.response_body[0];
-        //   let copyofStorelimit = { ...storeLimitValues };
-        //   copyofStorelimit.dm_language_limit =
-        //     storeLimitResponse.dm_language_limit;
-        //   copyofStorelimit.dm_user_limit = storeLimitResponse.dm_user_limit;
-        //   copyofStorelimit.store_limit = storeLimitResponse.store_limit;
-        //   setStoreLimitValues(copyofStorelimit);
-        // }
-      })
-      .catch((error) => {
-        // setIsLoading(false);
-        console.log("Server error from store limit API ", error.response);
-      });
-  };
-
-  const [storeLimitValues, setStoreLimitValues] = useState();
-  const [analysisCount, setAnalysisCount] = useState();
-  const dm4sightBaseURL = process.env.REACT_APP_4SIGHT_BASE_URL;
-
+  useEffect(() => {
+    getCurrentUserDetails();
+  }, []);
   useEffect(() => {
     if (currentTab == 2) {
       console.log("storeLimitApi", storeLimitApi);
-      MarketplaceServices.findAll("/ams/rest/v3/store-limit")
+      MarketplaceServices.findAll(storeLimitApi)
         .then(function (response) {
           console.log(
             "Server Response from store limit API: ",
             response.data.response_body
           );
-          console.log("rexxxx", response.data.response_body);
-          // setIsLoading(false);
-          // if (response && response.data.response_body) {
-          //   let storeLimitResponse = response.data.response_body[0];
-          //   let copyofStorelimit = { ...storeLimitValues };
-          //   copyofStorelimit.dm_language_limit =
-          //     storeLimitResponse.dm_language_limit;
-          //   copyofStorelimit.dm_user_limit = storeLimitResponse.dm_user_limit;
-          //   copyofStorelimit.store_limit = storeLimitResponse.store_limit;
           setStoreLimitValues(response.data.response_body);
-
-          instance
-            .get(
-              dm4sightBaseURL + dm4sightAnalysisCountAPI
-              //   dm4sightHeaders
-            )
-            .then((res) => {
-              setAnalysisCount(res.data);
-              console.log("redddd", res);
-            });
-          // }
         })
         .catch((error) => {
           // setIsLoading(false);
           console.log("Server error from store limit API ", error.response);
         });
-      // findAllStoreLimit();
+
+      instance
+        .get(dm4sightBaseURL + dm4sightAnalysisCountAPI, dm4sightHeaders)
+        .then((res) => {
+          setAnalysisCount(res.data);
+          console.log("redddd", res);
+        });
     }
   }, [currentTab]);
 
@@ -369,11 +374,26 @@ const Stores = () => {
       key: "limits",
       width: "30%",
       render: (text) => {
-        const [limitName, value] = text.split(",");
+        const [limitName, limitValue, keyName] = text.split(",");
         return (
           <Content className="flex flex-col gap-2">
             {limitName}
-            <Input className="w-24" value={value == "null" ? 0 : value} />
+            <Input
+              min={0}
+              type="number"
+              onChange={(e) => {
+                setValue(e.target.value);
+                updateValueByName(
+                  storeLimitValues,
+                  keyName,
+                  parseInt(e.target.value)
+                );
+              }}
+              disabled={!superAdmin}
+              className="w-28"
+              placeholder={limitValue == null ? "Unlimited" : ""}
+              value={limitValue == null || limitValue == 0 ? null : limitValue}
+            />
           </Content>
         );
       },
@@ -411,11 +431,28 @@ const Stores = () => {
       key: "limits",
       width: "30%",
       render: (text) => {
-        const [limitName, value] = text.split(",");
+        const [limitName, limitValue, keyName] = text.split(",");
         return (
           <Content className="flex flex-col gap-2">
             {limitName}
-            <Input className="w-24" value={value == "null" ? 0 : value} />
+            <Content>
+              <Input
+                type="number"
+                onChange={(e) => {
+                  setValue(e.target.value);
+                  updateValueByName(
+                    storeLimitValues,
+                    keyName,
+                    parseInt(e.target.value)
+                  );
+                }}
+                disabled={!superAdmin}
+                className="w-28"
+                min={0}
+                placeholder={limitValue == null ? "Unlimited" : ""}
+                value={limitValue > 0 ? limitValue : null}
+              />
+            </Content>
           </Content>
         );
       },
@@ -604,39 +641,36 @@ const Stores = () => {
     setSelectedTabTableContent(tempArray);
   };
 
-  const getActiveInactiveData = () => {
-    instance
-      .get(
-        dm4sightBaseURL + dm4sightAnalysisCountAPI
-        //   dm4sightHeaders
-      )
-      .then((response) => {
-        console.log("resdooooo", response.data);
+  // const getActiveInactiveData = () => {
+  //   // instance
+  //   //   .get(dm4sightBaseURL + dm4sightAnalysisCountAPI, dm4sightHeaders)
+  //     // .then((response) => {
+  //     //   console.log("resdooooo", response.data);
 
-        //   convert the response to table readable format
+  //       //   convert the response to table readable format
 
-        //   console.log(Object.entries(obj)); // [ ['foo', 'bar'], ['baz', 42] ]
-        // Object.entries converts key-value to array of key,value
-        //   key --> first value of Array
-        //   value ---> second value of array
-        // const transformedData = Object.entries(response.data.count_info).map(
-        //   ([key, value]) => ({
-        //     key: key,
-        //     store_name: value.name,
-        //     orders: value.count_order,
-        //     vendors: value.count_vendor,
-        //     products: value.count_product,
-        //     product_templates: value.count_template,
-        //   })
-        // );
-        // setTableData(transformedData);
-        // console.log(transformedData);
-      });
-  };
+  //       //   console.log(Object.entries(obj)); // [ ['foo', 'bar'], ['baz', 42] ]
+  //       // Object.entries converts key-value to array of key,value
+  //       //   key --> first value of Array
+  //       //   value ---> second value of array
+  //       // const transformedData = Object.entries(response.data.count_info).map(
+  //       //   ([key, value]) => ({
+  //       //     key: key,
+  //       //     store_name: value.name,
+  //       //     orders: value.count_order,
+  //       //     vendors: value.count_vendor,
+  //       //     products: value.count_product,
+  //       //     product_templates: value.count_template,
+  //       //   })
+  //       // );
+  //       // setTableData(transformedData);
+  //       // console.log(transformedData);
+  //     });
+  // };
 
-  useEffect(() => {
-    getActiveInactiveData();
-  });
+  // useEffect(() => {
+  //   getActiveInactiveData();
+  // });
 
   //!this useEffect for tab(initial rendering)
   useEffect(() => {
@@ -693,13 +727,17 @@ const Stores = () => {
     table_content: [
       {
         key: "1",
-        limits: `Maximum Store Creation Limit,${storeLimitValues?.store_limit}`,
+        limits: `${t("labels:maximum_store_creation_limit")},${
+          storeLimitValues?.store_limit
+        },store_limit`,
         stats:
           analysisCount?.store_count + " of " + storeLimitValues?.store_limit,
       },
       {
         key: "2",
-        limits: `Maximum Language Activation Limit,${storeLimitValues?.dm_language_limit}`,
+        limits: `${t("labels:maximum_language_activation_limit")},${
+          storeLimitValues?.dm_language_limit
+        },dm_language_limit`,
         stats:
           analysisCount?.lang_count +
           " of " +
@@ -707,7 +745,9 @@ const Stores = () => {
       },
       {
         key: "3",
-        limits: `Maximum User Limit,${storeLimitValues?.dm_user_limit}`,
+        limits: `${t("labels:maximum_user_limit")},${
+          storeLimitValues?.dm_user_limit
+        },dm_user_limit`,
         stats:
           analysisCount?.user_count + " of " + storeLimitValues?.dm_user_limit,
       },
@@ -735,43 +775,53 @@ const Stores = () => {
     table_content: [
       {
         key: "1",
-        limits: `Maximum Vendor Onboarding Limit,${storeLimitValues?.vendor_limit}`,
-        stats: 6,
+
+        limits: `${t("labels:max_vendor_onboarding_limit")},${
+          storeLimitValues?.vendor_limit
+        },vendor_limit`,
       },
+
       {
         key: "2",
-        limits: `Maximum Customer Onboarding Limit,${storeLimitValues?.customer_limit}`,
-        stats: 6,
+        limits: `${t("labels:max_customer_onboarding_limit")},${
+          storeLimitValues?.customer_limit
+        },customer_limit`,
       },
       {
         key: "3",
-        limits: `Maximum Product Limit,${storeLimitValues?.product_limit}`,
-        stats: 9,
+        limits: `${t("labels:max_product_limit")},${
+          storeLimitValues?.product_limit
+        },product_limit`,
       },
       {
         key: "4",
-        limits: `Maximum Order Limit perday ,${storeLimitValues?.order_limit_per_day}`,
-        stats: 9,
+        limits: `${t("labels:max_order_limit")} ,${
+          storeLimitValues?.order_limit_per_day
+        },order_limit_per_day`,
       },
       {
         key: "5",
-        limits: `Maximum Language Activation Limit,${storeLimitValues?.langauge_limit}`,
-        stats: 9,
+        limits: `${t("labels:max_language_limit")} ,${
+          storeLimitValues?.langauge_limit
+        },langauge_limit`,
       },
       {
         key: "6",
-        limits: `Maximum Product Template Limit,${storeLimitValues?.product_template_limit}`,
-        stats: 9,
+        limits: `${t("labels:max_product_template_limit")},${
+          storeLimitValues?.product_template_limit
+        },product_template_limit`,
       },
       {
         key: "7",
-        limits: `Maximum Store Users Limit,${storeLimitValues?.store_users_limit}`,
-        stats: 9,
+        limits: `${t("labels:max_store_user_limit")},${
+          storeLimitValues?.store_users_limit
+        },store_users_limit`,
       },
       {
         key: "8",
-        limits: `Maximum Vendor Users Limit,${storeLimitValues?.vendor_users_limit}`,
-        stats: 9,
+        limits: `${t("labels:max_vendor_user_limit")},${
+          storeLimitValues?.vendor_users_limit
+        },vendor_users_limit`,
       },
     ],
     pagenationSettings: pagination,
@@ -1288,6 +1338,29 @@ const Stores = () => {
       });
   };
 
+  // Function to update the value of an item based on its name
+  const updateValueByName = (data, itemName, newValue) => {
+    if (data.hasOwnProperty(itemName)) {
+      data[itemName] = newValue;
+    } else {
+      console.error(`Item with name '${itemName}' not found.`);
+    }
+  };
+
+  //! Post call for the store store limit api
+  const saveStoreLimit = () => {
+    const postBody = storeLimitValues;
+    MarketplaceServices.save(storeLimitApi, postBody)
+      .then((response) => {
+        console.log("response meeeeeeeeee", response);
+        MarketplaceToaster.showToast(response);
+      })
+      .catch((error) => {
+        console.log("Error Response From storelimit", error.response);
+        MarketplaceToaster.showToast(error.response);
+      });
+  };
+
   useEffect(() => {
     if (storeEditId) {
       var storeData =
@@ -1414,39 +1487,6 @@ const Stores = () => {
     }
   };
 
-  const dataSource = [
-    {
-      key: "1",
-      name: "Mike",
-      age: 32,
-      address: "10 Downing Street",
-    },
-    {
-      key: "2",
-      name: "John",
-      age: 42,
-      address: "10 Downing Street",
-    },
-  ];
-
-  const columns = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Age",
-      dataIndex: "age",
-      key: "age",
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
-    },
-  ];
-
   return (
     <Content className="">
       <StoreModal
@@ -1474,18 +1514,20 @@ const Stores = () => {
             </Title>
           }
           titleContent={
-            <Button
-              className="app-btn-primary !h-8 !hover:h-[32px]"
-              onClick={showAddDrawer}
-            >
-              {t("labels:add_store")}
-            </Button>
+            currentTab == 1 ? (
+              <Button
+                className="app-btn-primary !h-8 !hover:h-[32px]"
+                onClick={showAddDrawer}
+              >
+                {t("labels:add_store")}
+              </Button>
+            ) : null
           }
           headerContent={
             !isLoading && (
               <Content className="!h-10 !mt-7">
                 <Tabs
-                  defaultActiveKey="1"
+                  defaultActiveKey={currentTab}
                   items={[
                     {
                       key: "1",
@@ -1496,7 +1538,10 @@ const Stores = () => {
                       label: "Threshold Configuration",
                     },
                   ]}
-                  onChange={(key) => setCurrentTab(key)}
+                  onChange={(key) => {
+                    setCurrentTab(key);
+                    sessionStorage.setItem("currentStoretab", key);
+                  }}
                 />
 
                 {/* <DmTabAntDesign
@@ -1924,12 +1969,21 @@ const Stores = () => {
               ) : currentTab == 2 ? (
                 <>
                   <Content>
-                    <Title level={5}>Threshold 1</Title>
+                    <Title level={5}>Account Restrictions</Title>
                     <DynamicTable tableComponentData={tablePropsThreshold1} />
                   </Content>
                   <Content>
-                    <Title level={5}>Threshold 2</Title>
+                    <Title level={5}>Store Restrictions</Title>
                     <DynamicTable tableComponentData={tablePropsThreshold2} />
+                  </Content>
+                  <Content className="flex gap-2">
+                    <Button
+                      className={"app-btn-primary"}
+                      onClick={saveStoreLimit}
+                    >
+                      Save
+                    </Button>
+                    {/* <Button onClick={{}}>Discard</Button> */}
                   </Content>
                 </>
               ) : (
