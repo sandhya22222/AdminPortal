@@ -1368,7 +1368,7 @@ const StoreSettings = () => {
         return (
           <Content className="flex flex-col gap-2">
             {limitName}
-            <Input className="w-24" value={value == "null" ? 0 : value} />
+            <Input disabled={true} className="w-24" value={value == "null" ? 0 : value} />
           </Content>
         );
       },
@@ -1438,37 +1438,37 @@ const StoreSettings = () => {
       // },
       {
         key: "4",
-        limits: `Maximum Vendor Onboarding Limit,${storeLimitValues?.vendor_limit}`,
+        limits: `${t("labels:max_vendor_onboarding_limit")},${storeLimitValues?.vendor_limit}`,
         stats: analysisCount?.vendor_count + " of " + storeLimitValues?.vendor_limit
       },
       {
         key: "5",
-        limits: `Maximum Customer Onboarding Limit,${storeLimitValues?.customer_limit}`,
+        limits: `${t("labels:max_customer_onboarding_limit")},${storeLimitValues?.customer_limit}`,
         stats: analysisCount?.customer_count + " of " + storeLimitValues?.customer_limit,
       },
       {
         key: "6",
-        limits: `Maximum Product Limit,${storeLimitValues?.product_limit}`,
+        limits: `${t("labels:max_product_limit")},${storeLimitValues?.product_limit}`,
         stats: analysisCount?.product_count + " of " + storeLimitValues?.product_limit,
       },
       {
         key: "7",
-        limits: `Maximum Order Limit perday ,${storeLimitValues?.order_limit_per_day}`,
+        limits: `${t("labels:max_order_limit")},${storeLimitValues?.order_limit_per_day}`,
         stats: analysisCount?.order_count + " of " + storeLimitValues?.order_limit_per_day,
       },
       {
         key: "8",
-        limits: `Maximum Language Activation Limit,${storeLimitValues?.langauge_limit}`,
+        limits: `${t("labels:max_language_limit")},${storeLimitValues?.langauge_limit}`,
         stats: analysisCount?.lang_count + " of " + storeLimitValues?.langauge_limit,
       },
       {
         key: "9",
-        limits: `Maximum Product Template Limit,${storeLimitValues?.product_template_limit}`,
+        limits: `${t("labels:max_product_template_limit")},${storeLimitValues?.product_template_limit}`,
         stats: analysisCount?.prod_temp_count + " of " + storeLimitValues?.product_template_limit,
       },
       {
         key: "10",
-        limits: `Maximum Store Users Limit,${storeLimitValues?.store_users_limit}`,
+        limits: `${t("labels:max_store_user_limit")},${storeLimitValues?.store_users_limit}`,
         stats: analysisCount?.store_user_count + " of " + storeLimitValues?.store_users_limit,
       },
       // {

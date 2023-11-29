@@ -170,5 +170,12 @@
   "total": "Total",
   "maximum_store_creation_limit": "Maximum Store Creation Limit",
   "maximum_language_activation_limit": "Maximum Language Activation Limit",
-  "maximum_user_limit": "Maximum User Limit"
+  "maximum_user_limit": "Maximum User Limit",
+  "max_vendor_onboarding_limit": "Maximum Vendor Onboarding Limit",
+  "max_customer_onboarding_limit": "Maximum Customer Onboarding Limit",
+  "max_product_limit": "Maximum Product Limit",
+  "max_order_limit": "Maximum Order Limit perday ",
+  "max_language_limit": "Maximum Language Activation Limit",
+  "max_product_template_limit": "Maximum Product Template Limit",
+  "max_store_user_limit": "Maximum Store Users Limit"
 }

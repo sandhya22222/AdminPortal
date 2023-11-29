@@ -116,7 +116,13 @@ const SidebarNew = () => {
       inactive_icon: <img src={ProfileIcon} />,
       label: `${t("labels:user_access_control")}`,
       navigate_to: `/dashboard/user-access-control/list-user-roles?tab=0&page=1&limit=${pageLimitFromENV}`,
-      show_in_menu: true,
+      show_in_menu:  !auth.isAuthenticated ||
+      (auth.isAuthenticated &&
+        permissionValue &&
+        permissionValue.length > 0 &&
+        permissionValue.includes("UI-user-access-control"))
+        ? true
+        : false,
       // children: [],
     },
     // {
