@@ -269,7 +269,9 @@ const CreateUsers = () => {
       dataObject["lastname"] = lastName;
     }
     dataObject["email"] = emailId;
-    dataObject["groups_mapping"] = selectRole;
+    if (selectRole) {
+    dataObject["groups_mapping"] = [selectRole];
+    }
     MarketplaceServices.update(userAPI, dataObject, {
       user_name: userName
     })
