@@ -49,6 +49,7 @@ import MarketplaceToaster from "../../util/marketplaceToaster";
 import util from "../../util/common";
 import { Table } from "reactstrap";
 import axios from "axios";
+import { useAuth } from "react-oidc-context";
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
@@ -66,9 +67,10 @@ const storeNameMaxLength = process.env.REACT_APP_STORE_NAME_MAX_LENGTH;
 const userNameMinLength = process.env.REACT_APP_USERNAME_MIN_LENGTH;
 const userNameMaxLength = process.env.REACT_APP_USERNAME_MAX_LENGTH;
 const storeLimitApi = process.env.REACT_APP_STORE_PLATFORM_LIMIT_API;
-
 const dm4sightAnalysisCountAPI =
   process.env.REACT_APP_4SIGHT_GETANALYSISCOUNT_API;
+const dm4sightClientID = process.env.REACT_APP_4SIGHT_CLIENT_ID;
+const dm4sightBaseURL = process.env.REACT_APP_4SIGHT_BASE_URL;
 
 const Stores = () => {
   const { t } = useTranslation();
@@ -116,6 +118,8 @@ const Stores = () => {
   const [onChangeValues, setOnChangeValues] = useState(false);
   const [onChangeEditValues, setOnChangeEditValues] = useState(false);
   const [currentTab, setCurrentTab] = useState(1);
+  const [storeLimitValues, setStoreLimitValues] = useState();
+  const [analysisCount, setAnalysisCount] = useState();
 
   // const [currentPage, setCurrentPage] = useState(
   //   params.page ? params.page.slice(5, params.page.length) : 1
@@ -129,6 +133,21 @@ const Stores = () => {
   const [isStoreDeleting, setIsStoreDeleting] = useState(false);
   const [storeApiStatus, setStoreApiStatus] = useState();
   const searchInput = useRef(null);
+  const auth = useAuth();
+
+  let keyCLoak = sessionStorage.getItem("keycloakData");
+  keyCLoak = JSON.parse(keyCLoak);
+  let realmName = keyCLoak.clientId.replace(/-client$/, "");
+
+  const dm4sightHeaders = {
+    headers: {
+      token: auth.user && auth.user?.access_token,
+      realmname: realmName,
+      dmClientId: dm4sightClientID,
+      client: "admin",
+    },
+  };
+
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -158,9 +177,9 @@ const Stores = () => {
   };
 
   useEffect(() => {
-    console.log("tbid", tab_id);
     setRadioValue(tab_id);
   }, []);
+
   const storeTabData = [
     {
       tabId: 0,
@@ -292,72 +311,29 @@ const Stores = () => {
       ),
   });
 
-  //! get call of store limit API
-  const findAllStoreLimit = () => {
-    MarketplaceServices.findAll("/ams/rest/v3/store-limit")
-      .then(function (response) {
-        console.log(
-          "Server Response from store limit API: ",
-          response.data.response_body[0]
-        );
-        console.log("rexxxx", response);
-        // setIsLoading(false);
-        // if (response && response.data.response_body) {
-        //   let storeLimitResponse = response.data.response_body[0];
-        //   let copyofStorelimit = { ...storeLimitValues };
-        //   copyofStorelimit.dm_language_limit =
-        //     storeLimitResponse.dm_language_limit;
-        //   copyofStorelimit.dm_user_limit = storeLimitResponse.dm_user_limit;
-        //   copyofStorelimit.store_limit = storeLimitResponse.store_limit;
-        //   setStoreLimitValues(copyofStorelimit);
-        // }
-      })
-      .catch((error) => {
-        // setIsLoading(false);
-        console.log("Server error from store limit API ", error.response);
-      });
-  };
-
-  const [storeLimitValues, setStoreLimitValues] = useState();
-  const [analysisCount, setAnalysisCount] = useState();
-  const dm4sightBaseURL = process.env.REACT_APP_4SIGHT_BASE_URL;
-
   useEffect(() => {
     if (currentTab == 2) {
       console.log("storeLimitApi", storeLimitApi);
-      MarketplaceServices.findAll("/ams/rest/v3/store-limit")
+      MarketplaceServices.findAll(storeLimitApi)
         .then(function (response) {
           console.log(
             "Server Response from store limit API: ",
             response.data.response_body
           );
-          console.log("rexxxx", response.data.response_body);
-          // setIsLoading(false);
-          // if (response && response.data.response_body) {
-          //   let storeLimitResponse = response.data.response_body[0];
-          //   let copyofStorelimit = { ...storeLimitValues };
-          //   copyofStorelimit.dm_language_limit =
-          //     storeLimitResponse.dm_language_limit;
-          //   copyofStorelimit.dm_user_limit = storeLimitResponse.dm_user_limit;
-          //   copyofStorelimit.store_limit = storeLimitResponse.store_limit;
+
           setStoreLimitValues(response.data.response_body);
 
           instance
-            .get(
-              dm4sightBaseURL + dm4sightAnalysisCountAPI
-              //   dm4sightHeaders
-            )
+            .get(dm4sightBaseURL + dm4sightAnalysisCountAPI, dm4sightHeaders)
             .then((res) => {
               setAnalysisCount(res.data);
               console.log("redddd", res);
             });
-          // }
         })
         .catch((error) => {
           // setIsLoading(false);
           console.log("Server error from store limit API ", error.response);
         });
-      // findAllStoreLimit();
     }
   }, [currentTab]);
 
@@ -415,7 +391,11 @@ const Stores = () => {
         return (
           <Content className="flex flex-col gap-2">
             {limitName}
-            <Input className="w-24" value={value == "null" ? 0 : value} />
+            <Input
+              className="w-24"
+              placeholder="Unlimited"
+              value={value == "null" ? null : value}
+            />
           </Content>
         );
       },
@@ -604,39 +584,36 @@ const Stores = () => {
     setSelectedTabTableContent(tempArray);
   };
 
-  const getActiveInactiveData = () => {
-    instance
-      .get(
-        dm4sightBaseURL + dm4sightAnalysisCountAPI
-        //   dm4sightHeaders
-      )
-      .then((response) => {
-        console.log("resdooooo", response.data);
+  // const getActiveInactiveData = () => {
+  //   // instance
+  //   //   .get(dm4sightBaseURL + dm4sightAnalysisCountAPI, dm4sightHeaders)
+  //     // .then((response) => {
+  //     //   console.log("resdooooo", response.data);
 
-        //   convert the response to table readable format
+  //       //   convert the response to table readable format
 
-        //   console.log(Object.entries(obj)); // [ ['foo', 'bar'], ['baz', 42] ]
-        // Object.entries converts key-value to array of key,value
-        //   key --> first value of Array
-        //   value ---> second value of array
-        // const transformedData = Object.entries(response.data.count_info).map(
-        //   ([key, value]) => ({
-        //     key: key,
-        //     store_name: value.name,
-        //     orders: value.count_order,
-        //     vendors: value.count_vendor,
-        //     products: value.count_product,
-        //     product_templates: value.count_template,
-        //   })
-        // );
-        // setTableData(transformedData);
-        // console.log(transformedData);
-      });
-  };
+  //       //   console.log(Object.entries(obj)); // [ ['foo', 'bar'], ['baz', 42] ]
+  //       // Object.entries converts key-value to array of key,value
+  //       //   key --> first value of Array
+  //       //   value ---> second value of array
+  //       // const transformedData = Object.entries(response.data.count_info).map(
+  //       //   ([key, value]) => ({
+  //       //     key: key,
+  //       //     store_name: value.name,
+  //       //     orders: value.count_order,
+  //       //     vendors: value.count_vendor,
+  //       //     products: value.count_product,
+  //       //     product_templates: value.count_template,
+  //       //   })
+  //       // );
+  //       // setTableData(transformedData);
+  //       // console.log(transformedData);
+  //     });
+  // };
 
-  useEffect(() => {
-    getActiveInactiveData();
-  });
+  // useEffect(() => {
+  //   getActiveInactiveData();
+  // });
 
   //!this useEffect for tab(initial rendering)
   useEffect(() => {
@@ -1414,39 +1391,6 @@ const Stores = () => {
     }
   };
 
-  const dataSource = [
-    {
-      key: "1",
-      name: "Mike",
-      age: 32,
-      address: "10 Downing Street",
-    },
-    {
-      key: "2",
-      name: "John",
-      age: 42,
-      address: "10 Downing Street",
-    },
-  ];
-
-  const columns = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Age",
-      dataIndex: "age",
-      key: "age",
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
-    },
-  ];
-
   return (
     <Content className="">
       <StoreModal
@@ -1474,18 +1418,20 @@ const Stores = () => {
             </Title>
           }
           titleContent={
-            <Button
-              className="app-btn-primary !h-8 !hover:h-[32px]"
-              onClick={showAddDrawer}
-            >
-              {t("labels:add_store")}
-            </Button>
+            currentTab == 1 ? (
+              <Button
+                className="app-btn-primary !h-8 !hover:h-[32px]"
+                onClick={showAddDrawer}
+              >
+                {t("labels:add_store")}
+              </Button>
+            ) : null
           }
           headerContent={
             !isLoading && (
               <Content className="!h-10 !mt-7">
                 <Tabs
-                  defaultActiveKey="1"
+                  defaultActiveKey={currentTab}
                   items={[
                     {
                       key: "1",
@@ -1496,7 +1442,10 @@ const Stores = () => {
                       label: "Threshold Configuration",
                     },
                   ]}
-                  onChange={(key) => setCurrentTab(key)}
+                  onChange={(key) => {
+                    setCurrentTab(key);
+                    sessionStorage.setItem("currentStoretab", key);
+                  }}
                 />
 
                 {/* <DmTabAntDesign
@@ -1924,11 +1873,11 @@ const Stores = () => {
               ) : currentTab == 2 ? (
                 <>
                   <Content>
-                    <Title level={5}>Threshold 1</Title>
+                    <Title level={5}>Account Restrictions</Title>
                     <DynamicTable tableComponentData={tablePropsThreshold1} />
                   </Content>
                   <Content>
-                    <Title level={5}>Threshold 2</Title>
+                    <Title level={5}>Store Restrictions</Title>
                     <DynamicTable tableComponentData={tablePropsThreshold2} />
                   </Content>
                 </>
