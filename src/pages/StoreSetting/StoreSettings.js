@@ -6,6 +6,7 @@ import {
   Input,
   InputNumber,
   Layout,
+  Progress,
   Row,
   Space,
   Spin,
@@ -31,6 +32,9 @@ import MarketplaceToaster from "../../util/marketplaceToaster";
 import Status from "../Stores/Status";
 import Preview from "./Preview";
 import StoreImages from "./StoreImages";
+import { useAuth } from "react-oidc-context";
+import axios from "axios";
+import DynamicTable from "../../components/DynamicTable/DynamicTable";
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -40,6 +44,13 @@ const storeAPI = process.env.REACT_APP_STORE_API;
 const storeImagesAPI = process.env.REACT_APP_STORE_IMAGES_API;
 const storeBannerImageAPI = process.env.REACT_APP_STORE_BANNER_IMAGES_API;
 const storeLimitAPI = process.env.REACT_APP_STORE_LIMIT;
+const storePlatformAPI = process.env.REACT_APP_STORE_PLATFORM_LIMIT_API;
+const dm4sightAnalysisCountAPI =
+  process.env.REACT_APP_4SIGHT_GETANALYSISCOUNT_API;
+const dm4sightDataLimitAnalysisDetailsCountAPI =
+  process.env.REACT_APP_4SIGHT_GET_DATA_ANALYSISDETAIL_API;
+const dm4sightClientID = process.env.REACT_APP_4SIGHT_CLIENT_ID;
+const dm4sightBaseURL = process.env.REACT_APP_4SIGHT_BASE_URL;
 
 const StoreSettings = () => {
   const { t } = useTranslation();
@@ -119,6 +130,8 @@ const StoreSettings = () => {
   const [imageOfStoreFooterSettings, setImageOfStoreFooterSettings] =
     useState();
   const [bannerAbsoluteImage, setBannerAbsoluteImage] = useState([]);
+  const instance = axios.create();
+
 
   const [colorCodeValidation, setColorCodeValidation] = useState({
     pageBgColorValidation: false,
@@ -164,6 +177,27 @@ const StoreSettings = () => {
   const [invalidVendorUserLimit, setInvalidVendorUserLimit] =  useState(false);
   const [invalidMaxProductLimit, setInvalidMaxProductLimit] =  useState(false);
   const [invalidMaxTemplateLimit, setInvalidMaxTemplateLimit] =  useState(false);
+  const [hideActionButton, setHideActionButton] = useState(false);
+  const auth = useAuth();
+  const permissionValue = util.getPermissionData() || [];
+  const [storeLimitValues, setStoreLimitValues] = useState();
+  const [analysisCount, setAnalysisCount] = useState();
+
+  let keyCLoak = sessionStorage.getItem("keycloakData");
+  keyCLoak = JSON.parse(keyCLoak);
+  let realmName = keyCLoak.clientId.replace(/-client$/, "");
+
+  const dm4sightHeaders = {
+    headers: {
+      token: auth.user && auth.user?.access_token,
+      realmname: realmName,
+      dmClientId: dm4sightClientID,
+      client: "admin",
+    },
+    params: {
+      id:storeIdFromUrl 
+    }
+  };
 
   //! get call of  getStoreSettingApi
   const findAllWithoutPageStoreSettingApi = (storeId) => {
@@ -1290,6 +1324,177 @@ const StoreSettings = () => {
     }
   }, []);
 
+  useEffect(()=>{
+    setHideActionButton(!auth.isAuthenticated ||
+      (auth.isAuthenticated &&
+        permissionValue &&
+        permissionValue.length > 0 &&
+        permissionValue.includes("UI-product-admin"))
+        ? true
+        : false)
+  }, [auth])
+
+  
+  useEffect(() => {
+      MarketplaceServices.findAll(storePlatformAPI)
+        .then(function (response) {
+          console.log(
+            "Server Response from store limit API: ",
+            response.data.response_body
+          );
+          setStoreLimitValues(response.data.response_body);
+          instance
+            .get(dm4sightBaseURL + dm4sightDataLimitAnalysisDetailsCountAPI, dm4sightHeaders)
+            .then((res) => {
+              console.log("res analysis", res)
+              setAnalysisCount(res.data);
+            });
+        })
+        .catch((error) => {
+          // setIsLoading(false);
+          console.log("Server error from store limit API ", error.response);
+        });
+  }, []);
+
+  const StoreTableColumnThreshold = [
+    {
+      // title: `${t("labels:name")}`,
+      title: "Limits",
+      dataIndex: "limits",
+      key: "limits",
+      width: "30%",
+      render: (text) => {
+        const [limitName, value] = text.split(",");
+        return (
+          <Content className="flex flex-col gap-2">
+            {limitName}
+            <Input className="w-24" value={value == "null" ? 0 : value} />
+          </Content>
+        );
+      },
+    },
+    {
+      title: "Stats",
+      dataIndex: "stats",
+      key: "stats",
+      width: "20%",
+
+      render: (text) => {
+        if(text != null) {
+        const [count, total] = text.split(" of ");
+        return (
+          <Content className="flex flex-col gap-2">
+            {count} of {total}
+            <Progress
+              strokeColor={"#4A2D73"}
+              className="w-24"
+              size="small"
+              percent={(count / total) * 100}
+              showInfo={false}
+            />
+          </Content>
+        );
+        }else{
+          return (
+            <Content>
+               {"No stats"}
+            </Content>
+          );
+        }
+      },
+    },
+  ];
+
+  const pagination = [
+    {
+      defaultSize: 10,
+      showPageSizeChanger: false,
+      pageSizeOptions: ["5", "10"],
+    },
+  ];
+
+  const tablePropsThreshold = {
+    table_header: StoreTableColumnThreshold,
+    table_content: [
+      // {
+      //   key: "1",
+      //   limits: `Maximum Store Creation Limit,${storeLimitValues?.store_limit}`,
+      //   stats:
+      //     analysisCount?.store_count + " of " + storeLimitValues?.store_limit,
+      // },
+      // {
+      //   key: "2",
+      //   limits: `Maximum Language Activation Limit,${storeLimitValues?.dm_language_limit}`,
+      //   stats:
+      //     analysisCount?.lang_count +
+      //     " of " +
+      //     storeLimitValues?.dm_language_limit,
+      // },
+      // {
+      //   key: "3",
+      //   limits: `Maximum User Limit,${storeLimitValues?.dm_user_limit}`,
+      //   stats:
+      //     analysisCount?.user_count + " of " + storeLimitValues?.dm_user_limit,
+      // },
+      {
+        key: "4",
+        limits: `Maximum Vendor Onboarding Limit,${storeLimitValues?.vendor_limit}`,
+        stats: analysisCount?.vendor_count + " of " + storeLimitValues?.vendor_limit
+      },
+      {
+        key: "5",
+        limits: `Maximum Customer Onboarding Limit,${storeLimitValues?.customer_limit}`,
+        stats: analysisCount?.customer_count + " of " + storeLimitValues?.customer_limit,
+      },
+      {
+        key: "6",
+        limits: `Maximum Product Limit,${storeLimitValues?.product_limit}`,
+        stats: analysisCount?.product_count + " of " + storeLimitValues?.product_limit,
+      },
+      {
+        key: "7",
+        limits: `Maximum Order Limit perday ,${storeLimitValues?.order_limit_per_day}`,
+        stats: analysisCount?.order_count + " of " + storeLimitValues?.order_limit_per_day,
+      },
+      {
+        key: "8",
+        limits: `Maximum Language Activation Limit,${storeLimitValues?.langauge_limit}`,
+        stats: analysisCount?.lang_count + " of " + storeLimitValues?.langauge_limit,
+      },
+      {
+        key: "9",
+        limits: `Maximum Product Template Limit,${storeLimitValues?.product_template_limit}`,
+        stats: analysisCount?.prod_temp_count + " of " + storeLimitValues?.product_template_limit,
+      },
+      {
+        key: "10",
+        limits: `Maximum Store Users Limit,${storeLimitValues?.store_users_limit}`,
+        stats: analysisCount?.store_user_count + " of " + storeLimitValues?.store_users_limit,
+      },
+      // {
+      //   key: "11",
+      //   limits: `Maximum Vendor Users Limit,${storeLimitValues?.vendor_users_limit}`,
+      //   stats: analysisCount?.vendor_users_count + " of " + storeLimitValues?.vendor_users_limit,
+      // },
+    ],
+    pagenationSettings: pagination,
+    search_settings: {
+      is_enabled: false,
+      search_title: "Search by name",
+      search_data: ["name"],
+    },
+    filter_settings: {
+      is_enabled: false,
+      filter_title: "Filter's",
+      filter_data: [],
+    },
+    sorting_settings: {
+      is_enabled: false,
+      sorting_title: "Sorting by",
+      sorting_data: [],
+    },
+  };
+
   const numberToBasicLimit = (e) => {
     const { key, keyCode } = e;
     const { value } = e.target;
@@ -1453,7 +1658,7 @@ const StoreSettings = () => {
                 lg: 32,
               }}
             >
-              <Col span={6} className="gutter-row">
+              <Col>
                 <label className="text-[13px] mb-2 ml-1 input-label-color">
                   {t("labels:vendor_limit")}
                 </label>
@@ -1465,6 +1670,7 @@ const StoreSettings = () => {
                       ? storeDataLimitValues.vendor_limit
                       : ""
                   }
+                  disabled={hideActionButton}
                   onChange={(e) => {
                     let number = /^[0-9]*$/.test(e.target.value);
                     let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1482,314 +1688,357 @@ const StoreSettings = () => {
                   }}
                   status={invalidVendorLimit ? "error" : ""}
                 />
-              </Col>
-              <Col span={6} className="gutter-row">
-                <label className="text-[13px] mb-2 ml-1 input-label-color">
-                  {t("labels:customer_limit")}
-                </label>
-                <Input
-                  placeholder={t("labels:placeholder_unlimited")}
-                  // defaultValue={storeSettingData.store_currency["symbol"]}
-                  value={
-                    storeDataLimitValues.customer_limit > 0
-                      ? storeDataLimitValues.customer_limit
-                      : ""
-                  }
-                  status={invalidCustomerLimit ? "error" : ""}
-                  onChange={(e) => {
-                    let number = /^[0-9]*$/.test(e.target.value);
-                    let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-                    // to allow only 10 digits
-                    if (number && e.target.value.length <= 10) {
-                      copyofStoreDataLimitValue.customer_limit = e.target.value;
-                      setIsStoreDataLimitChanged(true);
-                      setInvalidCustomerLimit(false)
-                      setStoreDataLimitValues(copyofStoreDataLimitValue);
-                    } else if (e.target.value === "") {
-                      copyofStoreDataLimitValue.customer_limit = e.target.value;
-                      setStoreDataLimitValues(copyofStoreDataLimitValue);
-                      setInvalidCustomerLimit(false)
+                <Content className="mt-2">
+                  <label className="text-[13px] mb-2 ml-1 input-label-color">
+                    {t("labels:customer_limit")}
+                  </label>
+                  <Input
+                    placeholder={t("labels:placeholder_unlimited")}
+                    // defaultValue={storeSettingData.store_currency["symbol"]}
+                    disabled={hideActionButton}
+                    value={
+                      storeDataLimitValues.customer_limit > 0
+                        ? storeDataLimitValues.customer_limit
+                        : ""
                     }
-                  }}
-                />
-              </Col>
-              <Col span={6} className="gutter-row">
-                <label className="text-[13px] mb-2 ml-1 input-label-color">
-                  {t("labels:product_limit")}
-                </label>
-                <Input
-                  placeholder={t("labels:placeholder_unlimited")}
-                  // defaultValue={storeSettingData.store_currency["symbol"]}
-                  value={
-                    storeDataLimitValues.product_limit > 0
-                      ? storeDataLimitValues.product_limit
-                      : ""
-                  }
-                  status={invalidProductLimit ? "error" : ""}
-                  onChange={(e) => {
-                    let number = /^[0-9]*$/.test(e.target.value);
-                    let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-                    // to allow only 10 digits
-                    if (number && e.target.value.length <= 10) {
-                      copyofStoreDataLimitValue.product_limit = e.target.value;
-                      setIsStoreDataLimitChanged(true);
-                      setInvalidProductLimit(false)
-                      setStoreDataLimitValues(copyofStoreDataLimitValue);
-                    } else if (e.target.value === "") {
-                      setInvalidProductLimit(false)
-                      copyofStoreDataLimitValue.product_limit = e.target.value;
-                      setStoreDataLimitValues(copyofStoreDataLimitValue);
+                    status={invalidCustomerLimit ? "error" : ""}
+                    onChange={(e) => {
+                      let number = /^[0-9]*$/.test(e.target.value);
+                      let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+                      // to allow only 10 digits
+                      if (number && e.target.value.length <= 10) {
+                        copyofStoreDataLimitValue.customer_limit = e.target.value;
+                        setIsStoreDataLimitChanged(true);
+                        setInvalidCustomerLimit(false)
+                        setStoreDataLimitValues(copyofStoreDataLimitValue);
+                      } else if (e.target.value === "") {
+                        copyofStoreDataLimitValue.customer_limit = e.target.value;
+                        setStoreDataLimitValues(copyofStoreDataLimitValue);
+                        setInvalidCustomerLimit(false)
+                      }
+                    }}
+                  />
+                </Content>
+                <Content className="mt-2">
+                  <label className="text-[13px] mb-2 ml-1 input-label-color">
+                    {t("labels:product_limit")}
+                  </label>
+                  <Input
+                    disabled={hideActionButton}
+                    placeholder={t("labels:placeholder_unlimited")}
+                    // defaultValue={storeSettingData.store_currency["symbol"]}
+                    value={
+                      storeDataLimitValues.product_limit > 0
+                        ? storeDataLimitValues.product_limit
+                        : ""
                     }
-                  }}
-                />
-              </Col>
-              <Col span={6} className="gutter-row">
-              <label className="text-[13px] mb-2 ml-1 input-label-color whitespace-nowrap">
-                  {t("labels:order_limit_per_day")}
-                </label>
-                <Input
-                  placeholder={t("labels:placeholder_unlimited")}
-                  // defaultValue={storeSettingData.store_currency["symbol"]}
-                  value={
-                    storeDataLimitValues.order_limit_per_day > 0
-                      ? storeDataLimitValues.order_limit_per_day
-                      : ""
-                  }
-                  status={invalidOrderLimit ? "error" : ""}
-                  onChange={(e) => {
-                    let number = /^[0-9]*$/.test(e.target.value);
-                    let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-                    // to allow only 10 digits
-                    if (number && e.target.value.length <= 10) {
-                      copyofStoreDataLimitValue.order_limit_per_day =
-                        e.target.value;
-                      setIsStoreDataLimitChanged(true);
-                      setStoreDataLimitValues(copyofStoreDataLimitValue);
-                      setInvalidOrderLimit(false);
-                    } else if (e.target.value === "") {
-                      copyofStoreDataLimitValue.order_limit_per_day =
-                        e.target.value;
-                      setStoreDataLimitValues(copyofStoreDataLimitValue);
-                      setInvalidOrderLimit(false);
+                    status={invalidProductLimit ? "error" : ""}
+                    onChange={(e) => {
+                      let number = /^[0-9]*$/.test(e.target.value);
+                      let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+                      // to allow only 10 digits
+                      if (number && e.target.value.length <= 10) {
+                        copyofStoreDataLimitValue.product_limit = e.target.value;
+                        setIsStoreDataLimitChanged(true);
+                        setInvalidProductLimit(false)
+                        setStoreDataLimitValues(copyofStoreDataLimitValue);
+                      } else if (e.target.value === "") {
+                        setInvalidProductLimit(false)
+                        copyofStoreDataLimitValue.product_limit = e.target.value;
+                        setStoreDataLimitValues(copyofStoreDataLimitValue);
+                      }
+                    }}
+                  />
+                </Content>
+                <Content className="mt-2">
+                  <label className="text-[13px] mb-2 ml-1 input-label-color whitespace-nowrap">
+                    {t("labels:order_limit_per_day")}
+                  </label>
+                  <Input
+                    disabled={hideActionButton}
+                    placeholder={t("labels:placeholder_unlimited")}
+                    // defaultValue={storeSettingData.store_currency["symbol"]}
+                    value={
+                      storeDataLimitValues.order_limit_per_day > 0
+                        ? storeDataLimitValues.order_limit_per_day
+                        : ""
                     }
-                  }}
-                />
-              </Col>
-              <Col span={6} className="gutter-row">
-                <label className="text-[13px] mt-5 mb-2 ml-1 input-label-color">
-                  {t("labels:langauge_limit")}
-                </label>
-                <Input
-                  placeholder={t("labels:placeholder_unlimited")}
-                  // defaultValue={storeSettingData.store_currency["symbol"]}
-                  value={
-                    storeDataLimitValues.langauge_limit > 0
-                      ? storeDataLimitValues.langauge_limit
-                      : ""
-                  }
-                  status={invalidLanguageLimit ? "error" : ""}
-                  onChange={(e) => {
-                    let number = /^[0-9]*$/.test(e.target.value);
-                    let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-                    // to allow only 10 digits
-                    if (number && e.target.value.length <= 10) {
-                      copyofStoreDataLimitValue.langauge_limit = e.target.value;
-                      setIsStoreDataLimitChanged(true);
-                      setStoreDataLimitValues(copyofStoreDataLimitValue);
-                      setInvalidLanguageLimit(false);
-                    } else if (e.target.value === "") {
-                      copyofStoreDataLimitValue.langauge_limit = e.target.value;
-                      setStoreDataLimitValues(copyofStoreDataLimitValue);
-                      setInvalidLanguageLimit(false);
+                    status={invalidOrderLimit ? "error" : ""}
+                    onChange={(e) => {
+                      let number = /^[0-9]*$/.test(e.target.value);
+                      let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+                      // to allow only 10 digits
+                      if (number && e.target.value.length <= 10) {
+                        copyofStoreDataLimitValue.order_limit_per_day =
+                          e.target.value;
+                        setIsStoreDataLimitChanged(true);
+                        setStoreDataLimitValues(copyofStoreDataLimitValue);
+                        setInvalidOrderLimit(false);
+                      } else if (e.target.value === "") {
+                        copyofStoreDataLimitValue.order_limit_per_day =
+                          e.target.value;
+                        setStoreDataLimitValues(copyofStoreDataLimitValue);
+                        setInvalidOrderLimit(false);
+                      }
+                    }}
+                  />
+                </Content>
+                <Content className="mt-2">
+                  <label className="text-[13px] mb-2 ml-1 input-label-color">
+                    {t("labels:langauge_limit")}
+                  </label>
+                  <Input
+                    disabled={hideActionButton}
+                    placeholder={t("labels:placeholder_unlimited")}
+                    // defaultValue={storeSettingData.store_currency["symbol"]}
+                    value={
+                      storeDataLimitValues.langauge_limit > 0
+                        ? storeDataLimitValues.langauge_limit
+                        : ""
                     }
-                  }}
-                />
-              </Col>
-              <Col span={6} className="gutter-row">
-                <label className="text-[13px] mt-5 mb-2 ml-1 input-label-color">
-                  {t("labels:product_template_limit")}
-                </label>
-                <Input
-                  placeholder={t("labels:placeholder_unlimited")}
-                  // defaultValue={storeSettingData.store_currency["symbol"]}
-                  value={
-                    storeDataLimitValues.product_template_limit > 0
-                      ? storeDataLimitValues.product_template_limit
-                      : ""
-                  }
-                  status={invalidProductTemplateLimit ? "error" : ""}
-                  onChange={(e) => {
-                    let number = /^[0-9]*$/.test(e.target.value);
-                    let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-                    // to allow only 10 digits
-                    if (number && e.target.value.length <= 10) {
-                      copyofStoreDataLimitValue.product_template_limit =
-                        e.target.value;
-                      setIsStoreDataLimitChanged(true);
-                      setStoreDataLimitValues(copyofStoreDataLimitValue);
-                      setInvalidProductTemplateLimit(false);
-                    } else if (e.target.value === "") {
-                      copyofStoreDataLimitValue.product_template_limit =
-                        e.target.value;
-                      setStoreDataLimitValues(copyofStoreDataLimitValue);
-                      setInvalidProductTemplateLimit(false);
+                    status={invalidLanguageLimit ? "error" : ""}
+                    onChange={(e) => {
+                      let number = /^[0-9]*$/.test(e.target.value);
+                      let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+                      // to allow only 10 digits
+                      if (number && e.target.value.length <= 10) {
+                        copyofStoreDataLimitValue.langauge_limit = e.target.value;
+                        setIsStoreDataLimitChanged(true);
+                        setStoreDataLimitValues(copyofStoreDataLimitValue);
+                        setInvalidLanguageLimit(false);
+                      } else if (e.target.value === "") {
+                        copyofStoreDataLimitValue.langauge_limit = e.target.value;
+                        setStoreDataLimitValues(copyofStoreDataLimitValue);
+                        setInvalidLanguageLimit(false);
+                      }
+                    }}
+                  />
+                </Content>
+                <Content className="mt-2">
+                  <label className="text-[13px]  mb-2 ml-1 input-label-color">
+                    {t("labels:product_template_limit")}
+                  </label>
+                  <Input
+                    disabled={hideActionButton}
+                    placeholder={t("labels:placeholder_unlimited")}
+                    // defaultValue={storeSettingData.store_currency["symbol"]}
+                    value={
+                      storeDataLimitValues.product_template_limit > 0
+                        ? storeDataLimitValues.product_template_limit
+                        : ""
                     }
-                  }}
-                />
+                    status={invalidProductTemplateLimit ? "error" : ""}
+                    onChange={(e) => {
+                      let number = /^[0-9]*$/.test(e.target.value);
+                      let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+                      // to allow only 10 digits
+                      if (number && e.target.value.length <= 10) {
+                        copyofStoreDataLimitValue.product_template_limit =
+                          e.target.value;
+                        setIsStoreDataLimitChanged(true);
+                        setStoreDataLimitValues(copyofStoreDataLimitValue);
+                        setInvalidProductTemplateLimit(false);
+                      } else if (e.target.value === "") {
+                        copyofStoreDataLimitValue.product_template_limit =
+                          e.target.value;
+                        setStoreDataLimitValues(copyofStoreDataLimitValue);
+                        setInvalidProductTemplateLimit(false);
+                      }
+                    }}
+                  />
+                </Content>
               </Col>
-              <Col span={6} className="gutter-row">
-                <label className="text-[13px] mt-5 mb-2 ml-1 input-label-color">
-                  {t("labels:store_users_limit")}
-                </label>
-                <Input
-                  placeholder={t("labels:placeholder_unlimited")}
-                  value={
-                    storeDataLimitValues.store_users_limit > 0
-                      ? storeDataLimitValues.store_users_limit
-                      : ""
-                  }
-                  status={invalidStoreUserLimit ? "error" : ""}
-                  onChange={(e) => {
-                    let number = /^[0-9]*$/.test(e.target.value);
-                    let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-                    // to allow only 10 digits
-                    if (number && e.target.value.length <= 10) {
-                      copyofStoreDataLimitValue.store_users_limit =
-                        e.target.value;
-                      setIsStoreDataLimitChanged(true);
-                      setInvalidStoreUserLimit(false);
-                      setStoreDataLimitValues(copyofStoreDataLimitValue);
-                    } else if (e.target.value === "") {
-                      // setIsStoreDataLimitChanged(false);
-                      copyofStoreDataLimitValue.store_users_limit =
-                        e.target.value;
-                      setStoreDataLimitValues(copyofStoreDataLimitValue);
-                      setInvalidStoreUserLimit(false);
+              <Col>              
+                <Content>
+                  <label className="text-[13px] mb-2 ml-1 input-label-color">
+                    {t("labels:store_users_limit")}
+                  </label>
+                  <Input
+                    placeholder={t("labels:placeholder_unlimited")}
+                    disabled={hideActionButton}
+                    value={
+                      storeDataLimitValues.store_users_limit > 0
+                        ? storeDataLimitValues.store_users_limit
+                        : ""
                     }
-                  }}
-                />
-              </Col>
-              <Col span={6} className="gutter-row">
-                <label className="text-[13px] mt-5 mb-2 ml-1 input-label-color">
-                  {t("labels:vendor_users_limit")}
-                </label>
-                <Input
-                  placeholder={t("labels:placeholder_unlimited")}
-                  // defaultValue={storeSettingData.store_currency["symbol"]}
-                  value={
-                    storeDataLimitValues.vendor_users_limit > 0
-                      ? storeDataLimitValues.vendor_users_limit
-                      : ""
-                  }
-                  status={invalidVendorUserLimit ? "error" : ""}
-                  onChange={(e) => {
-                    let number = /^[0-9]*$/.test(e.target.value);
-                    let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-                    // to allow only 10 digits
-                    if (number && e.target.value.length <= 10) {
-                      copyofStoreDataLimitValue.vendor_users_limit =
-                        e.target.value;
-                      setIsStoreDataLimitChanged(true);
-                      setInvalidVendorUserLimit(false);
-                      setStoreDataLimitValues(copyofStoreDataLimitValue);
-                    } else if (e.target.value === "") {
-                      // setIsStoreDataLimitChanged(false);
-                      copyofStoreDataLimitValue.vendor_users_limit =
-                        e.target.value;
-                      setStoreDataLimitValues(copyofStoreDataLimitValue);
-                      setInvalidVendorUserLimit(false);
+                    status={invalidStoreUserLimit ? "error" : ""}
+                    onChange={(e) => {
+                      let number = /^[0-9]*$/.test(e.target.value);
+                      let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+                      // to allow only 10 digits
+                      if (number && e.target.value.length <= 10) {
+                        copyofStoreDataLimitValue.store_users_limit =
+                          e.target.value;
+                        setIsStoreDataLimitChanged(true);
+                        setInvalidStoreUserLimit(false);
+                        setStoreDataLimitValues(copyofStoreDataLimitValue);
+                      } else if (e.target.value === "") {
+                        // setIsStoreDataLimitChanged(false);
+                        copyofStoreDataLimitValue.store_users_limit =
+                          e.target.value;
+                        setStoreDataLimitValues(copyofStoreDataLimitValue);
+                        setInvalidStoreUserLimit(false);
+                      }
+                    }}
+                  />
+                </Content>
+                <Content className="mt-2">
+                  <label className="text-[13px] mb-2 ml-1 input-label-color">
+                    {t("labels:vendor_users_limit")}
+                  </label>
+                  <Input
+                    disabled={hideActionButton}
+                    placeholder={t("labels:placeholder_unlimited")}
+                    // defaultValue={storeSettingData.store_currency["symbol"]}
+                    value={
+                      storeDataLimitValues.vendor_users_limit > 0
+                        ? storeDataLimitValues.vendor_users_limit
+                        : ""
                     }
-                  }}
-                />
-              </Col>
-              <Col span={6} className="gutter-row">
-                <label className="text-[13px] mt-5 mb-2 ml-1 input-label-color">
-                  {t("labels:maximum_vendor_product_limit")}
-                </label>
-                <Input
-                  placeholder={t("labels:placeholder_unlimited")}
-                  // defaultValue={storeSettingData.store_currency["symbol"]}
-                  value={
-                    storeDataLimitValues.max_products_per_vendor > 0
-                      ? storeDataLimitValues.max_products_per_vendor
-                      : ""
-                  }
-                  status={invalidMaxProductLimit ? "error" : ""}
-                  onChange={(e) => {
-                    let number = /^[0-9]*$/.test(e.target.value);
-                    let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-                    // to allow only 10 digits
-                    if (number && e.target.value.length <= 10) {
-                      copyofStoreDataLimitValue.max_products_per_vendor =
-                        e.target.value;
-                      setIsStoreDataLimitChanged(true);
-                      setStoreDataLimitValues(copyofStoreDataLimitValue);
-                      setInvalidMaxProductLimit(false);
-                    } else if (e.target.value === "") {
-                      // setIsStoreDataLimitChanged(false);
-                      copyofStoreDataLimitValue.max_products_per_vendor =
-                        e.target.value;
-                      setStoreDataLimitValues(copyofStoreDataLimitValue);
-                      setInvalidMaxProductLimit(false);
+                    status={invalidVendorUserLimit ? "error" : ""}
+                    onChange={(e) => {
+                      let number = /^[0-9]*$/.test(e.target.value);
+                      let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+                      // to allow only 10 digits
+                      if (number && e.target.value.length <= 10) {
+                        copyofStoreDataLimitValue.vendor_users_limit =
+                          e.target.value;
+                        setIsStoreDataLimitChanged(true);
+                        setInvalidVendorUserLimit(false);
+                        setStoreDataLimitValues(copyofStoreDataLimitValue);
+                      } else if (e.target.value === "") {
+                        // setIsStoreDataLimitChanged(false);
+                        copyofStoreDataLimitValue.vendor_users_limit =
+                          e.target.value;
+                        setStoreDataLimitValues(copyofStoreDataLimitValue);
+                        setInvalidVendorUserLimit(false);
+                      }
+                    }}
+                  />
+                </Content>
+                <Content className="mt-2">
+                  <label className="text-[13px] mb-2 ml-1 input-label-color">
+                    {t("labels:maximum_vendor_product_limit")}
+                  </label>
+                  <Input
+                    disabled={hideActionButton}
+                    placeholder={t("labels:placeholder_unlimited")}
+                    // defaultValue={storeSettingData.store_currency["symbol"]}
+                    value={
+                      storeDataLimitValues.max_products_per_vendor > 0
+                        ? storeDataLimitValues.max_products_per_vendor
+                        : ""
                     }
-                  }}
-                />
-              </Col>
-              <Col span={6} className="gutter-row">
-                <label className="text-[13px] mt-5 mb-2 ml-1 input-label-color">
-                  {t("labels:maximum_vendor_product_template_limit")}
-                </label>
-                <Input
-                  placeholder={t("labels:placeholder_unlimited")}
-                  // defaultValue={storeSettingData.store_currency["symbol"]}
-                  value={
-                    storeDataLimitValues.max_templates_per_vendor > 0
-                      ? storeDataLimitValues.max_templates_per_vendor
-                      : ""
-                  }
-                  status={invalidMaxTemplateLimit ? "error" : ""}
-                  onChange={(e) => {
-                    let number = /^[0-9]*$/.test(e.target.value);
-                    let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-                    // to allow only 10 digits
-                    if (number && e.target.value.length <= 10) {
-                      copyofStoreDataLimitValue.max_templates_per_vendor =
-                        e.target.value;
-                      setIsStoreDataLimitChanged(true);
-                      setStoreDataLimitValues(copyofStoreDataLimitValue);
-                      setInvalidMaxTemplateLimit(false);
-                    } else if (e.target.value === "") {
-                      // setIsStoreDataLimitChanged(false);
-                      copyofStoreDataLimitValue.max_templates_per_vendor =
-                        e.target.value;
-                      setStoreDataLimitValues(copyofStoreDataLimitValue);
-                      setInvalidMaxTemplateLimit(false)
+                    status={invalidMaxProductLimit ? "error" : ""}
+                    onChange={(e) => {
+                      let number = /^[0-9]*$/.test(e.target.value);
+                      let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+                      // to allow only 10 digits
+                      if (number && e.target.value.length <= 10) {
+                        copyofStoreDataLimitValue.max_products_per_vendor =
+                          e.target.value;
+                        setIsStoreDataLimitChanged(true);
+                        setStoreDataLimitValues(copyofStoreDataLimitValue);
+                        setInvalidMaxProductLimit(false);
+                      } else if (e.target.value === "") {
+                        // setIsStoreDataLimitChanged(false);
+                        copyofStoreDataLimitValue.max_products_per_vendor =
+                          e.target.value;
+                        setStoreDataLimitValues(copyofStoreDataLimitValue);
+                        setInvalidMaxProductLimit(false);
+                      }
+                    }}
+                  />
+                </Content>
+                <Content className="mt-2">
+                  <label className="text-[13px] mb-2 ml-1 input-label-color">
+                    {t("labels:maximum_vendor_product_template_limit")}
+                  </label>
+                  <Input
+                    disabled={hideActionButton}
+                    placeholder={t("labels:placeholder_unlimited")}
+                    // defaultValue={storeSettingData.store_currency["symbol"]}
+                    value={
+                      storeDataLimitValues.max_templates_per_vendor > 0
+                        ? storeDataLimitValues.max_templates_per_vendor
+                        : ""
                     }
-                  }}
-                />
+                    status={invalidMaxTemplateLimit ? "error" : ""}
+                    onChange={(e) => {
+                      let number = /^[0-9]*$/.test(e.target.value);
+                      let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+                      // to allow only 10 digits
+                      if (number && e.target.value.length <= 10) {
+                        copyofStoreDataLimitValue.max_templates_per_vendor =
+                          e.target.value;
+                        setIsStoreDataLimitChanged(true);
+                        setStoreDataLimitValues(copyofStoreDataLimitValue);
+                        setInvalidMaxTemplateLimit(false);
+                      } else if (e.target.value === "") {
+                        // setIsStoreDataLimitChanged(false);
+                        copyofStoreDataLimitValue.max_templates_per_vendor =
+                          e.target.value;
+                        setStoreDataLimitValues(copyofStoreDataLimitValue);
+                        setInvalidMaxTemplateLimit(false)
+                      }
+                    }}
+                  />
+                </Content>
+                <Content className="mt-2">
+                  <label className="text-[13px] mb-2 ml-1 input-label-color">
+                    {t("labels:default_vendor_commission")}
+                  </label>
+                  <InputNumber
+                    disabled={hideActionButton}
+                    className="w-[100%]"
+                    value={storeDataLimitValues.default_store_commission}
+                    min={0}
+                    max={100}
+                    step="0.1"
+                    formatter={(value) => `${value}%`}
+                    parser={(value) => value.replace("%", "")}
+                    onChange={(value) => {
+                      let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+                      copyofStoreDataLimitValue.default_store_commission = value;
+                      setStoreDataLimitValues(copyofStoreDataLimitValue);
+                      setIsStoreDataLimitChanged(true);
+                    }}
+                  />
+                </Content>
               </Col>
-              <Col span={6} className="gutter-row">
-                <label className="text-[13px] mt-5 mb-2 ml-1 input-label-color">
-                  {t("labels:default_vendor_commission")}
-                </label>
-                <InputNumber
-                  className="w-[100%]"
-                  value={storeDataLimitValues.default_store_commission}
-                  min={0}
-                  max={100}
-                  step="0.1"
-                  formatter={(value) => `${value}%`}
-                  parser={(value) => value.replace("%", "")}
-                  onChange={(value) => {
-                    let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-                    copyofStoreDataLimitValue.default_store_commission = value;
-                    setStoreDataLimitValues(copyofStoreDataLimitValue);
-                    setIsStoreDataLimitChanged(true);
-                  }}
-                />
-              </Col>
+              {/* <Col span={6} className="gutter-row">
+               
+              </Col> */}
+              {/* <Col span={6} className="gutter-row">
+              
+              </Col> */}
+              {/* <Col span={6} className="gutter-row">
+             
+              </Col> */}
+              {/* <Col span={6} className="gutter-row">
+              
+              </Col> */}
+              {/* <Col span={6} className="gutter-row">
+               
+              </Col> */}
+              {/* <Col span={6} className="gutter-row">
+              
+              </Col> */}
+              {/* <Col span={6} className="gutter-row">
+              
+              </Col> */}
+              {/* <Col span={6} className="gutter-row">
+              
+              </Col> */}
+              {/* <Col span={6} className="gutter-row">
+              
+              </Col> */}
+              {/* <Col span={6} className="gutter-row">
+              
+              </Col> */}
             </Row>
             <Content className="mt-4">
+              {hideActionButton ? "" :
               <Row className="gap-2">
                 <Col>
                   <Button
@@ -1822,11 +2071,14 @@ const StoreSettings = () => {
                     {t("labels:discard")}
                   </Button>
                 </Col>
-              </Row>
+              </Row>}
             </Content>
           </Content>
         </Spin>
-
+        <Content className="bg-white !rounded-md">
+          {storeLimitValues && analysisCount ?
+            <DynamicTable tableComponentData={tablePropsThreshold} /> : ""}
+        </Content>
         <Spin tip="Please wait!" size="large" spinning={isLoading}>
           <Content className="bg-white mt-3 p-3 rounded-lg">
             <label className="text-[20px] font-bold !text-center">
