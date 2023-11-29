@@ -102,14 +102,14 @@ const SidebarNew = () => {
       navigate_to: "/dashboard/userprofile",
       show_in_menu: true,
     },
-    {
-      key: "9",
-      icon: <img src={ViewDashboard} />,
-      inactive_icon: <img src={ViewDashboard} />,
-      label: ` ${t("labels:dashboard")}`,
-      navigate_to: "/dashboard/newDashboard",
-      show_in_menu: true,
-    },
+    // {
+    //   key: "9",
+    //   icon: <img src={ViewDashboard} />,
+    //   inactive_icon: <img src={ViewDashboard} />,
+    //   label: ` ${t("labels:dashboard")}`,
+    //   navigate_to: "/dashboard/newDashboard",
+    //   show_in_menu: true,
+    // },
     {
       key: "12",
       icon: <img src={ProfileIcon} alt="userAccessControl" />,
