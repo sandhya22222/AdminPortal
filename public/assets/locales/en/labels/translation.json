@@ -177,5 +177,6 @@
   "max_order_limit": "Maximum Order Limit perday ",
   "max_language_limit": "Maximum Language Activation Limit",
   "max_product_template_limit": "Maximum Product Template Limit",
-  "max_store_user_limit": "Maximum Store Users Limit"
+  "max_store_user_limit": "Maximum Store Users Limit",
+  "max_vendor_user_limit": "Maximum Vendor Users Limit"
 }

@@ -351,16 +351,17 @@ const Stores = () => {
             response.data.response_body
           );
           setStoreLimitValues(response.data.response_body);
-          instance
-            .get(dm4sightBaseURL + dm4sightAnalysisCountAPI, dm4sightHeaders)
-            .then((res) => {
-              setAnalysisCount(res.data);
-              console.log("redddd", res);
-            });
         })
         .catch((error) => {
           // setIsLoading(false);
           console.log("Server error from store limit API ", error.response);
+        });
+
+      instance
+        .get(dm4sightBaseURL + dm4sightAnalysisCountAPI, dm4sightHeaders)
+        .then((res) => {
+          setAnalysisCount(res.data);
+          console.log("redddd", res);
         });
     }
   }, [currentTab]);
@@ -390,7 +391,7 @@ const Stores = () => {
               }}
               disabled={!superAdmin}
               className="w-28"
-              placeholder="Unlimited"
+              placeholder={limitValue == null ? "Unlimited" : ""}
               value={limitValue == null || limitValue == 0 ? null : limitValue}
             />
           </Content>
@@ -448,13 +449,8 @@ const Stores = () => {
                 disabled={!superAdmin}
                 className="w-28"
                 min={0}
-                placeholder="Unlimited"
-                defaultValue={
-                  limitValue.toString() === null ||
-                  limitValue.toString() === "0"
-                    ? ""
-                    : limitValue
-                }
+                placeholder={limitValue == null ? "Unlimited" : ""}
+                value={limitValue > 0 ? limitValue : null}
               />
             </Content>
           </Content>
@@ -779,35 +775,53 @@ const Stores = () => {
     table_content: [
       {
         key: "1",
-        limits: `Maximum Vendor Onboarding Limit,${storeLimitValues?.vendor_limit},vendor_limit`,
+
+        limits: `${t("labels:max_vendor_onboarding_limit")},${
+          storeLimitValues?.vendor_limit
+        },vendor_limit`,
       },
+
       {
         key: "2",
-        limits: `Maximum Customer Onboarding Limit,${storeLimitValues?.customer_limit},customer_limit`,
+        limits: `${t("labels:max_customer_onboarding_limit")},${
+          storeLimitValues?.customer_limit
+        },customer_limit`,
       },
       {
         key: "3",
-        limits: `Maximum Product Limit,${storeLimitValues?.product_limit},product_limit`,
+        limits: `${t("labels:max_product_limit")},${
+          storeLimitValues?.product_limit
+        },product_limit`,
       },
       {
         key: "4",
-        limits: `Maximum Order Limit perday ,${storeLimitValues?.order_limit_per_day},order_limit_per_day`,
+        limits: `${t("labels:max_order_limit")} ,${
+          storeLimitValues?.order_limit_per_day
+        },order_limit_per_day`,
       },
       {
         key: "5",
-        limits: `Maximum Language Activation Limit,${storeLimitValues?.langauge_limit},langauge_limit`,
+        limits: `${t("labels:max_language_limit")} ,${
+          storeLimitValues?.langauge_limit
+        },langauge_limit`,
       },
       {
         key: "6",
-        limits: `Maximum Product Template Limit,${storeLimitValues?.product_template_limit},product_template_limit`,
+        limits: `${t("labels:max_product_template_limit")},${
+          storeLimitValues?.product_template_limit
+        },product_template_limit`,
       },
       {
         key: "7",
-        limits: `Maximum Store Users Limit,${storeLimitValues?.store_users_limit},store_users_limit`,
+        limits: `${t("labels:max_store_user_limit")},${
+          storeLimitValues?.store_users_limit
+        },store_users_limit`,
       },
       {
         key: "8",
-        limits: `Maximum Vendor Users Limit,${storeLimitValues?.vendor_users_limit},vendor_users_limit`,
+        limits: `${t("labels:max_vendor_user_limit")},${
+          storeLimitValues?.vendor_users_limit
+        },vendor_users_limit`,
       },
     ],
     pagenationSettings: pagination,
@@ -1969,7 +1983,7 @@ const Stores = () => {
                     >
                       Save
                     </Button>
-                    <Button onClick={{}}>Discard</Button>
+                    {/* <Button onClick={{}}>Discard</Button> */}
                   </Content>
                 </>
               ) : (
