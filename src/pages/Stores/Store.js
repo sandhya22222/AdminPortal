@@ -731,13 +731,17 @@ const Stores = () => {
     table_content: [
       {
         key: "1",
-        limits: `Maximum Store Creation Limit,${storeLimitValues?.store_limit},store_limit`,
+        limits: `${t("labels:maximum_store_creation_limit")},${
+          storeLimitValues?.store_limit
+        },store_limit`,
         stats:
           analysisCount?.store_count + " of " + storeLimitValues?.store_limit,
       },
       {
         key: "2",
-        limits: `Maximum Language Activation Limit,${storeLimitValues?.dm_language_limit},dm_language_limit`,
+        limits: `${t("labels:maximum_language_activation_limit")},${
+          storeLimitValues?.dm_language_limit
+        },dm_language_limit`,
         stats:
           analysisCount?.lang_count +
           " of " +
@@ -745,7 +749,9 @@ const Stores = () => {
       },
       {
         key: "3",
-        limits: `Maximum User Limit,${storeLimitValues?.dm_user_limit},dm_user_limit`,
+        limits: `${t("labels:maximum_user_limit")},${
+          storeLimitValues?.dm_user_limit
+        },dm_user_limit`,
         stats:
           analysisCount?.user_count + " of " + storeLimitValues?.dm_user_limit,
       },

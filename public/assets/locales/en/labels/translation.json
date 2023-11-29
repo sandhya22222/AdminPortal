@@ -167,5 +167,8 @@
   "more": "More",
   "orders": "Orders",
   "product_templates": "Product Templates",
-  "total" :"Total"
+  "total": "Total",
+  "maximum_store_creation_limit": "Maximum Store Creation Limit",
+  "maximum_language_activation_limit": "Maximum Language Activation Limit",
+  "maximum_user_limit": "Maximum User Limit"
 }
