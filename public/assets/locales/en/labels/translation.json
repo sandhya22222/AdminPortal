@@ -178,5 +178,8 @@
   "max_language_limit": "Maximum Language Activation Limit",
   "max_product_template_limit": "Maximum Product Template Limit",
   "max_store_user_limit": "Maximum Store Users Limit",
-  "max_vendor_user_limit": "Maximum Vendor Users Limit"
+  "max_vendor_user_limit": "Maximum Vendor Users Limit",
+  "limit_set_by_admin_name": "Limits Set By Product Owner",
+  "override_limit_name":"Override Limits",
+  "stats_name": "Stats"
 }

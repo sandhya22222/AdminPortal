@@ -8,6 +8,7 @@ import {
   Layout,
   Progress,
   Row,
+  Skeleton,
   Space,
   Spin,
   Tooltip,
@@ -103,6 +104,7 @@ const StoreSettings = () => {
   const [headerForegroundColor, setHeaderForegroundColor] = useState("#000000");
   const [headerFgColor, setHeaderFgColor] = useState("#000000");
   const [isLoading, setIsLoading] = useState(false);
+  const [isStoreLimitDataLoading, setIsStoreLimitDataLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [imagesUpload, setImagesUpload] = useState([]);
   const [getImageData, setGetImageData] = useState([]);
@@ -167,17 +169,19 @@ const StoreSettings = () => {
   );
   const [isStoreDataLimitChanged, setIsStoreDataLimitChanged] = useState(false);
   const [isStoreDataLimitSaving, setIsStoreDataLimitSaving] = useState(false);
-  const [invalidVendorLimit, setInvalidVendorLimit] =  useState(false);
-  const [invalidCustomerLimit, setInvalidCustomerLimit] =  useState(false);
-  const [invalidProductLimit, setInvalidProductLimit] =  useState(false);
-  const [invalidOrderLimit, setInvalidOrderLimit] =  useState(false);
-  const [invalidLanguageLimit, setInvalidLanguageLimit] =  useState(false);
-  const [invalidProductTemplateLimit, setInvalidProductTemplateLimit] =  useState(false);
-  const [invalidStoreUserLimit, setInvalidStoreUserLimit] =  useState(false);
-  const [invalidVendorUserLimit, setInvalidVendorUserLimit] =  useState(false);
-  const [invalidMaxProductLimit, setInvalidMaxProductLimit] =  useState(false);
-  const [invalidMaxTemplateLimit, setInvalidMaxTemplateLimit] =  useState(false);
+  const [invalidVendorLimit, setInvalidVendorLimit] = useState(false);
+  const [invalidCustomerLimit, setInvalidCustomerLimit] = useState(false);
+  const [invalidProductLimit, setInvalidProductLimit] = useState(false);
+  const [invalidOrderLimit, setInvalidOrderLimit] = useState(false);
+  const [invalidLanguageLimit, setInvalidLanguageLimit] = useState(false);
+  const [invalidProductTemplateLimit, setInvalidProductTemplateLimit] = useState(false);
+  const [invalidStoreUserLimit, setInvalidStoreUserLimit] = useState(false);
+  const [invalidVendorUserLimit, setInvalidVendorUserLimit] = useState(false);
+  const [invalidMaxProductLimit, setInvalidMaxProductLimit] = useState(false);
+  const [invalidMaxTemplateLimit, setInvalidMaxTemplateLimit] = useState(false);
   const [hideActionButton, setHideActionButton] = useState(false);
+  const [disableMediaButton, setDisableMediaButton] = useState(false);
+  const [disableStatus, setDisableStatus] = useState(false);
   const auth = useAuth();
   const permissionValue = util.getPermissionData() || [];
   const [storeLimitValues, setStoreLimitValues] = useState();
@@ -195,7 +199,7 @@ const StoreSettings = () => {
       client: "admin",
     },
     params: {
-      id:storeIdFromUrl 
+      id: storeIdFromUrl
     }
   };
 
@@ -378,8 +382,8 @@ const StoreSettings = () => {
   const storeLimitValidation = () => {
     const maxLimit = 2147483647
     let count = 10;
-    let copyofStoreDataLimitValue = {...storeDataLimitValues}
-     if (copyofStoreDataLimitValue.vendor_limit != "" && parseInt(copyofStoreDataLimitValue.vendor_limit) > maxLimit) {
+    let copyofStoreDataLimitValue = { ...storeDataLimitValues }
+    if (copyofStoreDataLimitValue.vendor_limit != "" && copyofStoreDataLimitValue.vendor_limit > maxLimit) {
       count--;
       setInvalidVendorLimit(true);
       MarketplaceToaster.showToast(
@@ -389,7 +393,7 @@ const StoreSettings = () => {
           "error"
         )
       );
-    }else if(copyofStoreDataLimitValue.customer_limit != "" && parseInt(copyofStoreDataLimitValue.customer_limit) > maxLimit){
+    } else if (copyofStoreDataLimitValue.customer_limit != "" && parseInt(copyofStoreDataLimitValue.customer_limit) > maxLimit) {
       count--;
       setInvalidCustomerLimit(true);
       MarketplaceToaster.showToast(
@@ -399,7 +403,7 @@ const StoreSettings = () => {
           "error"
         )
       );
-    }else if(copyofStoreDataLimitValue.product_limit != "" && parseInt(copyofStoreDataLimitValue.product_limit) > maxLimit){
+    } else if (copyofStoreDataLimitValue.product_limit != "" && parseInt(copyofStoreDataLimitValue.product_limit) > maxLimit) {
       count--;
       setInvalidProductLimit(true);
       MarketplaceToaster.showToast(
@@ -409,7 +413,7 @@ const StoreSettings = () => {
           "error"
         )
       );
-    }else if(copyofStoreDataLimitValue.order_limit_per_day != "" && parseInt(copyofStoreDataLimitValue.order_limit_per_day) > maxLimit){
+    } else if (copyofStoreDataLimitValue.order_limit_per_day != "" && parseInt(copyofStoreDataLimitValue.order_limit_per_day) > maxLimit) {
       count--;
       setInvalidOrderLimit(true);
       MarketplaceToaster.showToast(
@@ -419,7 +423,7 @@ const StoreSettings = () => {
           "error"
         )
       );
-    }else if(copyofStoreDataLimitValue.langauge_limit != "" && parseInt(copyofStoreDataLimitValue.langauge_limit) > maxLimit){
+    } else if (copyofStoreDataLimitValue.langauge_limit != "" && parseInt(copyofStoreDataLimitValue.langauge_limit) > maxLimit) {
       count--;
       setInvalidLanguageLimit(true);
       MarketplaceToaster.showToast(
@@ -429,7 +433,7 @@ const StoreSettings = () => {
           "error"
         )
       );
-    }else if(copyofStoreDataLimitValue.product_template_limit != "" && parseInt(copyofStoreDataLimitValue.product_template_limit) > maxLimit){
+    } else if (copyofStoreDataLimitValue.product_template_limit != "" && parseInt(copyofStoreDataLimitValue.product_template_limit) > maxLimit) {
       count--;
       setInvalidProductTemplateLimit(true);
       MarketplaceToaster.showToast(
@@ -439,7 +443,7 @@ const StoreSettings = () => {
           "error"
         )
       );
-    }else if(copyofStoreDataLimitValue.store_users_limit != "" && parseInt(copyofStoreDataLimitValue.store_users_limit) > maxLimit){
+    } else if (copyofStoreDataLimitValue.store_users_limit != "" && parseInt(copyofStoreDataLimitValue.store_users_limit) > maxLimit) {
       count--;
       setInvalidStoreUserLimit(true);
       MarketplaceToaster.showToast(
@@ -449,7 +453,7 @@ const StoreSettings = () => {
           "error"
         )
       );
-    }else if(copyofStoreDataLimitValue.vendor_users_limit != "" && parseInt(copyofStoreDataLimitValue.vendor_users_limit) > maxLimit){
+    } else if (copyofStoreDataLimitValue.vendor_users_limit != "" && parseInt(copyofStoreDataLimitValue.vendor_users_limit) > maxLimit) {
       count--;
       setInvalidVendorUserLimit(true);
       MarketplaceToaster.showToast(
@@ -459,7 +463,7 @@ const StoreSettings = () => {
           "error"
         )
       );
-    }else if(copyofStoreDataLimitValue.max_products_per_vendor != "" && parseInt(copyofStoreDataLimitValue.max_products_per_vendor) > maxLimit){
+    } else if (copyofStoreDataLimitValue.max_products_per_vendor != "" && parseInt(copyofStoreDataLimitValue.max_products_per_vendor) > maxLimit) {
       count--;
       setInvalidMaxProductLimit(true);
       MarketplaceToaster.showToast(
@@ -469,7 +473,7 @@ const StoreSettings = () => {
           "error"
         )
       );
-    }else if(copyofStoreDataLimitValue.max_templates_per_vendor != "" && parseInt(copyofStoreDataLimitValue.max_templates_per_vendor) > maxLimit){
+    } else if (copyofStoreDataLimitValue.max_templates_per_vendor != "" && parseInt(copyofStoreDataLimitValue.max_templates_per_vendor) > maxLimit) {
       count--;
       setInvalidMaxTemplateLimit(true);
       MarketplaceToaster.showToast(
@@ -481,7 +485,7 @@ const StoreSettings = () => {
       );
     }
 
-    if(count == 10){
+    if (count == 10) {
       saveStoreDataLimit()
     }
   }
@@ -727,47 +731,94 @@ const StoreSettings = () => {
 
   //! Post call for the store data limit api
   const saveStoreDataLimit = () => {
+    // const postBody = {
+    //   vendor_limit:
+    //     storeDataLimitValues.vendor_limit == ""
+    //       ? 0
+    //       : parseInt(storeDataLimitValues.vendor_limit),
+    //   customer_limit:
+    //     storeDataLimitValues.customer_limit == ""
+    //       ? 0
+    //       : parseInt(storeDataLimitValues.customer_limit),
+    //   product_limit:
+    //     storeDataLimitValues.product_limit == ""
+    //       ? 0
+    //       : parseInt(storeDataLimitValues.product_limit),
+    //   order_limit_per_day:
+    //     storeDataLimitValues.order_limit_per_day == ""
+    //       ? 0
+    //       : parseInt(storeDataLimitValues.order_limit_per_day),
+    //   langauge_limit:
+    //     storeDataLimitValues.langauge_limit == ""
+    //       ? 0
+    //       : parseInt(storeDataLimitValues.langauge_limit),
+    //   product_template_limit:
+    //     storeDataLimitValues.product_template_limit == ""
+    //       ? 0
+    //       : parseInt(storeDataLimitValues.product_template_limit),
+    //   store_users_limit:
+    //     storeDataLimitValues.store_users_limit == ""
+    //       ? 0
+    //       : parseInt(storeDataLimitValues.store_users_limit),
+    //   vendor_users_limit:
+    //     storeDataLimitValues.vendor_users_limit == ""
+    //       ? 0
+    //       : parseInt(storeDataLimitValues.vendor_users_limit),
+    //   max_products_per_vendor:
+    //     storeDataLimitValues.max_products_per_vendor == ""
+    //       ? 0
+    //       : parseInt(storeDataLimitValues.max_products_per_vendor),
+    //   max_templates_per_vendor:
+    //     storeDataLimitValues.max_templates_per_vendor == ""
+    //       ? 0
+    //       : parseInt(storeDataLimitValues.max_templates_per_vendor),
+    //   default_store_commission:
+    //     storeDataLimitValues.default_store_commission == ""
+    //       ? 0
+    //       : parseFloat(storeDataLimitValues.default_store_commission),
+    //   store: storeIdFromUrl,
+    // };
     const postBody = {
       vendor_limit:
         storeDataLimitValues.vendor_limit == ""
           ? 0
-          : parseInt(storeDataLimitValues.vendor_limit),
+          : storeDataLimitValues.vendor_limit,
       customer_limit:
         storeDataLimitValues.customer_limit == ""
           ? 0
-          : parseInt(storeDataLimitValues.customer_limit),
+          : storeDataLimitValues.customer_limit,
       product_limit:
         storeDataLimitValues.product_limit == ""
           ? 0
-          : parseInt(storeDataLimitValues.product_limit),
+          : storeDataLimitValues.product_limit,
       order_limit_per_day:
         storeDataLimitValues.order_limit_per_day == ""
           ? 0
-          : parseInt(storeDataLimitValues.order_limit_per_day),
+          : storeDataLimitValues.order_limit_per_day,
       langauge_limit:
         storeDataLimitValues.langauge_limit == ""
           ? 0
-          : parseInt(storeDataLimitValues.langauge_limit),
+          : storeDataLimitValues.langauge_limit,
       product_template_limit:
         storeDataLimitValues.product_template_limit == ""
           ? 0
-          : parseInt(storeDataLimitValues.product_template_limit),
+          : storeDataLimitValues.product_template_limit,
       store_users_limit:
         storeDataLimitValues.store_users_limit == ""
           ? 0
-          : parseInt(storeDataLimitValues.store_users_limit),
+          : storeDataLimitValues.store_users_limit,
       vendor_users_limit:
         storeDataLimitValues.vendor_users_limit == ""
           ? 0
-          : parseInt(storeDataLimitValues.vendor_users_limit),
+          : storeDataLimitValues.vendor_users_limit,
       max_products_per_vendor:
         storeDataLimitValues.max_products_per_vendor == ""
           ? 0
-          : parseInt(storeDataLimitValues.max_products_per_vendor),
+          : storeDataLimitValues.max_products_per_vendor,
       max_templates_per_vendor:
         storeDataLimitValues.max_templates_per_vendor == ""
           ? 0
-          : parseInt(storeDataLimitValues.max_templates_per_vendor),
+          : storeDataLimitValues.max_templates_per_vendor,
       default_store_commission:
         storeDataLimitValues.default_store_commission == ""
           ? 0
@@ -1071,64 +1122,64 @@ const StoreSettings = () => {
       );
     } else if (
       (imageOfStoreSettingsCurrency && imageOfStoreSettingsCurrency.symbol) ===
-        (copyImageOfStoreSettingsCurrency &&
-          copyImageOfStoreSettingsCurrency.symbol) &&
+      (copyImageOfStoreSettingsCurrency &&
+        copyImageOfStoreSettingsCurrency.symbol) &&
       (imageOfStoreSettingsCurrency &&
         imageOfStoreSettingsCurrency.iso_code) ===
-        (copyImageOfStoreSettingsCurrency &&
-          copyImageOfStoreSettingsCurrency.iso_code) &&
+      (copyImageOfStoreSettingsCurrency &&
+        copyImageOfStoreSettingsCurrency.iso_code) &&
       (imageOfStoreSettingsCurrency &&
         imageOfStoreSettingsCurrency.fractional_unit) ===
-        (copyImageOfStoreSettingsCurrency &&
-          copyImageOfStoreSettingsCurrency.fractional_unit) &&
+      (copyImageOfStoreSettingsCurrency &&
+        copyImageOfStoreSettingsCurrency.fractional_unit) &&
       (imageOfStoreSettingsCurrency &&
         imageOfStoreSettingsCurrency.number_to_basic) ===
-        (copyImageOfStoreSettingsCurrency &&
-          copyImageOfStoreSettingsCurrency.number_to_basic) &&
+      (copyImageOfStoreSettingsCurrency &&
+        copyImageOfStoreSettingsCurrency.number_to_basic) &&
       (imageOfStoreSettingsPageTheme &&
         imageOfStoreSettingsPageTheme.bg_color) ===
-        (copyImageOfStoreSettingsPageTheme &&
-          copyImageOfStoreSettingsPageTheme.bg_color) &&
+      (copyImageOfStoreSettingsPageTheme &&
+        copyImageOfStoreSettingsPageTheme.bg_color) &&
       (imageOfStoreSettingsPageTheme &&
         imageOfStoreSettingsPageTheme.btn_primary_bg_color) ===
-        (copyImageOfStoreSettingsPageTheme &&
-          copyImageOfStoreSettingsPageTheme.btn_primary_bg_color) &&
+      (copyImageOfStoreSettingsPageTheme &&
+        copyImageOfStoreSettingsPageTheme.btn_primary_bg_color) &&
       (imageOfStoreSettingsPageTheme &&
         imageOfStoreSettingsPageTheme.btn_primary_fg_color) ===
-        (copyImageOfStoreSettingsPageTheme &&
-          copyImageOfStoreSettingsPageTheme.btn_primary_fg_color) &&
+      (copyImageOfStoreSettingsPageTheme &&
+        copyImageOfStoreSettingsPageTheme.btn_primary_fg_color) &&
       (imageOfStoreSettingsPageTheme &&
         imageOfStoreSettingsPageTheme.btn_secondary_bg_color) ===
-        (copyImageOfStoreSettingsPageTheme &&
-          copyImageOfStoreSettingsPageTheme.btn_secondary_bg_color) &&
+      (copyImageOfStoreSettingsPageTheme &&
+        copyImageOfStoreSettingsPageTheme.btn_secondary_bg_color) &&
       (imageOfStoreSettingsPageTheme &&
         imageOfStoreSettingsPageTheme.btn_secondary_fg_color) ===
-        (copyImageOfStoreSettingsPageTheme &&
-          copyImageOfStoreSettingsPageTheme.btn_secondary_fg_color) &&
+      (copyImageOfStoreSettingsPageTheme &&
+        copyImageOfStoreSettingsPageTheme.btn_secondary_fg_color) &&
       (imageOfStoreSettingsPageTheme &&
         imageOfStoreSettingsPageTheme.btn_tertiary_bg_color) ===
-        (copyImageOfStoreSettingsPageTheme &&
-          copyImageOfStoreSettingsPageTheme.btn_tertiary_bg_color) &&
+      (copyImageOfStoreSettingsPageTheme &&
+        copyImageOfStoreSettingsPageTheme.btn_tertiary_bg_color) &&
       (imageOfStoreSettingsPageTheme &&
         imageOfStoreSettingsPageTheme.btn_tertiary_fg_color) ===
-        (copyImageOfStoreSettingsPageTheme &&
-          copyImageOfStoreSettingsPageTheme.btn_tertiary_fg_color) &&
+      (copyImageOfStoreSettingsPageTheme &&
+        copyImageOfStoreSettingsPageTheme.btn_tertiary_fg_color) &&
       (imageOfStoreSettingsPageTheme &&
         imageOfStoreSettingsPageTheme.fg_color) ===
-        (copyImageOfStoreSettingsPageTheme &&
-          copyImageOfStoreSettingsPageTheme.fg_color) &&
+      (copyImageOfStoreSettingsPageTheme &&
+        copyImageOfStoreSettingsPageTheme.fg_color) &&
       (imageOfStoreHeaderSettings && imageOfStoreHeaderSettings.bg_color) ===
-        (copyImageOfStoreHeaderSetting &&
-          copyImageOfStoreHeaderSetting.bg_color) &&
+      (copyImageOfStoreHeaderSetting &&
+        copyImageOfStoreHeaderSetting.bg_color) &&
       (imageOfStoreHeaderSettings && imageOfStoreHeaderSettings.fg_color) ===
-        (copyImageOfStoreHeaderSetting &&
-          copyImageOfStoreHeaderSetting.fg_color) &&
+      (copyImageOfStoreHeaderSetting &&
+        copyImageOfStoreHeaderSetting.fg_color) &&
       (imageOfStoreFooterSettings && imageOfStoreFooterSettings.bg_color) ===
-        (copyImageOfStoreFooterSetting &&
-          copyImageOfStoreFooterSetting.bg_color) &&
+      (copyImageOfStoreFooterSetting &&
+        copyImageOfStoreFooterSetting.bg_color) &&
       (imageOfStoreFooterSettings && imageOfStoreFooterSettings.fg_color) ===
-        (copyImageOfStoreFooterSetting &&
-          copyImageOfStoreFooterSetting.fg_color) &&
+      (copyImageOfStoreFooterSetting &&
+        copyImageOfStoreFooterSetting.fg_color) &&
       imagesUpload.length === 0
     ) {
       MarketplaceToaster.showToast(
@@ -1324,82 +1375,467 @@ const StoreSettings = () => {
     }
   }, []);
 
-  useEffect(()=>{
-    setHideActionButton(!auth.isAuthenticated ||
+  useEffect(() => {
+    let isScopeAvailable = !auth.isAuthenticated ||
       (auth.isAuthenticated &&
         permissionValue &&
         permissionValue.length > 0 &&
-        permissionValue.includes("UI-product-admin"))
-        ? true
-        : false)
+        permissionValue.includes("ssdd"))
+      ? true
+      : false;
+    setHideActionButton(isScopeAvailable);
+    setDisableMediaButton(isScopeAvailable);
+    setDisableStatus(isScopeAvailable)
   }, [auth])
 
-  
+
   useEffect(() => {
-      MarketplaceServices.findAll(storePlatformAPI)
-        .then(function (response) {
-          console.log(
-            "Server Response from store limit API: ",
-            response.data.response_body
-          );
-          setStoreLimitValues(response.data.response_body);
-          instance
-            .get(dm4sightBaseURL + dm4sightDataLimitAnalysisDetailsCountAPI, dm4sightHeaders)
-            .then((res) => {
-              console.log("res analysis", res)
-              setAnalysisCount(res.data);
-            });
-        })
-        .catch((error) => {
-          // setIsLoading(false);
-          console.log("Server error from store limit API ", error.response);
-        });
+    setIsStoreLimitDataLoading(true);
+    MarketplaceServices.findAll(storePlatformAPI)
+      .then(function (response) {
+        console.log(
+          "Server Response from store limit API: ",
+          response.data.response_body
+        );
+        setStoreLimitValues(response.data.response_body);
+        instance
+          .get(dm4sightBaseURL + dm4sightDataLimitAnalysisDetailsCountAPI, dm4sightHeaders)
+          .then((res) => {
+            console.log("res analysis", res)
+            setIsStoreLimitDataLoading(false);
+            setAnalysisCount(res.data);
+          });
+      })
+      .catch((error) => {
+        // setIsLoading(false);
+        setIsStoreLimitDataLoading(false);
+        console.log("Server error from store limit API ", error.response);
+      });
   }, []);
+
+  const getStoreRestrictionControl = (key) => {
+    switch (key) {
+      case "vendor_limit":
+        return <InputNumber
+          placeholder={t("labels:placeholder_unlimited")}
+          value={
+            storeDataLimitValues.vendor_limit > 0
+              ? storeDataLimitValues.vendor_limit
+              : ""
+          }
+          disabled={hideActionButton}
+          onChange={(value) => {
+            // let number = /^[0-9]*$/.test(e.target.value);
+            // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+            // // to allow only 10 digits
+            // if (number && e.target.value.length <= 10) {
+            //   copyofStoreDataLimitValue.vendor_limit = e.target.value;
+            //   setIsStoreDataLimitChanged(true);
+            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+            //   setInvalidVendorLimit(false);
+            // } else if (e.target.value === "") {
+            //   copyofStoreDataLimitValue.vendor_limit = e.target.value;
+            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+            //   setInvalidVendorLimit(false);
+            // }
+            let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+            copyofStoreDataLimitValue.vendor_limit = value;
+            setStoreDataLimitValues(copyofStoreDataLimitValue);
+            setIsStoreDataLimitChanged(true);
+            setInvalidVendorLimit(false);
+          }}
+          status={invalidVendorLimit ? "error" : ""}
+        />
+        break;
+      case "customer_limit":
+        return <InputNumber
+          placeholder={t("labels:placeholder_unlimited")}
+          disabled={hideActionButton}
+          value={
+            storeDataLimitValues.customer_limit > 0
+              ? storeDataLimitValues.customer_limit
+              : ""
+          }
+          status={invalidCustomerLimit ? "error" : ""}
+          onChange={(value) => {
+            // let number = /^[0-9]*$/.test(e.target.value);
+            // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+            // // to allow only 10 digits
+            // if (number && e.target.value.length <= 10) {
+            //   copyofStoreDataLimitValue.customer_limit = e.target.value;
+            //   setIsStoreDataLimitChanged(true);
+            //   setInvalidCustomerLimit(false)
+            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+            // } else if (e.target.value === "") {
+            //   copyofStoreDataLimitValue.customer_limit = e.target.value;
+            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+            //   setInvalidCustomerLimit(false)
+            // }
+            let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+            copyofStoreDataLimitValue.customer_limit = value;
+            setIsStoreDataLimitChanged(true);
+            setInvalidCustomerLimit(false);
+          }}
+        />
+        break;
+      case "product_limit":
+        return <InputNumber
+          disabled={hideActionButton}
+          placeholder={t("labels:placeholder_unlimited")}
+          value={
+            storeDataLimitValues.product_limit > 0
+              ? storeDataLimitValues.product_limit
+              : ""
+          }
+          status={invalidProductLimit ? "error" : ""}
+          onChange={(value) => {
+            // let number = /^[0-9]*$/.test(e.target.value);
+            // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+            // // to allow only 10 digits
+            // if (number && e.target.value.length <= 10) {
+            //   copyofStoreDataLimitValue.product_limit = e.target.value;
+            //   setIsStoreDataLimitChanged(true);
+            //   setInvalidProductLimit(false)
+            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+            // } else if (e.target.value === "") {
+            //   setInvalidProductLimit(false)
+            //   copyofStoreDataLimitValue.product_limit = e.target.value;
+            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+            // }
+            let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+            copyofStoreDataLimitValue.product_limit = value;
+            setIsStoreDataLimitChanged(true);
+            setInvalidProductLimit(false);
+          }}
+        />
+        break;
+      case "order_limit_per_day":
+        return <InputNumber
+          disabled={hideActionButton}
+          placeholder={t("labels:placeholder_unlimited")}
+          value={
+            storeDataLimitValues.order_limit_per_day > 0
+              ? storeDataLimitValues.order_limit_per_day
+              : ""
+          }
+          status={invalidOrderLimit ? "error" : ""}
+          onChange={(value) => {
+            // let number = /^[0-9]*$/.test(e.target.value);
+            // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+            // // to allow only 10 digits
+            // if (number && e.target.value.length <= 10) {
+            //   copyofStoreDataLimitValue.order_limit_per_day =
+            //     e.target.value;
+            //   setIsStoreDataLimitChanged(true);
+            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+            //   setInvalidOrderLimit(false);
+            // } else if (e.target.value === "") {
+            //   copyofStoreDataLimitValue.order_limit_per_day =
+            //     e.target.value;
+            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+            //   setInvalidOrderLimit(false);
+            // }
+            let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+            copyofStoreDataLimitValue.order_limit_per_day = value;
+            setIsStoreDataLimitChanged(true);
+            setInvalidOrderLimit(false);
+          }}
+        />
+        break;
+      case "langauge_limit":
+        return <InputNumber
+          disabled={hideActionButton}
+          placeholder={t("labels:placeholder_unlimited")}
+          value={
+            storeDataLimitValues.langauge_limit > 0
+              ? storeDataLimitValues.langauge_limit
+              : ""
+          }
+          status={invalidLanguageLimit ? "error" : ""}
+          onChange={(value) => {
+            // let number = /^[0-9]*$/.test(e.target.value);
+            // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+            // // to allow only 10 digits
+            // if (number && e.target.value.length <= 10) {
+            //   copyofStoreDataLimitValue.langauge_limit = e.target.value;
+            //   setIsStoreDataLimitChanged(true);
+            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+            //   setInvalidLanguageLimit(false);
+            // } else if (e.target.value === "") {
+            //   copyofStoreDataLimitValue.langauge_limit = e.target.value;
+            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+            //   setInvalidLanguageLimit(false);
+            // }
+            let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+            copyofStoreDataLimitValue.langauge_limit = value;
+            setIsStoreDataLimitChanged(true);
+            setInvalidLanguageLimit(false);
+          }}
+        />
+        break;
+      case "product_template_limit":
+        return <InputNumber
+          disabled={hideActionButton}
+          placeholder={t("labels:placeholder_unlimited")}
+          value={
+            storeDataLimitValues.product_template_limit > 0
+              ? storeDataLimitValues.product_template_limit
+              : ""
+          }
+          status={invalidProductTemplateLimit ? "error" : ""}
+          onChange={(value) => {
+            // let number = /^[0-9]*$/.test(e.target.value);
+            // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+            // // to allow only 10 digits
+            // if (number && e.target.value.length <= 10) {
+            //   copyofStoreDataLimitValue.product_template_limit =
+            //     e.target.value;
+            //   setIsStoreDataLimitChanged(true);
+            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+            //   setInvalidProductTemplateLimit(false);
+            // } else if (e.target.value === "") {
+            //   copyofStoreDataLimitValue.product_template_limit =
+            //     e.target.value;
+            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+            //   setInvalidProductTemplateLimit(false);
+            // }
+            let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+            copyofStoreDataLimitValue.product_template_limit = value;
+            setIsStoreDataLimitChanged(true);
+            setInvalidProductTemplateLimit(false);
+          }}
+        />
+        break;
+      case "store_users_limit":
+        return <InputNumber
+          placeholder={t("labels:placeholder_unlimited")}
+          disabled={hideActionButton}
+          value={
+            storeDataLimitValues.store_users_limit > 0
+              ? storeDataLimitValues.store_users_limit
+              : ""
+          }
+          status={invalidStoreUserLimit ? "error" : ""}
+          onChange={(value) => {
+            // let number = /^[0-9]*$/.test(e.target.value);
+            // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+            // // to allow only 10 digits
+            // if (number && e.target.value.length <= 10) {
+            //   copyofStoreDataLimitValue.store_users_limit =
+            //     e.target.value;
+            //   setIsStoreDataLimitChanged(true);
+            //   setInvalidStoreUserLimit(false);
+            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+            // } else if (e.target.value === "") {
+            //   // setIsStoreDataLimitChanged(false);
+            //   copyofStoreDataLimitValue.store_users_limit =
+            //     e.target.value;
+            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+            //   setInvalidStoreUserLimit(false);
+            // }
+            let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+            copyofStoreDataLimitValue.store_users_limit = value;
+            setIsStoreDataLimitChanged(true);
+            setInvalidStoreUserLimit(false);
+          }}
+        />
+        break;
+      case "vendor_users_limit":
+        return <InputNumber
+          disabled={hideActionButton}
+          placeholder={t("labels:placeholder_unlimited")}
+          value={
+            storeDataLimitValues.vendor_users_limit > 0
+              ? storeDataLimitValues.vendor_users_limit
+              : ""
+          }
+          status={invalidVendorUserLimit ? "error" : ""}
+          onChange={(value) => {
+            // let number = /^[0-9]*$/.test(e.target.value);
+            // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+            // // to allow only 10 digits
+            // if (number && e.target.value.length <= 10) {
+            //   copyofStoreDataLimitValue.vendor_users_limit =
+            //     e.target.value;
+            //   setIsStoreDataLimitChanged(true);
+            //   setInvalidVendorUserLimit(false);
+            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+            // } else if (e.target.value === "") {
+            //   // setIsStoreDataLimitChanged(false);
+            //   copyofStoreDataLimitValue.vendor_users_limit =
+            //     e.target.value;
+            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+            //   setInvalidVendorUserLimit(false);
+            // }
+            let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+            copyofStoreDataLimitValue.vendor_users_limit = value;
+            setIsStoreDataLimitChanged(true);
+            setInvalidVendorUserLimit(false);
+          }}
+        />
+        break;
+      case "maximum_vendor_product_limit":
+        return <InputNumber
+          disabled={hideActionButton}
+          placeholder={t("labels:placeholder_unlimited")}
+          value={
+            storeDataLimitValues.max_products_per_vendor > 0
+              ? storeDataLimitValues.max_products_per_vendor
+              : ""
+          }
+          status={invalidMaxProductLimit ? "error" : ""}
+          onChange={(value) => {
+            // let number = /^[0-9]*$/.test(e.target.value);
+            // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+            // // to allow only 10 digits
+            // if (number && e.target.value.length <= 10) {
+            //   copyofStoreDataLimitValue.max_products_per_vendor =
+            //     e.target.value;
+            //   setIsStoreDataLimitChanged(true);
+            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+            //   setInvalidMaxProductLimit(false);
+            // } else if (e.target.value === "") {
+            //   // setIsStoreDataLimitChanged(false);
+            //   copyofStoreDataLimitValue.max_products_per_vendor =
+            //     e.target.value;
+            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+            //   setInvalidMaxProductLimit(false);
+            // }
+            let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+            copyofStoreDataLimitValue.max_products_per_vendor = value;
+            setIsStoreDataLimitChanged(true);
+            setInvalidMaxProductLimit(false);
+          }}
+        />
+        break;
+      case "maximum_vendor_product_template_limit":
+        return <InputNumber
+          disabled={hideActionButton}
+          placeholder={t("labels:placeholder_unlimited")}
+          value={
+            storeDataLimitValues.max_templates_per_vendor > 0
+              ? storeDataLimitValues.max_templates_per_vendor
+              : ""
+          }
+          status={invalidMaxTemplateLimit ? "error" : ""}
+          onChange={(value) => {
+            // let number = /^[0-9]*$/.test(e.target.value);
+            // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+            // // to allow only 10 digits
+            // if (number && e.target.value.length <= 10) {
+            //   copyofStoreDataLimitValue.max_templates_per_vendor =
+            //     e.target.value;
+            //   setIsStoreDataLimitChanged(true);
+            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+            //   setInvalidMaxTemplateLimit(false);
+            // } else if (e.target.value === "") {
+            //   // setIsStoreDataLimitChanged(false);
+            //   copyofStoreDataLimitValue.max_templates_per_vendor =
+            //     e.target.value;
+            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+            //   setInvalidMaxTemplateLimit(false)
+            // }
+            let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+            copyofStoreDataLimitValue.max_templates_per_vendor = value;
+            setIsStoreDataLimitChanged(true);
+            setInvalidMaxTemplateLimit(false);
+          }}
+        />
+        break;
+      case "default_vendor_commission":
+        return <InputNumber
+          disabled={hideActionButton}
+          value={storeDataLimitValues.default_store_commission}
+          min={0}
+          max={100}
+          step="0.1"
+          formatter={(value) => `${value}%`}
+          parser={(value) => value.replace("%", "")}
+          onChange={(value) => {
+            let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+            copyofStoreDataLimitValue.default_store_commission = value;
+            setStoreDataLimitValues(copyofStoreDataLimitValue);
+            setIsStoreDataLimitChanged(true);
+          }}
+        />
+        break;
+    }
+  }
 
   const StoreTableColumnThreshold = [
     {
       // title: `${t("labels:name")}`,
-      title: "Limits",
+      title: `${t("labels:limit_set_by_admin_name")}`,
       dataIndex: "limits",
       key: "limits",
       width: "30%",
       render: (text) => {
-        const [limitName, value] = text.split(",");
-        return (
-          <Content className="flex flex-col gap-2">
-            {limitName}
-            <Input disabled={true} className="w-24" value={value == "null" ? 0 : value} />
-          </Content>
-        );
+        if (text != null) {
+          const [limitName, value] = text.split(",");
+          return (
+            <Content className="flex flex-col gap-2">
+              <label className="text-[13px] mb-2 ml-1 input-label-color">
+                {limitName}
+              </label>
+              <Input disabled={true} className="w-24" value={value == "null" ? 0 : value} />
+            </Content>
+          );
+        } else {
+          return null
+        }
       },
     },
     {
-      title: "Stats",
+      // title: `${t("labels:name")}`,
+      title: `${t("labels:override_limit_name")}`,
+      dataIndex: "limitfields",
+      key: "limitfields",
+      width: "30%",
+      render: (text) => {
+        const [labelname, value, key] = text.split(",");
+        if (key !== "default_vendor_commission") {
+          return (
+            <Content className="flex flex-col">
+              <label className="text-[13px] mb-3 input-label-color">
+                {labelname}
+              </label>
+              {getStoreRestrictionControl(key)}
+            </Content>
+          );
+        } else {
+          return (
+            <Content className="flex flex-col">
+              <label className="text-[13px] mb-3 input-label-color">
+                {labelname}
+              </label>
+              {getStoreRestrictionControl(key)}
+            </Content>
+          )
+        }
+      },
+    },
+    {
+      title: `${t("labels:stats_name")}`,
       dataIndex: "stats",
       key: "stats",
       width: "20%",
-
       render: (text) => {
-        if(text != null) {
-        const [count, total] = text.split(" of ");
-        return (
-          <Content className="flex flex-col gap-2">
-            {count} of {total}
-            <Progress
-              strokeColor={"#4A2D73"}
-              className="w-24"
-              size="small"
-              percent={(count / total) * 100}
-              showInfo={false}
-            />
-          </Content>
-        );
-        }else{
+        if (text != null) {
+          const [count, total] = text.split(" of ");
           return (
-            <Content>
-               {"No stats"}
+            <Content className="flex flex-col gap-2">
+              {count} of {total}
+              <Progress
+                strokeColor={"#4A2D73"}
+                className="w-24"
+                size="small"
+                percent={(count / total) * 100}
+                showInfo={false}
+              />
             </Content>
           );
+        } else {
+          return null
         }
       },
     },
@@ -1438,38 +1874,89 @@ const StoreSettings = () => {
       // },
       {
         key: "4",
+        limitfields: `${t("labels:vendor_limit")},${storeDataLimitValues.vendor_limit > 0
+          ? storeDataLimitValues.vendor_limit
+          : ""},vendor_limit`,
         limits: `${t("labels:max_vendor_onboarding_limit")},${storeLimitValues?.vendor_limit}`,
         stats: analysisCount?.vendor_count + " of " + storeLimitValues?.vendor_limit
       },
       {
         key: "5",
+        limitfields: `${t("labels:customer_limit")},${storeDataLimitValues.customer_limit > 0
+          ? storeDataLimitValues.customer_limit
+          : ""},customer_limit`,
         limits: `${t("labels:max_customer_onboarding_limit")},${storeLimitValues?.customer_limit}`,
         stats: analysisCount?.customer_count + " of " + storeLimitValues?.customer_limit,
       },
       {
         key: "6",
+        limitfields: `${t("labels:product_limit")},${storeDataLimitValues.product_limit > 0
+          ? storeDataLimitValues.product_limit
+          : ""},product_limit`,
         limits: `${t("labels:max_product_limit")},${storeLimitValues?.product_limit}`,
         stats: analysisCount?.product_count + " of " + storeLimitValues?.product_limit,
       },
       {
         key: "7",
+        limitfields: `${t("labels:order_limit_per_day")},${storeDataLimitValues.order_limit_per_day > 0
+          ? storeDataLimitValues.order_limit_per_day
+          : ""},order_limit_per_day`,
         limits: `${t("labels:max_order_limit")},${storeLimitValues?.order_limit_per_day}`,
         stats: analysisCount?.order_count + " of " + storeLimitValues?.order_limit_per_day,
       },
       {
         key: "8",
+        limitfields: `${t("labels:langauge_limit")},${storeDataLimitValues.langauge_limit > 0
+          ? storeDataLimitValues.langauge_limit
+          : ""},langauge_limit`,
         limits: `${t("labels:max_language_limit")},${storeLimitValues?.langauge_limit}`,
         stats: analysisCount?.lang_count + " of " + storeLimitValues?.langauge_limit,
       },
       {
         key: "9",
+        limitfields: `${t("labels:product_template_limit")},${storeDataLimitValues.product_template_limit > 0
+          ? storeDataLimitValues.product_template_limit
+          : ""},product_template_limit`,
         limits: `${t("labels:max_product_template_limit")},${storeLimitValues?.product_template_limit}`,
         stats: analysisCount?.prod_temp_count + " of " + storeLimitValues?.product_template_limit,
       },
       {
         key: "10",
+        limitfields: `${t("labels:store_users_limit")},${storeDataLimitValues.store_users_limit > 0
+          ? storeDataLimitValues.store_users_limit
+          : ""},store_users_limit`,
         limits: `${t("labels:max_store_user_limit")},${storeLimitValues?.store_users_limit}`,
         stats: analysisCount?.store_user_count + " of " + storeLimitValues?.store_users_limit,
+      },
+      {
+        key: "11",
+        limitfields: `${t("labels:vendor_users_limit")},${storeDataLimitValues.vendor_users_limit > 0
+          ? storeDataLimitValues.vendor_users_limit
+          : ""},vendor_users_limit`,
+        limits: null,
+        stats: null,
+      },
+      {
+        key: "12",
+        limitfields: `${t("labels:maximum_vendor_product_limit")},${storeDataLimitValues.max_products_per_vendor > 0
+          ? storeDataLimitValues.max_products_per_vendor
+          : ""},maximum_vendor_product_limit`,
+        limits: null,
+        stats: null,
+      },
+      {
+        key: "12",
+        limitfields: `${t("labels:maximum_vendor_product_template_limit")},${storeDataLimitValues.max_templates_per_vendor > 0
+          ? storeDataLimitValues.max_templates_per_vendor
+          : ""},maximum_vendor_product_template_limit`,
+        limits: null,
+        stats: null,
+      },
+      {
+        key: "13",
+        limitfields: `${t("labels:default_vendor_commission")},${storeDataLimitValues.default_store_commission},default_vendor_commission`,
+        limits: null,
+        stats: null,
       },
       // {
       //   key: "11",
@@ -1545,6 +2032,7 @@ const StoreSettings = () => {
               storeStatus={changeSwitchStatus === 1 ? true : false}
               storeApiData={storeData}
               className="!inline-block"
+              disableStatus={disableStatus}
             />
           </Content>
         }
@@ -1553,7 +2041,7 @@ const StoreSettings = () => {
         showButtons={false}
       />
       <Content className="p-3 mt-[6.2rem]">
-        <Spin tip="Please wait!" size="large" spinning={isUpLoading}>
+        {disableMediaButton ? "" : <Spin tip="Please wait!" size="large" spinning={isUpLoading}>
           <Content className="bg-white p-3 !rounded-md">
             <label className="text-[20px] mb-2 font-bold">
               {t("labels:media")}
@@ -1572,6 +2060,7 @@ const StoreSettings = () => {
                   setValidStoreLogo={setValidStoreLogo}
                   InfoCircleText={`${t("messages:store_logo_info")}`}
                   setImageChangeValues={setImageChangeValues}
+                  disabelMediaButton={disableMediaButton}
                 />
               </Col>
               {/* <StoreMedia
@@ -1591,6 +2080,7 @@ const StoreSettings = () => {
               isSingleUpload={false}
               InfoCircleText={`${t("messages:banner_logo_info")}`}
               setImageChangeValues={setImageChangeValues}
+              disabelMediaButton={disableMediaButton}
             />
             {/* <StoreMedia
               title="Banner Images"
@@ -1644,13 +2134,14 @@ const StoreSettings = () => {
               </Row>
             </Content>
           </Content>
-        </Spin>
-        <Spin tip="Please wait!" size="large" spinning={isStoreDataLimitSaving}>
-          <Content className="bg-white mt-3 p-3 !rounded-md">
-            <label className="text-[20px] mb-2 font-bold">
+        </Spin>}
+
+        {/* <Spin tip="Please wait!" size="large" spinning={isStoreDataLimitSaving}> */}
+        {/* <Content className="bg-white mt-3 p-3 !rounded-md"> */}
+        {/* <label className="text-[20px] mb-2 font-bold">
               {t("labels:thershold_limit")}
-            </label>
-            <Row
+            </label> */}
+        {/* <Row
               gutter={{
                 xs: 8,
                 sm: 16,
@@ -1664,7 +2155,6 @@ const StoreSettings = () => {
                 </label>
                 <Input
                   placeholder={t("labels:placeholder_unlimited")}
-                  // defaultValue={storeSettingData.store_currency["symbol"]}
                   value={
                     storeDataLimitValues.vendor_limit > 0
                       ? storeDataLimitValues.vendor_limit
@@ -1694,7 +2184,6 @@ const StoreSettings = () => {
                   </label>
                   <Input
                     placeholder={t("labels:placeholder_unlimited")}
-                    // defaultValue={storeSettingData.store_currency["symbol"]}
                     disabled={hideActionButton}
                     value={
                       storeDataLimitValues.customer_limit > 0
@@ -1726,7 +2215,6 @@ const StoreSettings = () => {
                   <Input
                     disabled={hideActionButton}
                     placeholder={t("labels:placeholder_unlimited")}
-                    // defaultValue={storeSettingData.store_currency["symbol"]}
                     value={
                       storeDataLimitValues.product_limit > 0
                         ? storeDataLimitValues.product_limit
@@ -1757,7 +2245,6 @@ const StoreSettings = () => {
                   <Input
                     disabled={hideActionButton}
                     placeholder={t("labels:placeholder_unlimited")}
-                    // defaultValue={storeSettingData.store_currency["symbol"]}
                     value={
                       storeDataLimitValues.order_limit_per_day > 0
                         ? storeDataLimitValues.order_limit_per_day
@@ -1790,7 +2277,6 @@ const StoreSettings = () => {
                   <Input
                     disabled={hideActionButton}
                     placeholder={t("labels:placeholder_unlimited")}
-                    // defaultValue={storeSettingData.store_currency["symbol"]}
                     value={
                       storeDataLimitValues.langauge_limit > 0
                         ? storeDataLimitValues.langauge_limit
@@ -1821,7 +2307,6 @@ const StoreSettings = () => {
                   <Input
                     disabled={hideActionButton}
                     placeholder={t("labels:placeholder_unlimited")}
-                    // defaultValue={storeSettingData.store_currency["symbol"]}
                     value={
                       storeDataLimitValues.product_template_limit > 0
                         ? storeDataLimitValues.product_template_limit
@@ -1889,7 +2374,6 @@ const StoreSettings = () => {
                   <Input
                     disabled={hideActionButton}
                     placeholder={t("labels:placeholder_unlimited")}
-                    // defaultValue={storeSettingData.store_currency["symbol"]}
                     value={
                       storeDataLimitValues.vendor_users_limit > 0
                         ? storeDataLimitValues.vendor_users_limit
@@ -1923,7 +2407,6 @@ const StoreSettings = () => {
                   <Input
                     disabled={hideActionButton}
                     placeholder={t("labels:placeholder_unlimited")}
-                    // defaultValue={storeSettingData.store_currency["symbol"]}
                     value={
                       storeDataLimitValues.max_products_per_vendor > 0
                         ? storeDataLimitValues.max_products_per_vendor
@@ -1957,7 +2440,6 @@ const StoreSettings = () => {
                   <Input
                     disabled={hideActionButton}
                     placeholder={t("labels:placeholder_unlimited")}
-                    // defaultValue={storeSettingData.store_currency["symbol"]}
                     value={
                       storeDataLimitValues.max_templates_per_vendor > 0
                         ? storeDataLimitValues.max_templates_per_vendor
@@ -2006,38 +2488,8 @@ const StoreSettings = () => {
                   />
                 </Content>
               </Col>
-              {/* <Col span={6} className="gutter-row">
-               
-              </Col> */}
-              {/* <Col span={6} className="gutter-row">
-              
-              </Col> */}
-              {/* <Col span={6} className="gutter-row">
-             
-              </Col> */}
-              {/* <Col span={6} className="gutter-row">
-              
-              </Col> */}
-              {/* <Col span={6} className="gutter-row">
-               
-              </Col> */}
-              {/* <Col span={6} className="gutter-row">
-              
-              </Col> */}
-              {/* <Col span={6} className="gutter-row">
-              
-              </Col> */}
-              {/* <Col span={6} className="gutter-row">
-              
-              </Col> */}
-              {/* <Col span={6} className="gutter-row">
-              
-              </Col> */}
-              {/* <Col span={6} className="gutter-row">
-              
-              </Col> */}
-            </Row>
-            <Content className="mt-4">
+            </Row> */}
+        {/* <Content className="mt-4">
               {hideActionButton ? "" :
               <Row className="gap-2">
                 <Col>
@@ -2072,14 +2524,69 @@ const StoreSettings = () => {
                   </Button>
                 </Col>
               </Row>}
-            </Content>
+            </Content> */}
+        {/* </Content> */}
+        {/* </Spin> */}
+        {isStoreLimitDataLoading ? (
+          <Content className="bg-white p-3 !rounded-md mt-[2.0rem]">
+            <Skeleton
+              active
+              paragraph={{
+                rows: 6,
+              }}
+            ></Skeleton>
+            {/* <SkeletonComponent Layout="layout1" /> */}
           </Content>
-        </Spin>
-        <Content className="bg-white !rounded-md">
-          {storeLimitValues && analysisCount ?
-            <DynamicTable tableComponentData={tablePropsThreshold} /> : ""}
-        </Content>
-        <Spin tip="Please wait!" size="large" spinning={isLoading}>
+        ) :
+          <Spin tip="Please wait!" size="large" spinning={isStoreDataLimitSaving}>
+            <Content className="bg-white !rounded-md">
+              <Content className="p-3">
+                <label className="text-[20px] mb-2 font-bold">
+                  {t("labels:thershold_limit")}
+                </label>
+              </Content>
+              {storeLimitValues && analysisCount ?
+                <DynamicTable tableComponentData={tablePropsThreshold} /> : ""}
+              <Content className="p-3">
+                {hideActionButton ? "" :
+                  <Row className="gap-2">
+                    <Col>
+                      <Button
+                        className={
+                          isStoreDataLimitChanged
+                            ? "app-btn-primary"
+                            : "!opacity-75"
+                        }
+                        disabled={!isStoreDataLimitChanged}
+                        onClick={() => {
+                          storeLimitValidation();
+                        }}
+                      >
+                        {t("labels:save")}
+                      </Button>
+                    </Col>
+                    <Col className="">
+                      <Button
+                        // className=" app-btn-secondary"
+                        className={
+                          isStoreDataLimitChanged
+                            ? "app-btn-secondary"
+                            : "!opacity-75"
+                        }
+                        disabled={!isStoreDataLimitChanged}
+                        onClick={() => {
+                          navigate("/dashboard/store");
+                        }}
+                      >
+                        {t("labels:discard")}
+                      </Button>
+                    </Col>
+                  </Row>
+                }
+              </Content>
+            </Content>
+          </Spin>}
+        {hideActionButton ? "" : <Spin tip="Please wait!" size="large" spinning={isLoading}>
           <Content className="bg-white mt-3 p-3 rounded-lg">
             <label className="text-[20px] font-bold !text-center">
               {t("labels:currency")}
@@ -2103,11 +2610,10 @@ const StoreSettings = () => {
                 </span>
                 <Input
                   placeholder={t("placeholders:enter_currency_symbol")}
-                  className={`${
-                    inValidCurrencySymbol
-                      ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
-                      : ""
-                  }`}
+                  className={`${inValidCurrencySymbol
+                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
+                    : ""
+                    }`}
                   // defaultValue={storeSettingData.store_currency["symbol"]}
                   value={currencySymbol}
                   maxLength={3}
@@ -2163,11 +2669,10 @@ const StoreSettings = () => {
                     const trimmedUpdate = trimmed.replace(/\s+/g, " ");
                     setCurrencyIsoCode(trimmedUpdate);
                   }}
-                  className={`${
-                    inValidCurrencyIsoCode
-                      ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
-                      : ""
-                  }`}
+                  className={`${inValidCurrencyIsoCode
+                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
+                    : ""
+                    }`}
                 />
               </Col>
               <Col span={4} className="gutter-row">
@@ -2199,11 +2704,10 @@ const StoreSettings = () => {
                     const trimmedUpdate = trimmed.replace(/\s+/g, " ");
                     setFractionalUnit(trimmedUpdate);
                   }}
-                  className={`${
-                    inValidFractionalUnit
-                      ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
-                      : ""
-                  }`}
+                  className={`${inValidFractionalUnit
+                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
+                    : ""
+                    }`}
                 />
               </Col>
               <Col span={4} className="gutter-row">
@@ -2243,11 +2747,10 @@ const StoreSettings = () => {
                     setNumberToBasic(trimmedUpdate);
                   }}
                   onKeyDown={numberToBasicLimit}
-                  className={`${
-                    inValidNumberToBasic
-                      ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
-                      : ""
-                  }`}
+                  className={`${inValidNumberToBasic
+                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
+                    : ""
+                    }`}
                 />
               </Col>
             </Row>
@@ -2272,7 +2775,7 @@ const StoreSettings = () => {
                     cancelCallback={() => closeModal()}
                     isSpin={false}
                     className="!h-96"
-                    // hideCloseButton={false}
+                  // hideCloseButton={false}
                   >
                     <Preview
                       headerBackgroundColor={headerBackgroundColor}
@@ -3370,40 +3873,42 @@ const StoreSettings = () => {
                 </Row>
               </Content>
               <Content className="mt-4">
-                <Row className="gap-2">
-                  <Col>
-                    <Button
-                      className={
-                        onChangeValues ? "app-btn-primary " : "!opacity-75"
-                      }
-                      disabled={!onChangeValues}
-                      onClick={() => {
-                        validatePostStoreSetting();
-                      }}
-                    >
-                      {t("labels:save")}
-                    </Button>
-                  </Col>
-                  <Col className="">
-                    <Button
-                      className={
-                        onChangeValues === true
-                          ? "app-btn-secondary "
-                          : "!opacity-75"
-                      }
-                      disabled={!onChangeValues}
-                      onClick={() => {
-                        navigate("/dashboard/store");
-                      }}
-                    >
-                      {t("labels:discard")}
-                    </Button>
-                  </Col>
-                </Row>
+                {hideActionButton ? "" :
+                  <Row className="gap-2">
+                    <Col>
+                      <Button
+                        className={
+                          onChangeValues ? "app-btn-primary " : "!opacity-75"
+                        }
+                        disabled={!onChangeValues}
+                        onClick={() => {
+                          validatePostStoreSetting();
+                        }}
+                      >
+                        {t("labels:save")}
+                      </Button>
+                    </Col>
+                    <Col className="">
+                      <Button
+                        className={
+                          onChangeValues === true
+                            ? "app-btn-secondary "
+                            : "!opacity-75"
+                        }
+                        disabled={!onChangeValues}
+                        onClick={() => {
+                          navigate("/dashboard/store");
+                        }}
+                      >
+                        {t("labels:discard")}
+                      </Button>
+                    </Col>
+                  </Row>}
               </Content>
             </Content>
           </Content>
-        </Spin>
+        </Spin>}
+
       </Content>
     </Content>
   );

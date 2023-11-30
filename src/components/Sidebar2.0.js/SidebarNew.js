@@ -78,7 +78,13 @@ const SidebarNew = () => {
       inactive_icon: <img src={TranslateIcon} />,
       label: ` ${t("labels:languages")}`,
       navigate_to: "/dashboard/language",
-      show_in_menu: true,
+      show_in_menu: !auth.isAuthenticated ||
+        (auth.isAuthenticated &&
+          permissionValue &&
+          permissionValue.length > 0 &&
+          permissionValue.includes("ssdd"))
+        ? true
+        : false,
     },
     // {
     //   key: "4",
@@ -116,11 +122,11 @@ const SidebarNew = () => {
       inactive_icon: <img src={ProfileIcon} />,
       label: `${t("labels:user_access_control")}`,
       navigate_to: `/dashboard/user-access-control/list-user-roles?tab=0&page=1&limit=${pageLimitFromENV}`,
-      show_in_menu:  !auth.isAuthenticated ||
-      (auth.isAuthenticated &&
-        permissionValue &&
-        permissionValue.length > 0 &&
-        permissionValue.includes("UI-user-access-control"))
+      show_in_menu: !auth.isAuthenticated ||
+        (auth.isAuthenticated &&
+          permissionValue &&
+          permissionValue.length > 0 &&
+          permissionValue.includes("UI-user-access-control"))
         ? true
         : false,
       // children: [],
@@ -135,7 +141,7 @@ const SidebarNew = () => {
     //   (auth.isAuthenticated &&
     //     permissionValue &&
     //     permissionValue.length > 0 &&
-    //     permissionValue.includes("UI-product-admin"))
+    //     permissionValue.includes(UI-product-admin))
     //     ? true
     //     : false,
     // },
@@ -214,7 +220,7 @@ const SidebarNew = () => {
               // top: 0,
               // bottom: 0,
             }}
-            // className="!flex-[0_0_20%] min-h-screen border-r-[1px] drop-shadow-[0_0px_2px_rgba(0,0,0,0.15)]"
+          // className="!flex-[0_0_20%] min-h-screen border-r-[1px] drop-shadow-[0_0px_2px_rgba(0,0,0,0.15)]"
           >
             <Spin
               spinning={loadingEffect}
