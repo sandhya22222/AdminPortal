@@ -1473,6 +1473,7 @@ const StoreSettings = () => {
             // }
             let copyofStoreDataLimitValue = { ...storeDataLimitValues };
             copyofStoreDataLimitValue.customer_limit = value;
+            setStoreDataLimitValues(copyofStoreDataLimitValue);
             setIsStoreDataLimitChanged(true);
             setInvalidCustomerLimit(false);
           }}
@@ -1504,6 +1505,7 @@ const StoreSettings = () => {
             // }
             let copyofStoreDataLimitValue = { ...storeDataLimitValues };
             copyofStoreDataLimitValue.product_limit = value;
+            setStoreDataLimitValues(copyofStoreDataLimitValue);
             setIsStoreDataLimitChanged(true);
             setInvalidProductLimit(false);
           }}
@@ -1537,6 +1539,7 @@ const StoreSettings = () => {
             // }
             let copyofStoreDataLimitValue = { ...storeDataLimitValues };
             copyofStoreDataLimitValue.order_limit_per_day = value;
+            setStoreDataLimitValues(copyofStoreDataLimitValue);
             setIsStoreDataLimitChanged(true);
             setInvalidOrderLimit(false);
           }}
@@ -1568,6 +1571,7 @@ const StoreSettings = () => {
             // }
             let copyofStoreDataLimitValue = { ...storeDataLimitValues };
             copyofStoreDataLimitValue.langauge_limit = value;
+            setStoreDataLimitValues(copyofStoreDataLimitValue);
             setIsStoreDataLimitChanged(true);
             setInvalidLanguageLimit(false);
           }}
@@ -1601,6 +1605,7 @@ const StoreSettings = () => {
             // }
             let copyofStoreDataLimitValue = { ...storeDataLimitValues };
             copyofStoreDataLimitValue.product_template_limit = value;
+            setStoreDataLimitValues(copyofStoreDataLimitValue);
             setIsStoreDataLimitChanged(true);
             setInvalidProductTemplateLimit(false);
           }}
@@ -1635,6 +1640,7 @@ const StoreSettings = () => {
             // }
             let copyofStoreDataLimitValue = { ...storeDataLimitValues };
             copyofStoreDataLimitValue.store_users_limit = value;
+            setStoreDataLimitValues(copyofStoreDataLimitValue);
             setIsStoreDataLimitChanged(true);
             setInvalidStoreUserLimit(false);
           }}
@@ -1669,6 +1675,7 @@ const StoreSettings = () => {
             // }
             let copyofStoreDataLimitValue = { ...storeDataLimitValues };
             copyofStoreDataLimitValue.vendor_users_limit = value;
+            setStoreDataLimitValues(copyofStoreDataLimitValue);
             setIsStoreDataLimitChanged(true);
             setInvalidVendorUserLimit(false);
           }}
@@ -1703,6 +1710,7 @@ const StoreSettings = () => {
             // }
             let copyofStoreDataLimitValue = { ...storeDataLimitValues };
             copyofStoreDataLimitValue.max_products_per_vendor = value;
+            setStoreDataLimitValues(copyofStoreDataLimitValue);
             setIsStoreDataLimitChanged(true);
             setInvalidMaxProductLimit(false);
           }}
@@ -1725,7 +1733,7 @@ const StoreSettings = () => {
             // if (number && e.target.value.length <= 10) {
             //   copyofStoreDataLimitValue.max_templates_per_vendor =
             //     e.target.value;
-            //   setIsStoreDataLimitChanged(true);
+            setIsStoreDataLimitChanged(true);
             //   setStoreDataLimitValues(copyofStoreDataLimitValue);
             //   setInvalidMaxTemplateLimit(false);
             // } else if (e.target.value === "") {
@@ -1737,6 +1745,7 @@ const StoreSettings = () => {
             // }
             let copyofStoreDataLimitValue = { ...storeDataLimitValues };
             copyofStoreDataLimitValue.max_templates_per_vendor = value;
+            setStoreDataLimitValues(copyofStoreDataLimitValue);
             setIsStoreDataLimitChanged(true);
             setInvalidMaxTemplateLimit(false);
           }}
