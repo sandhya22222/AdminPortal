@@ -162,7 +162,7 @@ const Stores = () => {
         if (
           res.data.response_body.resource_access[
             "dmadmin-client"
-          ].roles.includes("ssdd")
+          ].roles.includes("UI-product-admin")
         ) {
           setSuperAdmin(true);
         }
@@ -170,7 +170,7 @@ const Stores = () => {
           "dddddddddddddddddddddddddddddddddddddddd",
           res.data.response_body.resource_access[
             "dmadmin-client"
-          ].roles.includes("ssdd")
+          ].roles.includes("UI-product-admin")
         );
       })
       .catch((err) => {
@@ -373,7 +373,7 @@ const Stores = () => {
       (auth.isAuthenticated &&
         permissionValue &&
         permissionValue.length > 0 &&
-        permissionValue.includes("ssdd"))
+        permissionValue.includes("UI-product-admin"))
       ? true
       : false)
   }, [auth])

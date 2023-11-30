@@ -1380,7 +1380,7 @@ const StoreSettings = () => {
       (auth.isAuthenticated &&
         permissionValue &&
         permissionValue.length > 0 &&
-        permissionValue.includes("ssdd"))
+        permissionValue.includes("UI-product-admin"))
       ? true
       : false;
     setHideActionButton(isScopeAvailable);
