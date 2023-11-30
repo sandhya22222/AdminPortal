@@ -83,8 +83,8 @@ const SidebarNew = () => {
           permissionValue &&
           permissionValue.length > 0 &&
           permissionValue.includes("UI-product-admin"))
-        ? true
-        : false,
+        ? false
+        : true,
     },
     // {
     //   key: "4",
