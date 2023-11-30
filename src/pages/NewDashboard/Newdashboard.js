@@ -1246,14 +1246,14 @@ const Newdashboard = () => {
                   {t("messages:dashboard_welcome_message")}
                 </Text>
               </Content>
-              <Content className="!w-[20%] flex flex-col justify-center items-center">
-                <Text className="!text-md mb-2 text-zinc-400 flex justify-left gap-1 items-center">
-                  <Content class="w-2 h-2 bg-lime-500 rounded-full"></Content>{" "}
-                  {t("labels:total")} {t("labels:active_stores")}
+              <Content className="!w-[30%] flex flex-col justify-center items-baseline">
+                <Text className="!text-md mb-2 text-zinc-400 flex gap-1 items-center">
+                  <Content class="w-2 h-2 bg-lime-500 rounded-full float-left"></Content>{" "}
+                  {t("labels:active_stores")}
                 </Text>
 
-                <Content className="flex flex-col  items-center h-4">
-                  <Content className="flex justify-between items-baseline gap-1 ">
+                <Content className="flex flex-col  items-baselin h-4">
+                  <Content className="flex justify-between  items-baseline gap-1 ">
                     <Title style={{ color: "#4A2D73" }} level={2}>
                       {activeStoreCount ? activeStoreCount : 0}{" "}
                     </Title>
@@ -1263,7 +1263,7 @@ const Newdashboard = () => {
                       {storeLimitValues?.store_limit
                         ? storeLimitValues?.store_limit
                         : 0}{" "}
-                      {t("labels:stores")}
+                      {t("labels:stores")} ({t("labels:max_allowed")})
                     </Text>
                   </Content>
                   <Progress
@@ -1281,14 +1281,13 @@ const Newdashboard = () => {
 
               <Divider className="h-20" type="vertical" />
 
-              <Content className="!w-[20%] pl-3 flex flex-col justify-center">
-                {/* <Content class="w-2 h-2 bg-lime-500 rounded-full"></Content>{" "} */}
+              <Content className="!w-[25%] pl-3 flex flex-col justify-center">
                 <Content>
                   <Text className="!text-md mb-2 text-zinc-400 flex justify-left gap-1 items-center">
                     <Content class="w-2 h-2  bg-neutral-400 rounded-full"></Content>{" "}
-                    {t("labels:inactive_sores")}
+                    {t("labels:draft")} / {t("labels:inactive_sores")}
                   </Text>
-                  <Content className="flex items-center ml-2">
+                  <Content className="flex items-baseline">
                     <Title class="text-zinc-400" level={2}>
                       {" "}
                       {inActiveStoreCount ? inActiveStoreCount : 0}{" "}
