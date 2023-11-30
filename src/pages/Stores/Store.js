@@ -733,24 +733,24 @@ const Stores = () => {
         stats:
           analysisCount?.store_count + " of " + storeLimitValues?.store_limit,
       },
-      {
-        key: "2",
-        limits: `${t("labels:maximum_language_activation_limit")},${
-          storeLimitValues?.dm_language_limit
-        },dm_language_limit`,
-        stats:
-          analysisCount?.lang_count +
-          " of " +
-          storeLimitValues?.dm_language_limit,
-      },
-      {
-        key: "3",
-        limits: `${t("labels:maximum_user_limit")},${
-          storeLimitValues?.dm_user_limit
-        },dm_user_limit`,
-        stats:
-          analysisCount?.user_count + " of " + storeLimitValues?.dm_user_limit,
-      },
+      // {
+      //   key: "2",
+      //   limits: `${t("labels:maximum_language_activation_limit")},${
+      //     storeLimitValues?.dm_language_limit
+      //   },dm_language_limit`,
+      //   stats:
+      //     analysisCount?.lang_count +
+      //     " of " +
+      //     storeLimitValues?.dm_language_limit,
+      // },
+      // {
+      //   key: "3",
+      //   limits: `${t("labels:maximum_user_limit")},${
+      //     storeLimitValues?.dm_user_limit
+      //   },dm_user_limit`,
+      //   stats:
+      //     analysisCount?.user_count + " of " + storeLimitValues?.dm_user_limit,
+      // },
     ],
     pagenationSettings: pagination,
     search_settings: {
