@@ -180,5 +180,8 @@
   "max_store_user_limit": "Maximum Store Users Limit",
   "max_vendor_user_limit": "Maximum Vendor Users Limit",
   "max_allowed": "Max Allowed",
-  "draft": "Draft"
+  "draft": "Draft",
+  "limit_set_by_admin_name": "Limits Set By Product Owner",
+  "override_limit_name":"Override Limits",
+  "stats_name": "Stats"
 }

@@ -46,6 +46,7 @@ const StoreImages = ({
   InfoCircleText,
   bannerAbsoluteImage,
   setImageChangeValues,
+  disabelMediaButton
 }) => {
   const authorizationHeader = useAuthorization();
   const dispatch = useDispatch();
@@ -423,6 +424,7 @@ const StoreImages = ({
                   return false;
                 }}
                 accept={supportedFileExtensions}
+                disabled={disabelMediaButton}
               >
                 {fileList.length >= 1 ? null : uploadButton}
               </Upload>
@@ -463,6 +465,7 @@ const StoreImages = ({
               openFileDialogOnClick={
                 bannerImagesLength < BannerImagesUploadLength ? true : false
               }
+              disabled={disabelMediaButton}
             >
               <Button
                 disabled={
@@ -538,6 +541,7 @@ const StoreImages = ({
                   openFileDialogOnClick={
                     bannerImagesLength < BannerImagesUploadLength ? true : false
                   }
+                  disabled={disabelMediaButton}
                 >
                   <Button
                     disabled={

@@ -137,8 +137,10 @@ const Stores = () => {
   const [isStoreDeleting, setIsStoreDeleting] = useState(false);
   const [storeApiStatus, setStoreApiStatus] = useState();
   const [superAdmin, setSuperAdmin] = useState(false);
+  const [hideAddStoreButton, setHideAddStoreButton] = useState(false);
   const searchInput = useRef(null);
   const auth = useAuth();
+  const permissionValue = util.getPermissionData() || [];
 
   let keyCLoak = sessionStorage.getItem("keycloakData");
   keyCLoak = JSON.parse(keyCLoak);
@@ -366,6 +368,18 @@ const Stores = () => {
     }
   }, [currentTab]);
 
+  useEffect(() => {
+    setHideAddStoreButton(
+      !auth.isAuthenticated ||
+        (auth.isAuthenticated &&
+          permissionValue &&
+          permissionValue.length > 0 &&
+          permissionValue.includes("UI-product-admin"))
+        ? true
+        : false
+    );
+  }, [auth]);
+
   const StoreTableColumnThreshold1 = [
     {
       // title: `${t("labels:name")}`,
@@ -508,6 +522,7 @@ const Stores = () => {
             setStoreApiData={setStoreApiData}
             activeCount={activeCount}
             setActiveCount={setActiveCount}
+            disableStatus={hideAddStoreButton}
           />
         );
       },
@@ -1515,12 +1530,16 @@ const Stores = () => {
           }
           titleContent={
             currentTab == 1 ? (
-              <Button
-                className="app-btn-primary !h-8 !hover:h-[32px]"
-                onClick={showAddDrawer}
-              >
-                {t("labels:add_store")}
-              </Button>
+              hideAddStoreButton ? (
+                ""
+              ) : (
+                <Button
+                  className="app-btn-primary !h-8 !hover:h-[32px]"
+                  onClick={showAddDrawer}
+                >
+                  {t("labels:add_store")}
+                </Button>
+              )
             ) : null
           }
           headerContent={
@@ -1976,15 +1995,19 @@ const Stores = () => {
                     <Title level={5}>Store Restrictions</Title>
                     <DynamicTable tableComponentData={tablePropsThreshold2} />
                   </Content>
-                  <Content className="flex gap-2">
-                    <Button
-                      className={"app-btn-primary"}
-                      onClick={saveStoreLimit}
-                    >
-                      Save
-                    </Button>
-                    {/* <Button onClick={{}}>Discard</Button> */}
-                  </Content>
+                  {hideAddStoreButton ? (
+                    <Content className="flex gap-2">
+                      <Button
+                        className={"app-btn-primary"}
+                        onClick={saveStoreLimit}
+                      >
+                        Save
+                      </Button>
+                      {/* <Button onClick={{}}>Discard</Button> */}
+                    </Content>
+                  ) : (
+                    ""
+                  )}
                 </>
               ) : (
                 <Content className="!mt-[1.7rem] !text-center bg-white p-3 !rounded-md">
