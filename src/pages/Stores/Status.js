@@ -18,6 +18,7 @@ function Status({
   tabId,
   activeCount,
   setActiveCount,
+  disableStatus
 }) {
   const authorizationHeader = useAuthorization();
   const { t } = useTranslation();
@@ -179,6 +180,7 @@ function Status({
               onClick={() => {
                 openModal(switchStatus);
               }}
+              disabled={disableStatus}
             />
           </Space>
         </Col>
