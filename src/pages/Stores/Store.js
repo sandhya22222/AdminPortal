@@ -405,7 +405,9 @@ const Stores = () => {
               }}
               disabled={!superAdmin}
               className="w-28"
-              placeholder={limitValue == null ? "Unlimited" : ""}
+              placeholder={
+                limitValue == null || limitValue == 0 ? "Unlimited" : ""
+              }
               value={limitValue == null || limitValue == 0 ? null : limitValue}
             />
           </Content>
@@ -463,7 +465,9 @@ const Stores = () => {
                 disabled={!superAdmin}
                 className="w-28"
                 min={0}
-                placeholder={limitValue == null ? "Unlimited" : ""}
+                placeholder={
+                  limitValue == null || limitValue == 0 ? "Unlimited" : ""
+                }
                 value={limitValue > 0 ? limitValue : null}
               />
             </Content>
