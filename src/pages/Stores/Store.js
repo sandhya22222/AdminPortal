@@ -392,23 +392,21 @@ const Stores = () => {
         return (
           <Content className="flex flex-col gap-2">
             {limitName}
-            <Input
+            <InputNumber
+              value={
+                storeLimitValues?.[keyName] > 0
+                  ? storeLimitValues?.[keyName]
+                  : ""
+              }
               min={0}
-              type="number"
-              onChange={(e) => {
-                setValue(e.target.value);
-                updateValueByName(
-                  storeLimitValues,
-                  keyName,
-                  parseInt(e.target.value)
-                );
+              onChange={(value) => {
+                let copyofStoreimitValues = { ...storeLimitValues };
+                copyofStoreimitValues[keyName] = value;
+                setStoreLimitValues(copyofStoreimitValues);
               }}
               disabled={!superAdmin}
               className="w-28"
-              placeholder={
-                limitValue == null || limitValue == 0 ? "Unlimited" : ""
-              }
-              value={limitValue == null || limitValue == 0 ? null : limitValue}
+              placeholder={t("labels:placeholder_unlimited")}
             />
           </Content>
         );
@@ -452,23 +450,21 @@ const Stores = () => {
           <Content className="flex flex-col gap-2">
             {limitName}
             <Content>
-              <Input
-                type="number"
-                onChange={(e) => {
-                  setValue(e.target.value);
-                  updateValueByName(
-                    storeLimitValues,
-                    keyName,
-                    parseInt(e.target.value)
-                  );
+              <InputNumber
+                value={
+                  storeLimitValues?.[keyName] > 0
+                    ? storeLimitValues?.[keyName]
+                    : ""
+                }
+                min={0}
+                onChange={(value) => {
+                  let copyofStoreimitValues = { ...storeLimitValues };
+                  copyofStoreimitValues[keyName] = value;
+                  setStoreLimitValues(copyofStoreimitValues);
                 }}
                 disabled={!superAdmin}
                 className="w-28"
-                min={0}
-                placeholder={
-                  limitValue == null || limitValue == 0 ? "Unlimited" : ""
-                }
-                value={limitValue > 0 ? limitValue : null}
+                placeholder={t("labels:placeholder_unlimited")}
               />
             </Content>
           </Content>
@@ -1355,15 +1351,6 @@ const Stores = () => {
         setIsUpLoading(false);
         MarketplaceToaster.showToast(error.response);
       });
-  };
-
-  // Function to update the value of an item based on its name
-  const updateValueByName = (data, itemName, newValue) => {
-    if (data.hasOwnProperty(itemName)) {
-      data[itemName] = newValue;
-    } else {
-      console.error(`Item with name '${itemName}' not found.`);
-    }
   };
 
   //! Post call for the store store limit api
