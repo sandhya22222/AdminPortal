@@ -420,17 +420,20 @@ const Stores = () => {
       width: "20%",
 
       render: (text) => {
-        const [count, total] = text.split(" of ");
+        const [count, total, keyName] = text.split(",");
         return (
           <Content className="flex flex-col gap-2">
-            {count} of {total}
-            <Progress
-              strokeColor={"#4A2D73"}
-              className="w-24"
-              size="small"
-              percent={(count / total) * 100}
-              showInfo={false}
-            />
+            {count} {total > 0 ? " of " + total : null}{" "}
+            {keyName === "store_limit" ? t("labels:active_stores") : null}
+            {total > 0 ? (
+              <Progress
+                strokeColor={"#4A2D73"}
+                className="w-24"
+                size="small"
+                percent={(count / total) * 100}
+                showInfo={false}
+              />
+            ) : null}
           </Content>
         );
       },
@@ -746,7 +749,11 @@ const Stores = () => {
           storeLimitValues?.store_limit
         },store_limit`,
         stats:
-          analysisCount?.store_count + " of " + storeLimitValues?.store_limit,
+          analysisCount?.store_count +
+          "," +
+          storeLimitValues?.store_limit +
+          "," +
+          "store_limit",
       },
       // {
       //   key: "2",
