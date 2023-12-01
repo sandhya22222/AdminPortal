@@ -416,7 +416,7 @@ const UserAccessControl = () => {
         );
         setServerDataCount(
           response.data.response_body &&
-            response.data.response_body.users.length
+            response.data.response_body.count
         );
 
         setUsersServerData(response.data.response_body.users);
