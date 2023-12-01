@@ -369,14 +369,16 @@ const Stores = () => {
   }, [currentTab]);
 
   useEffect(() => {
-    setHideAddStoreButton(!auth.isAuthenticated ||
-      (auth.isAuthenticated &&
-        permissionValue &&
-        permissionValue.length > 0 &&
-        permissionValue.includes("UI-product-admin"))
-      ? true
-      : false)
-  }, [auth])
+    setHideAddStoreButton(
+      !auth.isAuthenticated ||
+        (auth.isAuthenticated &&
+          permissionValue &&
+          permissionValue.length > 0 &&
+          permissionValue.includes("UI-product-admin"))
+        ? true
+        : false
+    );
+  }, [auth]);
 
   const StoreTableColumnThreshold1 = [
     {
@@ -390,21 +392,21 @@ const Stores = () => {
         return (
           <Content className="flex flex-col gap-2">
             {limitName}
-            <Input
+            <InputNumber
+              value={
+                storeLimitValues?.[keyName] > 0
+                  ? storeLimitValues?.[keyName]
+                  : ""
+              }
               min={0}
-              type="number"
-              onChange={(e) => {
-                setValue(e.target.value);
-                updateValueByName(
-                  storeLimitValues,
-                  keyName,
-                  parseInt(e.target.value)
-                );
+              onChange={(value) => {
+                let copyofStoreimitValues = { ...storeLimitValues };
+                copyofStoreimitValues[keyName] = value;
+                setStoreLimitValues(copyofStoreimitValues);
               }}
               disabled={!superAdmin}
               className="w-28"
-              placeholder={limitValue == null ? "Unlimited" : ""}
-              value={limitValue == null || limitValue == 0 ? null : limitValue}
+              placeholder={t("labels:placeholder_unlimited")}
             />
           </Content>
         );
@@ -448,21 +450,21 @@ const Stores = () => {
           <Content className="flex flex-col gap-2">
             {limitName}
             <Content>
-              <Input
-                type="number"
-                onChange={(e) => {
-                  setValue(e.target.value);
-                  updateValueByName(
-                    storeLimitValues,
-                    keyName,
-                    parseInt(e.target.value)
-                  );
+              <InputNumber
+                value={
+                  storeLimitValues?.[keyName] > 0
+                    ? storeLimitValues?.[keyName]
+                    : ""
+                }
+                min={0}
+                onChange={(value) => {
+                  let copyofStoreimitValues = { ...storeLimitValues };
+                  copyofStoreimitValues[keyName] = value;
+                  setStoreLimitValues(copyofStoreimitValues);
                 }}
                 disabled={!superAdmin}
                 className="w-28"
-                min={0}
-                placeholder={limitValue == null ? "Unlimited" : ""}
-                value={limitValue > 0 ? limitValue : null}
+                placeholder={t("labels:placeholder_unlimited")}
               />
             </Content>
           </Content>
@@ -558,13 +560,15 @@ const Stores = () => {
               <Link
                 to={{
                   pathname: "storesetting",
-                  search: `?id=${record.id}&page=${searchParams.get("page") ? searchParams.get("page") : 1
-                    }&limit=${searchParams.get("limit")
+                  search: `?id=${record.id}&page=${
+                    searchParams.get("page") ? searchParams.get("page") : 1
+                  }&limit=${
+                    searchParams.get("limit")
                       ? searchParams.get("limit")
                       : pageLimit
-                    }&storeId=${record.storeId}`,
+                  }&storeId=${record.storeId}`,
                 }}
-              // className=" pl-[10px] font-semibold app-table-data-title"
+                // className=" pl-[10px] font-semibold app-table-data-title"
               >
                 <Tooltip title={t("labels:store_settings")}>
                   <MdSettings className="text-[var(--mp-primary-border-color)] hover:text-[var(--mp-primary-border-color-h)] !text-xl" />
@@ -738,27 +742,30 @@ const Stores = () => {
     table_content: [
       {
         key: "1",
-        limits: `${t("labels:maximum_store_creation_limit")},${storeLimitValues?.store_limit
-          },store_limit`,
+        limits: `${t("labels:maximum_store_creation_limit")},${
+          storeLimitValues?.store_limit
+        },store_limit`,
         stats:
           analysisCount?.store_count + " of " + storeLimitValues?.store_limit,
       },
-      {
-        key: "2",
-        limits: `${t("labels:maximum_language_activation_limit")},${storeLimitValues?.dm_language_limit
-          },dm_language_limit`,
-        stats:
-          analysisCount?.lang_count +
-          " of " +
-          storeLimitValues?.dm_language_limit,
-      },
-      {
-        key: "3",
-        limits: `${t("labels:maximum_user_limit")},${storeLimitValues?.dm_user_limit
-          },dm_user_limit`,
-        stats:
-          analysisCount?.user_count + " of " + storeLimitValues?.dm_user_limit,
-      },
+      // {
+      //   key: "2",
+      //   limits: `${t("labels:maximum_language_activation_limit")},${
+      //     storeLimitValues?.dm_language_limit
+      //   },dm_language_limit`,
+      //   stats:
+      //     analysisCount?.lang_count +
+      //     " of " +
+      //     storeLimitValues?.dm_language_limit,
+      // },
+      // {
+      //   key: "3",
+      //   limits: `${t("labels:maximum_user_limit")},${
+      //     storeLimitValues?.dm_user_limit
+      //   },dm_user_limit`,
+      //   stats:
+      //     analysisCount?.user_count + " of " + storeLimitValues?.dm_user_limit,
+      // },
     ],
     pagenationSettings: pagination,
     search_settings: {
@@ -784,44 +791,52 @@ const Stores = () => {
       {
         key: "1",
 
-        limits: `${t("labels:max_vendor_onboarding_limit")},${storeLimitValues?.vendor_limit
-          },vendor_limit`,
+        limits: `${t("labels:max_vendor_onboarding_limit")},${
+          storeLimitValues?.vendor_limit
+        },vendor_limit`,
       },
 
       {
         key: "2",
-        limits: `${t("labels:max_customer_onboarding_limit")},${storeLimitValues?.customer_limit
-          },customer_limit`,
+        limits: `${t("labels:max_customer_onboarding_limit")},${
+          storeLimitValues?.customer_limit
+        },customer_limit`,
       },
       {
         key: "3",
-        limits: `${t("labels:max_product_limit")},${storeLimitValues?.product_limit
-          },product_limit`,
+        limits: `${t("labels:max_product_limit")},${
+          storeLimitValues?.product_limit
+        },product_limit`,
       },
       {
         key: "4",
-        limits: `${t("labels:max_order_limit")} ,${storeLimitValues?.order_limit_per_day
-          },order_limit_per_day`,
+        limits: `${t("labels:max_order_limit")} ,${
+          storeLimitValues?.order_limit_per_day
+        },order_limit_per_day`,
       },
       {
         key: "5",
-        limits: `${t("labels:max_language_limit")} ,${storeLimitValues?.langauge_limit
-          },langauge_limit`,
+        limits: `${t("labels:max_language_limit")} ,${
+          storeLimitValues?.langauge_limit
+        },langauge_limit`,
       },
       {
         key: "6",
-        limits: `${t("labels:max_product_template_limit")},${storeLimitValues?.product_template_limit
-          },product_template_limit`,
+        limits: `${t("labels:max_product_template_limit")},${
+          storeLimitValues?.product_template_limit
+        },product_template_limit`,
       },
       {
         key: "7",
-        limits: `${t("labels:max_store_user_limit")},${storeLimitValues?.store_users_limit
-          },store_users_limit`,
+        limits: `${t("labels:max_store_user_limit")},${
+          storeLimitValues?.store_users_limit
+        },store_users_limit`,
       },
       {
         key: "8",
-        limits: `${t("labels:max_vendor_user_limit")},${storeLimitValues?.vendor_users_limit
-          },vendor_users_limit`,
+        limits: `${t("labels:max_vendor_user_limit")},${
+          storeLimitValues?.vendor_users_limit
+        },vendor_users_limit`,
       },
     ],
     pagenationSettings: pagination,
@@ -861,8 +876,8 @@ const Stores = () => {
     setDrawerAction("put");
     setEditName(
       storeApiData &&
-      storeApiData.length > 0 &&
-      storeApiData.filter((element) => element.store_uuid === id)[0].name
+        storeApiData.length > 0 &&
+        storeApiData.filter((element) => element.store_uuid === id)[0].name
     );
     setInValidEditName(false);
   };
@@ -1338,15 +1353,6 @@ const Stores = () => {
       });
   };
 
-  // Function to update the value of an item based on its name
-  const updateValueByName = (data, itemName, newValue) => {
-    if (data.hasOwnProperty(itemName)) {
-      data[itemName] = newValue;
-    } else {
-      console.error(`Item with name '${itemName}' not found.`);
-    }
-  };
-
   //! Post call for the store store limit api
   const saveStoreLimit = () => {
     const postBody = storeLimitValues;
@@ -1514,14 +1520,18 @@ const Stores = () => {
             </Title>
           }
           titleContent={
-            currentTab == 1 ? hideAddStoreButton ? "" :
-              <Button
-                className="app-btn-primary !h-8 !hover:h-[32px]"
-                onClick={showAddDrawer}
-              >
-                {t("labels:add_store")}
-              </Button>
-              : null
+            currentTab == 1 ? (
+              hideAddStoreButton ? (
+                ""
+              ) : (
+                <Button
+                  className="app-btn-primary !h-8 !hover:h-[32px]"
+                  onClick={showAddDrawer}
+                >
+                  {t("labels:add_store")}
+                </Button>
+              )
+            ) : null
           }
           headerContent={
             !isLoading && (
@@ -1604,10 +1614,11 @@ const Stores = () => {
                   value={name}
                   minLength={storeNameMinLength}
                   maxLength={storeNameMaxLength}
-                  className={`${inValidName
-                    ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-[0.5rem]"
-                    : "mb-[0.5rem]"
-                    }`}
+                  className={`${
+                    inValidName
+                      ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-[0.5rem]"
+                      : "mb-[0.5rem]"
+                  }`}
                   onChange={(e) => {
                     // const alphaWithSpacesRegex = /^[A-Za-z\s]+$/;
                     const alphaWithoutSpaces = /^[a-zA-Z0-9]+$/;
@@ -1656,10 +1667,11 @@ const Stores = () => {
                   value={storeEmail}
                   minLength={emailMinLength}
                   maxLength={emailMaxLength}
-                  className={`${inValidEmail
-                    ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-6"
-                    : "mb-6"
-                    }`}
+                  className={`${
+                    inValidEmail
+                      ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-6"
+                      : "mb-6"
+                  }`}
                   onChange={(e) => {
                     setStoreEmail(e.target.value);
                     setInValidEmail(false);
@@ -1685,10 +1697,11 @@ const Stores = () => {
                   minLength={userNameMinLength}
                   maxLength={userNameMaxLength}
                   // suffix={`${storeUserName.length}/15`}
-                  className={`${inValidUserName
-                    ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-6"
-                    : "mb-6"
-                    }`}
+                  className={`${
+                    inValidUserName
+                      ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-6"
+                      : "mb-6"
+                  }`}
                   prefix={<UserOutlined className="site-form-item-icon" />}
                   onChange={(e) => {
                     const regex = /^[A-Za-z0-9_\- ]+$/;
@@ -1724,10 +1737,11 @@ const Stores = () => {
                   value={storePassword}
                   minLength={passwordMinLength}
                   maxLength={passwordMaxLength}
-                  className={`${inValidPassword
-                    ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-10"
-                    : "mb-10"
-                    }`}
+                  className={`${
+                    inValidPassword
+                      ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-10"
+                      : "mb-10"
+                  }`}
                   onChange={(e) => {
                     const value = e.target.value;
                     // if (value && value.length < 15) {
@@ -1792,10 +1806,11 @@ const Stores = () => {
                 <Input
                   value={editName}
                   placeholder={t("placeholders:enter_store_name")}
-                  className={`${inValidEditName
-                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 mb-6"
-                    : "mb-6"
-                    }`}
+                  className={`${
+                    inValidEditName
+                      ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 mb-6"
+                      : "mb-6"
+                  }`}
                   minLength={storeNameMinLength}
                   maxLength={storeNameMaxLength}
                   onChange={(e) => {
@@ -1971,15 +1986,19 @@ const Stores = () => {
                     <Title level={5}>Store Restrictions</Title>
                     <DynamicTable tableComponentData={tablePropsThreshold2} />
                   </Content>
-                  {hideAddStoreButton ? <Content className="flex gap-2">
-                    <Button
-                      className={"app-btn-primary"}
-                      onClick={saveStoreLimit}
-                    >
-                      Save
-                    </Button>
-                    {/* <Button onClick={{}}>Discard</Button> */}
-                  </Content> : ""}
+                  {hideAddStoreButton ? (
+                    <Content className="flex gap-2">
+                      <Button
+                        className={"app-btn-primary"}
+                        onClick={saveStoreLimit}
+                      >
+                        Save
+                      </Button>
+                      {/* <Button onClick={{}}>Discard</Button> */}
+                    </Content>
+                  ) : (
+                    ""
+                  )}
                 </>
               ) : (
                 <Content className="!mt-[1.7rem] !text-center bg-white p-3 !rounded-md">
