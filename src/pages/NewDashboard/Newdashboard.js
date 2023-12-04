@@ -1246,7 +1246,14 @@ const Newdashboard = () => {
                   {t("messages:dashboard_welcome_message")}
                 </Text>
               </Content>
-              <Content className="!w-[30%] flex flex-col justify-center items-baseline">
+              <Content
+                className={
+                  storeLimitValues?.store_limit
+                    ? " !w-[30%] flex flex-col justify-center items-baseline"
+                    : " !w-[14%] mr-0 pr-0 flex flex-col justify-center items-baseline"
+                }
+                // "  !w-[30%] flex flex-col justify-center items-baseline"
+              >
                 <Text className="!text-md mb-2 text-zinc-400 flex gap-1 items-center">
                   <Content class="w-2 h-2 bg-lime-500 rounded-full float-left"></Content>{" "}
                   {t("labels:active_stores")}
@@ -1257,31 +1264,35 @@ const Newdashboard = () => {
                     <Title style={{ color: "#4A2D73" }} level={2}>
                       {activeStoreCount ? activeStoreCount : 0}{" "}
                     </Title>
-                    <Text level={5} className="text-zinc-400 !font-semibold ">
-                      {" "}
-                      {t("labels:of")}{" "}
-                      {storeLimitValues?.store_limit
-                        ? storeLimitValues?.store_limit
-                        : 0}{" "}
-                      {t("labels:stores")} ({t("labels:max_allowed")})
-                    </Text>
+                    {storeLimitValues?.store_limit ? (
+                      <Text level={5} className="text-zinc-400 !font-semibold ">
+                        {" "}
+                        {t("labels:of")}{" "}
+                        {storeLimitValues?.store_limit
+                          ? storeLimitValues?.store_limit
+                          : 0}{" "}
+                        {t("labels:stores")} ({t("labels:max_allowed")})
+                      </Text>
+                    ) : null}
                   </Content>
-                  <Progress
-                    style={{ paddingTop: "10px", marginTop: "30px" }}
-                    strokeColor={"#4A2D73"}
-                    className="w-32 "
-                    size="small"
-                    percent={
-                      (activeStoreCount / storeLimitValues?.store_limit) * 100
-                    }
-                    showInfo={false}
-                  />
+                  {storeLimitValues?.store_limit ? (
+                    <Progress
+                      style={{ paddingTop: "10px", marginTop: "30px" }}
+                      strokeColor={"#4A2D73"}
+                      className="w-32 "
+                      size="small"
+                      percent={
+                        (activeStoreCount / storeLimitValues?.store_limit) * 100
+                      }
+                      showInfo={false}
+                    />
+                  ) : null}
                 </Content>
               </Content>
 
-              <Divider className="h-20" type="vertical" />
+              <Divider className="h-20 ml-0 pl-0" type="vertical" />
 
-              <Content className="!w-[25%] pl-3 flex flex-col justify-center">
+              <Content className="!w-[25%]  pl-4 flex flex-col justify-center">
                 <Content>
                   <Text className="!text-md mb-2 text-zinc-400 flex justify-left gap-1 items-center">
                     <Content class="w-2 h-2  bg-neutral-400 rounded-full"></Content>{" "}

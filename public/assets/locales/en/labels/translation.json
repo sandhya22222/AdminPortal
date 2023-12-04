@@ -182,6 +182,14 @@
   "max_allowed": "Max Allowed",
   "draft": "Draft",
   "limit_set_by_admin_name": "Limits Set By Product Owner",
-  "override_limit_name":"Override Limits",
-  "stats_name": "Stats"
+  "override_limit_name": "Override Limits",
+  "stats_name": "Stats",
+
+  "active_vendors": "Active Vendors",
+  "onboarded_customers": "Onboarded Customers",
+  "published_products": "Published Products",
+  "active_languages": "Active Languages",
+  "active_templates": "Active Templates",
+  "store_users": "Store Users",
+  "vendor_users": "Vendor Users"
 }

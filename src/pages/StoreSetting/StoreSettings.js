@@ -174,7 +174,8 @@ const StoreSettings = () => {
   const [invalidProductLimit, setInvalidProductLimit] = useState(false);
   const [invalidOrderLimit, setInvalidOrderLimit] = useState(false);
   const [invalidLanguageLimit, setInvalidLanguageLimit] = useState(false);
-  const [invalidProductTemplateLimit, setInvalidProductTemplateLimit] = useState(false);
+  const [invalidProductTemplateLimit, setInvalidProductTemplateLimit] =
+    useState(false);
   const [invalidStoreUserLimit, setInvalidStoreUserLimit] = useState(false);
   const [invalidVendorUserLimit, setInvalidVendorUserLimit] = useState(false);
   const [invalidMaxProductLimit, setInvalidMaxProductLimit] = useState(false);
@@ -199,8 +200,8 @@ const StoreSettings = () => {
       client: "admin",
     },
     params: {
-      id: storeIdFromUrl
-    }
+      id: storeIdFromUrl,
+    },
   };
 
   //! get call of  getStoreSettingApi
@@ -380,10 +381,13 @@ const StoreSettings = () => {
   };
 
   const storeLimitValidation = () => {
-    const maxLimit = 2147483647
+    const maxLimit = 2147483647;
     let count = 10;
-    let copyofStoreDataLimitValue = { ...storeDataLimitValues }
-    if (copyofStoreDataLimitValue.vendor_limit != "" && copyofStoreDataLimitValue.vendor_limit > maxLimit) {
+    let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+    if (
+      copyofStoreDataLimitValue.vendor_limit != "" &&
+      copyofStoreDataLimitValue.vendor_limit > maxLimit
+    ) {
       count--;
       setInvalidVendorLimit(true);
       MarketplaceToaster.showToast(
@@ -393,7 +397,10 @@ const StoreSettings = () => {
           "error"
         )
       );
-    } else if (copyofStoreDataLimitValue.customer_limit != "" && parseInt(copyofStoreDataLimitValue.customer_limit) > maxLimit) {
+    } else if (
+      copyofStoreDataLimitValue.customer_limit != "" &&
+      parseInt(copyofStoreDataLimitValue.customer_limit) > maxLimit
+    ) {
       count--;
       setInvalidCustomerLimit(true);
       MarketplaceToaster.showToast(
@@ -403,7 +410,10 @@ const StoreSettings = () => {
           "error"
         )
       );
-    } else if (copyofStoreDataLimitValue.product_limit != "" && parseInt(copyofStoreDataLimitValue.product_limit) > maxLimit) {
+    } else if (
+      copyofStoreDataLimitValue.product_limit != "" &&
+      parseInt(copyofStoreDataLimitValue.product_limit) > maxLimit
+    ) {
       count--;
       setInvalidProductLimit(true);
       MarketplaceToaster.showToast(
@@ -413,7 +423,10 @@ const StoreSettings = () => {
           "error"
         )
       );
-    } else if (copyofStoreDataLimitValue.order_limit_per_day != "" && parseInt(copyofStoreDataLimitValue.order_limit_per_day) > maxLimit) {
+    } else if (
+      copyofStoreDataLimitValue.order_limit_per_day != "" &&
+      parseInt(copyofStoreDataLimitValue.order_limit_per_day) > maxLimit
+    ) {
       count--;
       setInvalidOrderLimit(true);
       MarketplaceToaster.showToast(
@@ -423,7 +436,10 @@ const StoreSettings = () => {
           "error"
         )
       );
-    } else if (copyofStoreDataLimitValue.langauge_limit != "" && parseInt(copyofStoreDataLimitValue.langauge_limit) > maxLimit) {
+    } else if (
+      copyofStoreDataLimitValue.langauge_limit != "" &&
+      parseInt(copyofStoreDataLimitValue.langauge_limit) > maxLimit
+    ) {
       count--;
       setInvalidLanguageLimit(true);
       MarketplaceToaster.showToast(
@@ -433,7 +449,10 @@ const StoreSettings = () => {
           "error"
         )
       );
-    } else if (copyofStoreDataLimitValue.product_template_limit != "" && parseInt(copyofStoreDataLimitValue.product_template_limit) > maxLimit) {
+    } else if (
+      copyofStoreDataLimitValue.product_template_limit != "" &&
+      parseInt(copyofStoreDataLimitValue.product_template_limit) > maxLimit
+    ) {
       count--;
       setInvalidProductTemplateLimit(true);
       MarketplaceToaster.showToast(
@@ -443,7 +462,10 @@ const StoreSettings = () => {
           "error"
         )
       );
-    } else if (copyofStoreDataLimitValue.store_users_limit != "" && parseInt(copyofStoreDataLimitValue.store_users_limit) > maxLimit) {
+    } else if (
+      copyofStoreDataLimitValue.store_users_limit != "" &&
+      parseInt(copyofStoreDataLimitValue.store_users_limit) > maxLimit
+    ) {
       count--;
       setInvalidStoreUserLimit(true);
       MarketplaceToaster.showToast(
@@ -453,7 +475,10 @@ const StoreSettings = () => {
           "error"
         )
       );
-    } else if (copyofStoreDataLimitValue.vendor_users_limit != "" && parseInt(copyofStoreDataLimitValue.vendor_users_limit) > maxLimit) {
+    } else if (
+      copyofStoreDataLimitValue.vendor_users_limit != "" &&
+      parseInt(copyofStoreDataLimitValue.vendor_users_limit) > maxLimit
+    ) {
       count--;
       setInvalidVendorUserLimit(true);
       MarketplaceToaster.showToast(
@@ -463,7 +488,10 @@ const StoreSettings = () => {
           "error"
         )
       );
-    } else if (copyofStoreDataLimitValue.max_products_per_vendor != "" && parseInt(copyofStoreDataLimitValue.max_products_per_vendor) > maxLimit) {
+    } else if (
+      copyofStoreDataLimitValue.max_products_per_vendor != "" &&
+      parseInt(copyofStoreDataLimitValue.max_products_per_vendor) > maxLimit
+    ) {
       count--;
       setInvalidMaxProductLimit(true);
       MarketplaceToaster.showToast(
@@ -473,7 +501,10 @@ const StoreSettings = () => {
           "error"
         )
       );
-    } else if (copyofStoreDataLimitValue.max_templates_per_vendor != "" && parseInt(copyofStoreDataLimitValue.max_templates_per_vendor) > maxLimit) {
+    } else if (
+      copyofStoreDataLimitValue.max_templates_per_vendor != "" &&
+      parseInt(copyofStoreDataLimitValue.max_templates_per_vendor) > maxLimit
+    ) {
       count--;
       setInvalidMaxTemplateLimit(true);
       MarketplaceToaster.showToast(
@@ -486,9 +517,9 @@ const StoreSettings = () => {
     }
 
     if (count == 10) {
-      saveStoreDataLimit()
+      saveStoreDataLimit();
     }
-  }
+  };
 
   //! get call of store API
   const findAllStoreApi = () => {
@@ -1122,64 +1153,64 @@ const StoreSettings = () => {
       );
     } else if (
       (imageOfStoreSettingsCurrency && imageOfStoreSettingsCurrency.symbol) ===
-      (copyImageOfStoreSettingsCurrency &&
-        copyImageOfStoreSettingsCurrency.symbol) &&
+        (copyImageOfStoreSettingsCurrency &&
+          copyImageOfStoreSettingsCurrency.symbol) &&
       (imageOfStoreSettingsCurrency &&
         imageOfStoreSettingsCurrency.iso_code) ===
-      (copyImageOfStoreSettingsCurrency &&
-        copyImageOfStoreSettingsCurrency.iso_code) &&
+        (copyImageOfStoreSettingsCurrency &&
+          copyImageOfStoreSettingsCurrency.iso_code) &&
       (imageOfStoreSettingsCurrency &&
         imageOfStoreSettingsCurrency.fractional_unit) ===
-      (copyImageOfStoreSettingsCurrency &&
-        copyImageOfStoreSettingsCurrency.fractional_unit) &&
+        (copyImageOfStoreSettingsCurrency &&
+          copyImageOfStoreSettingsCurrency.fractional_unit) &&
       (imageOfStoreSettingsCurrency &&
         imageOfStoreSettingsCurrency.number_to_basic) ===
-      (copyImageOfStoreSettingsCurrency &&
-        copyImageOfStoreSettingsCurrency.number_to_basic) &&
+        (copyImageOfStoreSettingsCurrency &&
+          copyImageOfStoreSettingsCurrency.number_to_basic) &&
       (imageOfStoreSettingsPageTheme &&
         imageOfStoreSettingsPageTheme.bg_color) ===
-      (copyImageOfStoreSettingsPageTheme &&
-        copyImageOfStoreSettingsPageTheme.bg_color) &&
+        (copyImageOfStoreSettingsPageTheme &&
+          copyImageOfStoreSettingsPageTheme.bg_color) &&
       (imageOfStoreSettingsPageTheme &&
         imageOfStoreSettingsPageTheme.btn_primary_bg_color) ===
-      (copyImageOfStoreSettingsPageTheme &&
-        copyImageOfStoreSettingsPageTheme.btn_primary_bg_color) &&
+        (copyImageOfStoreSettingsPageTheme &&
+          copyImageOfStoreSettingsPageTheme.btn_primary_bg_color) &&
       (imageOfStoreSettingsPageTheme &&
         imageOfStoreSettingsPageTheme.btn_primary_fg_color) ===
-      (copyImageOfStoreSettingsPageTheme &&
-        copyImageOfStoreSettingsPageTheme.btn_primary_fg_color) &&
+        (copyImageOfStoreSettingsPageTheme &&
+          copyImageOfStoreSettingsPageTheme.btn_primary_fg_color) &&
       (imageOfStoreSettingsPageTheme &&
         imageOfStoreSettingsPageTheme.btn_secondary_bg_color) ===
-      (copyImageOfStoreSettingsPageTheme &&
-        copyImageOfStoreSettingsPageTheme.btn_secondary_bg_color) &&
+        (copyImageOfStoreSettingsPageTheme &&
+          copyImageOfStoreSettingsPageTheme.btn_secondary_bg_color) &&
       (imageOfStoreSettingsPageTheme &&
         imageOfStoreSettingsPageTheme.btn_secondary_fg_color) ===
-      (copyImageOfStoreSettingsPageTheme &&
-        copyImageOfStoreSettingsPageTheme.btn_secondary_fg_color) &&
+        (copyImageOfStoreSettingsPageTheme &&
+          copyImageOfStoreSettingsPageTheme.btn_secondary_fg_color) &&
       (imageOfStoreSettingsPageTheme &&
         imageOfStoreSettingsPageTheme.btn_tertiary_bg_color) ===
-      (copyImageOfStoreSettingsPageTheme &&
-        copyImageOfStoreSettingsPageTheme.btn_tertiary_bg_color) &&
+        (copyImageOfStoreSettingsPageTheme &&
+          copyImageOfStoreSettingsPageTheme.btn_tertiary_bg_color) &&
       (imageOfStoreSettingsPageTheme &&
         imageOfStoreSettingsPageTheme.btn_tertiary_fg_color) ===
-      (copyImageOfStoreSettingsPageTheme &&
-        copyImageOfStoreSettingsPageTheme.btn_tertiary_fg_color) &&
+        (copyImageOfStoreSettingsPageTheme &&
+          copyImageOfStoreSettingsPageTheme.btn_tertiary_fg_color) &&
       (imageOfStoreSettingsPageTheme &&
         imageOfStoreSettingsPageTheme.fg_color) ===
-      (copyImageOfStoreSettingsPageTheme &&
-        copyImageOfStoreSettingsPageTheme.fg_color) &&
+        (copyImageOfStoreSettingsPageTheme &&
+          copyImageOfStoreSettingsPageTheme.fg_color) &&
       (imageOfStoreHeaderSettings && imageOfStoreHeaderSettings.bg_color) ===
-      (copyImageOfStoreHeaderSetting &&
-        copyImageOfStoreHeaderSetting.bg_color) &&
+        (copyImageOfStoreHeaderSetting &&
+          copyImageOfStoreHeaderSetting.bg_color) &&
       (imageOfStoreHeaderSettings && imageOfStoreHeaderSettings.fg_color) ===
-      (copyImageOfStoreHeaderSetting &&
-        copyImageOfStoreHeaderSetting.fg_color) &&
+        (copyImageOfStoreHeaderSetting &&
+          copyImageOfStoreHeaderSetting.fg_color) &&
       (imageOfStoreFooterSettings && imageOfStoreFooterSettings.bg_color) ===
-      (copyImageOfStoreFooterSetting &&
-        copyImageOfStoreFooterSetting.bg_color) &&
+        (copyImageOfStoreFooterSetting &&
+          copyImageOfStoreFooterSetting.bg_color) &&
       (imageOfStoreFooterSettings && imageOfStoreFooterSettings.fg_color) ===
-      (copyImageOfStoreFooterSetting &&
-        copyImageOfStoreFooterSetting.fg_color) &&
+        (copyImageOfStoreFooterSetting &&
+          copyImageOfStoreFooterSetting.fg_color) &&
       imagesUpload.length === 0
     ) {
       MarketplaceToaster.showToast(
@@ -1376,18 +1407,18 @@ const StoreSettings = () => {
   }, []);
 
   useEffect(() => {
-    let isScopeAvailable = !auth.isAuthenticated ||
+    let isScopeAvailable =
+      !auth.isAuthenticated ||
       (auth.isAuthenticated &&
         permissionValue &&
         permissionValue.length > 0 &&
         permissionValue.includes("UI-product-admin"))
-      ? true
-      : false;
+        ? true
+        : false;
     setHideActionButton(isScopeAvailable);
     setDisableMediaButton(isScopeAvailable);
-    setDisableStatus(isScopeAvailable)
-  }, [auth])
-
+    setDisableStatus(isScopeAvailable);
+  }, [auth]);
 
   useEffect(() => {
     setIsStoreLimitDataLoading(true);
@@ -1399,9 +1430,12 @@ const StoreSettings = () => {
         );
         setStoreLimitValues(response.data.response_body);
         instance
-          .get(dm4sightBaseURL + dm4sightDataLimitAnalysisDetailsCountAPI, dm4sightHeaders)
+          .get(
+            dm4sightBaseURL + dm4sightDataLimitAnalysisDetailsCountAPI,
+            dm4sightHeaders
+          )
           .then((res) => {
-            console.log("res analysis", res)
+            console.log("res analysis", res);
             setIsStoreLimitDataLoading(false);
             setAnalysisCount(res.data);
           });
@@ -1416,360 +1450,382 @@ const StoreSettings = () => {
   const getStoreRestrictionControl = (key) => {
     switch (key) {
       case "vendor_limit":
-        return <InputNumber
-          placeholder={t("labels:placeholder_unlimited")}
-          value={
-            storeDataLimitValues.vendor_limit > 0
-              ? storeDataLimitValues.vendor_limit
-              : ""
-          }
-          disabled={hideActionButton}
-          onChange={(value) => {
-            // let number = /^[0-9]*$/.test(e.target.value);
-            // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-            // // to allow only 10 digits
-            // if (number && e.target.value.length <= 10) {
-            //   copyofStoreDataLimitValue.vendor_limit = e.target.value;
-            //   setIsStoreDataLimitChanged(true);
-            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-            //   setInvalidVendorLimit(false);
-            // } else if (e.target.value === "") {
-            //   copyofStoreDataLimitValue.vendor_limit = e.target.value;
-            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-            //   setInvalidVendorLimit(false);
-            // }
-            let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-            copyofStoreDataLimitValue.vendor_limit = value;
-            setStoreDataLimitValues(copyofStoreDataLimitValue);
-            setIsStoreDataLimitChanged(true);
-            setInvalidVendorLimit(false);
-          }}
-          status={invalidVendorLimit ? "error" : ""}
-        />
+        return (
+          <InputNumber
+            placeholder={t("labels:placeholder_unlimited")}
+            value={
+              storeDataLimitValues.vendor_limit > 0
+                ? storeDataLimitValues.vendor_limit
+                : ""
+            }
+            disabled={hideActionButton}
+            onChange={(value) => {
+              // let number = /^[0-9]*$/.test(e.target.value);
+              // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+              // // to allow only 10 digits
+              // if (number && e.target.value.length <= 10) {
+              //   copyofStoreDataLimitValue.vendor_limit = e.target.value;
+              //   setIsStoreDataLimitChanged(true);
+              //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+              //   setInvalidVendorLimit(false);
+              // } else if (e.target.value === "") {
+              //   copyofStoreDataLimitValue.vendor_limit = e.target.value;
+              //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+              //   setInvalidVendorLimit(false);
+              // }
+              let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+              copyofStoreDataLimitValue.vendor_limit = value;
+              setStoreDataLimitValues(copyofStoreDataLimitValue);
+              setIsStoreDataLimitChanged(true);
+              setInvalidVendorLimit(false);
+            }}
+            status={invalidVendorLimit ? "error" : ""}
+          />
+        );
         break;
       case "customer_limit":
-        return <InputNumber
-          placeholder={t("labels:placeholder_unlimited")}
-          disabled={hideActionButton}
-          value={
-            storeDataLimitValues.customer_limit > 0
-              ? storeDataLimitValues.customer_limit
-              : ""
-          }
-          status={invalidCustomerLimit ? "error" : ""}
-          onChange={(value) => {
-            // let number = /^[0-9]*$/.test(e.target.value);
-            // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-            // // to allow only 10 digits
-            // if (number && e.target.value.length <= 10) {
-            //   copyofStoreDataLimitValue.customer_limit = e.target.value;
-            //   setIsStoreDataLimitChanged(true);
-            //   setInvalidCustomerLimit(false)
-            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-            // } else if (e.target.value === "") {
-            //   copyofStoreDataLimitValue.customer_limit = e.target.value;
-            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-            //   setInvalidCustomerLimit(false)
-            // }
-            let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-            copyofStoreDataLimitValue.customer_limit = value;
-            setStoreDataLimitValues(copyofStoreDataLimitValue);
-            setIsStoreDataLimitChanged(true);
-            setInvalidCustomerLimit(false);
-          }}
-        />
+        return (
+          <InputNumber
+            placeholder={t("labels:placeholder_unlimited")}
+            disabled={hideActionButton}
+            value={
+              storeDataLimitValues.customer_limit > 0
+                ? storeDataLimitValues.customer_limit
+                : ""
+            }
+            status={invalidCustomerLimit ? "error" : ""}
+            onChange={(value) => {
+              // let number = /^[0-9]*$/.test(e.target.value);
+              // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+              // // to allow only 10 digits
+              // if (number && e.target.value.length <= 10) {
+              //   copyofStoreDataLimitValue.customer_limit = e.target.value;
+              //   setIsStoreDataLimitChanged(true);
+              //   setInvalidCustomerLimit(false)
+              //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+              // } else if (e.target.value === "") {
+              //   copyofStoreDataLimitValue.customer_limit = e.target.value;
+              //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+              //   setInvalidCustomerLimit(false)
+              // }
+              let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+              copyofStoreDataLimitValue.customer_limit = value;
+              setStoreDataLimitValues(copyofStoreDataLimitValue);
+              setIsStoreDataLimitChanged(true);
+              setInvalidCustomerLimit(false);
+            }}
+          />
+        );
         break;
       case "product_limit":
-        return <InputNumber
-          disabled={hideActionButton}
-          placeholder={t("labels:placeholder_unlimited")}
-          value={
-            storeDataLimitValues.product_limit > 0
-              ? storeDataLimitValues.product_limit
-              : ""
-          }
-          status={invalidProductLimit ? "error" : ""}
-          onChange={(value) => {
-            // let number = /^[0-9]*$/.test(e.target.value);
-            // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-            // // to allow only 10 digits
-            // if (number && e.target.value.length <= 10) {
-            //   copyofStoreDataLimitValue.product_limit = e.target.value;
-            //   setIsStoreDataLimitChanged(true);
-            //   setInvalidProductLimit(false)
-            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-            // } else if (e.target.value === "") {
-            //   setInvalidProductLimit(false)
-            //   copyofStoreDataLimitValue.product_limit = e.target.value;
-            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-            // }
-            let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-            copyofStoreDataLimitValue.product_limit = value;
-            setStoreDataLimitValues(copyofStoreDataLimitValue);
-            setIsStoreDataLimitChanged(true);
-            setInvalidProductLimit(false);
-          }}
-        />
+        return (
+          <InputNumber
+            disabled={hideActionButton}
+            placeholder={t("labels:placeholder_unlimited")}
+            value={
+              storeDataLimitValues.product_limit > 0
+                ? storeDataLimitValues.product_limit
+                : ""
+            }
+            status={invalidProductLimit ? "error" : ""}
+            onChange={(value) => {
+              // let number = /^[0-9]*$/.test(e.target.value);
+              // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+              // // to allow only 10 digits
+              // if (number && e.target.value.length <= 10) {
+              //   copyofStoreDataLimitValue.product_limit = e.target.value;
+              //   setIsStoreDataLimitChanged(true);
+              //   setInvalidProductLimit(false)
+              //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+              // } else if (e.target.value === "") {
+              //   setInvalidProductLimit(false)
+              //   copyofStoreDataLimitValue.product_limit = e.target.value;
+              //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+              // }
+              let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+              copyofStoreDataLimitValue.product_limit = value;
+              setStoreDataLimitValues(copyofStoreDataLimitValue);
+              setIsStoreDataLimitChanged(true);
+              setInvalidProductLimit(false);
+            }}
+          />
+        );
         break;
       case "order_limit_per_day":
-        return <InputNumber
-          disabled={hideActionButton}
-          placeholder={t("labels:placeholder_unlimited")}
-          value={
-            storeDataLimitValues.order_limit_per_day > 0
-              ? storeDataLimitValues.order_limit_per_day
-              : ""
-          }
-          status={invalidOrderLimit ? "error" : ""}
-          onChange={(value) => {
-            // let number = /^[0-9]*$/.test(e.target.value);
-            // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-            // // to allow only 10 digits
-            // if (number && e.target.value.length <= 10) {
-            //   copyofStoreDataLimitValue.order_limit_per_day =
-            //     e.target.value;
-            //   setIsStoreDataLimitChanged(true);
-            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-            //   setInvalidOrderLimit(false);
-            // } else if (e.target.value === "") {
-            //   copyofStoreDataLimitValue.order_limit_per_day =
-            //     e.target.value;
-            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-            //   setInvalidOrderLimit(false);
-            // }
-            let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-            copyofStoreDataLimitValue.order_limit_per_day = value;
-            setStoreDataLimitValues(copyofStoreDataLimitValue);
-            setIsStoreDataLimitChanged(true);
-            setInvalidOrderLimit(false);
-          }}
-        />
+        return (
+          <InputNumber
+            disabled={hideActionButton}
+            placeholder={t("labels:placeholder_unlimited")}
+            value={
+              storeDataLimitValues.order_limit_per_day > 0
+                ? storeDataLimitValues.order_limit_per_day
+                : ""
+            }
+            status={invalidOrderLimit ? "error" : ""}
+            onChange={(value) => {
+              // let number = /^[0-9]*$/.test(e.target.value);
+              // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+              // // to allow only 10 digits
+              // if (number && e.target.value.length <= 10) {
+              //   copyofStoreDataLimitValue.order_limit_per_day =
+              //     e.target.value;
+              //   setIsStoreDataLimitChanged(true);
+              //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+              //   setInvalidOrderLimit(false);
+              // } else if (e.target.value === "") {
+              //   copyofStoreDataLimitValue.order_limit_per_day =
+              //     e.target.value;
+              //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+              //   setInvalidOrderLimit(false);
+              // }
+              let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+              copyofStoreDataLimitValue.order_limit_per_day = value;
+              setStoreDataLimitValues(copyofStoreDataLimitValue);
+              setIsStoreDataLimitChanged(true);
+              setInvalidOrderLimit(false);
+            }}
+          />
+        );
         break;
       case "langauge_limit":
-        return <InputNumber
-          disabled={hideActionButton}
-          placeholder={t("labels:placeholder_unlimited")}
-          value={
-            storeDataLimitValues.langauge_limit > 0
-              ? storeDataLimitValues.langauge_limit
-              : ""
-          }
-          status={invalidLanguageLimit ? "error" : ""}
-          onChange={(value) => {
-            // let number = /^[0-9]*$/.test(e.target.value);
-            // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-            // // to allow only 10 digits
-            // if (number && e.target.value.length <= 10) {
-            //   copyofStoreDataLimitValue.langauge_limit = e.target.value;
-            //   setIsStoreDataLimitChanged(true);
-            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-            //   setInvalidLanguageLimit(false);
-            // } else if (e.target.value === "") {
-            //   copyofStoreDataLimitValue.langauge_limit = e.target.value;
-            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-            //   setInvalidLanguageLimit(false);
-            // }
-            let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-            copyofStoreDataLimitValue.langauge_limit = value;
-            setStoreDataLimitValues(copyofStoreDataLimitValue);
-            setIsStoreDataLimitChanged(true);
-            setInvalidLanguageLimit(false);
-          }}
-        />
+        return (
+          <InputNumber
+            disabled={hideActionButton}
+            placeholder={t("labels:placeholder_unlimited")}
+            value={
+              storeDataLimitValues.langauge_limit > 0
+                ? storeDataLimitValues.langauge_limit
+                : ""
+            }
+            status={invalidLanguageLimit ? "error" : ""}
+            onChange={(value) => {
+              // let number = /^[0-9]*$/.test(e.target.value);
+              // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+              // // to allow only 10 digits
+              // if (number && e.target.value.length <= 10) {
+              //   copyofStoreDataLimitValue.langauge_limit = e.target.value;
+              //   setIsStoreDataLimitChanged(true);
+              //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+              //   setInvalidLanguageLimit(false);
+              // } else if (e.target.value === "") {
+              //   copyofStoreDataLimitValue.langauge_limit = e.target.value;
+              //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+              //   setInvalidLanguageLimit(false);
+              // }
+              let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+              copyofStoreDataLimitValue.langauge_limit = value;
+              setStoreDataLimitValues(copyofStoreDataLimitValue);
+              setIsStoreDataLimitChanged(true);
+              setInvalidLanguageLimit(false);
+            }}
+          />
+        );
         break;
       case "product_template_limit":
-        return <InputNumber
-          disabled={hideActionButton}
-          placeholder={t("labels:placeholder_unlimited")}
-          value={
-            storeDataLimitValues.product_template_limit > 0
-              ? storeDataLimitValues.product_template_limit
-              : ""
-          }
-          status={invalidProductTemplateLimit ? "error" : ""}
-          onChange={(value) => {
-            // let number = /^[0-9]*$/.test(e.target.value);
-            // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-            // // to allow only 10 digits
-            // if (number && e.target.value.length <= 10) {
-            //   copyofStoreDataLimitValue.product_template_limit =
-            //     e.target.value;
-            //   setIsStoreDataLimitChanged(true);
-            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-            //   setInvalidProductTemplateLimit(false);
-            // } else if (e.target.value === "") {
-            //   copyofStoreDataLimitValue.product_template_limit =
-            //     e.target.value;
-            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-            //   setInvalidProductTemplateLimit(false);
-            // }
-            let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-            copyofStoreDataLimitValue.product_template_limit = value;
-            setStoreDataLimitValues(copyofStoreDataLimitValue);
-            setIsStoreDataLimitChanged(true);
-            setInvalidProductTemplateLimit(false);
-          }}
-        />
+        return (
+          <InputNumber
+            disabled={hideActionButton}
+            placeholder={t("labels:placeholder_unlimited")}
+            value={
+              storeDataLimitValues.product_template_limit > 0
+                ? storeDataLimitValues.product_template_limit
+                : ""
+            }
+            status={invalidProductTemplateLimit ? "error" : ""}
+            onChange={(value) => {
+              // let number = /^[0-9]*$/.test(e.target.value);
+              // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+              // // to allow only 10 digits
+              // if (number && e.target.value.length <= 10) {
+              //   copyofStoreDataLimitValue.product_template_limit =
+              //     e.target.value;
+              //   setIsStoreDataLimitChanged(true);
+              //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+              //   setInvalidProductTemplateLimit(false);
+              // } else if (e.target.value === "") {
+              //   copyofStoreDataLimitValue.product_template_limit =
+              //     e.target.value;
+              //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+              //   setInvalidProductTemplateLimit(false);
+              // }
+              let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+              copyofStoreDataLimitValue.product_template_limit = value;
+              setStoreDataLimitValues(copyofStoreDataLimitValue);
+              setIsStoreDataLimitChanged(true);
+              setInvalidProductTemplateLimit(false);
+            }}
+          />
+        );
         break;
       case "store_users_limit":
-        return <InputNumber
-          placeholder={t("labels:placeholder_unlimited")}
-          disabled={hideActionButton}
-          value={
-            storeDataLimitValues.store_users_limit > 0
-              ? storeDataLimitValues.store_users_limit
-              : ""
-          }
-          status={invalidStoreUserLimit ? "error" : ""}
-          onChange={(value) => {
-            // let number = /^[0-9]*$/.test(e.target.value);
-            // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-            // // to allow only 10 digits
-            // if (number && e.target.value.length <= 10) {
-            //   copyofStoreDataLimitValue.store_users_limit =
-            //     e.target.value;
-            //   setIsStoreDataLimitChanged(true);
-            //   setInvalidStoreUserLimit(false);
-            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-            // } else if (e.target.value === "") {
-            //   // setIsStoreDataLimitChanged(false);
-            //   copyofStoreDataLimitValue.store_users_limit =
-            //     e.target.value;
-            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-            //   setInvalidStoreUserLimit(false);
-            // }
-            let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-            copyofStoreDataLimitValue.store_users_limit = value;
-            setStoreDataLimitValues(copyofStoreDataLimitValue);
-            setIsStoreDataLimitChanged(true);
-            setInvalidStoreUserLimit(false);
-          }}
-        />
+        return (
+          <InputNumber
+            placeholder={t("labels:placeholder_unlimited")}
+            disabled={hideActionButton}
+            value={
+              storeDataLimitValues.store_users_limit > 0
+                ? storeDataLimitValues.store_users_limit
+                : ""
+            }
+            status={invalidStoreUserLimit ? "error" : ""}
+            onChange={(value) => {
+              // let number = /^[0-9]*$/.test(e.target.value);
+              // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+              // // to allow only 10 digits
+              // if (number && e.target.value.length <= 10) {
+              //   copyofStoreDataLimitValue.store_users_limit =
+              //     e.target.value;
+              //   setIsStoreDataLimitChanged(true);
+              //   setInvalidStoreUserLimit(false);
+              //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+              // } else if (e.target.value === "") {
+              //   // setIsStoreDataLimitChanged(false);
+              //   copyofStoreDataLimitValue.store_users_limit =
+              //     e.target.value;
+              //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+              //   setInvalidStoreUserLimit(false);
+              // }
+              let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+              copyofStoreDataLimitValue.store_users_limit = value;
+              setStoreDataLimitValues(copyofStoreDataLimitValue);
+              setIsStoreDataLimitChanged(true);
+              setInvalidStoreUserLimit(false);
+            }}
+          />
+        );
         break;
       case "vendor_users_limit":
-        return <InputNumber
-          disabled={hideActionButton}
-          placeholder={t("labels:placeholder_unlimited")}
-          value={
-            storeDataLimitValues.vendor_users_limit > 0
-              ? storeDataLimitValues.vendor_users_limit
-              : ""
-          }
-          status={invalidVendorUserLimit ? "error" : ""}
-          onChange={(value) => {
-            // let number = /^[0-9]*$/.test(e.target.value);
-            // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-            // // to allow only 10 digits
-            // if (number && e.target.value.length <= 10) {
-            //   copyofStoreDataLimitValue.vendor_users_limit =
-            //     e.target.value;
-            //   setIsStoreDataLimitChanged(true);
-            //   setInvalidVendorUserLimit(false);
-            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-            // } else if (e.target.value === "") {
-            //   // setIsStoreDataLimitChanged(false);
-            //   copyofStoreDataLimitValue.vendor_users_limit =
-            //     e.target.value;
-            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-            //   setInvalidVendorUserLimit(false);
-            // }
-            let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-            copyofStoreDataLimitValue.vendor_users_limit = value;
-            setStoreDataLimitValues(copyofStoreDataLimitValue);
-            setIsStoreDataLimitChanged(true);
-            setInvalidVendorUserLimit(false);
-          }}
-        />
+        return (
+          <InputNumber
+            disabled={hideActionButton}
+            placeholder={t("labels:placeholder_unlimited")}
+            value={
+              storeDataLimitValues.vendor_users_limit > 0
+                ? storeDataLimitValues.vendor_users_limit
+                : ""
+            }
+            status={invalidVendorUserLimit ? "error" : ""}
+            onChange={(value) => {
+              // let number = /^[0-9]*$/.test(e.target.value);
+              // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+              // // to allow only 10 digits
+              // if (number && e.target.value.length <= 10) {
+              //   copyofStoreDataLimitValue.vendor_users_limit =
+              //     e.target.value;
+              //   setIsStoreDataLimitChanged(true);
+              //   setInvalidVendorUserLimit(false);
+              //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+              // } else if (e.target.value === "") {
+              //   // setIsStoreDataLimitChanged(false);
+              //   copyofStoreDataLimitValue.vendor_users_limit =
+              //     e.target.value;
+              //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+              //   setInvalidVendorUserLimit(false);
+              // }
+              let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+              copyofStoreDataLimitValue.vendor_users_limit = value;
+              setStoreDataLimitValues(copyofStoreDataLimitValue);
+              setIsStoreDataLimitChanged(true);
+              setInvalidVendorUserLimit(false);
+            }}
+          />
+        );
         break;
       case "maximum_vendor_product_limit":
-        return <InputNumber
-          disabled={hideActionButton}
-          placeholder={t("labels:placeholder_unlimited")}
-          value={
-            storeDataLimitValues.max_products_per_vendor > 0
-              ? storeDataLimitValues.max_products_per_vendor
-              : ""
-          }
-          status={invalidMaxProductLimit ? "error" : ""}
-          onChange={(value) => {
-            // let number = /^[0-9]*$/.test(e.target.value);
-            // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-            // // to allow only 10 digits
-            // if (number && e.target.value.length <= 10) {
-            //   copyofStoreDataLimitValue.max_products_per_vendor =
-            //     e.target.value;
-            //   setIsStoreDataLimitChanged(true);
-            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-            //   setInvalidMaxProductLimit(false);
-            // } else if (e.target.value === "") {
-            //   // setIsStoreDataLimitChanged(false);
-            //   copyofStoreDataLimitValue.max_products_per_vendor =
-            //     e.target.value;
-            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-            //   setInvalidMaxProductLimit(false);
-            // }
-            let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-            copyofStoreDataLimitValue.max_products_per_vendor = value;
-            setStoreDataLimitValues(copyofStoreDataLimitValue);
-            setIsStoreDataLimitChanged(true);
-            setInvalidMaxProductLimit(false);
-          }}
-        />
+        return (
+          <InputNumber
+            disabled={hideActionButton}
+            placeholder={t("labels:placeholder_unlimited")}
+            value={
+              storeDataLimitValues.max_products_per_vendor > 0
+                ? storeDataLimitValues.max_products_per_vendor
+                : ""
+            }
+            status={invalidMaxProductLimit ? "error" : ""}
+            onChange={(value) => {
+              // let number = /^[0-9]*$/.test(e.target.value);
+              // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+              // // to allow only 10 digits
+              // if (number && e.target.value.length <= 10) {
+              //   copyofStoreDataLimitValue.max_products_per_vendor =
+              //     e.target.value;
+              //   setIsStoreDataLimitChanged(true);
+              //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+              //   setInvalidMaxProductLimit(false);
+              // } else if (e.target.value === "") {
+              //   // setIsStoreDataLimitChanged(false);
+              //   copyofStoreDataLimitValue.max_products_per_vendor =
+              //     e.target.value;
+              //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+              //   setInvalidMaxProductLimit(false);
+              // }
+              let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+              copyofStoreDataLimitValue.max_products_per_vendor = value;
+              setStoreDataLimitValues(copyofStoreDataLimitValue);
+              setIsStoreDataLimitChanged(true);
+              setInvalidMaxProductLimit(false);
+            }}
+          />
+        );
         break;
       case "maximum_vendor_product_template_limit":
-        return <InputNumber
-          disabled={hideActionButton}
-          placeholder={t("labels:placeholder_unlimited")}
-          value={
-            storeDataLimitValues.max_templates_per_vendor > 0
-              ? storeDataLimitValues.max_templates_per_vendor
-              : ""
-          }
-          status={invalidMaxTemplateLimit ? "error" : ""}
-          onChange={(value) => {
-            // let number = /^[0-9]*$/.test(e.target.value);
-            // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-            // // to allow only 10 digits
-            // if (number && e.target.value.length <= 10) {
-            //   copyofStoreDataLimitValue.max_templates_per_vendor =
-            //     e.target.value;
-            setIsStoreDataLimitChanged(true);
-            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-            //   setInvalidMaxTemplateLimit(false);
-            // } else if (e.target.value === "") {
-            //   // setIsStoreDataLimitChanged(false);
-            //   copyofStoreDataLimitValue.max_templates_per_vendor =
-            //     e.target.value;
-            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-            //   setInvalidMaxTemplateLimit(false)
-            // }
-            let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-            copyofStoreDataLimitValue.max_templates_per_vendor = value;
-            setStoreDataLimitValues(copyofStoreDataLimitValue);
-            setIsStoreDataLimitChanged(true);
-            setInvalidMaxTemplateLimit(false);
-          }}
-        />
+        return (
+          <InputNumber
+            disabled={hideActionButton}
+            placeholder={t("labels:placeholder_unlimited")}
+            value={
+              storeDataLimitValues.max_templates_per_vendor > 0
+                ? storeDataLimitValues.max_templates_per_vendor
+                : ""
+            }
+            status={invalidMaxTemplateLimit ? "error" : ""}
+            onChange={(value) => {
+              // let number = /^[0-9]*$/.test(e.target.value);
+              // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+              // // to allow only 10 digits
+              // if (number && e.target.value.length <= 10) {
+              //   copyofStoreDataLimitValue.max_templates_per_vendor =
+              //     e.target.value;
+              setIsStoreDataLimitChanged(true);
+              //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+              //   setInvalidMaxTemplateLimit(false);
+              // } else if (e.target.value === "") {
+              //   // setIsStoreDataLimitChanged(false);
+              //   copyofStoreDataLimitValue.max_templates_per_vendor =
+              //     e.target.value;
+              //   setStoreDataLimitValues(copyofStoreDataLimitValue);
+              //   setInvalidMaxTemplateLimit(false)
+              // }
+              let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+              copyofStoreDataLimitValue.max_templates_per_vendor = value;
+              setStoreDataLimitValues(copyofStoreDataLimitValue);
+              setIsStoreDataLimitChanged(true);
+              setInvalidMaxTemplateLimit(false);
+            }}
+          />
+        );
         break;
       case "default_vendor_commission":
-        return <InputNumber
-          disabled={hideActionButton}
-          value={storeDataLimitValues.default_store_commission}
-          min={0}
-          max={100}
-          step="0.1"
-          formatter={(value) => `${value}%`}
-          parser={(value) => value.replace("%", "")}
-          onChange={(value) => {
-            let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-            copyofStoreDataLimitValue.default_store_commission = value;
-            setStoreDataLimitValues(copyofStoreDataLimitValue);
-            setIsStoreDataLimitChanged(true);
-          }}
-        />
+        return (
+          <InputNumber
+            disabled={hideActionButton}
+            value={storeDataLimitValues.default_store_commission}
+            min={0}
+            max={100}
+            step="0.1"
+            formatter={(value) => `${value}%`}
+            parser={(value) => value.replace("%", "")}
+            onChange={(value) => {
+              let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+              copyofStoreDataLimitValue.default_store_commission = value;
+              setStoreDataLimitValues(copyofStoreDataLimitValue);
+              setIsStoreDataLimitChanged(true);
+            }}
+          />
+        );
         break;
     }
-  }
+  };
 
   const StoreTableColumnThreshold = [
     {
@@ -1786,11 +1842,16 @@ const StoreSettings = () => {
               <label className="text-[13px] mb-2 ml-1 input-label-color">
                 {limitName}
               </label>
-              <Input disabled={true} className="w-24" value={value == "null" ? 0 : value} />
+              <InputNumber
+                value={value > 0 ? value : ""}
+                disabled={true}
+                className="w-24"
+                placeholder={t("labels:placeholder_unlimited")}
+              />
             </Content>
           );
         } else {
-          return null
+          return null;
         }
       },
     },
@@ -1819,7 +1880,7 @@ const StoreSettings = () => {
               </label>
               {getStoreRestrictionControl(key)}
             </Content>
-          )
+          );
         }
       },
     },
@@ -1830,21 +1891,48 @@ const StoreSettings = () => {
       width: "20%",
       render: (text) => {
         if (text != null) {
-          const [count, total] = text.split(" of ");
+          const [count, total, keyName] = text.split(",");
           return (
             <Content className="flex flex-col gap-2">
-              {count} of {total}
-              <Progress
-                strokeColor={"#4A2D73"}
-                className="w-24"
-                size="small"
-                percent={(count / total) * 100}
-                showInfo={false}
-              />
+              {count} {total > 0 ? " of " + total : null}{" "}
+              {keyName === "vendor_limit"
+                ? t("labels:active_vendors")
+                : // "Active Vendors"
+                keyName === "customer_limit"
+                ? t("labels:onboarded_customers")
+                : //  "Onboarded Customers"
+                keyName === "product_limit"
+                ? t("labels:published_products")
+                : // "Published Products"
+                keyName === "order_limit_per_day"
+                ? t("labels:orders")
+                : // "Orders"
+                keyName === "langauge_limit"
+                ? t("labels:active_languages")
+                : // "Active Languages"
+                keyName === "product_template_limit"
+                ? t("labels:active_templates")
+                : // "Active Templates"
+                keyName === "store_users_limit"
+                ? t("labels:store_users")
+                : // "Store Users"
+                keyName === "vendor_users_limit"
+                ? t("labels:vendor_users")
+                : //  "Vendor Users"
+                  null}
+              {total > 0 ? (
+                <Progress
+                  strokeColor={"#4A2D73"}
+                  className="w-24"
+                  size="small"
+                  percent={(count / total) * 100}
+                  showInfo={false}
+                />
+              ) : null}
             </Content>
           );
         } else {
-          return null
+          return null;
         }
       },
     },
@@ -1883,87 +1971,172 @@ const StoreSettings = () => {
       // },
       {
         key: "4",
-        limitfields: `${t("labels:vendor_limit")},${storeDataLimitValues.vendor_limit > 0
-          ? storeDataLimitValues.vendor_limit
-          : ""},vendor_limit`,
-        limits: `${t("labels:max_vendor_onboarding_limit")},${storeLimitValues?.vendor_limit}`,
-        stats: analysisCount?.vendor_count + " of " + storeLimitValues?.vendor_limit
+        limitfields: `${t("labels:vendor_limit")},${
+          storeDataLimitValues.vendor_limit > 0
+            ? storeDataLimitValues.vendor_limit
+            : ""
+        },vendor_limit`,
+        limits: `${t("labels:max_vendor_onboarding_limit")},${
+          storeLimitValues?.vendor_limit
+        }`,
+        stats:
+          analysisCount?.vendor_count +
+          "," +
+          storeLimitValues?.vendor_limit +
+          "," +
+          "vendor_limit",
       },
       {
         key: "5",
-        limitfields: `${t("labels:customer_limit")},${storeDataLimitValues.customer_limit > 0
-          ? storeDataLimitValues.customer_limit
-          : ""},customer_limit`,
-        limits: `${t("labels:max_customer_onboarding_limit")},${storeLimitValues?.customer_limit}`,
-        stats: analysisCount?.customer_count + " of " + storeLimitValues?.customer_limit,
+        limitfields: `${t("labels:customer_limit")},${
+          storeDataLimitValues.customer_limit > 0
+            ? storeDataLimitValues.customer_limit
+            : ""
+        },customer_limit`,
+        limits: `${t("labels:max_customer_onboarding_limit")},${
+          storeLimitValues?.customer_limit
+        }`,
+        stats:
+          analysisCount?.customer_count +
+          "," +
+          storeLimitValues?.customer_limit +
+          "," +
+          "customer_limit",
       },
       {
         key: "6",
-        limitfields: `${t("labels:product_limit")},${storeDataLimitValues.product_limit > 0
-          ? storeDataLimitValues.product_limit
-          : ""},product_limit`,
-        limits: `${t("labels:max_product_limit")},${storeLimitValues?.product_limit}`,
-        stats: analysisCount?.product_count + " of " + storeLimitValues?.product_limit,
+        limitfields: `${t("labels:product_limit")},${
+          storeDataLimitValues.product_limit > 0
+            ? storeDataLimitValues.product_limit
+            : ""
+        },product_limit`,
+        limits: `${t("labels:max_product_limit")},${
+          storeLimitValues?.product_limit
+        }`,
+        stats:
+          analysisCount?.product_count +
+          "," +
+          storeLimitValues?.product_limit +
+          "," +
+          "product_limit",
       },
       {
         key: "7",
-        limitfields: `${t("labels:order_limit_per_day")},${storeDataLimitValues.order_limit_per_day > 0
-          ? storeDataLimitValues.order_limit_per_day
-          : ""},order_limit_per_day`,
-        limits: `${t("labels:max_order_limit")},${storeLimitValues?.order_limit_per_day}`,
-        stats: analysisCount?.order_count + " of " + storeLimitValues?.order_limit_per_day,
+        limitfields: `${t("labels:order_limit_per_day")},${
+          storeDataLimitValues.order_limit_per_day > 0
+            ? storeDataLimitValues.order_limit_per_day
+            : ""
+        },order_limit_per_day`,
+        limits: `${t("labels:max_order_limit")},${
+          storeLimitValues?.order_limit_per_day
+        }`,
+        stats:
+          analysisCount?.order_count +
+          "," +
+          storeLimitValues?.order_limit_per_day +
+          "," +
+          "order_limit_per_day",
       },
       {
         key: "8",
-        limitfields: `${t("labels:langauge_limit")},${storeDataLimitValues.langauge_limit > 0
-          ? storeDataLimitValues.langauge_limit
-          : ""},langauge_limit`,
-        limits: `${t("labels:max_language_limit")},${storeLimitValues?.langauge_limit}`,
-        stats: analysisCount?.lang_count + " of " + storeLimitValues?.langauge_limit,
+        limitfields: `${t("labels:langauge_limit")},${
+          storeDataLimitValues.langauge_limit > 0
+            ? storeDataLimitValues.langauge_limit
+            : ""
+        },langauge_limit`,
+        limits: `${t("labels:max_language_limit")},${
+          storeLimitValues?.langauge_limit
+        }`,
+        stats:
+          analysisCount?.lang_count +
+          "," +
+          storeLimitValues?.langauge_limit +
+          "," +
+          "langauge_limit",
       },
       {
         key: "9",
-        limitfields: `${t("labels:product_template_limit")},${storeDataLimitValues.product_template_limit > 0
-          ? storeDataLimitValues.product_template_limit
-          : ""},product_template_limit`,
-        limits: `${t("labels:max_product_template_limit")},${storeLimitValues?.product_template_limit}`,
-        stats: analysisCount?.prod_temp_count + " of " + storeLimitValues?.product_template_limit,
+        limitfields: `${t("labels:product_template_limit")},${
+          storeDataLimitValues.product_template_limit > 0
+            ? storeDataLimitValues.product_template_limit
+            : ""
+        },product_template_limit`,
+        limits: `${t("labels:max_product_template_limit")},${
+          storeLimitValues?.product_template_limit
+        }`,
+        stats:
+          analysisCount?.prod_temp_count +
+          "," +
+          storeLimitValues?.product_template_limit +
+          "," +
+          "product_template_limit",
       },
+
+      // stats:
+      // analysisCount?.lang_count +
+      // "," +
+      // storeLimitValues?.langauge_limit +
+      // "," +
+      // "langauge_limit",
       {
         key: "10",
-        limitfields: `${t("labels:store_users_limit")},${storeDataLimitValues.store_users_limit > 0
-          ? storeDataLimitValues.store_users_limit
-          : ""},store_users_limit`,
-        limits: `${t("labels:max_store_user_limit")},${storeLimitValues?.store_users_limit}`,
-        stats: analysisCount?.store_user_count + " of " + storeLimitValues?.store_users_limit,
+        limitfields: `${t("labels:store_users_limit")},${
+          storeDataLimitValues.store_users_limit > 0
+            ? storeDataLimitValues.store_users_limit
+            : ""
+        },store_users_limit`,
+        limits: `${t("labels:max_store_user_limit")},${
+          storeLimitValues?.store_users_limit
+        }`,
+        stats:
+          analysisCount?.store_user_count +
+          "," +
+          storeLimitValues?.store_users_limit +
+          "," +
+          "store_users_limit",
       },
       {
         key: "11",
-        limitfields: `${t("labels:vendor_users_limit")},${storeDataLimitValues.vendor_users_limit > 0
-          ? storeDataLimitValues.vendor_users_limit
-          : ""},vendor_users_limit`,
+        limitfields: `${t("labels:vendor_users_limit")},${
+          storeDataLimitValues.vendor_users_limit > 0
+            ? storeDataLimitValues.vendor_users_limit
+            : ""
+        },vendor_users_limit`,
+        limits: `${t("labels:max_vendor_user_limit")},${
+          storeLimitValues?.store_users_limit
+        }`,
+        // stats:
+        //   analysisCount?.vendor_user_count +
+        //   "," +
+        //   storeLimitValues?.vendor_users_limit +
+        //   "," +
+        //   "vendor_users_limit",
+      },
+      {
+        key: "12",
+        limitfields: `${t("labels:maximum_vendor_product_limit")},${
+          storeDataLimitValues.max_products_per_vendor > 0
+            ? storeDataLimitValues.max_products_per_vendor
+            : ""
+        },maximum_vendor_product_limit`,
         limits: null,
         stats: null,
       },
       {
         key: "12",
-        limitfields: `${t("labels:maximum_vendor_product_limit")},${storeDataLimitValues.max_products_per_vendor > 0
-          ? storeDataLimitValues.max_products_per_vendor
-          : ""},maximum_vendor_product_limit`,
-        limits: null,
-        stats: null,
-      },
-      {
-        key: "12",
-        limitfields: `${t("labels:maximum_vendor_product_template_limit")},${storeDataLimitValues.max_templates_per_vendor > 0
-          ? storeDataLimitValues.max_templates_per_vendor
-          : ""},maximum_vendor_product_template_limit`,
+        limitfields: `${t("labels:maximum_vendor_product_template_limit")},${
+          storeDataLimitValues.max_templates_per_vendor > 0
+            ? storeDataLimitValues.max_templates_per_vendor
+            : ""
+        },maximum_vendor_product_template_limit`,
         limits: null,
         stats: null,
       },
       {
         key: "13",
-        limitfields: `${t("labels:default_vendor_commission")},${storeDataLimitValues.default_store_commission},default_vendor_commission`,
+        limitfields: `${t("labels:default_vendor_commission")},${
+          storeDataLimitValues.default_store_commission
+        },default_vendor_commission`,
         limits: null,
         stats: null,
       },
@@ -2050,100 +2223,104 @@ const StoreSettings = () => {
         showButtons={false}
       />
       <Content className="p-3 mt-[6.2rem]">
-        {disableMediaButton ? "" : <Spin tip="Please wait!" size="large" spinning={isUpLoading}>
-          <Content className="bg-white p-3 !rounded-md">
-            <label className="text-[20px] mb-2 font-bold">
-              {t("labels:media")}
-            </label>
-            <Row class="flex space-x-4">
-              <Col>
-                <StoreImages
-                  title={`${t("labels:store_logo")}`}
-                  type={"store_logo"}
-                  storeId={id}
-                  imagesUpload={imagesUpload}
-                  setImagesUpload={setImagesUpload}
-                  getImageData={getImageData && getImageData[0]}
-                  isSingleUpload={true}
-                  validStoreLogo={validStoreLogo}
-                  setValidStoreLogo={setValidStoreLogo}
-                  InfoCircleText={`${t("messages:store_logo_info")}`}
-                  setImageChangeValues={setImageChangeValues}
-                  disabelMediaButton={disableMediaButton}
-                />
-              </Col>
-              {/* <StoreMedia
+        {disableMediaButton ? (
+          ""
+        ) : (
+          <Spin tip="Please wait!" size="large" spinning={isUpLoading}>
+            <Content className="bg-white p-3 !rounded-md">
+              <label className="text-[20px] mb-2 font-bold">
+                {t("labels:media")}
+              </label>
+              <Row class="flex space-x-4">
+                <Col>
+                  <StoreImages
+                    title={`${t("labels:store_logo")}`}
+                    type={"store_logo"}
+                    storeId={id}
+                    imagesUpload={imagesUpload}
+                    setImagesUpload={setImagesUpload}
+                    getImageData={getImageData && getImageData[0]}
+                    isSingleUpload={true}
+                    validStoreLogo={validStoreLogo}
+                    setValidStoreLogo={setValidStoreLogo}
+                    InfoCircleText={`${t("messages:store_logo_info")}`}
+                    setImageChangeValues={setImageChangeValues}
+                    disabelMediaButton={disableMediaButton}
+                  />
+                </Col>
+                {/* <StoreMedia
                 title={`${t("stores:Store-Logo")}`}
                 type={"store_logo"}
                 getImageData={getImageData && getImageData}
                 setGetImageData={setGetImageData}
               /> */}
-            </Row>
-            <StoreImages
-              title={`${t("labels:banner_logo")}`}
-              type={"banner_images"}
-              storeId={id}
-              imagesUpload={imagesUpload}
-              bannerAbsoluteImage={bannerAbsoluteImage}
-              setImagesUpload={setImagesUpload}
-              isSingleUpload={false}
-              InfoCircleText={`${t("messages:banner_logo_info")}`}
-              setImageChangeValues={setImageChangeValues}
-              disabelMediaButton={disableMediaButton}
-            />
-            {/* <StoreMedia
+              </Row>
+              <StoreImages
+                title={`${t("labels:banner_logo")}`}
+                type={"banner_images"}
+                storeId={id}
+                imagesUpload={imagesUpload}
+                bannerAbsoluteImage={bannerAbsoluteImage}
+                setImagesUpload={setImagesUpload}
+                isSingleUpload={false}
+                InfoCircleText={`${t("messages:banner_logo_info")}`}
+                setImageChangeValues={setImageChangeValues}
+                disabelMediaButton={disableMediaButton}
+              />
+              {/* <StoreMedia
               title="Banner Images"
               type={"banner_images"}
               getImageData={getImageData && getImageData}
               setGetImageData={setGetImageData}
             /> */}
-            <Content className="mt-4">
-              <Row className="gap-2">
-                <Col>
-                  <Button
-                    className={
-                      imageChangeValues ? "app-btn-primary" : "!opacity-75"
-                    }
-                    disabled={!imageChangeValues}
-                    onClick={() => {
-                      if (imagesUpload && imagesUpload.length > 0) {
-                        postImageOnClickSave();
-                      } else {
-                        toast(`${t("messages:no_changes_were_detected")}`, {
-                          position: toast.POSITION.TOP_RIGHT,
-                          type: "info",
-                          autoClose: 10000,
-                        });
-                        MarketplaceToaster.showToast(
-                          util.getToastObject(
-                            `${t("messages:no_changes_were_detected")}`,
-                            "info"
-                          )
-                        );
+              <Content className="mt-4">
+                <Row className="gap-2">
+                  <Col>
+                    <Button
+                      className={
+                        imageChangeValues ? "app-btn-primary" : "!opacity-75"
                       }
-                    }}
-                  >
-                    {t("labels:save")}
-                  </Button>
-                </Col>
-                <Col className="">
-                  <Button
-                    // className=" app-btn-secondary"
-                    className={
-                      imageChangeValues ? "app-btn-secondary" : "!opacity-75"
-                    }
-                    disabled={!imageChangeValues}
-                    onClick={() => {
-                      navigate("/dashboard/store");
-                    }}
-                  >
-                    {t("labels:discard")}
-                  </Button>
-                </Col>
-              </Row>
+                      disabled={!imageChangeValues}
+                      onClick={() => {
+                        if (imagesUpload && imagesUpload.length > 0) {
+                          postImageOnClickSave();
+                        } else {
+                          toast(`${t("messages:no_changes_were_detected")}`, {
+                            position: toast.POSITION.TOP_RIGHT,
+                            type: "info",
+                            autoClose: 10000,
+                          });
+                          MarketplaceToaster.showToast(
+                            util.getToastObject(
+                              `${t("messages:no_changes_were_detected")}`,
+                              "info"
+                            )
+                          );
+                        }
+                      }}
+                    >
+                      {t("labels:save")}
+                    </Button>
+                  </Col>
+                  <Col className="">
+                    <Button
+                      // className=" app-btn-secondary"
+                      className={
+                        imageChangeValues ? "app-btn-secondary" : "!opacity-75"
+                      }
+                      disabled={!imageChangeValues}
+                      onClick={() => {
+                        navigate("/dashboard/store");
+                      }}
+                    >
+                      {t("labels:discard")}
+                    </Button>
+                  </Col>
+                </Row>
+              </Content>
             </Content>
-          </Content>
-        </Spin>}
+          </Spin>
+        )}
 
         {/* <Spin tip="Please wait!" size="large" spinning={isStoreDataLimitSaving}> */}
         {/* <Content className="bg-white mt-3 p-3 !rounded-md"> */}
@@ -2546,18 +2723,27 @@ const StoreSettings = () => {
             ></Skeleton>
             {/* <SkeletonComponent Layout="layout1" /> */}
           </Content>
-        ) :
-          <Spin tip="Please wait!" size="large" spinning={isStoreDataLimitSaving}>
+        ) : (
+          <Spin
+            tip="Please wait!"
+            size="large"
+            spinning={isStoreDataLimitSaving}
+          >
             <Content className="bg-white !rounded-md">
               <Content className="p-3">
                 <label className="text-[20px] mb-2 font-bold">
                   {t("labels:thershold_limit")}
                 </label>
               </Content>
-              {storeLimitValues && analysisCount ?
-                <DynamicTable tableComponentData={tablePropsThreshold} /> : ""}
+              {storeLimitValues && analysisCount ? (
+                <DynamicTable tableComponentData={tablePropsThreshold} />
+              ) : (
+                ""
+              )}
               <Content className="p-3">
-                {hideActionButton ? "" :
+                {hideActionButton ? (
+                  ""
+                ) : (
                   <Row className="gap-2">
                     <Col>
                       <Button
@@ -2591,1333 +2777,1386 @@ const StoreSettings = () => {
                       </Button>
                     </Col>
                   </Row>
-                }
+                )}
               </Content>
             </Content>
-          </Spin>}
-        {hideActionButton ? "" : <Spin tip="Please wait!" size="large" spinning={isLoading}>
-          <Content className="bg-white mt-3 p-3 rounded-lg">
-            <label className="text-[20px] font-bold !text-center">
-              {t("labels:currency")}
-            </label>
-            <Divider className="!my-4" />
-            <Row
-              className="mt-2"
-              gutter={{
-                xs: 8,
-                sm: 16,
-                md: 24,
-                lg: 32,
-              }}
-            >
-              <Col span={4} className="gutter-row">
-                <label className="text-[13px] mb-2 ml-1 input-label-color">
-                  {t("labels:symbol")}
-                </label>
-                <span className="mandatory-symbol-color text-sm !text-center ml-1">
-                  *
-                </span>
-                <Input
-                  placeholder={t("placeholders:enter_currency_symbol")}
-                  className={`${inValidCurrencySymbol
-                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
-                    : ""
+          </Spin>
+        )}
+        {hideActionButton ? (
+          ""
+        ) : (
+          <Spin tip="Please wait!" size="large" spinning={isLoading}>
+            <Content className="bg-white mt-3 p-3 rounded-lg">
+              <label className="text-[20px] font-bold !text-center">
+                {t("labels:currency")}
+              </label>
+              <Divider className="!my-4" />
+              <Row
+                className="mt-2"
+                gutter={{
+                  xs: 8,
+                  sm: 16,
+                  md: 24,
+                  lg: 32,
+                }}
+              >
+                <Col span={4} className="gutter-row">
+                  <label className="text-[13px] mb-2 ml-1 input-label-color">
+                    {t("labels:symbol")}
+                  </label>
+                  <span className="mandatory-symbol-color text-sm !text-center ml-1">
+                    *
+                  </span>
+                  <Input
+                    placeholder={t("placeholders:enter_currency_symbol")}
+                    className={`${
+                      inValidCurrencySymbol
+                        ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
+                        : ""
                     }`}
-                  // defaultValue={storeSettingData.store_currency["symbol"]}
-                  value={currencySymbol}
-                  maxLength={3}
-                  onChange={(e) => {
-                    const regex = /^[A-Za-z $£€¥₹]*$/;
-                    const inputValue = e.target.value.replace(/\!/g, "");
+                    // defaultValue={storeSettingData.store_currency["symbol"]}
+                    value={currencySymbol}
+                    maxLength={3}
+                    onChange={(e) => {
+                      const regex = /^[A-Za-z $£€¥₹]*$/;
+                      const inputValue = e.target.value.replace(/\!/g, "");
 
-                    if (regex.test(inputValue) || inputValue === "") {
-                      setCurrencySymbol(inputValue);
-                      setOnChangeValues(true);
-                      setInValidCurrencySymbol(false);
-                      let temp = { ...copyImageOfStoreSettingsCurrency };
-                      temp["symbol"] = inputValue;
-                      setCopyImageOfStoreSettingsCurrency(temp);
-                    } else {
-                      setInValidCurrencySymbol(true);
-                    }
-                  }}
-                  onBlur={() => {
-                    const trimmed = currencySymbol.trim();
-                    const trimmedUpdate = trimmed.replace(/\s+/g, " ");
-                    setCurrencySymbol(trimmedUpdate);
-                  }}
-                />
-              </Col>
-              <Col span={4} className="gutter-row">
-                <label className="text-[13px] mb-2 ml-1 input-label-color">
-                  {t("labels:iso_code")}
-                </label>
-                <span className="mandatory-symbol-color text-sm ml-1 !text-center">
-                  *
-                </span>
-                <Input
-                  placeholder={t("placeholders:enter_iso_code")}
-                  value={currencyIsoCode}
-                  maxLength={3}
-                  onChange={(e) => {
-                    const regex = /^[A-Za-z]*$/;
-                    if (regex.test(e.target.value)) {
-                      setCurrencyIsoCode(e.target.value);
-                      setInValidCurrencyIsoCode(false);
-                      setOnChangeValues(true);
-                      let temp = { ...copyImageOfStoreSettingsCurrency };
-                      temp["iso_code"] = e.target.value;
-                      setCopyImageOfStoreSettingsCurrency(temp);
-                    } else {
-                      // setCurrencyIsoCode("");
-                      setInValidCurrencyIsoCode(true);
-                    }
-                  }}
-                  onBlur={() => {
-                    const trimmed = currencyIsoCode.trim();
-                    const trimmedUpdate = trimmed.replace(/\s+/g, " ");
-                    setCurrencyIsoCode(trimmedUpdate);
-                  }}
-                  className={`${inValidCurrencyIsoCode
-                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
-                    : ""
+                      if (regex.test(inputValue) || inputValue === "") {
+                        setCurrencySymbol(inputValue);
+                        setOnChangeValues(true);
+                        setInValidCurrencySymbol(false);
+                        let temp = { ...copyImageOfStoreSettingsCurrency };
+                        temp["symbol"] = inputValue;
+                        setCopyImageOfStoreSettingsCurrency(temp);
+                      } else {
+                        setInValidCurrencySymbol(true);
+                      }
+                    }}
+                    onBlur={() => {
+                      const trimmed = currencySymbol.trim();
+                      const trimmedUpdate = trimmed.replace(/\s+/g, " ");
+                      setCurrencySymbol(trimmedUpdate);
+                    }}
+                  />
+                </Col>
+                <Col span={4} className="gutter-row">
+                  <label className="text-[13px] mb-2 ml-1 input-label-color">
+                    {t("labels:iso_code")}
+                  </label>
+                  <span className="mandatory-symbol-color text-sm ml-1 !text-center">
+                    *
+                  </span>
+                  <Input
+                    placeholder={t("placeholders:enter_iso_code")}
+                    value={currencyIsoCode}
+                    maxLength={3}
+                    onChange={(e) => {
+                      const regex = /^[A-Za-z]*$/;
+                      if (regex.test(e.target.value)) {
+                        setCurrencyIsoCode(e.target.value);
+                        setInValidCurrencyIsoCode(false);
+                        setOnChangeValues(true);
+                        let temp = { ...copyImageOfStoreSettingsCurrency };
+                        temp["iso_code"] = e.target.value;
+                        setCopyImageOfStoreSettingsCurrency(temp);
+                      } else {
+                        // setCurrencyIsoCode("");
+                        setInValidCurrencyIsoCode(true);
+                      }
+                    }}
+                    onBlur={() => {
+                      const trimmed = currencyIsoCode.trim();
+                      const trimmedUpdate = trimmed.replace(/\s+/g, " ");
+                      setCurrencyIsoCode(trimmedUpdate);
+                    }}
+                    className={`${
+                      inValidCurrencyIsoCode
+                        ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
+                        : ""
                     }`}
-                />
-              </Col>
-              <Col span={4} className="gutter-row">
-                <label className="text-[13px] mb-2 ml-1 input-label-color">
-                  {t("labels:fractional_unit")}
-                </label>
-                <span className="mandatory-symbol-color text-sm ml-1 !text-center">
-                  *
-                </span>
-                <Input
-                  placeholder={t("placeholders:enter_fractional_unit")}
-                  value={fractionalUnit}
-                  maxLength={10}
-                  onChange={(e) => {
-                    const regex = /^[A-Za-z]*$/;
-                    if (regex.test(e.target.value)) {
-                      setFractionalUnit(e.target.value);
-                      setInValidFractionalUnit(false);
-                      setOnChangeValues(true);
-                      let temp = { ...copyImageOfStoreSettingsCurrency };
-                      temp["fractional_unit"] = e.target.value;
-                      setCopyImageOfStoreSettingsCurrency(temp);
-                    } else {
-                      setInValidFractionalUnit(true);
-                    }
-                  }}
-                  onBlur={() => {
-                    const trimmed = fractionalUnit.trim();
-                    const trimmedUpdate = trimmed.replace(/\s+/g, " ");
-                    setFractionalUnit(trimmedUpdate);
-                  }}
-                  className={`${inValidFractionalUnit
-                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
-                    : ""
+                  />
+                </Col>
+                <Col span={4} className="gutter-row">
+                  <label className="text-[13px] mb-2 ml-1 input-label-color">
+                    {t("labels:fractional_unit")}
+                  </label>
+                  <span className="mandatory-symbol-color text-sm ml-1 !text-center">
+                    *
+                  </span>
+                  <Input
+                    placeholder={t("placeholders:enter_fractional_unit")}
+                    value={fractionalUnit}
+                    maxLength={10}
+                    onChange={(e) => {
+                      const regex = /^[A-Za-z]*$/;
+                      if (regex.test(e.target.value)) {
+                        setFractionalUnit(e.target.value);
+                        setInValidFractionalUnit(false);
+                        setOnChangeValues(true);
+                        let temp = { ...copyImageOfStoreSettingsCurrency };
+                        temp["fractional_unit"] = e.target.value;
+                        setCopyImageOfStoreSettingsCurrency(temp);
+                      } else {
+                        setInValidFractionalUnit(true);
+                      }
+                    }}
+                    onBlur={() => {
+                      const trimmed = fractionalUnit.trim();
+                      const trimmedUpdate = trimmed.replace(/\s+/g, " ");
+                      setFractionalUnit(trimmedUpdate);
+                    }}
+                    className={`${
+                      inValidFractionalUnit
+                        ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
+                        : ""
                     }`}
-                />
-              </Col>
-              <Col span={4} className="gutter-row">
-                {" "}
-                <label className="text-[13px] mb-2 ml-1 input-label-color">
-                  {t("labels:number_to_basic")}
-                </label>
-                <span className="mandatory-symbol-color text-sm !text-center ml-1">
-                  *
-                </span>
-                <InputNumber
-                  placeholder={t("placeholders:enter_number_to_basic")}
-                  value={numberToBasic}
-                  // type="number"
-                  min={1}
-                  minLength={1}
-                  maxLength={99999}
-                  max={99999}
-                  onChange={(e) => {
-                    // setNumberToBasic(e);
-                    if (e !== "" && e !== null && e !== undefined) {
-                      setNumberToBasic(e);
-                      setOnChangeValues(true);
-                    } else {
-                      setNumberToBasic(e);
-                      // setInValidNumberToBasic(true);
-                    }
-                    setInValidNumberToBasic(false);
+                  />
+                </Col>
+                <Col span={4} className="gutter-row">
+                  {" "}
+                  <label className="text-[13px] mb-2 ml-1 input-label-color">
+                    {t("labels:number_to_basic")}
+                  </label>
+                  <span className="mandatory-symbol-color text-sm !text-center ml-1">
+                    *
+                  </span>
+                  <InputNumber
+                    placeholder={t("placeholders:enter_number_to_basic")}
+                    value={numberToBasic}
+                    // type="number"
+                    min={1}
+                    minLength={1}
+                    maxLength={99999}
+                    max={99999}
+                    onChange={(e) => {
+                      // setNumberToBasic(e);
+                      if (e !== "" && e !== null && e !== undefined) {
+                        setNumberToBasic(e);
+                        setOnChangeValues(true);
+                      } else {
+                        setNumberToBasic(e);
+                        // setInValidNumberToBasic(true);
+                      }
+                      setInValidNumberToBasic(false);
 
-                    let temp = { ...copyImageOfStoreSettingsCurrency };
-                    temp["number_to_basic"] = e;
-                    setCopyImageOfStoreSettingsCurrency(temp);
-                  }}
-                  onBlur={() => {
-                    const trimmed = numberToBasic.trim();
-                    const trimmedUpdate = trimmed.replace(/\s+/g, " ");
-                    setNumberToBasic(trimmedUpdate);
-                  }}
-                  onKeyDown={numberToBasicLimit}
-                  className={`${inValidNumberToBasic
-                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
-                    : ""
+                      let temp = { ...copyImageOfStoreSettingsCurrency };
+                      temp["number_to_basic"] = e;
+                      setCopyImageOfStoreSettingsCurrency(temp);
+                    }}
+                    onBlur={() => {
+                      const trimmed = numberToBasic.trim();
+                      const trimmedUpdate = trimmed.replace(/\s+/g, " ");
+                      setNumberToBasic(trimmedUpdate);
+                    }}
+                    onKeyDown={numberToBasicLimit}
+                    className={`${
+                      inValidNumberToBasic
+                        ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
+                        : ""
                     }`}
-                />
-              </Col>
-            </Row>
-            <Content className="">
+                  />
+                </Col>
+              </Row>
               <Content className="">
-                <Row className="!mb-4">
-                  <Content className="flex justify-between w-full">
-                    <label className="text-[20px]  mt-2 font-bold select-none">
-                      {t("labels:page_theme")}
-                    </label>
-                    <Button
-                      className="app-btn-secondary flex justify-center items-center"
-                      onClick={() => openModal()}
+                <Content className="">
+                  <Row className="!mb-4">
+                    <Content className="flex justify-between w-full">
+                      <label className="text-[20px]  mt-2 font-bold select-none">
+                        {t("labels:page_theme")}
+                      </label>
+                      <Button
+                        className="app-btn-secondary flex justify-center items-center"
+                        onClick={() => openModal()}
+                      >
+                        <EyeOutlined className="" /> {t("labels:preview")}
+                      </Button>
+                    </Content>
+                    <StoreModal
+                      isVisible={isModalOpen}
+                      title={`${t(
+                        "labels:sample_preview_page_for_store_front"
+                      )}`}
+                      width={1000}
+                      cancelCallback={() => closeModal()}
+                      isSpin={false}
+                      className="!h-96"
+                      // hideCloseButton={false}
                     >
-                      <EyeOutlined className="" /> {t("labels:preview")}
-                    </Button>
-                  </Content>
-                  <StoreModal
-                    isVisible={isModalOpen}
-                    title={`${t("labels:sample_preview_page_for_store_front")}`}
-                    width={1000}
-                    cancelCallback={() => closeModal()}
-                    isSpin={false}
-                    className="!h-96"
-                  // hideCloseButton={false}
-                  >
-                    <Preview
-                      headerBackgroundColor={headerBackgroundColor}
-                      headerForegroundColor={headerForegroundColor}
-                      footerBackgroundColor={footerBackgroundColor}
-                      footerForegroundColor={footerForegroundColor}
-                      pageBackgroundColor={pageBackgroundColor}
-                      foreGroundColor={foreGroundColor}
-                      buttonPrimaryBackgroundColor={
-                        buttonPrimaryBackgroundColor
-                      }
-                      buttonSecondaryBackgroundColor={
-                        buttonSecondaryBackgroundColor
-                      }
-                      buttonTeritaryBackgroundColor={
-                        buttonTeritaryBackgroundColor
-                      }
-                      buttonPrimaryForegroundColor={
-                        buttonPrimaryForegroundColor
-                      }
-                      buttonSecondaryForegroundColor={
-                        buttonSecondaryForegroundColor
-                      }
-                      buttonTeritaryForegroundColor={
-                        buttonTeritaryForegroundColor
-                      }
-                      getImageData={getImageData}
-                    />
-                  </StoreModal>
-                </Row>
-                <Divider className="!my-4" />
-                <Row className="mt-2">
-                  <Col span={8} className="mr-2 ">
-                    <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
-                      {t("labels:background_color")}
-                    </label>
-                    <Content className="flex gap-2">
-                      <Input
-                        type="color"
-                        value={pageBackgroundColor}
-                        onChange={(e) => {
-                          const patternName = /^#([A-Fa-f0-9]{6})$/;
-                          if (patternName.test(e.target.value) === false) {
-                            let temp = { ...colorCodeValidation };
-                            temp["pageBgColorValidation"] = true;
-                            setColorCodeValidation(temp);
-                            setPageBackgroundColor(e.target.value);
-                            setOnChangeValues(true);
-                          } else {
-                            let temp = { ...colorCodeValidation };
-                            temp["pageBgColorValidation"] = false;
-                            setColorCodeValidation(temp);
-                            setPageBackgroundColor(e.target.value);
-                            setOnChangeValues(true);
-                          }
-                          // setPageBackgroundColor(e.target.value);
-                          let temp = { ...copyImageOfStoreSettingsPageTheme };
-                          temp["bg_color"] = e.target.value;
-                          setCopyImageOfStoreSettingsPageTheme(temp);
-                        }}
-                        className="w-9 p-0"
+                      <Preview
+                        headerBackgroundColor={headerBackgroundColor}
+                        headerForegroundColor={headerForegroundColor}
+                        footerBackgroundColor={footerBackgroundColor}
+                        footerForegroundColor={footerForegroundColor}
+                        pageBackgroundColor={pageBackgroundColor}
+                        foreGroundColor={foreGroundColor}
+                        buttonPrimaryBackgroundColor={
+                          buttonPrimaryBackgroundColor
+                        }
+                        buttonSecondaryBackgroundColor={
+                          buttonSecondaryBackgroundColor
+                        }
+                        buttonTeritaryBackgroundColor={
+                          buttonTeritaryBackgroundColor
+                        }
+                        buttonPrimaryForegroundColor={
+                          buttonPrimaryForegroundColor
+                        }
+                        buttonSecondaryForegroundColor={
+                          buttonSecondaryForegroundColor
+                        }
+                        buttonTeritaryForegroundColor={
+                          buttonTeritaryForegroundColor
+                        }
+                        getImageData={getImageData}
                       />
-                      <Space.Compact className="">
+                    </StoreModal>
+                  </Row>
+                  <Divider className="!my-4" />
+                  <Row className="mt-2">
+                    <Col span={8} className="mr-2 ">
+                      <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
+                        {t("labels:background_color")}
+                      </label>
+                      <Content className="flex gap-2">
                         <Input
+                          type="color"
                           value={pageBackgroundColor}
-                          maxLength={7}
-                          className="w-[150px]"
                           onChange={(e) => {
-                            const inputValue = e.target.value;
-                            // Allow only numeric input
-                            const numericValue = inputValue
-                              .replace(/[^a-f0-9#]/gi, "")
-                              .substring(0, 7);
-                            setPageBackgroundColor(numericValue);
                             const patternName = /^#([A-Fa-f0-9]{6})$/;
-                            if (patternName.test(numericValue) === false) {
+                            if (patternName.test(e.target.value) === false) {
                               let temp = { ...colorCodeValidation };
                               temp["pageBgColorValidation"] = true;
                               setColorCodeValidation(temp);
-                              setPageBackgroundColor(numericValue);
+                              setPageBackgroundColor(e.target.value);
                               setOnChangeValues(true);
                             } else {
                               let temp = { ...colorCodeValidation };
                               temp["pageBgColorValidation"] = false;
                               setColorCodeValidation(temp);
-                              setPageBackgroundColor(numericValue);
+                              setPageBackgroundColor(e.target.value);
                               setOnChangeValues(true);
                             }
                             // setPageBackgroundColor(e.target.value);
                             let temp = { ...copyImageOfStoreSettingsPageTheme };
-                            temp["bg_color"] = numericValue;
+                            temp["bg_color"] = e.target.value;
                             setCopyImageOfStoreSettingsPageTheme(temp);
                           }}
-                          addonAfter={
-                            <Tooltip
-                              title={t("messages:reset_to_the_original_value")}
-                            >
-                              <UndoOutlined
-                                onClick={() => {
-                                  setPageBackgroundColor(pageBgColor);
-                                  let temp = { ...colorCodeValidation };
-                                  temp["pageBgColorValidation"] = false;
-                                  setColorCodeValidation(temp);
-                                }}
-                              />
-                            </Tooltip>
-                          }
+                          className="w-9 p-0"
                         />
-                      </Space.Compact>
-                    </Content>
-                    {colorCodeValidation.pageBgColorValidation === true ? (
-                      <p className="text-red-600 text-sm">
-                        {t("messages:please_enter_valid_hexadecimal_code")}{" "}
-                        <br />
-                        {t("messages:ex_ffffff_for_white_000000_for_black")}
-                      </p>
-                    ) : null}
-                  </Col>
-                  <Col span={8} className="ml-1">
-                    <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
-                      {t("labels:text_color")}
-                    </label>
-                    <Content className="flex gap-2">
-                      <Input
-                        type="color"
-                        value={foreGroundColor}
-                        onChange={(e) => {
-                          const patternName = /^#([A-Fa-f0-9]{6})$/;
-                          if (patternName.test(e.target.value) === false) {
-                            let temp = { ...colorCodeValidation };
-                            temp["pageTextColorValidation"] = true;
-                            setColorCodeValidation(temp);
-                            setForeGroundColor(e.target.value);
-                            setOnChangeValues(true);
-                          } else {
-                            let temp = { ...colorCodeValidation };
-                            temp["pageTextColorValidation"] = false;
-                            setColorCodeValidation(temp);
-                            setForeGroundColor(e.target.value);
-                            setOnChangeValues(true);
-                          }
-                          // setForeGroundColor(e.target.value);
-                          let temp = { ...copyImageOfStoreSettingsPageTheme };
-                          temp["fg_color"] = e.target.value;
-                          setCopyImageOfStoreSettingsPageTheme(temp);
-                        }}
-                        className="w-9 p-0"
-                      />
-                      <Space.Compact className="">
+                        <Space.Compact className="">
+                          <Input
+                            value={pageBackgroundColor}
+                            maxLength={7}
+                            className="w-[150px]"
+                            onChange={(e) => {
+                              const inputValue = e.target.value;
+                              // Allow only numeric input
+                              const numericValue = inputValue
+                                .replace(/[^a-f0-9#]/gi, "")
+                                .substring(0, 7);
+                              setPageBackgroundColor(numericValue);
+                              const patternName = /^#([A-Fa-f0-9]{6})$/;
+                              if (patternName.test(numericValue) === false) {
+                                let temp = { ...colorCodeValidation };
+                                temp["pageBgColorValidation"] = true;
+                                setColorCodeValidation(temp);
+                                setPageBackgroundColor(numericValue);
+                                setOnChangeValues(true);
+                              } else {
+                                let temp = { ...colorCodeValidation };
+                                temp["pageBgColorValidation"] = false;
+                                setColorCodeValidation(temp);
+                                setPageBackgroundColor(numericValue);
+                                setOnChangeValues(true);
+                              }
+                              // setPageBackgroundColor(e.target.value);
+                              let temp = {
+                                ...copyImageOfStoreSettingsPageTheme,
+                              };
+                              temp["bg_color"] = numericValue;
+                              setCopyImageOfStoreSettingsPageTheme(temp);
+                            }}
+                            addonAfter={
+                              <Tooltip
+                                title={t(
+                                  "messages:reset_to_the_original_value"
+                                )}
+                              >
+                                <UndoOutlined
+                                  onClick={() => {
+                                    setPageBackgroundColor(pageBgColor);
+                                    let temp = { ...colorCodeValidation };
+                                    temp["pageBgColorValidation"] = false;
+                                    setColorCodeValidation(temp);
+                                  }}
+                                />
+                              </Tooltip>
+                            }
+                          />
+                        </Space.Compact>
+                      </Content>
+                      {colorCodeValidation.pageBgColorValidation === true ? (
+                        <p className="text-red-600 text-sm">
+                          {t("messages:please_enter_valid_hexadecimal_code")}{" "}
+                          <br />
+                          {t("messages:ex_ffffff_for_white_000000_for_black")}
+                        </p>
+                      ) : null}
+                    </Col>
+                    <Col span={8} className="ml-1">
+                      <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
+                        {t("labels:text_color")}
+                      </label>
+                      <Content className="flex gap-2">
                         <Input
+                          type="color"
                           value={foreGroundColor}
-                          maxLength={7}
-                          className="w-[150px]"
                           onChange={(e) => {
-                            const inputValue = e.target.value;
-                            // Allow only numeric input
-                            const numericValue = inputValue
-                              .replace(/[^a-f0-9#]/gi, "")
-                              .substring(0, 7);
-                            setForeGroundColor(numericValue);
                             const patternName = /^#([A-Fa-f0-9]{6})$/;
-                            if (patternName.test(numericValue) === false) {
+                            if (patternName.test(e.target.value) === false) {
                               let temp = { ...colorCodeValidation };
                               temp["pageTextColorValidation"] = true;
                               setColorCodeValidation(temp);
-                              setForeGroundColor(numericValue);
+                              setForeGroundColor(e.target.value);
                               setOnChangeValues(true);
                             } else {
                               let temp = { ...colorCodeValidation };
                               temp["pageTextColorValidation"] = false;
                               setColorCodeValidation(temp);
-                              setForeGroundColor(numericValue);
+                              setForeGroundColor(e.target.value);
                               setOnChangeValues(true);
                             }
                             // setForeGroundColor(e.target.value);
                             let temp = { ...copyImageOfStoreSettingsPageTheme };
-                            temp["fg_color"] = numericValue;
+                            temp["fg_color"] = e.target.value;
                             setCopyImageOfStoreSettingsPageTheme(temp);
                           }}
-                          addonAfter={
-                            <Tooltip
-                              title={t("messages:reset_to_the_original_value")}
-                            >
-                              <UndoOutlined
-                                onClick={() => {
-                                  let temp = { ...colorCodeValidation };
-                                  temp["pageTextColorValidation"] = false;
-                                  setColorCodeValidation(temp);
-                                  setForeGroundColor(pageFgColor);
-                                }}
-                              />
-                            </Tooltip>
-                          }
+                          className="w-9 p-0"
                         />
-                      </Space.Compact>
-                    </Content>
-                    {colorCodeValidation.pageTextColorValidation === true ? (
-                      <p className="text-red-600 text-sm">
-                        {t("messages:please_enter_valid_hexadecimal_code")}{" "}
-                        <br />
-                        {t("messages:ex_ffffff_for_white_000000_for_black")}
-                      </p>
-                    ) : null}
-                  </Col>
-                </Row>
-                <Row className="mt-4">
-                  <Col span={8} className="mr-2 ">
-                    <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
-                      {t("labels:primary_button_background_color")}
-                    </label>
-                    <Content className="flex gap-2">
-                      <Input
-                        type="color"
-                        className="w-9 p-0"
-                        value={buttonPrimaryBackgroundColor}
-                        onChange={(e) => {
-                          const patternName = /^#([A-Fa-f0-9]{6})$/;
-                          if (patternName.test(e.target.value) === false) {
-                            let temp = { ...colorCodeValidation };
-                            temp["primaryBgValidation"] = true;
-                            setColorCodeValidation(temp);
-                            setButtonPrimaryBackgroundColor(e.target.value);
-                            setOnChangeValues(true);
-                          } else {
-                            let temp = { ...colorCodeValidation };
-                            temp["primaryBgValidation"] = false;
-                            setColorCodeValidation(temp);
-                            setButtonPrimaryBackgroundColor(e.target.value);
-                            setOnChangeValues(true);
-                          }
-                          // setButtonPrimaryBackgroundColor(e.target.value);
-                          let temp = { ...copyImageOfStoreSettingsPageTheme };
-                          temp["btn_primary_bg_color"] = e.target.value;
-                          setCopyImageOfStoreSettingsPageTheme(temp);
-                        }}
-                      />
-                      <Space.Compact className="">
+                        <Space.Compact className="">
+                          <Input
+                            value={foreGroundColor}
+                            maxLength={7}
+                            className="w-[150px]"
+                            onChange={(e) => {
+                              const inputValue = e.target.value;
+                              // Allow only numeric input
+                              const numericValue = inputValue
+                                .replace(/[^a-f0-9#]/gi, "")
+                                .substring(0, 7);
+                              setForeGroundColor(numericValue);
+                              const patternName = /^#([A-Fa-f0-9]{6})$/;
+                              if (patternName.test(numericValue) === false) {
+                                let temp = { ...colorCodeValidation };
+                                temp["pageTextColorValidation"] = true;
+                                setColorCodeValidation(temp);
+                                setForeGroundColor(numericValue);
+                                setOnChangeValues(true);
+                              } else {
+                                let temp = { ...colorCodeValidation };
+                                temp["pageTextColorValidation"] = false;
+                                setColorCodeValidation(temp);
+                                setForeGroundColor(numericValue);
+                                setOnChangeValues(true);
+                              }
+                              // setForeGroundColor(e.target.value);
+                              let temp = {
+                                ...copyImageOfStoreSettingsPageTheme,
+                              };
+                              temp["fg_color"] = numericValue;
+                              setCopyImageOfStoreSettingsPageTheme(temp);
+                            }}
+                            addonAfter={
+                              <Tooltip
+                                title={t(
+                                  "messages:reset_to_the_original_value"
+                                )}
+                              >
+                                <UndoOutlined
+                                  onClick={() => {
+                                    let temp = { ...colorCodeValidation };
+                                    temp["pageTextColorValidation"] = false;
+                                    setColorCodeValidation(temp);
+                                    setForeGroundColor(pageFgColor);
+                                  }}
+                                />
+                              </Tooltip>
+                            }
+                          />
+                        </Space.Compact>
+                      </Content>
+                      {colorCodeValidation.pageTextColorValidation === true ? (
+                        <p className="text-red-600 text-sm">
+                          {t("messages:please_enter_valid_hexadecimal_code")}{" "}
+                          <br />
+                          {t("messages:ex_ffffff_for_white_000000_for_black")}
+                        </p>
+                      ) : null}
+                    </Col>
+                  </Row>
+                  <Row className="mt-4">
+                    <Col span={8} className="mr-2 ">
+                      <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
+                        {t("labels:primary_button_background_color")}
+                      </label>
+                      <Content className="flex gap-2">
                         <Input
+                          type="color"
+                          className="w-9 p-0"
                           value={buttonPrimaryBackgroundColor}
-                          maxLength={7}
-                          className="w-[150px]"
                           onChange={(e) => {
-                            const inputValue = e.target.value;
-                            // Allow only numeric input
-                            const numericValue = inputValue
-                              .replace(/[^a-f0-9#]/gi, "")
-                              .substring(0, 7);
-                            setButtonPrimaryBackgroundColor(numericValue);
                             const patternName = /^#([A-Fa-f0-9]{6})$/;
-                            if (patternName.test(numericValue) === false) {
+                            if (patternName.test(e.target.value) === false) {
                               let temp = { ...colorCodeValidation };
                               temp["primaryBgValidation"] = true;
                               setColorCodeValidation(temp);
-                              setButtonPrimaryBackgroundColor(numericValue);
+                              setButtonPrimaryBackgroundColor(e.target.value);
                               setOnChangeValues(true);
                             } else {
                               let temp = { ...colorCodeValidation };
                               temp["primaryBgValidation"] = false;
                               setColorCodeValidation(temp);
-                              setButtonPrimaryBackgroundColor(numericValue);
+                              setButtonPrimaryBackgroundColor(e.target.value);
                               setOnChangeValues(true);
                             }
                             // setButtonPrimaryBackgroundColor(e.target.value);
                             let temp = { ...copyImageOfStoreSettingsPageTheme };
-                            temp["btn_primary_bg_color"] = numericValue;
+                            temp["btn_primary_bg_color"] = e.target.value;
                             setCopyImageOfStoreSettingsPageTheme(temp);
                           }}
-                          addonAfter={
-                            <Tooltip
-                              title={t("messages:reset_to_the_original_value")}
-                            >
-                              <UndoOutlined
-                                onClick={() => {
-                                  setButtonPrimaryBackgroundColor(
-                                    btnPrimaryBgColor
-                                  );
-                                  let temp = { ...colorCodeValidation };
-                                  temp["primaryBgValidation"] = false;
-                                  setColorCodeValidation(temp);
-                                }}
-                              />
-                            </Tooltip>
-                          }
                         />
-                      </Space.Compact>
-                    </Content>
-                    {colorCodeValidation.primaryBgValidation === true ? (
-                      <p className="text-red-600 text-sm">
-                        {t("messages:please_enter_valid_hexadecimal_code")}{" "}
-                        <br />
-                        {t("messages:ex_ffffff_for_white_000000_for_black")}
-                      </p>
-                    ) : null}
-                  </Col>
-                  <Col span={8} className="ml-1">
-                    <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
-                      {t("labels:secondary_button_background_color")}
-                    </label>
-                    <Content className="flex gap-2">
-                      <Input
-                        type="color"
-                        className="w-9 p-0"
-                        value={buttonSecondaryBackgroundColor}
-                        onChange={(e) => {
-                          const patternName = /^#([A-Fa-f0-9]{6})$/;
-                          if (patternName.test(e.target.value) === false) {
-                            let temp = { ...colorCodeValidation };
-                            temp["secondaryBgValidation"] = true;
-                            setColorCodeValidation(temp);
-                            setButtonSecondaryBackgroundColor(e.target.value);
-                            setOnChangeValues(true);
-                          } else {
-                            let temp = { ...colorCodeValidation };
-                            temp["secondaryBgValidation"] = false;
-                            setColorCodeValidation(temp);
-                            setButtonSecondaryBackgroundColor(e.target.value);
-                            setOnChangeValues(true);
-                          }
-                          // setButtonSecondaryBackgroundColor(e.target.value);
-                          let temp = { ...copyImageOfStoreSettingsPageTheme };
-                          temp["btn_secondary_bg_color"] = e.target.value;
-                          setCopyImageOfStoreSettingsPageTheme(temp);
-                        }}
-                      />
-                      <Space.Compact className="">
+                        <Space.Compact className="">
+                          <Input
+                            value={buttonPrimaryBackgroundColor}
+                            maxLength={7}
+                            className="w-[150px]"
+                            onChange={(e) => {
+                              const inputValue = e.target.value;
+                              // Allow only numeric input
+                              const numericValue = inputValue
+                                .replace(/[^a-f0-9#]/gi, "")
+                                .substring(0, 7);
+                              setButtonPrimaryBackgroundColor(numericValue);
+                              const patternName = /^#([A-Fa-f0-9]{6})$/;
+                              if (patternName.test(numericValue) === false) {
+                                let temp = { ...colorCodeValidation };
+                                temp["primaryBgValidation"] = true;
+                                setColorCodeValidation(temp);
+                                setButtonPrimaryBackgroundColor(numericValue);
+                                setOnChangeValues(true);
+                              } else {
+                                let temp = { ...colorCodeValidation };
+                                temp["primaryBgValidation"] = false;
+                                setColorCodeValidation(temp);
+                                setButtonPrimaryBackgroundColor(numericValue);
+                                setOnChangeValues(true);
+                              }
+                              // setButtonPrimaryBackgroundColor(e.target.value);
+                              let temp = {
+                                ...copyImageOfStoreSettingsPageTheme,
+                              };
+                              temp["btn_primary_bg_color"] = numericValue;
+                              setCopyImageOfStoreSettingsPageTheme(temp);
+                            }}
+                            addonAfter={
+                              <Tooltip
+                                title={t(
+                                  "messages:reset_to_the_original_value"
+                                )}
+                              >
+                                <UndoOutlined
+                                  onClick={() => {
+                                    setButtonPrimaryBackgroundColor(
+                                      btnPrimaryBgColor
+                                    );
+                                    let temp = { ...colorCodeValidation };
+                                    temp["primaryBgValidation"] = false;
+                                    setColorCodeValidation(temp);
+                                  }}
+                                />
+                              </Tooltip>
+                            }
+                          />
+                        </Space.Compact>
+                      </Content>
+                      {colorCodeValidation.primaryBgValidation === true ? (
+                        <p className="text-red-600 text-sm">
+                          {t("messages:please_enter_valid_hexadecimal_code")}{" "}
+                          <br />
+                          {t("messages:ex_ffffff_for_white_000000_for_black")}
+                        </p>
+                      ) : null}
+                    </Col>
+                    <Col span={8} className="ml-1">
+                      <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
+                        {t("labels:secondary_button_background_color")}
+                      </label>
+                      <Content className="flex gap-2">
                         <Input
+                          type="color"
+                          className="w-9 p-0"
                           value={buttonSecondaryBackgroundColor}
-                          className="w-[150px]"
-                          maxLength={7}
                           onChange={(e) => {
-                            const inputValue = e.target.value;
-                            // Allow only numeric input
-                            const numericValue = inputValue
-                              .replace(/[^a-f0-9#]/gi, "")
-                              .substring(0, 7);
-                            setButtonSecondaryBackgroundColor(numericValue);
                             const patternName = /^#([A-Fa-f0-9]{6})$/;
-                            if (patternName.test(numericValue) === false) {
+                            if (patternName.test(e.target.value) === false) {
                               let temp = { ...colorCodeValidation };
                               temp["secondaryBgValidation"] = true;
                               setColorCodeValidation(temp);
-                              setButtonSecondaryBackgroundColor(numericValue);
+                              setButtonSecondaryBackgroundColor(e.target.value);
                               setOnChangeValues(true);
                             } else {
                               let temp = { ...colorCodeValidation };
                               temp["secondaryBgValidation"] = false;
                               setColorCodeValidation(temp);
-                              setButtonSecondaryBackgroundColor(numericValue);
+                              setButtonSecondaryBackgroundColor(e.target.value);
                               setOnChangeValues(true);
                             }
-
                             // setButtonSecondaryBackgroundColor(e.target.value);
                             let temp = { ...copyImageOfStoreSettingsPageTheme };
-                            temp["btn_secondary_bg_color"] = numericValue;
+                            temp["btn_secondary_bg_color"] = e.target.value;
                             setCopyImageOfStoreSettingsPageTheme(temp);
                           }}
-                          addonAfter={
-                            <Tooltip
-                              title={t("messages:reset_to_the_original_value")}
-                            >
-                              <UndoOutlined
-                                onClick={() => {
-                                  setButtonSecondaryBackgroundColor(
-                                    btnSecondaryBgColor
-                                  );
-                                  let temp = { ...colorCodeValidation };
-                                  temp["secondaryBgValidation"] = false;
-                                  setColorCodeValidation(temp);
-                                }}
-                              />
-                            </Tooltip>
-                          }
                         />
-                      </Space.Compact>
-                    </Content>
-                    {colorCodeValidation.secondaryBgValidation === true ? (
-                      <p className="text-red-600 text-sm">
-                        {t("messages:please_enter_valid_hexadecimal_code")}{" "}
-                        <br />
-                        {t("messages:ex_ffffff_for_white_000000_for_black")}
-                      </p>
-                    ) : null}
-                  </Col>
-                  <Col span={7} className="ml-2">
-                    <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
-                      {t("labels:tertiary_button_background_color")}
-                    </label>
-                    <Content className="flex gap-2">
-                      <Input
-                        type="color"
-                        className="w-9 p-0"
-                        value={buttonTeritaryBackgroundColor}
-                        onChange={(e) => {
-                          const patternName = /^#([A-Fa-f0-9]{6})$/;
-                          if (patternName.test(e.target.value) === false) {
-                            let temp = { ...colorCodeValidation };
-                            temp["tertiaryBgValidation"] = true;
-                            setColorCodeValidation(temp);
-                            setButtonTeritaryBackgroundColor(e.target.value);
-                            setOnChangeValues(true);
-                          } else {
-                            let temp = { ...colorCodeValidation };
-                            temp["tertiaryBgValidation"] = false;
-                            setColorCodeValidation(temp);
-                            setButtonTeritaryBackgroundColor(e.target.value);
-                            setOnChangeValues(true);
-                          }
-                          // setButtonTeritaryBackgroundColor(e.target.value);
-                          let temp = { ...copyImageOfStoreSettingsPageTheme };
-                          temp["btn_tertiary_bg_color"] = e.target.value;
-                          setCopyImageOfStoreSettingsPageTheme(temp);
-                        }}
-                      />
-                      <Space.Compact className="">
+                        <Space.Compact className="">
+                          <Input
+                            value={buttonSecondaryBackgroundColor}
+                            className="w-[150px]"
+                            maxLength={7}
+                            onChange={(e) => {
+                              const inputValue = e.target.value;
+                              // Allow only numeric input
+                              const numericValue = inputValue
+                                .replace(/[^a-f0-9#]/gi, "")
+                                .substring(0, 7);
+                              setButtonSecondaryBackgroundColor(numericValue);
+                              const patternName = /^#([A-Fa-f0-9]{6})$/;
+                              if (patternName.test(numericValue) === false) {
+                                let temp = { ...colorCodeValidation };
+                                temp["secondaryBgValidation"] = true;
+                                setColorCodeValidation(temp);
+                                setButtonSecondaryBackgroundColor(numericValue);
+                                setOnChangeValues(true);
+                              } else {
+                                let temp = { ...colorCodeValidation };
+                                temp["secondaryBgValidation"] = false;
+                                setColorCodeValidation(temp);
+                                setButtonSecondaryBackgroundColor(numericValue);
+                                setOnChangeValues(true);
+                              }
+
+                              // setButtonSecondaryBackgroundColor(e.target.value);
+                              let temp = {
+                                ...copyImageOfStoreSettingsPageTheme,
+                              };
+                              temp["btn_secondary_bg_color"] = numericValue;
+                              setCopyImageOfStoreSettingsPageTheme(temp);
+                            }}
+                            addonAfter={
+                              <Tooltip
+                                title={t(
+                                  "messages:reset_to_the_original_value"
+                                )}
+                              >
+                                <UndoOutlined
+                                  onClick={() => {
+                                    setButtonSecondaryBackgroundColor(
+                                      btnSecondaryBgColor
+                                    );
+                                    let temp = { ...colorCodeValidation };
+                                    temp["secondaryBgValidation"] = false;
+                                    setColorCodeValidation(temp);
+                                  }}
+                                />
+                              </Tooltip>
+                            }
+                          />
+                        </Space.Compact>
+                      </Content>
+                      {colorCodeValidation.secondaryBgValidation === true ? (
+                        <p className="text-red-600 text-sm">
+                          {t("messages:please_enter_valid_hexadecimal_code")}{" "}
+                          <br />
+                          {t("messages:ex_ffffff_for_white_000000_for_black")}
+                        </p>
+                      ) : null}
+                    </Col>
+                    <Col span={7} className="ml-2">
+                      <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
+                        {t("labels:tertiary_button_background_color")}
+                      </label>
+                      <Content className="flex gap-2">
                         <Input
+                          type="color"
+                          className="w-9 p-0"
                           value={buttonTeritaryBackgroundColor}
-                          className="w-[150px]"
-                          maxLength={7}
                           onChange={(e) => {
-                            const inputValue = e.target.value;
-                            // Allow only numeric input
-                            const numericValue = inputValue
-                              .replace(/[^a-f0-9#]/gi, "")
-                              .substring(0, 7);
-                            setButtonTeritaryBackgroundColor(numericValue);
                             const patternName = /^#([A-Fa-f0-9]{6})$/;
-                            if (patternName.test(numericValue) === false) {
+                            if (patternName.test(e.target.value) === false) {
                               let temp = { ...colorCodeValidation };
                               temp["tertiaryBgValidation"] = true;
                               setColorCodeValidation(temp);
-                              setButtonTeritaryBackgroundColor(numericValue);
+                              setButtonTeritaryBackgroundColor(e.target.value);
                               setOnChangeValues(true);
                             } else {
                               let temp = { ...colorCodeValidation };
                               temp["tertiaryBgValidation"] = false;
                               setColorCodeValidation(temp);
-                              setButtonTeritaryBackgroundColor(numericValue);
+                              setButtonTeritaryBackgroundColor(e.target.value);
                               setOnChangeValues(true);
                             }
                             // setButtonTeritaryBackgroundColor(e.target.value);
                             let temp = { ...copyImageOfStoreSettingsPageTheme };
-                            temp["btn_tertiary_bg_color"] = numericValue;
+                            temp["btn_tertiary_bg_color"] = e.target.value;
                             setCopyImageOfStoreSettingsPageTheme(temp);
                           }}
-                          addonAfter={
-                            <Tooltip
-                              title={t("messages:reset_to_the_original_value")}
-                            >
-                              <UndoOutlined
-                                onClick={() => {
-                                  setButtonTeritaryBackgroundColor(
-                                    btnTeritaryBgColor
-                                  );
-                                  let temp = { ...colorCodeValidation };
-                                  temp["tertiaryBgValidation"] = false;
-                                  setColorCodeValidation(temp);
-                                }}
-                              />
-                            </Tooltip>
-                          }
                         />
-                      </Space.Compact>
-                    </Content>
-                    {colorCodeValidation.tertiaryBgValidation === true ? (
-                      <p className="text-red-600 text-sm">
-                        {t("messages:please_enter_valid_hexadecimal_code")}{" "}
-                        <br />
-                        {t("messages:ex_ffffff_for_white_000000_for_black")}
-                      </p>
-                    ) : null}
-                  </Col>
-                </Row>
-                <Row className="mt-4">
-                  <Col span={8} className="mr-2 ">
-                    <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
-                      {t("labels:primary_button_text_color")}
-                    </label>
-                    <Content className="flex gap-2">
-                      <Input
-                        type="color"
-                        className="w-9 p-0"
-                        value={buttonPrimaryForegroundColor}
-                        onChange={(e) => {
-                          const patternName = /^#([A-Fa-f0-9]{6})$/;
-                          if (patternName.test(e.target.value) === false) {
-                            let temp = { ...colorCodeValidation };
-                            temp["primaryTextValidation"] = true;
-                            setColorCodeValidation(temp);
-                            setButtonPrimaryForegroundColor(e.target.value);
-                            setOnChangeValues(true);
-                          } else {
-                            let temp = { ...colorCodeValidation };
-                            temp["primaryTextValidation"] = false;
-                            setColorCodeValidation(temp);
-                            setButtonPrimaryForegroundColor(e.target.value);
-                            setOnChangeValues(true);
-                          }
-                          // setButtonPrimaryForegroundColor(e.target.value);
-                          let temp = { ...copyImageOfStoreSettingsPageTheme };
-                          temp["btn_primary_fg_color"] = e.target.value;
-                          setCopyImageOfStoreSettingsPageTheme(temp);
-                        }}
-                      />
-                      <Space.Compact className="">
+                        <Space.Compact className="">
+                          <Input
+                            value={buttonTeritaryBackgroundColor}
+                            className="w-[150px]"
+                            maxLength={7}
+                            onChange={(e) => {
+                              const inputValue = e.target.value;
+                              // Allow only numeric input
+                              const numericValue = inputValue
+                                .replace(/[^a-f0-9#]/gi, "")
+                                .substring(0, 7);
+                              setButtonTeritaryBackgroundColor(numericValue);
+                              const patternName = /^#([A-Fa-f0-9]{6})$/;
+                              if (patternName.test(numericValue) === false) {
+                                let temp = { ...colorCodeValidation };
+                                temp["tertiaryBgValidation"] = true;
+                                setColorCodeValidation(temp);
+                                setButtonTeritaryBackgroundColor(numericValue);
+                                setOnChangeValues(true);
+                              } else {
+                                let temp = { ...colorCodeValidation };
+                                temp["tertiaryBgValidation"] = false;
+                                setColorCodeValidation(temp);
+                                setButtonTeritaryBackgroundColor(numericValue);
+                                setOnChangeValues(true);
+                              }
+                              // setButtonTeritaryBackgroundColor(e.target.value);
+                              let temp = {
+                                ...copyImageOfStoreSettingsPageTheme,
+                              };
+                              temp["btn_tertiary_bg_color"] = numericValue;
+                              setCopyImageOfStoreSettingsPageTheme(temp);
+                            }}
+                            addonAfter={
+                              <Tooltip
+                                title={t(
+                                  "messages:reset_to_the_original_value"
+                                )}
+                              >
+                                <UndoOutlined
+                                  onClick={() => {
+                                    setButtonTeritaryBackgroundColor(
+                                      btnTeritaryBgColor
+                                    );
+                                    let temp = { ...colorCodeValidation };
+                                    temp["tertiaryBgValidation"] = false;
+                                    setColorCodeValidation(temp);
+                                  }}
+                                />
+                              </Tooltip>
+                            }
+                          />
+                        </Space.Compact>
+                      </Content>
+                      {colorCodeValidation.tertiaryBgValidation === true ? (
+                        <p className="text-red-600 text-sm">
+                          {t("messages:please_enter_valid_hexadecimal_code")}{" "}
+                          <br />
+                          {t("messages:ex_ffffff_for_white_000000_for_black")}
+                        </p>
+                      ) : null}
+                    </Col>
+                  </Row>
+                  <Row className="mt-4">
+                    <Col span={8} className="mr-2 ">
+                      <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
+                        {t("labels:primary_button_text_color")}
+                      </label>
+                      <Content className="flex gap-2">
                         <Input
+                          type="color"
+                          className="w-9 p-0"
                           value={buttonPrimaryForegroundColor}
-                          maxLength={7}
-                          className="w-[150px]"
                           onChange={(e) => {
-                            const inputValue = e.target.value;
-                            // Allow only numeric input
-                            const numericValue = inputValue
-                              .replace(/[^a-f0-9#]/gi, "")
-                              .substring(0, 7);
-                            setButtonPrimaryForegroundColor(numericValue);
                             const patternName = /^#([A-Fa-f0-9]{6})$/;
-                            if (patternName.test(numericValue) === false) {
+                            if (patternName.test(e.target.value) === false) {
                               let temp = { ...colorCodeValidation };
                               temp["primaryTextValidation"] = true;
                               setColorCodeValidation(temp);
-                              setButtonPrimaryForegroundColor(numericValue);
+                              setButtonPrimaryForegroundColor(e.target.value);
                               setOnChangeValues(true);
                             } else {
                               let temp = { ...colorCodeValidation };
                               temp["primaryTextValidation"] = false;
                               setColorCodeValidation(temp);
-                              setButtonPrimaryForegroundColor(numericValue);
+                              setButtonPrimaryForegroundColor(e.target.value);
                               setOnChangeValues(true);
                             }
                             // setButtonPrimaryForegroundColor(e.target.value);
                             let temp = { ...copyImageOfStoreSettingsPageTheme };
-                            temp["btn_primary_fg_color"] = numericValue;
+                            temp["btn_primary_fg_color"] = e.target.value;
                             setCopyImageOfStoreSettingsPageTheme(temp);
                           }}
-                          addonAfter={
-                            <Tooltip
-                              title={t("messages:reset_to_the_original_value")}
-                            >
-                              <UndoOutlined
-                                onClick={() => {
-                                  setButtonPrimaryForegroundColor(
-                                    btnPrimaryFgColor
-                                  );
-                                  let temp = { ...colorCodeValidation };
-                                  temp["primaryTextValidation"] = false;
-                                  setColorCodeValidation(temp);
-                                }}
-                              />
-                            </Tooltip>
-                          }
                         />
-                      </Space.Compact>
-                    </Content>
-                    {colorCodeValidation.primaryTextValidation === true ? (
-                      <p className="text-red-600 text-sm">
-                        {t("messages:please_enter_valid_hexadecimal_code")}{" "}
-                        <br />
-                        {t("messages:ex_ffffff_for_white_000000_for_black")}
-                      </p>
-                    ) : null}
-                  </Col>
-                  <Col span={8} className="ml-1">
-                    <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
-                      {t("labels:secondary_button_text_color")}
-                    </label>
-                    <Content className="flex gap-2">
-                      <Input
-                        type="color"
-                        className="w-9 p-0"
-                        value={buttonSecondaryForegroundColor}
-                        onChange={(e) => {
-                          const patternName = /^#([A-Fa-f0-9]{6})$/;
-                          if (patternName.test(e.target.value) === false) {
-                            let temp = { ...colorCodeValidation };
-                            temp["secondaryTextValidation"] = true;
-                            setColorCodeValidation(temp);
-                            setButtonSecondaryForegroundColor(e.target.value);
-                            setOnChangeValues(true);
-                          } else {
-                            let temp = { ...colorCodeValidation };
-                            temp["secondaryTextValidation"] = false;
-                            setColorCodeValidation(temp);
-                            setButtonSecondaryForegroundColor(e.target.value);
-                            setOnChangeValues(true);
-                          }
-                          // setButtonSecondaryForegroundColor(e.target.value);
-                          let temp = { ...copyImageOfStoreSettingsPageTheme };
-                          temp["btn_secondary_fg_color"] = e.target.value;
-                          setCopyImageOfStoreSettingsPageTheme(temp);
-                        }}
-                      />
-                      <Space.Compact className="">
+                        <Space.Compact className="">
+                          <Input
+                            value={buttonPrimaryForegroundColor}
+                            maxLength={7}
+                            className="w-[150px]"
+                            onChange={(e) => {
+                              const inputValue = e.target.value;
+                              // Allow only numeric input
+                              const numericValue = inputValue
+                                .replace(/[^a-f0-9#]/gi, "")
+                                .substring(0, 7);
+                              setButtonPrimaryForegroundColor(numericValue);
+                              const patternName = /^#([A-Fa-f0-9]{6})$/;
+                              if (patternName.test(numericValue) === false) {
+                                let temp = { ...colorCodeValidation };
+                                temp["primaryTextValidation"] = true;
+                                setColorCodeValidation(temp);
+                                setButtonPrimaryForegroundColor(numericValue);
+                                setOnChangeValues(true);
+                              } else {
+                                let temp = { ...colorCodeValidation };
+                                temp["primaryTextValidation"] = false;
+                                setColorCodeValidation(temp);
+                                setButtonPrimaryForegroundColor(numericValue);
+                                setOnChangeValues(true);
+                              }
+                              // setButtonPrimaryForegroundColor(e.target.value);
+                              let temp = {
+                                ...copyImageOfStoreSettingsPageTheme,
+                              };
+                              temp["btn_primary_fg_color"] = numericValue;
+                              setCopyImageOfStoreSettingsPageTheme(temp);
+                            }}
+                            addonAfter={
+                              <Tooltip
+                                title={t(
+                                  "messages:reset_to_the_original_value"
+                                )}
+                              >
+                                <UndoOutlined
+                                  onClick={() => {
+                                    setButtonPrimaryForegroundColor(
+                                      btnPrimaryFgColor
+                                    );
+                                    let temp = { ...colorCodeValidation };
+                                    temp["primaryTextValidation"] = false;
+                                    setColorCodeValidation(temp);
+                                  }}
+                                />
+                              </Tooltip>
+                            }
+                          />
+                        </Space.Compact>
+                      </Content>
+                      {colorCodeValidation.primaryTextValidation === true ? (
+                        <p className="text-red-600 text-sm">
+                          {t("messages:please_enter_valid_hexadecimal_code")}{" "}
+                          <br />
+                          {t("messages:ex_ffffff_for_white_000000_for_black")}
+                        </p>
+                      ) : null}
+                    </Col>
+                    <Col span={8} className="ml-1">
+                      <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
+                        {t("labels:secondary_button_text_color")}
+                      </label>
+                      <Content className="flex gap-2">
                         <Input
+                          type="color"
+                          className="w-9 p-0"
                           value={buttonSecondaryForegroundColor}
-                          maxLength={7}
-                          className="w-[150px]"
                           onChange={(e) => {
-                            const inputValue = e.target.value;
-                            // Allow only numeric input
-                            const numericValue = inputValue
-                              .replace(/[^a-f0-9#]/gi, "")
-                              .substring(0, 7);
-                            setButtonSecondaryForegroundColor(numericValue);
                             const patternName = /^#([A-Fa-f0-9]{6})$/;
-                            if (patternName.test(numericValue) === false) {
+                            if (patternName.test(e.target.value) === false) {
                               let temp = { ...colorCodeValidation };
                               temp["secondaryTextValidation"] = true;
                               setColorCodeValidation(temp);
-                              setButtonSecondaryForegroundColor(numericValue);
+                              setButtonSecondaryForegroundColor(e.target.value);
                               setOnChangeValues(true);
                             } else {
                               let temp = { ...colorCodeValidation };
                               temp["secondaryTextValidation"] = false;
                               setColorCodeValidation(temp);
-                              setButtonSecondaryForegroundColor(numericValue);
+                              setButtonSecondaryForegroundColor(e.target.value);
                               setOnChangeValues(true);
                             }
                             // setButtonSecondaryForegroundColor(e.target.value);
                             let temp = { ...copyImageOfStoreSettingsPageTheme };
-                            temp["btn_secondary_fg_color"] = numericValue;
+                            temp["btn_secondary_fg_color"] = e.target.value;
                             setCopyImageOfStoreSettingsPageTheme(temp);
                           }}
-                          addonAfter={
-                            <Tooltip
-                              title={t("messages:reset_to_the_original_value")}
-                            >
-                              <UndoOutlined
-                                onClick={() => {
-                                  setButtonSecondaryForegroundColor(
-                                    btnSecondaryFgColor
-                                  );
-                                  let temp = { ...colorCodeValidation };
-                                  temp["secondaryTextValidation"] = false;
-                                  setColorCodeValidation(temp);
-                                }}
-                              />
-                            </Tooltip>
-                          }
                         />
-                      </Space.Compact>
-                    </Content>
-                    {colorCodeValidation.secondaryTextValidation === true ? (
-                      <p className="text-red-600 text-sm">
-                        {t("messages:please_enter_valid_hexadecimal_code")}{" "}
-                        <br />
-                        {t("messages:ex_ffffff_for_white_000000_for_black")}
-                      </p>
-                    ) : null}
-                  </Col>
-                  <Col span={7} className="ml-2">
-                    <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
-                      {t("labels:tertiary_button_text_color")}
-                    </label>
-                    <Content className="flex gap-2">
-                      <Input
-                        type="color"
-                        className="w-9 p-0"
-                        value={buttonTeritaryForegroundColor}
-                        onChange={(e) => {
-                          const patternName = /^#([A-Fa-f0-9]{6})$/;
-                          if (patternName.test(e.target.value) === false) {
-                            let temp = { ...colorCodeValidation };
-                            temp["tertiaryTextValidation"] = true;
-                            setColorCodeValidation(temp);
-                            setButtonTeritaryForegroundColor(e.target.value);
-                            setOnChangeValues(true);
-                          } else {
-                            let temp = { ...colorCodeValidation };
-                            temp["tertiaryTextValidation"] = false;
-                            setColorCodeValidation(temp);
-                            setButtonTeritaryForegroundColor(e.target.value);
-                            setOnChangeValues(true);
-                          }
-                          // setButtonTeritaryForegroundColor(e.target.value);
-                          let temp = { ...copyImageOfStoreSettingsPageTheme };
-                          temp["btn_tertiary_fg_color"] = e.target.value;
-                          setCopyImageOfStoreSettingsPageTheme(temp);
-                        }}
-                      />
-                      <Space.Compact className="">
+                        <Space.Compact className="">
+                          <Input
+                            value={buttonSecondaryForegroundColor}
+                            maxLength={7}
+                            className="w-[150px]"
+                            onChange={(e) => {
+                              const inputValue = e.target.value;
+                              // Allow only numeric input
+                              const numericValue = inputValue
+                                .replace(/[^a-f0-9#]/gi, "")
+                                .substring(0, 7);
+                              setButtonSecondaryForegroundColor(numericValue);
+                              const patternName = /^#([A-Fa-f0-9]{6})$/;
+                              if (patternName.test(numericValue) === false) {
+                                let temp = { ...colorCodeValidation };
+                                temp["secondaryTextValidation"] = true;
+                                setColorCodeValidation(temp);
+                                setButtonSecondaryForegroundColor(numericValue);
+                                setOnChangeValues(true);
+                              } else {
+                                let temp = { ...colorCodeValidation };
+                                temp["secondaryTextValidation"] = false;
+                                setColorCodeValidation(temp);
+                                setButtonSecondaryForegroundColor(numericValue);
+                                setOnChangeValues(true);
+                              }
+                              // setButtonSecondaryForegroundColor(e.target.value);
+                              let temp = {
+                                ...copyImageOfStoreSettingsPageTheme,
+                              };
+                              temp["btn_secondary_fg_color"] = numericValue;
+                              setCopyImageOfStoreSettingsPageTheme(temp);
+                            }}
+                            addonAfter={
+                              <Tooltip
+                                title={t(
+                                  "messages:reset_to_the_original_value"
+                                )}
+                              >
+                                <UndoOutlined
+                                  onClick={() => {
+                                    setButtonSecondaryForegroundColor(
+                                      btnSecondaryFgColor
+                                    );
+                                    let temp = { ...colorCodeValidation };
+                                    temp["secondaryTextValidation"] = false;
+                                    setColorCodeValidation(temp);
+                                  }}
+                                />
+                              </Tooltip>
+                            }
+                          />
+                        </Space.Compact>
+                      </Content>
+                      {colorCodeValidation.secondaryTextValidation === true ? (
+                        <p className="text-red-600 text-sm">
+                          {t("messages:please_enter_valid_hexadecimal_code")}{" "}
+                          <br />
+                          {t("messages:ex_ffffff_for_white_000000_for_black")}
+                        </p>
+                      ) : null}
+                    </Col>
+                    <Col span={7} className="ml-2">
+                      <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
+                        {t("labels:tertiary_button_text_color")}
+                      </label>
+                      <Content className="flex gap-2">
                         <Input
+                          type="color"
+                          className="w-9 p-0"
                           value={buttonTeritaryForegroundColor}
-                          maxLength={7}
-                          className="w-[150px]"
                           onChange={(e) => {
-                            const inputValue = e.target.value;
-                            // Allow only numeric input
-                            const numericValue = inputValue
-                              .replace(/[^a-f0-9#]/gi, "")
-                              .substring(0, 7);
-                            setButtonTeritaryForegroundColor(numericValue);
                             const patternName = /^#([A-Fa-f0-9]{6})$/;
-                            if (patternName.test(numericValue) === false) {
+                            if (patternName.test(e.target.value) === false) {
                               let temp = { ...colorCodeValidation };
                               temp["tertiaryTextValidation"] = true;
                               setColorCodeValidation(temp);
-                              setButtonTeritaryForegroundColor(numericValue);
+                              setButtonTeritaryForegroundColor(e.target.value);
                               setOnChangeValues(true);
                             } else {
                               let temp = { ...colorCodeValidation };
                               temp["tertiaryTextValidation"] = false;
                               setColorCodeValidation(temp);
-                              setButtonTeritaryForegroundColor(numericValue);
+                              setButtonTeritaryForegroundColor(e.target.value);
                               setOnChangeValues(true);
                             }
                             // setButtonTeritaryForegroundColor(e.target.value);
                             let temp = { ...copyImageOfStoreSettingsPageTheme };
-                            temp["btn_tertiary_fg_color"] = numericValue;
+                            temp["btn_tertiary_fg_color"] = e.target.value;
                             setCopyImageOfStoreSettingsPageTheme(temp);
                           }}
-                          addonAfter={
-                            <Tooltip
-                              title={t("messages:reset_to_the_original_value")}
-                            >
-                              <UndoOutlined
-                                onClick={() => {
-                                  setButtonTeritaryForegroundColor(
-                                    btnTeritaryFgColor
-                                  );
-                                  let temp = { ...colorCodeValidation };
-                                  temp["tertiaryTextValidation"] = false;
-                                  setColorCodeValidation(temp);
-                                }}
-                              />
-                            </Tooltip>
-                          }
                         />
-                      </Space.Compact>
-                    </Content>
-                    {colorCodeValidation.tertiaryTextValidation === true ? (
-                      <p className="text-red-600 text-sm">
-                        {t("messages:please_enter_valid_hexadecimal_code")}{" "}
-                        <br />
-                        {t("messages:ex_ffffff_for_white_000000_for_black")}
-                      </p>
-                    ) : null}
-                  </Col>
-                </Row>
-              </Content>
-              <Content>
-                <label className="text-[20px] mb-2 mt-4 font-bold select-none">
-                  {t("labels:store_header_setting")}
-                </label>
-                <Row className="mt-2">
-                  <Col span={8} className="mr-2 ">
-                    <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
-                      {t("labels:background_color")}
-                    </label>
-                    <Content className="flex gap-2">
-                      <Input
-                        type="color"
-                        className="w-9 p-0"
-                        value={headerBackgroundColor}
-                        onChange={(e) => {
-                          const patternName = /^#([A-Fa-f0-9]{6})$/;
-                          if (patternName.test(e.target.value) === false) {
-                            let temp = { ...colorCodeValidation };
-                            temp["headerBgValidation"] = true;
-                            setColorCodeValidation(temp);
-                            setHeaderBackgroundColor(e.target.value);
-                            setOnChangeValues(true);
-                          } else {
-                            let temp = { ...colorCodeValidation };
-                            temp["headerBgValidation"] = false;
-                            setColorCodeValidation(temp);
-                            setHeaderBackgroundColor(e.target.value);
-                            setOnChangeValues(true);
-                          }
-                          // setHeaderBackgroundColor(e.target.value);
-                          let temp = { ...copyImageOfStoreHeaderSetting };
-                          temp["bg_color"] = e.target.value;
-                          setCopyImageOfStoreHeaderSetting(temp);
-                        }}
-                      />
-                      <Space.Compact className="">
+                        <Space.Compact className="">
+                          <Input
+                            value={buttonTeritaryForegroundColor}
+                            maxLength={7}
+                            className="w-[150px]"
+                            onChange={(e) => {
+                              const inputValue = e.target.value;
+                              // Allow only numeric input
+                              const numericValue = inputValue
+                                .replace(/[^a-f0-9#]/gi, "")
+                                .substring(0, 7);
+                              setButtonTeritaryForegroundColor(numericValue);
+                              const patternName = /^#([A-Fa-f0-9]{6})$/;
+                              if (patternName.test(numericValue) === false) {
+                                let temp = { ...colorCodeValidation };
+                                temp["tertiaryTextValidation"] = true;
+                                setColorCodeValidation(temp);
+                                setButtonTeritaryForegroundColor(numericValue);
+                                setOnChangeValues(true);
+                              } else {
+                                let temp = { ...colorCodeValidation };
+                                temp["tertiaryTextValidation"] = false;
+                                setColorCodeValidation(temp);
+                                setButtonTeritaryForegroundColor(numericValue);
+                                setOnChangeValues(true);
+                              }
+                              // setButtonTeritaryForegroundColor(e.target.value);
+                              let temp = {
+                                ...copyImageOfStoreSettingsPageTheme,
+                              };
+                              temp["btn_tertiary_fg_color"] = numericValue;
+                              setCopyImageOfStoreSettingsPageTheme(temp);
+                            }}
+                            addonAfter={
+                              <Tooltip
+                                title={t(
+                                  "messages:reset_to_the_original_value"
+                                )}
+                              >
+                                <UndoOutlined
+                                  onClick={() => {
+                                    setButtonTeritaryForegroundColor(
+                                      btnTeritaryFgColor
+                                    );
+                                    let temp = { ...colorCodeValidation };
+                                    temp["tertiaryTextValidation"] = false;
+                                    setColorCodeValidation(temp);
+                                  }}
+                                />
+                              </Tooltip>
+                            }
+                          />
+                        </Space.Compact>
+                      </Content>
+                      {colorCodeValidation.tertiaryTextValidation === true ? (
+                        <p className="text-red-600 text-sm">
+                          {t("messages:please_enter_valid_hexadecimal_code")}{" "}
+                          <br />
+                          {t("messages:ex_ffffff_for_white_000000_for_black")}
+                        </p>
+                      ) : null}
+                    </Col>
+                  </Row>
+                </Content>
+                <Content>
+                  <label className="text-[20px] mb-2 mt-4 font-bold select-none">
+                    {t("labels:store_header_setting")}
+                  </label>
+                  <Row className="mt-2">
+                    <Col span={8} className="mr-2 ">
+                      <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
+                        {t("labels:background_color")}
+                      </label>
+                      <Content className="flex gap-2">
                         <Input
+                          type="color"
+                          className="w-9 p-0"
                           value={headerBackgroundColor}
-                          maxLength={7}
-                          className="w-[150px]"
                           onChange={(e) => {
-                            const inputValue = e.target.value;
-                            // Allow only numeric input
-                            const numericValue = inputValue
-                              .replace(/[^a-f0-9#]/gi, "")
-                              .substring(0, 7);
-                            setHeaderBackgroundColor(numericValue);
                             const patternName = /^#([A-Fa-f0-9]{6})$/;
-                            if (patternName.test(numericValue) === false) {
+                            if (patternName.test(e.target.value) === false) {
                               let temp = { ...colorCodeValidation };
                               temp["headerBgValidation"] = true;
                               setColorCodeValidation(temp);
-                              setHeaderBackgroundColor(numericValue);
+                              setHeaderBackgroundColor(e.target.value);
                               setOnChangeValues(true);
                             } else {
                               let temp = { ...colorCodeValidation };
                               temp["headerBgValidation"] = false;
                               setColorCodeValidation(temp);
-                              setHeaderBackgroundColor(numericValue);
+                              setHeaderBackgroundColor(e.target.value);
                               setOnChangeValues(true);
                             }
                             // setHeaderBackgroundColor(e.target.value);
                             let temp = { ...copyImageOfStoreHeaderSetting };
-                            temp["bg_color"] = numericValue;
+                            temp["bg_color"] = e.target.value;
                             setCopyImageOfStoreHeaderSetting(temp);
                           }}
-                          addonAfter={
-                            <Tooltip
-                              title={t("messages:reset_to_the_original_value")}
-                            >
-                              <UndoOutlined
-                                onClick={() => {
-                                  setHeaderBackgroundColor(headerBgColor);
-                                  let temp = { ...colorCodeValidation };
-                                  temp["headerBgValidation"] = false;
-                                  setColorCodeValidation(temp);
-                                }}
-                              />
-                            </Tooltip>
-                          }
                         />
-                      </Space.Compact>
-                    </Content>
-                    {colorCodeValidation.headerBgValidation === true ? (
-                      <p className="text-red-600 text-sm">
-                        {t("messages:please_enter_valid_hexadecimal_code")}{" "}
-                        <br />
-                        {t("messages:ex_ffffff_for_white_000000_for_black")}
-                      </p>
-                    ) : null}
-                  </Col>
-                  <Col span={8} className="ml-1">
-                    <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
-                      {" "}
-                      {t("labels:text_color")}
-                    </label>
-                    <Content className="flex gap-2">
-                      <Input
-                        type="color"
-                        className="w-9 p-0"
-                        value={headerForegroundColor}
-                        onChange={(e) => {
-                          const patternName = /^#([A-Fa-f0-9]{6})$/;
-                          if (patternName.test(e.target.value) === false) {
-                            let temp = { ...colorCodeValidation };
-                            temp["headerTextValidation"] = true;
-                            setColorCodeValidation(temp);
-                            setHeaderForegroundColor(e.target.value);
-                            setOnChangeValues(true);
-                          } else {
-                            let temp = { ...colorCodeValidation };
-                            temp["headerTextValidation"] = false;
-                            setColorCodeValidation(temp);
-                            setHeaderForegroundColor(e.target.value);
-                            setOnChangeValues(true);
-                          }
-                          let temp = { ...copyImageOfStoreHeaderSetting };
-                          temp["fg_color"] = e.target.value;
-                          setCopyImageOfStoreHeaderSetting(temp);
-                        }}
-                      />
-                      <Space.Compact className="">
+                        <Space.Compact className="">
+                          <Input
+                            value={headerBackgroundColor}
+                            maxLength={7}
+                            className="w-[150px]"
+                            onChange={(e) => {
+                              const inputValue = e.target.value;
+                              // Allow only numeric input
+                              const numericValue = inputValue
+                                .replace(/[^a-f0-9#]/gi, "")
+                                .substring(0, 7);
+                              setHeaderBackgroundColor(numericValue);
+                              const patternName = /^#([A-Fa-f0-9]{6})$/;
+                              if (patternName.test(numericValue) === false) {
+                                let temp = { ...colorCodeValidation };
+                                temp["headerBgValidation"] = true;
+                                setColorCodeValidation(temp);
+                                setHeaderBackgroundColor(numericValue);
+                                setOnChangeValues(true);
+                              } else {
+                                let temp = { ...colorCodeValidation };
+                                temp["headerBgValidation"] = false;
+                                setColorCodeValidation(temp);
+                                setHeaderBackgroundColor(numericValue);
+                                setOnChangeValues(true);
+                              }
+                              // setHeaderBackgroundColor(e.target.value);
+                              let temp = { ...copyImageOfStoreHeaderSetting };
+                              temp["bg_color"] = numericValue;
+                              setCopyImageOfStoreHeaderSetting(temp);
+                            }}
+                            addonAfter={
+                              <Tooltip
+                                title={t(
+                                  "messages:reset_to_the_original_value"
+                                )}
+                              >
+                                <UndoOutlined
+                                  onClick={() => {
+                                    setHeaderBackgroundColor(headerBgColor);
+                                    let temp = { ...colorCodeValidation };
+                                    temp["headerBgValidation"] = false;
+                                    setColorCodeValidation(temp);
+                                  }}
+                                />
+                              </Tooltip>
+                            }
+                          />
+                        </Space.Compact>
+                      </Content>
+                      {colorCodeValidation.headerBgValidation === true ? (
+                        <p className="text-red-600 text-sm">
+                          {t("messages:please_enter_valid_hexadecimal_code")}{" "}
+                          <br />
+                          {t("messages:ex_ffffff_for_white_000000_for_black")}
+                        </p>
+                      ) : null}
+                    </Col>
+                    <Col span={8} className="ml-1">
+                      <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
+                        {" "}
+                        {t("labels:text_color")}
+                      </label>
+                      <Content className="flex gap-2">
                         <Input
+                          type="color"
+                          className="w-9 p-0"
                           value={headerForegroundColor}
-                          className="w-[150px]"
-                          maxLength={7}
                           onChange={(e) => {
-                            const inputValue = e.target.value;
-                            // Allow only numeric input
-                            const numericValue = inputValue
-                              .replace(/[^a-f0-9#]/gi, "")
-                              .substring(0, 7);
-                            setHeaderForegroundColor(numericValue);
                             const patternName = /^#([A-Fa-f0-9]{6})$/;
-                            if (patternName.test(numericValue) === false) {
+                            if (patternName.test(e.target.value) === false) {
                               let temp = { ...colorCodeValidation };
                               temp["headerTextValidation"] = true;
                               setColorCodeValidation(temp);
-                              setHeaderForegroundColor(numericValue);
+                              setHeaderForegroundColor(e.target.value);
                               setOnChangeValues(true);
                             } else {
                               let temp = { ...colorCodeValidation };
                               temp["headerTextValidation"] = false;
                               setColorCodeValidation(temp);
-                              setHeaderForegroundColor(numericValue);
+                              setHeaderForegroundColor(e.target.value);
                               setOnChangeValues(true);
                             }
-                            // setHeaderForegroundColor(e.target.value);
                             let temp = { ...copyImageOfStoreHeaderSetting };
-                            temp["fg_color"] = numericValue;
+                            temp["fg_color"] = e.target.value;
                             setCopyImageOfStoreHeaderSetting(temp);
                           }}
-                          addonAfter={
-                            <Tooltip
-                              title={t("messages:reset_to_the_original_value")}
-                            >
-                              <UndoOutlined
-                                onClick={() => {
-                                  setHeaderForegroundColor(headerFgColor);
-                                  let temp = { ...colorCodeValidation };
-                                  temp["headerTextValidation"] = false;
-                                  setColorCodeValidation(temp);
-                                }}
-                              />
-                            </Tooltip>
-                          }
                         />
-                      </Space.Compact>
-                    </Content>
-                    {colorCodeValidation.headerTextValidation === true ? (
-                      <p className="text-red-600 text-sm">
-                        {t("messages:please_enter_valid_hexadecimal_code")}{" "}
-                        <br />
-                        {t("messages:ex_ffffff_for_white_000000_for_black")}
-                      </p>
-                    ) : null}
-                  </Col>
-                </Row>
-              </Content>
-              <Content>
-                <label className="text-[20px] mb-2 mt-4 font-bold select-none">
-                  {t("labels:store_footer_setting")}
-                </label>
-                <Row className="mt-2">
-                  <Col span={8} className="mr-2 ">
-                    <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
-                      {t("labels:background_color")}
-                    </label>
-                    <Content className="flex gap-2">
-                      <Input
-                        type="color"
-                        className="w-9 p-0"
-                        value={footerBackgroundColor}
-                        onChange={(e) => {
-                          const patternName = /^#([A-Fa-f0-9]{6})$/;
-                          if (patternName.test(e.target.value) === false) {
-                            let temp = { ...colorCodeValidation };
-                            temp["footerBgValidation"] = true;
-                            setColorCodeValidation(temp);
-                            setFooterBackgroundColor(e.target.value);
-                            setOnChangeValues(true);
-                          } else {
-                            let temp = { ...colorCodeValidation };
-                            temp["footerBgValidation"] = false;
-                            setColorCodeValidation(temp);
-                            setFooterBackgroundColor(e.target.value);
-                            setOnChangeValues(true);
-                          }
-                          // setFooterBackgroundColor(e.target.value);
-                          let temp = { ...copyImageOfStoreFooterSetting };
-                          temp["bg_color"] = e.target.value;
-                          setCopyImageOfStoreFooterSetting(temp);
-                        }}
-                      />
-                      <Space.Compact className="">
+                        <Space.Compact className="">
+                          <Input
+                            value={headerForegroundColor}
+                            className="w-[150px]"
+                            maxLength={7}
+                            onChange={(e) => {
+                              const inputValue = e.target.value;
+                              // Allow only numeric input
+                              const numericValue = inputValue
+                                .replace(/[^a-f0-9#]/gi, "")
+                                .substring(0, 7);
+                              setHeaderForegroundColor(numericValue);
+                              const patternName = /^#([A-Fa-f0-9]{6})$/;
+                              if (patternName.test(numericValue) === false) {
+                                let temp = { ...colorCodeValidation };
+                                temp["headerTextValidation"] = true;
+                                setColorCodeValidation(temp);
+                                setHeaderForegroundColor(numericValue);
+                                setOnChangeValues(true);
+                              } else {
+                                let temp = { ...colorCodeValidation };
+                                temp["headerTextValidation"] = false;
+                                setColorCodeValidation(temp);
+                                setHeaderForegroundColor(numericValue);
+                                setOnChangeValues(true);
+                              }
+                              // setHeaderForegroundColor(e.target.value);
+                              let temp = { ...copyImageOfStoreHeaderSetting };
+                              temp["fg_color"] = numericValue;
+                              setCopyImageOfStoreHeaderSetting(temp);
+                            }}
+                            addonAfter={
+                              <Tooltip
+                                title={t(
+                                  "messages:reset_to_the_original_value"
+                                )}
+                              >
+                                <UndoOutlined
+                                  onClick={() => {
+                                    setHeaderForegroundColor(headerFgColor);
+                                    let temp = { ...colorCodeValidation };
+                                    temp["headerTextValidation"] = false;
+                                    setColorCodeValidation(temp);
+                                  }}
+                                />
+                              </Tooltip>
+                            }
+                          />
+                        </Space.Compact>
+                      </Content>
+                      {colorCodeValidation.headerTextValidation === true ? (
+                        <p className="text-red-600 text-sm">
+                          {t("messages:please_enter_valid_hexadecimal_code")}{" "}
+                          <br />
+                          {t("messages:ex_ffffff_for_white_000000_for_black")}
+                        </p>
+                      ) : null}
+                    </Col>
+                  </Row>
+                </Content>
+                <Content>
+                  <label className="text-[20px] mb-2 mt-4 font-bold select-none">
+                    {t("labels:store_footer_setting")}
+                  </label>
+                  <Row className="mt-2">
+                    <Col span={8} className="mr-2 ">
+                      <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
+                        {t("labels:background_color")}
+                      </label>
+                      <Content className="flex gap-2">
                         <Input
+                          type="color"
+                          className="w-9 p-0"
                           value={footerBackgroundColor}
-                          className="w-[150px]"
-                          maxLength={7}
                           onChange={(e) => {
-                            const inputValue = e.target.value;
-                            // Allow only numeric input
-                            const numericValue = inputValue
-                              .replace(/[^a-f0-9#]/gi, "")
-                              .substring(0, 7);
-                            setFooterBackgroundColor(numericValue);
                             const patternName = /^#([A-Fa-f0-9]{6})$/;
-                            if (patternName.test(numericValue) === false) {
+                            if (patternName.test(e.target.value) === false) {
                               let temp = { ...colorCodeValidation };
                               temp["footerBgValidation"] = true;
                               setColorCodeValidation(temp);
-                              setFooterBackgroundColor(numericValue);
+                              setFooterBackgroundColor(e.target.value);
                               setOnChangeValues(true);
                             } else {
                               let temp = { ...colorCodeValidation };
                               temp["footerBgValidation"] = false;
                               setColorCodeValidation(temp);
-                              setFooterBackgroundColor(numericValue);
+                              setFooterBackgroundColor(e.target.value);
                               setOnChangeValues(true);
                             }
                             // setFooterBackgroundColor(e.target.value);
                             let temp = { ...copyImageOfStoreFooterSetting };
-                            temp["bg_color"] = numericValue;
+                            temp["bg_color"] = e.target.value;
                             setCopyImageOfStoreFooterSetting(temp);
                           }}
-                          addonAfter={
-                            <Tooltip
-                              title={t("messages:reset_to_the_original_value")}
-                            >
-                              <UndoOutlined
-                                onClick={() => {
-                                  setFooterBackgroundColor(headerFgColor);
-                                  let temp = { ...colorCodeValidation };
-                                  temp["footerBgValidation"] = false;
-                                  setColorCodeValidation(temp);
-                                }}
-                              />
-                            </Tooltip>
-                          }
                         />
-                      </Space.Compact>
-                    </Content>
-                    {colorCodeValidation.footerBgValidation === true ? (
-                      <p className="text-red-600 text-sm">
-                        {t("messages:please_enter_valid_hexadecimal_code")}{" "}
-                        <br />
-                        {t("messages:ex_ffffff_for_white_000000_for_black")}
-                      </p>
-                    ) : null}
-                  </Col>
-                  <Col span={8} className="ml-1">
-                    <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
-                      {t("labels:text_color")}
-                    </label>
-                    <Content className="flex gap-2">
-                      <Input
-                        type="color"
-                        className="w-9 p-0"
-                        value={footerForegroundColor}
-                        onChange={(e) => {
-                          const patternName = /^#([A-Fa-f0-9]{6})$/;
-                          if (patternName.test(e.target.value) === false) {
-                            let temp = { ...colorCodeValidation };
-                            temp["footerTextValidation"] = true;
-                            setColorCodeValidation(temp);
-                            setFooterForegroundColor(e.target.value);
-                            setOnChangeValues(true);
-                          } else {
-                            let temp = { ...colorCodeValidation };
-                            temp["footerTextValidation"] = false;
-                            setColorCodeValidation(temp);
-                            setFooterForegroundColor(e.target.value);
-                            setOnChangeValues(true);
-                          }
-                          let temp = { ...copyImageOfStoreFooterSetting };
-                          temp["fg_color"] = e.target.value;
-                          setCopyImageOfStoreFooterSetting(temp);
-                        }}
-                      />
-                      <Space.Compact className="">
+                        <Space.Compact className="">
+                          <Input
+                            value={footerBackgroundColor}
+                            className="w-[150px]"
+                            maxLength={7}
+                            onChange={(e) => {
+                              const inputValue = e.target.value;
+                              // Allow only numeric input
+                              const numericValue = inputValue
+                                .replace(/[^a-f0-9#]/gi, "")
+                                .substring(0, 7);
+                              setFooterBackgroundColor(numericValue);
+                              const patternName = /^#([A-Fa-f0-9]{6})$/;
+                              if (patternName.test(numericValue) === false) {
+                                let temp = { ...colorCodeValidation };
+                                temp["footerBgValidation"] = true;
+                                setColorCodeValidation(temp);
+                                setFooterBackgroundColor(numericValue);
+                                setOnChangeValues(true);
+                              } else {
+                                let temp = { ...colorCodeValidation };
+                                temp["footerBgValidation"] = false;
+                                setColorCodeValidation(temp);
+                                setFooterBackgroundColor(numericValue);
+                                setOnChangeValues(true);
+                              }
+                              // setFooterBackgroundColor(e.target.value);
+                              let temp = { ...copyImageOfStoreFooterSetting };
+                              temp["bg_color"] = numericValue;
+                              setCopyImageOfStoreFooterSetting(temp);
+                            }}
+                            addonAfter={
+                              <Tooltip
+                                title={t(
+                                  "messages:reset_to_the_original_value"
+                                )}
+                              >
+                                <UndoOutlined
+                                  onClick={() => {
+                                    setFooterBackgroundColor(headerFgColor);
+                                    let temp = { ...colorCodeValidation };
+                                    temp["footerBgValidation"] = false;
+                                    setColorCodeValidation(temp);
+                                  }}
+                                />
+                              </Tooltip>
+                            }
+                          />
+                        </Space.Compact>
+                      </Content>
+                      {colorCodeValidation.footerBgValidation === true ? (
+                        <p className="text-red-600 text-sm">
+                          {t("messages:please_enter_valid_hexadecimal_code")}{" "}
+                          <br />
+                          {t("messages:ex_ffffff_for_white_000000_for_black")}
+                        </p>
+                      ) : null}
+                    </Col>
+                    <Col span={8} className="ml-1">
+                      <label className="text-[13px] mb-2 ml-1 select-none input-label-color">
+                        {t("labels:text_color")}
+                      </label>
+                      <Content className="flex gap-2">
                         <Input
+                          type="color"
+                          className="w-9 p-0"
                           value={footerForegroundColor}
-                          className="w-[150px]"
-                          maxLength={7}
                           onChange={(e) => {
-                            const inputValue = e.target.value;
-                            // Allow only numeric input
-                            const numericValue = inputValue
-                              .replace(/[^a-f0-9#]/gi, "")
-                              .substring(0, 7);
-                            setFooterForegroundColor(numericValue);
                             const patternName = /^#([A-Fa-f0-9]{6})$/;
-                            if (patternName.test(numericValue) === false) {
+                            if (patternName.test(e.target.value) === false) {
                               let temp = { ...colorCodeValidation };
                               temp["footerTextValidation"] = true;
                               setColorCodeValidation(temp);
-                              setFooterForegroundColor(numericValue);
+                              setFooterForegroundColor(e.target.value);
                               setOnChangeValues(true);
                             } else {
                               let temp = { ...colorCodeValidation };
                               temp["footerTextValidation"] = false;
                               setColorCodeValidation(temp);
-                              setFooterForegroundColor(numericValue);
+                              setFooterForegroundColor(e.target.value);
                               setOnChangeValues(true);
                             }
-                            // setFooterForegroundColor(e.target.value);
                             let temp = { ...copyImageOfStoreFooterSetting };
-                            temp["fg_color"] = numericValue;
+                            temp["fg_color"] = e.target.value;
                             setCopyImageOfStoreFooterSetting(temp);
                           }}
-                          addonAfter={
-                            <Tooltip
-                              title={t("messages:reset_to_the_original_value")}
-                            >
-                              <UndoOutlined
-                                onClick={() => {
-                                  setFooterForegroundColor(footerFgColor);
-                                  let temp = { ...colorCodeValidation };
-                                  temp["footerTextValidation"] = false;
-                                  setColorCodeValidation(temp);
-                                }}
-                              />
-                            </Tooltip>
-                          }
                         />
-                      </Space.Compact>
-                    </Content>
-                    {colorCodeValidation.footerTextValidation === true ? (
-                      <p className="text-red-600 text-sm">
-                        {t("messages:please_enter_valid_hexadecimal_code")}{" "}
-                        <br />
-                        {t("messages:ex_ffffff_for_white_000000_for_black")}
-                      </p>
-                    ) : null}
-                  </Col>
-                </Row>
-              </Content>
-              <Content className="mt-4">
-                {hideActionButton ? "" :
-                  <Row className="gap-2">
-                    <Col>
-                      <Button
-                        className={
-                          onChangeValues ? "app-btn-primary " : "!opacity-75"
-                        }
-                        disabled={!onChangeValues}
-                        onClick={() => {
-                          validatePostStoreSetting();
-                        }}
-                      >
-                        {t("labels:save")}
-                      </Button>
+                        <Space.Compact className="">
+                          <Input
+                            value={footerForegroundColor}
+                            className="w-[150px]"
+                            maxLength={7}
+                            onChange={(e) => {
+                              const inputValue = e.target.value;
+                              // Allow only numeric input
+                              const numericValue = inputValue
+                                .replace(/[^a-f0-9#]/gi, "")
+                                .substring(0, 7);
+                              setFooterForegroundColor(numericValue);
+                              const patternName = /^#([A-Fa-f0-9]{6})$/;
+                              if (patternName.test(numericValue) === false) {
+                                let temp = { ...colorCodeValidation };
+                                temp["footerTextValidation"] = true;
+                                setColorCodeValidation(temp);
+                                setFooterForegroundColor(numericValue);
+                                setOnChangeValues(true);
+                              } else {
+                                let temp = { ...colorCodeValidation };
+                                temp["footerTextValidation"] = false;
+                                setColorCodeValidation(temp);
+                                setFooterForegroundColor(numericValue);
+                                setOnChangeValues(true);
+                              }
+                              // setFooterForegroundColor(e.target.value);
+                              let temp = { ...copyImageOfStoreFooterSetting };
+                              temp["fg_color"] = numericValue;
+                              setCopyImageOfStoreFooterSetting(temp);
+                            }}
+                            addonAfter={
+                              <Tooltip
+                                title={t(
+                                  "messages:reset_to_the_original_value"
+                                )}
+                              >
+                                <UndoOutlined
+                                  onClick={() => {
+                                    setFooterForegroundColor(footerFgColor);
+                                    let temp = { ...colorCodeValidation };
+                                    temp["footerTextValidation"] = false;
+                                    setColorCodeValidation(temp);
+                                  }}
+                                />
+                              </Tooltip>
+                            }
+                          />
+                        </Space.Compact>
+                      </Content>
+                      {colorCodeValidation.footerTextValidation === true ? (
+                        <p className="text-red-600 text-sm">
+                          {t("messages:please_enter_valid_hexadecimal_code")}{" "}
+                          <br />
+                          {t("messages:ex_ffffff_for_white_000000_for_black")}
+                        </p>
+                      ) : null}
                     </Col>
-                    <Col className="">
-                      <Button
-                        className={
-                          onChangeValues === true
-                            ? "app-btn-secondary "
-                            : "!opacity-75"
-                        }
-                        disabled={!onChangeValues}
-                        onClick={() => {
-                          navigate("/dashboard/store");
-                        }}
-                      >
-                        {t("labels:discard")}
-                      </Button>
-                    </Col>
-                  </Row>}
+                  </Row>
+                </Content>
+                <Content className="mt-4">
+                  {hideActionButton ? (
+                    ""
+                  ) : (
+                    <Row className="gap-2">
+                      <Col>
+                        <Button
+                          className={
+                            onChangeValues ? "app-btn-primary " : "!opacity-75"
+                          }
+                          disabled={!onChangeValues}
+                          onClick={() => {
+                            validatePostStoreSetting();
+                          }}
+                        >
+                          {t("labels:save")}
+                        </Button>
+                      </Col>
+                      <Col className="">
+                        <Button
+                          className={
+                            onChangeValues === true
+                              ? "app-btn-secondary "
+                              : "!opacity-75"
+                          }
+                          disabled={!onChangeValues}
+                          onClick={() => {
+                            navigate("/dashboard/store");
+                          }}
+                        >
+                          {t("labels:discard")}
+                        </Button>
+                      </Col>
+                    </Row>
+                  )}
+                </Content>
               </Content>
             </Content>
-          </Content>
-        </Spin>}
-
+          </Spin>
+        )}
       </Content>
     </Content>
   );
