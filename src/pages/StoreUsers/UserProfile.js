@@ -71,6 +71,17 @@ const UserProfile = () => {
     findAllWithoutPageStoreUsers();
     window.scroll(0, 0);
   }, []);
+
+  const formatTimestamp = (timestamp) => {
+    const timestampInSeconds =
+      timestamp.length > 10 ? timestamp / 1000 : timestamp;
+    const momentObject = moment.unix(timestampInSeconds);
+
+    // Use format with 'D MMMM YYYY' to display only the date
+    const formattedDate = momentObject.format("D MMMM YYYY");
+    return formattedDate;
+  };
+
   return (
     <Content>
       <HeaderForTitle
@@ -181,9 +192,13 @@ const UserProfile = () => {
                         langDirection === "rtl" ? "!mr-1" : "!ml-1"
                       }`}
                     >
-                      {moment
-                        .unix(storeUsersData && storeUsersData.createdTimestamp)
-                        .format("D MMMM YYYY")}
+                      {/* {moment(
+                        storeUsersData && storeUsersData.createdTimestamp
+                      ).format("D MMMM YYYY")} */}
+                      {formatTimestamp(
+                        storeUsersData &&
+                          storeUsersData.createdTimestamp.toString()
+                      )}
                     </Content>
                   </Row>
                 </Content>
