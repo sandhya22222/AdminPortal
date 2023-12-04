@@ -137,3 +137,22 @@
   border-color: var(--mp-input-field-focused-color) !important; 
   box-shadow: -1px 0px 6px 0px var(--mp-input-field-outer-glow-color) !important;
 }
+.ant-tree-select-dropdown .ant-select-tree-checkbox-checked .ant-select-tree-checkbox-inner {
+  background-color: var(--mp-input-field-hover-color) !important;
+  border-color: var(--mp-input-field-hover-color) !important;
+}
+.ant-select-tree-checkbox-inner:hover{
+  border:1px solid var(--mp-input-field-hover-color) !important;
+}
+.ant-tree-select-dropdown .ant-select-tree .ant-select-tree-treenode-active .ant-select-tree-node-content-wrapper {
+  outline: 1px solid  var(--mp-input-field-hover-color) !important;
+}
+.ant-tree-select-dropdown .ant-select-tree .ant-select-tree-node-content-wrapper.ant-select-tree-node-selected{
+  background-color:var(--mp-input-field-outer-glow-color) !important;
+}
+
+.anticon svg {
+  /* vertical-align: baseline !important; */
+  display: inline-block !important;
+  color: var(--mp-primary-color) !important;
+}
