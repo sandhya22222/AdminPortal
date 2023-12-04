@@ -417,7 +417,7 @@ const CreateUsers = () => {
         showArrowIcon={true}
         saveFunction={userFormValidation}
         isVisible={pageAction === "edit" ? false : true}
-        showButtons={pageAction === "edit" ? true : false}
+        showButtons={false}
       />
       <Content className="!min-h-screen mt-[6.7rem] p-3">
         {isUserDetailFetching ?
@@ -451,6 +451,9 @@ const CreateUsers = () => {
                       onChange={(e) => {
                         setUserName(e.target.value);
                         setInvalidUserName(false);
+                      }}
+                      onBlur={(e) => {
+                        setUserName(e.target.value.trim().replace(/\s+/g, " "),);
                       }}
                       maxLength={userNameMaxLength}
                       placeholder={t("placeholders:user_name_placeholder")}
@@ -527,6 +530,9 @@ const CreateUsers = () => {
                           setIsUserDetailsEditted(true)
                           }
                       }}
+                      onBlur={(e) => {
+                        setEmailId(e.target.value.trim().replace(/\s+/g, " "),);
+                      }}
                       maxLength={emailMaxLength}
                       placeholder={t("placeholders:enter_email")}
                     />
@@ -550,6 +556,9 @@ const CreateUsers = () => {
                       onChange={(e) => {
                         setPassword(e.target.value);
                         setInValidPassword(false);
+                      }}
+                      onBlur={(e) => {
+                        setPassword(e.target.value.trim().replace(/\s+/g, " "),);
                       }}
                       minLength={passwordMinLength}
                       maxLength={passwordMaxLength}
