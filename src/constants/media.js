@@ -32,7 +32,8 @@ import starIcon from "../assets/images/common/starIcon.svg";
 import globeIcon from "../assets/images/common/globeIcon.svg";
 import FrontEndKeysDownloadIcon from "../assets/images/common/FrontEndKeysDownloadIcon.svg";
 import BackendKeysDownloadIcon from "../assets/images/common/BackendKeysDownloadIcon.svg";
-import DropdownIcon from "../assets/images/common/DropdownIcon.svg"
+import DropdownIcon from "../assets/images/common/DropdownIcon.svg";
+import UserAccessControl from "../assets/images/common/UserAccessControl.svg";
 export {
   AppStoreLogo,
   PlayStoreLogo,
@@ -68,5 +69,6 @@ export {
   globeIcon,
   FrontEndKeysDownloadIcon,
   BackendKeysDownloadIcon,
-  DropdownIcon
+  DropdownIcon,
+  UserAccessControl,
 };

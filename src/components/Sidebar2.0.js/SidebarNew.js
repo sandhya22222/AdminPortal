@@ -11,6 +11,7 @@ import {
   TranslateIcon,
   ViewDashboard,
   menuIcon,
+  UserAccessControl,
 } from "../../constants/media";
 import Footer from "./../footer/Footer";
 import { useTranslation } from "react-i18next";
@@ -78,13 +79,14 @@ const SidebarNew = () => {
       inactive_icon: <img src={TranslateIcon} />,
       label: ` ${t("labels:languages")}`,
       navigate_to: "/dashboard/language",
-      show_in_menu: !auth.isAuthenticated ||
+      show_in_menu:
+        !auth.isAuthenticated ||
         (auth.isAuthenticated &&
           permissionValue &&
           permissionValue.length > 0 &&
           permissionValue.includes("UI-product-admin"))
-        ? false
-        : true,
+          ? false
+          : true,
     },
     // {
     //   key: "4",
@@ -102,8 +104,8 @@ const SidebarNew = () => {
     },
     {
       key: "6",
-      icon: <img src={ProfileIcon} />,
-      inactive_icon: <img src={ProfileIcon} />,
+      icon: <img src={UserAccessControl} />,
+      inactive_icon: <img src={UserAccessControl} />,
       label: ` ${t("labels:profile")}`,
       navigate_to: "/dashboard/userprofile",
       show_in_menu: true,
@@ -122,13 +124,14 @@ const SidebarNew = () => {
       inactive_icon: <img src={ProfileIcon} />,
       label: `${t("labels:user_access_control")}`,
       navigate_to: `/dashboard/user-access-control/list-user-roles?tab=0&page=1&limit=${pageLimitFromENV}`,
-      show_in_menu: !auth.isAuthenticated ||
+      show_in_menu:
+        !auth.isAuthenticated ||
         (auth.isAuthenticated &&
           permissionValue &&
           permissionValue.length > 0 &&
           permissionValue.includes("UI-user-access-control"))
-        ? true
-        : false,
+          ? true
+          : false,
       // children: [],
     },
     // {
@@ -220,7 +223,7 @@ const SidebarNew = () => {
               // top: 0,
               // bottom: 0,
             }}
-          // className="!flex-[0_0_20%] min-h-screen border-r-[1px] drop-shadow-[0_0px_2px_rgba(0,0,0,0.15)]"
+            // className="!flex-[0_0_20%] min-h-screen border-r-[1px] drop-shadow-[0_0px_2px_rgba(0,0,0,0.15)]"
           >
             <Spin
               spinning={loadingEffect}
