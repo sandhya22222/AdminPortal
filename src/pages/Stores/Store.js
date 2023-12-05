@@ -1717,7 +1717,7 @@ const Stores = () => {
                       validator.matches(e.target.value, regex)
                     ) {
                       setInValidUserName(false);
-                      setStoreUserName(e.target.value);
+                      setStoreUserName(String(e.target.value).toLowerCase());
                       setOnChangeValues(true);
                     } else if (e.target.value === "") {
                       setStoreUserName(e.target.value);
