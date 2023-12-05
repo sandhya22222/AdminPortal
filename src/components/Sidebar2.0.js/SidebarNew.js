@@ -104,8 +104,22 @@ const SidebarNew = () => {
     },
     {
       key: "6",
-      icon: <img src={UserAccessControl} />,
-      inactive_icon: <img src={UserAccessControl} />,
+      icon: (
+        <img
+          src={ProfileIcon}
+          alt="profileIcon"
+          width={"15px"}
+          height={"15px"}
+        />
+      ),
+      inactive_icon: (
+        <img
+          src={ProfileIcon}
+          alt="profileIcon"
+          width={"15px"}
+          height={"15px"}
+        />
+      ),
       label: ` ${t("labels:profile")}`,
       navigate_to: "/dashboard/userprofile",
       show_in_menu: true,
@@ -120,18 +134,32 @@ const SidebarNew = () => {
     // },
     {
       key: "12",
-      icon: <img src={ProfileIcon} alt="userAccessControl" />,
-      inactive_icon: <img src={ProfileIcon} />,
+      icon: (
+        <img
+          src={UserAccessControl}
+          alt="userAccessControl"
+          width={"15px"}
+          height={"15px"}
+        />
+      ),
+      inactive_icon: (
+        <img
+          src={UserAccessControl}
+          alt="userAccessControl"
+          width={"15px"}
+          height={"15px"}
+        />
+      ),
       label: `${t("labels:user_access_control")}`,
       navigate_to: `/dashboard/user-access-control/list-user-roles?tab=0&page=1&limit=${pageLimitFromENV}`,
-      show_in_menu:
-        !auth.isAuthenticated ||
-        (auth.isAuthenticated &&
-          permissionValue &&
-          permissionValue.length > 0 &&
-          permissionValue.includes("UI-user-access-control"))
-          ? true
-          : false,
+      show_in_menu: true,
+      // !auth.isAuthenticated ||
+      // (auth.isAuthenticated &&
+      //   permissionValue &&
+      //   permissionValue.length > 0 &&
+      //   permissionValue.includes("UI-user-access-control"))
+      //   ? true
+      //   : false,
       // children: [],
     },
     // {
