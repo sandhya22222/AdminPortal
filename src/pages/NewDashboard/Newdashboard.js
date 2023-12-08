@@ -1296,7 +1296,7 @@ const Newdashboard = () => {
                 <Content>
                   <Text className="!text-md mb-2 text-zinc-400 flex justify-left gap-1 items-center">
                     <Content class="w-2 h-2  bg-neutral-400 rounded-full"></Content>{" "}
-                    {t("labels:draft")} / {t("labels:inactive_sores")}
+                    {t("labels:inactive_sores")}
                   </Text>
                   <Content className="flex items-baseline">
                     <Title class="text-zinc-400" level={2}>
