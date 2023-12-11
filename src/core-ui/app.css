@@ -156,3 +156,7 @@
   display: inline-block !important;
   /* color: var(--mp-primary-color) !important; */
 }
+
+a:hover {
+  color: var(--mp-input-field-hover-color) !important;
+}

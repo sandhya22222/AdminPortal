@@ -37,6 +37,9 @@ import {
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import { DeleteIcon } from "../../constants/media";
+import {
+  InfoCircleTwoTone
+} from "@ant-design/icons";
 //! Import user defined components
 import Highlighter from "react-highlight-words";
 import DmPagination from "../../components/DmPagination/DmPagination";
@@ -52,6 +55,7 @@ import util from "../../util/common";
 import { Table } from "reactstrap";
 import axios from "axios";
 import { useAuth } from "react-oidc-context";
+import { validatePositiveNumber } from "../../util/validation";
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
@@ -388,10 +392,15 @@ const Stores = () => {
       key: "limits",
       width: "30%",
       render: (text) => {
-        const [limitName, limitValue, keyName] = text.split(",");
+        const [limitName, limitValue, keyName, tooltip] = text.split(",");
         return (
           <Content className="flex flex-col gap-2">
+            <div className="flex gap-2 items-center">
             {limitName}
+            <Tooltip title={tooltip} placement="right">
+              <InfoCircleTwoTone twoToneColor={"#7d3192"} className="text-xs" />
+            </Tooltip>
+            </div>
             <InputNumber
               value={
                 storeLimitValues?.[keyName] > 0
@@ -399,6 +408,9 @@ const Stores = () => {
                   : ""
               }
               min={0}
+              onKeyPress={(e) => {
+                validatePositiveNumber(e, /[0-9]/);
+              }}
               onChange={(value) => {
                 let copyofStoreimitValues = { ...storeLimitValues };
                 copyofStoreimitValues[keyName] = value;
@@ -448,10 +460,15 @@ const Stores = () => {
       key: "limits",
       width: "30%",
       render: (text) => {
-        const [limitName, limitValue, keyName] = text.split(",");
+        const [limitName, limitValue, keyName, tooltip] = text.split(",");
         return (
           <Content className="flex flex-col gap-2">
+            <div className="flex gap-2 items-center">
             {limitName}
+            <Tooltip title={tooltip} placement="right">
+              <InfoCircleTwoTone twoToneColor={"#7d3192"} className="text-xs" />
+            </Tooltip>
+            </div>
             <Content>
               <InputNumber
                 value={
@@ -460,6 +477,9 @@ const Stores = () => {
                     : ""
                 }
                 min={0}
+                onKeyPress={(e) => {
+                  validatePositiveNumber(e, /[0-9]/);
+                }}
                 onChange={(value) => {
                   let copyofStoreimitValues = { ...storeLimitValues };
                   copyofStoreimitValues[keyName] = value;
@@ -560,23 +580,36 @@ const Stores = () => {
               className="app-btn-icon flex align-items-center justify-center"
               type="text"
             >
-              <Link
+              {hideAddStoreButton ? <Link
                 to={{
                   pathname: "storesetting",
-                  search: `?id=${record.id}&page=${
-                    searchParams.get("page") ? searchParams.get("page") : 1
-                  }&limit=${
-                    searchParams.get("limit")
+                  search: `?id=${record.id}&page=${searchParams.get("page") ? searchParams.get("page") : 1
+                    }&limit=${searchParams.get("limit")
                       ? searchParams.get("limit")
                       : pageLimit
-                  }&storeId=${record.storeId}`,
+                    }&storeId=${record.storeId}`,
                 }}
-                // className=" pl-[10px] font-semibold app-table-data-title"
+                style={{ textDecoration: 'none' }}
+              // className=" pl-[10px] font-semibold app-table-data-title"
+              >
+                <Tooltip title={t("labels:view_details")}>
+                  {t("labels:view_details")}
+                </Tooltip>
+              </Link> : <Link
+                to={{
+                  pathname: "storesetting",
+                  search: `?id=${record.id}&page=${searchParams.get("page") ? searchParams.get("page") : 1
+                    }&limit=${searchParams.get("limit")
+                      ? searchParams.get("limit")
+                      : pageLimit
+                    }&storeId=${record.storeId}`,
+                }}
+              // className=" pl-[10px] font-semibold app-table-data-title"
               >
                 <Tooltip title={t("labels:store_settings")}>
                   <MdSettings className="text-[var(--mp-primary-border-color)] hover:text-[var(--mp-primary-border-color-h)] !text-xl" />
                 </Tooltip>
-              </Link>
+              </Link>}
             </Button>
 
             {/* {record.status === "InActive" ? (
@@ -747,7 +780,7 @@ const Stores = () => {
         key: "1",
         limits: `${t("labels:maximum_store_creation_limit")},${
           storeLimitValues?.store_limit
-        },store_limit`,
+        },store_limit,${t("labels:store_limit_tooltip")}`,
         stats:
           analysisCount?.store_count +
           "," +
@@ -800,51 +833,51 @@ const Stores = () => {
 
         limits: `${t("labels:max_vendor_onboarding_limit")},${
           storeLimitValues?.vendor_limit
-        },vendor_limit`,
+        },vendor_limit, ${t("labels:vendor_limit_tooltip")}`,
       },
 
       {
         key: "2",
         limits: `${t("labels:max_customer_onboarding_limit")},${
           storeLimitValues?.customer_limit
-        },customer_limit`,
+        },customer_limit, ${t("labels:customer_limit_tooltip")}`,
       },
       {
         key: "3",
         limits: `${t("labels:max_product_limit")},${
           storeLimitValues?.product_limit
-        },product_limit`,
+        },product_limit, ${t("labels:product_limit_tooltip")}`,
       },
       {
         key: "4",
         limits: `${t("labels:max_order_limit")} ,${
           storeLimitValues?.order_limit_per_day
-        },order_limit_per_day`,
+        },order_limit_per_day, ${t("labels:order_limit_tooltip")}`,
       },
       {
         key: "5",
         limits: `${t("labels:max_language_limit")} ,${
           storeLimitValues?.langauge_limit
-        },langauge_limit`,
+        },langauge_limit, ${t("labels:language_limit_tooltip")}`,
       },
       {
         key: "6",
         limits: `${t("labels:max_product_template_limit")},${
           storeLimitValues?.product_template_limit
-        },product_template_limit`,
-      },
-      {
-        key: "7",
-        limits: `${t("labels:max_store_user_limit")},${
-          storeLimitValues?.store_users_limit
-        },store_users_limit`,
-      },
-      {
-        key: "8",
-        limits: `${t("labels:max_vendor_user_limit")},${
-          storeLimitValues?.vendor_users_limit
-        },vendor_users_limit`,
-      },
+        },product_template_limit, ${t("labels:product_template_limit_tooltip")}`,
+      }
+      // {
+      //   key: "7",
+      //   limits: `${t("labels:max_store_user_limit")},${
+      //     storeLimitValues?.store_users_limit
+      //   },store_users_limit`,
+      // },
+      // {
+      //   key: "8",
+      //   limits: `${t("labels:max_vendor_user_limit")},${
+      //     storeLimitValues?.vendor_users_limit
+      //   },vendor_users_limit`,
+      // },
     ],
     pagenationSettings: pagination,
     search_settings: {
