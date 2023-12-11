@@ -1986,7 +1986,7 @@ const StoreSettings = () => {
         stats:
           analysisCount?.vendor_count +
           "," +
-          storeLimitValues?.vendor_limit +
+          storeDataLimitValues?.vendor_limit +
           "," +
           "vendor_limit",
       },
@@ -2003,7 +2003,7 @@ const StoreSettings = () => {
         stats:
           analysisCount?.customer_count +
           "," +
-          storeLimitValues?.customer_limit +
+          storeDataLimitValues?.customer_limit +
           "," +
           "customer_limit",
       },
@@ -2020,7 +2020,7 @@ const StoreSettings = () => {
         stats:
           analysisCount?.product_count +
           "," +
-          storeLimitValues?.product_limit +
+          storeDataLimitValues?.product_limit +
           "," +
           "product_limit",
       },
@@ -2037,7 +2037,7 @@ const StoreSettings = () => {
         stats:
           analysisCount?.order_count +
           "," +
-          storeLimitValues?.order_limit_per_day +
+          storeDataLimitValues?.order_limit_per_day +
           "," +
           "order_limit_per_day",
       },
@@ -2054,7 +2054,7 @@ const StoreSettings = () => {
         stats:
           analysisCount?.lang_count +
           "," +
-          storeLimitValues?.langauge_limit +
+          storeDataLimitValues?.langauge_limit +
           "," +
           "langauge_limit",
       },
@@ -2071,7 +2071,7 @@ const StoreSettings = () => {
         stats:
           analysisCount?.prod_temp_count +
           "," +
-          storeLimitValues?.product_template_limit +
+          storeDataLimitValues?.product_template_limit +
           "," +
           "product_template_limit",
       },
@@ -2082,40 +2082,40 @@ const StoreSettings = () => {
       // storeLimitValues?.langauge_limit +
       // "," +
       // "langauge_limit",
-      {
-        key: "10",
-        limitfields: `${t("labels:store_users_limit")},${
-          storeDataLimitValues.store_users_limit > 0
-            ? storeDataLimitValues.store_users_limit
-            : ""
-        },store_users_limit`,
-        limits: `${t("labels:max_store_user_limit")},${
-          storeLimitValues?.store_users_limit
-        }`,
-        stats:
-          analysisCount?.store_user_count +
-          "," +
-          storeLimitValues?.store_users_limit +
-          "," +
-          "store_users_limit",
-      },
-      {
-        key: "11",
-        limitfields: `${t("labels:vendor_users_limit")},${
-          storeDataLimitValues.vendor_users_limit > 0
-            ? storeDataLimitValues.vendor_users_limit
-            : ""
-        },vendor_users_limit`,
-        limits: `${t("labels:max_vendor_user_limit")},${
-          storeLimitValues?.store_users_limit
-        }`,
-        // stats:
-        //   analysisCount?.vendor_user_count +
-        //   "," +
-        //   storeLimitValues?.vendor_users_limit +
-        //   "," +
-        //   "vendor_users_limit",
-      },
+      // {
+      //   key: "10",
+      //   limitfields: `${t("labels:store_users_limit")},${
+      //     storeDataLimitValues.store_users_limit > 0
+      //       ? storeDataLimitValues.store_users_limit
+      //       : ""
+      //   },store_users_limit`,
+      //   limits: `${t("labels:max_store_user_limit")},${
+      //     storeLimitValues?.store_users_limit
+      //   }`,
+      //   stats:
+      //     analysisCount?.store_user_count +
+      //     "," +
+      //     storeLimitValues?.store_users_limit +
+      //     "," +
+      //     "store_users_limit",
+      // },
+      // {
+      //   key: "11",
+      //   limitfields: `${t("labels:vendor_users_limit")},${
+      //     storeDataLimitValues.vendor_users_limit > 0
+      //       ? storeDataLimitValues.vendor_users_limit
+      //       : ""
+      //   },vendor_users_limit`,
+      //   limits: `${t("labels:max_vendor_user_limit")},${
+      //     storeLimitValues?.store_users_limit
+      //   }`,
+      //   // stats:
+      //   //   analysisCount?.vendor_user_count +
+      //   //   "," +
+      //   //   storeLimitValues?.vendor_users_limit +
+      //   //   "," +
+      //   //   "vendor_users_limit",
+      // },
       {
         key: "12",
         limitfields: `${t("labels:maximum_vendor_product_limit")},${
