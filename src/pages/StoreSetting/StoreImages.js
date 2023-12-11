@@ -46,7 +46,7 @@ const StoreImages = ({
   InfoCircleText,
   bannerAbsoluteImage,
   setImageChangeValues,
-  disabelMediaButton
+  disabelMediaButton,
 }) => {
   const authorizationHeader = useAuthorization();
   const dispatch = useDispatch();
@@ -381,7 +381,7 @@ const StoreImages = ({
         <Content className=" items-end  ">
           <Tooltip
             title={InfoCircleText}
-            overlayStyle={{ zIndex: 11, position: "fixed" }}
+            overlayStyle={{ zIndex: 1, position: "fixed" }}
             placement="topLeft"
           >
             <InfoCircleOutlined className="!text-[var(--mp-brand-color-h)]" />
