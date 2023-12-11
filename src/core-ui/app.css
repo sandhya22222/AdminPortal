@@ -154,7 +154,7 @@
 .anticon svg {
   /* vertical-align: baseline !important; */
   display: inline-block !important;
-  color: var(--mp-primary-color) !important;
+  /* color: var(--mp-primary-color) !important; */
 }
 
 a:hover {
