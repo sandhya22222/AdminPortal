@@ -55,6 +55,7 @@ import util from "../../util/common";
 import { Table } from "reactstrap";
 import axios from "axios";
 import { useAuth } from "react-oidc-context";
+import { validatePositiveNumber } from "../../util/validation";
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
@@ -407,6 +408,9 @@ const Stores = () => {
                   : ""
               }
               min={0}
+              onKeyPress={(e) => {
+                validatePositiveNumber(e, /[0-9]/);
+              }}
               onChange={(value) => {
                 let copyofStoreimitValues = { ...storeLimitValues };
                 copyofStoreimitValues[keyName] = value;
@@ -473,6 +477,9 @@ const Stores = () => {
                     : ""
                 }
                 min={0}
+                onKeyPress={(e) => {
+                  validatePositiveNumber(e, /[0-9]/);
+                }}
                 onChange={(value) => {
                   let copyofStoreimitValues = { ...storeLimitValues };
                   copyofStoreimitValues[keyName] = value;

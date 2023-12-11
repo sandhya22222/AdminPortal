@@ -36,6 +36,7 @@ import StoreImages from "./StoreImages";
 import { useAuth } from "react-oidc-context";
 import axios from "axios";
 import DynamicTable from "../../components/DynamicTable/DynamicTable";
+import { validatePositiveNumber } from "../../util/validation";
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -1463,6 +1464,9 @@ const StoreSettings = () => {
                 : ""
             }
             disabled={hideActionButton}
+            onKeyPress={(e) => {
+              validatePositiveNumber(e, /[0-9]/);
+            }}
             onChange={(value) => {
               // let number = /^[0-9]*$/.test(e.target.value);
               // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1498,6 +1502,9 @@ const StoreSettings = () => {
                 : ""
             }
             status={invalidCustomerLimit ? "error" : ""}
+            onKeyPress={(e) => {
+              validatePositiveNumber(e, /[0-9]/);
+            }}
             onChange={(value) => {
               // let number = /^[0-9]*$/.test(e.target.value);
               // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1532,6 +1539,9 @@ const StoreSettings = () => {
                 : ""
             }
             status={invalidProductLimit ? "error" : ""}
+            onKeyPress={(e) => {
+              validatePositiveNumber(e, /[0-9]/);
+            }}
             onChange={(value) => {
               // let number = /^[0-9]*$/.test(e.target.value);
               // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1566,6 +1576,9 @@ const StoreSettings = () => {
                 : ""
             }
             status={invalidOrderLimit ? "error" : ""}
+            onKeyPress={(e) => {
+              validatePositiveNumber(e, /[0-9]/);
+            }}
             onChange={(value) => {
               // let number = /^[0-9]*$/.test(e.target.value);
               // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1602,6 +1615,9 @@ const StoreSettings = () => {
                 : ""
             }
             status={invalidLanguageLimit ? "error" : ""}
+            onKeyPress={(e) => {
+              validatePositiveNumber(e, /[0-9]/);
+            }}
             onChange={(value) => {
               // let number = /^[0-9]*$/.test(e.target.value);
               // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1636,6 +1652,9 @@ const StoreSettings = () => {
                 : ""
             }
             status={invalidProductTemplateLimit ? "error" : ""}
+            onKeyPress={(e) => {
+              validatePositiveNumber(e, /[0-9]/);
+            }}
             onChange={(value) => {
               // let number = /^[0-9]*$/.test(e.target.value);
               // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1672,6 +1691,9 @@ const StoreSettings = () => {
                 : ""
             }
             status={invalidStoreUserLimit ? "error" : ""}
+            onKeyPress={(e) => {
+              validatePositiveNumber(e, /[0-9]/);
+            }}
             onChange={(value) => {
               // let number = /^[0-9]*$/.test(e.target.value);
               // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1709,6 +1731,9 @@ const StoreSettings = () => {
                 : ""
             }
             status={invalidVendorUserLimit ? "error" : ""}
+            onKeyPress={(e) => {
+              validatePositiveNumber(e, /[0-9]/);
+            }}
             onChange={(value) => {
               // let number = /^[0-9]*$/.test(e.target.value);
               // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1746,6 +1771,9 @@ const StoreSettings = () => {
                 : ""
             }
             status={invalidMaxProductLimit ? "error" : ""}
+            onKeyPress={(e) => {
+              validatePositiveNumber(e, /[0-9]/);
+            }}
             onChange={(value) => {
               // let number = /^[0-9]*$/.test(e.target.value);
               // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1783,6 +1811,9 @@ const StoreSettings = () => {
                 : ""
             }
             status={invalidMaxTemplateLimit ? "error" : ""}
+            onKeyPress={(e) => {
+              validatePositiveNumber(e, /[0-9]/);
+            }}
             onChange={(value) => {
               // let number = /^[0-9]*$/.test(e.target.value);
               // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1819,6 +1850,9 @@ const StoreSettings = () => {
             step="0.1"
             formatter={(value) => `${value}%`}
             parser={(value) => value.replace("%", "")}
+            onKeyPress={(e) => {
+              validatePositiveNumber(e, /[0-9]/);
+            }}
             onChange={(value) => {
               let copyofStoreDataLimitValue = { ...storeDataLimitValues };
               copyofStoreDataLimitValue.default_store_commission = value;
