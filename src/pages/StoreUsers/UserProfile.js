@@ -142,9 +142,10 @@ const UserProfile = () => {
                         storeUsersData.groups.length > 0 &&
                         storeUsersData.groups.map((ele) => (
                           <span className="ml-1">
-                            {ele.name === "" || ele.name === undefined
+                            {/* {ele.name === "" || ele.name === undefined
                               ? "NA"
-                              : ele.name}
+                              : ele.name} */}
+                              {ele.name}
                           </span>
                         ))}
                     </Content>
@@ -158,10 +159,11 @@ const UserProfile = () => {
                         langDirection === "rtl" ? "!mr-1" : "!ml-1"
                       }`}
                     >
-                      {(storeUsersData && storeUsersData.firstName === "") ||
+                      {/* {(storeUsersData && storeUsersData.firstName === "") ||
                       (storeUsersData && storeUsersData.firstName === undefined)
                         ? "NA"
-                        : storeUsersData && storeUsersData.firstName}
+                        : storeUsersData && storeUsersData.firstName} */}
+                        {storeUsersData && storeUsersData.firstName}
                     </Content>
                   </Row>
                   <Row className=" mb-2">
@@ -173,10 +175,11 @@ const UserProfile = () => {
                         langDirection === "rtl" ? "!mr-1" : "!ml-1"
                       }`}
                     >
-                      {(storeUsersData && storeUsersData.lastName === "") ||
+                      {/* {(storeUsersData && storeUsersData.lastName === "") ||
                       (storeUsersData && storeUsersData.lastName === undefined)
                         ? "NA"
-                        : storeUsersData && storeUsersData.lastName}
+                        : storeUsersData && storeUsersData.lastName} */}
+                        {storeUsersData && storeUsersData.lastName}
                     </Content>
                   </Row>
                   <Row className="">

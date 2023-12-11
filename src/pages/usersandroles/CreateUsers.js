@@ -379,6 +379,7 @@ const CreateUsers = () => {
             setLastName(selectedUserDetails[0].lastName);
             setEmailId(selectedUserDetails[0].email);
             setSelectRole(selectedUserDetails[0].groups[0].name);
+            setUserStatus(selectedUserDetails[0].enabled);
           }
         }
       })
