@@ -160,3 +160,7 @@
 a:hover {
   color: var(--mp-input-field-hover-color) !important;
 }
+
+a{
+  color: var(--mp-brand-color) !important;
+}
