@@ -214,6 +214,13 @@ const Stores = () => {
     setRadioValue(tab_id);
   }, []);
 
+  useEffect(() => {
+    // console.log("location..", window.sessionStorage.getItem("currentStoretab"))
+    if (window.sessionStorage.getItem("currentStoretab") == 1) {
+     setCurrentTab("1");
+    }
+  }, [window.sessionStorage.getItem("currentStoretab")])
+
   const storeTabData = [
     {
       tabId: 0,
@@ -576,41 +583,45 @@ const Stores = () => {
                 }}
               />
             </Tooltip> */}
-            <Button
-              className="app-btn-icon flex align-items-center justify-center"
-              type="text"
-            >
-              {hideAddStoreButton ? <Link
-                to={{
-                  pathname: "storesetting",
-                  search: `?id=${record.id}&page=${searchParams.get("page") ? searchParams.get("page") : 1
-                    }&limit=${searchParams.get("limit")
-                      ? searchParams.get("limit")
-                      : pageLimit
-                    }&storeId=${record.storeId}`,
-                }}
-                style={{ textDecoration: 'none' }}
-              // className=" pl-[10px] font-semibold app-table-data-title"
+          
+            {hideAddStoreButton ?
+                <Link
+                  to={{
+                    pathname: "storesetting",
+                    search: `?id=${record.id}&page=${searchParams.get("page") ? searchParams.get("page") : 1
+                      }&limit=${searchParams.get("limit")
+                        ? searchParams.get("limit")
+                        : pageLimit
+                      }&storeId=${record.storeId}`,
+                  }}
+                  style={{ textDecoration: 'none' }}
+                // className=" pl-[10px] font-semibold app-table-data-title"
+                >
+                  <Tooltip title={t("labels:view_details")}>
+                    {t("labels:view_details")}
+                  </Tooltip>
+                </Link>
+              :
+              <Button
+                className="app-btn-icon flex align-items-center justify-center"
+                type="text"
               >
-                <Tooltip title={t("labels:view_details")}>
-                  {t("labels:view_details")}
-                </Tooltip>
-              </Link> : <Link
-                to={{
-                  pathname: "storesetting",
-                  search: `?id=${record.id}&page=${searchParams.get("page") ? searchParams.get("page") : 1
-                    }&limit=${searchParams.get("limit")
-                      ? searchParams.get("limit")
-                      : pageLimit
-                    }&storeId=${record.storeId}`,
-                }}
-              // className=" pl-[10px] font-semibold app-table-data-title"
-              >
-                <Tooltip title={t("labels:store_settings")}>
-                  <MdSettings className="text-[var(--mp-primary-border-color)] hover:text-[var(--mp-primary-border-color-h)] !text-xl" />
-                </Tooltip>
-              </Link>}
-            </Button>
+                {<Link
+                  to={{
+                    pathname: "storesetting",
+                    search: `?id=${record.id}&page=${searchParams.get("page") ? searchParams.get("page") : 1
+                      }&limit=${searchParams.get("limit")
+                        ? searchParams.get("limit")
+                        : pageLimit
+                      }&storeId=${record.storeId}`,
+                  }}
+                // className=" pl-[10px] font-semibold app-table-data-title"
+                >
+                  <Tooltip title={t("labels:store_settings")}>
+                    <MdSettings className="text-[var(--mp-primary-border-color)] hover:text-[var(--mp-primary-border-color-h)] !text-xl" />
+                  </Tooltip>
+                </Link>}
+              </Button>}
 
             {/* {record.status === "InActive" ? (
               <Button
@@ -1577,7 +1588,8 @@ const Stores = () => {
             !isLoading && (
               <Content className="!h-10 !mt-7">
                 <Tabs
-                  defaultActiveKey={currentTab}
+                  // defaultActiveKey={currentTab}
+                  activeKey={currentTab}
                   items={[
                     {
                       key: "1",

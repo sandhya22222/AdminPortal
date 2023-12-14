@@ -287,6 +287,9 @@ const SidebarNew = () => {
                       key={item.key}
                       // className="!bg-[var(--mp-brand-color)] !hover:bg-[var(--mp-brand-color)]"
                       onClick={() => {
+                        if(item.key == 2){
+                          sessionStorage.setItem("currentStoretab", 1);
+                        }
                         navigate(item.navigate_to);
                       }}
                     >
