@@ -217,7 +217,7 @@ const Stores = () => {
   useEffect(() => {
     // console.log("location..", window.sessionStorage.getItem("currentStoretab"))
     if (window.sessionStorage.getItem("currentStoretab") == 1) {
-     setCurrentTab("1");
+      setCurrentTab("1");
     }
   }, [window.sessionStorage.getItem("currentStoretab")])
 
@@ -403,10 +403,10 @@ const Stores = () => {
         return (
           <Content className="flex flex-col gap-2">
             <div className="flex gap-2 items-center">
-            {limitName}
-            <Tooltip title={tooltip} placement="right">
-              <InfoCircleTwoTone twoToneColor={"#7d3192"} className="text-xs" />
-            </Tooltip>
+              {limitName}
+              <Tooltip title={tooltip} placement="right">
+                <InfoCircleTwoTone twoToneColor={"#7d3192"} className="text-xs" />
+              </Tooltip>
             </div>
             <InputNumber
               value={
@@ -441,18 +441,23 @@ const Stores = () => {
       render: (text) => {
         const [count, total, keyName] = text.split(",");
         return (
-          <Content className="flex flex-col gap-2">
-            {count} {total > 0 ? " of " + total : null}{" "}
-            {keyName === "store_limit" ? t("labels:active_stores") : null}
-            {total > 0 ? (
-              <Progress
-                strokeColor={"#4A2D73"}
-                className="w-24"
-                size="small"
-                percent={(count / total) * 100}
-                showInfo={false}
-              />
-            ) : null}
+          <Content>
+            {
+              (count !== "undefined" && total !== "undefined") ?
+                <Content className="flex flex-col gap-2">
+                  {count} {total > 0 ? " of " + total : null}{" "}
+                  {keyName === "store_limit" ? t("labels:active_stores") : null}
+                  {total > 0 ? (
+                    <Progress
+                      strokeColor={"#4A2D73"}
+                      className="w-24"
+                      size="small"
+                      percent={(count / total) * 100}
+                      showInfo={false}
+                    />
+                  ) : null}
+                </Content> :
+                <Spin tip="Loading"></Spin>}
           </Content>
         );
       },
@@ -471,10 +476,10 @@ const Stores = () => {
         return (
           <Content className="flex flex-col gap-2">
             <div className="flex gap-2 items-center">
-            {limitName}
-            <Tooltip title={tooltip} placement="right">
-              <InfoCircleTwoTone twoToneColor={"#7d3192"} className="text-xs" />
-            </Tooltip>
+              {limitName}
+              <Tooltip title={tooltip} placement="right">
+                <InfoCircleTwoTone twoToneColor={"#7d3192"} className="text-xs" />
+              </Tooltip>
             </div>
             <Content>
               <InputNumber
@@ -583,24 +588,24 @@ const Stores = () => {
                 }}
               />
             </Tooltip> */}
-          
+
             {hideAddStoreButton ?
-                <Link
-                  to={{
-                    pathname: "storesetting",
-                    search: `?id=${record.id}&page=${searchParams.get("page") ? searchParams.get("page") : 1
-                      }&limit=${searchParams.get("limit")
-                        ? searchParams.get("limit")
-                        : pageLimit
-                      }&storeId=${record.storeId}`,
-                  }}
-                  style={{ textDecoration: 'none' }}
-                // className=" pl-[10px] font-semibold app-table-data-title"
-                >
-                  <Tooltip title={t("labels:view_details")}>
-                    {t("labels:view_details")}
-                  </Tooltip>
-                </Link>
+              <Link
+                to={{
+                  pathname: "storesetting",
+                  search: `?id=${record.id}&page=${searchParams.get("page") ? searchParams.get("page") : 1
+                    }&limit=${searchParams.get("limit")
+                      ? searchParams.get("limit")
+                      : pageLimit
+                    }&storeId=${record.storeId}`,
+                }}
+                style={{ textDecoration: 'none' }}
+              // className=" pl-[10px] font-semibold app-table-data-title"
+              >
+                <Tooltip title={t("labels:view_details")}>
+                  {t("labels:view_details")}
+                </Tooltip>
+              </Link>
               :
               <Button
                 className="app-btn-icon flex align-items-center justify-center"
@@ -789,9 +794,8 @@ const Stores = () => {
     table_content: [
       {
         key: "1",
-        limits: `${t("labels:maximum_store_creation_limit")},${
-          storeLimitValues?.store_limit
-        },store_limit,${t("labels:store_limit_tooltip")}`,
+        limits: `${t("labels:maximum_store_creation_limit")},${storeLimitValues?.store_limit
+          },store_limit,${t("labels:store_limit_tooltip")}`,
         stats:
           analysisCount?.store_count +
           "," +
@@ -842,40 +846,34 @@ const Stores = () => {
       {
         key: "1",
 
-        limits: `${t("labels:max_vendor_onboarding_limit")},${
-          storeLimitValues?.vendor_limit
-        },vendor_limit, ${t("labels:vendor_limit_tooltip")}`,
+        limits: `${t("labels:max_vendor_onboarding_limit")},${storeLimitValues?.vendor_limit
+          },vendor_limit, ${t("labels:vendor_limit_tooltip")}`,
       },
 
       {
         key: "2",
-        limits: `${t("labels:max_customer_onboarding_limit")},${
-          storeLimitValues?.customer_limit
-        },customer_limit, ${t("labels:customer_limit_tooltip")}`,
+        limits: `${t("labels:max_customer_onboarding_limit")},${storeLimitValues?.customer_limit
+          },customer_limit, ${t("labels:customer_limit_tooltip")}`,
       },
       {
         key: "3",
-        limits: `${t("labels:max_product_limit")},${
-          storeLimitValues?.product_limit
-        },product_limit, ${t("labels:product_limit_tooltip")}`,
+        limits: `${t("labels:max_product_limit")},${storeLimitValues?.product_limit
+          },product_limit, ${t("labels:product_limit_tooltip")}`,
       },
       {
         key: "4",
-        limits: `${t("labels:max_order_limit")} ,${
-          storeLimitValues?.order_limit_per_day
-        },order_limit_per_day, ${t("labels:order_limit_tooltip")}`,
+        limits: `${t("labels:max_order_limit")} ,${storeLimitValues?.order_limit_per_day
+          },order_limit_per_day, ${t("labels:order_limit_tooltip")}`,
       },
       {
         key: "5",
-        limits: `${t("labels:max_language_limit")} ,${
-          storeLimitValues?.langauge_limit
-        },langauge_limit, ${t("labels:language_limit_tooltip")}`,
+        limits: `${t("labels:max_language_limit")} ,${storeLimitValues?.langauge_limit
+          },langauge_limit, ${t("labels:language_limit_tooltip")}`,
       },
       {
         key: "6",
-        limits: `${t("labels:max_product_template_limit")},${
-          storeLimitValues?.product_template_limit
-        },product_template_limit, ${t("labels:product_template_limit_tooltip")}`,
+        limits: `${t("labels:max_product_template_limit")},${storeLimitValues?.product_template_limit
+          },product_template_limit, ${t("labels:product_template_limit_tooltip")}`,
       }
       // {
       //   key: "7",
@@ -927,8 +925,8 @@ const Stores = () => {
     setDrawerAction("put");
     setEditName(
       storeApiData &&
-        storeApiData.length > 0 &&
-        storeApiData.filter((element) => element.store_uuid === id)[0].name
+      storeApiData.length > 0 &&
+      storeApiData.filter((element) => element.store_uuid === id)[0].name
     );
     setInValidEditName(false);
   };
@@ -1666,11 +1664,10 @@ const Stores = () => {
                   value={name}
                   minLength={storeNameMinLength}
                   maxLength={storeNameMaxLength}
-                  className={`${
-                    inValidName
-                      ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-[0.5rem]"
-                      : "mb-[0.5rem]"
-                  }`}
+                  className={`${inValidName
+                    ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-[0.5rem]"
+                    : "mb-[0.5rem]"
+                    }`}
                   onChange={(e) => {
                     // const alphaWithSpacesRegex = /^[A-Za-z\s]+$/;
                     const alphaWithoutSpaces = /^[a-zA-Z0-9]+$/;
@@ -1719,11 +1716,10 @@ const Stores = () => {
                   value={storeEmail}
                   minLength={emailMinLength}
                   maxLength={emailMaxLength}
-                  className={`${
-                    inValidEmail
-                      ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-6"
-                      : "mb-6"
-                  }`}
+                  className={`${inValidEmail
+                    ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-6"
+                    : "mb-6"
+                    }`}
                   onChange={(e) => {
                     setStoreEmail(e.target.value);
                     setInValidEmail(false);
@@ -1749,11 +1745,10 @@ const Stores = () => {
                   minLength={userNameMinLength}
                   maxLength={userNameMaxLength}
                   // suffix={`${storeUserName.length}/15`}
-                  className={`${
-                    inValidUserName
-                      ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-6"
-                      : "mb-6"
-                  }`}
+                  className={`${inValidUserName
+                    ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-6"
+                    : "mb-6"
+                    }`}
                   prefix={<UserOutlined className="site-form-item-icon" />}
                   onChange={(e) => {
                     const regex = /^[A-Za-z0-9_\- ]+$/;
@@ -1789,11 +1784,10 @@ const Stores = () => {
                   value={storePassword}
                   minLength={passwordMinLength}
                   maxLength={passwordMaxLength}
-                  className={`${
-                    inValidPassword
-                      ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-10"
-                      : "mb-10"
-                  }`}
+                  className={`${inValidPassword
+                    ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-10"
+                    : "mb-10"
+                    }`}
                   onChange={(e) => {
                     const value = e.target.value;
                     // if (value && value.length < 15) {
@@ -1858,11 +1852,10 @@ const Stores = () => {
                 <Input
                   value={editName}
                   placeholder={t("placeholders:enter_store_name")}
-                  className={`${
-                    inValidEditName
-                      ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 mb-6"
-                      : "mb-6"
-                  }`}
+                  className={`${inValidEditName
+                    ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400 mb-6"
+                    : "mb-6"
+                    }`}
                   minLength={storeNameMinLength}
                   maxLength={storeNameMaxLength}
                   onChange={(e) => {
