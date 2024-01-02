@@ -132,7 +132,7 @@ const CreateUsers = () => {
       selectRole === undefined
     ) {
       count--;
-      if (userName === "") {
+      if (password === "") {
         setInValidPassword(true);
       }
       if (emailId === "") {
