@@ -172,7 +172,7 @@ const UserAccessControl = () => {
               <Button className="app-btn-icon" type="text">
                 <Tooltip
                   placement="bottom"
-                  title={`${t("labels:delete")}` + ` ` + `${record.username}`}
+                  title={`${t("labels:delete_user")}`}
                   overlayStyle={{ zIndex: 1 }}
                 >
                   {/* <DeleteIcon
@@ -190,8 +190,9 @@ const UserAccessControl = () => {
                   className="!app-delete-icon mt-[6px] cursor-pointer"
                   alt="icon"
                 /> */}
-              </Tooltip>
-            </Button>)}
+                </Tooltip>
+              </Button>
+            )}
             <Tooltip title={t("labels:edit_user")} className="ml-1">
               <Button
                 type="text"
@@ -211,7 +212,6 @@ const UserAccessControl = () => {
                 </Content>
               </Button>
             </Tooltip>
-          
           </Content>
         );
       },
@@ -415,8 +415,7 @@ const UserAccessControl = () => {
           response.data.response_body.users
         );
         setServerDataCount(
-          response.data.response_body &&
-            response.data.response_body.count
+          response.data.response_body && response.data.response_body.count
         );
 
         setUsersServerData(response.data.response_body.users);
