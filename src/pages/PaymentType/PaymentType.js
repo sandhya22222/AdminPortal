@@ -43,6 +43,16 @@ const PaymentType = () => {
           payment_type: `${t("labels:online_payment")}`,
           is_payment_gateway: true,
         },
+        {
+          id: 3,
+          payment_type: `${t("labels:razor_pay")}`,
+          is_payment_gateway: true,
+        },
+        {
+          id: 4,
+          payment_type: `${t("labels:stripe")}`,
+          is_payment_gateway: true,
+        },
         // {
         //   id: 3,
         //   payment_type: "Purchase Order",
