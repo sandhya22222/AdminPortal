@@ -37,9 +37,7 @@ import {
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import { DeleteIcon } from "../../constants/media";
-import {
-  InfoCircleTwoTone
-} from "@ant-design/icons";
+import { InfoCircleTwoTone } from "@ant-design/icons";
 //! Import user defined components
 import Highlighter from "react-highlight-words";
 import DmPagination from "../../components/DmPagination/DmPagination";
@@ -126,20 +124,14 @@ const Stores = () => {
   const [onChangeEditValues, setOnChangeEditValues] = useState(false);
   const [currentTab, setCurrentTab] = useState(1);
   const [storeLimitValues, setStoreLimitValues] = useState();
+  const [duplicateStoreLimitValues, setDuplicateStoreLimitValues] = useState(
+    []
+  );
   const [analysisCount, setAnalysisCount] = useState();
-  const [currentUserDetailsAPIData, setCurrentUserDetailsAPIData] = useState();
-
-  // const [currentPage, setCurrentPage] = useState(
-  //   params.page ? params.page.slice(5, params.page.length) : 1
-  // );
-  // const [currentCount, setCurrentCount] = useState(
-  //   params.count ? params.count.slice(6, params.count.length) : 20
-  // );
   const [countForStore, setCountForStore] = useState();
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const [isStoreDeleting, setIsStoreDeleting] = useState(false);
-  const [storeApiStatus, setStoreApiStatus] = useState();
   const [superAdmin, setSuperAdmin] = useState(false);
   const [hideAddStoreButton, setHideAddStoreButton] = useState(false);
   const searchInput = useRef(null);
@@ -217,9 +209,9 @@ const Stores = () => {
   useEffect(() => {
     // console.log("location..", window.sessionStorage.getItem("currentStoretab"))
     if (window.sessionStorage.getItem("currentStoretab") == 1) {
-     setCurrentTab("1");
+      setCurrentTab("1");
     }
-  }, [window.sessionStorage.getItem("currentStoretab")])
+  }, [window.sessionStorage.getItem("currentStoretab")]);
 
   const storeTabData = [
     {
@@ -354,6 +346,7 @@ const Stores = () => {
   useEffect(() => {
     getCurrentUserDetails();
   }, []);
+
   useEffect(() => {
     if (currentTab == 2) {
       console.log("storeLimitApi", storeLimitApi);
@@ -364,6 +357,7 @@ const Stores = () => {
             response.data.response_body
           );
           setStoreLimitValues(response.data.response_body);
+          setDuplicateStoreLimitValues(response.data.response_body);
         })
         .catch((error) => {
           // setIsLoading(false);
@@ -403,10 +397,13 @@ const Stores = () => {
         return (
           <Content className="flex flex-col gap-2">
             <div className="flex gap-2 items-center">
-            {limitName}
-            <Tooltip title={tooltip} placement="right">
-              <InfoCircleTwoTone twoToneColor={"#7d3192"} className="text-xs" />
-            </Tooltip>
+              {limitName}
+              <Tooltip title={tooltip} placement="right">
+                <InfoCircleTwoTone
+                  twoToneColor={"#7d3192"}
+                  className="text-xs"
+                />
+              </Tooltip>
             </div>
             <InputNumber
               value={
@@ -441,18 +438,24 @@ const Stores = () => {
       render: (text) => {
         const [count, total, keyName] = text.split(",");
         return (
-          <Content className="flex flex-col gap-2">
-            {count} {total > 0 ? " of " + total : null}{" "}
-            {keyName === "store_limit" ? t("labels:active_stores") : null}
-            {total > 0 ? (
-              <Progress
-                strokeColor={"#4A2D73"}
-                className="w-24"
-                size="small"
-                percent={(count / total) * 100}
-                showInfo={false}
-              />
-            ) : null}
+          <Content>
+            {count !== "undefined" && total !== "undefined" ? (
+              <Content className="flex flex-col gap-2">
+                {count} {total > 0 ? " of " + total : null}{" "}
+                {keyName === "store_limit" ? t("labels:active_stores") : null}
+                {total > 0 ? (
+                  <Progress
+                    strokeColor={"#4A2D73"}
+                    className="w-24"
+                    size="small"
+                    percent={(count / total) * 100}
+                    showInfo={false}
+                  />
+                ) : null}
+              </Content>
+            ) : (
+              <Spin tip="Loading"></Spin>
+            )}
           </Content>
         );
       },
@@ -471,10 +474,13 @@ const Stores = () => {
         return (
           <Content className="flex flex-col gap-2">
             <div className="flex gap-2 items-center">
-            {limitName}
-            <Tooltip title={tooltip} placement="right">
-              <InfoCircleTwoTone twoToneColor={"#7d3192"} className="text-xs" />
-            </Tooltip>
+              {limitName}
+              <Tooltip title={tooltip} placement="right">
+                <InfoCircleTwoTone
+                  twoToneColor={"#7d3192"}
+                  className="text-xs"
+                />
+              </Tooltip>
             </div>
             <Content>
               <InputNumber
@@ -583,45 +589,52 @@ const Stores = () => {
                 }}
               />
             </Tooltip> */}
-          
-            {hideAddStoreButton ?
-                <Link
-                  to={{
-                    pathname: "storesetting",
-                    search: `?id=${record.id}&page=${searchParams.get("page") ? searchParams.get("page") : 1
-                      }&limit=${searchParams.get("limit")
-                        ? searchParams.get("limit")
-                        : pageLimit
-                      }&storeId=${record.storeId}`,
-                  }}
-                  style={{ textDecoration: 'none' }}
+
+            {hideAddStoreButton ? (
+              <Link
+                to={{
+                  pathname: "storesetting",
+                  search: `?id=${record.id}&page=${
+                    searchParams.get("page") ? searchParams.get("page") : 1
+                  }&limit=${
+                    searchParams.get("limit")
+                      ? searchParams.get("limit")
+                      : pageLimit
+                  }&storeId=${record.storeId}`,
+                }}
+                style={{ textDecoration: "none" }}
                 // className=" pl-[10px] font-semibold app-table-data-title"
-                >
-                  <Tooltip title={t("labels:view_details")}>
-                    {t("labels:view_details")}
-                  </Tooltip>
-                </Link>
-              :
+              >
+                <Tooltip title={t("labels:view_details")}>
+                  {t("labels:view_details")}
+                </Tooltip>
+              </Link>
+            ) : (
               <Button
                 className="app-btn-icon flex align-items-center justify-center"
                 type="text"
               >
-                {<Link
-                  to={{
-                    pathname: "storesetting",
-                    search: `?id=${record.id}&page=${searchParams.get("page") ? searchParams.get("page") : 1
-                      }&limit=${searchParams.get("limit")
-                        ? searchParams.get("limit")
-                        : pageLimit
+                {
+                  <Link
+                    to={{
+                      pathname: "storesetting",
+                      search: `?id=${record.id}&page=${
+                        searchParams.get("page") ? searchParams.get("page") : 1
+                      }&limit=${
+                        searchParams.get("limit")
+                          ? searchParams.get("limit")
+                          : pageLimit
                       }&storeId=${record.storeId}`,
-                  }}
-                // className=" pl-[10px] font-semibold app-table-data-title"
-                >
-                  <Tooltip title={t("labels:store_settings")}>
-                    <MdSettings className="text-[var(--mp-primary-border-color)] hover:text-[var(--mp-primary-border-color-h)] !text-xl" />
-                  </Tooltip>
-                </Link>}
-              </Button>}
+                    }}
+                    // className=" pl-[10px] font-semibold app-table-data-title"
+                  >
+                    <Tooltip title={t("labels:store_settings")}>
+                      <MdSettings className="text-[var(--mp-primary-border-color)] hover:text-[var(--mp-primary-border-color-h)] !text-xl" />
+                    </Tooltip>
+                  </Link>
+                }
+              </Button>
+            )}
 
             {/* {record.status === "InActive" ? (
               <Button
@@ -875,8 +888,10 @@ const Stores = () => {
         key: "6",
         limits: `${t("labels:max_product_template_limit")},${
           storeLimitValues?.product_template_limit
-        },product_template_limit, ${t("labels:product_template_limit_tooltip")}`,
-      }
+        },product_template_limit, ${t(
+          "labels:product_template_limit_tooltip"
+        )}`,
+      },
       // {
       //   key: "7",
       //   limits: `${t("labels:max_store_user_limit")},${
@@ -1409,8 +1424,10 @@ const Stores = () => {
     const postBody = storeLimitValues;
     MarketplaceServices.save(storeLimitApi, postBody)
       .then((response) => {
+        setDuplicateStoreLimitValues(response.data.response_body);
         console.log("response meeeeeeeeee", response);
         MarketplaceToaster.showToast(response);
+        setStoreLimitOnchangeValues(true);
       })
       .catch((error) => {
         console.log("Error Response From storelimit", error.response);
@@ -1418,6 +1435,37 @@ const Stores = () => {
       });
   };
 
+  const validationForSaveStoreLimit = () => {
+    if (
+      duplicateStoreLimitValues?.customer_limit ===
+        storeLimitValues?.customer_limit &&
+      duplicateStoreLimitValues?.dm_language_limit ===
+        storeLimitValues?.dm_language_limit &&
+      duplicateStoreLimitValues?.dm_user_limit ===
+        storeLimitValues?.dm_user_limit &&
+      duplicateStoreLimitValues?.order_limit_per_day ===
+        storeLimitValues?.order_limit_per_day &&
+      duplicateStoreLimitValues?.product_limit ===
+        storeLimitValues?.product_limit &&
+      duplicateStoreLimitValues?.product_template_limit ===
+        storeLimitValues?.product_template_limit &&
+      duplicateStoreLimitValues?.store_limit === storeLimitValues.store_limit &&
+      duplicateStoreLimitValues?.store_users_limit ===
+        storeLimitValues?.store_users_limit &&
+      duplicateStoreLimitValues?.vendor_limit ===
+        storeLimitValues?.vendor_limit &&
+      duplicateStoreLimitValues?.vendor_users_limit ===
+        storeLimitValues?.vendor_users_limit &&
+      duplicateStoreLimitValues?.langauge_limit ===
+        storeLimitValues?.langauge_limit
+    ) {
+      MarketplaceToaster.showToast(
+        util.getToastObject(`${t("messages:no_changes_were_detected")}`, "info")
+      );
+    } else {
+      saveStoreLimit();
+    }
+  };
   useEffect(() => {
     if (storeEditId) {
       var storeData =
@@ -2021,9 +2069,9 @@ const Stores = () => {
                     onChange={handleRadioChange}
                     value={value}
                   >
-                    <Radio value={0}>All</Radio>
-                    <Radio value={1}>Active</Radio>
-                    <Radio value={2}>Inactive</Radio>
+                    <Radio value={0}>{t("labels:all")}</Radio>
+                    <Radio value={1}>{t("labels:active")}</Radio>
+                    <Radio value={2}>{t("labels:inactive")}</Radio>
                   </Radio.Group>
 
                   <DynamicTable tableComponentData={tablePropsData} />
@@ -2031,20 +2079,20 @@ const Stores = () => {
               ) : currentTab == 2 ? (
                 <>
                   <Content>
-                    <Title level={5}>Account Restrictions</Title>
+                    <Title level={5}>{t("labels:account_restrictions")}</Title>
                     <DynamicTable tableComponentData={tablePropsThreshold1} />
                   </Content>
                   <Content>
-                    <Title level={5}>Store Restrictions</Title>
+                    <Title level={5}>{t("labels:store_restrictions")}</Title>
                     <DynamicTable tableComponentData={tablePropsThreshold2} />
                   </Content>
                   {hideAddStoreButton ? (
                     <Content className="flex gap-2">
                       <Button
                         className={"app-btn-primary"}
-                        onClick={saveStoreLimit}
+                        onClick={() => validationForSaveStoreLimit()}
                       >
-                        Save
+                        {t("labels:save")}
                       </Button>
                       {/* <Button onClick={{}}>Discard</Button> */}
                     </Content>
