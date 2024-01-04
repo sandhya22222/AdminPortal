@@ -273,7 +273,7 @@ const SidebarNew = ({ permissionValue }) => {
             <Spin
               spinning={myData.length > 0 ? false : true}
               indicator={antIcon}
-              tip="Please Wait..."
+              tip=""
             >
               <Menu
                 mode="inline"
@@ -313,8 +313,7 @@ const SidebarNew = ({ permissionValue }) => {
                   ) : null
                 ) : ""}
               </Menu>
-            </Spin>
-            <Content className="justify-center self-center px-[8px] items-center">
+              <Content className="justify-center self-center px-[8px] items-center">
               <Divider
                 style={{
                   background: "#FFFFFF",
@@ -324,6 +323,7 @@ const SidebarNew = ({ permissionValue }) => {
                 }}
               />
             </Content>
+            </Spin>
             <Button
               type="text"
               icon={
