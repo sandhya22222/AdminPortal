@@ -75,7 +75,7 @@ const Language = () => {
       render: (text, record) => {
         return (
           <Content className="inline-block">
-            <Tooltip title={record.language}>
+            <Tooltip title={record.language} overlayStyle={{ zIndex: 1 }}>
               <Text
                 className={`mx-2 ${
                   record.is_default ? "!max-w-[150px]" : "!max-w-[150px]"
