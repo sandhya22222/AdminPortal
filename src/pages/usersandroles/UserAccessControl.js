@@ -23,6 +23,7 @@ import CreateGroup from "./CreateGroup";
 import StoreModal from "../../components/storeModal/StoreModal";
 import MarketplaceToaster from "../../util/marketplaceToaster";
 import { EditIcon } from "../../constants/media";
+import { usePageTitle } from "../../hooks/usePageTitle";
 // import { DeleteIcon } from "../../constants/media";
 
 const { Content } = Layout;
@@ -34,6 +35,7 @@ const usersAllAPI = process.env.REACT_APP_USERS_ALL_API;
 const userAPI = process.env.REACT_APP_USERS_API;
 const updateUserStatusAPI = process.env.REACT_APP_USER_STATUS_API;
 const currentUserDetailsAPI = process.env.REACT_APP_USER_PROFILE_API;
+const portalInfo = JSON.parse(process.env.REACT_APP_PORTAL_INFO);
 
 const UserAccessControl = () => {
   const { t } = useTranslation();
@@ -57,6 +59,7 @@ const UserAccessControl = () => {
     useState(false);
   const [selectedUserData, setSelectedUserData] = useState({});
   const [currentUserDetailsAPIData, setCurrentUserDetailsAPIData] = useState();
+  usePageTitle(`${t("labels:user_access_control")}`);
 
   //!json data displaying for tabs
   const mainTabData = [
