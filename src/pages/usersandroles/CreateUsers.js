@@ -553,37 +553,36 @@ const CreateUsers = () => {
                       />
                     </Content>
                   </Content>
-                  <Content className="my-3">
-                    <Typography className="input-label-color mb-2 flex gap-1">
-                      {t("labels:password")}
-                      <span className="mandatory-symbol-color text-sm ">*</span>
-                    </Typography>
+                    {pageAction !== "add" ? "" :
+                      <Content className="my-3">
+                        <Typography className="input-label-color mb-2 flex gap-1">
+                          {t("labels:password")}
+                          <span className="mandatory-symbol-color text-sm ">*</span>
+                        </Typography>
 
-                    <Content>
-                      <Input.Password
-                        className={`${
-                          invalidPassword
-                            ? "border-red-400  border-[1px] rounded-lg border-solid focus:border-red-400 hover:border-red-400"
-                            : " border-solid border-[#C6C6C6]"
-                        }`}
-                        value={password}
-                        disabled={pageAction !== "add" ? true : false}
-                        onChange={(e) => {
-                          setPassword(e.target.value);
-                          setInValidPassword(false);
-                        }}
-                        onBlur={(e) => {
-                          setPassword(
-                            e.target.value.trim().replace(/\s+/g, " ")
-                          );
-                        }}
-                        minLength={passwordMinLength}
-                        maxLength={passwordMaxLength}
-                        placeholder={t("placeholders:enter_password")}
-                      />
-                    </Content>
-                  </Content>
-
+                        <Content>
+                          <Input.Password
+                            className={`${invalidPassword
+                                ? "border-red-400  border-[1px] rounded-lg border-solid focus:border-red-400 hover:border-red-400"
+                                : " border-solid border-[#C6C6C6]"
+                              }`}
+                            value={password}
+                            disabled={pageAction !== "add" ? true : false}
+                            onChange={(e) => {
+                              setPassword(e.target.value);
+                              setInValidPassword(false);
+                            }}
+                            onBlur={(e) => {
+                              setPassword(
+                                e.target.value.trim().replace(/\s+/g, " ")
+                              );
+                            }}
+                            minLength={passwordMinLength}
+                            maxLength={passwordMaxLength}
+                            placeholder={t("placeholders:enter_password")}
+                          />
+                        </Content>
+                      </Content>}
                   <Content className="flex my-3">
                     <Content>
                       <Typography className="input-label-color mb-2 flex gap-1">
