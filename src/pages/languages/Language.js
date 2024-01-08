@@ -358,9 +358,12 @@ const Language = () => {
                 }}
                 className=" pl-[10px] font-semibold app-table-data-title"
               >
-                <Tooltip title="Edit Language">
-                  <img src={EditIcon} alt="edit" className="!text-sm !w-5" />
-                </Tooltip>
+                <Button className="app-btn-icon app-edit-icon" type="text">
+                  <Tooltip title="Edit Language">
+                    {/* <img src={EditIcon} alt="edit" className="!text-sm !w-5" /> */}
+                    <MdEdit />
+                  </Tooltip>
+                </Button>
               </Link>
             ) : (
               ""
