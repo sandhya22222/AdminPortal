@@ -132,6 +132,9 @@ const UserAccessControl = () => {
         return (
           <Content>
             <Switch
+              disabled={currentUserDetailsAPIData?.preferred_username ===
+                record?.username &&
+              currentUserDetailsAPIData?.email === record?.email ? true : false}
               className={
                 record.enabled == true ? "!bg-green-500" : "!bg-gray-400"
               }
