@@ -7,8 +7,9 @@ import HeaderForTitle from "../../components/header/HeaderForTitle";
 import LanguageDocUpload from "./LanguageDocUpload";
 import LanguageForm from "./LanguageForm";
 import LanguageHeaderAction from "./LanguageHeaderAction";
-
+import { useNavigate } from "react-router-dom";
 function LanguageSettings() {
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const { Content } = Layout;
   const { Title } = Typography;
@@ -25,6 +26,17 @@ function LanguageSettings() {
     setLanguageName(searchParams.get("n"));
     setLanguageDefault(searchParams.get("d"));
   }, [searchParams]);
+  useEffect(() => {
+    const handleBrowserBackButton = (event) => {
+      navigate("/dashboard/language");
+    };
+
+    window.addEventListener("popstate", handleBrowserBackButton);
+
+    return () => {
+      window.removeEventListener("popstate", handleBrowserBackButton);
+    };
+  }, [navigate]);
   return (
     <Content className="pt-1">
       <Content className="!z-20">
