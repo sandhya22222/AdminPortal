@@ -160,12 +160,15 @@
 }
 
 .app-delete-icon {
-  color: var(--mp-danger-primary-color) !important;
+  /* color: var(--mp-danger-primary-color) !important; */
+  font-size: 17px !important;
 }
-.app-delete-icon:hover {
+/* .app-delete-icon:hover {
   color: var(--mp-danger-primary-color-h) !important;
+} */
+.app-edit-icon {
+  font-size: 20px !important;
 }
-
 .app-btn-reject {
   color: var(--mp-danger-primary-color) !important;
 }
