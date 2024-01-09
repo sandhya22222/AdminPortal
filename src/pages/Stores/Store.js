@@ -1427,7 +1427,6 @@ const Stores = () => {
         setDuplicateStoreLimitValues(response.data.response_body);
         console.log("response meeeeeeeeee", response);
         MarketplaceToaster.showToast(response);
-        setStoreLimitOnchangeValues(true);
       })
       .catch((error) => {
         console.log("Error Response From storelimit", error.response);

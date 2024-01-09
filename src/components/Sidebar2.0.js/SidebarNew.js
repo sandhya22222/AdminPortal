@@ -32,7 +32,7 @@ const pageLimitFromENV = process.env.REACT_APP_ITEM_PER_PAGE;
 
 //! Global Variables
 
-const SidebarNew = () => {
+const SidebarNew = ({ permissionValue }) => {
   const { t } = useTranslation();
   const [collapsed, setCollapsed] = useState(false);
   const [selectedItem, setSelectedItem] = useState([]);
@@ -41,148 +41,15 @@ const SidebarNew = () => {
   const [isHovering, setIsHovering] = useState(false);
 
   // get permissions from storage
-  const permissionValue = util.getPermissionData() || [];
+
   const auth = useAuth();
   // console.log("Permission value...", permissionValue)
 
   const { pathname } = useLocation();
 
   const navigate = useNavigate();
-  const myData = [
-    // {
-    //   key: "-1",
-    //   icon: <AiOutlineHome />,
-    //   label: "Home",
-    //   navigate_to: "/",
-    //   item: null,
-    // },
-    {
-      key: "1",
-      icon: <img src={ViewDashboard} />,
-      inactive_icon: <img src={ViewDashboard} />,
-      label: ` ${t("labels:dashboard")}`,
-      navigate_to: "/dashboard",
-      show_in_menu: true,
-      // children: [],
-    },
-    {
-      key: "2",
-      icon: <img src={Store} />,
-      inactive_icon: <img src={Store} />,
-      label: ` ${t("labels:stores")}`,
-      navigate_to: "/dashboard/store",
-      show_in_menu: true,
-    },
-    {
-      key: "3",
-      icon: <img src={TranslateIcon} />,
-      inactive_icon: <img src={TranslateIcon} />,
-      label: ` ${t("labels:languages")}`,
-      navigate_to: "/dashboard/language",
-      show_in_menu:
-        !auth.isAuthenticated ||
-        (auth.isAuthenticated &&
-          permissionValue &&
-          permissionValue.length > 0 &&
-          permissionValue.includes("UI-product-admin"))
-          ? false
-          : true,
-    },
-    // {
-    //   key: "4",
-    //   icon: <SettingOutlined />,
-    //   label: "Store Settings",
-    //   navigate_to: "/dashboard/storesetting",
-    // },
-    {
-      key: "5",
-      icon: <img src={PaymentTypeIcon} />,
-      inactive_icon: <img src={PaymentTypeIcon} />,
-      label: ` ${t("labels:payment_type")}`,
-      navigate_to: "/dashboard/paymenttype",
-      show_in_menu: true,
-    },
-    {
-      key: "6",
-      icon: (
-        <img
-          src={ProfileIcon}
-          alt="profileIcon"
-          width={"15px"}
-          height={"15px"}
-        />
-      ),
-      inactive_icon: (
-        <img
-          src={ProfileIcon}
-          alt="profileIcon"
-          width={"15px"}
-          height={"15px"}
-        />
-      ),
-      label: ` ${t("labels:profile")}`,
-      navigate_to: "/dashboard/userprofile",
-      show_in_menu: true,
-    },
-    // {
-    //   key: "9",
-    //   icon: <img src={ViewDashboard} />,
-    //   inactive_icon: <img src={ViewDashboard} />,
-    //   label: ` ${t("labels:dashboard")}`,
-    //   navigate_to: "/dashboard/newDashboard",
-    //   show_in_menu: true,
-    // },
-    {
-      key: "12",
-      icon: (
-        <img
-          src={UserAccessControl}
-          alt="userAccessControl"
-          width={"15px"}
-          height={"15px"}
-        />
-      ),
-      inactive_icon: (
-        <img
-          src={UserAccessControl}
-          alt="userAccessControl"
-          width={"15px"}
-          height={"15px"}
-        />
-      ),
-      label: `${t("labels:user_access_control")}`,
-      navigate_to: `/dashboard/user-access-control/list-user-roles?tab=0&page=1&limit=${pageLimitFromENV}`,
-      show_in_menu:!auth.isAuthenticated ||
-      (auth.isAuthenticated &&
-        permissionValue &&
-        permissionValue.length > 0 &&
-        permissionValue.includes("UI-user-access-control"))
-        ? true
-        : false,
-      // !auth.isAuthenticated ||
-      // (auth.isAuthenticated &&
-      //   permissionValue &&
-      //   permissionValue.length > 0 &&
-      //   permissionValue.includes("UI-user-access-control"))
-      //   ? true
-      //   : false,
-      // children: [],
-    },
-    // {
-    //   key: "7",
-    //   icon: <img src={Store} />,
-    //   inactive_icon: <img src={Store} />,
-    //   label: ` ${t("labels:admin_menu")}`,
-    //   navigate_to: "/dashboard/adminsettings",
-    //   show_in_menu: !auth.isAuthenticated ||
-    //   (auth.isAuthenticated &&
-    //     permissionValue &&
-    //     permissionValue.length > 0 &&
-    //     permissionValue.includes(UI-product-admin))
-    //     ? true
-    //     : false,
-    // },
-  ];
+
+  const [myData, setMyData] = useState([]);
 
   const handlePageRefresh = (navigationPath) => {
     if (pathname !== navigationPath) {
@@ -232,6 +99,150 @@ const SidebarNew = () => {
     }
   }, [pathname]);
 
+  useEffect(() => {
+    // const myData =
+    // const permissionValue = util.getPermissionData() || []; 
+    console.log("permission value", permissionValue.length > 0 && permissionValue.includes("UI-product-admin") ? false : true, permissionValue, window.sessionStorage.getItem("permissions_data"), myData)
+    if (permissionValue && permissionValue.length > 0) {
+      setMyData([
+        // {
+        //   key: "-1",
+        //   icon: <AiOutlineHome />,
+        //   label: "Home",
+        //   navigate_to: "/",
+        //   item: null,
+        // },
+        {
+          key: "1",
+          icon: <img src={ViewDashboard} />,
+          inactive_icon: <img src={ViewDashboard} />,
+          label: ` ${t("labels:dashboard")}`,
+          navigate_to: "/dashboard",
+          show_in_menu: true,
+          // children: [],
+        },
+        {
+          key: "2",
+          icon: <img src={Store} />,
+          inactive_icon: <img src={Store} />,
+          label: ` ${t("labels:stores")}`,
+          navigate_to: "/dashboard/store",
+          show_in_menu: true,
+        },
+        {
+          key: "3",
+          icon: <img src={TranslateIcon} />,
+          inactive_icon: <img src={TranslateIcon} />,
+          label: ` ${t("labels:languages")}`,
+          navigate_to: "/dashboard/language",
+          show_in_menu:
+            !auth.isAuthenticated ||
+              (auth.isAuthenticated &&
+                permissionValue &&
+                permissionValue.length > 0 &&
+                permissionValue.includes("UI-product-admin"))
+              ? false
+              : true,
+        },
+        // {
+        //   key: "4",
+        //   icon: <SettingOutlined />,
+        //   label: "Store Settings",
+        //   navigate_to: "/dashboard/storesetting",
+        // },
+        {
+          key: "5",
+          icon: <img src={PaymentTypeIcon} />,
+          inactive_icon: <img src={PaymentTypeIcon} />,
+          label: ` ${t("labels:payment_type")}`,
+          navigate_to: "/dashboard/paymenttype",
+          show_in_menu: true,
+        },
+        {
+          key: "6",
+          icon: (
+            <img
+              src={ProfileIcon}
+              alt="profileIcon"
+              width={"15px"}
+              height={"15px"}
+            />
+          ),
+          inactive_icon: (
+            <img
+              src={ProfileIcon}
+              alt="profileIcon"
+              width={"15px"}
+              height={"15px"}
+            />
+          ),
+          label: ` ${t("labels:profile")}`,
+          navigate_to: "/dashboard/userprofile",
+          show_in_menu: true,
+        },
+        // {
+        //   key: "9",
+        //   icon: <img src={ViewDashboard} />,
+        //   inactive_icon: <img src={ViewDashboard} />,
+        //   label: ` ${t("labels:dashboard")}`,
+        //   navigate_to: "/dashboard/newDashboard",
+        //   show_in_menu: true,
+        // },
+        {
+          key: "12",
+          icon: (
+            <img
+              src={UserAccessControl}
+              alt="userAccessControl"
+              width={"15px"}
+              height={"15px"}
+            />
+          ),
+          inactive_icon: (
+            <img
+              src={UserAccessControl}
+              alt="userAccessControl"
+              width={"15px"}
+              height={"15px"}
+            />
+          ),
+          label: `${t("labels:user_access_control")}`,
+          navigate_to: `/dashboard/user-access-control/list-user-roles?tab=0&page=1&limit=${pageLimitFromENV}`,
+          show_in_menu: !auth.isAuthenticated ||
+            (auth.isAuthenticated &&
+              permissionValue &&
+              permissionValue.length > 0 &&
+              permissionValue.includes("UI-user-access-control"))
+            ? true
+            : false,
+          // !auth.isAuthenticated ||
+          // (auth.isAuthenticated &&
+          //   permissionValue &&
+          //   permissionValue.length > 0 &&
+          //   permissionValue.includes("UI-user-access-control"))
+          //   ? true
+          //   : false,
+          // children: [],
+        },
+        // {
+        //   key: "7",
+        //   icon: <img src={Store} />,
+        //   inactive_icon: <img src={Store} />,
+        //   label: ` ${t("labels:admin_menu")}`,
+        //   navigate_to: "/dashboard/adminsettings",
+        //   show_in_menu: !auth.isAuthenticated ||
+        //   (auth.isAuthenticated &&
+        //     permissionValue &&
+        //     permissionValue.length > 0 &&
+        //     permissionValue.includes(UI-product-admin))
+        //     ? true
+        //     : false,
+        // },
+      ]);
+    }
+
+  }, [permissionValue])
+
   return (
     <Layout>
       <div>
@@ -257,12 +268,12 @@ const SidebarNew = () => {
               // top: 0,
               // bottom: 0,
             }}
-            // className="!flex-[0_0_20%] min-h-screen border-r-[1px] drop-shadow-[0_0px_2px_rgba(0,0,0,0.15)]"
+          // className="!flex-[0_0_20%] min-h-screen border-r-[1px] drop-shadow-[0_0px_2px_rgba(0,0,0,0.15)]"
           >
             <Spin
-              spinning={loadingEffect}
+              spinning={myData.length > 0 ? false : true}
               indicator={antIcon}
-              tip="Please Wait..."
+              tip=""
             >
               <Menu
                 mode="inline"
@@ -276,7 +287,7 @@ const SidebarNew = () => {
                   // backgroundColor: "#7d3192",
                 }}
               >
-                {myData.map((item) =>
+                {myData.length > 0 ? myData.map((item) =>
                   item.show_in_menu ? (
                     <Menu.Item
                       icon={
@@ -287,7 +298,7 @@ const SidebarNew = () => {
                       key={item.key}
                       // className="!bg-[var(--mp-brand-color)] !hover:bg-[var(--mp-brand-color)]"
                       onClick={() => {
-                        if(item.key == 2){
+                        if (item.key == 2) {
                           sessionStorage.setItem("currentStoretab", 1);
                         }
                         navigate(item.navigate_to);
@@ -300,10 +311,9 @@ const SidebarNew = () => {
                       )}
                     </Menu.Item>
                   ) : null
-                )}
+                ) : ""}
               </Menu>
-            </Spin>
-            <Content className="justify-center self-center px-[8px] items-center">
+              <Content className="justify-center self-center px-[8px] items-center">
               <Divider
                 style={{
                   background: "#FFFFFF",
@@ -313,6 +323,7 @@ const SidebarNew = () => {
                 }}
               />
             </Content>
+            </Spin>
             <Button
               type="text"
               icon={
