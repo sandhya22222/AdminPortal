@@ -23,6 +23,8 @@ import CreateGroup from "./CreateGroup";
 import StoreModal from "../../components/storeModal/StoreModal";
 import MarketplaceToaster from "../../util/marketplaceToaster";
 import { EditIcon } from "../../constants/media";
+import { usePageTitle } from "../../hooks/usePageTitle";
+import { MdEdit } from "react-icons/md";
 // import { DeleteIcon } from "../../constants/media";
 
 const { Content } = Layout;
@@ -34,6 +36,7 @@ const usersAllAPI = process.env.REACT_APP_USERS_ALL_API;
 const userAPI = process.env.REACT_APP_USERS_API;
 const updateUserStatusAPI = process.env.REACT_APP_USER_STATUS_API;
 const currentUserDetailsAPI = process.env.REACT_APP_USER_PROFILE_API;
+const portalInfo = JSON.parse(process.env.REACT_APP_PORTAL_INFO);
 
 const UserAccessControl = () => {
   const { t } = useTranslation();
@@ -57,6 +60,7 @@ const UserAccessControl = () => {
     useState(false);
   const [selectedUserData, setSelectedUserData] = useState({});
   const [currentUserDetailsAPIData, setCurrentUserDetailsAPIData] = useState();
+  usePageTitle(`${t("labels:user_access_control")}`);
 
   //!json data displaying for tabs
   const mainTabData = [
@@ -132,6 +136,13 @@ const UserAccessControl = () => {
         return (
           <Content>
             <Switch
+              disabled={
+                currentUserDetailsAPIData?.preferred_username ===
+                  record?.username &&
+                currentUserDetailsAPIData?.email === record?.email
+                  ? true
+                  : false
+              }
               className={
                 record.enabled == true ? "!bg-green-500" : "!bg-gray-400"
               }
@@ -169,7 +180,7 @@ const UserAccessControl = () => {
             {currentUserDetailsAPIData?.preferred_username ===
               record?.username &&
             currentUserDetailsAPIData?.email === record?.email ? null : (
-              <Button className="app-btn-icon" type="text">
+              <Button className="app-btn-icon app-delete-icon" type="text">
                 <Tooltip
                   placement="bottom"
                   title={`${t("labels:delete_user")}`}
@@ -183,7 +194,7 @@ const UserAccessControl = () => {
                     onClick={() => openUserDeleteModal(record.username)}
                     // role={"button"}
                     // className="app-delete-icon mt-[6px] cursor-pointer"
-                    className="text-base ml-[7px] anticon-delete-custom-border"
+                    // className="text-base ml-[7px] anticon-delete-custom-border"
                   />
                   {/* <img
                   src={DeleteIcon}
@@ -196,20 +207,21 @@ const UserAccessControl = () => {
             <Tooltip title={t("labels:edit_user")} className="ml-1">
               <Button
                 type="text"
-                className="app-btn-icon"
+                className="app-btn-icon app-edit-icon"
                 onClick={() => {
                   navigate(
                     `/dashboard/user-access-control/edit-user?id=${record.id}`
                   );
                 }}
               >
-                <Content className=" flex justify-center align-items-center">
+                {/* <Content className=" flex justify-center align-items-center">
                   <img
                     src={EditIcon}
                     alt="Edit Icon"
                     className=" !w-[12px] !text-center !text-sm cursor-pointer pt-[5px]"
                   />
-                </Content>
+                </Content> */}
+                <MdEdit />
               </Button>
             </Tooltip>
           </Content>

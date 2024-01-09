@@ -239,6 +239,10 @@ const removeAuthToken = () => {
   window.sessionStorage.removeItem("access_token");
 };
 
+const removePermission = () => {
+  window.sessionStorage.removeItem("permissions_data");
+};
+
 const util = {
   isDev,
   hasKeyCloakData,
@@ -265,6 +269,7 @@ const util = {
   setIsAuthorized,
   getPermissionData,
   setUserSelectedLngCode,
+  removePermission
 };
 
 export default util;

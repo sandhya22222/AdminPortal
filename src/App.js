@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useState } from "react";
 import { Container } from "reactstrap";
 import { Layout, Spin } from "antd";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -45,6 +45,7 @@ const umsBaseUrl = process.env.REACT_APP_USM_BASE_URL;
 const { Content } = Layout;
 const App = () => {
   const auth = useAuth();
+  const [permissionData, setPermissionData] = useState([]);
   useFavicon();
 
   const getPermissions = () => {
@@ -56,6 +57,7 @@ const App = () => {
         util.setPermissionData(
           res.data.response_body.resource_access[`${realmNameClient}`].roles
         );
+        setPermissionData(res.data.response_body.resource_access[`${realmNameClient}`].roles)
       })
       .catch((err) => {
         console.log("get permission api error", err);
@@ -85,6 +87,7 @@ const App = () => {
   }
 
   if (auth.isLoading) {
+    util.removePermission();
     return (
       <Layout className="h-[100vh]">
         <Content className="grid justify-items-center align-items-center h-full">
@@ -120,7 +123,7 @@ const App = () => {
             <Route path="/logout" element={<LogOut />} />
 
             {auth.isAuthenticated ? (
-              <Route path="/dashboard" element={<SidebarNew />}>
+              <Route path="/dashboard" element={<SidebarNew permissionValue={permissionData} />}>
                 <Route path="" element={<NewDashboard />} />
                 <>
                   {/* <Route path="language" element={<Language />} />
