@@ -203,5 +203,11 @@
    "razor_pay":"Razor Pay",
    "stripe":"Stripe",
    "account_restrictions":"Account Restrictions",
-   "store_restrictions":"Store Restrictions"
+   "store_restrictions":"Store Restrictions",
+   "change_password":"change password",
+   "profile_picture":"Profile picture",
+   "new_password":"Newpassword",
+   "confirm_password":"Confirm password",
+   "your_password_must_contain":"Your password must contain"
+
 }

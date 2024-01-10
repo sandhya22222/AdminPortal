@@ -7,7 +7,6 @@ import HeaderForTitle from "../../components/header/HeaderForTitle";
 import LanguageDocUpload from "./LanguageDocUpload";
 import LanguageForm from "./LanguageForm";
 import LanguageHeaderAction from "./LanguageHeaderAction";
-import { useNavigate } from "react-router-dom";
 function LanguageSettings() {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -19,7 +18,6 @@ function LanguageSettings() {
   const [languageName, setLanguageName] = useState();
   const [languageDefault, setLanguageDefault] = useState();
   const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
   useEffect(() => {
     setLanguageCode(searchParams.get("c"));
     setLanguageStatus(searchParams.get("s"));
@@ -128,7 +126,6 @@ function LanguageSettings() {
           </Content>
         </Content>
       </Content>
-      <Button onClick={handelClick}>testing</Button>
     </Content>
   );
 }
