@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Avatar, Layout, Typography, Row, Skeleton } from "antd";
+import {
+  Avatar,
+  Layout,
+  Typography,
+  Row,
+  Skeleton,
+  Input,
+  Button,
+  Col,
+} from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import moment from "moment";
@@ -10,6 +19,10 @@ import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { usePageTitle } from "../../hooks/usePageTitle";
 import util from "../../util/common";
+import StoreModal from "../../components/storeModal/StoreModal";
+import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+import MarketplaceToaster from "../../util/marketplaceToaster";
+
 const { Content } = Layout;
 const { Text, Title } = Typography;
 
@@ -24,6 +37,123 @@ const UserProfile = () => {
   const [errorMessage, setErrorMessage] = useState();
   const [langDirection, setLangDirection] = useState("ltr");
   const [hideEmail, setHideEmail] = useState("");
+  const [email, setEmail] = useState("");
+
+  const [userName, setUserName] = useState();
+  const [relmname, setRelmName] = useState();
+  // const [createdDate,setCreatedDate]=useState();
+  const [isPasswordChangeModalOpen, setIsPasswordChangeModalOpen] =
+    useState(false);
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
+
+  const showPasswordChangeModal = () => {
+    setIsPasswordChangeModalOpen(true);
+  };
+
+  // saving password
+  const handleOkPasswordChangeModal = () => {
+    //check wether the currrent password is same as in api call
+    // check wether the new password is equal to confirm passsword
+    // make the api call for changing the password
+    if (currentPassword === currentPassword) {
+      if (validatePassword()) {
+        if (password === confirmPassword) {
+          const response_body = {
+            realmname: relmname,
+            username: userName,
+            new_password: password,
+          };
+          console.log("Response Body: ", response_body);
+          //make the api cal
+          console.log("new password is set to : ", password, " successfully");
+          MarketplaceToaster.showToast(
+            util.getToastObject(`Succssfully updated the password`, "success")
+          );
+          setPassword("");
+          setCurrentPassword("");
+          setConfirmPassword("");
+          setIsPasswordChangeModalOpen(false);
+        } else {
+          console.log("erroroororororororororororo");
+          MarketplaceToaster.showToast(
+            util.getToastObject(
+              `Both the new password and confirm passsword should be same`,
+              "error"
+            )
+          );
+        }
+      } else {
+        MarketplaceToaster.showToast(
+          util.getToastObject(`Please enter a valid password`, "error")
+        );
+      }
+    } else {
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `The current password should match exisiting pass`,
+          "error"
+        )
+      );
+    }
+  };
+
+  // handeling Closing password modal
+  const handleCancelPasswordChangeModal = () => {
+    setIsPasswordChangeModalOpen(false);
+    setPassword("");
+    setConfirmPassword("");
+    setCurrentPassword("");
+  };
+
+  // fucntion to validate password
+  function validatePassword() {
+    // Check for at least 12 characters
+    if (password.length < 12) {
+      return false;
+    }
+    // Check for at least one uppercase letter
+    if (!/[A-Z]/.test(password)) {
+      return false;
+    }
+    // Check for at least one special character or symbol
+    if (!/[!@#$%^&*"'()_+{}\[\]:;<>,.?~\\/-]/.test(password)) {
+      return false;
+    }
+    // Check for at least one lowercase letter
+    if (!/[a-z]/.test(password)) {
+      return false;
+    }
+    // Check for at least one number
+    if (!/\d/.test(password)) {
+      return false;
+    }
+    return true;
+  }
+
+  const handlePasswordChange = (e) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+  };
+  const handleConfirmPasswordChange = (e) => {
+    const newPassword = e.target.value;
+    setConfirmPassword(newPassword);
+  };
+  const handleCurrnetPasswordChange = (e) => {
+    const newPassword = e.target.value;
+    setCurrentPassword(newPassword);
+  };
+
+  console.log("current pwd:", currentPassword);
+  console.log("new password", password);
+  console.log("confirm pwd:", confirmPassword);
+
+  // checking wethet the password is valid or not
+  useEffect(() => {
+    setIsPasswordValid(validatePassword());
+  }, [password]);
 
   const findAllWithoutPageStoreUsers = () => {
     MarketplaceServices.findAllWithoutPage(storeUsersAPI, null, false)
@@ -36,6 +166,12 @@ const UserProfile = () => {
         setStoreUsersData(response.data.response_body);
         setIsLoading(false);
         const email = response.data.response_body.email;
+        setEmail(email);
+        const name = response.data.response_body.username;
+        setUserName(name);
+        console.log("Username ---->: ", userName);
+        setRelmName(response.data.response_body.relmname);
+        console.log("Relm Name : ", relmname);
         const emailHide =
           email &&
           email.replace(
@@ -93,7 +229,7 @@ const UserProfile = () => {
           </Content>
         }
       />
-      <Content className="mt-[7.8rem] ">
+      <Content className="mt-[9rem] ">
         {isLoading ? (
           <Content className="!text-center !p-6">
             <Content className="inline-block shadow-sm  bg-[#FFFFFF] !rounded-md px-8 py-10 w-[500px]">
@@ -113,103 +249,339 @@ const UserProfile = () => {
             </Content>
           </Content>
         ) : (
-          <Content className="!text-center !p-6 !mx-[17rem]">
-            <Content className="inline-block">
-              <Content className="shadow-sm  bg-[#FFFFFF] !rounded-2xl flex flex-col items-center px-8 py-10 w-[500px]">
-                {/* <Row className="mb-2">
-                  <Avatar size={104} icon={<UserOutlined />} />
-                </Row>
-                </Row> */}
-                <Row className="mb-2">
-                  <Text className="font-medium text-lg">
-                    {storeUsersData && storeUsersData.username}
-                  </Text>
-                </Row>
-                <Row className="font-semibold mb-3">
-                  <Text to="">{hideEmail && hideEmail}</Text>
-                </Row>
-                <Content className="flex flex-col items-center">
-                  <Row className="mb-2">
-                    <Content className="text-md font-medium flex text-right">
-                      {t("labels:role")}:{" "}
-                    </Content>
-                    <Content
-                      className={`text-md font-medium ${
-                        langDirection === "rtl" ? "!mr-1" : ""
-                      }`}
-                    >
-                      {storeUsersData &&
-                        storeUsersData.groups.length > 0 &&
-                        storeUsersData.groups.map((ele) => (
-                          <span className="ml-1">
-                            {/* {ele.name === "" || ele.name === undefined
-                              ? "NA"
-                              : ele.name} */}
-                              {ele.name}
-                          </span>
-                        ))}
-                    </Content>
-                  </Row>
-                  <Row className="mb-2">
-                    <Content className="text-md font-medium">
-                      {t("labels:first_name")}:{" "}
-                    </Content>
-                    <Content
-                      className={`text-md font-medium ${
-                        langDirection === "rtl" ? "!mr-1" : "!ml-1"
-                      }`}
-                    >
-                      {/* {(storeUsersData && storeUsersData.firstName === "") ||
-                      (storeUsersData && storeUsersData.firstName === undefined)
-                        ? "NA"
-                        : storeUsersData && storeUsersData.firstName} */}
-                        {storeUsersData && storeUsersData.firstName}
-                    </Content>
-                  </Row>
-                  <Row className=" mb-2">
-                    <Content className="text-md font-medium">
-                      {t("labels:last_name")}:{" "}
-                    </Content>
-                    <Content
-                      className={`text-md font-medium ${
-                        langDirection === "rtl" ? "!mr-1" : "!ml-1"
-                      }`}
-                    >
-                      {/* {(storeUsersData && storeUsersData.lastName === "") ||
-                      (storeUsersData && storeUsersData.lastName === undefined)
-                        ? "NA"
-                        : storeUsersData && storeUsersData.lastName} */}
-                        {storeUsersData && storeUsersData.lastName}
-                    </Content>
-                  </Row>
-                  <Row className="">
-                    <Content className="text-md font-medium">
-                      {t("labels:onboarded_on")}:{" "}
-                      {/* {getGenerateDateAndTime(
+          // <Content className="!text-center !p-6 !mx-[17rem]">
+          //   <Content className="inline-block">
+          //     <Content className="shadow-sm  bg-[#FFFFFF] !rounded-2xl flex flex-col items-center px-8 py-10 w-[500px]">
+          //       {/* <Row className="mb-2">
+          //         <Avatar size={104} icon={<UserOutlined />} />
+          //       </Row>
+          //       </Row> */}
+          //       <Row className="mb-2">
+          //         <Text className="font-medium text-lg">
+          //           {storeUsersData && storeUsersData.username}
+          //         </Text>
+          //       </Row>
+          //       <Row className="font-semibold mb-3">
+          //         <Text to="">{hideEmail && hideEmail}</Text>
+          //       </Row>
+          //       <Content className="flex flex-col items-center">
+          //         <Row className="mb-2">
+          //           <Content className="text-md font-medium flex text-right">
+          //             {t("labels:role")}:{" "}
+          //           </Content>
+          //           <Content
+          //             className={`text-md font-medium ${
+          //               langDirection === "rtl" ? "!mr-1" : ""
+          //             }`}
+          //           >
+          //             {storeUsersData &&
+          //               storeUsersData.groups.length > 0 &&
+          //               storeUsersData.groups.map((ele) => (
+          //                 <span className="ml-1">
+          //                   {/* {ele.name === "" || ele.name === undefined
+          //                     ? "NA"
+          //                     : ele.name} */}
+          //                     {ele.name}
+          //                 </span>
+          //               ))}
+          //           </Content>
+          //         </Row>
+          //         <Row className="mb-2">
+          //           <Content className="text-md font-medium">
+          //             {t("labels:first_name")}:{" "}
+          //           </Content>
+          //           <Content
+          //             className={`text-md font-medium ${
+          //               langDirection === "rtl" ? "!mr-1" : "!ml-1"
+          //             }`}
+          //           >
+          //             {/* {(storeUsersData && storeUsersData.firstName === "") ||
+          //             (storeUsersData && storeUsersData.firstName === undefined)
+          //               ? "NA"
+          //               : storeUsersData && storeUsersData.firstName} */}
+          //               {storeUsersData && storeUsersData.firstName}
+          //           </Content>
+          //         </Row>
+          //         <Row className=" mb-2">
+          //           <Content className="text-md font-medium">
+          //             {t("labels:last_name")}:{" "}
+          //           </Content>
+          //           <Content
+          //             className={`text-md font-medium ${
+          //               langDirection === "rtl" ? "!mr-1" : "!ml-1"
+          //             }`}
+          //           >
+          //             {/* {(storeUsersData && storeUsersData.lastName === "") ||
+          //             (storeUsersData && storeUsersData.lastName === undefined)
+          //               ? "NA"
+          //               : storeUsersData && storeUsersData.lastName} */}
+          //               {storeUsersData && storeUsersData.lastName}
+          //           </Content>
+          //         </Row>
+          //         <Row className="">
+          //           <Content className="text-md font-medium">
+          //             {t("labels:onboarded_on")}:{" "}
+          //             {/* {getGenerateDateAndTime(
+          //               storeUsersData && storeUsersData.createdTimestamp,
+          //               "D MMMM YYYY"
+          //             )} */}
+          //           </Content>
+          //           <Content
+          //             className={`text-md font-medium ${
+          //               langDirection === "rtl" ? "!mr-1" : "!ml-1"
+          //             }`}
+          //           >
+          //             {/* {moment(
+          //               storeUsersData && storeUsersData.createdTimestamp
+          //             ).format("D MMMM YYYY")} */}
+          //             {formatTimestamp(
+          //               storeUsersData &&
+          //                 storeUsersData.createdTimestamp.toString()
+          //             )}
+          //           </Content>
+          //         </Row>
+          //       </Content>
+          //     </Content>
+          //   </Content>
+          // </Content>
+          <Content className="mx-3 my-24">
+            <Content className="w-[100%] bg-white my-3 p-2 rounded-md shadow-sm">
+              <div className="flex gap-2">
+                <img
+                  src={
+                    "https://images.unsplash.com/photo-1566275529824-cca6d008f3da?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cGhvdG98ZW58MHx8MHx8fDA%3D"
+                  }
+                  alt="Profile"
+                  className="w-16 aspect-square rounded-[50%] overflow-hidden"
+                />
+                <div className="flex flex-col justify-center">
+                  <Typography className="input-label-color  m-0 items-center">
+                    <span className="text-3xl">
+                      {storeUsersData && storeUsersData.username}
+                    </span>{" "}
+                    <span>
+                      {t("profile:onboarded_on")}{" "}
+                      {getGenerateDateAndTime(
                         storeUsersData && storeUsersData.createdTimestamp,
-                        "D MMMM YYYY"
-                      )} */}
-                    </Content>
-                    <Content
-                      className={`text-md font-medium ${
-                        langDirection === "rtl" ? "!mr-1" : "!ml-1"
-                      }`}
-                    >
-                      {/* {moment(
-                        storeUsersData && storeUsersData.createdTimestamp
-                      ).format("D MMMM YYYY")} */}
-                      {formatTimestamp(
-                        storeUsersData &&
-                          storeUsersData.createdTimestamp.toString()
-                      )}
-                    </Content>
-                  </Row>
-                </Content>
-              </Content>
+                        "MMM D YYYY"
+                      ).replace(/(\w{3} \d{1,2}) (\d{4})/, "$1, $2")}
+                    </span>
+                  </Typography>
+                  <Typography className="text-black m-0">
+                    {storeUsersData && storeUsersData.firstName}
+                  </Typography>
+                </div>
+              </div>
+            </Content>
+
+            <Content className="w-[100%] bg-white my-4 p-3 rounded-md shadow-sm">
+              <Row gutter={25} className="pb-2">
+                <Col span={12}>
+                  <Typography className="input-label-color">
+                    {t("profile:first_name")}
+                  </Typography>
+                </Col>
+                <Col>
+                  <Typography className="input-label-color">
+                    {t("profile:last_name")}
+                  </Typography>
+                </Col>
+              </Row>
+              <Row gutter={25} className="pb-2">
+                <Col span={12}>
+                  <Typography className="border border-gray-300 p-2 rounded-md min-h-[38px]">
+                    {storeUsersData && storeUsersData.firstName}
+                  </Typography>
+                </Col>
+                <Col span={12}>
+                  <Typography className="border border-gray-300 p-2 rounded-md min-h-[38px]">
+                    {storeUsersData &&
+                      storeUsersData.groups.length > 0 &&
+                      storeUsersData.groups.map((ele) => (
+                        <span>
+                          {ele.name.replace(/-/g, " ")}
+                        </span>
+                      ))}
+                  </Typography>
+                </Col>
+              </Row>
+              <Row className="pb-2">
+                <Col>
+                  <Typography className="input-label-color">
+                    {t("profile:email_address")}
+                  </Typography>
+                </Col>
+              </Row>
+              <Row gutter={25}>
+                <Col span={12}>
+                  <Typography className="border border-gray-300 p-2 rounded-md min-h-[38px]">
+                    {email}
+                  </Typography>
+                </Col>
+                <Col>
+                  <Button
+                    onClick={showPasswordChangeModal}
+                    className="min-h-[38px]"
+                  >
+                    {t("profile:change_password")}
+                  </Button>
+                </Col>
+              </Row>
+              <Typography className="input-label-color py-2">
+                {t("profile:profile_picture")}
+              </Typography>
+              <img
+                src={
+                  "https://images.unsplash.com/photo-1566275529824-cca6d008f3da?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cGhvdG98ZW58MHx8MHx8fDA%3D"
+                }
+                alt="Profile"
+                className=" w-24 aspect-square "
+              />
             </Content>
           </Content>
         )}
       </Content>
+      {/* Change password modal */}
+      <StoreModal
+        isVisible={isPasswordChangeModalOpen}
+        title={t("profile:change_password")}
+        okCallback={() => handleOkPasswordChangeModal()}
+        cancelCallback={() => handleCancelPasswordChangeModal()}
+        okButtonText={`${t("common:save")}`}
+        cancelButtonText={`${t("common:cancel")}`}
+        isSpin={""}
+        width={1000}
+      >
+        <hr />
+        <Content className="mt-2">
+          <Row gutter={50}>
+            <Col span={12}>
+              <Content>
+                <Typography className="input-label-color py-2">
+                  {t("profile:current_password")}
+                </Typography>
+                <Input.Password
+                  placeholder={t("profile:enter_your_current_password")}
+                  value={currentPassword}
+                  onChange={handleCurrnetPasswordChange}
+                />
+              </Content>
+            </Col>
+          </Row>
+          <Row gutter={50} className="mt-6 mb-2">
+            <Col span={12}>
+              <Content className="mb-2">
+                <Typography className="input-label-color py-2">
+                  {t("profile:new_password")}
+                </Typography>
+
+                <Input.Password
+                  placeholder={t("profile:enter_your_new_password")}
+                  value={password}
+                  onChange={handlePasswordChange}
+                />
+                {password && !isPasswordValid && (
+                  <div style={{ color: "red" }}>
+                    {"Please enter a valid password"}
+                  </div>
+                )}
+              </Content>
+              <Content>
+                <Typography className="input-label-color py-2">
+                  {t("profile:confirm_password")}
+                </Typography>
+                <Input.Password
+                  placeholder={t("profile:enter_your_new_password")}
+                  value={confirmPassword}
+                  onChange={handleConfirmPasswordChange}
+                  className={
+                    password &&
+                    confirmPassword &&
+                    password !== "" &&
+                    confirmPassword !== "" &&
+                    password !== confirmPassword
+                      ? "custom-error-input"
+                      : null
+                  }
+                />
+                {password &&
+                  confirmPassword &&
+                  password !== "" &&
+                  confirmPassword !== "" &&
+                  password !== confirmPassword && (
+                    <div style={{ color: "red" }}>{"password mismatch"}</div>
+                  )}
+              </Content>
+            </Col>
+            <Col span={12} className=" border-l-2 border-gray-300">
+              <Content>
+                <Title level={5}>
+                  {t("profile:your_password_must_contain")}
+                </Title>
+                <p>
+                  <IoMdCheckmarkCircleOutline
+                    style={{
+                      color: `${
+                        password && password.length >= 12 ? "green" : "initial"
+                      }`,
+                      display: "inline",
+                    }}
+                  />{" "}
+                  {t("profile:atleast_12_charecters")}
+                </p>
+                <p>
+                  <IoMdCheckmarkCircleOutline
+                    style={{
+                      color: `${
+                        password && /[A-Z]/.test(password) ? "green" : "initial"
+                      }`,
+                      display: "inline",
+                    }}
+                  />{" "}
+                  {t("profile:one_or_more_upper_case_letter")}
+                </p>
+                <p>
+                  <IoMdCheckmarkCircleOutline
+                    style={{
+                      color: `${
+                        password &&
+                        /[!@#$%^&*"'()_+{}\[\]:;<>,.?~\\/-]/.test(password)
+                          ? "green"
+                          : "initial"
+                      }`,
+                      display: "inline",
+                    }}
+                  />{" "}
+                  {t("profile:one_or_more_special_charecter_or_symbols")}
+                </p>
+                <p>
+                  <IoMdCheckmarkCircleOutline
+                    style={{
+                      color: `${
+                        password && /[a-z]/.test(password) ? "green" : "initial"
+                      }`,
+                      display: "inline",
+                    }}
+                  />{" "}
+                  {t("profile:one_or_more_lower_case_letters")}
+                </p>
+                <p>
+                  <IoMdCheckmarkCircleOutline
+                    style={{
+                      color: `${
+                        password && /[\d]/.test(password) ? "green" : "initial"
+                      }`,
+                      display: "inline",
+                    }}
+                  />{" "}
+                  {t("profile:one_or_more_numbers")}
+                </p>
+              </Content>
+            </Col>
+          </Row>
+        </Content>
+        <hr />
+      </StoreModal>
     </Content>
   );
 };

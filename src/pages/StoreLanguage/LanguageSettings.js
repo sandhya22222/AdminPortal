@@ -1,7 +1,7 @@
 import { Divider, Layout, Typography, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
 // import MarketplaceAppConfig from "../../util/MarketplaceMutlitenancy";
 import LanguageDocUpload from "./LanguageDocUpload";
@@ -19,6 +19,7 @@ function LanguageSettings() {
   const [languageName, setLanguageName] = useState();
   const [languageDefault, setLanguageDefault] = useState();
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   useEffect(() => {
     setLanguageCode(searchParams.get("c"));
     setLanguageStatus(searchParams.get("s"));
@@ -127,6 +128,7 @@ function LanguageSettings() {
           </Content>
         </Content>
       </Content>
+      <Button onClick={handelClick}>testing</Button>
     </Content>
   );
 }

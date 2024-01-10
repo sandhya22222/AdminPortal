@@ -1,0 +1,20 @@
+{
+  "role": "Role",
+  "first_name": "First Name",
+  "last_name": "Last Name",
+  "onboarded_on": "Onboarded on",
+  "email_address": "Email address",
+  "profile_picture": "Profile Picture",
+  "change_password": "Change Password",
+  "new_password": "New Password",
+  "confirm_password": "Confirm Password",
+  "current_password": "Current Password",
+  "your_password_must_contain": "Your Password must contain",
+  "atleast_12_charecters": "Atleast 12 charecters",
+  "one_or_more_upper_case_letter": "One or more upper case letter",
+  "one_or_more_special_charecter_or_symbols": "One or more special charecter or symbols",
+  "one_or_more_lower_case_letters": "One or more lower case letters",
+  "one_or_more_numbers": "One or more numbers",
+  "enter_your_current_password": "Enter Your current password",
+  "enter_your_new_password": "Enter your new password"
+}
