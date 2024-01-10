@@ -7,9 +7,9 @@ import HeaderForTitle from "../../components/header/HeaderForTitle";
 import LanguageDocUpload from "./LanguageDocUpload";
 import LanguageForm from "./LanguageForm";
 import LanguageHeaderAction from "./LanguageHeaderAction";
-import { Button } from "antd";
-
+import { useNavigate } from "react-router-dom";
 function LanguageSettings() {
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const { Content } = Layout;
   const { Title } = Typography;
@@ -27,30 +27,17 @@ function LanguageSettings() {
     setLanguageName(searchParams.get("n"));
     setLanguageDefault(searchParams.get("d"));
   }, [searchParams]);
-
   useEffect(() => {
-    console.log("inside useEffect");
-    const handlePopstate = (event) => {
-      console.log("back button presed");
-      navigate(`/dashboard/language`);
-      // Perform your custom actions
+    const handleBrowserBackButton = (event) => {
+      navigate("/dashboard/language");
     };
 
-    // Add the event listener when the component mounts
+    window.addEventListener("popstate", handleBrowserBackButton);
 
-    window.addEventListener("popstate", handlePopstate);
-
-    // Remove the event listener when the component unmounts
     return () => {
-      window.removeEventListener("popstate", handlePopstate);
+      window.removeEventListener("popstate", handleBrowserBackButton);
     };
-  }, []);
-
-  const handelClick = () => {
-    console.log("Button pressed");
-    navigate(`/dashboard/language`);
-  }
-
+  }, [navigate]);
   return (
     <Content className="pt-1">
       <Content className="!z-20">
