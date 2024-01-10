@@ -119,8 +119,7 @@ const CreateUsers = () => {
 
   // validation of user form
   const userFormValidation = () => {
-    const emailRegex =
-      /^[A-Za-z\_]+[0-9]{0,64}@([A-Za-z\-]{3,255}\.)+[A-Za-z]{2,4}$/;
+    const emailRegex = /^[A-Za-z\_0-9]{3,64}@[A-Za-z\-]{3,255}\.[A-Za-z]{2,3}$/;
     const passwordRegex =
       /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{12,64}$/;
     const userNameRegex = /^[A-Za-z0-9_\- ]+$/;
@@ -289,8 +288,7 @@ const CreateUsers = () => {
   };
 
   const userFormValidationEdit = () => {
-    const emailRegex =
-      /^[A-Za-z\_]+[0-9]{0,64}@([A-Za-z\-]{3,255}\.)+[A-Za-z]{2,4}$/;
+    const emailRegex = /^[A-Za-z\_0-9]{3,64}@[A-Za-z\-]{3,255}\.[A-Za-z]{2,3}$/;
     let count = 1;
     if (emailId === "") {
       count--;
@@ -322,9 +320,9 @@ const CreateUsers = () => {
   const handleChangeRole = (value) => {
     setSelectRole(value);
     setInvalidRole(false);
-    if (pageAction != "add") {
+    // if (pageAction != "add") {
       setIsUserDetailsEditted(true);
-    }
+    // /}
   };
 
   //handle change of type select
@@ -334,6 +332,7 @@ const CreateUsers = () => {
   //*Handler for the status change(Active and Inactive)
   const onChange = (checked) => {
     setUserStatus(checked);
+    setIsUserDetailsEditted(true);
   };
 
   //useEffect to form the data for the role dropdown
@@ -462,6 +461,7 @@ const CreateUsers = () => {
                         onChange={(e) => {
                           setUserName(String(e.target.value).toLowerCase());
                           setInvalidUserName(false);
+                          setIsUserDetailsEditted(true);
                         }}
                         onBlur={(e) => {
                           setUserName(
@@ -486,9 +486,9 @@ const CreateUsers = () => {
                             const regex = /^[a-zA-Z]*$/; // only allow letters
                             if (regex.test(value)) {
                               setFirstName(e.target.value);
-                              if (pageAction != "add") {
+                              // if (pageAction != "add") {
                                 setIsUserDetailsEditted(true);
-                              }
+                              // }
                             }
                           }}
                           minLength={nameMinLength}
@@ -510,9 +510,9 @@ const CreateUsers = () => {
                             const regex = /^[a-zA-Z]*$/; // only allow letters
                             if (regex.test(value)) {
                               setLastName(e.target.value);
-                              if (pageAction != "add") {
+                              // if (pageAction != "add") {
                                 setIsUserDetailsEditted(true);
-                              }
+                              // }
                             }
                           }}
                           minLength={nameMinLength}
@@ -537,11 +537,11 @@ const CreateUsers = () => {
                         }`}
                         value={emailId}
                         onChange={(e) => {
-                          setEmailId(e.target.value);
+                          setEmailId(e.target.value.toLowerCase());
                           setInvalidEmailId(false);
-                          if (pageAction != "add") {
+                          // if (pageAction != "add") {
                             setIsUserDetailsEditted(true);
-                          }
+                          // }
                         }}
                         onBlur={(e) => {
                           setEmailId(
@@ -571,6 +571,7 @@ const CreateUsers = () => {
                             onChange={(e) => {
                               setPassword(e.target.value);
                               setInValidPassword(false);
+                              setIsUserDetailsEditted(true);
                             }}
                             onBlur={(e) => {
                               setPassword(
@@ -647,7 +648,7 @@ const CreateUsers = () => {
                       className={`app-btn-primary ml-2
                        `}
                       disabled={
-                        pageAction != "add" ? !isUserDetailsEditted : false
+                        !isUserDetailsEditted
                       }
                     >
                       {pageAction === "edit"
