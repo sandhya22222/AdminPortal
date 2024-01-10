@@ -1,12 +1,13 @@
 import { Divider, Layout, Typography, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
 // import MarketplaceAppConfig from "../../util/MarketplaceMutlitenancy";
 import LanguageDocUpload from "./LanguageDocUpload";
 import LanguageForm from "./LanguageForm";
 import LanguageHeaderAction from "./LanguageHeaderAction";
+import { Button } from "antd";
 
 function LanguageSettings() {
   const { t } = useTranslation();
@@ -18,6 +19,7 @@ function LanguageSettings() {
   const [languageName, setLanguageName] = useState();
   const [languageDefault, setLanguageDefault] = useState();
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   useEffect(() => {
     setLanguageCode(searchParams.get("c"));
     setLanguageStatus(searchParams.get("s"));
@@ -25,6 +27,30 @@ function LanguageSettings() {
     setLanguageName(searchParams.get("n"));
     setLanguageDefault(searchParams.get("d"));
   }, [searchParams]);
+
+  useEffect(() => {
+    console.log("inside useEffect");
+    const handlePopstate = (event) => {
+      console.log("back button presed");
+      navigate(`/dashboard/language`);
+      // Perform your custom actions
+    };
+
+    // Add the event listener when the component mounts
+
+    window.addEventListener("popstate", handlePopstate);
+
+    // Remove the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("popstate", handlePopstate);
+    };
+  }, []);
+
+  const handelClick = () => {
+    console.log("Button pressed");
+    navigate(`/dashboard/language`);
+  }
+
   return (
     <Content className="pt-1">
       <Content className="!z-20">
@@ -115,6 +141,7 @@ function LanguageSettings() {
           </Content>
         </Content>
       </Content>
+      <Button onClick={handelClick}>testing</Button>
     </Content>
   );
 }
