@@ -9,7 +9,7 @@ const { Content } = Layout;
 const { Title } = Typography;
 
 const PaymentType = () => {
-  usePageTitle("Payment Type");
+  usePageTitle(t("labels:payment_type"));
   const { t } = useTranslation();
   useEffect(() => {
     window.scroll(0, 0);

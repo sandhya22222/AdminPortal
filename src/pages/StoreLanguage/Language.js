@@ -45,7 +45,7 @@ const downloadBackendKeysAPI =
   process.env.REACT_APP_DOWNLOAD_ADMIN_BACKEND_MESSAGE_DETAILS;
 const Language = () => {
   const { t } = useTranslation();
-  usePageTitle("Languages");
+  usePageTitle(t("labels:languages"));
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -77,8 +77,8 @@ const Language = () => {
           <Content className="inline-block">
             <Tooltip title={record.language} overlayStyle={{ zIndex: 1 }}>
               <Text
-                className={`mx-2 ${
-                  record.is_default ? "!max-w-[150px]" : "!max-w-[150px]"
+                className={`mx-1 ${
+                  record.is_default ? "!max-w-[80px]" : "!max-w-[150px]"
                 } `}
                 ellipsis={true}
               >

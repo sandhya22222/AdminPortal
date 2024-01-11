@@ -135,7 +135,6 @@ const StoreSettings = () => {
   const [bannerAbsoluteImage, setBannerAbsoluteImage] = useState([]);
   const instance = axios.create();
 
-
   const [colorCodeValidation, setColorCodeValidation] = useState({
     pageBgColorValidation: false,
     pageTextColorValidation: false,
@@ -1439,7 +1438,8 @@ const StoreSettings = () => {
             console.log("res analysis", res);
             setIsStoreLimitDataLoading(false);
             setAnalysisCount(res.data);
-          }).catch((error) => {
+          })
+          .catch((error) => {
             // setIsLoading(false);
             setIsStoreLimitDataLoading(false);
             console.log("Server error from 4sight api ", error.response);
