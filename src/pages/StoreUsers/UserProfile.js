@@ -360,7 +360,7 @@ const UserProfile = () => {
                       {storeUsersData && storeUsersData.username}
                     </span>{" "}
                     <span>
-                      {t("profile:onboarded_on")}{" "}
+                      {t("labels:onboarded_on")}{" "}
                       {getGenerateDateAndTime(
                         storeUsersData && storeUsersData.createdTimestamp,
                         "MMM D YYYY"
@@ -368,7 +368,11 @@ const UserProfile = () => {
                     </span>
                   </Typography>
                   <Typography className="text-black m-0">
-                    {storeUsersData && storeUsersData.firstName}
+                    {storeUsersData &&
+                      storeUsersData.groups.length > 0 &&
+                      storeUsersData.groups.map((ele) => (
+                        <span>{ele.name.replace(/-/g, " ")}</span>
+                      ))}
                   </Typography>
                 </div>
               </div>
@@ -378,12 +382,12 @@ const UserProfile = () => {
               <Row gutter={25} className="pb-2">
                 <Col span={12}>
                   <Typography className="input-label-color">
-                    {t("profile:first_name")}
+                    {t("labels:first_name")}
                   </Typography>
                 </Col>
                 <Col>
                   <Typography className="input-label-color">
-                    {t("profile:last_name")}
+                    {t("labels:last_name")}
                   </Typography>
                 </Col>
               </Row>
@@ -395,18 +399,14 @@ const UserProfile = () => {
                 </Col>
                 <Col span={12}>
                   <Typography className="border border-gray-300 p-2 rounded-md min-h-[38px]">
-                    {storeUsersData &&
-                      storeUsersData.groups.length > 0 &&
-                      storeUsersData.groups.map((ele) => (
-                        <span>{ele.name.replace(/-/g, " ")}</span>
-                      ))}
+                    {storeUsersData && storeUsersData.lastName}
                   </Typography>
                 </Col>
               </Row>
               <Row className="pb-2">
                 <Col>
                   <Typography className="input-label-color">
-                    {t("profile:email_address")}
+                    {t("labels:email")}
                   </Typography>
                 </Col>
               </Row>
@@ -421,12 +421,12 @@ const UserProfile = () => {
                     onClick={showPasswordChangeModal}
                     className="min-h-[38px]"
                   >
-                    {t("profile:change_password")}
+                    {t("labels:change_password")}
                   </Button>
                 </Col>
               </Row>
               <Typography className="input-label-color py-2">
-                {t("profile:profile_picture")}
+                {t("labels:profile_picture")}
               </Typography>
               <img
                 src={
@@ -442,11 +442,11 @@ const UserProfile = () => {
       {/* Change password modal */}
       <StoreModal
         isVisible={isPasswordChangeModalOpen}
-        title={t("profile:change_password")}
+        title={t("labels:change_password")}
         okCallback={() => handleOkPasswordChangeModal()}
         cancelCallback={() => handleCancelPasswordChangeModal()}
-        okButtonText={`${t("common:save")}`}
-        cancelButtonText={`${t("common:cancel")}`}
+        okButtonText={`${t("label:save")}`}
+        cancelButtonText={`${t("label:cancel")}`}
         isSpin={""}
         width={1000}
       >
@@ -456,10 +456,10 @@ const UserProfile = () => {
             <Col span={12}>
               <Content>
                 <Typography className="input-label-color py-2">
-                  {t("profile:current_password")}
+                  {t("labels:current_password")}
                 </Typography>
                 <Input.Password
-                  placeholder={t("profile:enter_your_current_password")}
+                  placeholder={t("placeholders:enter_password")}
                   value={currentPassword}
                   onChange={handleCurrnetPasswordChange}
                 />
@@ -470,11 +470,11 @@ const UserProfile = () => {
             <Col span={12}>
               <Content className="mb-2">
                 <Typography className="input-label-color py-2">
-                  {t("profile:new_password")}
+                  {t("labels:new_password")}
                 </Typography>
 
                 <Input.Password
-                  placeholder={t("profile:enter_your_new_password")}
+                  placeholder={t("placeholders:enter_your_new_password")}
                   value={password}
                   onChange={handlePasswordChange}
                 />
@@ -486,10 +486,10 @@ const UserProfile = () => {
               </Content>
               <Content>
                 <Typography className="input-label-color py-2">
-                  {t("profile:confirm_password")}
+                  {t("labels:confirm_password")}
                 </Typography>
                 <Input.Password
-                  placeholder={t("profile:enter_your_new_password")}
+                  placeholder={t("placeholders:enter_your_new_password")}
                   value={confirmPassword}
                   onChange={handleConfirmPasswordChange}
                   className={
@@ -514,7 +514,7 @@ const UserProfile = () => {
             <Col span={12} className=" border-l-2 border-gray-300">
               <Content>
                 <Title level={5}>
-                  {t("profile:your_password_must_contain")}
+                  {t("labels:your_password_must_contain")}
                 </Title>
                 <p>
                   <IoMdCheckmarkCircleOutline
@@ -525,7 +525,7 @@ const UserProfile = () => {
                       display: "inline",
                     }}
                   />{" "}
-                  {t("profile:atleast_12_charecters")}
+                  {t("messages:atleast_12_charecters")}
                 </p>
                 <p>
                   <IoMdCheckmarkCircleOutline
@@ -536,7 +536,7 @@ const UserProfile = () => {
                       display: "inline",
                     }}
                   />{" "}
-                  {t("profile:one_or_more_upper_case_letter")}
+                  {t("messages:one_or_more_upper_case_letter")}
                 </p>
                 <p>
                   <IoMdCheckmarkCircleOutline
@@ -550,7 +550,7 @@ const UserProfile = () => {
                       display: "inline",
                     }}
                   />{" "}
-                  {t("profile:one_or_more_special_charecter_or_symbols")}
+                  {t("messages:one_or_more_special_charecter_or_symbols")}
                 </p>
                 <p>
                   <IoMdCheckmarkCircleOutline
@@ -561,7 +561,7 @@ const UserProfile = () => {
                       display: "inline",
                     }}
                   />{" "}
-                  {t("profile:one_or_more_lower_case_letters")}
+                  {t("messages:one_or_more_lower_case_letters")}
                 </p>
                 <p>
                   <IoMdCheckmarkCircleOutline
@@ -572,7 +572,7 @@ const UserProfile = () => {
                       display: "inline",
                     }}
                   />{" "}
-                  {t("profile:one_or_more_numbers")}
+                  {t("messages:one_or_more_numbers")}
                 </p>
               </Content>
             </Col>

@@ -82,7 +82,7 @@ i18n
     backend: {
       loadPath: getCurrentHost,
     },
-    ns: ["placeholders", "messages", "labels","profile"],
+    ns: ["placeholders", "messages", "labels"],
     interpolation: {
       escapeValue: false,
     },

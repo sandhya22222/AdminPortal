@@ -15,5 +15,6 @@
     "enter_number_to_basic":"E.g. 100",
     "user_name_placeholder":"Enter user name",
     "role_name_placeholder":"Enter role name",
-    "role_description_placeholder":"Enter role description"
+    "role_description_placeholder":"Enter role description",
+    "enter_your_new_password":"Enter your new password"
 }
