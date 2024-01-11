@@ -64,6 +64,10 @@ const CreateUsers = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isUserDetailFetching, setIsUserDetailFetching] = useState(false);
   const [isUserDetailsEditted, setIsUserDetailsEditted] = useState(false);
+  const [currentFirstName, setCurrentFirstName ] = useState("");
+  const [currentLastName, setCurrentLastName ] = useState("");
+  const [currentRole, setCurrentRole ] = useState("");
+  const [currentEmailId, setCurrentEmailId ] = useState("");
 
   //Get call of groups
   const findAllGroupLists = () => {
@@ -379,6 +383,10 @@ const CreateUsers = () => {
             setLastName(selectedUserDetails[0].lastName);
             setEmailId(selectedUserDetails[0].email);
             setSelectRole(selectedUserDetails[0].groups[0].name);
+            setCurrentFirstName(selectedUserDetails[0].firstName);
+            setCurrentLastName(selectedUserDetails[0].lastName);
+            setCurrentRole(selectedUserDetails[0].groups[0].name);
+            setCurrentEmailId(selectedUserDetails[0].email)
             setUserStatus(selectedUserDetails[0].enabled);
           }
         }
@@ -460,18 +468,21 @@ const CreateUsers = () => {
                         value={userName}
                         disabled={pageAction !== "add" ? true : false}
                         onChange={(e) => {
-                            const alphaWithoutSpaces = /^[a-zA-Z0-9]+$/;
-                            if (
-                              e.target.value !== "" &&
-                              validator.matches(e.target.value, alphaWithoutSpaces)
-                            ) {
-                              setUserName(String(e.target.value).toLowerCase());
-                              setInvalidUserName(false);
-                              setIsUserDetailsEditted(true);
-                            } else if (e.target.value === "") {
-                              setUserName(e.target.value)
-                            }
-                          }}
+                          const alphaWithoutSpaces = /^[a-zA-Z0-9]+$/;
+                          if (
+                            e.target.value !== "" &&
+                            validator.matches(
+                              e.target.value,
+                              alphaWithoutSpaces
+                            )
+                          ) {
+                            setUserName(String(e.target.value).toLowerCase());
+                            setInvalidUserName(false);
+                            setIsUserDetailsEditted(true);
+                          } else if (e.target.value === "") {
+                            setUserName(e.target.value);
+                          }
+                        }}
                         onBlur={(e) => {
                           setUserName(
                             e.target.value.trim().replace(/\s+/g, " ")
@@ -673,7 +684,12 @@ const CreateUsers = () => {
                             selectRole
                             ? false
                             : true
-                          : !isUserDetailsEditted
+                          : firstName != currentFirstName ||
+                            lastName != currentLastName ||
+                            emailId != currentEmailId ||
+                            selectRole != currentRole
+                          ? false
+                          : true
                       }
                     >
                       {pageAction === "edit"
