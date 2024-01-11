@@ -71,7 +71,7 @@ const instance = axios.create();
 const Dashboard = () => {
   const auth = useAuth();
   const dispatch = useDispatch();
-  usePageTitle("Dashboard");
+  usePageTitle(t("labels:dashboard"));
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [dashboardData, setDashboardData] = useState();
@@ -637,8 +637,8 @@ const Dashboard = () => {
             {item.store_name && item.store_name.length > 20
               ? `${item.store_name.slice(0, 20)}...`
               : item.store_name
-                ? item.store_name
-                : "null"}
+              ? item.store_name
+              : "null"}
           </span>
         </Tooltip>
       ),
@@ -648,8 +648,8 @@ const Dashboard = () => {
             {item.vendor_name && item.vendor_name.length > 20
               ? `${item.vendor_name.slice(0, 20)}...`
               : item.vendor_name
-                ? item.vendor_name
-                : "null"}
+              ? item.vendor_name
+              : "null"}
           </span>
         </Tooltip>
       ),
@@ -660,8 +660,9 @@ const Dashboard = () => {
       ),
       units: item.order_placed ? item.order_placed : "null",
       sales: (
-        <span style={{ color: "#52C41A" }}>{`${item.symbol ? item.symbol : ""
-          }${item.sum_amount.toFixed(2)}`}</span>
+        <span style={{ color: "#52C41A" }}>{`${
+          item.symbol ? item.symbol : ""
+        }${item.sum_amount.toFixed(2)}`}</span>
       ),
     };
   });
@@ -708,8 +709,8 @@ const Dashboard = () => {
             {item.store_name && item.store_name.length > 20
               ? `${item.store_name.slice(0, 20)}...`
               : item.store_name
-                ? item.store_name
-                : "null"}
+              ? item.store_name
+              : "null"}
           </span>
         </Tooltip>
       ),
@@ -717,8 +718,9 @@ const Dashboard = () => {
       product_type: <Tag color="magenta">Physical</Tag>,
       units: item.sum_quantity,
       sales: (
-        <span style={{ color: "#52C41A" }}>{`${item.symbol
-          } ${item.sum_amount.toFixed(2)}`}</span>
+        <span style={{ color: "#52C41A" }}>{`${
+          item.symbol
+        } ${item.sum_amount.toFixed(2)}`}</span>
       ),
     };
   });
@@ -757,8 +759,8 @@ const Dashboard = () => {
             {item.vendor_name && item.vendor_name.length > 20
               ? `${item.min_store_id.slice(0, 20)}...`
               : item.vendor_name
-                ? item.vendor_name
-                : "null"}
+              ? item.vendor_name
+              : "null"}
           </span>
         </Tooltip>
       ),
@@ -768,16 +770,17 @@ const Dashboard = () => {
             {item.store_name && item.store_name.length > 20
               ? `${item.min_store_id.slice(0, 20)}...`
               : item.store_name
-                ? item.store_name
-                : "null"}
+              ? item.store_name
+              : "null"}
           </span>
         </Tooltip>
       ),
 
       units: item.sum_quantity,
       sales: (
-        <span style={{ color: "#52C41A" }}>{`${item.symbol
-          } ${item.sum_amount.toFixed(2)}`}</span>
+        <span style={{ color: "#52C41A" }}>{`${
+          item.symbol
+        } ${item.sum_amount.toFixed(2)}`}</span>
       ),
     };
   });
@@ -1444,29 +1447,29 @@ const Dashboard = () => {
                   </Title>
                   {updatedTimeState === "products"
                     ? renderUpdatedTime(
-                      "products",
-                      updatedTimes.products,
-                      refetchProducts
-                    )
+                        "products",
+                        updatedTimes.products,
+                        refetchProducts
+                      )
                     : updatedTimeState === "stores"
-                      ? renderUpdatedTime(
+                    ? renderUpdatedTime(
                         "stores",
                         updatedTimes.stores,
                         refetchStores
                       )
-                      : updatedTimeState === "vendors"
-                        ? renderUpdatedTime(
-                          "vendors",
-                          updatedTimes.vendors,
-                          refetchVendors
-                        )
-                        : updatedTimeState === "types"
-                          ? renderUpdatedTime(
-                            "types",
-                            updatedTimes.types,
-                            refetchTypes
-                          )
-                          : null}
+                    : updatedTimeState === "vendors"
+                    ? renderUpdatedTime(
+                        "vendors",
+                        updatedTimes.vendors,
+                        refetchVendors
+                      )
+                    : updatedTimeState === "types"
+                    ? renderUpdatedTime(
+                        "types",
+                        updatedTimes.types,
+                        refetchTypes
+                      )
+                    : null}
                 </div>
 
                 <Tabs

@@ -371,7 +371,7 @@ const StoreImages = ({
   useEffect(() => {
     setBannerImagesLength(bannerAbsoluteImage && bannerAbsoluteImage.length);
   }, [bannerAbsoluteImage]);
-
+  console.log("bannerImagesLength", bannerImagesLength);
   return (
     <Content className=" mb-2">
       <Content className="flex !mb-3 gap-1">

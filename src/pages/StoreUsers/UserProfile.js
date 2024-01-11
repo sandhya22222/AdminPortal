@@ -29,7 +29,7 @@ const { Text, Title } = Typography;
 const storeUsersAPI = process.env.REACT_APP_USERS_API;
 
 const UserProfile = () => {
-  usePageTitle("Profile");
+  usePageTitle(t("labels:profile"));
   const { t } = useTranslation();
   const [storeUsersData, setStoreUsersData] = useState();
   const [isLoading, setIsLoading] = useState(true);
@@ -398,9 +398,7 @@ const UserProfile = () => {
                     {storeUsersData &&
                       storeUsersData.groups.length > 0 &&
                       storeUsersData.groups.map((ele) => (
-                        <span>
-                          {ele.name.replace(/-/g, " ")}
-                        </span>
+                        <span>{ele.name.replace(/-/g, " ")}</span>
                       ))}
                   </Typography>
                 </Col>
