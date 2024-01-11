@@ -19,6 +19,7 @@ import HeaderForTitle from "../../components/header/HeaderForTitle";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import MarketplaceToaster from "../../util/marketplaceToaster";
 import util from "../../util/common";
+import validator from "validator";
 
 //! Import CSS libraries
 
@@ -459,10 +460,18 @@ const CreateUsers = () => {
                         value={userName}
                         disabled={pageAction !== "add" ? true : false}
                         onChange={(e) => {
-                          setUserName(String(e.target.value).toLowerCase());
-                          setInvalidUserName(false);
-                          setIsUserDetailsEditted(true);
-                        }}
+                            const alphaWithoutSpaces = /^[a-zA-Z0-9]+$/;
+                            if (
+                              e.target.value !== "" &&
+                              validator.matches(e.target.value, alphaWithoutSpaces)
+                            ) {
+                              setUserName(String(e.target.value).toLowerCase());
+                              setInvalidUserName(false);
+                              setIsUserDetailsEditted(true);
+                            } else if (e.target.value === "") {
+                              setUserName(e.target.value)
+                            }
+                          }}
                         onBlur={(e) => {
                           setUserName(
                             e.target.value.trim().replace(/\s+/g, " ")
