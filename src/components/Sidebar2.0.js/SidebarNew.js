@@ -14,6 +14,7 @@ import {
   UserAccessControl,
   StoreSettings,
   PaymentSettingsIcon,
+  OpenInNew,
 } from "../../constants/media";
 import Footer from "./../footer/Footer";
 import { useTranslation } from "react-i18next";
@@ -34,9 +35,9 @@ const pageLimitFromENV = process.env.REACT_APP_ITEM_PER_PAGE;
 
 //! Global Variables
 
-const SidebarNew = ({ permissionValue }) => {
+const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
   const { t } = useTranslation();
-  const [collapsed, setCollapsed] = useState(false);
+  // const [collapsed, setCollapsed] = useState(false);
   const [selectedItem, setSelectedItem] = useState([]);
   const [openedItem, setOpenedItem] = useState([]);
   const [loadingEffect, setLoadingEffect] = useState(false);
@@ -378,6 +379,69 @@ const SidebarNew = ({ permissionValue }) => {
               indicator={antIcon}
               tip=""
             >
+              <Content className="!h-20  space-y-4 !bg-[#392359] !py-2">
+                {myData && myData.length > 0 ? (
+                  <Content>
+                    <Content
+                      className={` text-white font-normal ${
+                        util.getSelectedLanguageDirection()?.toUpperCase() ===
+                        "RTL"
+                          ? "!mr-7"
+                          : "!ml-7"
+                      }`}
+                    >
+                      {collapsed ? (
+                        <p className="">{"T H"}</p>
+                      ) : (
+                        <p>{"Torry Harris Market Place"}</p>
+                      )}
+                    </Content>
+                    <Content className="flex">
+                      {collapsed ? (
+                        <div className="  w-[100%] !flex !items-center !justify-center">
+                          <img
+                            src={OpenInNew}
+                            alt="openInNewIcon"
+                            width={"22px"}
+                            height={"22px"}
+                            // className="!ml-6"
+                          />
+                        </div>
+                      ) : (
+                        <>
+                          <div className="!w-[25%] ">
+                            <img
+                              src={Store}
+                              alt="StoreIcon"
+                              width={"20px"}
+                              height={"20px"}
+                              className={` ${
+                                util
+                                  .getSelectedLanguageDirection()
+                                  ?.toUpperCase() === "RTL"
+                                  ? "!mr-6"
+                                  : "!ml-6"
+                              }`}
+                            />
+                          </div>
+                          <div className="!w-[70%]">
+                            <p className="text-white">{"View My Store"}</p>
+                          </div>
+                          <div className="!w-[25%] ">
+                            <img
+                              src={OpenInNew}
+                              alt="openInNewIcon"
+                              width={"22px"}
+                              height={"22px"}
+                              // className="!ml-6"
+                            />
+                          </div>
+                        </>
+                      )}
+                    </Content>
+                  </Content>
+                ) : null}
+              </Content>
               <Menu
                 mode="inline"
                 className="h-full !text-base !bg-[var(--mp-brand-color)]"
@@ -474,7 +538,7 @@ const SidebarNew = ({ permissionValue }) => {
                   ) : null
                 )}
               </Menu>
-              <Content className="justify-center self-center px-[8px] items-center">
+              {/* <Content className="justify-center self-center px-[8px] items-center">
                 <Divider
                   style={{
                     background: "#FFFFFF",
@@ -483,9 +547,9 @@ const SidebarNew = ({ permissionValue }) => {
                     marginTop: "50px",
                   }}
                 />
-              </Content>
+              </Content> */}
             </Spin>
-            <Button
+            {/* <Button
               type="text"
               icon={
                 collapsed ? (
@@ -514,7 +578,7 @@ const SidebarNew = ({ permissionValue }) => {
                 justifyContent: "center",
                 alignItems: "center",
               }}
-            />
+            /> */}
           </Sider>
         </Affix>
       </div>
