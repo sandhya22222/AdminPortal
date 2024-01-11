@@ -7,9 +7,9 @@ import HeaderForTitle from "../../components/header/HeaderForTitle";
 import LanguageDocUpload from "./LanguageDocUpload";
 import LanguageForm from "./LanguageForm";
 import LanguageHeaderAction from "./LanguageHeaderAction";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 function LanguageSettings() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { t } = useTranslation();
   const { Content } = Layout;
   const { Title } = Typography;
@@ -128,7 +128,7 @@ function LanguageSettings() {
           </Content>
         </Content>
       </Content>
-      <Button onClick={handelClick}>testing</Button>
+      {/* <Button onClick={handelClick}>testing</Button> */}
     </Content>
   );
 }
