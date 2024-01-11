@@ -8,7 +8,7 @@ import LanguageDocUpload from "./LanguageDocUpload";
 import LanguageForm from "./LanguageForm";
 import LanguageHeaderAction from "./LanguageHeaderAction";
 function LanguageSettings() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const { Content } = Layout;
   const { Title } = Typography;

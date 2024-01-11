@@ -12,6 +12,8 @@ import {
   ViewDashboard,
   menuIcon,
   UserAccessControl,
+  StoreSettings,
+  PaymentSettingsIcon,
 } from "../../constants/media";
 import Footer from "./../footer/Footer";
 import { useTranslation } from "react-i18next";
@@ -138,56 +140,149 @@ const SidebarNew = ({ permissionValue }) => {
           show_in_menu: true,
         },
         {
-          key: "3",
-          icon: <img src={TranslateIcon} />,
-          inactive_icon: <img src={TranslateIcon} />,
-          label: ` ${t("labels:languages")}`,
-          navigate_to: "/dashboard/language",
-          show_in_menu:
-            !auth.isAuthenticated ||
-            (auth.isAuthenticated &&
-              permissionValue &&
-              permissionValue.length > 0 &&
-              permissionValue.includes("UI-product-admin"))
-              ? false
-              : true,
+          key: "15",
+          icon: <img src={StoreSettings} alt="storeSettings" />,
+          inactive_icon: <img src={StoreSettings} />,
+          label: `${t("labels:Settings")}`,
+          navigate_to: "/dashboard/",
+          show_in_menu: true,
+          children: [
+            {
+              key: "3",
+              icon: <img src={TranslateIcon} />,
+              inactive_icon: <img src={TranslateIcon} />,
+              label: ` ${t("labels:languages")}`,
+              navigate_to: "/dashboard/language",
+              show_in_menu:
+                !auth.isAuthenticated ||
+                (auth.isAuthenticated &&
+                  permissionValue &&
+                  permissionValue.length > 0 &&
+                  permissionValue.includes("UI-product-admin"))
+                  ? false
+                  : true,
+            },
+            {
+              key: "5",
+              icon: <img src={PaymentSettingsIcon} />,
+              inactive_icon: <img src={PaymentTypeIcon} />,
+              label: ` ${t("labels:payment_settings")}`,
+              navigate_to: "/dashboard/paymenttype",
+              show_in_menu: true,
+            },
+            {
+              key: "6",
+              icon: (
+                <img
+                  src={ProfileIcon}
+                  alt="profileIcon"
+                  width={"15px"}
+                  height={"15px"}
+                />
+              ),
+              inactive_icon: (
+                <img
+                  src={ProfileIcon}
+                  alt="profileIcon"
+                  width={"15px"}
+                  height={"15px"}
+                />
+              ),
+              label: ` ${t("labels:my_profile")}`,
+              navigate_to: "/dashboard/userprofile",
+              show_in_menu: true,
+            },
+            {
+              key: "12",
+              icon: (
+                <img
+                  src={UserAccessControl}
+                  alt="userAccessControl"
+                  width={"15px"}
+                  height={"15px"}
+                />
+              ),
+              inactive_icon: (
+                <img
+                  src={UserAccessControl}
+                  alt="userAccessControl"
+                  width={"15px"}
+                  height={"15px"}
+                />
+              ),
+              label: `${t("labels:user_access_control")}`,
+              navigate_to: `/dashboard/user-access-control/list-user-roles?tab=0&page=1&limit=${pageLimitFromENV}`,
+              show_in_menu:
+                !auth.isAuthenticated ||
+                (auth.isAuthenticated &&
+                  permissionValue &&
+                  permissionValue.length > 0 &&
+                  permissionValue.includes("UI-user-access-control"))
+                  ? true
+                  : false,
+              // !auth.isAuthenticated ||
+              // (auth.isAuthenticated &&
+              //   permissionValue &&
+              //   permissionValue.length > 0 &&
+              //   permissionValue.includes("UI-user-access-control"))
+              //   ? true
+              //   : false,
+              // children: [],
+            },
+          ],
         },
+        // moved into store settings
+        // {
+        //   key: "3",
+        //   icon: <img src={TranslateIcon} />,
+        //   inactive_icon: <img src={TranslateIcon} />,
+        //   label: ` ${t("labels:languages")}`,
+        //   navigate_to: "/dashboard/language",
+        //   show_in_menu:
+        //     !auth.isAuthenticated ||
+        //     (auth.isAuthenticated &&
+        //       permissionValue &&
+        //       permissionValue.length > 0 &&
+        //       permissionValue.includes("UI-product-admin"))
+        //       ? false
+        //       : true,
+        // },
         // {
         //   key: "4",
         //   icon: <SettingOutlined />,
         //   label: "Store Settings",
         //   navigate_to: "/dashboard/storesetting",
         // },
-        {
-          key: "5",
-          icon: <img src={PaymentTypeIcon} />,
-          inactive_icon: <img src={PaymentTypeIcon} />,
-          label: ` ${t("labels:payment_type")}`,
-          navigate_to: "/dashboard/paymenttype",
-          show_in_menu: true,
-        },
-        {
-          key: "6",
-          icon: (
-            <img
-              src={ProfileIcon}
-              alt="profileIcon"
-              width={"15px"}
-              height={"15px"}
-            />
-          ),
-          inactive_icon: (
-            <img
-              src={ProfileIcon}
-              alt="profileIcon"
-              width={"15px"}
-              height={"15px"}
-            />
-          ),
-          label: ` ${t("labels:profile")}`,
-          navigate_to: "/dashboard/userprofile",
-          show_in_menu: true,
-        },
+        // {
+        //   key: "5",
+        //   icon: <img src={PaymentTypeIcon} />,
+        //   inactive_icon: <img src={PaymentTypeIcon} />,
+        //   label: ` ${t("labels:payment_type")}`,
+        //   navigate_to: "/dashboard/paymenttype",
+        //   show_in_menu: true,
+        // },
+        // {
+        //   key: "6",
+        //   icon: (
+        //     <img
+        //       src={ProfileIcon}
+        //       alt="profileIcon"
+        //       width={"15px"}
+        //       height={"15px"}
+        //     />
+        //   ),
+        //   inactive_icon: (
+        //     <img
+        //       src={ProfileIcon}
+        //       alt="profileIcon"
+        //       width={"15px"}
+        //       height={"15px"}
+        //     />
+        //   ),
+        //   label: ` ${t("labels:profile")}`,
+        //   navigate_to: "/dashboard/userprofile",
+        //   show_in_menu: true,
+        // },
         // {
         //   key: "9",
         //   icon: <img src={ViewDashboard} />,
@@ -196,43 +291,43 @@ const SidebarNew = ({ permissionValue }) => {
         //   navigate_to: "/dashboard/newDashboard",
         //   show_in_menu: true,
         // },
-        {
-          key: "12",
-          icon: (
-            <img
-              src={UserAccessControl}
-              alt="userAccessControl"
-              width={"15px"}
-              height={"15px"}
-            />
-          ),
-          inactive_icon: (
-            <img
-              src={UserAccessControl}
-              alt="userAccessControl"
-              width={"15px"}
-              height={"15px"}
-            />
-          ),
-          label: `${t("labels:user_access_control")}`,
-          navigate_to: `/dashboard/user-access-control/list-user-roles?tab=0&page=1&limit=${pageLimitFromENV}`,
-          show_in_menu:
-            !auth.isAuthenticated ||
-            (auth.isAuthenticated &&
-              permissionValue &&
-              permissionValue.length > 0 &&
-              permissionValue.includes("UI-user-access-control"))
-              ? true
-              : false,
-          // !auth.isAuthenticated ||
-          // (auth.isAuthenticated &&
-          //   permissionValue &&
-          //   permissionValue.length > 0 &&
-          //   permissionValue.includes("UI-user-access-control"))
-          //   ? true
-          //   : false,
-          // children: [],
-        },
+        // {
+        //   key: "12",
+        //   icon: (
+        //     <img
+        //       src={UserAccessControl}
+        //       alt="userAccessControl"
+        //       width={"15px"}
+        //       height={"15px"}
+        //     />
+        //   ),
+        //   inactive_icon: (
+        //     <img
+        //       src={UserAccessControl}
+        //       alt="userAccessControl"
+        //       width={"15px"}
+        //       height={"15px"}
+        //     />
+        //   ),
+        //   label: `${t("labels:user_access_control")}`,
+        //   navigate_to: `/dashboard/user-access-control/list-user-roles?tab=0&page=1&limit=${pageLimitFromENV}`,
+        //   show_in_menu:
+        //     !auth.isAuthenticated ||
+        //     (auth.isAuthenticated &&
+        //       permissionValue &&
+        //       permissionValue.length > 0 &&
+        //       permissionValue.includes("UI-user-access-control"))
+        //       ? true
+        //       : false,
+        //   // !auth.isAuthenticated ||
+        //   // (auth.isAuthenticated &&
+        //   //   permissionValue &&
+        //   //   permissionValue.length > 0 &&
+        //   //   permissionValue.includes("UI-user-access-control"))
+        //   //   ? true
+        //   //   : false,
+        //   // children: [],
+        // },
         // {
         //   key: "7",
         //   icon: <img src={Store} />,
@@ -288,6 +383,10 @@ const SidebarNew = ({ permissionValue }) => {
                 className="h-full !text-base !bg-[var(--mp-brand-color)]"
                 selectedKeys={selectedItem}
                 openKeys={openedItem}
+                onOpenChange={(e) => {
+                  setOpenedItem(e);
+                  // console.log(e);
+                }}
                 theme={"dark"}
                 style={{
                   height: "calc(100vh - 145px)",
@@ -295,7 +394,7 @@ const SidebarNew = ({ permissionValue }) => {
                   // backgroundColor: "#7d3192",
                 }}
               >
-                {myData.length > 0
+                {/* {myData.length > 0
                   ? myData.map((item) =>
                       item.show_in_menu ? (
                         <Menu.Item
@@ -324,7 +423,56 @@ const SidebarNew = ({ permissionValue }) => {
                         </Menu.Item>
                       ) : null
                     )
-                  : ""}
+                  : ""} */}
+                {myData.map((item) =>
+                  item.show_in_menu && item.children ? (
+                    <Menu.SubMenu
+                      icon={item.icon}
+                      key={item.key}
+                      // style={{ color: "black" }}
+                      title={item.label}
+                    >
+                      {item.children.map((child) =>
+                        child.show_in_menu ? (
+                          <Menu.Item
+                            icon={child.icon}
+                            key={child.key}
+                            // style={{ color: "black" }}
+                            onClick={() => {
+                              navigate(child.navigate_to);
+                              handlePageRefresh(child.navigate_to);
+                            }}
+                          >
+                            {selectedItem === child.key ? (
+                              <span className="font-semibold">
+                                {child.label}
+                              </span>
+                            ) : (
+                              child.label
+                            )}
+                          </Menu.Item>
+                        ) : null
+                      )}
+                    </Menu.SubMenu>
+                  ) : item.show_in_menu ? (
+                    <Menu.Item
+                      icon={item.icon}
+                      key={item.key}
+                      disabled={!item.show_in_menu}
+                      // style={{ color: "black" }}
+                      onClick={() => {
+                        navigate(item.navigate_to);
+                        handlePageRefresh(item.navigate_to);
+                      }}
+                    >
+                      {selectedItem === item.key ? (
+                        <span className="font-semibold ">{item.label}</span>
+                      ) : (
+                        item.label
+                      )}
+                    </Menu.Item>
+                  ) : null
+                )}
               </Menu>
               <Content className="justify-center self-center px-[8px] items-center">
                 <Divider

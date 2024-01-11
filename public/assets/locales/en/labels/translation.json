@@ -211,5 +211,7 @@
    "your_password_must_contain":"Your password must contain",
    "my_stores":"My Stores",
    "threshold_configuration":"Threshold Configuration",
-   "limits":"Limits"
+   "limits":"Limits",
+   "my_profile":"My Profile",
+   "payment_settings":"Payment Settings"
 }
