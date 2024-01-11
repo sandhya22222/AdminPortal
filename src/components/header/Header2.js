@@ -2,7 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
-import { Layout, Tooltip, Image, Dropdown, Avatar, Typography } from "antd";
+import {
+  Layout,
+  Tooltip,
+  Image,
+  Dropdown,
+  Avatar,
+  Typography,
+  Tag,
+  Button,
+} from "antd";
 import {
   TranslationOutlined,
   DownOutlined,
@@ -28,6 +37,9 @@ import {
   DmBrandLogo,
   marketPlaceLogo,
   ProfileIcon,
+  menuIcon,
+  BackBurgerIcon,
+  Collapse,
 } from "../../constants/media";
 
 import util from "../../util/common";
@@ -42,8 +54,10 @@ const multilingualFunctionalityEnabled =
   process.env.REACT_APP_IS_MULTILINGUAL_ENABLED;
 const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API;
 const storeUsersAPI = process.env.REACT_APP_USERS_API;
+const portalInfo = JSON.parse(process.env.REACT_APP_PORTAL_INFO);
 
-const Header2 = () => {
+console.log("portalInfoTest", portalInfo);
+const Header2 = ({ collapsed, setCollapsed }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { Text } = Typography;
@@ -223,9 +237,42 @@ const Header2 = () => {
   return (
     <Content>
       <Header className="fixed z-20 top-0 p-0 !h-12 w-full bg-white drop-shadow-md">
-        <Content className="px-3 !py-2 !h-12 flex !justify-between  items-center">
+        <Content className="px-3 !py-2 !h-12 flex !justify-between  items-center ">
           {/* Left content which displays brand logo and other stuffs */}
-          <Content className="!inline-block text-left self-center">
+          <div className=" mx-2">
+            <Button
+              type="text"
+              icon={
+                collapsed ? (
+                  <img src={Collapse} />
+                ) : (
+                  <img
+                    className={`  ${
+                      util.getSelectedLanguageDirection()?.toUpperCase() ===
+                      "RTL"
+                        ? "rotate-180"
+                        : ""
+                    }`}
+                    src={BackBurgerIcon}
+                    alt="BackButton"
+                  />
+                )
+              }
+              onClick={() => setCollapsed(!collapsed)}
+              // className="!bg-[var(--mp-brand-color)] hover:bg-[var(--mp-brand-color)]"
+              className="hover:none"
+              style={{
+                width: "100%",
+                display: "flex",
+                padding: "8 16 8 16",
+                marginTop: "4px",
+                color: "white",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            />
+          </div>
+          <div className="!inline-block text-left self-center mx-2 ">
             <a href="/dashboard">
               <img
                 //width={180}
@@ -234,7 +281,12 @@ const Header2 = () => {
                 className="!h-[32px]"
               />
             </a>
-          </Content>
+          </div>
+          <div className=" mx-3 ">
+            <Tag className="portalNameTag">
+              {portalInfo && portalInfo.title.toUpperCase()}
+            </Tag>
+          </div>
           {/* Center content to display any item if required */}
           <Content className="!inline-block text-center self-center"></Content>
           {/* Right content to display user menus, login icon, language icon and other stuffs */}
@@ -258,7 +310,7 @@ const Header2 = () => {
                     className="!h-8 absolute bottom-[-2px] left-[-30px]"
                   /> */}
                   <Text className="text-lg text-slate-600 pr-1">
-                  {userName ? userName : userProfileInfo}
+                    {userName ? userName : userProfileInfo}
                   </Text>
                   <DownOutlined className="text-xs text-slate-600" />
                 </Paragraph>
