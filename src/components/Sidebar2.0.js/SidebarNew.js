@@ -101,8 +101,16 @@ const SidebarNew = ({ permissionValue }) => {
 
   useEffect(() => {
     // const myData =
-    // const permissionValue = util.getPermissionData() || []; 
-    console.log("permission value", permissionValue.length > 0 && permissionValue.includes("UI-product-admin") ? false : true, permissionValue, window.sessionStorage.getItem("permissions_data"), myData)
+    // const permissionValue = util.getPermissionData() || [];
+    console.log(
+      "permission value",
+      permissionValue.length > 0 && permissionValue.includes("UI-product-admin")
+        ? false
+        : true,
+      permissionValue,
+      window.sessionStorage.getItem("permissions_data"),
+      myData
+    );
     if (permissionValue && permissionValue.length > 0) {
       setMyData([
         // {
@@ -137,10 +145,10 @@ const SidebarNew = ({ permissionValue }) => {
           navigate_to: "/dashboard/language",
           show_in_menu:
             !auth.isAuthenticated ||
-              (auth.isAuthenticated &&
-                permissionValue &&
-                permissionValue.length > 0 &&
-                permissionValue.includes("UI-product-admin"))
+            (auth.isAuthenticated &&
+              permissionValue &&
+              permissionValue.length > 0 &&
+              permissionValue.includes("UI-product-admin"))
               ? false
               : true,
         },
@@ -208,13 +216,14 @@ const SidebarNew = ({ permissionValue }) => {
           ),
           label: `${t("labels:user_access_control")}`,
           navigate_to: `/dashboard/user-access-control/list-user-roles?tab=0&page=1&limit=${pageLimitFromENV}`,
-          show_in_menu: !auth.isAuthenticated ||
+          show_in_menu:
+            !auth.isAuthenticated ||
             (auth.isAuthenticated &&
               permissionValue &&
               permissionValue.length > 0 &&
               permissionValue.includes("UI-user-access-control"))
-            ? true
-            : false,
+              ? true
+              : false,
           // !auth.isAuthenticated ||
           // (auth.isAuthenticated &&
           //   permissionValue &&
@@ -240,8 +249,7 @@ const SidebarNew = ({ permissionValue }) => {
         // },
       ]);
     }
-
-  }, [permissionValue])
+  }, [permissionValue]);
 
   return (
     <Layout>
@@ -268,7 +276,7 @@ const SidebarNew = ({ permissionValue }) => {
               // top: 0,
               // bottom: 0,
             }}
-          // className="!flex-[0_0_20%] min-h-screen border-r-[1px] drop-shadow-[0_0px_2px_rgba(0,0,0,0.15)]"
+            // className="!flex-[0_0_20%] min-h-screen border-r-[1px] drop-shadow-[0_0px_2px_rgba(0,0,0,0.15)]"
           >
             <Spin
               spinning={myData.length > 0 ? false : true}
@@ -287,47 +295,65 @@ const SidebarNew = ({ permissionValue }) => {
                   // backgroundColor: "#7d3192",
                 }}
               >
-                {myData.length > 0 ? myData.map((item) =>
-                  item.show_in_menu ? (
-                    <Menu.Item
-                      icon={
-                        selectedItem === item.key
-                          ? item.icon
-                          : item.inactive_icon
-                      }
-                      key={item.key}
-                      // className="!bg-[var(--mp-brand-color)] !hover:bg-[var(--mp-brand-color)]"
-                      onClick={() => {
-                        if (item.key == 2) {
-                          sessionStorage.setItem("currentStoretab", 1);
-                        }
-                        navigate(item.navigate_to);
-                      }}
-                    >
-                      {selectedItem === item.key ? (
-                        <span className="font-semibold ">{item.label}</span>
-                      ) : (
-                        <span className="text-[#ffffffde]"> {item.label} </span>
-                      )}
-                    </Menu.Item>
-                  ) : null
-                ) : ""}
+                {myData.length > 0
+                  ? myData.map((item) =>
+                      item.show_in_menu ? (
+                        <Menu.Item
+                          icon={
+                            selectedItem === item.key
+                              ? item.icon
+                              : item.inactive_icon
+                          }
+                          key={item.key}
+                          // className="!bg-[var(--mp-brand-color)] !hover:bg-[var(--mp-brand-color)]"
+                          onClick={() => {
+                            if (item.key == 2) {
+                              sessionStorage.setItem("currentStoretab", 1);
+                            }
+                            navigate(item.navigate_to);
+                          }}
+                        >
+                          {selectedItem === item.key ? (
+                            <span className="font-semibold ">{item.label}</span>
+                          ) : (
+                            <span className="text-[#ffffffde]">
+                              {" "}
+                              {item.label}{" "}
+                            </span>
+                          )}
+                        </Menu.Item>
+                      ) : null
+                    )
+                  : ""}
               </Menu>
               <Content className="justify-center self-center px-[8px] items-center">
-              <Divider
-                style={{
-                  background: "#FFFFFF",
-                  opacity: "0.55",
-                  margin: "0px",
-                  marginTop: "50px",
-                }}
-              />
-            </Content>
+                <Divider
+                  style={{
+                    background: "#FFFFFF",
+                    opacity: "0.55",
+                    margin: "0px",
+                    marginTop: "50px",
+                  }}
+                />
+              </Content>
             </Spin>
             <Button
               type="text"
               icon={
-                collapsed ? <img src={menuIcon} /> : <img src={BackBurger} />
+                collapsed ? (
+                  <img src={menuIcon} />
+                ) : (
+                  <img
+                    className={`  ${
+                      util.getSelectedLanguageDirection()?.toUpperCase() ===
+                      "RTL"
+                        ? "rotate-180"
+                        : ""
+                    }`}
+                    src={BackBurger}
+                    alt="BackButton"
+                  />
+                )
               }
               onClick={() => setCollapsed(!collapsed)}
               className="!bg-[var(--mp-brand-color)] hover:bg-[var(--mp-brand-color)]"

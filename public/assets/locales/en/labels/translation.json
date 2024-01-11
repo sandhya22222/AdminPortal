@@ -70,7 +70,7 @@
   "left_to_right": "Left to Right",
   "right_to_left": "Right to Left",
   "status_label": "Status:",
-  "default_language_label": "Make this default Language",
+  "default_language_label": "Make This Default Language",
   "remove_language_label": "Remove Language",
   "json_format": "Download .json",
   "csv_format": "Download .csv",

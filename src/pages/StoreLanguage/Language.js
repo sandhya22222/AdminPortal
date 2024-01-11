@@ -321,7 +321,7 @@ const Language = () => {
         const fileURL = window.URL.createObjectURL(response.data);
         let alink = document.createElement("a");
         alink.href = fileURL;
-        alink.download = "key_value_format.csv";
+        alink.download = "frontend_keys_document.csv";
         alink.click();
       })
       .catch((error) => {
@@ -399,7 +399,7 @@ const Language = () => {
         const fileURL = window.URL.createObjectURL(response.data);
         let alink = document.createElement("a");
         alink.href = fileURL;
-        alink.download = "message_format.csv";
+        alink.download = "backend_keys_document.csv";
         alink.click();
       })
       .catch((error) => {
@@ -445,7 +445,7 @@ const Language = () => {
                   {t("labels:download_support_document_template")}
                 </Content>
               </Button> */}
-              <Dropdown
+              {/* <Dropdown
                 menu={{
                   items,
                   onClick: handleOnclickForDownloadDocument,
@@ -457,11 +457,10 @@ const Language = () => {
                 <a onClick={(e) => e.preventDefault()}>
                   <Space>
                     {t("labels:download_support_document_template")}
-                    {/* <img src={DropdownIcon} className="!w-3" /> */}
                     <DownOutlined className="!ml-[4px]" />
                   </Space>
                 </a>
-              </Dropdown>
+              </Dropdown> */}
               <Button
                 className="app-btn-primary flex align-items-center"
                 onClick={() =>
