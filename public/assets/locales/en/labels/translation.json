@@ -208,6 +208,8 @@
    "profile_picture":"Profile picture",
    "new_password":"Newpassword",
    "confirm_password":"Confirm password",
-   "your_password_must_contain":"Your password must contain"
-
+   "your_password_must_contain":"Your password must contain",
+   "my_stores":"My Stores",
+   "threshold_configuration":"Threshold Configuration",
+   "limits":"Limits"
 }
