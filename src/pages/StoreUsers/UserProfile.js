@@ -29,8 +29,8 @@ const { Text, Title } = Typography;
 const storeUsersAPI = process.env.REACT_APP_USERS_API;
 
 const UserProfile = () => {
-  usePageTitle(t("labels:profile"));
   const { t } = useTranslation();
+  usePageTitle(t("labels:profile"));
   const [storeUsersData, setStoreUsersData] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [isNetworkError, setIsNetworkError] = useState(false);
