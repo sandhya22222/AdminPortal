@@ -80,11 +80,11 @@ const { Content } = Layout;
 const instance = axios.create();
 
 const Newdashboard = () => {
+  const { t } = useTranslation();
   const auth = useAuth();
   const dispatch = useDispatch();
-  usePageTitle("Dashboard");
+  usePageTitle(t("labels:dashboard"));
   const navigate = useNavigate();
-  const { t } = useTranslation();
   const [dashboardData, setDashboardData] = useState();
   const [dashboardDataLoading, setDashboardDataLoading] = useState(true);
   const [dashboardDataNetWorkError, setDashboardDataNetWorkError] =

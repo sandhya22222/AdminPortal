@@ -203,5 +203,8 @@
    "razor_pay":"Razor Pay",
    "stripe":"Stripe",
    "account_restrictions":"Account Restrictions",
-   "store_restrictions":"Store Restrictions"
+   "store_restrictions":"Store Restrictions",
+   "my_stores":"My Stores",
+   "threshold_configuration":"Threshold Configuration",
+   "limits":"Limits"
 }
