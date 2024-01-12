@@ -1,14 +1,14 @@
 import { Divider, Layout, Typography, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
 // import MarketplaceAppConfig from "../../util/MarketplaceMutlitenancy";
 import LanguageDocUpload from "./LanguageDocUpload";
 import LanguageForm from "./LanguageForm";
 import LanguageHeaderAction from "./LanguageHeaderAction";
-
 function LanguageSettings() {
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const { Content } = Layout;
   const { Title } = Typography;
@@ -25,6 +25,17 @@ function LanguageSettings() {
     setLanguageName(searchParams.get("n"));
     setLanguageDefault(searchParams.get("d"));
   }, [searchParams]);
+  useEffect(() => {
+    const handleBrowserBackButton = (event) => {
+      navigate("/dashboard/language");
+    };
+
+    window.addEventListener("popstate", handleBrowserBackButton);
+
+    return () => {
+      window.removeEventListener("popstate", handleBrowserBackButton);
+    };
+  }, [navigate]);
   return (
     <Content className="pt-1">
       <Content className="!z-20">

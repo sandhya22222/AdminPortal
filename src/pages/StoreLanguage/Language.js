@@ -45,7 +45,7 @@ const downloadBackendKeysAPI =
   process.env.REACT_APP_DOWNLOAD_ADMIN_BACKEND_MESSAGE_DETAILS;
 const Language = () => {
   const { t } = useTranslation();
-  usePageTitle("Languages");
+  usePageTitle(t("labels:languages"));
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -77,8 +77,8 @@ const Language = () => {
           <Content className="inline-block">
             <Tooltip title={record.language} overlayStyle={{ zIndex: 1 }}>
               <Text
-                className={`mx-2 ${
-                  record.is_default ? "!max-w-[150px]" : "!max-w-[150px]"
+                className={`mx-1 ${
+                  record.is_default ? "!max-w-[80px]" : "!max-w-[150px]"
                 } `}
                 ellipsis={true}
               >
@@ -321,7 +321,7 @@ const Language = () => {
         const fileURL = window.URL.createObjectURL(response.data);
         let alink = document.createElement("a");
         alink.href = fileURL;
-        alink.download = "key_value_format.csv";
+        alink.download = "frontend_keys_document.csv";
         alink.click();
       })
       .catch((error) => {
@@ -399,7 +399,7 @@ const Language = () => {
         const fileURL = window.URL.createObjectURL(response.data);
         let alink = document.createElement("a");
         alink.href = fileURL;
-        alink.download = "message_format.csv";
+        alink.download = "backend_keys_document.csv";
         alink.click();
       })
       .catch((error) => {
@@ -445,7 +445,7 @@ const Language = () => {
                   {t("labels:download_support_document_template")}
                 </Content>
               </Button> */}
-              <Dropdown
+              {/* <Dropdown
                 menu={{
                   items,
                   onClick: handleOnclickForDownloadDocument,
@@ -457,11 +457,10 @@ const Language = () => {
                 <a onClick={(e) => e.preventDefault()}>
                   <Space>
                     {t("labels:download_support_document_template")}
-                    {/* <img src={DropdownIcon} className="!w-3" /> */}
                     <DownOutlined className="!ml-[4px]" />
                   </Space>
                 </a>
-              </Dropdown>
+              </Dropdown> */}
               <Button
                 className="app-btn-primary flex align-items-center"
                 onClick={() =>

@@ -70,7 +70,7 @@
   "left_to_right": "Left to Right",
   "right_to_left": "Right to Left",
   "status_label": "Status:",
-  "default_language_label": "Make this default Language",
+  "default_language_label": "Make This Default Language",
   "remove_language_label": "Remove Language",
   "json_format": "Download .json",
   "csv_format": "Download .csv",
@@ -203,5 +203,15 @@
    "razor_pay":"Razor Pay",
    "stripe":"Stripe",
    "account_restrictions":"Account Restrictions",
-   "store_restrictions":"Store Restrictions"
+   "store_restrictions":"Store Restrictions",
+   "change_password":"change password",
+   "profile_picture":"Profile picture",
+   "new_password":"Newpassword",
+   "confirm_password":"Confirm password",
+   "your_password_must_contain":"Your password must contain",
+   "my_stores":"My Stores",
+   "threshold_configuration":"Threshold Configuration",
+   "limits":"Limits",
+   "my_profile":"My Profile",
+   "payment_settings":"Payment Settings"
 }

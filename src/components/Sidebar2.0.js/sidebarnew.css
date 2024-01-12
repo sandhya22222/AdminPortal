@@ -22,3 +22,12 @@
   height: 49px !important;
   line-height: 12px !important;
 }
+
+.ant-menu-submenu-title{
+  padding-left: 15px !important;
+}
+
+.ant-menu-dark.ant-menu-inline .ant-menu-sub.ant-menu-inline {
+  background: unset !important;
+  }
+

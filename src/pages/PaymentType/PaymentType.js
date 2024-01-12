@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Layout, Typography } from "antd";
+import { Layout, Typography, Table } from "antd";
 
 import DynamicTable from "../../components/DynamicTable/DynamicTable";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
@@ -9,8 +9,8 @@ const { Content } = Layout;
 const { Title } = Typography;
 
 const PaymentType = () => {
-  usePageTitle("Payment Type");
   const { t } = useTranslation();
+  usePageTitle(t("labels:payment_type"));
   useEffect(() => {
     window.scroll(0, 0);
   }, []);
@@ -18,82 +18,72 @@ const PaymentType = () => {
   const paymentTypeColumns = [
     {
       title: `${t("labels:payment_types")}`,
-      dataIndex: "paymentType",
-      key: "paymentType",
+      dataIndex: "name",
+      key: "name",
       width: "40%",
-      render: (text, record) => {
-        return <>{record.name}</>;
-      },
+      // render: (text, record) => {
+      //   return <>{record.name}</>;
+      // },
     },
   ];
 
-  const paymentTypesData = [
+  const data = [
     {
-      count: 3,
-      page_number: 1,
-      page_limit: 20,
-      data: [
+      key: 1,
+      name: `${t("labels:cash_on_delivery")}`,
+      is_payment_gateway: false,
+    },
+    {
+      key: 2,
+      name: `${t("labels:online_payment")}`,
+      is_payment_gateway: true,
+      children: [
         {
-          id: 1,
-          payment_type: `${t("labels:cash_on_delivery")}`,
-          is_payment_gateway: false,
-        },
-        {
-          id: 2,
-          payment_type: `${t("labels:online_payment")}`,
+          key: 21,
+          name: `${t("labels:razor_pay")}`,
           is_payment_gateway: true,
         },
         {
-          id: 3,
-          payment_type: `${t("labels:razor_pay")}`,
+          key: 22,
+          name: `${t("labels:stripe")}`,
           is_payment_gateway: true,
         },
-        {
-          id: 4,
-          payment_type: `${t("labels:stripe")}`,
-          is_payment_gateway: true,
-        },
-        // {
-        //   id: 3,
-        //   payment_type: "Purchase Order",
-        //   is_payment_gateway: true,
-        // },
       ],
     },
   ];
 
-  const tempArray = [];
-  paymentTypesData[0] &&
-    paymentTypesData[0].data.map((element, index) => {
-      var tempId = element.id;
-      var paymentTypeName = element.payment_type;
-      tempArray.push({
-        key: index,
-        name: paymentTypeName,
-        id: tempId,
-      });
-    });
+  // const tempArray = [];
+  // paymentTypesData[0] &&
+  //   paymentTypesData[0].data.map((element, index) => {
+  //     var tempId = element.id;
+  //     var paymentTypeName = element.payment_type;
+  //     tempArray.push({
+  //       key: index,
+  //       name: paymentTypeName,
+  //       id: tempId,
+  //     });
+  //   });
 
-  const tablePropsData = {
-    table_header: paymentTypeColumns,
-    table_content: tempArray,
-    pagenationSettings: false,
-    search_settings: {
-      is_enabled: false,
-      search_title: "Search by name",
-      search_data: ["name"],
-    },
-    filter_settings: {
-      is_enabled: false,
-      filter_title: "Filter's",
-      filter_data: [],
-    },
-    sorting_settings: {
-      is_enabled: false,
-      sorting_title: "Sorting by",
-      sorting_data: [],
-    },
-  };
+  // const tablePropsData = {
+  //   table_header: paymentTypeColumns,
+  //   table_content: tempArray,
+  //   pagenationSettings: false,
+  //   search_settings: {
+  //     is_enabled: false,
+  //     search_title: "Search by name",
+  //     search_data: ["name"],
+  //   },
+  //   filter_settings: {
+  //     is_enabled: false,
+  //     filter_title: "Filter's",
+  //     filter_data: [],
+  //   },
+  //   sorting_settings: {
+  //     is_enabled: false,
+  //     sorting_title: "Sorting by",
+  //     sorting_data: [],
+  //   },
+  // };
 
   return (
     <Content className="">
@@ -107,7 +97,11 @@ const PaymentType = () => {
         }
       />
       <Content className="!p-3 !mt-[7.4rem] ">
-        <DynamicTable tableComponentData={tablePropsData} />
+        <Table
+          dataSource={data}
+          columns={paymentTypeColumns}
+          pagination={false}
+        />
       </Content>
     </Content>
   );

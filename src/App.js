@@ -46,6 +46,8 @@ const { Content } = Layout;
 const App = () => {
   const auth = useAuth();
   const [permissionData, setPermissionData] = useState([]);
+  const [collapsed, setCollapsed] = useState(false);
+
   useFavicon();
 
   const getPermissions = () => {
@@ -116,14 +118,15 @@ const App = () => {
               : "top-right"
           }
         />
-        <Header2 />
+        <Header2 collapsed={collapsed} setCollapsed={setCollapsed} />
         <Container fluid className="p-0 bg-[#F4F4F4] text-[#393939]">
+        
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/logout" element={<LogOut />} />
 
             {auth.isAuthenticated ? (
-              <Route path="/dashboard" element={<SidebarNew permissionValue={permissionData} />}>
+              <Route path="/dashboard" element={<SidebarNew permissionValue={permissionData} collapsed={collapsed} setCollapsed={setCollapsed} />}>
                 <Route path="" element={<NewDashboard />} />
                 <>
                   {/* <Route path="language" element={<Language />} />

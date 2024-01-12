@@ -19,6 +19,7 @@ import HeaderForTitle from "../../components/header/HeaderForTitle";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import MarketplaceToaster from "../../util/marketplaceToaster";
 import util from "../../util/common";
+import validator from "validator";
 
 //! Import CSS libraries
 
@@ -63,6 +64,10 @@ const CreateUsers = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isUserDetailFetching, setIsUserDetailFetching] = useState(false);
   const [isUserDetailsEditted, setIsUserDetailsEditted] = useState(false);
+  const [currentFirstName, setCurrentFirstName ] = useState("");
+  const [currentLastName, setCurrentLastName ] = useState("");
+  const [currentRole, setCurrentRole ] = useState("");
+  const [currentEmailId, setCurrentEmailId ] = useState("");
 
   //Get call of groups
   const findAllGroupLists = () => {
@@ -119,8 +124,7 @@ const CreateUsers = () => {
 
   // validation of user form
   const userFormValidation = () => {
-    const emailRegex =
-      /^[A-Za-z\_]+[0-9]{0,64}@([A-Za-z\-]{3,255}\.)+[A-Za-z]{2,4}$/;
+    const emailRegex = /^[A-Za-z\_0-9]{3,64}@[A-Za-z\-]{3,255}\.[A-Za-z]{2,3}$/;
     const passwordRegex =
       /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{12,64}$/;
     const userNameRegex = /^[A-Za-z0-9_\- ]+$/;
@@ -289,8 +293,7 @@ const CreateUsers = () => {
   };
 
   const userFormValidationEdit = () => {
-    const emailRegex =
-      /^[A-Za-z\_]+[0-9]{0,64}@([A-Za-z\-]{3,255}\.)+[A-Za-z]{2,4}$/;
+    const emailRegex = /^[A-Za-z\_0-9]{3,64}@[A-Za-z\-]{3,255}\.[A-Za-z]{2,3}$/;
     let count = 1;
     if (emailId === "") {
       count--;
@@ -322,9 +325,9 @@ const CreateUsers = () => {
   const handleChangeRole = (value) => {
     setSelectRole(value);
     setInvalidRole(false);
-    if (pageAction != "add") {
+    // if (pageAction != "add") {
       setIsUserDetailsEditted(true);
-    }
+    // /}
   };
 
   //handle change of type select
@@ -334,6 +337,7 @@ const CreateUsers = () => {
   //*Handler for the status change(Active and Inactive)
   const onChange = (checked) => {
     setUserStatus(checked);
+    setIsUserDetailsEditted(true);
   };
 
   //useEffect to form the data for the role dropdown
@@ -379,6 +383,10 @@ const CreateUsers = () => {
             setLastName(selectedUserDetails[0].lastName);
             setEmailId(selectedUserDetails[0].email);
             setSelectRole(selectedUserDetails[0].groups[0].name);
+            setCurrentFirstName(selectedUserDetails[0].firstName);
+            setCurrentLastName(selectedUserDetails[0].lastName);
+            setCurrentRole(selectedUserDetails[0].groups[0].name);
+            setCurrentEmailId(selectedUserDetails[0].email)
             setUserStatus(selectedUserDetails[0].enabled);
           }
         }
@@ -460,8 +468,20 @@ const CreateUsers = () => {
                         value={userName}
                         disabled={pageAction !== "add" ? true : false}
                         onChange={(e) => {
-                          setUserName(String(e.target.value).toLowerCase());
-                          setInvalidUserName(false);
+                          const alphaWithoutSpaces = /^[a-zA-Z0-9]+$/;
+                          if (
+                            e.target.value !== "" &&
+                            validator.matches(
+                              e.target.value,
+                              alphaWithoutSpaces
+                            )
+                          ) {
+                            setUserName(String(e.target.value).toLowerCase());
+                            setInvalidUserName(false);
+                            setIsUserDetailsEditted(true);
+                          } else if (e.target.value === "") {
+                            setUserName(e.target.value);
+                          }
                         }}
                         onBlur={(e) => {
                           setUserName(
@@ -486,9 +506,9 @@ const CreateUsers = () => {
                             const regex = /^[a-zA-Z]*$/; // only allow letters
                             if (regex.test(value)) {
                               setFirstName(e.target.value);
-                              if (pageAction != "add") {
-                                setIsUserDetailsEditted(true);
-                              }
+                              // if (pageAction != "add") {
+                              setIsUserDetailsEditted(true);
+                              // }
                             }
                           }}
                           minLength={nameMinLength}
@@ -510,9 +530,9 @@ const CreateUsers = () => {
                             const regex = /^[a-zA-Z]*$/; // only allow letters
                             if (regex.test(value)) {
                               setLastName(e.target.value);
-                              if (pageAction != "add") {
-                                setIsUserDetailsEditted(true);
-                              }
+                              // if (pageAction != "add") {
+                              setIsUserDetailsEditted(true);
+                              // }
                             }
                           }}
                           minLength={nameMinLength}
@@ -537,11 +557,11 @@ const CreateUsers = () => {
                         }`}
                         value={emailId}
                         onChange={(e) => {
-                          setEmailId(e.target.value);
+                          setEmailId(e.target.value.toLowerCase());
                           setInvalidEmailId(false);
-                          if (pageAction != "add") {
-                            setIsUserDetailsEditted(true);
-                          }
+                          // if (pageAction != "add") {
+                          setIsUserDetailsEditted(true);
+                          // }
                         }}
                         onBlur={(e) => {
                           setEmailId(
@@ -553,36 +573,43 @@ const CreateUsers = () => {
                       />
                     </Content>
                   </Content>
-                    {pageAction !== "add" ? "" :
-                      <Content className="my-3">
-                        <Typography className="input-label-color mb-2 flex gap-1">
-                          {t("labels:password")}
-                          <span className="mandatory-symbol-color text-sm ">*</span>
-                        </Typography>
+                  {pageAction !== "add" ? (
+                    ""
+                  ) : (
+                    <Content className="my-3">
+                      <Typography className="input-label-color mb-2 flex gap-1">
+                        {t("labels:password")}
+                        <span className="mandatory-symbol-color text-sm ">
+                          *
+                        </span>
+                      </Typography>
 
-                        <Content>
-                          <Input.Password
-                            className={`${invalidPassword
-                                ? "border-red-400  border-[1px] rounded-lg border-solid focus:border-red-400 hover:border-red-400"
-                                : " border-solid border-[#C6C6C6]"
-                              }`}
-                            value={password}
-                            disabled={pageAction !== "add" ? true : false}
-                            onChange={(e) => {
-                              setPassword(e.target.value);
-                              setInValidPassword(false);
-                            }}
-                            onBlur={(e) => {
-                              setPassword(
-                                e.target.value.trim().replace(/\s+/g, " ")
-                              );
-                            }}
-                            minLength={passwordMinLength}
-                            maxLength={passwordMaxLength}
-                            placeholder={t("placeholders:enter_password")}
-                          />
-                        </Content>
-                      </Content>}
+                      <Content>
+                        <Input.Password
+                          className={`${
+                            invalidPassword
+                              ? "border-red-400  border-[1px] rounded-lg border-solid focus:border-red-400 hover:border-red-400"
+                              : " border-solid border-[#C6C6C6]"
+                          }`}
+                          value={password}
+                          disabled={pageAction !== "add" ? true : false}
+                          onChange={(e) => {
+                            setPassword(e.target.value);
+                            setInValidPassword(false);
+                            setIsUserDetailsEditted(true);
+                          }}
+                          onBlur={(e) => {
+                            setPassword(
+                              e.target.value.trim().replace(/\s+/g, " ")
+                            );
+                          }}
+                          minLength={passwordMinLength}
+                          maxLength={passwordMaxLength}
+                          placeholder={t("placeholders:enter_password")}
+                        />
+                      </Content>
+                    </Content>
+                  )}
                   <Content className="flex my-3">
                     <Content>
                       <Typography className="input-label-color mb-2 flex gap-1">
@@ -647,7 +674,22 @@ const CreateUsers = () => {
                       className={`app-btn-primary ml-2
                        `}
                       disabled={
-                        pageAction != "add" ? !isUserDetailsEditted : false
+                        pageAction === "add"
+                          ? userName != "" ||
+                            emailId != "" ||
+                            password != "" ||
+                            firstName != "" ||
+                            lastName != "" ||
+                            userStatus ||
+                            selectRole
+                            ? false
+                            : true
+                          : firstName != currentFirstName ||
+                            lastName != currentLastName ||
+                            emailId != currentEmailId ||
+                            selectRole != currentRole
+                          ? false
+                          : true
                       }
                     >
                       {pageAction === "edit"

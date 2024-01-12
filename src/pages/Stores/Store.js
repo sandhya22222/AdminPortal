@@ -62,8 +62,8 @@ const storeAPI = process.env.REACT_APP_STORE_API;
 const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE);
 const titleMinLength = process.env.REACT_APP_TITLE_MIN_LENGTH;
 const titleMaxLength = process.env.REACT_APP_TITLE_MAX_LENGTH;
-const emailMinLength = process.env.REACT_APP_DESCRIPTION_MIN_LENGTH;
-const emailMaxLength = process.env.REACT_APP_DESCRIPTION_MAX_LENGTH;
+const emailMinLength = process.env.REACT_APP_EMAIL_MIN_LENGTH;
+const emailMaxLength = process.env.REACT_APP_EMAIL_MAX_LENGTH;
 const passwordMinLength = process.env.REACT_APP_PASSWORD_MIN_LENGTH;
 const passwordMaxLength = process.env.REACT_APP_PASSWORD_MAX_LENGTH;
 const storeNameMinLength = process.env.REACT_APP_STORE_NAME_MIN_LENGTH;
@@ -387,8 +387,7 @@ const Stores = () => {
 
   const StoreTableColumnThreshold1 = [
     {
-      // title: `${t("labels:name")}`,
-      title: "Limits",
+      title: `${t("labels:limits")}`,
       dataIndex: "limits",
       key: "limits",
       width: "30%",
@@ -487,7 +486,7 @@ const Stores = () => {
     },
 
     {
-      title: "Stats",
+      title: `${t("labels:stats_name")}`,
       dataIndex: "stats",
       key: "stats",
       width: "20%",
@@ -522,7 +521,7 @@ const Stores = () => {
   const StoreTableColumnThreshold2 = [
     {
       // title: `${t("labels:name")}`,
-      title: "Limits",
+      title: `${t("labels:limits")}`,
       dataIndex: "limits",
       key: "limits",
       width: "30%",
@@ -999,6 +998,7 @@ const Stores = () => {
     setInValidPassword(false);
     setOnChangeValues(false);
     setShowStoreErrorMessage(false);
+    setOnChangeValues(false);
   };
   //!edit drawer
   const showEditDrawer = (id) => {
@@ -1020,6 +1020,7 @@ const Stores = () => {
     setStoreEmail("");
     setStorePassword("");
     setStoreUserName("");
+    setOnChangeValues(false);
   };
 
   //! opening the delete popup model
@@ -1375,7 +1376,8 @@ const Stores = () => {
         )
       );
     } else if (
-      (storeEmail && validator.isEmail(storeEmail) === false) ||
+      storeEmail &&
+      validator.isEmail(storeEmail) === false &&
       validator.isLength(storeEmail.trim(), {
         min: emailMinLength,
         max: emailMaxLength,
@@ -1424,6 +1426,7 @@ const Stores = () => {
       saveStoreData();
     }
   };
+
   //! post call for stores
   const saveStoreData = () => {
     const postBody = {
@@ -1706,11 +1709,11 @@ const Stores = () => {
                   items={[
                     {
                       key: "1",
-                      label: "My Stores",
+                      label: `${t("labels:my_stores")}`,
                     },
                     {
                       key: "2",
-                      label: "Threshold Configuration",
+                      label: `${t("labels:threshold_configuration")}`,
                     },
                   ]}
                   onChange={(key) => {
@@ -1797,7 +1800,7 @@ const Stores = () => {
                     } else if (e.target.value === "") {
                       setName(e.target.value);
                       // setShowStoreErrorMessage(false);
-                      setOnChangeValues(true);
+                      setOnChangeValues(false);
                     }
                     setInValidName(false);
                   }}
@@ -1838,9 +1841,15 @@ const Stores = () => {
                       : "mb-6"
                   }`}
                   onChange={(e) => {
-                    setStoreEmail(e.target.value);
+                    // setStoreEmail(e.target.value);
                     setInValidEmail(false);
-                    setOnChangeValues(true);
+                    if (e.target.value === "") {
+                      setOnChangeValues(false);
+                      setStoreEmail(e.target.value);
+                    } else {
+                      setOnChangeValues(true);
+                      setStoreEmail(e.target.value);
+                    }
                   }}
                   onBlur={() => {
                     const trimmed = storeEmail.trim();
@@ -1879,9 +1888,8 @@ const Stores = () => {
                       setOnChangeValues(true);
                     } else if (e.target.value === "") {
                       setStoreUserName(e.target.value);
-                      setOnChangeValues(true);
+                      setOnChangeValues(false);
                     }
-                    setOnChangeValues(true);
                   }}
                   onBlur={() => {
                     const trimmed = storeUserName.trim();
@@ -1909,23 +1917,16 @@ const Stores = () => {
                   }`}
                   onChange={(e) => {
                     const value = e.target.value;
-                    // if (value && value.length < 15) {
-                    setStorePassword(e.target.value);
+                    // setStorePassword(e.target.value);
                     setInValidPassword(false);
-                    setOnChangeValues(true);
-                    // }
-                    // else if (value && value.length >= 15) {
-                    //   toast(
-                    //     "Password should allow only 15 characters",
-                    //     {
-                    //       position: toast.POSITION.TOP_RIGHT,
-                    //       type: "warning",
-                    //     }
-                    //   );
-                    // } else
-                    // if (e.target.value === "") {
-                    //   setStorePassword(e.target.value);
-                    // }
+                    // setOnChangeValues(true);
+                    if (e.target.value === "") {
+                      setOnChangeValues(false);
+                      setStorePassword(e.target.value);
+                    } else {
+                      setOnChangeValues(true);
+                      setStorePassword(e.target.value);
+                    }
                   }}
                   onKeyDown={handleKeyDown}
                   onBlur={() => {
@@ -2027,7 +2028,7 @@ const Stores = () => {
                       setOnChangeEditValues(true);
                     } else {
                       toast(
-                        `${t("stores:Please enter the valid email address")}`,
+                        `${t("stores:please_enter_the_valid_email_address")}`,
                         {
                           position: toast.POSITION.TOP_RIGHT,
                           type: "warning",

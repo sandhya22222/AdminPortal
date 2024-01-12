@@ -34,6 +34,15 @@ import FrontEndKeysDownloadIcon from "../assets/images/common/FrontEndKeysDownlo
 import BackendKeysDownloadIcon from "../assets/images/common/BackendKeysDownloadIcon.svg";
 import DropdownIcon from "../assets/images/common/DropdownIcon.svg";
 import UserAccessControl from "../assets/images/common/UserAccessControl.svg";
+import StoreSettings from "../assets/images/sidebar/cog.png";
+import PaymentSettingsIcon from "../assets/images/sidebar/settings.svg";
+import BackBurgerIcon from "../assets/images/sidebar/backBurger.svg";
+import OpenInNew from "../assets/images/sidebar/open-in-new.svg";
+import Collapse from "../assets/images/sidebar/collaps.svg";
+
+
+
+
 export {
   AppStoreLogo,
   PlayStoreLogo,
@@ -71,4 +80,9 @@ export {
   BackendKeysDownloadIcon,
   DropdownIcon,
   UserAccessControl,
+  StoreSettings,
+  PaymentSettingsIcon,
+  BackBurgerIcon,
+OpenInNew,
+Collapse
 };
