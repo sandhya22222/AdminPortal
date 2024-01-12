@@ -213,5 +213,7 @@
    "threshold_configuration":"Threshold Configuration",
    "limits":"Limits",
    "my_profile":"My Profile",
-   "payment_settings":"Payment Settings"
+   "payment_settings":"Payment Settings",
+   "view_my_store":"View My Store"
+
 }
