@@ -3,6 +3,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { Affix, Button, Divider, Layout, Menu, Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+
 import {
   BackBurger,
   PaymentTypeIcon,
@@ -18,6 +19,7 @@ import {
 } from "../../constants/media";
 import Footer from "./../footer/Footer";
 import { useTranslation } from "react-i18next";
+import MarketplaceServices from "../../services/axios/MarketplaceServices";
 //! Import CSS libraries
 
 //! Import user defined functions
@@ -32,6 +34,8 @@ const { Sider, Content } = Layout;
 
 const antIcon = <LoadingOutlined className="text-[10px] hidden" spin />;
 const pageLimitFromENV = process.env.REACT_APP_ITEM_PER_PAGE;
+const sfUrlAPI = process.env.REACT_APP_STORE_FRONT_URL;
+
 
 //! Global Variables
 
@@ -42,6 +46,8 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
   const [openedItem, setOpenedItem] = useState([]);
   const [loadingEffect, setLoadingEffect] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
+  const [sfUrl, setSFUrl] = useState();
+
 
   // get permissions from storage
 
@@ -70,6 +76,24 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
     setIsHovering(false);
   };
 
+  const storeFrontUrl = () => {
+    MarketplaceServices.findAll(
+      sfUrlAPI,
+      // { "vendor-status": parseInt(1) },
+      null,
+      true
+    )
+      .then(function (response) {
+        console.log("Response from get SF url", response.data);
+        if (response.data.response_body) {
+          setSFUrl(response.data.response_body.url);
+        }
+      })
+      .catch(function (error) {
+        // setIsNetworkError(true);
+        console.log("Response from SFurl", error);
+      });
+    }
   useEffect(() => {
     switch (pathname.split("/")[2]) {
       case "userprofile":
@@ -105,6 +129,8 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
   useEffect(() => {
     // const myData =
     // const permissionValue = util.getPermissionData() || [];
+    // storeFrontUrl();
+
     console.log(
       "permission value",
       permissionValue.length > 0 && permissionValue.includes("UI-product-admin")
@@ -379,7 +405,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
               indicator={antIcon}
               tip=""
             >
-              <Content className="!h-20  space-y-4 !bg-[#392359] !py-2">
+              <Content className="!h-12  space-y-4 !bg-[#392359] !py-2">
                 {myData && myData.length > 0 ? (
                   <Content>
                     <Content
@@ -391,12 +417,12 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                       }`}
                     >
                       {collapsed ? (
-                        <p className="">{"T H"}</p>
+                        <p className="">{"TH"}</p>
                       ) : (
                         <p>{"Torry Harris Market Place"}</p>
                       )}
                     </Content>
-                    <Content className="flex">
+                    {/* <Content className="flex cursor-pointer"  onClick={() => window.open(sfUrl, "_blank")}>
                       {collapsed ? (
                         <div className="  w-[100%] !flex !items-center !justify-center">
                           <img
@@ -438,7 +464,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                           </div>
                         </>
                       )}
-                    </Content>
+                    </Content> */}
                   </Content>
                 ) : null}
               </Content>
