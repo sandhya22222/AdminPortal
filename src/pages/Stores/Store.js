@@ -404,7 +404,7 @@ const Stores = () => {
                 />
               </Tooltip>
             </div>
-            <InputNumber
+            {/* <InputNumber
               value={
                 storeLimitValues?.[keyName] > 0
                   ? storeLimitValues?.[keyName]
@@ -418,7 +418,64 @@ const Stores = () => {
                 let copyofStoreimitValues = { ...storeLimitValues };
                 copyofStoreimitValues[keyName] = value;
                 setStoreLimitValues(copyofStoreimitValues);
+                console.log("value", value);
               }}
+              disabled={!superAdmin}
+              className="w-28"
+              placeholder={t("labels:placeholder_unlimited")}
+            /> */}
+
+            <InputNumber
+              value={
+                storeLimitValues?.[keyName] > 0
+                  ? storeLimitValues?.[keyName]
+                  : ""
+              }
+              min={0}
+              onKeyPress={(e) => {
+                validatePositiveNumber(e, /[0-9]/);
+              }}
+              onChange={(value) => {
+                let copyofStoreLimitValues = { ...storeLimitValues };
+                copyofStoreLimitValues[keyName] = value;
+                setStoreLimitValues(copyofStoreLimitValues);
+              }}
+              // onPaste={(e) => {
+              //   // Prevent pasting non-numeric characters and limit to 12 characters
+              //   e.preventDefault();
+              //   const pastedValue = e.clipboardData
+              //     .getData("text/plain")
+              //     .replace(/[^0-9]/g, "")
+              //     .substring(0, 12);
+              //   document.execCommand("insertText", false, pastedValue);
+              // }}
+
+              onPaste={(e) => {
+                e.preventDefault();
+
+                const pastedText = e.clipboardData.getData("text/plain");
+                const numericValue = pastedText.replace(/[^0-9]/g, "");
+                const truncatedValue = numericValue.substring(0, 12);
+
+                // Check if the resulting value is a positive number
+                if (/^[0-9]+$/.test(truncatedValue)) {
+                  let copyOfStoreLimitValues = { ...storeLimitValues };
+                  copyOfStoreLimitValues[keyName] = truncatedValue;
+                  setStoreLimitValues(copyOfStoreLimitValues);
+                }
+              }}
+              // onPaste={(e) => {
+              //   // Prevent pasting non-numeric characters and limit to 12 characters
+              //   e.preventDefault();
+              //   const pastedValue = e.clipboardData
+              //     .getData("text/plain")
+              //     .replace(/[^0-9]/g, "")
+              //     .substring(0, 12);
+              //   const updatedValue = parseInt(pastedValue, 10) || 0; // Ensure it's a valid number
+              //   let copyofStoreLimitValues = { ...storeLimitValues };
+              //   copyofStoreLimitValues[keyName] = updatedValue;
+              //   setStoreLimitValues(copyofStoreLimitValues);
+              // }}
               disabled={!superAdmin}
               className="w-28"
               placeholder={t("labels:placeholder_unlimited")}
@@ -496,6 +553,15 @@ const Stores = () => {
                   let copyofStoreimitValues = { ...storeLimitValues };
                   copyofStoreimitValues[keyName] = value;
                   setStoreLimitValues(copyofStoreimitValues);
+                }}
+                onPaste={(e) => {
+                  // Prevent pasting non-numeric characters and limit to 12 characters
+                  e.preventDefault();
+                  const pastedValue = e.clipboardData
+                    .getData("text/plain")
+                    .replace(/[^0-9]/g, "")
+                    .substring(0, 12);
+                  document.execCommand("insertText", false, pastedValue);
                 }}
                 disabled={!superAdmin}
                 className="w-28"
@@ -2094,7 +2160,14 @@ const Stores = () => {
                       >
                         {t("labels:save")}
                       </Button>
-                      {/* <Button onClick={{}}>Discard</Button> */}
+                      <Button
+                        onClick={() => {
+                          setCurrentTab(1);
+                          sessionStorage.setItem("currentStoretab", 1);
+                        }}
+                      >
+                        Discard
+                      </Button>
                     </Content>
                   ) : (
                     ""

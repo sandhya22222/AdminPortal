@@ -22,7 +22,13 @@ import { MdStore } from "react-icons/md";
 import { useDispatch } from "react-redux";
 
 import axios from "axios";
-import { StarTwoTone, ReloadOutlined } from "@ant-design/icons";
+import {
+  StarTwoTone,
+  ReloadOutlined,
+  LineChartOutlined,
+  BarChartOutlined,
+  UnorderedListOutlined,
+} from "@ant-design/icons";
 import { useQuery } from "react-query";
 
 //! Import CSS libraries
@@ -201,6 +207,10 @@ const Newdashboard = () => {
             vendors: value.count_vendor,
             products: value.count_product,
             product_templates: value.count_template,
+            orders_received: value.count_received_order,
+            in_progress: value.count_inprogress_order,
+            orders_cancelled: value.count_cancelled_order,
+            orders_fulfilled: value.count_fulfilled_order,
           })
         );
 
@@ -1196,7 +1206,7 @@ const Newdashboard = () => {
   //     });
   // };
 
-  const columns = [
+  const performanceColumns = [
     {
       title: t("labels:store_name"),
       dataIndex: "store_name",
@@ -1207,11 +1217,46 @@ const Newdashboard = () => {
       dataIndex: "orders",
       key: "orders",
     },
+    // {
+    //   title: t("labels:product_templates"),
+    //   dataIndex: "product_templates",
+    //   key: "product_templates",
+    // },
+    // {
+    //   title: t("labels:products"),
+    //   dataIndex: "products",
+    //   key: "products",
+    // },
+    // {
+    //   title: t("labels:vendors"),
+    //   dataIndex: "vendors",
+    //   key: "vendors",
+    // },
+  ];
+
+  const statisticsColumns = [
+    {
+      title: t("labels:store_name"),
+      dataIndex: "store_name",
+      key: "store_name",
+    },
     {
       title: t("labels:product_templates"),
       dataIndex: "product_templates",
       key: "product_templates",
     },
+    {
+      title: t("labels:orders"),
+      dataIndex: "orders",
+      key: "orders",
+    },
+
+    // {
+    //   title: t("labels:categories"),
+    //   dataIndex: "categories",
+    //   key: "categories",
+    // },
+
     {
       title: t("labels:products"),
       dataIndex: "products",
@@ -1224,6 +1269,57 @@ const Newdashboard = () => {
     },
   ];
 
+  const ordersColumns = [
+    {
+      title: t("labels:store_name"),
+      dataIndex: "store_name",
+      key: "store_name",
+    },
+    {
+      title: t("labels:orders_received"),
+      dataIndex: "orders_received",
+      key: "orders_received",
+    },
+
+    {
+      title: t("labels:in_progress"),
+      dataIndex: "in_progress",
+      key: "in_progress",
+    },
+    {
+      title: t("labels:orders_fulfilled"),
+      dataIndex: "orders_fulfilled",
+      key: "orders_fulfilled",
+    },
+
+    {
+      title: t("labels:orders_cancelled"),
+      dataIndex: "orders_cancelled",
+      key: "orders_cancelled",
+    },
+
+    {
+      title: t("labels:orders"),
+      dataIndex: "orders",
+      key: "orders",
+    },
+    // {
+    //   title: t("labels:product_templates"),
+    //   dataIndex: "product_templates",
+    //   key: "product_templates",
+    // },
+    // {
+    //   title: t("labels:products"),
+    //   dataIndex: "products",
+    //   key: "products",
+    // },
+    // {
+    //   title: t("labels:vendors"),
+    //   dataIndex: "vendors",
+    //   key: "vendors",
+    // },
+  ];
+
   return (
     <Content className="mb-2">
       <Content className="mb-2">
@@ -1233,7 +1329,11 @@ const Newdashboard = () => {
               <Content className="!w-[10%] flex  align-start">
                 <Space direction="vertical" size={16}>
                   <Space wrap size={16}>
-                    <Avatar size={64} icon={<UserOutlined />} />
+                    <Avatar
+                      size={64}
+                      className="flex items-center justify-center"
+                      icon={<UserOutlined />}
+                    />
                   </Space>
                 </Space>
               </Content>
@@ -1259,18 +1359,26 @@ const Newdashboard = () => {
                   {t("labels:active_stores")}
                 </Text>
 
-                <Content className="flex flex-col  items-baselin h-4">
+                <Content className="flex flex-col  items-baseline h-4 min-w-40 max-w-72">
                   <Content className="flex justify-between  items-baseline gap-1 ">
                     <Title style={{ color: "#4A2D73" }} level={2}>
                       {activeStoreCount ? activeStoreCount : 0}{" "}
                     </Title>
                     {storeLimitValues?.store_limit ? (
-                      <Text level={5} className="text-zinc-400 !font-semibold ">
+                      <Text
+                        level={5}
+                        className={
+                          storeLimitValues?.store_limit.toString().length >= 5
+                            ? "text-zinc-400 !font-semibold w-60"
+                            : "text-zinc-400 !font-semibold "
+                        }
+                      >
                         {" "}
                         {t("labels:of")}{" "}
                         {storeLimitValues?.store_limit
                           ? storeLimitValues?.store_limit
                           : 0}{" "}
+                        {/* {storeLimitValues?.store_limit.toString().length} */}
                         {t("labels:stores")} ({t("labels:max_allowed")})
                       </Text>
                     ) : null}
@@ -1333,9 +1441,15 @@ const Newdashboard = () => {
               hidden={dm4sightEnabled === "true" ? false : true}
               className="flex justify-between !mt-14"
             >
-              <Content className="!w-[20%]  bg-[#ffff] p-4  shadow-sm rounded-md justify-center">
+              <Content className="!w-[65%] m-1 bg-[#ffff] p-4  shadow-sm rounded-md justify-center">
                 <Content className="flex items-center justify-between mb-1">
-                  <Title level={4} className="!m-0  !text-black">
+                  <Title level={4} className="!m-0  !text-black flex gap-2">
+                    <Avatar
+                      shape="square"
+                      className="flex items-center justify-center bg-yellow-500	"
+                      icon={<BarChartOutlined />}
+                    />
+
                     {t("labels:store_overview")}
                   </Title>
                   <Button
@@ -1350,11 +1464,64 @@ const Newdashboard = () => {
                   <Table
                     pagination={false}
                     dataSource={tableData}
-                    columns={columns}
+                    columns={statisticsColumns}
                   />
                 </Content>
               </Content>
+              {/* <Content className="!w-[35%] m-1  bg-[#ffff] p-4  shadow-sm rounded-md justify-center">
+                <Content className="flex items-center justify-between mb-1">
+                  <Title level={4} className="!m-0  !text-black flex gap-2">
+                    <Avatar
+                      shape="square"
+                      className="flex items-center justify-center bg-cyan-500	"
+                      icon={<LineChartOutlined />}
+                    />
+                    {t("labels:performance")}
+                  </Title>
+                  <Button
+                    onClick={() => navigate("/dashboard/store")}
+                    type="link"
+                  >
+                    {t("labels:more")}
+                  </Button>
+                </Content>
+                <Divider className="w-10" />
+                <Content>
+                  <Table
+                    pagination={false}
+                    dataSource={tableData}
+                    columns={performanceColumns}
+                  />
+                </Content>
+              </Content> */}
             </Content>
+            {/* <Content className="!w-[100%]  bg-[#ffff] p-4 mt-1  shadow-sm rounded-md justify-center"> */}
+            {/* <Content className="flex items-center justify-between mb-1">
+                <Title level={4} className="!m-0  !text-black flex gap-2">
+                  <Avatar
+                    shape="square"
+                    className="flex items-center justify-center bg-blue-500		"
+                    icon={<UnorderedListOutlined />}
+                  />
+
+                  {t("labels:orders")}
+                </Title>
+                <Button
+                  onClick={() => navigate("/dashboard/store")}
+                  type="link"
+                >
+                  {t("labels:more")}
+                </Button>
+              </Content> */}
+            {/* <Divider className="w-10" /> */}
+            {/* <Content>
+                <Table
+                  pagination={false}
+                  dataSource={tableData}
+                  columns={ordersColumns}
+                />
+              </Content> */}
+            {/* </Content> */}
           </Content>
         )}
       </Content>
