@@ -568,6 +568,7 @@ const CreateUsers = () => {
                             e.target.value.trim().replace(/\s+/g, " ")
                           );
                         }}
+                        autocomplete="off"
                         maxLength={emailMaxLength}
                         placeholder={t("placeholders:enter_email")}
                       />
@@ -605,6 +606,7 @@ const CreateUsers = () => {
                           }}
                           minLength={passwordMinLength}
                           maxLength={passwordMaxLength}
+                          autoComplete="new-password"
                           placeholder={t("placeholders:enter_password")}
                         />
                       </Content>
