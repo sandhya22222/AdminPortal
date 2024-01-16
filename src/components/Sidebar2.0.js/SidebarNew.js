@@ -406,10 +406,10 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
               indicator={antIcon}
               tip=""
             >
-              <Content className="!h-12  space-y-4 !bg-[#392359] !py-2">
+              {/* <Content className="!h-12  space-y-4 !bg-[#392359] !py-2">
                 {myData && myData.length > 0 ? (
-                  <Content>
-                    <Content
+                  <Content> */}
+                    {/* <Content
                       className={` text-white font-normal ${
                         util.getSelectedLanguageDirection()?.toUpperCase() ===
                         "RTL"
@@ -422,7 +422,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                       ) : (
                         <p>{"Torry Harris Market Place"}</p>
                       )}
-                    </Content>
+                    </Content> */}
                     {/* <Content className="flex cursor-pointer"  onClick={() => window.open(sfUrl, "_blank")}>
                       {collapsed ? (
                         <div className="  w-[100%] !flex !items-center !justify-center">
@@ -466,9 +466,9 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                         </>
                       )}
                     </Content> */}
-                  </Content>
+                  {/* </Content>
                 ) : null}
-              </Content>
+              </Content> */}
               <Menu
                 mode="inline"
                 className="h-full !text-base !bg-[var(--mp-brand-color)]"
