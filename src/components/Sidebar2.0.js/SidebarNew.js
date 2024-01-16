@@ -173,6 +173,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
           label: `${t("labels:Settings")}`,
           navigate_to: "/dashboard/",
           show_in_menu: true,
+          childrenKeys:["3","5","6","12"],
           children: [
             {
               key: "3",
@@ -521,6 +522,11 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                       key={item.key}
                       // style={{ color: "black" }}
                       title={item.label}
+                      style={{
+                        opacity: item.childrenKeys.includes(selectedItem)
+                          ? 1
+                          : 0.7,
+                      }}
                     >
                       {item.children.map((child) =>
                         child.show_in_menu ? (
@@ -531,6 +537,9 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                             onClick={() => {
                               navigate(child.navigate_to);
                               handlePageRefresh(child.navigate_to);
+                            }}
+                            style={{
+                              opacity: selectedItem === child.key ? 1 : 0.8,
                             }}
                           >
                             {selectedItem === child.key ? (
@@ -553,6 +562,9 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                       onClick={() => {
                         navigate(item.navigate_to);
                         handlePageRefresh(item.navigate_to);
+                      }}
+                      style={{
+                        opacity: selectedItem === item.key ? 1 : 0.8,
                       }}
                     >
                       {selectedItem === item.key ? (
