@@ -173,6 +173,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
           label: `${t("labels:Settings")}`,
           navigate_to: "/dashboard/",
           show_in_menu: true,
+          childrenKeys:["3","5","6","12"],
           children: [
             {
               key: "3",
@@ -405,10 +406,10 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
               indicator={antIcon}
               tip=""
             >
-              <Content className="!h-12  space-y-4 !bg-[#392359] !py-2">
+              {/* <Content className="!h-12  space-y-4 !bg-[#392359] !py-2">
                 {myData && myData.length > 0 ? (
-                  <Content>
-                    <Content
+                  <Content> */}
+                    {/* <Content
                       className={` text-white font-normal ${
                         util.getSelectedLanguageDirection()?.toUpperCase() ===
                         "RTL"
@@ -421,7 +422,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                       ) : (
                         <p>{"Torry Harris Market Place"}</p>
                       )}
-                    </Content>
+                    </Content> */}
                     {/* <Content className="flex cursor-pointer"  onClick={() => window.open(sfUrl, "_blank")}>
                       {collapsed ? (
                         <div className="  w-[100%] !flex !items-center !justify-center">
@@ -465,9 +466,9 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                         </>
                       )}
                     </Content> */}
-                  </Content>
+                  {/* </Content>
                 ) : null}
-              </Content>
+              </Content> */}
               <Menu
                 mode="inline"
                 className="h-full !text-base !bg-[var(--mp-brand-color)]"
@@ -521,6 +522,11 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                       key={item.key}
                       // style={{ color: "black" }}
                       title={item.label}
+                      style={{
+                        opacity: item.childrenKeys.includes(selectedItem)
+                          ? 1
+                          : 0.7,
+                      }}
                     >
                       {item.children.map((child) =>
                         child.show_in_menu ? (
@@ -531,6 +537,9 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                             onClick={() => {
                               navigate(child.navigate_to);
                               handlePageRefresh(child.navigate_to);
+                            }}
+                            style={{
+                              opacity: selectedItem === child.key ? 1 : 0.8,
                             }}
                           >
                             {selectedItem === child.key ? (
@@ -553,6 +562,9 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                       onClick={() => {
                         navigate(item.navigate_to);
                         handlePageRefresh(item.navigate_to);
+                      }}
+                      style={{
+                        opacity: selectedItem === item.key ? 1 : 0.8,
                       }}
                     >
                       {selectedItem === item.key ? (
