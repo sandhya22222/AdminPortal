@@ -75,7 +75,11 @@ const Language = () => {
       render: (text, record) => {
         return (
           <Content className="inline-block">
-            <Tooltip title={record.language} overlayStyle={{ zIndex: 1 }}>
+            <Tooltip
+              title={record.language}
+              overlayStyle={{ zIndex: 1 }}
+              placement="right"
+            >
               <Text
                 className={`mx-1 ${
                   record.is_default ? "!max-w-[80px]" : "!max-w-[150px]"
@@ -514,7 +518,9 @@ const Language = () => {
             </Content>
             {languageData &&
             languageData.length == 1 &&
-            languageData[0].language_code ? (
+            languageData[0].language_code &&
+            totalLanguageCount &&
+            totalLanguageCount <= pageLimit ? (
               <Content className="bg-white mt-4 p-2">
                 <LanguageBanner></LanguageBanner>
               </Content>

@@ -200,7 +200,7 @@
   "product_template_limit_tooltip": "Product template limit tooltip message",
   "store_limit_tooltip": "Store limit tooltip message",
   "delete_user": "Delete user",
-  "razor_pay": "Razor Pay",
+  "razor_pay": "Razorpay",
   "stripe": "Stripe",
   "account_restrictions": "Account Restrictions",
   "store_restrictions": "Store Restrictions",
