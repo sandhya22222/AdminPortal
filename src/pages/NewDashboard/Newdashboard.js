@@ -1241,14 +1241,14 @@ const Newdashboard = () => {
       key: "store_name",
     },
     {
-      title: t("labels:product_templates"),
-      dataIndex: "product_templates",
-      key: "product_templates",
-    },
-    {
-      title: t("labels:orders"),
+      title: t("labels:number_of") + " " + t("labels:orders"),
       dataIndex: "orders",
       key: "orders",
+    },
+    {
+      title: t("labels:number_of") + " " + t("labels:product_templates"),
+      dataIndex: "product_templates",
+      key: "product_templates",
     },
 
     // {
@@ -1258,12 +1258,12 @@ const Newdashboard = () => {
     // },
 
     {
-      title: t("labels:products"),
+      title: t("labels:number_of") + " " + t("labels:products"),
       dataIndex: "products",
       key: "products",
     },
     {
-      title: t("labels:vendors"),
+      title: t("labels:number_of") + " " + t("labels:vendors"),
       dataIndex: "vendors",
       key: "vendors",
     },
@@ -1452,12 +1452,12 @@ const Newdashboard = () => {
 
                     {t("labels:store_overview")}
                   </Title>
-                  <Button
+                  {/* <Button
                     onClick={() => navigate("/dashboard/store")}
                     type="link"
                   >
                     {t("labels:more")}
-                  </Button>
+                  </Button> */}
                 </Content>
                 <Divider className="w-10" />
                 <Content>

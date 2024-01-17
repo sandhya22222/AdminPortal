@@ -218,5 +218,6 @@
   "new_password_and_confirm_password_should_be_same": "New password and confirm password should be same",
   "please_enter_a_valid_password": "Please enter a valid password",
   "plese_enter_your_current_password": "Plese enter your current password",
-  "current_password":"Current password"
+  "current_password": "Current password",
+  "number_of": "Number of"
 }
