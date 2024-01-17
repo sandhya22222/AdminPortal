@@ -76,6 +76,7 @@ const dm4sightAnalysisCountAPI =
 const dm4sightClientID = process.env.REACT_APP_4SIGHT_CLIENT_ID;
 const dm4sightBaseURL = process.env.REACT_APP_4SIGHT_BASE_URL;
 const currentUserDetailsAPI = process.env.REACT_APP_USER_PROFILE_API;
+const maxDataLimit = process.env.REACT_APP_MAX_DATA_LIMIT;
 
 const Stores = () => {
   const { t } = useTranslation();
@@ -432,6 +433,7 @@ const Stores = () => {
                   : ""
               }
               min={0}
+              max={maxDataLimit}
               onKeyPress={(e) => {
                 validatePositiveNumber(e, /[0-9]/);
               }}
@@ -546,6 +548,7 @@ const Stores = () => {
                     : ""
                 }
                 min={0}
+                max={maxDataLimit}
                 onKeyPress={(e) => {
                   validatePositiveNumber(e, /[0-9]/);
                 }}
