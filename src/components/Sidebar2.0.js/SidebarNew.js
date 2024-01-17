@@ -3,6 +3,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { Affix, Button, Divider, Layout, Menu, Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+
 import {
   BackBurger,
   PaymentTypeIcon,
@@ -18,6 +19,7 @@ import {
 } from "../../constants/media";
 import Footer from "./../footer/Footer";
 import { useTranslation } from "react-i18next";
+import MarketplaceServices from "../../services/axios/MarketplaceServices";
 //! Import CSS libraries
 
 //! Import user defined functions
@@ -32,6 +34,8 @@ const { Sider, Content } = Layout;
 
 const antIcon = <LoadingOutlined className="text-[10px] hidden" spin />;
 const pageLimitFromENV = process.env.REACT_APP_ITEM_PER_PAGE;
+const sfUrlAPI = process.env.REACT_APP_STORE_FRONT_URL;
+
 
 //! Global Variables
 
@@ -42,6 +46,8 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
   const [openedItem, setOpenedItem] = useState([]);
   const [loadingEffect, setLoadingEffect] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
+  const [sfUrl, setSFUrl] = useState();
+
 
   // get permissions from storage
 
@@ -70,6 +76,24 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
     setIsHovering(false);
   };
 
+  const storeFrontUrl = () => {
+    MarketplaceServices.findAll(
+      sfUrlAPI,
+      // { "vendor-status": parseInt(1) },
+      null,
+      true
+    )
+      .then(function (response) {
+        console.log("Response from get SF url", response.data);
+        if (response.data.response_body) {
+          setSFUrl(response.data.response_body.url);
+        }
+      })
+      .catch(function (error) {
+        // setIsNetworkError(true);
+        console.log("Response from SFurl", error);
+      });
+    }
   useEffect(() => {
     switch (pathname.split("/")[2]) {
       case "userprofile":
@@ -105,6 +129,8 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
   useEffect(() => {
     // const myData =
     // const permissionValue = util.getPermissionData() || [];
+    // storeFrontUrl();
+
     console.log(
       "permission value",
       permissionValue.length > 0 && permissionValue.includes("UI-product-admin")
@@ -147,6 +173,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
           label: `${t("labels:Settings")}`,
           navigate_to: "/dashboard/",
           show_in_menu: true,
+          childrenKeys:["3","5","6","12"],
           children: [
             {
               key: "3",
@@ -379,10 +406,10 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
               indicator={antIcon}
               tip=""
             >
-              <Content className="!h-20  space-y-4 !bg-[#392359] !py-2">
+              {/* <Content className="!h-12  space-y-4 !bg-[#392359] !py-2">
                 {myData && myData.length > 0 ? (
-                  <Content>
-                    <Content
+                  <Content> */}
+                    {/* <Content
                       className={` text-white font-normal ${
                         util.getSelectedLanguageDirection()?.toUpperCase() ===
                         "RTL"
@@ -391,12 +418,12 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                       }`}
                     >
                       {collapsed ? (
-                        <p className="">{"T H"}</p>
+                        <p className="">{"TH"}</p>
                       ) : (
                         <p>{"Torry Harris Market Place"}</p>
                       )}
-                    </Content>
-                    <Content className="flex">
+                    </Content> */}
+                    {/* <Content className="flex cursor-pointer"  onClick={() => window.open(sfUrl, "_blank")}>
                       {collapsed ? (
                         <div className="  w-[100%] !flex !items-center !justify-center">
                           <img
@@ -438,10 +465,10 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                           </div>
                         </>
                       )}
-                    </Content>
-                  </Content>
+                    </Content> */}
+                  {/* </Content>
                 ) : null}
-              </Content>
+              </Content> */}
               <Menu
                 mode="inline"
                 className="h-full !text-base !bg-[var(--mp-brand-color)]"
@@ -495,6 +522,11 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                       key={item.key}
                       // style={{ color: "black" }}
                       title={item.label}
+                      style={{
+                        opacity: item.childrenKeys.includes(selectedItem)
+                          ? 1
+                          : 0.8,
+                      }}
                     >
                       {item.children.map((child) =>
                         child.show_in_menu ? (
@@ -505,6 +537,9 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                             onClick={() => {
                               navigate(child.navigate_to);
                               handlePageRefresh(child.navigate_to);
+                            }}
+                            style={{
+                              opacity: !item.childrenKeys.includes(selectedItem)?1:selectedItem === child.key ? 1 : 0.8,
                             }}
                           >
                             {selectedItem === child.key ? (
@@ -527,6 +562,9 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                       onClick={() => {
                         navigate(item.navigate_to);
                         handlePageRefresh(item.navigate_to);
+                      }}
+                      style={{
+                        opacity: selectedItem === item.key ? 1 : 0.8,
                       }}
                     >
                       {selectedItem === item.key ? (
