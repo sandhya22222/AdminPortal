@@ -525,7 +525,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                       style={{
                         opacity: item.childrenKeys.includes(selectedItem)
                           ? 1
-                          : 0.7,
+                          : 0.8,
                       }}
                     >
                       {item.children.map((child) =>
@@ -539,7 +539,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                               handlePageRefresh(child.navigate_to);
                             }}
                             style={{
-                              opacity: selectedItem === child.key ? 1 : 0.8,
+                              opacity: !item.childrenKeys.includes(selectedItem)?1:selectedItem === child.key ? 1 : 0.8,
                             }}
                           >
                             {selectedItem === child.key ? (
