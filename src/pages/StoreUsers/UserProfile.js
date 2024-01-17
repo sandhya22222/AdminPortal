@@ -25,7 +25,7 @@ import MarketplaceToaster from "../../util/marketplaceToaster";
 
 const { Content } = Layout;
 const { Text, Title } = Typography;
-
+const changePasswordAPI = process.env.REACT_APP_CHANGE_PASSWORD_API;
 const storeUsersAPI = process.env.REACT_APP_USERS_API;
 
 const UserProfile = () => {
@@ -58,42 +58,36 @@ const UserProfile = () => {
     //check wether the currrent password is same as in api call
     // check wether the new password is equal to confirm passsword
     // make the api call for changing the password
-    if (currentPassword === currentPassword) {
+    if (
+      currentPassword !== null &&
+      currentPassword !== "" &&
+      currentPassword.length > 0
+    ) {
       if (validatePassword()) {
         if (password === confirmPassword) {
-          const response_body = {
-            realmname: relmname,
-            username: userName,
-            new_password: password,
-          };
-          console.log("Response Body: ", response_body);
-          //make the api cal
-          console.log("new password is set to : ", password, " successfully");
-          MarketplaceToaster.showToast(
-            util.getToastObject(`Succssfully updated the password`, "success")
-          );
-          setPassword("");
-          setCurrentPassword("");
-          setConfirmPassword("");
-          setIsPasswordChangeModalOpen(false);
+          changePasswordAPICall();
         } else {
-          console.log("erroroororororororororororo");
           MarketplaceToaster.showToast(
             util.getToastObject(
-              `Both the new password and confirm passsword should be same`,
+              `${t(
+                "labels:new_password_and_confirm_password_should_be_same"
+              )}`,
               "error"
             )
           );
         }
       } else {
         MarketplaceToaster.showToast(
-          util.getToastObject(`Please enter a valid password`, "error")
+          util.getToastObject(
+            `${t("labels:please_enter_a_valid_password")}`,
+            "error"
+          )
         );
       }
     } else {
       MarketplaceToaster.showToast(
         util.getToastObject(
-          `The current password should match exisiting pass`,
+          `${t("labels:plese_enter_your_current_password")}`,
           "error"
         )
       );
@@ -198,6 +192,36 @@ const UserProfile = () => {
         }
       });
   };
+
+  const changePasswordAPICall = () => {
+    MarketplaceServices.save(
+      changePasswordAPI,
+      {
+        old_password: currentPassword,
+        new_password: password,
+      },
+      false
+    )
+      .then(function (response) {
+        console.log(
+          "response from  change password server response-----> ",
+          response.data
+        );
+        MarketplaceToaster.showToast(response);
+        setPassword("");
+        setCurrentPassword("");
+        setConfirmPassword("");
+        setIsPasswordChangeModalOpen(false);
+      })
+      .catch((error) => {
+        console.log("error from change password API ====>", error.response);
+        MarketplaceToaster.showToast(error.response);
+        setPassword("");
+        setCurrentPassword("");
+        setConfirmPassword("");
+      });
+  };
+
   useEffect(() => {
     if (util.getSelectedLanguageDirection()) {
       setLangDirection(util.getSelectedLanguageDirection()?.toLowerCase());
@@ -347,13 +371,14 @@ const UserProfile = () => {
           <Content className="mx-3 my-24">
             <Content className="w-[100%] bg-white my-3 p-2 rounded-md shadow-sm">
               <div className="flex gap-2">
-                <img
+                {/* <img
                   src={
                     "https://images.unsplash.com/photo-1566275529824-cca6d008f3da?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cGhvdG98ZW58MHx8MHx8fDA%3D"
                   }
                   alt="Profile"
                   className="w-16 aspect-square rounded-[50%] overflow-hidden"
-                />
+                /> */}
+                <Avatar size={64} icon={<UserOutlined />} />
                 <div className="flex flex-col justify-center">
                   <Typography className="input-label-color  m-0 items-center">
                     <span className="text-3xl">
@@ -428,13 +453,14 @@ const UserProfile = () => {
               <Typography className="input-label-color py-2">
                 {t("labels:profile_picture")}
               </Typography>
-              <img
+              {/* <img
                 src={
                   "https://images.unsplash.com/photo-1566275529824-cca6d008f3da?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cGhvdG98ZW58MHx8MHx8fDA%3D"
                 }
                 alt="Profile"
                 className=" w-24 aspect-square "
-              />
+              /> */}
+              <Avatar shape="square" size={64} icon={<UserOutlined />} />
             </Content>
           </Content>
         )}
