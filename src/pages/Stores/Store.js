@@ -1716,7 +1716,7 @@ const Stores = () => {
                     },
                     {
                       key: "2",
-                      label: `${t("labels:threshold_configuration")}`,
+                      label: <span className="!mr-3">{t("labels:threshold_configuration")}</span>,
                     },
                   ]}
                   onChange={(key) => {

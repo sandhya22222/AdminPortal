@@ -444,9 +444,9 @@ function LanguageDocUpload({ langCode }) {
             {t("messages:upload_success")}
           </Title>
           <Text>{t("messages:upload_success_message")}</Text>
-          <Content className="mt-3">
+          <Content className="mt-3 flex gap-2">
             <Button
-              className="app-btn-primary mr-2"
+              className="app-btn-primary"
               onClick={() => closeSuccessModal()}
             >
               {t("labels:close")}
