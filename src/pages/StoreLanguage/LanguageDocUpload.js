@@ -141,7 +141,7 @@ function LanguageDocUpload({ langCode }) {
         const fileURL = window.URL.createObjectURL(response.data);
         let alink = document.createElement("a");
         alink.href = fileURL;
-        alink.download = "message_format.csv";
+        alink.download = "backend_keys_document.csv";
         alink.click();
 
         MarketplaceToaster.showToast(
@@ -258,7 +258,7 @@ function LanguageDocUpload({ langCode }) {
         const fileURL = window.URL.createObjectURL(response.data);
         let alink = document.createElement("a");
         alink.href = fileURL;
-        alink.download = "key_value_format.csv";
+        alink.download = "frontend_keys_document.csv";
         alink.click();
 
         MarketplaceToaster.showToast(

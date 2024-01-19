@@ -53,6 +53,7 @@ const dm4sightDataLimitAnalysisDetailsCountAPI =
   process.env.REACT_APP_4SIGHT_GET_DATA_ANALYSISDETAIL_API;
 const dm4sightClientID = process.env.REACT_APP_4SIGHT_CLIENT_ID;
 const dm4sightBaseURL = process.env.REACT_APP_4SIGHT_BASE_URL;
+const maxDataLimit = process.env.REACT_APP_MAX_DATA_LIMIT;
 
 const StoreSettings = () => {
   const { t } = useTranslation();
@@ -134,7 +135,6 @@ const StoreSettings = () => {
     useState();
   const [bannerAbsoluteImage, setBannerAbsoluteImage] = useState([]);
   const instance = axios.create();
-
 
   const [colorCodeValidation, setColorCodeValidation] = useState({
     pageBgColorValidation: false,
@@ -382,7 +382,7 @@ const StoreSettings = () => {
   };
 
   const storeLimitValidation = () => {
-    const maxLimit = 2147483647;
+    const maxLimit = maxDataLimit;
     let count = 10;
     let copyofStoreDataLimitValue = { ...storeDataLimitValues };
     if (
@@ -1439,7 +1439,8 @@ const StoreSettings = () => {
             console.log("res analysis", res);
             setIsStoreLimitDataLoading(false);
             setAnalysisCount(res.data);
-          }).catch((error) => {
+          })
+          .catch((error) => {
             // setIsLoading(false);
             setIsStoreLimitDataLoading(false);
             console.log("Server error from 4sight api ", error.response);
@@ -1467,6 +1468,11 @@ const StoreSettings = () => {
             onKeyPress={(e) => {
               validatePositiveNumber(e, /[0-9]/);
             }}
+            onPaste={(e) => {
+              validatePositiveNumber(e, /[0-9]/);
+            }}
+            className={"w-28"}
+            max={maxDataLimit}
             onChange={(value) => {
               // let number = /^[0-9]*$/.test(e.target.value);
               // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1505,6 +1511,11 @@ const StoreSettings = () => {
             onKeyPress={(e) => {
               validatePositiveNumber(e, /[0-9]/);
             }}
+            onPaste={(e) => {
+              validatePositiveNumber(e, /[0-9]/);
+            }}
+            className={"w-28"}
+            max={maxDataLimit}
             onChange={(value) => {
               // let number = /^[0-9]*$/.test(e.target.value);
               // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1542,6 +1553,11 @@ const StoreSettings = () => {
             onKeyPress={(e) => {
               validatePositiveNumber(e, /[0-9]/);
             }}
+            onPaste={(e) => {
+              validatePositiveNumber(e, /[0-9]/);
+            }}
+            className={"w-28"}
+            max={maxDataLimit}
             onChange={(value) => {
               // let number = /^[0-9]*$/.test(e.target.value);
               // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1579,6 +1595,11 @@ const StoreSettings = () => {
             onKeyPress={(e) => {
               validatePositiveNumber(e, /[0-9]/);
             }}
+            onPaste={(e) => {
+              validatePositiveNumber(e, /[0-9]/);
+            }}
+            className={"w-28"}
+            max={maxDataLimit}
             onChange={(value) => {
               // let number = /^[0-9]*$/.test(e.target.value);
               // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1618,6 +1639,11 @@ const StoreSettings = () => {
             onKeyPress={(e) => {
               validatePositiveNumber(e, /[0-9]/);
             }}
+            onPaste={(e) => {
+              validatePositiveNumber(e, /[0-9]/);
+            }}
+            className={"w-28"}
+            max={maxDataLimit}
             onChange={(value) => {
               // let number = /^[0-9]*$/.test(e.target.value);
               // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1655,6 +1681,11 @@ const StoreSettings = () => {
             onKeyPress={(e) => {
               validatePositiveNumber(e, /[0-9]/);
             }}
+            onPaste={(e) => {
+              validatePositiveNumber(e, /[0-9]/);
+            }}
+            className={"w-28"}
+            max={maxDataLimit}
             onChange={(value) => {
               // let number = /^[0-9]*$/.test(e.target.value);
               // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1694,6 +1725,11 @@ const StoreSettings = () => {
             onKeyPress={(e) => {
               validatePositiveNumber(e, /[0-9]/);
             }}
+            onPaste={(e) => {
+              validatePositiveNumber(e, /[0-9]/);
+            }}
+            className={"w-28"}
+            max={maxDataLimit}
             onChange={(value) => {
               // let number = /^[0-9]*$/.test(e.target.value);
               // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1734,6 +1770,11 @@ const StoreSettings = () => {
             onKeyPress={(e) => {
               validatePositiveNumber(e, /[0-9]/);
             }}
+            onPaste={(e) => {
+              validatePositiveNumber(e, /[0-9]/);
+            }}
+            className={"w-28"}
+            max={maxDataLimit}
             onChange={(value) => {
               // let number = /^[0-9]*$/.test(e.target.value);
               // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1774,6 +1815,11 @@ const StoreSettings = () => {
             onKeyPress={(e) => {
               validatePositiveNumber(e, /[0-9]/);
             }}
+            onPaste={(e) => {
+              validatePositiveNumber(e, /[0-9]/);
+            }}
+            className={"w-28"}
+            max={maxDataLimit}
             onChange={(value) => {
               // let number = /^[0-9]*$/.test(e.target.value);
               // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1814,6 +1860,11 @@ const StoreSettings = () => {
             onKeyPress={(e) => {
               validatePositiveNumber(e, /[0-9]/);
             }}
+            onPaste={(e) => {
+              validatePositiveNumber(e, /[0-9]/);
+            }}
+            className={"w-28"}
+            max={maxDataLimit}
             onChange={(value) => {
               // let number = /^[0-9]*$/.test(e.target.value);
               // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1853,6 +1904,24 @@ const StoreSettings = () => {
             onKeyPress={(e) => {
               validatePositiveNumber(e, /[0-9]/);
             }}
+            onPaste={(e) => {
+              validatePositiveNumber(e, /[0-9]/);
+            }}
+            // onPaste={(e) => {
+            //   e.preventDefault();
+
+            //   const pastedText = e.clipboardData.getData("text/plain");
+            //   const numericValue = pastedText.replace(/[^0-9]/g, "");
+            //   const truncatedValue = numericValue.substring(0, 12);
+
+            //   // Check if the resulting value is a positive number
+            //   if (/^[0-9]+$/.test(truncatedValue)) {
+            //     let copyofStoreDataLimitValue = { ...storeDataLimitValues };
+            //     copyofStoreDataLimitValue.default_store_commission = truncatedValue;
+            //     setStoreDataLimitValues(copyofStoreDataLimitValue);
+            //   }
+            // }}
+            className={"w-28"}
             onChange={(value) => {
               let copyofStoreDataLimitValue = { ...storeDataLimitValues };
               copyofStoreDataLimitValue.default_store_commission = value;
@@ -1883,7 +1952,7 @@ const StoreSettings = () => {
               <InputNumber
                 value={value > 0 ? value : ""}
                 disabled={true}
-                className="w-24"
+                className={"w-28"}
                 placeholder={t("labels:placeholder_unlimited")}
               />
             </Content>

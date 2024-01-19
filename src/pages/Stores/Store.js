@@ -62,8 +62,8 @@ const storeAPI = process.env.REACT_APP_STORE_API;
 const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE);
 const titleMinLength = process.env.REACT_APP_TITLE_MIN_LENGTH;
 const titleMaxLength = process.env.REACT_APP_TITLE_MAX_LENGTH;
-const emailMinLength = process.env.REACT_APP_DESCRIPTION_MIN_LENGTH;
-const emailMaxLength = process.env.REACT_APP_DESCRIPTION_MAX_LENGTH;
+const emailMinLength = process.env.REACT_APP_EMAIL_MIN_LENGTH;
+const emailMaxLength = process.env.REACT_APP_EMAIL_MAX_LENGTH;
 const passwordMinLength = process.env.REACT_APP_PASSWORD_MIN_LENGTH;
 const passwordMaxLength = process.env.REACT_APP_PASSWORD_MAX_LENGTH;
 const storeNameMinLength = process.env.REACT_APP_STORE_NAME_MIN_LENGTH;
@@ -76,6 +76,7 @@ const dm4sightAnalysisCountAPI =
 const dm4sightClientID = process.env.REACT_APP_4SIGHT_CLIENT_ID;
 const dm4sightBaseURL = process.env.REACT_APP_4SIGHT_BASE_URL;
 const currentUserDetailsAPI = process.env.REACT_APP_USER_PROFILE_API;
+const maxDataLimit = process.env.REACT_APP_MAX_DATA_LIMIT;
 
 const Stores = () => {
   const { t } = useTranslation();
@@ -387,8 +388,7 @@ const Stores = () => {
 
   const StoreTableColumnThreshold1 = [
     {
-      // title: `${t("labels:name")}`,
-      title: "Limits",
+      title: `${t("labels:limits")}`,
       dataIndex: "limits",
       key: "limits",
       width: "30%",
@@ -405,7 +405,7 @@ const Stores = () => {
                 />
               </Tooltip>
             </div>
-            <InputNumber
+            {/* <InputNumber
               value={
                 storeLimitValues?.[keyName] > 0
                   ? storeLimitValues?.[keyName]
@@ -419,7 +419,65 @@ const Stores = () => {
                 let copyofStoreimitValues = { ...storeLimitValues };
                 copyofStoreimitValues[keyName] = value;
                 setStoreLimitValues(copyofStoreimitValues);
+                console.log("value", value);
               }}
+              disabled={!superAdmin}
+              className="w-28"
+              placeholder={t("labels:placeholder_unlimited")}
+            /> */}
+
+            <InputNumber
+              value={
+                storeLimitValues?.[keyName] > 0
+                  ? storeLimitValues?.[keyName]
+                  : ""
+              }
+              min={0}
+              max={maxDataLimit}
+              onKeyPress={(e) => {
+                validatePositiveNumber(e, /[0-9]/);
+              }}
+              onChange={(value) => {
+                let copyofStoreLimitValues = { ...storeLimitValues };
+                copyofStoreLimitValues[keyName] = value;
+                setStoreLimitValues(copyofStoreLimitValues);
+              }}
+              // onPaste={(e) => {
+              //   // Prevent pasting non-numeric characters and limit to 12 characters
+              //   e.preventDefault();
+              //   const pastedValue = e.clipboardData
+              //     .getData("text/plain")
+              //     .replace(/[^0-9]/g, "")
+              //     .substring(0, 12);
+              //   document.execCommand("insertText", false, pastedValue);
+              // }}
+
+              onPaste={(e) => {
+                e.preventDefault();
+
+                const pastedText = e.clipboardData.getData("text/plain");
+                const numericValue = pastedText.replace(/[^0-9]/g, "");
+                const truncatedValue = numericValue.substring(0, 12);
+
+                // Check if the resulting value is a positive number
+                if (/^[0-9]+$/.test(truncatedValue)) {
+                  let copyOfStoreLimitValues = { ...storeLimitValues };
+                  copyOfStoreLimitValues[keyName] = truncatedValue;
+                  setStoreLimitValues(copyOfStoreLimitValues);
+                }
+              }}
+              // onPaste={(e) => {
+              //   // Prevent pasting non-numeric characters and limit to 12 characters
+              //   e.preventDefault();
+              //   const pastedValue = e.clipboardData
+              //     .getData("text/plain")
+              //     .replace(/[^0-9]/g, "")
+              //     .substring(0, 12);
+              //   const updatedValue = parseInt(pastedValue, 10) || 0; // Ensure it's a valid number
+              //   let copyofStoreLimitValues = { ...storeLimitValues };
+              //   copyofStoreLimitValues[keyName] = updatedValue;
+              //   setStoreLimitValues(copyofStoreLimitValues);
+              // }}
               disabled={!superAdmin}
               className="w-28"
               placeholder={t("labels:placeholder_unlimited")}
@@ -430,7 +488,7 @@ const Stores = () => {
     },
 
     {
-      title: "Stats",
+      title: `${t("labels:stats_name")}`,
       dataIndex: "stats",
       key: "stats",
       width: "20%",
@@ -465,7 +523,7 @@ const Stores = () => {
   const StoreTableColumnThreshold2 = [
     {
       // title: `${t("labels:name")}`,
-      title: "Limits",
+      title: `${t("labels:limits")}`,
       dataIndex: "limits",
       key: "limits",
       width: "30%",
@@ -490,6 +548,7 @@ const Stores = () => {
                     : ""
                 }
                 min={0}
+                max={maxDataLimit}
                 onKeyPress={(e) => {
                   validatePositiveNumber(e, /[0-9]/);
                 }}
@@ -497,6 +556,15 @@ const Stores = () => {
                   let copyofStoreimitValues = { ...storeLimitValues };
                   copyofStoreimitValues[keyName] = value;
                   setStoreLimitValues(copyofStoreimitValues);
+                }}
+                onPaste={(e) => {
+                  // Prevent pasting non-numeric characters and limit to 12 characters
+                  e.preventDefault();
+                  const pastedValue = e.clipboardData
+                    .getData("text/plain")
+                    .replace(/[^0-9]/g, "")
+                    .substring(0, 12);
+                  document.execCommand("insertText", false, pastedValue);
                 }}
                 disabled={!superAdmin}
                 className="w-28"
@@ -933,6 +1001,7 @@ const Stores = () => {
     setInValidPassword(false);
     setOnChangeValues(false);
     setShowStoreErrorMessage(false);
+    setOnChangeValues(false);
   };
   //!edit drawer
   const showEditDrawer = (id) => {
@@ -954,6 +1023,7 @@ const Stores = () => {
     setStoreEmail("");
     setStorePassword("");
     setStoreUserName("");
+    setOnChangeValues(false);
   };
 
   //! opening the delete popup model
@@ -1309,7 +1379,8 @@ const Stores = () => {
         )
       );
     } else if (
-      (storeEmail && validator.isEmail(storeEmail) === false) ||
+      storeEmail &&
+      validator.isEmail(storeEmail) === false &&
       validator.isLength(storeEmail.trim(), {
         min: emailMinLength,
         max: emailMaxLength,
@@ -1358,6 +1429,7 @@ const Stores = () => {
       saveStoreData();
     }
   };
+
   //! post call for stores
   const saveStoreData = () => {
     const postBody = {
@@ -1640,11 +1712,11 @@ const Stores = () => {
                   items={[
                     {
                       key: "1",
-                      label: "My Stores",
+                      label: `${t("labels:my_stores")}`,
                     },
                     {
                       key: "2",
-                      label: "Threshold Configuration",
+                      label: `${t("labels:threshold_configuration")}`,
                     },
                   ]}
                   onChange={(key) => {
@@ -1731,7 +1803,7 @@ const Stores = () => {
                     } else if (e.target.value === "") {
                       setName(e.target.value);
                       // setShowStoreErrorMessage(false);
-                      setOnChangeValues(true);
+                      setOnChangeValues(false);
                     }
                     setInValidName(false);
                   }}
@@ -1772,9 +1844,15 @@ const Stores = () => {
                       : "mb-6"
                   }`}
                   onChange={(e) => {
-                    setStoreEmail(e.target.value);
+                    // setStoreEmail(e.target.value);
                     setInValidEmail(false);
-                    setOnChangeValues(true);
+                    if (e.target.value === "") {
+                      setOnChangeValues(false);
+                      setStoreEmail(e.target.value);
+                    } else {
+                      setOnChangeValues(true);
+                      setStoreEmail(e.target.value);
+                    }
                   }}
                   onBlur={() => {
                     const trimmed = storeEmail.trim();
@@ -1813,9 +1891,8 @@ const Stores = () => {
                       setOnChangeValues(true);
                     } else if (e.target.value === "") {
                       setStoreUserName(e.target.value);
-                      setOnChangeValues(true);
+                      setOnChangeValues(false);
                     }
-                    setOnChangeValues(true);
                   }}
                   onBlur={() => {
                     const trimmed = storeUserName.trim();
@@ -1843,23 +1920,16 @@ const Stores = () => {
                   }`}
                   onChange={(e) => {
                     const value = e.target.value;
-                    // if (value && value.length < 15) {
-                    setStorePassword(e.target.value);
+                    // setStorePassword(e.target.value);
                     setInValidPassword(false);
-                    setOnChangeValues(true);
-                    // }
-                    // else if (value && value.length >= 15) {
-                    //   toast(
-                    //     "Password should allow only 15 characters",
-                    //     {
-                    //       position: toast.POSITION.TOP_RIGHT,
-                    //       type: "warning",
-                    //     }
-                    //   );
-                    // } else
-                    // if (e.target.value === "") {
-                    //   setStorePassword(e.target.value);
-                    // }
+                    // setOnChangeValues(true);
+                    if (e.target.value === "") {
+                      setOnChangeValues(false);
+                      setStorePassword(e.target.value);
+                    } else {
+                      setOnChangeValues(true);
+                      setStorePassword(e.target.value);
+                    }
                   }}
                   onKeyDown={handleKeyDown}
                   onBlur={() => {
@@ -1961,7 +2031,7 @@ const Stores = () => {
                       setOnChangeEditValues(true);
                     } else {
                       toast(
-                        `${t("stores:Please enter the valid email address")}`,
+                        `${t("stores:please_enter_the_valid_email_address")}`,
                         {
                           position: toast.POSITION.TOP_RIGHT,
                           type: "warning",
@@ -2093,7 +2163,14 @@ const Stores = () => {
                       >
                         {t("labels:save")}
                       </Button>
-                      {/* <Button onClick={{}}>Discard</Button> */}
+                      <Button
+                        onClick={() => {
+                          setCurrentTab(1);
+                          sessionStorage.setItem("currentStoretab", 1);
+                        }}
+                      >
+                        Discard
+                      </Button>
                     </Content>
                   ) : (
                     ""
