@@ -471,8 +471,8 @@ const UserProfile = () => {
         title={t("labels:change_password")}
         okCallback={() => handleOkPasswordChangeModal()}
         cancelCallback={() => handleCancelPasswordChangeModal()}
-        okButtonText={`${t("label:save")}`}
-        cancelButtonText={`${t("label:cancel")}`}
+        okButtonText={`${t("labels:save")}`}
+        cancelButtonText={`${t("labels:cancel")}`}
         isSpin={""}
         width={1000}
       >
