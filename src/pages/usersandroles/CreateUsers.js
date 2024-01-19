@@ -493,8 +493,8 @@ const CreateUsers = () => {
                       />
                     </Content>
                   </Content>
-                  <Content className="flex my-3">
-                    <Content className=" mr-3">
+                  <Content className="flex my-3 gap-3">
+                    <Content className="">
                       <Typography className="input-label-color mb-2 flex gap-1">
                         {t("labels:first_name")}
                       </Typography>
@@ -612,7 +612,7 @@ const CreateUsers = () => {
                       </Content>
                     </Content>
                   )}
-                  <Content className="flex my-3">
+                  <Content className="flex my-3 !gap-[60px]">
                     <Content>
                       <Typography className="input-label-color mb-2 flex gap-1">
                         {t("labels:status")}
@@ -633,7 +633,7 @@ const CreateUsers = () => {
                         />
                       </Content>
                     </Content>
-                    <Content className="pl-[4.2rem]">
+                    <Content className="">
                       <Typography className="input-label-color mb-2 flex gap-1">
                         {t("labels:role")}
                         <span className="mandatory-symbol-color text-sm ">
@@ -660,7 +660,7 @@ const CreateUsers = () => {
                     </Content>
                   </Content>
 
-                  <Content className="my-2">
+                  <Content className="my-2 flex gap-2">
                     <Button
                       className="app-btn-secondary"
                       onClick={() => navigate(-1)}
@@ -673,7 +673,7 @@ const CreateUsers = () => {
                           ? userFormValidationEdit
                           : userFormValidation
                       }
-                      className={`app-btn-primary ml-2
+                      className={`app-btn-primary 
                        `}
                       disabled={
                         pageAction === "add"
