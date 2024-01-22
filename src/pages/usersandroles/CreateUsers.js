@@ -124,7 +124,7 @@ const CreateUsers = () => {
 
   // validation of user form
   const userFormValidation = () => {
-    const emailRegex = /^[A-Za-z\_0-9]{3,64}@[A-Za-z\-]{3,255}\.[A-Za-z]{2,3}$/;
+    const emailRegex = /^[a-zA-Z0-9_.+-]{3,64}@[A-Za-z\-]{3,255}\.[A-Za-z]{2,3}$/;
     const passwordRegex =
       /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{12,64}$/;
     const userNameRegex = /^[A-Za-z0-9_\- ]+$/;
@@ -293,7 +293,7 @@ const CreateUsers = () => {
   };
 
   const userFormValidationEdit = () => {
-    const emailRegex = /^[A-Za-z\_0-9]{3,64}@[A-Za-z\-]{3,255}\.[A-Za-z]{2,3}$/;
+    const emailRegex = /^[a-zA-Z0-9_.+-]{3,64}@[A-Za-z\-]{3,255}\.[A-Za-z]{2,3}$/;
     let count = 1;
     if (emailId === "") {
       count--;
