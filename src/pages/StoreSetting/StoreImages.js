@@ -466,7 +466,7 @@ const StoreImages = ({
               accept={supportedFileExtensions}
               onChange={(e) => {
                 handleChange(e);
-                setImageChangeValues(true);
+                // setImageChangeValues(true);
               }}
               openFileDialogOnClick={
                 bannerImagesLength < BannerImagesUploadLength ? true : false
@@ -542,7 +542,7 @@ const StoreImages = ({
                   accept={supportedFileExtensions}
                   onChange={(e) => {
                     handleChange(e);
-                    setImageChangeValues(true);
+                    // setImageChangeValues(true);
                   }}
                   openFileDialogOnClick={
                     bannerImagesLength < BannerImagesUploadLength ? true : false
