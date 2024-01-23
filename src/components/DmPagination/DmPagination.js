@@ -39,6 +39,7 @@ export default function DmPagination({
   return (
     <Content className="mt-3 mb-5">
       <Pagination
+        pageSizeOptions={[20, 50, 100]}
         showSizeChanger={showSizeChanger}
         current={presentPage}
         defaultCurrent={currentPage}
