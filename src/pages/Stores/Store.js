@@ -77,6 +77,7 @@ const dm4sightClientID = process.env.REACT_APP_4SIGHT_CLIENT_ID;
 const dm4sightBaseURL = process.env.REACT_APP_4SIGHT_BASE_URL;
 const currentUserDetailsAPI = process.env.REACT_APP_USER_PROFILE_API;
 const maxDataLimit = process.env.REACT_APP_MAX_DATA_LIMIT;
+const emailRegexPattern = process.env.REACT_APP_REGEX_PATTERN_EMAIL;
 
 const Stores = () => {
   const { t } = useTranslation();
@@ -1124,6 +1125,7 @@ const Stores = () => {
 
   //! validation for post call
   const validateStorePostField = () => {
+    const emailRegex = new RegExp(emailRegexPattern)
     const pattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{12,64}$/;
     // /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!_%*?&])[A-Za-z\d@$!_%*?&]{6,15}$/;
     let count = 4;
@@ -1380,11 +1382,7 @@ const Stores = () => {
       );
     } else if (
       storeEmail &&
-      validator.isEmail(storeEmail) === false &&
-      validator.isLength(storeEmail.trim(), {
-        min: emailMinLength,
-        max: emailMaxLength,
-      }) === false
+      emailRegex.test(storeEmail) === false
     ) {
       setInValidEmail(true);
       count--;
@@ -1554,6 +1552,7 @@ const Stores = () => {
   }, [storeEditId]);
   //! validation for put call
   const validateStorePutField = () => {
+    // const emailRegex = new RegExp(emailRegexPattern)
     if (editName === "" || editName === null || editName === undefined) {
       setInValidEditName(true);
       toast(`Please enter the store name`, {
