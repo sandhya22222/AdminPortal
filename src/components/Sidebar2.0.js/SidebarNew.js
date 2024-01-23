@@ -179,7 +179,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
               key: "3",
               icon: <img src={TranslateIcon} />,
               inactive_icon: <img src={TranslateIcon} />,
-              label: ` ${t("labels:languages")}`,
+              label: `${t("labels:language_settings")}`,
               navigate_to: "/dashboard/language",
               show_in_menu:
                 !auth.isAuthenticated ||

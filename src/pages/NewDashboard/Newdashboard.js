@@ -119,6 +119,8 @@ const Newdashboard = () => {
 
   const [storeLimitValues, setStoreLimitValues] = useState([]);
   const [username, setUsername] = useState("");
+  const [langDirection, setLangDirection] = useState("ltr");
+
 
   let keyCLoak = sessionStorage.getItem("keycloakData");
   keyCLoak = JSON.parse(keyCLoak);
@@ -160,6 +162,11 @@ const Newdashboard = () => {
       util.removeIsAuthorized();
     }
   }, [auth]);
+  useEffect(() => {
+    if (util.getSelectedLanguageDirection()) {
+      setLangDirection(util.getSelectedLanguageDirection()?.toLowerCase());
+    }
+  }, [util.getSelectedLanguageDirection()]);
 
   // useEffect(() => {
   //   if (auth.isAuthenticated) {
@@ -1319,7 +1326,6 @@ const Newdashboard = () => {
     //   key: "vendors",
     // },
   ];
-
   return (
     <Content className="mb-2">
       <Content className="mb-2">
@@ -1349,8 +1355,8 @@ const Newdashboard = () => {
               <Content
                 className={
                   storeLimitValues?.store_limit
-                    ? " !w-[30%] flex flex-col justify-center items-baseline"
-                    : " !w-[14%] mr-0 pr-0 flex flex-col justify-center items-baseline"
+                    ? " !w-[40%] flex flex-col justify-center items-baseline"
+                    : " !w-[24%]  mr-0 pr-0 flex flex-col justify-center items-baseline"
                 }
                 // "  !w-[30%] flex flex-col justify-center items-baseline"
               >
@@ -1359,17 +1365,25 @@ const Newdashboard = () => {
                   {t("labels:active_stores")}
                 </Text>
 
-                <Content className="flex flex-col  items-baseline h-4 min-w-40 max-w-72">
-                  <Content className="flex justify-between  items-baseline gap-1 ">
-                    <Title style={{ color: "#4A2D73" }} level={2}>
-                      {activeStoreCount ? activeStoreCount : 0}{" "}
-                    </Title>
+                <Content className="flex flex-col  items-baseline h-4 min-w-40 max-w-72 space-x-2 ">
+                  <div className="flex justify-between  items-baseline gap-1 ">
+                    { langDirection == "ltr" ? (
+                      <div className="">
+                        <Title style={{ color: "#4A2D73" }} level={2}>
+                          {activeStoreCount ? activeStoreCount : 0}{" "}
+                        </Title>
+                      </div>
+                    ) : null}
                     {storeLimitValues?.store_limit ? (
                       <Text
                         level={5}
                         className={
                           storeLimitValues?.store_limit.toString().length >= 5
-                            ? "text-zinc-400 !font-semibold w-60"
+                            ? `text-zinc-400 !font-semibold   ${
+                              langDirection == "rtl"
+                                  ? "w-[185px]"
+                                  : "w-60"
+                              }`
                             : "text-zinc-400 !font-semibold "
                         }
                       >
@@ -1382,25 +1396,38 @@ const Newdashboard = () => {
                         {t("labels:stores")} ({t("labels:max_allowed")})
                       </Text>
                     ) : null}
-                  </Content>
-                  {storeLimitValues?.store_limit ? (
-                    <Progress
-                      style={{ paddingTop: "10px", marginTop: "30px" }}
-                      strokeColor={"#4A2D73"}
-                      className="w-32 "
-                      size="small"
-                      percent={
-                        (activeStoreCount / storeLimitValues?.store_limit) * 100
-                      }
-                      showInfo={false}
-                    />
-                  ) : null}
+                    { langDirection == "rtl" ? (
+                      <div className="">
+                        <Title style={{ color: "#4A2D73" }} level={2}>
+                          {activeStoreCount ? activeStoreCount : 0}{" "}
+                        </Title>
+                      </div>
+                    ) : null}
+                  </div>
                 </Content>
+                {storeLimitValues?.store_limit ? (
+                  <Progress
+                    style={{ paddingTop: "10px", marginTop: "25px" }}
+                    strokeColor={"#4A2D73"}
+                    className="w-32 "
+                    size="small"
+                    percent={
+                      (activeStoreCount / storeLimitValues?.store_limit) * 100
+                    }
+                    showInfo={false}
+                  />
+                ) : null}
               </Content>
 
               <Divider className="h-20 ml-0 pl-0" type="vertical" />
 
-              <Content className="!w-[25%]  pl-4 flex flex-col justify-center">
+              <Content
+                className={`!w-[25%] flex flex-col justify-center ${
+                  util.getSelectedLanguageDirection()?.toUpperCase() === "RTL"
+                    ? "pr-10"
+                    : "pl-4"
+                }`}
+              >
                 <Content>
                   <Text className="!text-md mb-2 text-zinc-400 flex justify-left gap-1 items-center">
                     <Content class="w-2 h-2  bg-neutral-400 rounded-full"></Content>{" "}
