@@ -70,7 +70,7 @@ const UserAccessControl = () => {
     },
     {
       tabId: 1,
-      tabTitle: <p className="!mb-0">{t("labels:roles")}</p>,
+      tabTitle: <p className="!mb-0 !mr-2">{t("labels:roles")}</p>,
     },
   ];
 
@@ -204,7 +204,11 @@ const UserAccessControl = () => {
                 </Tooltip>
               </Button>
             )}
-            <Tooltip title={t("labels:edit_user")} className="ml-1" placement="bottom">
+            <Tooltip
+              title={t("labels:edit_user")}
+              className="ml-1"
+              placement="bottom"
+            >
               <Button
                 type="text"
                 className="app-btn-icon app-edit-icon"

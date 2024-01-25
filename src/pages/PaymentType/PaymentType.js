@@ -38,11 +38,11 @@ const PaymentType = () => {
       name: `${t("labels:online_payment")}`,
       is_payment_gateway: true,
       children: [
-        {
-          key: 21,
-          name: `${t("labels:razor_pay")}`,
-          is_payment_gateway: true,
-        },
+        // {
+        //   key: 21,
+        //   name: `${t("labels:razor_pay")}`,
+        //   is_payment_gateway: true,
+        // },
         {
           key: 22,
           name: `${t("labels:stripe")}`,

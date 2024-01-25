@@ -23,6 +23,7 @@ import { TiDelete } from "react-icons/ti";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import "./StoreImages.css";
 import MarketplaceToaster from "../../util/marketplaceToaster";
+import util from "../../util/common";
 const { Title } = Typography;
 const { Content } = Layout;
 const { Image } = Skeleton;
@@ -382,7 +383,12 @@ const StoreImages = ({
           <Tooltip
             title={InfoCircleText}
             overlayStyle={{ zIndex: 1, position: "fixed" }}
-            placement="topLeft"
+            // placement="leftTop"
+            placement={
+              util.getSelectedLanguageDirection()?.toUpperCase() === "RTL"
+                ? "leftTop"
+                : "rightTop"
+            }
           >
             <InfoCircleOutlined className="!text-[var(--mp-brand-color-h)]" />
           </Tooltip>
@@ -460,7 +466,7 @@ const StoreImages = ({
               accept={supportedFileExtensions}
               onChange={(e) => {
                 handleChange(e);
-                setImageChangeValues(true);
+                // setImageChangeValues(true);
               }}
               openFileDialogOnClick={
                 bannerImagesLength < BannerImagesUploadLength ? true : false
@@ -536,7 +542,7 @@ const StoreImages = ({
                   accept={supportedFileExtensions}
                   onChange={(e) => {
                     handleChange(e);
-                    setImageChangeValues(true);
+                    // setImageChangeValues(true);
                   }}
                   openFileDialogOnClick={
                     bannerImagesLength < BannerImagesUploadLength ? true : false

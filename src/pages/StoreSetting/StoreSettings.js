@@ -2384,10 +2384,10 @@ const StoreSettings = () => {
                 <Row className="gap-2">
                   <Col>
                     <Button
-                      className={
-                        imageChangeValues ? "app-btn-primary" : "!opacity-75"
+                      className={"app-btn-primary"}
+                      disabled={
+                        imagesUpload && imagesUpload.length > 0 ? false : true
                       }
-                      disabled={!imageChangeValues}
                       onClick={() => {
                         if (imagesUpload && imagesUpload.length > 0) {
                           postImageOnClickSave();
@@ -2412,10 +2412,10 @@ const StoreSettings = () => {
                   <Col className="">
                     <Button
                       // className=" app-btn-secondary"
-                      className={
-                        imageChangeValues ? "app-btn-secondary" : "!opacity-75"
+                      className={"app-btn-secondary"}
+                      disabled={
+                        imagesUpload && imagesUpload.length > 0 ? false : true
                       }
-                      disabled={!imageChangeValues}
                       onClick={() => {
                         navigate("/dashboard/store");
                       }}
