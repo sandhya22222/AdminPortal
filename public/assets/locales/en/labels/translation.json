@@ -220,5 +220,6 @@
   "plese_enter_your_current_password": "Plese enter your current password",
   "current_password": "Current password",
   "number_of": "Number of",
-  "language_settings":"Language Settings"
+  "language_settings":"Language Settings",
+  "settings":"Settings"
 }

@@ -233,6 +233,16 @@ const Header2 = ({ collapsed, setCollapsed }) => {
   useEffect(() => {
     setStoreSelectedLngCode(selectedLanguage && selectedLanguage.language_code);
   }, [selectedLanguage]);
+  
+  const multilingualNameChanging=(value)=>{
+    let multilingualKey = value.toLowerCase();
+    multilingualKey = multilingualKey
+      .replace(/ /g, "_");
+      console.log("multilingualKey------>",multilingualKey);
+     
+    return multilingualKey;
+
+  }
 
   return (
     <Content>
@@ -284,7 +294,9 @@ const Header2 = ({ collapsed, setCollapsed }) => {
           </div>
           <div className=" mx-3 ">
             <Tag className="portalNameTag">
-              {portalInfo && portalInfo.title.toUpperCase()}
+          
+              {t(`labels:${multilingualNameChanging(portalInfo && portalInfo.title)}`)}
+             
             </Tag>
           </div>
           {/* Center content to display any item if required */}
