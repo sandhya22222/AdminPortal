@@ -22,6 +22,7 @@ import util from "../../util/common";
 import StoreModal from "../../components/storeModal/StoreModal";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import MarketplaceToaster from "../../util/marketplaceToaster";
+import SkeletonComponent from "../../components/Skeleton/SkeletonComponent";
 
 const { Content } = Layout;
 const { Text, Title } = Typography;
@@ -255,23 +256,13 @@ const UserProfile = () => {
       />
       <Content className="mt-[9rem] ">
         {isLoading ? (
-          <Content className="!text-center !p-6">
-            <Content className="inline-block shadow-sm  bg-[#FFFFFF] !rounded-md px-8 py-10 w-[500px]">
-              <Skeleton
-                active
-                paragraph={{
-                  rows: 3,
-                }}
-                className="p-3"
-              ></Skeleton>
-            </Content>
-          </Content>
+        <Content className=" bg-white p-3 !mx-4 ">
+        <SkeletonComponent />
+      </Content>
         ) : isNetworkError ? (
-          <Content className="!text-center !p-6">
-            <Content className="inline-block shadow-sm  bg-[#FFFFFF] !rounded-md px-8 py-10 w-[500px]">
-              {t("messages:profile_description")}
-            </Content>
-          </Content>
+          <Content className="p-3 text-center !mx-4 bg-[#F4F4F4]">
+          <p>{t("messages:network_error")}</p>
+        </Content>
         ) : (
           // <Content className="!text-center !p-6 !mx-[17rem]">
           //   <Content className="inline-block">
@@ -392,7 +383,7 @@ const UserProfile = () => {
                       ).replace(/(\w{3} \d{1,2}) (\d{4})/, "$1, $2")}
                     </span>
                   </Typography>
-                  <Typography className="text-black m-0">
+                  <Typography className="text-black !mt-1 !mb-0 !mx-0">
                     {storeUsersData &&
                       storeUsersData.groups.length > 0 &&
                       storeUsersData.groups.map((ele) => (
@@ -444,7 +435,7 @@ const UserProfile = () => {
                 <Col>
                   <Button
                     onClick={showPasswordChangeModal}
-                    className="min-h-[38px]"
+                    className="min-h-[38px] app-btn-secondary"
                   >
                     {t("labels:change_password")}
                   </Button>

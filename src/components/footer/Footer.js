@@ -15,7 +15,7 @@ const NewFooter = () => {
           {t("labels:copyright")} -{" "}
           {t("labels:torry_harris_integration_solutions")} -{" "}
           {t("labels:torry_harris_marketplace")} - {t("labels:admin_portal")}{" "}
-          {t("labels:version")} {portalInfo.version} |{t("labels:credits")}
+          {t("labels:version")} {portalInfo.version}{" "}|{" "}{t("labels:credits")}
         </Paragraph>
       </div>
     </Content>

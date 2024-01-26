@@ -170,7 +170,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
           key: "15",
           icon: <img src={StoreSettings} alt="storeSettings" />,
           inactive_icon: <img src={StoreSettings} />,
-          label: `${t("labels:Settings")}`,
+          label: `${t("labels:settings")}`,
           navigate_to: "/dashboard/",
           show_in_menu: true,
           childrenKeys:["3","5","6","12"],
