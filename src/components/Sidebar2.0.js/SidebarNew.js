@@ -163,7 +163,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
           icon: <img src={Store} />,
           inactive_icon: <img src={Store} />,
           label: ` ${t("labels:stores")}`,
-          navigate_to: "/dashboard/store",
+          navigate_to: "/dashboard/store?t=1",
           show_in_menu: true,
         },
         {

@@ -45,7 +45,8 @@ const downloadBackendKeysAPI =
   process.env.REACT_APP_DOWNLOAD_ADMIN_BACKEND_MESSAGE_DETAILS;
 const Language = () => {
   const { t } = useTranslation();
-  usePageTitle(t("labels:languages"));
+ 
+  usePageTitle(t("labels:language_settings"));
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(false);

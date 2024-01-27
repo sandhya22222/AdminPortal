@@ -233,16 +233,14 @@ const Header2 = ({ collapsed, setCollapsed }) => {
   useEffect(() => {
     setStoreSelectedLngCode(selectedLanguage && selectedLanguage.language_code);
   }, [selectedLanguage]);
-  
-  const multilingualNameChanging=(value)=>{
-    let multilingualKey = value.toLowerCase();
-    multilingualKey = multilingualKey
-      .replace(/ /g, "_");
-      console.log("multilingualKey------>",multilingualKey);
-     
-    return multilingualKey;
 
-  }
+  const multilingualNameChanging = (value) => {
+    let multilingualKey = value.toLowerCase();
+    multilingualKey = multilingualKey.replace(/ /g, "_");
+    console.log("multilingualKey------>", multilingualKey);
+
+    return multilingualKey;
+  };
 
   return (
     <Content>
@@ -294,9 +292,11 @@ const Header2 = ({ collapsed, setCollapsed }) => {
           </div>
           <div className=" mx-3 ">
             <Tag className="portalNameTag">
-          
-              {t(`labels:${multilingualNameChanging(portalInfo && portalInfo.title)}`)}
-             
+              {t(
+                `labels:${multilingualNameChanging(
+                  portalInfo && portalInfo.title
+                )}`
+              )}
             </Tag>
           </div>
           {/* Center content to display any item if required */}
@@ -322,7 +322,10 @@ const Header2 = ({ collapsed, setCollapsed }) => {
                     className="!h-8 absolute bottom-[-2px] left-[-30px]"
                   /> */}
                   <Text className="text-lg text-slate-600 pr-1">
-                    {userName ? userName : userProfileInfo}
+                    {(userName && userName.length>0)
+                      ? userName.slice(0, 1).toUpperCase() + userName.slice(1)
+                      : userProfileInfo&& userProfileInfo.length>0 &&userProfileInfo.slice(0, 1).toUpperCase() +
+                      userProfileInfo&& userProfileInfo.length>0 &&userProfileInfo.slice(1)}
                   </Text>
                   <DownOutlined className="text-xs text-slate-600" />
                 </Paragraph>

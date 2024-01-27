@@ -10,7 +10,7 @@ const { Title } = Typography;
 
 const PaymentType = () => {
   const { t } = useTranslation();
-  usePageTitle(t("labels:payment_type"));
+  usePageTitle(t("labels:payment_settings"));
   useEffect(() => {
     window.scroll(0, 0);
   }, []);
