@@ -19,7 +19,16 @@
 .ant-input:hover {
   border-color: var(--mp-brand-color) !important;
 }
-
+.ant-table-wrapper .ant-table-row-expand-icon:hover {
+  color: var(--mp-brand-color) !important;
+}
+.ant-table-wrapper .ant-table-row-expand-icon:focus{
+  color: var(--mp-brand-color) !important;
+}
+.ant-menu-dark.ant-menu-submenu>.ant-menu{
+  background-color:  var(--mp-brand-color) !important;
+  
+  }
 .ant-pagination .ant-pagination-item-active {
   border-color: var(--mp-brand-color) !important;
 }

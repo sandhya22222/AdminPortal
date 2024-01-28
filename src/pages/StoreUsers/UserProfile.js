@@ -373,7 +373,9 @@ const UserProfile = () => {
                 <div className="flex flex-col justify-center">
                   <Typography className="input-label-color  m-0 items-center">
                     <span className="text-3xl">
-                      {storeUsersData && storeUsersData.username}
+                      {storeUsersData && storeUsersData.username &&storeUsersData.username.length>0 ?storeUsersData.username.slice(0, 1).toUpperCase()+storeUsersData.username.slice(1):null}
+                   
+                     
                     </span>{" "}
                     <span>
                       {t("labels:onboarded_on")}{" "}

@@ -16,6 +16,7 @@ import {
   Tabs,
   Progress,
   InputNumber,
+  Table
 } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import validator from "validator";
@@ -50,7 +51,7 @@ import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import Status from "./Status";
 import MarketplaceToaster from "../../util/marketplaceToaster";
 import util from "../../util/common";
-import { Table } from "reactstrap";
+
 import axios from "axios";
 import { useAuth } from "react-oidc-context";
 import { validatePositiveNumber } from "../../util/validation";
@@ -92,6 +93,7 @@ const Stores = () => {
   // const store_id = new URLSearchParams(search).get("store_id");
   const tab_id = new URLSearchParams(search).get("tab");
   const page_number = new URLSearchParams(search).get("page");
+  const mainTab= new URLSearchParams(search).get("page");
   const [searchParams, setSearchParams] = useSearchParams();
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -139,7 +141,7 @@ const Stores = () => {
   const searchInput = useRef(null);
   const auth = useAuth();
   const permissionValue = util.getPermissionData() || [];
-
+  
   let keyCLoak = sessionStorage.getItem("keycloakData");
   keyCLoak = JSON.parse(keyCLoak);
   let realmName = keyCLoak.clientId.replace(/-client$/, "");
@@ -206,6 +208,7 @@ const Stores = () => {
 
   useEffect(() => {
     setRadioValue(tab_id);
+   
   }, []);
 
   useEffect(() => {
@@ -347,6 +350,7 @@ const Stores = () => {
   });
   useEffect(() => {
     getCurrentUserDetails();
+    
   }, []);
 
   useEffect(() => {
@@ -373,6 +377,7 @@ const Stores = () => {
           console.log("redddd", res);
         });
     }
+    setValue(0);
   }, [currentTab]);
 
   useEffect(() => {
@@ -600,7 +605,7 @@ const Stores = () => {
       // showSorterTooltip: true,
       render: (text, record) => {
         return (
-          <Tooltip title={record.name}>
+          <Tooltip title={record.name} placement="bottom">
             <Text className="max-w-xs" ellipsis={{ tooltip: record.name }}>
               {record.name}
             </Text>
@@ -697,7 +702,7 @@ const Stores = () => {
                     }}
                     // className=" pl-[10px] font-semibold app-table-data-title"
                   >
-                    <Tooltip title={t("labels:store_settings")}>
+                    <Tooltip title={t("labels:store_settings")} placement="bottom">
                       <MdSettings className="text-[var(--mp-primary-border-color)] hover:text-[var(--mp-primary-border-color-h)] !text-xl" />
                     </Tooltip>
                   </Link>
@@ -826,6 +831,9 @@ const Stores = () => {
       //   handleTabChangeStore("0");
       // }
       tableStoreData(storeApiData);
+    }
+    else{
+      setSelectedTabTableContent([]);
     }
   }, [storeApiData]);
 
@@ -1070,6 +1078,7 @@ const Stores = () => {
         // let allStoresData = response.data;
         // allStoresData = { ...allStoresData, count: 22 };
         setStoreApiData(response.data.response_body.data);
+        
         setIsPaginationDataLoaded(false);
         setCountForStore(response.data.response_body.count);
       })
@@ -1599,8 +1608,21 @@ const Stores = () => {
         ? parseInt(searchParams.get("tab"))
         : ""
     );
+    let mainTab=searchParams.get("t");
+    if(mainTab==undefined || mainTab==null){
+      setCurrentTab("1");
+    }
+    else{
+      setCurrentTab(mainTab);
+      if(mainTab==1){
+        setValue(0);
+      }
+    }
+   
     window.scrollTo(0, 0);
   }, [searchParams]);
+
+
 
   const handlePageNumberChange = (page, pageSize) => {
     // setSearchParams({
@@ -1720,6 +1742,9 @@ const Stores = () => {
                   ]}
                   onChange={(key) => {
                     setCurrentTab(key);
+                    setSearchParams({
+                      t:key
+                    })
                     sessionStorage.setItem("currentStoretab", key);
                   }}
                 />
@@ -2129,7 +2154,7 @@ const Stores = () => {
         ) : (
           <Content className="">
             <Content>
-              {currentTab == 1 && storeApiData && storeApiData.length > 0 ? (
+              {currentTab == 1  ? (
                 <Content className="bg-white ">
                   <Radio.Group
                     className="mt-3 mr-4 flex float-right"
@@ -2141,8 +2166,10 @@ const Stores = () => {
                     <Radio value={1}>{t("labels:active")}</Radio>
                     <Radio value={2}>{t("labels:inactive")}</Radio>
                   </Radio.Group>
+                  <Table className="mt-2" columns={StoreTableColumn} dataSource={selectedTabTableContent} pagination={false}/>
+                  
 
-                  <DynamicTable tableComponentData={tablePropsData} />
+                
                 </Content>
               ) : currentTab == 2 ? (
                 <>
