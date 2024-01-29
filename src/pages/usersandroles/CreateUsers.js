@@ -616,8 +616,8 @@ const CreateUsers = () => {
                       </Content>
                     </Content>
                   )}
-                  <Content className="flex my-3 !gap-[60px]">
-                    <Content>
+                  <Content className="flex my-3">
+                  {pageAction !== "add" ? "": <Content>
                       <Typography className="input-label-color mb-2 flex gap-1">
                         {t("labels:status")}
                       </Typography>
@@ -636,7 +636,8 @@ const CreateUsers = () => {
                           // }}
                         />
                       </Content>
-                    </Content>
+                    </Content>}
+                   
                     <Content className="">
                       <Typography className="input-label-color mb-2 flex gap-1">
                         {t("labels:role")}
