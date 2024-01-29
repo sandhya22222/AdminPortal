@@ -70,9 +70,7 @@ const UserProfile = () => {
         } else {
           MarketplaceToaster.showToast(
             util.getToastObject(
-              `${t(
-                "labels:new_password_and_confirm_password_should_be_same"
-              )}`,
+              `${t("labels:new_password_and_confirm_password_should_be_same")}`,
               "error"
             )
           );
@@ -256,13 +254,13 @@ const UserProfile = () => {
       />
       <Content className="mt-[9rem] ">
         {isLoading ? (
-        <Content className=" bg-white p-3 !mx-4 ">
-        <SkeletonComponent />
-      </Content>
+          <Content className=" bg-white p-3 !mx-4 ">
+            <SkeletonComponent />
+          </Content>
         ) : isNetworkError ? (
           <Content className="p-3 text-center !mx-4 bg-[#F4F4F4]">
-          <p>{t("messages:network_error")}</p>
-        </Content>
+            <p>{t("messages:network_error")}</p>
+          </Content>
         ) : (
           // <Content className="!text-center !p-6 !mx-[17rem]">
           //   <Content className="inline-block">
@@ -373,9 +371,12 @@ const UserProfile = () => {
                 <div className="flex flex-col justify-center">
                   <Typography className="input-label-color  m-0 items-center">
                     <span className="text-3xl">
-                      {storeUsersData && storeUsersData.username &&storeUsersData.username.length>0 ?storeUsersData.username.slice(0, 1).toUpperCase()+storeUsersData.username.slice(1):null}
-                   
-                     
+                      {storeUsersData &&
+                      storeUsersData.username &&
+                      storeUsersData.username.length > 0
+                        ? storeUsersData.username.slice(0, 1).toUpperCase() +
+                          storeUsersData.username.slice(1)
+                        : null}
                     </span>{" "}
                     <span>
                       {t("labels:onboarded_on")}{" "}
@@ -499,7 +500,7 @@ const UserProfile = () => {
                 />
                 {password && !isPasswordValid && (
                   <div style={{ color: "red" }}>
-                    {"Please enter a valid password"}
+                    {t("labels:please_enter_a_valid_password")}
                   </div>
                 )}
               </Content>
@@ -526,7 +527,9 @@ const UserProfile = () => {
                   password !== "" &&
                   confirmPassword !== "" &&
                   password !== confirmPassword && (
-                    <div style={{ color: "red" }}>{"password mismatch"}</div>
+                    <div style={{ color: "red" }}>
+                      {t("messages:password_mismatch")}
+                    </div>
                   )}
               </Content>
             </Col>

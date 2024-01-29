@@ -21,6 +21,7 @@ import DynamicTable from "../../components/DynamicTable/DynamicTable";
 import SkeletonComponent from "../../components/Skeleton/SkeletonComponent";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
 import PageSpinner from "../../components/spinner/PageSpinner";
+import util from "../../util/common";
 import {
   DownloadIcon,
   DownloadIconDisable,
@@ -45,7 +46,7 @@ const downloadBackendKeysAPI =
   process.env.REACT_APP_DOWNLOAD_ADMIN_BACKEND_MESSAGE_DETAILS;
 const Language = () => {
   const { t } = useTranslation();
- 
+
   usePageTitle(t("labels:language_settings"));
   const navigate = useNavigate();
 
@@ -79,7 +80,11 @@ const Language = () => {
             <Tooltip
               title={record.language}
               overlayStyle={{ zIndex: 1 }}
-              placement="right"
+              placement={
+                util.getSelectedLanguageDirection()?.toUpperCase() === "RTL"
+                  ? "left"
+                  : "right"
+              }
             >
               <Text
                 className={`mx-1 ${

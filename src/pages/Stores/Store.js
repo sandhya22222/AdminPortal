@@ -16,7 +16,7 @@ import {
   Tabs,
   Progress,
   InputNumber,
-  Table
+  Table,
 } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import validator from "validator";
@@ -93,7 +93,7 @@ const Stores = () => {
   // const store_id = new URLSearchParams(search).get("store_id");
   const tab_id = new URLSearchParams(search).get("tab");
   const page_number = new URLSearchParams(search).get("page");
-  const mainTab= new URLSearchParams(search).get("page");
+  const mainTab = new URLSearchParams(search).get("page");
   const [searchParams, setSearchParams] = useSearchParams();
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -141,7 +141,7 @@ const Stores = () => {
   const searchInput = useRef(null);
   const auth = useAuth();
   const permissionValue = util.getPermissionData() || [];
-  
+
   let keyCLoak = sessionStorage.getItem("keycloakData");
   keyCLoak = JSON.parse(keyCLoak);
   let realmName = keyCLoak.clientId.replace(/-client$/, "");
@@ -208,7 +208,6 @@ const Stores = () => {
 
   useEffect(() => {
     setRadioValue(tab_id);
-   
   }, []);
 
   useEffect(() => {
@@ -350,7 +349,6 @@ const Stores = () => {
   });
   useEffect(() => {
     getCurrentUserDetails();
-    
   }, []);
 
   useEffect(() => {
@@ -404,7 +402,14 @@ const Stores = () => {
           <Content className="flex flex-col gap-2">
             <div className="flex gap-2 items-center">
               {limitName}
-              <Tooltip title={tooltip} placement="right">
+              <Tooltip
+                title={tooltip}
+                placement={
+                  util.getSelectedLanguageDirection()?.toUpperCase() === "RTL"
+                    ? "left"
+                    : "right"
+                }
+              >
                 <InfoCircleTwoTone
                   twoToneColor={"#7d3192"}
                   className="text-xs"
@@ -539,7 +544,14 @@ const Stores = () => {
           <Content className="flex flex-col gap-2">
             <div className="flex gap-2 items-center">
               {limitName}
-              <Tooltip title={tooltip} placement="right">
+              <Tooltip
+                title={tooltip}
+                placement={
+                  util.getSelectedLanguageDirection()?.toUpperCase() === "RTL"
+                    ? "left"
+                    : "right"
+                }
+              >
                 <InfoCircleTwoTone
                   twoToneColor={"#7d3192"}
                   className="text-xs"
@@ -702,7 +714,10 @@ const Stores = () => {
                     }}
                     // className=" pl-[10px] font-semibold app-table-data-title"
                   >
-                    <Tooltip title={t("labels:store_settings")} placement="bottom">
+                    <Tooltip
+                      title={t("labels:store_settings")}
+                      placement="bottom"
+                    >
                       <MdSettings className="text-[var(--mp-primary-border-color)] hover:text-[var(--mp-primary-border-color-h)] !text-xl" />
                     </Tooltip>
                   </Link>
@@ -831,8 +846,7 @@ const Stores = () => {
       //   handleTabChangeStore("0");
       // }
       tableStoreData(storeApiData);
-    }
-    else{
+    } else {
       setSelectedTabTableContent([]);
     }
   }, [storeApiData]);
@@ -881,7 +895,8 @@ const Stores = () => {
         key: "1",
         limits: `${t("labels:maximum_store_creation_limit")},${
           storeLimitValues?.store_limit
-        },store_limit,${t("labels:store_limit_tooltip")}`,
+        },store_limit,
+        ${t("labels:store_limit_tooltip")}`,
         stats:
           analysisCount?.store_count +
           "," +
@@ -1078,7 +1093,7 @@ const Stores = () => {
         // let allStoresData = response.data;
         // allStoresData = { ...allStoresData, count: 22 };
         setStoreApiData(response.data.response_body.data);
-        
+
         setIsPaginationDataLoaded(false);
         setCountForStore(response.data.response_body.count);
       })
@@ -1134,7 +1149,7 @@ const Stores = () => {
 
   //! validation for post call
   const validateStorePostField = () => {
-    const emailRegex = new RegExp(emailRegexPattern)
+    const emailRegex = new RegExp(emailRegexPattern);
     const pattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{12,64}$/;
     // /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!_%*?&])[A-Za-z\d@$!_%*?&]{6,15}$/;
     let count = 4;
@@ -1389,10 +1404,7 @@ const Stores = () => {
           "error"
         )
       );
-    } else if (
-      storeEmail &&
-      emailRegex.test(storeEmail) === false
-    ) {
+    } else if (storeEmail && emailRegex.test(storeEmail) === false) {
       setInValidEmail(true);
       count--;
       MarketplaceToaster.showToast(
@@ -1608,21 +1620,18 @@ const Stores = () => {
         ? parseInt(searchParams.get("tab"))
         : ""
     );
-    let mainTab=searchParams.get("t");
-    if(mainTab==undefined || mainTab==null){
+    let mainTab = searchParams.get("t");
+    if (mainTab == undefined || mainTab == null) {
       setCurrentTab("1");
-    }
-    else{
+    } else {
       setCurrentTab(mainTab);
-      if(mainTab==1){
+      if (mainTab == 1) {
         setValue(0);
       }
     }
-   
+
     window.scrollTo(0, 0);
   }, [searchParams]);
-
-
 
   const handlePageNumberChange = (page, pageSize) => {
     // setSearchParams({
@@ -1737,14 +1746,18 @@ const Stores = () => {
                     },
                     {
                       key: "2",
-                      label: <span className="!mr-3">{t("labels:threshold_configuration")}</span>,
+                      label: (
+                        <span className="!mr-3">
+                          {t("labels:threshold_configuration")}
+                        </span>
+                      ),
                     },
                   ]}
                   onChange={(key) => {
                     setCurrentTab(key);
                     setSearchParams({
-                      t:key
-                    })
+                      t: key,
+                    });
                     sessionStorage.setItem("currentStoretab", key);
                   }}
                 />
@@ -2154,7 +2167,7 @@ const Stores = () => {
         ) : (
           <Content className="">
             <Content>
-              {currentTab == 1  ? (
+              {currentTab == 1 ? (
                 <Content className="bg-white ">
                   <Radio.Group
                     className="mt-3 mr-4 flex float-right"
@@ -2166,10 +2179,12 @@ const Stores = () => {
                     <Radio value={1}>{t("labels:active")}</Radio>
                     <Radio value={2}>{t("labels:inactive")}</Radio>
                   </Radio.Group>
-                  <Table className="mt-2" columns={StoreTableColumn} dataSource={selectedTabTableContent} pagination={false}/>
-                  
-
-                
+                  <Table
+                    className="mt-2"
+                    columns={StoreTableColumn}
+                    dataSource={selectedTabTableContent}
+                    pagination={false}
+                  />
                 </Content>
               ) : currentTab == 2 ? (
                 <>
