@@ -581,6 +581,11 @@ const UserAccessControl = () => {
                       ? parseInt(searchParams.get("page"))
                       : 1
                   }
+                  presentPage={
+                    parseInt(searchParams.get("page"))
+                      ? parseInt(searchParams.get("page"))
+                      : 1
+                  }
                   totalItemsCount={serverDataCount}
                   defaultPageSize={itemsPerPageFromEnv}
                   pageSize={
