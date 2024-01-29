@@ -81,6 +81,6 @@
     "one_or_more_upper_case_letter":"One or more Upper case letter",
     "one_or_more_special_charecter_or_symbols":"One or more special character or symbols",
     "one_or_more_lower_case_letters":"One or more lower case letters",
-    "one_or_more_numbers":"One or more numbers"
-    
+    "one_or_more_numbers":"One or more numbers",
+    "password_mismatch":"Password mismatch"
 }
