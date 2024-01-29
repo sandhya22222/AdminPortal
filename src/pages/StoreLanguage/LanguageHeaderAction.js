@@ -370,7 +370,7 @@ function LanguageHeaderAction({
       <StoreModal
         isVisible={isModalOpen}
         okButtonText={t("labels:yes")}
-        title={changeSwitchStatus ? t("labels:success") : t("labels:warning")}
+        title={changeSwitchStatus ? t("messages:language_activation_confirmation") : t("messages:language_deactivation_confirmation")}
         cancelButtonText={t("labels:cancel")}
         okCallback={() => updateLanguageStatus()}
         cancelCallback={() => closeModal()}
@@ -379,12 +379,13 @@ function LanguageHeaderAction({
       >
         {changeSwitchStatus ? (
           <div>
-            <p>{t("messages:language_activation_confirmation")}</p>
-            <p>{t("messages:language_activation_confirmation_message")}</p>
+          
+            <p className="!m-0 !p-0">{t("messages:language_activation_confirmation_message")}</p>
+            <p className="!m-0 !p-0">{t("messages:are_you_sure_you_like_to_proceed")}</p>
           </div>
         ) : (
           <div>
-            <p>{t("messages:language_deactivation_confirmation")}</p>
+            
             <p>{t("messages:language_deactivation_confirmation_message")}</p>
           </div>
         )}
