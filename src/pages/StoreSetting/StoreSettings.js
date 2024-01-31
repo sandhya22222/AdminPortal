@@ -2303,12 +2303,12 @@ const StoreSettings = () => {
       <HeaderForTitle
         title={
           <Content className="flex !w-[80vw]">
-            <Content className="!w-[82%]">
+            <Content className="!w-[83%]">
               <Title level={3} className="!font-normal !mb-0">
                 {storeName}
               </Title>
             </Content>
-            <Content className="!w-[18%]">
+            <Content className="!w-[17%]">
               <Status
                 storeId={id}
                 storeStatus={changeSwitchStatus === 1 ? true : false}

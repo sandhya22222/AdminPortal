@@ -502,12 +502,19 @@ const StoreImages = ({
         </Content>
       ) : (
         <>
-          <Content className=" flex !space-x-10">
+          <Content className=" flex !space-x-8">
             {allImageUrl &&
               allImageUrl.length > 0 &&
               allImageUrl.map((ele, index) => {
                 return (
-                  <div className="!relative">
+                  <div
+                    className={
+                      util.getSelectedLanguageDirection()?.toUpperCase() ===
+                      "RTL"
+                        ? "!relative !ml-6"
+                        : "!relative "
+                    }
+                  >
                     {/* <div className="grid grid-cols-4 gap-4"> */}
                     <img src={ele} className="!w-24 !h-26 " />
                     {/* </div> */}
