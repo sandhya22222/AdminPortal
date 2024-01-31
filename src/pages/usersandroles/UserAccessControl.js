@@ -208,6 +208,7 @@ const UserAccessControl = () => {
               title={t("labels:edit_user")}
               className="ml-1"
               placement="bottom"
+              overlayStyle={{ zIndex: 1 }}
             >
               <Button
                 type="text"
