@@ -403,6 +403,7 @@ const Stores = () => {
             <div className="flex gap-2 items-center">
               {limitName}
               <Tooltip
+                overlayStyle={{ zIndex: 1 }}
                 title={tooltip}
                 placement={
                   util.getSelectedLanguageDirection()?.toUpperCase() === "RTL"
@@ -545,6 +546,7 @@ const Stores = () => {
             <div className="flex gap-2 items-center">
               {limitName}
               <Tooltip
+                overlayStyle={{ zIndex: 1 }}
                 title={tooltip}
                 placement={
                   util.getSelectedLanguageDirection()?.toUpperCase() === "RTL"
@@ -715,6 +717,7 @@ const Stores = () => {
                     // className=" pl-[10px] font-semibold app-table-data-title"
                   >
                     <Tooltip
+                      overlayStyle={{ zIndex: 1 }}
                       title={t("labels:store_settings")}
                       placement="bottom"
                     >
