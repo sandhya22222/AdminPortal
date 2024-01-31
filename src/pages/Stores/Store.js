@@ -510,9 +510,25 @@ const Stores = () => {
         return (
           <Content>
             {count !== "undefined" && total !== "undefined" ? (
-              <Content className="flex flex-col gap-2">
-                {count} {total > 0 ? " of " + total : null}{" "}
-                {keyName === "store_limit" ? t("labels:active_stores") : null}
+              <Content className="flex flex-col">
+                {/* {count} {total > 0 ? " of " + total : null}{" "}
+                {keyName === "store_limit" ? t("labels:active_stores") : null} */}
+                <div
+                  className={
+                    util.getSelectedLanguageDirection()?.toUpperCase() === "RTL"
+                      ? "flex flex-row-reverse !justify-end !space-x-1"
+                      : "flex !space-x-1"
+                  }
+                >
+                  <p>{count}</p>
+                  <p>{t("labels:of")}</p>
+                  <p>{total > 0 ? total : null}</p>
+                  <p>
+                    {keyName === "store_limit"
+                      ? t("labels:active_stores")
+                      : null}
+                  </p>
+                </div>
                 {total > 0 ? (
                   <Progress
                     strokeColor={"#4A2D73"}
