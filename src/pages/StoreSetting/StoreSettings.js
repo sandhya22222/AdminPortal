@@ -1995,47 +1995,54 @@ const StoreSettings = () => {
       title: `${t("labels:stats_name")}`,
       dataIndex: "stats",
       key: "stats",
-      width: "20%",
+      width: "30%",
       render: (text) => {
         if (text != null) {
           const [count, total, keyName] = text.split(",");
+          const labelText =
+            keyName === "vendor_limit"
+              ? t("labels:active_vendors")
+              : keyName === "customer_limit"
+              ? t("labels:onboarded_customers")
+              : keyName === "product_limit"
+              ? t("labels:published_products")
+              : keyName === "order_limit_per_day"
+              ? t("labels:orders")
+              : keyName === "langauge_limit"
+              ? t("labels:active_languages")
+              : keyName === "product_template_limit"
+              ? t("labels:active_templates")
+              : keyName === "store_users_limit"
+              ? t("labels:store_users")
+              : keyName === "vendor_users_limit"
+              ? t("labels:vendor_users")
+              : null;
           return (
-            <Content className="flex flex-col gap-2">
-              {count} {total > 0 ? " of " + total : null}{" "}
-              {keyName === "vendor_limit"
-                ? t("labels:active_vendors")
-                : // "Active Vendors"
-                keyName === "customer_limit"
-                ? t("labels:onboarded_customers")
-                : //  "Onboarded Customers"
-                keyName === "product_limit"
-                ? t("labels:published_products")
-                : // "Published Products"
-                keyName === "order_limit_per_day"
-                ? t("labels:orders")
-                : // "Orders"
-                keyName === "langauge_limit"
-                ? t("labels:active_languages")
-                : // "Active Languages"
-                keyName === "product_template_limit"
-                ? t("labels:active_templates")
-                : // "Active Templates"
-                keyName === "store_users_limit"
-                ? t("labels:store_users")
-                : // "Store Users"
-                keyName === "vendor_users_limit"
-                ? t("labels:vendor_users")
-                : //  "Vendor Users"
-                  null}
-              {total > 0 ? (
-                <Progress
-                  strokeColor={"#4A2D73"}
-                  className="w-24"
-                  size="small"
-                  percent={(count / total) * 100}
-                  showInfo={false}
-                />
-              ) : null}
+            <Content className="flex !flex-col">
+              {/* {`${count} of ${total} ${labelText !== null ? labelText : ""}`} */}
+              <div
+                className={
+                  util.getSelectedLanguageDirection()?.toUpperCase() === "RTL"
+                    ? "flex flex-row-reverse !justify-end !space-x-1"
+                    : "flex !space-x-1"
+                }
+              >
+                <p>{count}</p>
+                <p>{t("labels:of")}</p>
+                <p>{total}</p>
+                <p>{labelText !== null ? labelText : ""}</p>
+              </div>
+              <div>
+                {total > 0 ? (
+                  <Progress
+                    strokeColor={"#4A2D73"}
+                    className="w-24"
+                    size="small"
+                    percent={(count / total) * 100}
+                    showInfo={false}
+                  />
+                ) : null}
+              </div>
             </Content>
           );
         } else {
@@ -2295,36 +2302,34 @@ const StoreSettings = () => {
     <Content>
       <HeaderForTitle
         title={
-          <Content>
-            <Title level={3} className="!font-normal !mb-0">
-              {storeName}
-            </Title>
-          </Content>
-          // <Content className="flex">
-          //   <Content className="flex self-center gap-2">
-          //     <Link to="/dashboard/store">
-          //       <ArrowLeftOutlined
-          //         role={"button"}
-          //         className={"text-black text-lg "}
-          //       />
-          //     </Link>
-          //     <Title level={3} className="!font-normal !mb-0">
-          //       {storeName}
-          //     </Title>
-          //   </Content>
-          // </Content>
-        }
-        titleContent={
-          <Content className="text-right flex flex-row-reverse items-center">
-            <Status
-              storeId={id}
-              storeStatus={changeSwitchStatus === 1 ? true : false}
-              storeApiData={storeData}
-              className="!inline-block"
-              disableStatus={disableStatus}
-            />
+          <Content className="flex !w-[80vw]">
+            <Content className="!w-[83%]">
+              <Title level={3} className="!font-normal !mb-0">
+                {storeName}
+              </Title>
+            </Content>
+            <Content className="!w-[17%]">
+              <Status
+                storeId={id}
+                storeStatus={changeSwitchStatus === 1 ? true : false}
+                storeApiData={storeData}
+                className="!inline-block"
+                disableStatus={disableStatus}
+              />
+            </Content>
           </Content>
         }
+        // titleContent={
+        //   <Content className="text-right flex flex-row-reverse items-center">
+        //     <Status
+        //       storeId={id}
+        //       storeStatus={changeSwitchStatus === 1 ? true : false}
+        //       storeApiData={storeData}
+        //       className="!inline-block"
+        //       disableStatus={disableStatus}
+        //     />
+        //   </Content>
+        // }
         backNavigationPath={`/dashboard/store`}
         showArrowIcon={true}
         showButtons={false}

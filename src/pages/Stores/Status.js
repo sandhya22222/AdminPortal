@@ -147,8 +147,8 @@ function Status({
         okButtonText={t("labels:yes")}
         title={
           changeSwitchStatus
-            ? `${t("labels:success")}`
-            : `${t("labels:warning")}`
+            ? `${t("messages:store_activation_confirmation")}`
+            : `${t("messages:store_deactivation_confirmation")}`
         }
         cancelButtonText={t("labels:cancel")}
         okCallback={() => updateStoreStatus()}
@@ -159,12 +159,13 @@ function Status({
         {/* <Content className="!w-3/5"> */}
         {changeSwitchStatus ? (
           <div>
-            <p>{t("messages:store_activation_confirmation")}</p>
-            <p>{t("messages:store_active_confirmation_message")}</p>
+           
+            <p className="!mb-0">{t("messages:store_active_confirmation_message")}</p>
+            <p className="!m-0 !p-0">{t("messages:are_you_sure_you_like_to_proceed")}</p>
           </div>
         ) : (
           <div>
-            <p>{t("messages:store_deactivation_confirmation")}</p>
+          
             <p>{t("messages:store_deactivation_confirmation_message")}</p>
           </div>
         )}

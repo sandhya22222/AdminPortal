@@ -208,6 +208,7 @@ const UserAccessControl = () => {
               title={t("labels:edit_user")}
               className="ml-1"
               placement="bottom"
+              overlayStyle={{ zIndex: 1 }}
             >
               <Button
                 type="text"
@@ -577,6 +578,11 @@ const UserAccessControl = () => {
               <Content className="!grid !justify-items-end">
                 <DmPagination
                   currentPage={
+                    parseInt(searchParams.get("page"))
+                      ? parseInt(searchParams.get("page"))
+                      : 1
+                  }
+                  presentPage={
                     parseInt(searchParams.get("page"))
                       ? parseInt(searchParams.get("page"))
                       : 1
