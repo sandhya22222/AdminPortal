@@ -2029,7 +2029,7 @@ const StoreSettings = () => {
               >
                 <p>{count}</p>
                 <p>{t("labels:of")}</p>
-                <p>{total}</p>
+                <p>{total > 0 ? total : null}</p>
                 <p>{labelText !== null ? labelText : ""}</p>
               </div>
               <div>
