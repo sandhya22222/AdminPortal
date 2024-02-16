@@ -65,10 +65,10 @@ const CreateUsers = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isUserDetailFetching, setIsUserDetailFetching] = useState(false);
   const [isUserDetailsEditted, setIsUserDetailsEditted] = useState(false);
-  const [currentFirstName, setCurrentFirstName ] = useState("");
-  const [currentLastName, setCurrentLastName ] = useState("");
-  const [currentRole, setCurrentRole ] = useState("");
-  const [currentEmailId, setCurrentEmailId ] = useState("");
+  const [currentFirstName, setCurrentFirstName] = useState("");
+  const [currentLastName, setCurrentLastName] = useState("");
+  const [currentRole, setCurrentRole] = useState("");
+  const [currentEmailId, setCurrentEmailId] = useState("");
 
   //Get call of groups
   const findAllGroupLists = () => {
@@ -126,7 +126,7 @@ const CreateUsers = () => {
   // validation of user form
   const userFormValidation = () => {
     // const emailRegex = /^[a-zA-Z0-9_.+-]{3,64}@[A-Za-z\-]{3,255}\.[A-Za-z]{2,3}$/;
-    const emailRegex = new RegExp(emailRegexPattern)
+    const emailRegex = new RegExp(emailRegexPattern);
     const passwordRegex =
       /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{12,64}$/;
     const userNameRegex = /^[A-Za-z0-9_\- ]+$/;
@@ -295,9 +295,9 @@ const CreateUsers = () => {
   };
 
   const userFormValidationEdit = () => {
-  // console.log("emailRegexPattern", new RegExp(emailRegexPattern))
+    // console.log("emailRegexPattern", new RegExp(emailRegexPattern))
     // const emailRegex = /^[a-zA-Z0-9_.+-]{3,64}@[A-Za-z\-]{3,255}\.[A-Za-z]{2,3}$/;
-    const emailRegex = new RegExp(emailRegexPattern)
+    const emailRegex = new RegExp(emailRegexPattern);
     let count = 1;
     if (emailId === "") {
       count--;
@@ -319,6 +319,15 @@ const CreateUsers = () => {
           "error"
         )
       );
+    } else if (selectRole === undefined) {
+      count--;
+      setInvalidRole(true);
+      MarketplaceToaster.showToast(
+        util.getToastObject(
+          `${t("messages:please_enter_the_values_for_the_mandatory_fields")}`,
+          "error"
+        )
+      );
     }
     if (count === 1) {
       handlePutUsers();
@@ -330,7 +339,7 @@ const CreateUsers = () => {
     setSelectRole(value);
     setInvalidRole(false);
     // if (pageAction != "add") {
-      setIsUserDetailsEditted(true);
+    setIsUserDetailsEditted(true);
     // /}
   };
 
@@ -390,7 +399,7 @@ const CreateUsers = () => {
             setCurrentFirstName(selectedUserDetails[0].firstName);
             setCurrentLastName(selectedUserDetails[0].lastName);
             setCurrentRole(selectedUserDetails[0].groups[0].name);
-            setCurrentEmailId(selectedUserDetails[0].email)
+            setCurrentEmailId(selectedUserDetails[0].email);
             setUserStatus(selectedUserDetails[0].enabled);
           }
         }
@@ -617,27 +626,31 @@ const CreateUsers = () => {
                     </Content>
                   )}
                   <Content className="flex my-3">
-                  {pageAction !== "add" ? "": <Content>
-                      <Typography className="input-label-color mb-2 flex gap-1">
-                        {t("labels:status")}
-                      </Typography>
+                    {pageAction !== "add" ? (
+                      ""
+                    ) : (
                       <Content>
-                        <Switch
-                          disabled={pageAction !== "add" ? true : false}
-                          className={
-                            userStatus === true
-                              ? "!bg-green-500"
-                              : "!bg-gray-400"
-                          }
-                          checked={userStatus}
-                          onChange={onChange}
-                          // onClick={() => {
-                          //   openModal(switchStatus);
-                          // }}
-                        />
+                        <Typography className="input-label-color mb-2 flex gap-1">
+                          {t("labels:status")}
+                        </Typography>
+                        <Content>
+                          <Switch
+                            disabled={pageAction !== "add" ? true : false}
+                            className={
+                              userStatus === true
+                                ? "!bg-green-500"
+                                : "!bg-gray-400"
+                            }
+                            checked={userStatus}
+                            onChange={onChange}
+                            // onClick={() => {
+                            //   openModal(switchStatus);
+                            // }}
+                          />
+                        </Content>
                       </Content>
-                    </Content>}
-                   
+                    )}
+
                     <Content className="">
                       <Typography className="input-label-color mb-2 flex gap-1">
                         {t("labels:role")}
