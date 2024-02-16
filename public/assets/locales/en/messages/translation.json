@@ -82,5 +82,7 @@
     "one_or_more_special_charecter_or_symbols":"One or more special character or symbols",
     "one_or_more_lower_case_letters":"One or more lower case letters",
     "one_or_more_numbers":"One or more numbers",
-    "password_mismatch":"Password mismatch"
+    "password_mismatch":"Password mismatch",
+    "upload_image_content":" Accepted image formats include .png, .jpeg, and .jpg, with a size ranging from 1KB to 20MB per image.",
+    "please_ensure_that_upload_only_eight_images":"Please ensure that you upload no more than 8 images."
 }

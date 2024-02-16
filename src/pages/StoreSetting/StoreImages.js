@@ -434,56 +434,54 @@ const StoreImages = ({
               >
                 {fileList.length >= 1 ? null : uploadButton}
               </Upload>
-              {/* <Modal
-                open={previewOpen}
-                title={previewTitle}
-                footer={null}
-                onCancel={handleCancel}
-              >
-                <img
-                  alt="previewImage"
-                  style={{
-                    width: "100%",
-                  }}
-                  src={previewImage}
-                />
-              </Modal> */}
+              <div className="mt-2 text-[#a8a8a8]">
+                <p className="!mb-0 ">{t("messages:upload_image_content")}</p>
+              </div>
             </>
           ) : (
-            <Upload
-              maxCount={BannerImagesUploadLength}
-              className="w-90"
-              listType="picture"
-              multiple={true}
-              beforeUpload={() => {
-                return false;
-              }}
-              afterUpload={() => {
-                return false;
-              }}
-              fileList={fileList}
-              onPreview={handlePreview}
-              accept={supportedFileExtensions}
-              onChange={(e) => {
-                handleChange(e);
-                // setImageChangeValues(true);
-              }}
-              openFileDialogOnClick={
-                bannerImagesLength < BannerImagesUploadLength ? true : false
-              }
-              disabled={disabelMediaButton}
-            >
-              <Button
-                disabled={
-                  bannerImagesLength < BannerImagesUploadLength ? false : true
+            <>
+              <Upload
+                maxCount={BannerImagesUploadLength}
+                className="w-90"
+                listType="picture"
+                multiple={true}
+                beforeUpload={() => {
+                  return false;
+                }}
+                afterUpload={() => {
+                  return false;
+                }}
+                fileList={fileList}
+                onPreview={handlePreview}
+                accept={supportedFileExtensions}
+                onChange={(e) => {
+                  handleChange(e);
+                  // setImageChangeValues(true);
+                }}
+                openFileDialogOnClick={
+                  bannerImagesLength < BannerImagesUploadLength ? true : false
                 }
-                className="font-semibold app-btn-secondary flex justify-center items-center"
+                disabled={disabelMediaButton}
               >
-                <UploadOutlined className="" />
-                {t("labels:click_to_upload")}({t("labels:max")}:{" "}
-                {BannerImagesUploadLength})
-              </Button>
-            </Upload>
+                <Button
+                  disabled={
+                    bannerImagesLength < BannerImagesUploadLength ? false : true
+                  }
+                  className="font-semibold app-btn-secondary flex justify-center items-center"
+                >
+                  <UploadOutlined className="" />
+                  {t("labels:click_to_upload")}
+                  {/* ({t("labels:max")}:{" "}
+                  {BannerImagesUploadLength}) */}
+                </Button>
+                <div className="mt-2 text-[#a8a8a8]">
+                  <p className="!mb-0 ">{t("messages:upload_image_content")}</p>
+                  <p className="!mb-2">
+                    {t("messages:please_ensure_that_upload_only_eight_images")}
+                  </p>
+                </div>
+              </Upload>
+            </>
           )}
           <Modal
             open={previewOpen}
@@ -565,9 +563,20 @@ const StoreImages = ({
                     className="font-semibold app-btn-secondary flex justify-center items-center"
                   >
                     <UploadOutlined className="" />
-                    {t("labels:click_to_upload")}({t("labels:max")}:{" "}
-                    {BannerImagesUploadLength})
+                    {t("labels:click_to_upload")}
+                    {/* ({t("labels:max")}:{" "}
+                    {BannerImagesUploadLength}) */}
                   </Button>
+                  <div className="mt-2 text-[#a8a8a8]">
+                    <p className="!mb-0 ">
+                      {t("messages:upload_image_content")}
+                    </p>
+                    <p className="!mb-0">
+                      {t(
+                        "messages:please_ensure_that_upload_only_eight_images"
+                      )}
+                    </p>
+                  </div>
                 </Upload>
                 <Modal
                   open={previewOpen}
