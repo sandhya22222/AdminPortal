@@ -521,8 +521,14 @@ const Stores = () => {
                   }
                 >
                   <p>{count}</p>
-                  <p>{t("labels:of")}</p>
-                  <p>{total > 0 ? total : null}</p>
+                  {
+                    total > 0 ? <>
+                      <p>{t("labels:of")}</p>
+                      <p>{total}</p>
+                    </> : ""
+                  }
+                  {/* <p>{total > 0 ? t("labels:of") : ""}</p>
+                  <p>{total > 0 ? total : null}</p> */}
                   <p>
                     {keyName === "store_limit"
                       ? t("labels:active_stores")
