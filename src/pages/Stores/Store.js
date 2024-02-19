@@ -17,6 +17,7 @@ import {
   Progress,
   InputNumber,
   Table,
+  Badge,
 } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import validator from "validator";
@@ -37,7 +38,7 @@ import {
 } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
-import { DeleteIcon } from "../../constants/media";
+import { DeleteIcon, saveStoreConfirmationImage } from "../../constants/media";
 import { InfoCircleTwoTone } from "@ant-design/icons";
 //! Import user defined components
 import Highlighter from "react-highlight-words";
@@ -88,12 +89,8 @@ const Stores = () => {
   const params = useParams();
   const navigate = useNavigate();
   const search = useLocation().search;
-  const currentPage = new URLSearchParams(search).get("page");
-  const currentCount = new URLSearchParams(search).get("count");
   // const store_id = new URLSearchParams(search).get("store_id");
   const tab_id = new URLSearchParams(search).get("tab");
-  const page_number = new URLSearchParams(search).get("page");
-  const mainTab = new URLSearchParams(search).get("page");
   const [searchParams, setSearchParams] = useSearchParams();
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -138,6 +135,8 @@ const Stores = () => {
   const [isStoreDeleting, setIsStoreDeleting] = useState(false);
   const [superAdmin, setSuperAdmin] = useState(false);
   const [hideAddStoreButton, setHideAddStoreButton] = useState(false);
+  const [saveStoreModalOpen, setSaveStoreModalOpen] = useState(false);
+  const [storeStatusCheck, setStoreStatusCheck] = useState();
   const searchInput = useRef(null);
   const auth = useAuth();
   const permissionValue = util.getPermissionData() || [];
@@ -167,7 +166,7 @@ const Stores = () => {
           setSuperAdmin(true);
         }
         console.log(
-          "dddddddddddddddddddddddddddddddddddddddd",
+          "response",
           res.data.response_body.resource_access[
             "dmadmin-client"
           ].roles.includes("UI-product-admin")
@@ -615,35 +614,35 @@ const Stores = () => {
 
   //! table columns
   const StoreTableColumn = [
-    // {
-    //   title: "Id",
-    //   dataIndex: "id",
-    //   key: "id",
-    //   width: "8%",
-    //   render: (text, record) => {
-    //     return <>{record.id}</>;
-    //   },
-    // },
     {
       title: `${t("labels:name")}`,
       dataIndex: "name",
       key: "name",
       width: "30%",
       ellipsis: true,
-      // sorter: (name1, name2) => name1.name.localeCompare(name2.name),
-      // sortDirections: ["descend", "ascend"],
-      // showSorterTooltip: true,
       render: (text, record) => {
         return (
-          <Tooltip title={record.name} placement="bottom">
-            <Text className="max-w-xs" ellipsis={{ tooltip: record.name }}>
-              {record.name}
-            </Text>
-          </Tooltip>
+          <>
+            <Row>
+              <Tooltip title={record.name} placement="bottom">
+                <Text
+                  className="max-w-xs"
+                  ellipsis={{ tooltip: record.name }}
+                  disabled={record.status === 3 ? true : false}
+                >
+                  {record.name}
+                </Text>
+              </Tooltip>
+            </Row>
+            {record.status === 3 ? (
+              <div className="flex space-x-2">
+                <Badge status="processing" />
+                <Text>{t("labels:processing")}</Text>
+              </div>
+            ) : null}
+          </>
         );
-        // <>{record.name}</>;
       },
-      // ...getColumnSearchProps("name"),
     },
     {
       title: `${t("labels:status")}`,
@@ -654,7 +653,7 @@ const Stores = () => {
         return (
           <Status
             storeId={record.id}
-            storeStatus={record.status === "Active" ? true : false}
+            storeStatus={record.status === 1 ? true : false}
             tabId={tab_id}
             storeApiData={storeApiData}
             setSelectedTabTableContent={setSelectedTabTableContent}
@@ -663,6 +662,7 @@ const Stores = () => {
             activeCount={activeCount}
             setActiveCount={setActiveCount}
             disableStatus={hideAddStoreButton}
+            statusInprogress={record.status}
           />
         );
       },
@@ -673,7 +673,11 @@ const Stores = () => {
       key: "created_on",
       width: "30%",
       render: (text, record) => {
-        return <>{new Date(record.created_on).toLocaleString()}</>;
+        return (
+          <Text disabled={record.status === 3 ? true : false}>
+            {new Date(record.created_on).toLocaleString()}
+          </Text>
+        );
       },
     },
     {
@@ -715,8 +719,11 @@ const Stores = () => {
               </Link>
             ) : (
               <Button
-                className="app-btn-icon flex align-items-center justify-center"
+                className={`app-btn-icon flex align-items-center justify-center ${
+                  record.status === 3 ? "opacity-30" : ""
+                }`}
                 type="text"
+                disabled={record.status === 3 ? true : false}
               >
                 {
                   <Link
@@ -817,7 +824,7 @@ const Stores = () => {
             name: storeName,
             id: storeId,
             created_on: createdOn,
-            status: statusForStores[storeStatus],
+            status: storeStatus,
             storeId: storeActualId,
           });
       });
@@ -1100,19 +1107,21 @@ const Stores = () => {
           activeStores: response.data.response_body.active_stores,
           inactiveStores: response.data.response_body.inactive_stores,
         });
-        // setInactiveCount(response.data.inactive_stores);
+        const filteredStoreData =
+          response &&
+          response.data.response_body.data.filter((ele) => ele.status);
+
+        // Extract 'status' property from all objects and store in state
+        const extractedStatus = filteredStoreData.map((ele) => ele.status);
+        setStoreStatusCheck(extractedStatus);
+
         setIsNetworkError(false);
         setIsLoading(false);
         console.log(
           "Server Response from findByPageStoreApi Function: ",
           response.data.response_body
         );
-        // setStoreApiData(response.data.data);
-        //TODO: Remove line 303,304 and setStoreApiData(response.data)
-        // let allStoresData = response.data;
-        // allStoresData = { ...allStoresData, count: 22 };
         setStoreApiData(response.data.response_body.data);
-
         setIsPaginationDataLoaded(false);
         setCountForStore(response.data.response_body.count);
       })
@@ -1175,19 +1184,14 @@ const Stores = () => {
     if (
       storeEmail === "" &&
       storeUserName === "" &&
-      storePassword === "" &&
+      // storePassword === "" &&
       name === ""
     ) {
       setInValidEmail(true);
       setInValidUserName(true);
-      setInValidPassword(true);
+      // setInValidPassword(true);
       setInValidName(true);
       count--;
-      // toast("Please provide values for the mandatory fields", {
-      //   position: toast.POSITION.TOP_RIGHT,
-      //   type: "error",
-      //   autoClose: 10000,
-      // });
       MarketplaceToaster.showToast(
         util.getToastObject(
           `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
@@ -1197,12 +1201,12 @@ const Stores = () => {
     } else if (
       storeEmail === "" &&
       storeUserName === "" &&
-      storePassword === "" &&
+      // storePassword === "" &&
       name !== ""
     ) {
       setInValidEmail(true);
       setInValidUserName(true);
-      setInValidPassword(true);
+      // setInValidPassword(true);
       count--;
       MarketplaceToaster.showToast(
         util.getToastObject(
@@ -1213,11 +1217,11 @@ const Stores = () => {
     } else if (
       storeEmail !== "" &&
       storeUserName === "" &&
-      storePassword === "" &&
+      // storePassword === "" &&
       name === ""
     ) {
       setInValidUserName(true);
-      setInValidPassword(true);
+      // setInValidPassword(true);
       setInValidName(true);
       count--;
       MarketplaceToaster.showToast(
@@ -1229,11 +1233,11 @@ const Stores = () => {
     } else if (
       storeEmail === "" &&
       storeUserName !== "" &&
-      storePassword === "" &&
+      // storePassword === "" &&
       name === ""
     ) {
       setInValidEmail(true);
-      setInValidPassword(true);
+      // setInValidPassword(true);
       setInValidName(true);
       count--;
       MarketplaceToaster.showToast(
@@ -1245,7 +1249,7 @@ const Stores = () => {
     } else if (
       storeEmail === "" &&
       storeUserName === "" &&
-      storePassword !== "" &&
+      // storePassword !== "" &&
       name === ""
     ) {
       setInValidEmail(true);
@@ -1261,7 +1265,7 @@ const Stores = () => {
     } else if (
       storeEmail === "" &&
       storeUserName === "" &&
-      storePassword !== "" &&
+      // storePassword !== "" &&
       name !== ""
     ) {
       setInValidEmail(true);
@@ -1276,11 +1280,11 @@ const Stores = () => {
     } else if (
       storeEmail === "" &&
       storeUserName !== "" &&
-      storePassword === "" &&
+      // storePassword === "" &&
       name !== ""
     ) {
       setInValidEmail(true);
-      setInValidPassword(true);
+      // setInValidPassword(true);
       count--;
       MarketplaceToaster.showToast(
         util.getToastObject(
@@ -1291,11 +1295,11 @@ const Stores = () => {
     } else if (
       storeEmail !== "" &&
       storeUserName === "" &&
-      storePassword === "" &&
+      // storePassword === "" &&
       name !== ""
     ) {
       setInValidUserName(true);
-      setInValidPassword(true);
+      // setInValidPassword(true);
       count--;
       MarketplaceToaster.showToast(
         util.getToastObject(
@@ -1306,7 +1310,7 @@ const Stores = () => {
     } else if (
       storeEmail !== "" &&
       storeUserName === "" &&
-      storePassword !== "" &&
+      // storePassword !== "" &&
       name === ""
     ) {
       setInValidName(true);
@@ -1321,11 +1325,11 @@ const Stores = () => {
     } else if (
       storeEmail !== "" &&
       storeUserName !== "" &&
-      storePassword === "" &&
+      // storePassword === "" &&
       name === ""
     ) {
       setInValidName(true);
-      setInValidPassword(true);
+      // setInValidPassword(true);
       count--;
       MarketplaceToaster.showToast(
         util.getToastObject(
@@ -1336,7 +1340,7 @@ const Stores = () => {
     } else if (
       storeEmail === "" &&
       storeUserName !== "" &&
-      storePassword !== "" &&
+      // storePassword !== "" &&
       name === ""
     ) {
       setInValidName(true);
@@ -1351,7 +1355,7 @@ const Stores = () => {
     } else if (
       storeEmail !== "" &&
       storeUserName !== "" &&
-      storePassword !== "" &&
+      // storePassword !== "" &&
       name === ""
     ) {
       setInValidName(true);
@@ -1365,7 +1369,7 @@ const Stores = () => {
     } else if (
       storeEmail === "" &&
       storeUserName !== "" &&
-      storePassword !== "" &&
+      // storePassword !== "" &&
       name !== ""
     ) {
       setInValidEmail(true);
@@ -1379,7 +1383,7 @@ const Stores = () => {
     } else if (
       storeEmail !== "" &&
       storeUserName === "" &&
-      storePassword !== "" &&
+      // storePassword !== "" &&
       name !== ""
     ) {
       setInValidUserName(true);
@@ -1390,21 +1394,23 @@ const Stores = () => {
           "error"
         )
       );
-    } else if (
-      storeEmail !== "" &&
-      storeUserName !== "" &&
-      storePassword === "" &&
-      name !== ""
-    ) {
-      setInValidPassword(true);
-      count--;
-      MarketplaceToaster.showToast(
-        util.getToastObject(
-          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
-          "error"
-        )
-      );
-    } else if (
+    }
+    // else if (
+    //   storeEmail !== "" &&
+    //   storeUserName !== "" &&
+    //   storePassword === "" &&
+    //   name !== ""
+    // ) {
+    //   setInValidPassword(true);
+    //   count--;
+    //   MarketplaceToaster.showToast(
+    //     util.getToastObject(
+    //       `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+    //       "error"
+    //     )
+    //   );
+    // }
+    else if (
       name &&
       validator.isLength(name.trim(), {
         min: storeNameMinLength,
@@ -1451,18 +1457,19 @@ const Stores = () => {
           "error"
         )
       );
-    } else if (storePassword && pattern.test(storePassword) === false) {
-      setInValidPassword(true);
-      count--;
-      MarketplaceToaster.showToast(
-        util.getToastObject(
-          `${t(
-            "messages:password_must_contain_minimum_of"
-          )} ${passwordMinLength} ${t("messages:password_error_message")}`,
-          "error"
-        )
-      );
     }
+    // else if (storePassword && pattern.test(storePassword) === false) {
+    //   setInValidPassword(true);
+    //   count--;
+    //   MarketplaceToaster.showToast(
+    //     util.getToastObject(
+    //       `${t(
+    //         "messages:password_must_contain_minimum_of"
+    //       )} ${passwordMinLength} ${t("messages:password_error_message")}`,
+    //       "error"
+    //     )
+    //   );
+    // }
     if (count === 4) {
       saveStoreData();
     }
@@ -1474,12 +1481,13 @@ const Stores = () => {
       name: name.trim(),
       username: storeUserName.trim(),
       email: storeEmail.trim(),
-      password: storePassword.trim(),
+      // password: storePassword.trim(),
     };
     setIsUpLoading(true);
     MarketplaceServices.save(storeAPI, postBody)
       .then((response) => {
-        MarketplaceToaster.showToast(response);
+        // MarketplaceToaster.showToast(response);
+        setSaveStoreModalOpen(true);
         setIsUpLoading(false);
         onClose();
         setName("");
@@ -1575,6 +1583,7 @@ const Stores = () => {
       saveStoreLimit();
     }
   };
+
   useEffect(() => {
     if (storeEditId) {
       var storeData =
@@ -1590,6 +1599,7 @@ const Stores = () => {
       }
     }
   }, [storeEditId]);
+
   //! validation for put call
   const validateStorePutField = () => {
     // const emailRegex = new RegExp(emailRegexPattern)
@@ -1648,8 +1658,15 @@ const Stores = () => {
         setValue(0);
       }
     }
-
     window.scrollTo(0, 0);
+   
+    // if (storeStatusCheck.includes(3)) {
+      // Set up interval to fetch data every 30 seconds (30000 milliseconds)
+      const intervalId = setInterval(findByPageStoreApi, 30000);
+
+      // Clean up the interval when the component is unmounted
+      return () => clearInterval(intervalId);
+    // }
   }, [searchParams]);
 
   const handlePageNumberChange = (page, pageSize) => {
@@ -1932,8 +1949,8 @@ const Stores = () => {
                   // suffix={`${storeUserName.length}/15`}
                   className={`${
                     inValidUserName
-                      ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-6"
-                      : "mb-6"
+                      ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-10"
+                      : "mb-10"
                   }`}
                   prefix={<UserOutlined className="site-form-item-icon" />}
                   onChange={(e) => {
@@ -1957,7 +1974,7 @@ const Stores = () => {
                   }}
                 />
 
-                <label
+                {/* <label
                   className="text-[13px] mb-2 ml-1 input-label-color"
                   id="labStPwd"
                 >
@@ -1992,7 +2009,7 @@ const Stores = () => {
                     const trimmed = storePassword.trim();
                     setStorePassword(trimmed);
                   }}
-                />
+                /> */}
                 <Button
                   className={onChangeValues ? "app-btn-primary" : "!opacity-75"}
                   disabled={!onChangeValues}
@@ -2271,6 +2288,48 @@ const Stores = () => {
           </Content>
         )}
       </Content>
+      <StoreModal
+        isVisible={saveStoreModalOpen}
+        // okButtonText={t("labels:yes")}
+        // cancelButtonText={t("labels:cancel")}
+        // title={t("labels:warning")}
+        // okCallback={() => saveStoreData()}
+        // cancelCallback={() => closeDeleteModal()}
+        isSpin={false}
+        hideCloseButton={false}
+        width={800}
+      >
+        {
+          <Content className="!text-center">
+            <Text className=" font-semibold text-[15px]">
+              {t("labels:building_store")}
+            </Text>
+            <div
+              className="mt-5 mb-3"
+              style={{ "text-align": "-webkit-center" }}
+            >
+              <img src={saveStoreConfirmationImage} className="" />
+            </div>
+            <div className="!font-medium">
+              <p className="!mb-0 ">
+                {t("messages:hang_tight_as_we_conjure_up_store")}
+              </p>
+              <p className="!mb-0">
+                {t("messages:swing_by_in_a_bit_to_witness_the_magic_unfolding")}
+              </p>
+              <p>{t("messages:thanks_for_your_patience")}</p>
+            </div>
+            <Button
+              className="app-btn-primary"
+              onClick={() => {
+                setSaveStoreModalOpen(false);
+              }}
+            >
+              {t("labels:close_message")}
+            </Button>
+          </Content>
+        }
+      </StoreModal>
     </Content>
   );
 };

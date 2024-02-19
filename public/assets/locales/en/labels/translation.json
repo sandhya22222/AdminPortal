@@ -221,5 +221,10 @@
   "current_password": "Current password",
   "number_of": "Number of",
   "language_settings":"Language Settings",
-  "settings":"Settings"
+  "settings":"Settings",
+  "building_store":"Building Store",
+  "activating_store":"Activating Store",
+  "deactivating_store":"Deactivating Store",
+  "close_message":"Close Message",
+  "processing":"Processing"
 }
