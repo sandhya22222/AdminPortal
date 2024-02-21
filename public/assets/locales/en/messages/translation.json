@@ -90,5 +90,6 @@
     "thanks_for_your_patience":"Thanks for your patience !",
    "patience_is_a_virtue":"Patience is a virtue !",
    "activation_message":"We're activating your store. Come back in a jiffy to check activation status ",
-   "deactivation_message":"We're deactivating your store. Come back in a jiffy to check deactivation status "
+   "deactivation_message":"We're deactivating your store. Come back in a jiffy to check deactivation status ",
+   "your_store_has_been_successfully_created":"Your store has been successfully created."
 }

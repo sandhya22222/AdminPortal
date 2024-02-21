@@ -90,7 +90,7 @@ const Stores = () => {
   const navigate = useNavigate();
   const search = useLocation().search;
   // const store_id = new URLSearchParams(search).get("store_id");
-  const tab_id = new URLSearchParams(search).get("tab");
+  const tab_id = new URLSearchParams(search).get("t");
   const [searchParams, setSearchParams] = useSearchParams();
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -136,11 +136,13 @@ const Stores = () => {
   const [superAdmin, setSuperAdmin] = useState(false);
   const [hideAddStoreButton, setHideAddStoreButton] = useState(false);
   const [saveStoreModalOpen, setSaveStoreModalOpen] = useState(false);
-  const [storeStatusCheck, setStoreStatusCheck] = useState();
+  const [storeStatusLoading, setStoreStatusLoading] = useState(false);
+  const [storeStatusId, setStoreStatusId] = useState();
+  const [storeId, setStoreId] = useState();
+  const [statusInprogressData, setStatusInprogressData] = useState([]);
   const searchInput = useRef(null);
   const auth = useAuth();
   const permissionValue = util.getPermissionData() || [];
-
   let keyCLoak = sessionStorage.getItem("keycloakData");
   keyCLoak = JSON.parse(keyCLoak);
   let realmName = keyCLoak.clientId.replace(/-client$/, "");
@@ -520,12 +522,14 @@ const Stores = () => {
                   }
                 >
                   <p>{count}</p>
-                  {
-                    total > 0 ? <>
+                  {total > 0 ? (
+                    <>
                       <p>{t("labels:of")}</p>
                       <p>{total}</p>
-                    </> : ""
-                  }
+                    </>
+                  ) : (
+                    ""
+                  )}
                   {/* <p>{total > 0 ? t("labels:of") : ""}</p>
                   <p>{total > 0 ? total : null}</p> */}
                   <p>
@@ -641,10 +645,20 @@ const Stores = () => {
               </Tooltip>
             </Row>
             {record.status === 3 ? (
-              <div className="flex space-x-2">
-                <Badge status="processing" />
-                <Text>{t("labels:processing")}</Text>
-              </div>
+              <Spin spinning={storeStatusLoading}>
+                {console.log(
+                  "storeId === record.storeId",
+                  storeId,
+                  record.storeId
+                )}
+                <div
+                  className="flex space-x-2"
+                  // onLoad={handleStoreDataStore(record.id, record.storeId)}
+                >
+                  <Badge status="processing" />
+                  <Text>{t("labels:processing")}</Text>
+                </div>
+              </Spin>
             ) : null}
           </>
         );
@@ -779,6 +793,7 @@ const Stores = () => {
     },
   ];
 
+  console.log("storeId", storeId);
   //! status of stores like active or inactive
   const statusForStores = {
     1: "Active",
@@ -793,17 +808,6 @@ const Stores = () => {
         ? parseInt(searchParams.get("limit"))
         : pageLimit,
     });
-    // if (status === "0") {
-    //   tableStoreData(storeApiData);
-    // } else if (status === "1") {
-    //   tableStoreData(
-    //     storeApiData.filter((element) => element.status == status)
-    //   );
-    // } else if (status === "2") {
-    //   tableStoreData(
-    //     storeApiData.filter((element) => element.status == status)
-    //   );
-    // }
   };
   //!pagination
   const pagination = [
@@ -837,46 +841,10 @@ const Stores = () => {
     setSelectedTabTableContent(tempArray);
   };
 
-  // const getActiveInactiveData = () => {
-  //   // instance
-  //   //   .get(dm4sightBaseURL + dm4sightAnalysisCountAPI, dm4sightHeaders)
-  //     // .then((response) => {
-  //     //   console.log("resdooooo", response.data);
-
-  //       //   convert the response to table readable format
-
-  //       //   console.log(Object.entries(obj)); // [ ['foo', 'bar'], ['baz', 42] ]
-  //       // Object.entries converts key-value to array of key,value
-  //       //   key --> first value of Array
-  //       //   value ---> second value of array
-  //       // const transformedData = Object.entries(response.data.count_info).map(
-  //       //   ([key, value]) => ({
-  //       //     key: key,
-  //       //     store_name: value.name,
-  //       //     orders: value.count_order,
-  //       //     vendors: value.count_vendor,
-  //       //     products: value.count_product,
-  //       //     product_templates: value.count_template,
-  //       //   })
-  //       // );
-  //       // setTableData(transformedData);
-  //       // console.log(transformedData);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   getActiveInactiveData();
-  // });
-
   //!this useEffect for tab(initial rendering)
   useEffect(() => {
     if (storeApiData && storeApiData.length > 0 && !isLoading) {
       setIsLoading(false);
-      // if (tab_id === "0" || tab_id === "1" || tab_id === "2") {
-      //   handleTabChangeStore(tab_id);
-      // } else {
-      //   handleTabChangeStore("0");
-      // }
       tableStoreData(storeApiData);
     } else {
       setSelectedTabTableContent([]);
@@ -1113,14 +1081,12 @@ const Stores = () => {
           activeStores: response.data.response_body.active_stores,
           inactiveStores: response.data.response_body.inactive_stores,
         });
-        const filteredStoreData =
+        const filteredData =
           response &&
-          response.data.response_body.data.filter((ele) => ele.status);
-
-        // Extract 'status' property from all objects and store in state
-        const extractedStatus = filteredStoreData.map((ele) => ele.status);
-        setStoreStatusCheck(extractedStatus);
-
+          response.data.response_body &&
+          response.data.response_body.data.filter((ele) => ele.status === 3);
+        setStatusInprogressData(filteredData);
+        console.log("filteredData", filteredData);
         setIsNetworkError(false);
         setIsLoading(false);
         console.log(
@@ -1150,14 +1116,14 @@ const Stores = () => {
           }
           if (error && error.response === undefined) {
             setSearchParams({
-              tab: parseInt(searchParams.get("tab")),
+              tab: parseInt(searchParams.get("t")),
               page: 1,
               limit: parseInt(searchParams.get("limit")),
             });
           }
           if (error.response.data.message === "That page contains no results") {
             setSearchParams({
-              tab: parseInt(searchParams.get("tab")),
+              tab: parseInt(searchParams.get("t")),
               page: 1,
               limit: parseInt(searchParams.get("limit")),
             });
@@ -1166,13 +1132,92 @@ const Stores = () => {
       });
   };
 
+  //! another get call for stores for particular store_uuid
+  const findAllStoreData = (statusUUid, id) => {
+    console.log("statusUUid", statusUUid, id);
+
+    MarketplaceServices.findAll(
+      storeAPI,
+      {
+        store_id: statusUUid,
+      },
+      false
+    )
+      .then(function (response) {
+        console.log(
+          "Server Response from findByPageStoreApi Function for store uuid: ",
+          response.data.response_body
+        );
+        setStoreStatusId();
+        console.log("storeApiData", storeApiData);
+        let temp = [...storeApiData];
+        console.log("temp", temp);
+        let index = temp.findIndex((ele) => ele.id == id);
+        temp[index]["status"] = response.data.response_body.data[0].status;
+        setStoreApiData(temp);
+        console.log("tempTemp", temp);
+        setInterval(() => {
+          setStoreStatusLoading(false);
+        }, 1000);
+
+        if (response.data.response_body.data[0].status === 2) {
+          let duplicateData = [...statusInprogressData];
+          let temp = duplicateData.filter((ele) => ele.id != id);
+          if (temp && temp.length > 0) {
+            setStatusInprogressData(temp);
+          } else {
+            setStatusInprogressData([]);
+          }
+
+          MarketplaceToaster.showToast(
+            util.getToastObject(
+              `${t("messages:your_store_has_been_successfully_created")}`,
+              "success"
+            )
+          );
+        }
+      })
+      .catch((error) => {
+        setStoreStatusLoading(false);
+        console.log(
+          "Server error from findByPageStoreApi Function ",
+          error.response
+        );
+      });
+  };
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (statusInprogressData && statusInprogressData.length > 0) {
+        for (var i = 0; i < statusInprogressData.length; i++) {
+          console.log("first", statusInprogressData[i].id);
+          setStoreId(statusInprogressData[i].id);
+          setStoreStatusLoading(true);
+          findAllStoreData(
+            // searchParams.get("page") ? parseInt(searchParams.get("page")) : 1,
+            // searchParams.get("limit")
+            //   ? parseInt(searchParams.get("limit"))
+            //   : pageLimit,
+            statusInprogressData[i].store_uuid,
+            statusInprogressData[i].id
+          );
+        }
+      }
+    }, 30000);
+    return () => clearInterval(intervalId);
+  }, [statusInprogressData]);
+
+  console.log("   setStoreStatusLoading(true);--->", storeStatusLoading);
+
   //!useEffect for getting the table in table without refreshing
   useEffect(() => {
+    console.log("postData", postData);
     if (postData != null) {
       if (storeApiData.length < pageLimit) {
         const temp = [...storeApiData];
         temp.push(postData);
         setStoreApiData(temp);
+        console.log("tempAPI", temp);
       }
       let totalStoresCount = { ...activeCount };
       totalStoresCount["totalStores"] = activeCount.totalStores + 1;
@@ -1504,6 +1549,10 @@ const Stores = () => {
           "Server Success Response From stores",
           response.data.response_body
         );
+        const postFilteredData = [...statusInprogressData];
+        postFilteredData.push(response.data.response_body);
+        setStatusInprogressData(postFilteredData);
+        console.log("postFilteredData", postFilteredData);
         setPostData(response.data.response_body);
       })
       .catch((error) => {
@@ -1512,6 +1561,7 @@ const Stores = () => {
         console.log("Error response from the store post call", error.response);
       });
   };
+
   //!put call for stores
   const updateStoreData = () => {
     const putObject = {
@@ -1598,9 +1648,6 @@ const Stores = () => {
         storeApiData.filter((element) => element.store_uuid === storeEditId);
       if (storeData && storeData.length > 0) {
         setEditName(storeData[0].name);
-        // setStoreEditEmail(storeData[0].email);
-        // setStoreEditUserName(storeData[0].username);
-        // setStoreEditPassword(storeEditPassword[0].password);
         setServerStoreName(storeData[0].name);
       }
     }
@@ -1665,24 +1712,11 @@ const Stores = () => {
       }
     }
     window.scrollTo(0, 0);
-   
-    // if (storeStatusCheck.includes(3)) {
-      // Set up interval to fetch data every 30 seconds (30000 milliseconds)
-      const intervalId = setInterval(findByPageStoreApi, 30000);
-
-      // Clean up the interval when the component is unmounted
-      return () => clearInterval(intervalId);
-    // }
   }, [searchParams]);
 
   const handlePageNumberChange = (page, pageSize) => {
-    // setSearchParams({
-    //   tab: searchParams.get("tab"),
-    //   page: parseInt(page) ? parseInt(page) : 1,
-    //   limit: parseInt(pageSize) ? parseInt(pageSize) : pageLimit,
-    // });
     setSearchParams({
-      tab: tab_id === null ? "0" : tab_id,
+      t: tab_id === null ? "0" : tab_id,
       page: parseInt(page) ? parseInt(page) : 1,
       limit: parseInt(pageSize) ? parseInt(pageSize) : pageLimit,
     });
@@ -2265,30 +2299,32 @@ const Stores = () => {
                 </Content>
               )}
             </Content>
-            {currentTab == 1 && countForStore && countForStore >= pageLimit ? (
+            {tab_id == 1 ? (
               <Content className=" grid justify-items-end">
-                <DmPagination
-                  currentPage={
-                    parseInt(searchParams.get("page"))
-                      ? parseInt(searchParams.get("page"))
-                      : 1
-                  }
-                  presentPage={
-                    parseInt(searchParams.get("page"))
-                      ? parseInt(searchParams.get("page"))
-                      : 1
-                  }
-                  totalItemsCount={countForStore}
-                  defaultPageSize={pageLimit}
-                  pageSize={
-                    parseInt(searchParams.get("limit"))
-                      ? parseInt(searchParams.get("limit"))
-                      : pageLimit
-                  }
-                  handlePageNumberChange={handlePageNumberChange}
-                  showSizeChanger={true}
-                  showTotal={true}
-                />
+                {countForStore && countForStore >= pageLimit ? (
+                  <DmPagination
+                    currentPage={
+                      parseInt(searchParams.get("page"))
+                        ? parseInt(searchParams.get("page"))
+                        : 1
+                    }
+                    presentPage={
+                      parseInt(searchParams.get("page"))
+                        ? parseInt(searchParams.get("page"))
+                        : 1
+                    }
+                    totalItemsCount={countForStore}
+                    defaultPageSize={pageLimit}
+                    pageSize={
+                      parseInt(searchParams.get("limit"))
+                        ? parseInt(searchParams.get("limit"))
+                        : pageLimit
+                    }
+                    handlePageNumberChange={handlePageNumberChange}
+                    showSizeChanger={true}
+                    showTotal={true}
+                  />
+                ) : null}
               </Content>
             ) : null}
           </Content>
