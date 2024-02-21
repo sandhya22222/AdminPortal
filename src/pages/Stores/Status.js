@@ -53,7 +53,6 @@ function Status({
   }, []);
 
   const updateStoreStatus = async () => {
-    debugger;
     const reqbody = {
       status: changeSwitchStatus === true ? 1 : 2,
     };
