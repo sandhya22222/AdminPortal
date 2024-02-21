@@ -269,12 +269,12 @@ const CreateUsers = () => {
   const handlePutUsers = () => {
     setIsLoading(true);
     let dataObject = {};
-    if (firstName !== "") {
-      dataObject["firstname"] = firstName;
-    }
-    if (lastName !== "") {
-      dataObject["lastname"] = lastName;
-    }
+    // if (firstName !== "") {
+    dataObject["firstname"] = firstName;
+    // }
+    // if (lastName !== "") {
+    dataObject["lastname"] = lastName;
+    // }
     dataObject["email"] = emailId;
     // if (selectRole) {
     //   dataObject["groups_mapping"] = [selectRole];
