@@ -215,7 +215,7 @@ const UserAccessControl = () => {
                 className="app-btn-icon app-edit-icon"
                 onClick={() => {
                   navigate(
-                    `/dashboard/user-access-control/edit-user?id=${record.id}`
+                    `/dashboard/user-access-control/edit-user?id=${record.id}&uname=${currentUserDetailsAPIData?.preferred_username}`
                   );
                 }}
               >
