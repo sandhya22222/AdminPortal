@@ -65,10 +65,11 @@ const CreateUsers = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isUserDetailFetching, setIsUserDetailFetching] = useState(false);
   const [isUserDetailsEditted, setIsUserDetailsEditted] = useState(false);
-  const [currentFirstName, setCurrentFirstName] = useState("");
-  const [currentLastName, setCurrentLastName] = useState("");
-  const [currentRole, setCurrentRole] = useState("");
-  const [currentEmailId, setCurrentEmailId] = useState("");
+  const [currentFirstName, setCurrentFirstName ] = useState("");
+  const [currentLastName, setCurrentLastName ] = useState("");
+  const [currentRole, setCurrentRole ] = useState("");
+  const [currentEmailId, setCurrentEmailId ] = useState("");
+  const [currentUser, setCurrentUser] = useState("");
 
   //Get call of groups
   const findAllGroupLists = () => {
@@ -268,16 +269,16 @@ const CreateUsers = () => {
   const handlePutUsers = () => {
     setIsLoading(true);
     let dataObject = {};
-    if (firstName !== "") {
-      dataObject["firstname"] = firstName;
-    }
-    if (lastName !== "") {
-      dataObject["lastname"] = lastName;
-    }
+    // if (firstName !== "") {
+    dataObject["firstname"] = firstName;
+    // }
+    // if (lastName !== "") {
+    dataObject["lastname"] = lastName;
+    // }
     dataObject["email"] = emailId;
-    if (selectRole) {
-      dataObject["groups_mapping"] = [selectRole];
-    }
+    // if (selectRole) {
+    //   dataObject["groups_mapping"] = [selectRole];
+    // }
     MarketplaceServices.update(userAPI, dataObject, {
       user_name: userName,
     })
@@ -418,6 +419,7 @@ const CreateUsers = () => {
     setPageAction(pathnameString[0]);
     if (pathnameString[0] !== "add") {
       findAllUsersLists(searchParams.get("id"));
+      setCurrentUser(searchParams.get("uname"));
     }
     findAllGroupLists();
     window.scrollTo(0, 0);
@@ -660,6 +662,7 @@ const CreateUsers = () => {
                       </Typography>
                       <Content>
                         <Select
+                          disabled={userName == currentUser}
                           style={{
                             width: 665,
                           }}

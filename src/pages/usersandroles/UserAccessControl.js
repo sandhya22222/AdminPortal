@@ -114,7 +114,7 @@ const UserAccessControl = () => {
       dataIndex: "userName",
       key: "userName",
       ellipsis: true,
-
+      width: "17%",
       render: (text, record) => {
         return <Content>{record.username}</Content>;
       },
@@ -124,6 +124,7 @@ const UserAccessControl = () => {
       title: <Content>{t("labels:email")}</Content>,
       dataIndex: "emailId",
       key: "emailId",
+      width: "35%",
       render: (text, record) => {
         return <Content>{record.email}</Content>;
       },
@@ -132,6 +133,7 @@ const UserAccessControl = () => {
       title: <Content>{t("labels:status")}</Content>,
       dataIndex: "status",
       key: "status",
+      width: "10%",
       render: (text, record) => {
         return (
           <Content>
@@ -159,6 +161,7 @@ const UserAccessControl = () => {
       title: <Content>{t("labels:role")}</Content>,
       dataIndex: "role",
       key: "role",
+      width: "15%",
       ellipsis: true,
       render: (text, record) => {
         return (
@@ -174,6 +177,7 @@ const UserAccessControl = () => {
       title: `${t("labels:action")}`,
       dataIndex: "",
       key: "",
+      width: "15%",
       render: (text, record) => {
         return (
           <Content className="flex items-center">
@@ -215,7 +219,7 @@ const UserAccessControl = () => {
                 className="app-btn-icon app-edit-icon"
                 onClick={() => {
                   navigate(
-                    `/dashboard/user-access-control/edit-user?id=${record.id}`
+                    `/dashboard/user-access-control/edit-user?id=${record.id}&uname=${currentUserDetailsAPIData?.preferred_username}`
                   );
                 }}
               >
