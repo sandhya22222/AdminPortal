@@ -65,10 +65,10 @@ const CreateUsers = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isUserDetailFetching, setIsUserDetailFetching] = useState(false);
   const [isUserDetailsEditted, setIsUserDetailsEditted] = useState(false);
-  const [currentFirstName, setCurrentFirstName ] = useState("");
-  const [currentLastName, setCurrentLastName ] = useState("");
-  const [currentRole, setCurrentRole ] = useState("");
-  const [currentEmailId, setCurrentEmailId ] = useState("");
+  const [currentFirstName, setCurrentFirstName] = useState("");
+  const [currentLastName, setCurrentLastName] = useState("");
+  const [currentRole, setCurrentRole] = useState("");
+  const [currentEmailId, setCurrentEmailId] = useState("");
   const [currentUser, setCurrentUser] = useState("");
 
   //Get call of groups
@@ -95,7 +95,7 @@ const CreateUsers = () => {
     // dataObject["realmname"] = sessionStorage.getItem("client");
     dataObject["username"] = userName;
     dataObject["email"] = emailId;
-    dataObject["password"] = password;
+    // dataObject["password"] = password;
     dataObject["status"] = userStatus;
     if (firstName !== "") {
       dataObject["firstname"] = firstName;
@@ -131,17 +131,17 @@ const CreateUsers = () => {
     const passwordRegex =
       /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{12,64}$/;
     const userNameRegex = /^[A-Za-z0-9_\- ]+$/;
-    let count = 4;
+    let count = 3;
     if (
       userName === "" ||
       emailId === "" ||
-      password === "" ||
+      // password === "" ||
       selectRole === undefined
     ) {
       count--;
-      if (password === "") {
-        setInValidPassword(true);
-      }
+      // if (password === "") {
+      //   setInValidPassword(true);
+      // }
       if (emailId === "") {
         setInvalidEmailId(true);
       }
@@ -246,21 +246,22 @@ const CreateUsers = () => {
           "error"
         )
       );
-    } else if (passwordRegex.test(password) === false) {
-      count--;
-      setInValidPassword(true);
-
-      MarketplaceToaster.showToast(
-        util.getToastObject(
-          `${t(
-            "messages:password_must_contain_minimum_of"
-          )} ${passwordMinLength}  ${t("messages:password_error_message")}`,
-          "error"
-        )
-      );
     }
+    // else if (passwordRegex.test(password) === false) {
+    //   count--;
+    //   setInValidPassword(true);
 
-    if (count === 4) {
+    //   MarketplaceToaster.showToast(
+    //     util.getToastObject(
+    //       `${t(
+    //         "messages:password_must_contain_minimum_of"
+    //       )} ${passwordMinLength}  ${t("messages:password_error_message")}`,
+    //       "error"
+    //     )
+    //   );
+    // }
+
+    if (count === 3) {
       handlePostUsers();
     }
   };
@@ -590,7 +591,7 @@ const CreateUsers = () => {
                       />
                     </Content>
                   </Content>
-                  {pageAction !== "add" ? (
+                  {/* {pageAction !== "add" ? (
                     ""
                   ) : (
                     <Content className="my-3">
@@ -627,7 +628,7 @@ const CreateUsers = () => {
                         />
                       </Content>
                     </Content>
-                  )}
+                  )} */}
                   <Content className="flex my-3">
                     {pageAction !== "add" ? (
                       ""
