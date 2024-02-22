@@ -515,6 +515,7 @@ const CreateUsers = () => {
                       </Typography>
                       <Content>
                         <Input
+                          autoComplete="off"
                           value={firstName}
                           onChange={(e) => {
                             const { value } = e.target;
@@ -536,9 +537,9 @@ const CreateUsers = () => {
                       <Typography className="input-label-color mb-2 flex gap-1">
                         {t("labels:last_name")}
                       </Typography>
-
                       <Content>
                         <Input
+                          autoComplete="off"
                           value={lastName}
                           onChange={(e) => {
                             const { value } = e.target;
