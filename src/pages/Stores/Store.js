@@ -90,7 +90,8 @@ const Stores = () => {
   const navigate = useNavigate();
   const search = useLocation().search;
   // const store_id = new URLSearchParams(search).get("store_id");
-  const tab_id = new URLSearchParams(search).get("t");
+  const m_tab_id = new URLSearchParams(search).get("m_t");
+  const tab = new URLSearchParams(search).get("tab");
   const [searchParams, setSearchParams] = useSearchParams();
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -140,6 +141,8 @@ const Stores = () => {
   const [storeStatusId, setStoreStatusId] = useState();
   const [storeId, setStoreId] = useState();
   const [statusInprogressData, setStatusInprogressData] = useState([]);
+  const [radioValue, setRadioValue] = useState(1);
+  const [value, setValue] = useState(tab ? tab : 0);
   const searchInput = useRef(null);
   const auth = useAuth();
   const permissionValue = util.getPermissionData() || [];
@@ -184,11 +187,11 @@ const Stores = () => {
     setSearchText(selectedKeys[0]);
     setSearchedColumn(dataIndex);
   };
-
   const handleRadioChange = (e) => {
     setValue(e.target.value);
     setRadioValue(e.target.value);
     setSearchParams({
+      m_t: m_tab_id,
       tab: e.target.value,
       page: 1,
       limit: parseInt(searchParams.get("limit"))
@@ -198,9 +201,6 @@ const Stores = () => {
     console.log("object status", e.target.value);
   };
 
-  const [radioValue, setRadioValue] = useState(1);
-
-  const [value, setValue] = useState(tab_id ? tab_id : 0);
   const onChange = (e) => {
     console.log("radio checked", e.target.value);
     setValue(e.target.value);
@@ -208,13 +208,13 @@ const Stores = () => {
   };
 
   useEffect(() => {
-    setRadioValue(tab_id);
+    setRadioValue(tab);
   }, []);
 
   useEffect(() => {
     // console.log("location..", window.sessionStorage.getItem("currentStoretab"))
     if (window.sessionStorage.getItem("currentStoretab") == 1) {
-      setCurrentTab("1");
+      setCurrentTab(1);
     }
   }, [window.sessionStorage.getItem("currentStoretab")]);
 
@@ -376,7 +376,7 @@ const Stores = () => {
           console.log("redddd", res);
         });
     }
-    setValue(0);
+    // setValue(0);
   }, [currentTab]);
 
   useEffect(() => {
@@ -674,7 +674,7 @@ const Stores = () => {
           <Status
             storeId={record.id}
             storeStatus={record.status === 1 ? true : false}
-            tabId={tab_id}
+            tabId={value}
             storeApiData={storeApiData}
             setSelectedTabTableContent={setSelectedTabTableContent}
             selectedTabTableContent={selectedTabTableContent}
@@ -793,7 +793,6 @@ const Stores = () => {
     },
   ];
 
-  console.log("storeId", storeId);
   //! status of stores like active or inactive
   const statusForStores = {
     1: "Active",
@@ -1116,14 +1115,14 @@ const Stores = () => {
           }
           if (error && error.response === undefined) {
             setSearchParams({
-              tab: parseInt(searchParams.get("t")),
+              tab: parseInt(searchParams.get("tab")),
               page: 1,
               limit: parseInt(searchParams.get("limit")),
             });
           }
           if (error.response.data.message === "That page contains no results") {
             setSearchParams({
-              tab: parseInt(searchParams.get("t")),
+              tab: parseInt(searchParams.get("tab")),
               page: 1,
               limit: parseInt(searchParams.get("limit")),
             });
@@ -1702,21 +1701,22 @@ const Stores = () => {
         ? parseInt(searchParams.get("tab"))
         : ""
     );
-    let mainTab = searchParams.get("t");
+    let mainTab = searchParams.get("m_t");
     if (mainTab == undefined || mainTab == null) {
-      setCurrentTab("1");
+      setCurrentTab(1);
     } else {
       setCurrentTab(mainTab);
-      if (mainTab == 1) {
-        setValue(0);
-      }
+      // if (mainTab == 1) {
+      //   setValue(1);
+      // }
     }
     window.scrollTo(0, 0);
   }, [searchParams]);
 
   const handlePageNumberChange = (page, pageSize) => {
     setSearchParams({
-      t: tab_id === null ? "0" : tab_id,
+      m_t: m_tab_id,
+      tab: tab === null ? "0" : tab,
       page: parseInt(page) ? parseInt(page) : 1,
       limit: parseInt(pageSize) ? parseInt(pageSize) : pageLimit,
     });
@@ -1832,7 +1832,7 @@ const Stores = () => {
                   onChange={(key) => {
                     setCurrentTab(key);
                     setSearchParams({
-                      t: key,
+                      m_t: key,
                     });
                     sessionStorage.setItem("currentStoretab", key);
                   }}
@@ -2246,7 +2246,7 @@ const Stores = () => {
               {currentTab == 1 ? (
                 <Content className="bg-white ">
                   <Radio.Group
-                    className="mt-3 mr-4 flex float-right"
+                    className="mt-3 mr-4 flex float-right mb-2"
                     optionType="button"
                     onChange={handleRadioChange}
                     value={value}
@@ -2286,7 +2286,7 @@ const Stores = () => {
                           sessionStorage.setItem("currentStoretab", 1);
                         }}
                       >
-                        Discard
+                        {t("labels:discard")}
                       </Button>
                     </Content>
                   ) : (
@@ -2299,7 +2299,7 @@ const Stores = () => {
                 </Content>
               )}
             </Content>
-            {tab_id == 1 ? (
+            {m_tab_id == 1 ? (
               <Content className=" grid justify-items-end">
                 {countForStore && countForStore >= pageLimit ? (
                   <DmPagination
@@ -2332,11 +2332,6 @@ const Stores = () => {
       </Content>
       <StoreModal
         isVisible={saveStoreModalOpen}
-        // okButtonText={t("labels:yes")}
-        // cancelButtonText={t("labels:cancel")}
-        // title={t("labels:warning")}
-        // okCallback={() => saveStoreData()}
-        // cancelCallback={() => closeDeleteModal()}
         isSpin={false}
         hideCloseButton={false}
         width={800}

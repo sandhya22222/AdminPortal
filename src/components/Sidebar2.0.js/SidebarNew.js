@@ -36,7 +36,6 @@ const antIcon = <LoadingOutlined className="text-[10px] hidden" spin />;
 const pageLimitFromENV = process.env.REACT_APP_ITEM_PER_PAGE;
 const sfUrlAPI = process.env.REACT_APP_STORE_FRONT_URL;
 
-
 //! Global Variables
 
 const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
@@ -47,7 +46,6 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
   const [loadingEffect, setLoadingEffect] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [sfUrl, setSFUrl] = useState();
-
 
   // get permissions from storage
 
@@ -93,7 +91,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
         // setIsNetworkError(true);
         console.log("Response from SFurl", error);
       });
-    }
+  };
   useEffect(() => {
     switch (pathname.split("/")[2]) {
       case "userprofile":
@@ -163,7 +161,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
           icon: <img src={Store} />,
           inactive_icon: <img src={Store} />,
           label: ` ${t("labels:stores")}`,
-          navigate_to: "/dashboard/store?t=1",
+          navigate_to: "/dashboard/store?m_t=1",
           show_in_menu: true,
         },
         {
@@ -173,7 +171,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
           label: `${t("labels:settings")}`,
           navigate_to: "/dashboard/",
           show_in_menu: true,
-          childrenKeys:["3","5","6","12"],
+          childrenKeys: ["3", "5", "6", "12"],
           children: [
             {
               key: "3",
@@ -409,7 +407,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
               {/* <Content className="!h-12  space-y-4 !bg-[#392359] !py-2">
                 {myData && myData.length > 0 ? (
                   <Content> */}
-                    {/* <Content
+              {/* <Content
                       className={` text-white font-normal ${
                         util.getSelectedLanguageDirection()?.toUpperCase() ===
                         "RTL"
@@ -423,7 +421,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                         <p>{"Torry Harris Market Place"}</p>
                       )}
                     </Content> */}
-                    {/* <Content className="flex cursor-pointer"  onClick={() => window.open(sfUrl, "_blank")}>
+              {/* <Content className="flex cursor-pointer"  onClick={() => window.open(sfUrl, "_blank")}>
                       {collapsed ? (
                         <div className="  w-[100%] !flex !items-center !justify-center">
                           <img
@@ -466,7 +464,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                         </>
                       )}
                     </Content> */}
-                  {/* </Content>
+              {/* </Content>
                 ) : null}
               </Content> */}
               <Menu
@@ -539,7 +537,11 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                               handlePageRefresh(child.navigate_to);
                             }}
                             style={{
-                              opacity: !item.childrenKeys.includes(selectedItem)?1:selectedItem === child.key ? 1 : 0.8,
+                              opacity: !item.childrenKeys.includes(selectedItem)
+                                ? 1
+                                : selectedItem === child.key
+                                ? 1
+                                : 0.8,
                             }}
                           >
                             {selectedItem === child.key ? (

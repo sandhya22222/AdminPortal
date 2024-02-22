@@ -26,7 +26,7 @@ function Status({
   const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [switchStatus, setSwitchStatus] = useState(storeStatus);
-  const [changeSwitchStatus, setChangeSwitchStatus] = useState("");
+  const [changeSwitchStatus, setChangeSwitchStatus] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [activeConfirmationModalOpen, setActiveConfirmationModalOpen] =
     useState(false);
