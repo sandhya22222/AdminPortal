@@ -30,15 +30,15 @@ const Preview = ({
     <Content>
       <Content>
         <Header className="header !p-0">
-          <Menu
-            className="!h-16 "
+          <Content
+            className="!h-16 flex"
             style={{
               backgroundColor: headerBackgroundColor,
               // color: headerForegroundColor,
             }}
             mode="horizontal"
           >
-            <Content className="flex justify-start ">
+            <div className="flex justify-start !w-[39%]">
               {getImageData && getImageData.length > 0 ? (
                 absoluteStoreImageInfo &&
                 absoluteStoreImageInfo.type === "store_logo" ? (
@@ -52,18 +52,19 @@ const Preview = ({
               ) : (
                 <img className="" src={marketPlaceLogo} />
               )}
-            </Content>
-            <Content
-              className={
-                util.getSelectedLanguageDirection()?.toUpperCase() === "RTL"
-                  ? "text-lg !flex !justify-items-center pl-44"
-                  : "text-lg !flex !justify-items-center pr-44"
-              }
+            </div>
+            <div
+              // className={
+              //   util.getSelectedLanguageDirection()?.toUpperCase() === "RTL"
+              //     ? "text-lg !flex !justify-items-center pl-44"
+              //     : "text-lg !flex !justify-items-center pr-44"
+              // }
+              className="!flex !justify-center text-lg"
               style={{ color: headerForegroundColor }}
             >
               {t("labels:header_content_of_the_page")}
-            </Content>
-          </Menu>
+            </div>
+          </Content>
         </Header>
       </Content>
       <Content
