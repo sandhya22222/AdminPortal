@@ -1899,8 +1899,8 @@ const StoreSettings = () => {
             min={0}
             max={100}
             step="0.1"
-            formatter={(value) => `${value}%`}
-            parser={(value) => value.replace("%", "")}
+            formatter={(value) => (value ? `${value}%` : '')}
+            parser={(value) => (value ? value.replace('%', '') : '')}
             onKeyPress={(e) => {
               validatePositiveNumber(e, /[0-9]/);
             }}
