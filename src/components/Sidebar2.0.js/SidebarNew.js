@@ -197,28 +197,6 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
               show_in_menu: true,
             },
             {
-              key: "6",
-              icon: (
-                <img
-                  src={ProfileIcon}
-                  alt="profileIcon"
-                  width={"15px"}
-                  height={"15px"}
-                />
-              ),
-              inactive_icon: (
-                <img
-                  src={ProfileIcon}
-                  alt="profileIcon"
-                  width={"15px"}
-                  height={"15px"}
-                />
-              ),
-              label: ` ${t("labels:my_profile")}`,
-              navigate_to: "/dashboard/userprofile",
-              show_in_menu: true,
-            },
-            {
               key: "12",
               icon: (
                 <img
@@ -254,6 +232,28 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
               //   ? true
               //   : false,
               // children: [],
+            },
+            {
+              key: "6",
+              icon: (
+                <img
+                  src={ProfileIcon}
+                  alt="profileIcon"
+                  width={"15px"}
+                  height={"15px"}
+                />
+              ),
+              inactive_icon: (
+                <img
+                  src={ProfileIcon}
+                  alt="profileIcon"
+                  width={"15px"}
+                  height={"15px"}
+                />
+              ),
+              label: ` ${t("labels:my_profile")}`,
+              navigate_to: "/dashboard/userprofile",
+              show_in_menu: true,
             },
           ],
         },
