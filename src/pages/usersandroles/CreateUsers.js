@@ -664,7 +664,7 @@ const CreateUsers = () => {
                       </Typography>
                       <Content>
                         <Select
-                          disabled={userName == currentUser}
+                          disabled={pageAction === "edit" ? userName == currentUser : false}
                           style={{
                             width: 665,
                           }}
