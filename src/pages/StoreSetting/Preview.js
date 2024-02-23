@@ -38,7 +38,7 @@ const Preview = ({
             }}
             mode="horizontal"
           >
-            <div className="flex justify-start !w-[39%]">
+            <div className="flex justify-start !w-[39%] p-2">
               {getImageData && getImageData.length > 0 ? (
                 absoluteStoreImageInfo &&
                 absoluteStoreImageInfo.type === "store_logo" ? (
@@ -59,7 +59,7 @@ const Preview = ({
               //     ? "text-lg !flex !justify-items-center pl-44"
               //     : "text-lg !flex !justify-items-center pr-44"
               // }
-              className="!flex !justify-center text-lg"
+              className="!flex !justify-center text-lg !mt-4"
               style={{ color: headerForegroundColor }}
             >
               {t("labels:header_content_of_the_page")}
