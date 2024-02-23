@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Switch, Space, Row, Col } from "antd";
-import { toast } from "react-toastify";
+import { Switch, Space, Row, Col, Layout, Button, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import StoreModal from "../../components/storeModal/StoreModal";
 import useAuthorization from "../../hooks/useAuthorization";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import MarketplaceToaster from "../../util/marketplaceToaster";
+import { storeActiveConfirmationImage } from "../../constants/media";
 const storeEditStatusAPI = process.env.REACT_APP_STORE_STATUS_API;
 
+const { Content } = Layout;
+const { Text } = Typography;
 function Status({
   storeId,
   storeStatus,
@@ -18,17 +20,23 @@ function Status({
   tabId,
   activeCount,
   setActiveCount,
-  disableStatus
+  disableStatus,
+  statusInprogress,
 }) {
-  const authorizationHeader = useAuthorization();
   const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [switchStatus, setSwitchStatus] = useState(storeStatus);
-  const [changeSwitchStatus, setChangeSwitchStatus] = useState("");
+  const [changeSwitchStatus, setChangeSwitchStatus] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const [activeConfirmationModalOpen, setActiveConfirmationModalOpen] =
+    useState(false);
+
   // closing the delete popup model
   const closeModal = () => {
     setIsModalOpen(false);
+    if (statusInprogress === 4 || statusInprogress === 5) {
+      setActiveConfirmationModalOpen(true);
+    }
   };
 
   useEffect(() => {
@@ -36,7 +44,7 @@ function Status({
   }, [storeStatus]);
 
   // opening the delete popup model
-  const openModal = (e) => {
+  const openModal = () => {
     setIsModalOpen(true);
   };
 
@@ -64,7 +72,6 @@ function Status({
           response.config.params.store_id
         );
         let duplicateActiveCall = { ...activeCount };
-
         if (
           duplicateActiveCall &&
           duplicateActiveCall.activeStores !== undefined
@@ -156,39 +163,100 @@ function Status({
         isSpin={isLoading}
         hideCloseButton={false}
       >
-        {/* <Content className="!w-3/5"> */}
         {changeSwitchStatus ? (
           <div>
-           
-            <p className="!mb-0">{t("messages:store_active_confirmation_message")}</p>
-            <p className="!m-0 !p-0">{t("messages:are_you_sure_you_like_to_proceed")}</p>
+            <p className="!mb-0">
+              {t("messages:store_active_confirmation_message")}
+            </p>
+            <p className="!m-0 !p-0">
+              {t("messages:are_you_sure_you_like_to_proceed")}
+            </p>
           </div>
         ) : (
           <div>
-          
             <p>{t("messages:store_deactivation_confirmation_message")}</p>
           </div>
         )}
-        {/* </Content> */}
       </StoreModal>
+
       <Row className="gap-1">
         <Col>
           <Space direction="vertical">
             <Switch
+              loading={
+                statusInprogress == 4 || statusInprogress == 5 ? true : false
+              }
               className={switchStatus ? "!bg-green-500" : "!bg-gray-400"}
               checked={switchStatus}
               onChange={onChange}
               onClick={() => {
                 openModal(switchStatus);
               }}
-              disabled={disableStatus}
+              disabled={disableStatus || statusInprogress === 3}
             />
           </Space>
         </Col>
-        <div className="">
-          {switchStatus ? `${t("labels:active")}` : `${t("labels:inactive")}`}
-        </div>
+        {/* <div className={statusInprogress === 3 ? "opacity-30" : ""}>
+            {switchStatus ? `${t("labels:active")}` : `${t("labels:inactive")}`}
+          </div> */}
       </Row>
+      <StoreModal
+        isVisible={activeConfirmationModalOpen}
+        isSpin={false}
+        hideCloseButton={false}
+        width={800}
+      >
+        {statusInprogress === 4 ? (
+          <Content className="!text-center">
+            <Text className=" font-semibold text-[15px]">
+              {t("labels:activating_store")}
+            </Text>
+            <div
+              className="mt-5 mb-3"
+              style={{ "text-align": "-webkit-center" }}
+            >
+              <img src={storeActiveConfirmationImage} className="" />
+            </div>
+            <div className="mb-3">
+              <p className="!mb-0">{t("messages:patience_is_a_virtue")}</p>
+              <p className="!mb-0">{t("messages:activation_message")}</p>
+            </div>
+            <Button
+              className="app-btn-primary"
+              onClick={() => {
+                setActiveConfirmationModalOpen(false);
+              }}
+            >
+              {t("labels:close_message")}
+            </Button>
+          </Content>
+        ) : null}
+        {statusInprogress === 5 ? (
+          <Content className="!text-center">
+            <Text className=" font-semibold text-[15px]">
+              {t("labels:deactivating_store")}
+            </Text>
+            <div
+              className="mt-5 mb-3"
+              style={{ "text-align": "-webkit-center" }}
+            >
+              <img src={storeActiveConfirmationImage} className="" />
+            </div>
+            <div className="mb-3">
+              <p className="!mb-0">{t("messages:patience_is_a_virtue")}</p>
+              <p className="!mb-0">{t("messages:deactivation_message")}</p>
+            </div>
+            <Button
+              className="app-btn-primary"
+              onClick={() => {
+                setActiveConfirmationModalOpen(false);
+              }}
+            >
+              {t("labels:close_message")}
+            </Button>
+          </Content>
+        ) : null}
+      </StoreModal>
     </div>
   );
 }

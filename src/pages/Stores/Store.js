@@ -17,6 +17,7 @@ import {
   Progress,
   InputNumber,
   Table,
+  Badge,
 } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import validator from "validator";
@@ -37,7 +38,7 @@ import {
 } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
-import { DeleteIcon } from "../../constants/media";
+import { DeleteIcon, saveStoreConfirmationImage } from "../../constants/media";
 import { InfoCircleTwoTone } from "@ant-design/icons";
 //! Import user defined components
 import Highlighter from "react-highlight-words";
@@ -88,12 +89,9 @@ const Stores = () => {
   const params = useParams();
   const navigate = useNavigate();
   const search = useLocation().search;
-  const currentPage = new URLSearchParams(search).get("page");
-  const currentCount = new URLSearchParams(search).get("count");
   // const store_id = new URLSearchParams(search).get("store_id");
-  const tab_id = new URLSearchParams(search).get("tab");
-  const page_number = new URLSearchParams(search).get("page");
-  const mainTab = new URLSearchParams(search).get("page");
+  const m_tab_id = new URLSearchParams(search).get("m_t");
+  const tab = new URLSearchParams(search).get("tab");
   const [searchParams, setSearchParams] = useSearchParams();
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -138,10 +136,16 @@ const Stores = () => {
   const [isStoreDeleting, setIsStoreDeleting] = useState(false);
   const [superAdmin, setSuperAdmin] = useState(false);
   const [hideAddStoreButton, setHideAddStoreButton] = useState(false);
+  const [saveStoreModalOpen, setSaveStoreModalOpen] = useState(false);
+  const [storeStatusLoading, setStoreStatusLoading] = useState(false);
+  const [storeStatusId, setStoreStatusId] = useState();
+  const [storeId, setStoreId] = useState();
+  const [statusInprogressData, setStatusInprogressData] = useState([]);
+  const [radioValue, setRadioValue] = useState(1);
+  const [value, setValue] = useState(tab ? tab : 0);
   const searchInput = useRef(null);
   const auth = useAuth();
   const permissionValue = util.getPermissionData() || [];
-
   let keyCLoak = sessionStorage.getItem("keycloakData");
   keyCLoak = JSON.parse(keyCLoak);
   let realmName = keyCLoak.clientId.replace(/-client$/, "");
@@ -167,7 +171,7 @@ const Stores = () => {
           setSuperAdmin(true);
         }
         console.log(
-          "dddddddddddddddddddddddddddddddddddddddd",
+          "response",
           res.data.response_body.resource_access[
             "dmadmin-client"
           ].roles.includes("UI-product-admin")
@@ -183,11 +187,11 @@ const Stores = () => {
     setSearchText(selectedKeys[0]);
     setSearchedColumn(dataIndex);
   };
-
   const handleRadioChange = (e) => {
     setValue(e.target.value);
     setRadioValue(e.target.value);
     setSearchParams({
+      m_t: m_tab_id,
       tab: e.target.value,
       page: 1,
       limit: parseInt(searchParams.get("limit"))
@@ -197,9 +201,6 @@ const Stores = () => {
     console.log("object status", e.target.value);
   };
 
-  const [radioValue, setRadioValue] = useState(1);
-
-  const [value, setValue] = useState(tab_id ? tab_id : 0);
   const onChange = (e) => {
     console.log("radio checked", e.target.value);
     setValue(e.target.value);
@@ -207,13 +208,13 @@ const Stores = () => {
   };
 
   useEffect(() => {
-    setRadioValue(tab_id);
+    setRadioValue(tab);
   }, []);
 
   useEffect(() => {
     // console.log("location..", window.sessionStorage.getItem("currentStoretab"))
     if (window.sessionStorage.getItem("currentStoretab") == 1) {
-      setCurrentTab("1");
+      setCurrentTab(1);
     }
   }, [window.sessionStorage.getItem("currentStoretab")]);
 
@@ -375,7 +376,7 @@ const Stores = () => {
           console.log("redddd", res);
         });
     }
-    setValue(0);
+    // setValue(0);
   }, [currentTab]);
 
   useEffect(() => {
@@ -521,12 +522,14 @@ const Stores = () => {
                   }
                 >
                   <p>{count}</p>
-                  {
-                    total > 0 ? <>
+                  {total > 0 ? (
+                    <>
                       <p>{t("labels:of")}</p>
                       <p>{total}</p>
-                    </> : ""
-                  }
+                    </>
+                  ) : (
+                    ""
+                  )}
                   {/* <p>{total > 0 ? t("labels:of") : ""}</p>
                   <p>{total > 0 ? total : null}</p> */}
                   <p>
@@ -621,35 +624,45 @@ const Stores = () => {
 
   //! table columns
   const StoreTableColumn = [
-    // {
-    //   title: "Id",
-    //   dataIndex: "id",
-    //   key: "id",
-    //   width: "8%",
-    //   render: (text, record) => {
-    //     return <>{record.id}</>;
-    //   },
-    // },
     {
       title: `${t("labels:name")}`,
       dataIndex: "name",
       key: "name",
       width: "30%",
       ellipsis: true,
-      // sorter: (name1, name2) => name1.name.localeCompare(name2.name),
-      // sortDirections: ["descend", "ascend"],
-      // showSorterTooltip: true,
       render: (text, record) => {
         return (
-          <Tooltip title={record.name} placement="bottom">
-            <Text className="max-w-xs" ellipsis={{ tooltip: record.name }}>
-              {record.name}
-            </Text>
-          </Tooltip>
+          <>
+            <Row>
+              <Tooltip title={record.name} placement="bottom">
+                <Text
+                  className="max-w-xs"
+                  ellipsis={{ tooltip: record.name }}
+                  disabled={record.status === 3 ? true : false}
+                >
+                  {record.name}
+                </Text>
+              </Tooltip>
+            </Row>
+            {record.status === 3 ? (
+              <Spin spinning={storeStatusLoading}>
+                {console.log(
+                  "storeId === record.storeId",
+                  storeId,
+                  record.storeId
+                )}
+                <div
+                  className="flex space-x-2"
+                  // onLoad={handleStoreDataStore(record.id, record.storeId)}
+                >
+                  <Badge status="processing" />
+                  <Text>{t("labels:processing")}</Text>
+                </div>
+              </Spin>
+            ) : null}
+          </>
         );
-        // <>{record.name}</>;
       },
-      // ...getColumnSearchProps("name"),
     },
     {
       title: `${t("labels:status")}`,
@@ -660,8 +673,8 @@ const Stores = () => {
         return (
           <Status
             storeId={record.id}
-            storeStatus={record.status === "Active" ? true : false}
-            tabId={tab_id}
+            storeStatus={record.status === 1 ? true : false}
+            tabId={value}
             storeApiData={storeApiData}
             setSelectedTabTableContent={setSelectedTabTableContent}
             selectedTabTableContent={selectedTabTableContent}
@@ -669,6 +682,7 @@ const Stores = () => {
             activeCount={activeCount}
             setActiveCount={setActiveCount}
             disableStatus={hideAddStoreButton}
+            statusInprogress={record.status}
           />
         );
       },
@@ -679,7 +693,11 @@ const Stores = () => {
       key: "created_on",
       width: "30%",
       render: (text, record) => {
-        return <>{new Date(record.created_on).toLocaleString()}</>;
+        return (
+          <Text disabled={record.status === 3 ? true : false}>
+            {new Date(record.created_on).toLocaleString()}
+          </Text>
+        );
       },
     },
     {
@@ -721,8 +739,11 @@ const Stores = () => {
               </Link>
             ) : (
               <Button
-                className="app-btn-icon flex align-items-center justify-center"
+                className={`app-btn-icon flex align-items-center justify-center ${
+                  record.status === 3 ? "opacity-30" : ""
+                }`}
                 type="text"
+                disabled={record.status === 3 ? true : false}
               >
                 {
                   <Link
@@ -786,17 +807,6 @@ const Stores = () => {
         ? parseInt(searchParams.get("limit"))
         : pageLimit,
     });
-    // if (status === "0") {
-    //   tableStoreData(storeApiData);
-    // } else if (status === "1") {
-    //   tableStoreData(
-    //     storeApiData.filter((element) => element.status == status)
-    //   );
-    // } else if (status === "2") {
-    //   tableStoreData(
-    //     storeApiData.filter((element) => element.status == status)
-    //   );
-    // }
   };
   //!pagination
   const pagination = [
@@ -823,53 +833,17 @@ const Stores = () => {
             name: storeName,
             id: storeId,
             created_on: createdOn,
-            status: statusForStores[storeStatus],
+            status: storeStatus,
             storeId: storeActualId,
           });
       });
     setSelectedTabTableContent(tempArray);
   };
 
-  // const getActiveInactiveData = () => {
-  //   // instance
-  //   //   .get(dm4sightBaseURL + dm4sightAnalysisCountAPI, dm4sightHeaders)
-  //     // .then((response) => {
-  //     //   console.log("resdooooo", response.data);
-
-  //       //   convert the response to table readable format
-
-  //       //   console.log(Object.entries(obj)); // [ ['foo', 'bar'], ['baz', 42] ]
-  //       // Object.entries converts key-value to array of key,value
-  //       //   key --> first value of Array
-  //       //   value ---> second value of array
-  //       // const transformedData = Object.entries(response.data.count_info).map(
-  //       //   ([key, value]) => ({
-  //       //     key: key,
-  //       //     store_name: value.name,
-  //       //     orders: value.count_order,
-  //       //     vendors: value.count_vendor,
-  //       //     products: value.count_product,
-  //       //     product_templates: value.count_template,
-  //       //   })
-  //       // );
-  //       // setTableData(transformedData);
-  //       // console.log(transformedData);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   getActiveInactiveData();
-  // });
-
   //!this useEffect for tab(initial rendering)
   useEffect(() => {
     if (storeApiData && storeApiData.length > 0 && !isLoading) {
       setIsLoading(false);
-      // if (tab_id === "0" || tab_id === "1" || tab_id === "2") {
-      //   handleTabChangeStore(tab_id);
-      // } else {
-      //   handleTabChangeStore("0");
-      // }
       tableStoreData(storeApiData);
     } else {
       setSelectedTabTableContent([]);
@@ -1106,19 +1080,19 @@ const Stores = () => {
           activeStores: response.data.response_body.active_stores,
           inactiveStores: response.data.response_body.inactive_stores,
         });
-        // setInactiveCount(response.data.inactive_stores);
+        const filteredData =
+          response &&
+          response.data.response_body &&
+          response.data.response_body.data.filter((ele) => ele.status === 3);
+        setStatusInprogressData(filteredData);
+        console.log("filteredData", filteredData);
         setIsNetworkError(false);
         setIsLoading(false);
         console.log(
           "Server Response from findByPageStoreApi Function: ",
           response.data.response_body
         );
-        // setStoreApiData(response.data.data);
-        //TODO: Remove line 303,304 and setStoreApiData(response.data)
-        // let allStoresData = response.data;
-        // allStoresData = { ...allStoresData, count: 22 };
         setStoreApiData(response.data.response_body.data);
-
         setIsPaginationDataLoaded(false);
         setCountForStore(response.data.response_body.count);
       })
@@ -1157,13 +1131,92 @@ const Stores = () => {
       });
   };
 
+  //! another get call for stores for particular store_uuid
+  const findAllStoreData = (statusUUid, id) => {
+    console.log("statusUUid", statusUUid, id);
+
+    MarketplaceServices.findAll(
+      storeAPI,
+      {
+        store_id: statusUUid,
+      },
+      false
+    )
+      .then(function (response) {
+        console.log(
+          "Server Response from findByPageStoreApi Function for store uuid: ",
+          response.data.response_body
+        );
+        setStoreStatusId();
+        console.log("storeApiData", storeApiData);
+        let temp = [...storeApiData];
+        console.log("temp", temp);
+        let index = temp.findIndex((ele) => ele.id == id);
+        temp[index]["status"] = response.data.response_body.data[0].status;
+        setStoreApiData(temp);
+        console.log("tempTemp", temp);
+        setInterval(() => {
+          setStoreStatusLoading(false);
+        }, 1000);
+
+        if (response.data.response_body.data[0].status === 2) {
+          let duplicateData = [...statusInprogressData];
+          let temp = duplicateData.filter((ele) => ele.id != id);
+          if (temp && temp.length > 0) {
+            setStatusInprogressData(temp);
+          } else {
+            setStatusInprogressData([]);
+          }
+
+          MarketplaceToaster.showToast(
+            util.getToastObject(
+              `${t("messages:your_store_has_been_successfully_created")}`,
+              "success"
+            )
+          );
+        }
+      })
+      .catch((error) => {
+        setStoreStatusLoading(false);
+        console.log(
+          "Server error from findByPageStoreApi Function ",
+          error.response
+        );
+      });
+  };
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (statusInprogressData && statusInprogressData.length > 0) {
+        for (var i = 0; i < statusInprogressData.length; i++) {
+          console.log("first", statusInprogressData[i].id);
+          setStoreId(statusInprogressData[i].id);
+          setStoreStatusLoading(true);
+          findAllStoreData(
+            // searchParams.get("page") ? parseInt(searchParams.get("page")) : 1,
+            // searchParams.get("limit")
+            //   ? parseInt(searchParams.get("limit"))
+            //   : pageLimit,
+            statusInprogressData[i].store_uuid,
+            statusInprogressData[i].id
+          );
+        }
+      }
+    }, 30000);
+    return () => clearInterval(intervalId);
+  }, [statusInprogressData]);
+
+  console.log("   setStoreStatusLoading(true);--->", storeStatusLoading);
+
   //!useEffect for getting the table in table without refreshing
   useEffect(() => {
+    console.log("postData", postData);
     if (postData != null) {
       if (storeApiData.length < pageLimit) {
         const temp = [...storeApiData];
         temp.push(postData);
         setStoreApiData(temp);
+        console.log("tempAPI", temp);
       }
       let totalStoresCount = { ...activeCount };
       totalStoresCount["totalStores"] = activeCount.totalStores + 1;
@@ -1181,19 +1234,14 @@ const Stores = () => {
     if (
       storeEmail === "" &&
       storeUserName === "" &&
-      storePassword === "" &&
+      // storePassword === "" &&
       name === ""
     ) {
       setInValidEmail(true);
       setInValidUserName(true);
-      setInValidPassword(true);
+      // setInValidPassword(true);
       setInValidName(true);
       count--;
-      // toast("Please provide values for the mandatory fields", {
-      //   position: toast.POSITION.TOP_RIGHT,
-      //   type: "error",
-      //   autoClose: 10000,
-      // });
       MarketplaceToaster.showToast(
         util.getToastObject(
           `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
@@ -1203,12 +1251,12 @@ const Stores = () => {
     } else if (
       storeEmail === "" &&
       storeUserName === "" &&
-      storePassword === "" &&
+      // storePassword === "" &&
       name !== ""
     ) {
       setInValidEmail(true);
       setInValidUserName(true);
-      setInValidPassword(true);
+      // setInValidPassword(true);
       count--;
       MarketplaceToaster.showToast(
         util.getToastObject(
@@ -1219,11 +1267,11 @@ const Stores = () => {
     } else if (
       storeEmail !== "" &&
       storeUserName === "" &&
-      storePassword === "" &&
+      // storePassword === "" &&
       name === ""
     ) {
       setInValidUserName(true);
-      setInValidPassword(true);
+      // setInValidPassword(true);
       setInValidName(true);
       count--;
       MarketplaceToaster.showToast(
@@ -1235,11 +1283,11 @@ const Stores = () => {
     } else if (
       storeEmail === "" &&
       storeUserName !== "" &&
-      storePassword === "" &&
+      // storePassword === "" &&
       name === ""
     ) {
       setInValidEmail(true);
-      setInValidPassword(true);
+      // setInValidPassword(true);
       setInValidName(true);
       count--;
       MarketplaceToaster.showToast(
@@ -1251,7 +1299,7 @@ const Stores = () => {
     } else if (
       storeEmail === "" &&
       storeUserName === "" &&
-      storePassword !== "" &&
+      // storePassword !== "" &&
       name === ""
     ) {
       setInValidEmail(true);
@@ -1267,7 +1315,7 @@ const Stores = () => {
     } else if (
       storeEmail === "" &&
       storeUserName === "" &&
-      storePassword !== "" &&
+      // storePassword !== "" &&
       name !== ""
     ) {
       setInValidEmail(true);
@@ -1282,11 +1330,11 @@ const Stores = () => {
     } else if (
       storeEmail === "" &&
       storeUserName !== "" &&
-      storePassword === "" &&
+      // storePassword === "" &&
       name !== ""
     ) {
       setInValidEmail(true);
-      setInValidPassword(true);
+      // setInValidPassword(true);
       count--;
       MarketplaceToaster.showToast(
         util.getToastObject(
@@ -1297,11 +1345,11 @@ const Stores = () => {
     } else if (
       storeEmail !== "" &&
       storeUserName === "" &&
-      storePassword === "" &&
+      // storePassword === "" &&
       name !== ""
     ) {
       setInValidUserName(true);
-      setInValidPassword(true);
+      // setInValidPassword(true);
       count--;
       MarketplaceToaster.showToast(
         util.getToastObject(
@@ -1312,7 +1360,7 @@ const Stores = () => {
     } else if (
       storeEmail !== "" &&
       storeUserName === "" &&
-      storePassword !== "" &&
+      // storePassword !== "" &&
       name === ""
     ) {
       setInValidName(true);
@@ -1327,11 +1375,11 @@ const Stores = () => {
     } else if (
       storeEmail !== "" &&
       storeUserName !== "" &&
-      storePassword === "" &&
+      // storePassword === "" &&
       name === ""
     ) {
       setInValidName(true);
-      setInValidPassword(true);
+      // setInValidPassword(true);
       count--;
       MarketplaceToaster.showToast(
         util.getToastObject(
@@ -1342,7 +1390,7 @@ const Stores = () => {
     } else if (
       storeEmail === "" &&
       storeUserName !== "" &&
-      storePassword !== "" &&
+      // storePassword !== "" &&
       name === ""
     ) {
       setInValidName(true);
@@ -1357,7 +1405,7 @@ const Stores = () => {
     } else if (
       storeEmail !== "" &&
       storeUserName !== "" &&
-      storePassword !== "" &&
+      // storePassword !== "" &&
       name === ""
     ) {
       setInValidName(true);
@@ -1371,7 +1419,7 @@ const Stores = () => {
     } else if (
       storeEmail === "" &&
       storeUserName !== "" &&
-      storePassword !== "" &&
+      // storePassword !== "" &&
       name !== ""
     ) {
       setInValidEmail(true);
@@ -1385,7 +1433,7 @@ const Stores = () => {
     } else if (
       storeEmail !== "" &&
       storeUserName === "" &&
-      storePassword !== "" &&
+      // storePassword !== "" &&
       name !== ""
     ) {
       setInValidUserName(true);
@@ -1396,21 +1444,23 @@ const Stores = () => {
           "error"
         )
       );
-    } else if (
-      storeEmail !== "" &&
-      storeUserName !== "" &&
-      storePassword === "" &&
-      name !== ""
-    ) {
-      setInValidPassword(true);
-      count--;
-      MarketplaceToaster.showToast(
-        util.getToastObject(
-          `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
-          "error"
-        )
-      );
-    } else if (
+    }
+    // else if (
+    //   storeEmail !== "" &&
+    //   storeUserName !== "" &&
+    //   storePassword === "" &&
+    //   name !== ""
+    // ) {
+    //   setInValidPassword(true);
+    //   count--;
+    //   MarketplaceToaster.showToast(
+    //     util.getToastObject(
+    //       `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
+    //       "error"
+    //     )
+    //   );
+    // }
+    else if (
       name &&
       validator.isLength(name.trim(), {
         min: storeNameMinLength,
@@ -1457,18 +1507,19 @@ const Stores = () => {
           "error"
         )
       );
-    } else if (storePassword && pattern.test(storePassword) === false) {
-      setInValidPassword(true);
-      count--;
-      MarketplaceToaster.showToast(
-        util.getToastObject(
-          `${t(
-            "messages:password_must_contain_minimum_of"
-          )} ${passwordMinLength} ${t("messages:password_error_message")}`,
-          "error"
-        )
-      );
     }
+    // else if (storePassword && pattern.test(storePassword) === false) {
+    //   setInValidPassword(true);
+    //   count--;
+    //   MarketplaceToaster.showToast(
+    //     util.getToastObject(
+    //       `${t(
+    //         "messages:password_must_contain_minimum_of"
+    //       )} ${passwordMinLength} ${t("messages:password_error_message")}`,
+    //       "error"
+    //     )
+    //   );
+    // }
     if (count === 4) {
       saveStoreData();
     }
@@ -1480,12 +1531,13 @@ const Stores = () => {
       name: name.trim(),
       username: storeUserName.trim(),
       email: storeEmail.trim(),
-      password: storePassword.trim(),
+      // password: storePassword.trim(),
     };
     setIsUpLoading(true);
     MarketplaceServices.save(storeAPI, postBody)
       .then((response) => {
-        MarketplaceToaster.showToast(response);
+        // MarketplaceToaster.showToast(response);
+        setSaveStoreModalOpen(true);
         setIsUpLoading(false);
         onClose();
         setName("");
@@ -1496,6 +1548,10 @@ const Stores = () => {
           "Server Success Response From stores",
           response.data.response_body
         );
+        const postFilteredData = [...statusInprogressData];
+        postFilteredData.push(response.data.response_body);
+        setStatusInprogressData(postFilteredData);
+        console.log("postFilteredData", postFilteredData);
         setPostData(response.data.response_body);
       })
       .catch((error) => {
@@ -1504,6 +1560,7 @@ const Stores = () => {
         console.log("Error response from the store post call", error.response);
       });
   };
+
   //!put call for stores
   const updateStoreData = () => {
     const putObject = {
@@ -1581,6 +1638,7 @@ const Stores = () => {
       saveStoreLimit();
     }
   };
+
   useEffect(() => {
     if (storeEditId) {
       var storeData =
@@ -1589,13 +1647,11 @@ const Stores = () => {
         storeApiData.filter((element) => element.store_uuid === storeEditId);
       if (storeData && storeData.length > 0) {
         setEditName(storeData[0].name);
-        // setStoreEditEmail(storeData[0].email);
-        // setStoreEditUserName(storeData[0].username);
-        // setStoreEditPassword(storeEditPassword[0].password);
         setServerStoreName(storeData[0].name);
       }
     }
   }, [storeEditId]);
+
   //! validation for put call
   const validateStorePutField = () => {
     // const emailRegex = new RegExp(emailRegexPattern)
@@ -1645,27 +1701,22 @@ const Stores = () => {
         ? parseInt(searchParams.get("tab"))
         : ""
     );
-    let mainTab = searchParams.get("t");
+    let mainTab = searchParams.get("m_t");
     if (mainTab == undefined || mainTab == null) {
-      setCurrentTab("1");
+      setCurrentTab(1);
     } else {
       setCurrentTab(mainTab);
-      if (mainTab == 1) {
-        setValue(0);
-      }
+      // if (mainTab == 1) {
+      //   setValue(1);
+      // }
     }
-
     window.scrollTo(0, 0);
   }, [searchParams]);
 
   const handlePageNumberChange = (page, pageSize) => {
-    // setSearchParams({
-    //   tab: searchParams.get("tab"),
-    //   page: parseInt(page) ? parseInt(page) : 1,
-    //   limit: parseInt(pageSize) ? parseInt(pageSize) : pageLimit,
-    // });
     setSearchParams({
-      tab: tab_id === null ? "0" : tab_id,
+      m_t: m_tab_id,
+      tab: tab === null ? "0" : tab,
       page: parseInt(page) ? parseInt(page) : 1,
       limit: parseInt(pageSize) ? parseInt(pageSize) : pageLimit,
     });
@@ -1781,7 +1832,7 @@ const Stores = () => {
                   onChange={(key) => {
                     setCurrentTab(key);
                     setSearchParams({
-                      t: key,
+                      m_t: key,
                     });
                     sessionStorage.setItem("currentStoretab", key);
                   }}
@@ -1938,8 +1989,8 @@ const Stores = () => {
                   // suffix={`${storeUserName.length}/15`}
                   className={`${
                     inValidUserName
-                      ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-6"
-                      : "mb-6"
+                      ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-10"
+                      : "mb-10"
                   }`}
                   prefix={<UserOutlined className="site-form-item-icon" />}
                   onChange={(e) => {
@@ -1963,7 +2014,7 @@ const Stores = () => {
                   }}
                 />
 
-                <label
+                {/* <label
                   className="text-[13px] mb-2 ml-1 input-label-color"
                   id="labStPwd"
                 >
@@ -1998,7 +2049,7 @@ const Stores = () => {
                     const trimmed = storePassword.trim();
                     setStorePassword(trimmed);
                   }}
-                />
+                /> */}
                 <Button
                   className={onChangeValues ? "app-btn-primary" : "!opacity-75"}
                   disabled={!onChangeValues}
@@ -2195,7 +2246,7 @@ const Stores = () => {
               {currentTab == 1 ? (
                 <Content className="bg-white ">
                   <Radio.Group
-                    className="mt-3 mr-4 flex float-right"
+                    className="mt-3 mr-4 flex float-right mb-2"
                     optionType="button"
                     onChange={handleRadioChange}
                     value={value}
@@ -2235,7 +2286,7 @@ const Stores = () => {
                           sessionStorage.setItem("currentStoretab", 1);
                         }}
                       >
-                        Discard
+                        {t("labels:discard")}
                       </Button>
                     </Content>
                   ) : (
@@ -2248,35 +2299,74 @@ const Stores = () => {
                 </Content>
               )}
             </Content>
-            {currentTab == 1 && countForStore && countForStore >= pageLimit ? (
+            {m_tab_id == 1 ? (
               <Content className=" grid justify-items-end">
-                <DmPagination
-                  currentPage={
-                    parseInt(searchParams.get("page"))
-                      ? parseInt(searchParams.get("page"))
-                      : 1
-                  }
-                  presentPage={
-                    parseInt(searchParams.get("page"))
-                      ? parseInt(searchParams.get("page"))
-                      : 1
-                  }
-                  totalItemsCount={countForStore}
-                  defaultPageSize={pageLimit}
-                  pageSize={
-                    parseInt(searchParams.get("limit"))
-                      ? parseInt(searchParams.get("limit"))
-                      : pageLimit
-                  }
-                  handlePageNumberChange={handlePageNumberChange}
-                  showSizeChanger={true}
-                  showTotal={true}
-                />
+                {countForStore && countForStore >= pageLimit ? (
+                  <DmPagination
+                    currentPage={
+                      parseInt(searchParams.get("page"))
+                        ? parseInt(searchParams.get("page"))
+                        : 1
+                    }
+                    presentPage={
+                      parseInt(searchParams.get("page"))
+                        ? parseInt(searchParams.get("page"))
+                        : 1
+                    }
+                    totalItemsCount={countForStore}
+                    defaultPageSize={pageLimit}
+                    pageSize={
+                      parseInt(searchParams.get("limit"))
+                        ? parseInt(searchParams.get("limit"))
+                        : pageLimit
+                    }
+                    handlePageNumberChange={handlePageNumberChange}
+                    showSizeChanger={true}
+                    showTotal={true}
+                  />
+                ) : null}
               </Content>
             ) : null}
           </Content>
         )}
       </Content>
+      <StoreModal
+        isVisible={saveStoreModalOpen}
+        isSpin={false}
+        hideCloseButton={false}
+        width={800}
+      >
+        {
+          <Content className="!text-center">
+            <Text className=" font-semibold text-[15px]">
+              {t("labels:building_store")}
+            </Text>
+            <div
+              className="mt-5 mb-3"
+              style={{ "text-align": "-webkit-center" }}
+            >
+              <img src={saveStoreConfirmationImage} className="" />
+            </div>
+            <div className="!font-medium">
+              <p className="!mb-0 ">
+                {t("messages:hang_tight_as_we_conjure_up_store")}
+              </p>
+              <p className="!mb-0">
+                {t("messages:swing_by_in_a_bit_to_witness_the_magic_unfolding")}
+              </p>
+              <p>{t("messages:thanks_for_your_patience")}</p>
+            </div>
+            <Button
+              className="app-btn-primary"
+              onClick={() => {
+                setSaveStoreModalOpen(false);
+              }}
+            >
+              {t("labels:close_message")}
+            </Button>
+          </Content>
+        }
+      </StoreModal>
     </Content>
   );
 };

@@ -39,10 +39,8 @@ import PaymentSettingsIcon from "../assets/images/sidebar/settings.svg";
 import BackBurgerIcon from "../assets/images/sidebar/backBurger.svg";
 import OpenInNew from "../assets/images/sidebar/open-in-new.svg";
 import Collapse from "../assets/images/sidebar/collaps.svg";
-
-
-
-
+import saveStoreConfirmationImage from "../assets/images/common/StoreSaveConfirmationImage.svg";
+import storeActiveConfirmationImage from "../assets/images/common/StoreActiveDeactiveConfirmation.svg";
 export {
   AppStoreLogo,
   PlayStoreLogo,
@@ -83,6 +81,8 @@ export {
   StoreSettings,
   PaymentSettingsIcon,
   BackBurgerIcon,
-OpenInNew,
-Collapse
+  OpenInNew,
+  Collapse,
+  saveStoreConfirmationImage,
+  storeActiveConfirmationImage,
 };

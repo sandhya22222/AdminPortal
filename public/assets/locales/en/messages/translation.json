@@ -84,5 +84,12 @@
     "one_or_more_numbers":"One or more numbers",
     "password_mismatch":"Password mismatch",
     "upload_image_content":" Accepted image formats include .png, .jpeg, and .jpg, with a size ranging from 1KB to 20MB per image.",
-    "please_ensure_that_upload_only_eight_images":"Please ensure that you upload no more than 8 images."
+    "please_ensure_that_upload_only_eight_images":"Please ensure that you upload no more than 8 images.",
+    "hang_tight_as_we_conjure_up_store":"Hang tight as we conjure up store!",
+    "swing_by_in_a_bit_to_witness_the_magic_unfolding":"Swing by in a bit to witness the magic unfolding.",
+    "thanks_for_your_patience":"Thanks for your patience !",
+   "patience_is_a_virtue":"Patience is a virtue !",
+   "activation_message":"We're activating your store. Come back in a jiffy to check activation status ",
+   "deactivation_message":"We're deactivating your store. Come back in a jiffy to check deactivation status ",
+   "your_store_has_been_successfully_created":"Your store has been successfully created."
 }
