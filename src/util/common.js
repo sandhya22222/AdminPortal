@@ -185,7 +185,7 @@ const getStoreSupportedLngs = () => {
       storeSupportedLngs = [];
       storeLngs.forEach((element) => {
         if (element.language_code) {
-          storeSupportedLngs.push(element.language_code);
+          storeSupportedLngs.push(element.language_code.toLowerCase());
         }
       });
     }

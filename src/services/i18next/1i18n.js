@@ -43,14 +43,14 @@ i18n
   .use(initReactI18next)
   .init({
     supportedLngs: util.getStoreSupportedLngs(),
-    fallbackLng: util.getStoreDefaultLngCode(),
+    fallbackLng: util.getStoreDefaultLngCode().toLowerCase(),
     debug: true,
     returnEmptyString: false,
 
     whitelist: util.getStoreSupportedLngs(), // array with whitelisted languages
     nonExplicitWhitelist: false,
     load: "all", // | currentOnly | languageOnly
-    preload: [util.getStoreDefaultLngCode(), util.getUserSelectedLngCode()], // array with preload languages
+    preload: [util.getStoreDefaultLngCode().toLowerCase(), util.getUserSelectedLngCode().toLowerCase()], // array with preload languages
 
     // order and from where user language should be detected
     order: [
