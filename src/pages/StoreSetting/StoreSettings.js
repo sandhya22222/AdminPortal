@@ -1899,8 +1899,8 @@ const StoreSettings = () => {
             min={0}
             max={100}
             step="0.1"
-            formatter={(value) => (value ? `${value}%` : '')}
-            parser={(value) => (value ? value.replace('%', '') : '')}
+            formatter={(value) => (value ? `${value}%` : "")}
+            parser={(value) => (value ? value.replace("%", "") : "")}
             onKeyPress={(e) => {
               validatePositiveNumber(e, /[0-9]/);
             }}
@@ -2028,12 +2028,14 @@ const StoreSettings = () => {
                 }
               >
                 <p>{count}</p>
-                {
-                  total > 0 ? <>
+                {total > 0 ? (
+                  <>
                     <p>{t("labels:of")}</p>
                     <p>{total}</p>
-                  </> : ""
-                }
+                  </>
+                ) : (
+                  ""
+                )}
                 {/* // <p>{total > 0 ? t("labels:of") : ""}</p>
                 // <p>{total > 0 ? total : ""}</p> */}
                 <p>{labelText !== null ? labelText : ""}</p>
@@ -2309,18 +2311,19 @@ const StoreSettings = () => {
       <HeaderForTitle
         title={
           <Content className="flex !w-[80vw]">
-            <Content className="!w-[83%]">
+            <Content className="!w-[85%]">
               <Title level={3} className="!font-normal !mb-0">
                 {storeName}
               </Title>
             </Content>
-            <Content className="!w-[17%]">
+            <Content className="!w-[15%]">
               <Status
                 storeId={id}
                 storeStatus={changeSwitchStatus === 1 ? true : false}
                 storeApiData={storeData}
                 className="!inline-block"
                 disableStatus={disableStatus}
+                statusInprogress={changeSwitchStatus}
               />
             </Content>
           </Content>
@@ -2336,7 +2339,7 @@ const StoreSettings = () => {
         //     />
         //   </Content>
         // }
-        backNavigationPath={`/dashboard/store`}
+        backNavigationPath={`/dashboard/store?m_t=1`}
         showArrowIcon={true}
         showButtons={false}
       />
