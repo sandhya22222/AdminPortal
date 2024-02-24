@@ -1206,8 +1206,6 @@ const Stores = () => {
     return () => clearInterval(intervalId);
   }, [statusInprogressData]);
 
-  console.log("   setStoreStatusLoading(true);--->", storeStatusLoading);
-
   //!useEffect for getting the table in table without refreshing
   useEffect(() => {
     console.log("postData", postData);
@@ -1713,10 +1711,11 @@ const Stores = () => {
     window.scrollTo(0, 0);
   }, [searchParams]);
 
+  console.log("tab", tab);
   const handlePageNumberChange = (page, pageSize) => {
     setSearchParams({
       m_t: m_tab_id,
-      tab: tab === null ? "0" : tab,
+      tab: tab === null || tab === "" ? "0" : tab,
       page: parseInt(page) ? parseInt(page) : 1,
       limit: parseInt(pageSize) ? parseInt(pageSize) : pageLimit,
     });
