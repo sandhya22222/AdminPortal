@@ -96,7 +96,7 @@ const CreateUsers = () => {
     dataObject["username"] = userName;
     dataObject["email"] = emailId;
     // dataObject["password"] = password;
-    dataObject["status"] = userStatus;
+    dataObject["status"] = true;
     if (firstName !== "") {
       dataObject["firstname"] = firstName;
     }
@@ -630,7 +630,7 @@ const CreateUsers = () => {
                     </Content>
                   )} */}
                   <Content className="flex my-3">
-                    {pageAction !== "add" ? (
+                    {/* {pageAction !== "add" ? (
                       ""
                     ) : (
                       <Content>
@@ -653,7 +653,7 @@ const CreateUsers = () => {
                           />
                         </Content>
                       </Content>
-                    )}
+                    )} */}
 
                     <Content className="">
                       <Typography className="input-label-color mb-2 flex gap-1">
