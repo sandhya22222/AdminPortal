@@ -13,6 +13,8 @@ const StoreModal = ({
   width,
   hideCloseButton,
   isSpin,
+  isCancelButtonDisabled,
+  isOkButtonDisabled,
 }) => {
   const handleOk = () => {
     okCallback();
@@ -38,8 +40,11 @@ const StoreModal = ({
           : [
               <Button
                 className={` app-btn-secondary ${
-                  isSpin === true ? " !opacity-50 !cursor-not-allowed" : " "
+                  isCancelButtonDisabled
+                    ? " !opacity-50 !cursor-not-allowed"
+                    : " "
                 }`}
+                disabled={isCancelButtonDisabled}
                 key="back"
                 onClick={handleCancel}
               >
@@ -47,8 +52,9 @@ const StoreModal = ({
               </Button>,
               <Button
                 className={`app-btn-primary ${
-                  isSpin === true ? " !opacity-50 !cursor-not-allowed" : " "
+                  isOkButtonDisabled ? " !opacity-50 !cursor-not-allowed" : " "
                 }`}
+                disabled={isOkButtonDisabled ? isOkButtonDisabled : false}
                 key="submit"
                 onClick={handleOk}
               >

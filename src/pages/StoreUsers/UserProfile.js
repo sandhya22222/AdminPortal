@@ -28,6 +28,8 @@ const { Content } = Layout;
 const { Text, Title } = Typography;
 const changePasswordAPI = process.env.REACT_APP_CHANGE_PASSWORD_API;
 const storeUsersAPI = process.env.REACT_APP_USERS_API;
+const maxPasswordLength = process.env.REACT_APP_PASSWORD_MAX_LENGTH;
+const minPasswordLength = process.env.REACT_APP_PASSWORD_MIN_LENGTH;
 
 const UserProfile = () => {
   const { t } = useTranslation();
@@ -49,6 +51,9 @@ const UserProfile = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [isConfirmpasswordValid, setisConfirmpasswordValid] = useState(true);
+  const [isNewpasswordValid, setisNewpasswordValid] = useState(true);
+  const [isCurrentpasswordValid, setisCurrentpasswordValid] = useState(true);
 
   const showPasswordChangeModal = () => {
     setIsPasswordChangeModalOpen(true);
@@ -59,6 +64,18 @@ const UserProfile = () => {
     //check wether the currrent password is same as in api call
     // check wether the new password is equal to confirm passsword
     // make the api call for changing the password
+    setisConfirmpasswordValid(true);
+    setisCurrentpasswordValid(true);
+    setisNewpasswordValid(true);
+    if (currentPassword === "") {
+      setisCurrentpasswordValid(false);
+    }
+    if (password === "") {
+      setisNewpasswordValid(false);
+    }
+    if (confirmPassword === "") {
+      setisConfirmpasswordValid(false);
+    }
     if (
       currentPassword !== null &&
       currentPassword !== "" &&
@@ -96,6 +113,9 @@ const UserProfile = () => {
   // handeling Closing password modal
   const handleCancelPasswordChangeModal = () => {
     setIsPasswordChangeModalOpen(false);
+    setisConfirmpasswordValid(true);
+    setisCurrentpasswordValid(true);
+    setisNewpasswordValid(true);
     setPassword("");
     setConfirmPassword("");
     setCurrentPassword("");
@@ -412,6 +432,18 @@ const UserProfile = () => {
               </Row>
               <Row gutter={25} className="pb-2">
                 <Col span={12}>
+                  <Input
+                    value={storeUsersData && storeUsersData.firstName}
+                    disabled
+                  />
+                </Col>
+                <Col span={12}>
+                  <Input
+                    value={storeUsersData && storeUsersData.lastName}
+                    disabled
+                  />
+                </Col>
+                {/* <Col span={12}>
                   <Typography className="border border-gray-300 p-2 rounded-md min-h-[38px]">
                     {storeUsersData && storeUsersData.firstName}
                   </Typography>
@@ -420,7 +452,7 @@ const UserProfile = () => {
                   <Typography className="border border-gray-300 p-2 rounded-md min-h-[38px]">
                     {storeUsersData && storeUsersData.lastName}
                   </Typography>
-                </Col>
+                </Col> */}
               </Row>
               <Row className="pb-2">
                 <Col>
@@ -431,9 +463,10 @@ const UserProfile = () => {
               </Row>
               <Row gutter={25}>
                 <Col span={12}>
-                  <Typography className="border border-gray-300 p-2 rounded-md min-h-[38px]">
+                  {/* <Typography className="border border-gray-300 p-2 rounded-md min-h-[38px]">
                     {email}
-                  </Typography>
+                  </Typography> */}
+                  <Input value={email} disabled />
                 </Col>
                 <Col>
                   <Button
@@ -460,148 +493,176 @@ const UserProfile = () => {
         )}
       </Content>
       {/* Change password modal */}
-      <StoreModal
-        isVisible={isPasswordChangeModalOpen}
-        title={t("labels:change_password")}
-        okCallback={() => handleOkPasswordChangeModal()}
-        cancelCallback={() => handleCancelPasswordChangeModal()}
-        okButtonText={`${t("labels:save")}`}
-        cancelButtonText={`${t("labels:cancel")}`}
-        isSpin={""}
-        width={1000}
-      >
-        <hr />
-        <Content className="mt-2">
-          <Row gutter={50}>
-            <Col span={12}>
-              <Content>
-                <Typography className="input-label-color py-2">
-                  {t("labels:current_password")}
-                </Typography>
-                <Input.Password
-                  placeholder={t("placeholders:enter_password")}
-                  value={currentPassword}
-                  onChange={handleCurrnetPasswordChange}
-                />
-              </Content>
-            </Col>
-          </Row>
-          <Row gutter={50} className="mt-6 mb-2">
-            <Col span={12}>
-              <Content className="mb-2">
-                <Typography className="input-label-color py-2">
-                  {t("labels:new_password")}
-                </Typography>
+      {isPasswordChangeModalOpen ? (
+        <StoreModal
+          isVisible={isPasswordChangeModalOpen}
+          title={t("labels:change_password")}
+          okCallback={() => handleOkPasswordChangeModal()}
+          cancelCallback={() => handleCancelPasswordChangeModal()}
+          okButtonText={`${t("labels:save")}`}
+          cancelButtonText={`${t("labels:cancel")}`}
+          isOkButtonDisabled={
+            password === "" && currentPassword === "" && confirmPassword === ""
+          }
+          isSpin={""}
+          width={1000}
+        >
+          <hr />
+          <Content className="mt-2">
+            <Row gutter={50}>
+              <Col span={12}>
+                <Content>
+                  <Typography className="input-label-color py-2">
+                    {t("labels:current_password")}
+                  </Typography>
+                  <Input.Password
+                    placeholder={t("placeholders:enter_password")}
+                    status={isCurrentpasswordValid ? "" : "error"}
+                    maxLength={maxPasswordLength}
+                    minLength={minPasswordLength}
+                    value={currentPassword}
+                    onChange={handleCurrnetPasswordChange}
+                  />
+                </Content>
+              </Col>
+            </Row>
+            <Row gutter={50} className="mt-6 mb-2">
+              <Col span={12}>
+                <Content className="mb-2">
+                  <Typography className="input-label-color py-2">
+                    {t("labels:new_password")}
+                  </Typography>
 
-                <Input.Password
-                  placeholder={t("placeholders:enter_your_new_password")}
-                  value={password}
-                  onChange={handlePasswordChange}
-                />
-                {password && !isPasswordValid && (
-                  <div style={{ color: "red" }}>
-                    {t("labels:please_enter_a_valid_password")}
-                  </div>
-                )}
-              </Content>
-              <Content>
-                <Typography className="input-label-color py-2">
-                  {t("labels:confirm_password")}
-                </Typography>
-                <Input.Password
-                  placeholder={t("placeholders:enter_your_new_password")}
-                  value={confirmPassword}
-                  onChange={handleConfirmPasswordChange}
-                  className={
-                    password &&
+                  <Input.Password
+                    placeholder={t("placeholders:enter_your_new_password")}
+                    value={password}
+                    status={
+                      isNewpasswordValid
+                        ? password && !isPasswordValid
+                          ? "error"
+                          : ""
+                        : "error"
+                    }
+                    maxLength={maxPasswordLength}
+                    minLength={minPasswordLength}
+                    onChange={handlePasswordChange}
+                  />
+                  {password && !isPasswordValid && (
+                    <div style={{ color: "red" }}>
+                      {t("labels:please_enter_a_valid_password")}
+                    </div>
+                  )}
+                </Content>
+                <Content>
+                  <Typography className="input-label-color py-2">
+                    {t("labels:confirm_password")}
+                  </Typography>
+                  <Input.Password
+                    placeholder={t("placeholders:enter_your_confirm_password")}
+                    value={confirmPassword}
+                    onChange={handleConfirmPasswordChange}
+                    status={isConfirmpasswordValid ? "" : "error"}
+                    maxLength={maxPasswordLength}
+                    minLength={minPasswordLength}
+                    className={
+                      password &&
+                      confirmPassword &&
+                      password !== "" &&
+                      confirmPassword !== "" &&
+                      password !== confirmPassword
+                        ? "custom-error-input"
+                        : null
+                    }
+                  />
+                  {password &&
                     confirmPassword &&
                     password !== "" &&
                     confirmPassword !== "" &&
-                    password !== confirmPassword
-                      ? "custom-error-input"
-                      : null
-                  }
-                />
-                {password &&
-                  confirmPassword &&
-                  password !== "" &&
-                  confirmPassword !== "" &&
-                  password !== confirmPassword && (
-                    <div style={{ color: "red" }}>
-                      {t("messages:password_mismatch")}
-                    </div>
-                  )}
-              </Content>
-            </Col>
-            <Col span={12} className=" border-l-2 border-gray-300">
-              <Content>
-                <Title level={5}>
-                  {t("labels:your_password_must_contain")}
-                </Title>
-                <p>
-                  <IoMdCheckmarkCircleOutline
-                    style={{
-                      color: `${
-                        password && password.length >= 12 ? "green" : "initial"
-                      }`,
-                      display: "inline",
-                    }}
-                  />{" "}
-                  {t("messages:atleast_12_charecters")}
-                </p>
-                <p>
-                  <IoMdCheckmarkCircleOutline
-                    style={{
-                      color: `${
-                        password && /[A-Z]/.test(password) ? "green" : "initial"
-                      }`,
-                      display: "inline",
-                    }}
-                  />{" "}
-                  {t("messages:one_or_more_upper_case_letter")}
-                </p>
-                <p>
-                  <IoMdCheckmarkCircleOutline
-                    style={{
-                      color: `${
-                        password &&
-                        /[!@#$%^&*"'()_+{}\[\]:;<>,.?~\\/-]/.test(password)
-                          ? "green"
-                          : "initial"
-                      }`,
-                      display: "inline",
-                    }}
-                  />{" "}
-                  {t("messages:one_or_more_special_charecter_or_symbols")}
-                </p>
-                <p>
-                  <IoMdCheckmarkCircleOutline
-                    style={{
-                      color: `${
-                        password && /[a-z]/.test(password) ? "green" : "initial"
-                      }`,
-                      display: "inline",
-                    }}
-                  />{" "}
-                  {t("messages:one_or_more_lower_case_letters")}
-                </p>
-                <p>
-                  <IoMdCheckmarkCircleOutline
-                    style={{
-                      color: `${
-                        password && /[\d]/.test(password) ? "green" : "initial"
-                      }`,
-                      display: "inline",
-                    }}
-                  />{" "}
-                  {t("messages:one_or_more_numbers")}
-                </p>
-              </Content>
-            </Col>
-          </Row>
-        </Content>
-        <hr />
-      </StoreModal>
+                    password !== confirmPassword && (
+                      <div style={{ color: "red" }}>
+                        {t("messages:password_mismatch")}
+                      </div>
+                    )}
+                </Content>
+              </Col>
+              <Col span={12} className=" border-l-2 border-gray-300">
+                <Content>
+                  <Title level={5}>
+                    {t("labels:your_password_must_contain")}
+                  </Title>
+                  <p>
+                    <IoMdCheckmarkCircleOutline
+                      style={{
+                        color: `${
+                          password && password.length >= 12
+                            ? "green"
+                            : "initial"
+                        }`,
+                        display: "inline",
+                      }}
+                    />{" "}
+                    {t("messages:atleast_12_charecters")}
+                  </p>
+                  <p>
+                    <IoMdCheckmarkCircleOutline
+                      style={{
+                        color: `${
+                          password && /[A-Z]/.test(password)
+                            ? "green"
+                            : "initial"
+                        }`,
+                        display: "inline",
+                      }}
+                    />{" "}
+                    {t("messages:one_or_more_upper_case_letter")}
+                  </p>
+                  <p>
+                    <IoMdCheckmarkCircleOutline
+                      style={{
+                        color: `${
+                          password &&
+                          /[!@#$%^&*"'()_+{}\[\]:;<>,.?~\\/-]/.test(password)
+                            ? "green"
+                            : "initial"
+                        }`,
+                        display: "inline",
+                      }}
+                    />{" "}
+                    {t("messages:one_or_more_special_charecter_or_symbols")}
+                  </p>
+                  <p>
+                    <IoMdCheckmarkCircleOutline
+                      style={{
+                        color: `${
+                          password && /[a-z]/.test(password)
+                            ? "green"
+                            : "initial"
+                        }`,
+                        display: "inline",
+                      }}
+                    />{" "}
+                    {t("messages:one_or_more_lower_case_letters")}
+                  </p>
+                  <p>
+                    <IoMdCheckmarkCircleOutline
+                      style={{
+                        color: `${
+                          password && /[\d]/.test(password)
+                            ? "green"
+                            : "initial"
+                        }`,
+                        display: "inline",
+                      }}
+                    />{" "}
+                    {t("messages:one_or_more_numbers")}
+                  </p>
+                </Content>
+              </Col>
+            </Row>
+          </Content>
+          <hr />
+        </StoreModal>
+      ) : null}
     </Content>
   );
 };
