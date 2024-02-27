@@ -471,7 +471,7 @@ const UserProfile = () => {
                 <Col>
                   <Button
                     onClick={showPasswordChangeModal}
-                    className="min-h-[38px] app-btn-secondary"
+                    className="app-btn-secondary"
                   >
                     {t("labels:change_password")}
                   </Button>
@@ -504,6 +504,7 @@ const UserProfile = () => {
           isOkButtonDisabled={
             password === "" && currentPassword === "" && confirmPassword === ""
           }
+          hideCloseButton={false}
           isSpin={""}
           width={1000}
         >
