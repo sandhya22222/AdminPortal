@@ -1131,6 +1131,24 @@ const Stores = () => {
       });
   };
 
+  //!useEffect for getting the table in table without refreshing
+  useEffect(() => {
+    console.log("postData", postData);
+    if (postData != null) {
+      if (storeApiData.length < pageLimit) {
+        const temp = [...storeApiData];
+        temp.push(postData);
+        setStoreApiData(temp);
+        console.log("tempAPI", temp);
+      }
+      let totalStoresCount = { ...activeCount };
+      totalStoresCount["totalStores"] = activeCount.totalStores + 1;
+      totalStoresCount["inactiveStores"] = activeCount.inactiveStores + 1;
+      setActiveCount(totalStoresCount);
+    }
+  }, [postData]);
+
+
   //! another get call for stores for particular store_uuid
   const findAllStoreData = (statusUUid, id) => {
     console.log("statusUUid", statusUUid, id);
@@ -1204,24 +1222,7 @@ const Stores = () => {
       }
     }, 30000);
     return () => clearInterval(intervalId);
-  }, [statusInprogressData]);
-
-  //!useEffect for getting the table in table without refreshing
-  useEffect(() => {
-    console.log("postData", postData);
-    if (postData != null) {
-      if (storeApiData.length < pageLimit) {
-        const temp = [...storeApiData];
-        temp.push(postData);
-        setStoreApiData(temp);
-        console.log("tempAPI", temp);
-      }
-      let totalStoresCount = { ...activeCount };
-      totalStoresCount["totalStores"] = activeCount.totalStores + 1;
-      totalStoresCount["inactiveStores"] = activeCount.inactiveStores + 1;
-      setActiveCount(totalStoresCount);
-    }
-  }, [postData]);
+  }, [statusInprogressData, storeApiData]);
 
   //! validation for post call
   const validateStorePostField = () => {
