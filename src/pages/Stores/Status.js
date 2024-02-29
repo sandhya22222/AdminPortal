@@ -22,6 +22,9 @@ function Status({
   setActiveCount,
   disableStatus,
   statusInprogress,
+  setStatusInprogressData,
+  statusInprogressData,
+  setPreviousStatus,
 }) {
   const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,13 +33,10 @@ function Status({
   const [isLoading, setIsLoading] = useState(false);
   const [activeConfirmationModalOpen, setActiveConfirmationModalOpen] =
     useState(false);
-
+  const [storeCheckStatus, setStoreCheckStatus] = useState();
   // closing the delete popup model
   const closeModal = () => {
     setIsModalOpen(false);
-    if (statusInprogress === 4 || statusInprogress === 5) {
-      setActiveConfirmationModalOpen(true);
-    }
   };
 
   useEffect(() => {
@@ -62,15 +62,32 @@ function Status({
       store_id: storeId,
     })
       .then((response) => {
+        console.log(
+          "response.config.params.store_id",
+          response.config.params.store_id
+        );
         setSwitchStatus(changeSwitchStatus);
         closeModal();
         setIsLoading(false);
-        MarketplaceToaster.showToast(response);
-        console.log(
-          "Selected content",
-          selectedTabTableContent,
-          response.config.params.store_id
+        if (
+          (response && response.data.response_body.status === 5) ||
+          (response && response.data.response_body.status === 4)
+        ) {
+          setActiveConfirmationModalOpen(true);
+        }
+        setStoreCheckStatus(response.data.response_body.status);
+        // MarketplaceToaster.showToast(response);
+        let temp = [...storeApiData];
+        let index = temp.findIndex(
+          (ele) => ele.id === response.data.response_body.id
         );
+        temp[index]["status"] = response.data.response_body.status;
+        setStoreApiData(temp);
+        const statusData = [...statusInprogressData];
+        statusData.push(response.data.response_body);
+        setStatusInprogressData(statusData);
+        setPreviousStatus(response.data.response_body.status);
+
         let duplicateActiveCall = { ...activeCount };
         if (
           duplicateActiveCall &&
@@ -90,27 +107,27 @@ function Status({
             setActiveCount(duplicateActiveCall);
           }
         }
-        if (changeSwitchStatus) {
-          storeApiData &&
-            storeApiData.length > 0 &&
-            storeApiData.forEach((element) => {
-              if (element.store_uuid == response.config.params.store_id) {
-                element.status = 1;
-              }
-            });
-          if (setStoreApiData !== undefined) {
-            setStoreApiData(storeApiData);
-          }
-        } else {
-          storeApiData.forEach((element) => {
-            if (element.store_uuid == response.config.params.store_id) {
-              element.status = 2;
-            }
-          });
-          if (setStoreApiData !== undefined) {
-            setStoreApiData(storeApiData);
-          }
-        }
+        // if (changeSwitchStatus) {
+        //   storeApiData &&
+        //     storeApiData.length > 0 &&
+        //     storeApiData.forEach((element) => {
+        //       if (element.store_uuid == response.config.params.store_id) {
+        //         element.status = 1;
+        //       }
+        //     });
+        //   if (setStoreApiData !== undefined) {
+        //     setStoreApiData(storeApiData);
+        //   }
+        // } else {
+        //   storeApiData.forEach((element) => {
+        //     if (element.store_uuid == response.config.params.store_id) {
+        //       element.status = 2;
+        //     }
+        //   });
+        //   if (setStoreApiData !== undefined) {
+        //     setStoreApiData(storeApiData);
+        //   }
+        // }
         if (
           tabId > 0 &&
           selectedTabTableContent &&
@@ -127,8 +144,7 @@ function Status({
             let index = temp.findIndex(
               (ele) => ele.id === response.config.params.store_id
             );
-            temp[index]["status"] =
-              changeSwitchStatus === true ? "Active" : "InActive";
+            temp[index]["status"] = changeSwitchStatus === true ? 1 : 2;
             setSelectedTabTableContent(temp);
           }
         }
@@ -138,7 +154,7 @@ function Status({
         setIsLoading(false);
         closeModal();
         MarketplaceToaster.showToast(error.response);
-        console.log("Error from the status response ===>", error.response);
+        console.log("Error from the status response ===>", error);
       });
   };
 
@@ -147,6 +163,7 @@ function Status({
     setIsModalOpen(true);
   };
 
+  console.log("storeCheckStatus", storeCheckStatus);
   return (
     <div>
       <StoreModal
@@ -184,7 +201,7 @@ function Status({
           <Space direction="vertical">
             <Switch
               loading={
-                statusInprogress == 4 || statusInprogress == 5 ? true : false
+                statusInprogress === 4 || statusInprogress === 5 ? true : false
               }
               className={switchStatus ? "!bg-green-500" : "!bg-gray-400"}
               checked={switchStatus}
@@ -206,7 +223,7 @@ function Status({
         hideCloseButton={false}
         width={800}
       >
-        {statusInprogress === 4 ? (
+        {storeCheckStatus === 4 ? (
           <Content className="!text-center">
             <Text className=" font-semibold text-[15px]">
               {t("labels:activating_store")}
@@ -231,7 +248,7 @@ function Status({
             </Button>
           </Content>
         ) : null}
-        {statusInprogress === 5 ? (
+        {storeCheckStatus === 5 ? (
           <Content className="!text-center">
             <Text className=" font-semibold text-[15px]">
               {t("labels:deactivating_store")}

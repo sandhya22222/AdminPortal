@@ -143,6 +143,7 @@ const Stores = () => {
   const [statusInprogressData, setStatusInprogressData] = useState([]);
   const [radioValue, setRadioValue] = useState(1);
   const [value, setValue] = useState(tab ? tab : 0);
+  const [previousStatus, setPreviousStatus] = useState(null);
   const searchInput = useRef(null);
   const auth = useAuth();
   const permissionValue = util.getPermissionData() || [];
@@ -683,6 +684,9 @@ const Stores = () => {
             setActiveCount={setActiveCount}
             disableStatus={hideAddStoreButton}
             statusInprogress={record.status}
+            setStatusInprogressData={setStatusInprogressData}
+            statusInprogressData={statusInprogressData}
+            setPreviousStatus={setPreviousStatus}
           />
         );
       },
@@ -1083,7 +1087,9 @@ const Stores = () => {
         const filteredData =
           response &&
           response.data.response_body &&
-          response.data.response_body.data.filter((ele) => ele.status === 3);
+          response.data.response_body.data.filter(
+            (ele) => ele.status === 3 || ele.status === 4 || ele.status === 5
+          );
         setStatusInprogressData(filteredData);
         console.log("filteredData", filteredData);
         setIsNetworkError(false);
@@ -1115,6 +1121,7 @@ const Stores = () => {
           }
           if (error && error.response === undefined) {
             setSearchParams({
+              m_t: parseInt(searchParams.get("m_t")),
               tab: parseInt(searchParams.get("tab")),
               page: 1,
               limit: parseInt(searchParams.get("limit")),
@@ -1122,6 +1129,7 @@ const Stores = () => {
           }
           if (error.response.data.message === "That page contains no results") {
             setSearchParams({
+              m_t: parseInt(searchParams.get("m_t")),
               tab: parseInt(searchParams.get("tab")),
               page: 1,
               limit: parseInt(searchParams.get("limit")),
@@ -1139,7 +1147,6 @@ const Stores = () => {
         const temp = [...storeApiData];
         temp.push(postData);
         setStoreApiData(temp);
-        console.log("tempAPI", temp);
       }
       let totalStoresCount = { ...activeCount };
       totalStoresCount["totalStores"] = activeCount.totalStores + 1;
@@ -1147,7 +1154,6 @@ const Stores = () => {
       setActiveCount(totalStoresCount);
     }
   }, [postData]);
-
 
   //! another get call for stores for particular store_uuid
   const findAllStoreData = (statusUUid, id) => {
@@ -1166,18 +1172,19 @@ const Stores = () => {
           response.data.response_body
         );
         setStoreStatusId();
-        console.log("storeApiData", storeApiData);
         let temp = [...storeApiData];
-        console.log("temp", temp);
         let index = temp.findIndex((ele) => ele.id == id);
         temp[index]["status"] = response.data.response_body.data[0].status;
         setStoreApiData(temp);
-        console.log("tempTemp", temp);
+
         setInterval(() => {
           setStoreStatusLoading(false);
         }, 1000);
 
-        if (response.data.response_body.data[0].status === 2) {
+        if (
+          response.data.response_body.data[0].status === 2 ||
+          response.data.response_body.data[0].status === 1
+        ) {
           let duplicateData = [...statusInprogressData];
           let temp = duplicateData.filter((ele) => ele.id != id);
           if (temp && temp.length > 0) {
@@ -1185,13 +1192,32 @@ const Stores = () => {
           } else {
             setStatusInprogressData([]);
           }
-
-          MarketplaceToaster.showToast(
-            util.getToastObject(
-              `${t("messages:your_store_has_been_successfully_created")}`,
-              "success"
-            )
-          );
+          if (response.data.response_body.data[0].status === 1) {
+            MarketplaceToaster.showToast(
+              util.getToastObject(
+                `${t("messages:your_store_has_been_successfully_activated")}`,
+                "success"
+              )
+            );
+          } else if (response.data.response_body.data[0].status === 2) {
+            if (previousStatus === 5) {
+              MarketplaceToaster.showToast(
+                util.getToastObject(
+                  `${t(
+                    "messages:your_store_has_been_successfully_deactivated"
+                  )}`,
+                  "success"
+                )
+              );
+            } else {
+              MarketplaceToaster.showToast(
+                util.getToastObject(
+                  `${t("messages:your_store_has_been_successfully_created")}`,
+                  "success"
+                )
+              );
+            }
+          }
         }
       })
       .catch((error) => {
@@ -1211,10 +1237,6 @@ const Stores = () => {
           setStoreId(statusInprogressData[i].id);
           setStoreStatusLoading(true);
           findAllStoreData(
-            // searchParams.get("page") ? parseInt(searchParams.get("page")) : 1,
-            // searchParams.get("limit")
-            //   ? parseInt(searchParams.get("limit"))
-            //   : pageLimit,
             statusInprogressData[i].store_uuid,
             statusInprogressData[i].id
           );
