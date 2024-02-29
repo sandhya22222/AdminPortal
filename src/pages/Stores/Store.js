@@ -1171,6 +1171,7 @@ const Stores = () => {
           "Server Response from findByPageStoreApi Function for store uuid: ",
           response.data.response_body
         );
+        // setPreviousStatus(response.data.response_body.data[0].status);
         setStoreStatusId();
         let temp = [...storeApiData];
         let index = temp.findIndex((ele) => ele.id == id);
@@ -1200,7 +1201,7 @@ const Stores = () => {
               )
             );
           } else if (response.data.response_body.data[0].status === 2) {
-            if (previousStatus === 5) {
+            if (previousStatus === 5 || previousStatus === 4) {
               MarketplaceToaster.showToast(
                 util.getToastObject(
                   `${t(

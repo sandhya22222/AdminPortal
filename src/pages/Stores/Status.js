@@ -25,6 +25,7 @@ function Status({
   setStatusInprogressData,
   statusInprogressData,
   setPreviousStatus,
+  setDuplicateStoreStatus,
 }) {
   const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -39,6 +40,7 @@ function Status({
     setIsModalOpen(false);
   };
 
+  console.log("storeStatus", storeStatus);
   useEffect(() => {
     setSwitchStatus(storeStatus);
   }, [storeStatus]);
@@ -83,10 +85,24 @@ function Status({
         );
         temp[index]["status"] = response.data.response_body.status;
         setStoreApiData(temp);
-        const statusData = [...statusInprogressData];
-        statusData.push(response.data.response_body);
-        setStatusInprogressData(statusData);
-        setPreviousStatus(response.data.response_body.status);
+        if (
+          statusInprogressData !== undefined &&
+          statusInprogressData !== null
+        ) {
+          let statusData = [...statusInprogressData];
+          statusData.push(response.data.response_body);
+          setStatusInprogressData(statusData);
+        }
+
+        if (setPreviousStatus !== undefined && setPreviousStatus !== null) {
+          setPreviousStatus(response.data.response_body.status);
+        }
+        if (
+          setDuplicateStoreStatus !== undefined &&
+          setDuplicateStoreStatus !== null
+        ) {
+          setDuplicateStoreStatus(response.data.response_body.status);
+        }
 
         let duplicateActiveCall = { ...activeCount };
         if (

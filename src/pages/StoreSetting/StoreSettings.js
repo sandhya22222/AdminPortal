@@ -134,10 +134,7 @@ const StoreSettings = () => {
   const [imageOfStoreFooterSettings, setImageOfStoreFooterSettings] =
     useState();
   const [bannerAbsoluteImage, setBannerAbsoluteImage] = useState([]);
-  const [previousStatus, setPreviousStatus] = useState(null);
-  const [storeId, setStoreId] = useState();
-  const [statusInprogressData, setStatusInprogressData] = useState([]);
-  const [storeStatus, setStoreStatus] = useState();
+  const [duplicateStoreStatus, setDuplicateStoreStatus] = useState();
   const instance = axios.create();
 
   const [colorCodeValidation, setColorCodeValidation] = useState({
@@ -544,11 +541,10 @@ const StoreSettings = () => {
           let selectedStore = response.data.response_body.data.filter(
             (element) => element.store_uuid === id
           );
-          setStatusInprogressData(selectedStore);
           if (selectedStore.length > 0) {
             setStoreName(selectedStore[0].name);
             setChangeSwitchStatus(selectedStore[0].status);
-            setStoreId(selectedStore[0].id);
+            setDuplicateStoreStatus(selectedStore[0].status);
           }
         }
       })
@@ -571,52 +567,24 @@ const StoreSettings = () => {
           "Server Response from findByPageStoreApi Function for store uuid: ",
           response.data.response_body
         );
-
-        let temp = [...storeData];
-        let index = temp.findIndex((ele) => ele.id == storeId);
-        temp[index]["status"] = response.data.response_body.data[0].status;
-        setStoreData(temp);
-
-        // setInterval(() => {
-        //   setStoreStatusLoading(false);
-        // }, 1000);
-
-        if (
-          response.data.response_body.data[0].status === 2 ||
-          response.data.response_body.data[0].status === 1
-        ) {
-          let duplicateData = [...statusInprogressData];
-          let temp = duplicateData.filter((ele) => ele.id != storeId);
-          if (temp && temp.length > 0) {
-            setStatusInprogressData(temp);
-          } else {
-            setInterval(() => {
-              setStatusInprogressData([]);
-            }, 1000);
-          }
-          if (response.data.response_body.data[0].status === 1) {
-            MarketplaceToaster.showToast(
-              util.getToastObject(
-                `${t("messages:your_store_has_been_successfully_activated")}`,
-                "success"
-              )
-            );
-          } else if (response.data.response_body.data[0].status === 2) {
-            if (previousStatus === 5) {
-              MarketplaceToaster.showToast(
-                util.getToastObject(
-                  `${t(
-                    "messages:your_store_has_been_successfully_deactivated"
-                  )}`,
-                  "success"
-                )
-              );
-            }
-          }
+        setDuplicateStoreStatus(response.data.response_body.data[0].status);
+        if (response.data.response_body.data[0].status === 1) {
+          MarketplaceToaster.showToast(
+            util.getToastObject(
+              `${t("messages:your_store_has_been_successfully_activated")}`,
+              "success"
+            )
+          );
+        } else if (response.data.response_body.data[0].status === 2) {
+          MarketplaceToaster.showToast(
+            util.getToastObject(
+              `${t("messages:your_store_has_been_successfully_deactivated")}`,
+              "success"
+            )
+          );
         }
       })
       .catch((error) => {
-        // setStoreStatusLoading(false);
         console.log(
           "Server error from findByPageStoreApi Function ",
           error.response
@@ -626,17 +594,13 @@ const StoreSettings = () => {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      if (storeData && storeData.length > 0) {
+      if (duplicateStoreStatus !== 1 && duplicateStoreStatus !== 2) {
         findAllStoreData(id);
       }
     }, 30000);
-    if (statusInprogressData && statusInprogressData.length > 0) {
-      if (statusInprogressData[0] !== undefined) {
-        setStoreStatus(statusInprogressData[0].status);
-      }
-    }
+
     return () => clearInterval(intervalId);
-  }, [statusInprogressData, storeData]);
+  }, [duplicateStoreStatus]);
 
   //! post call for store settings
   const saveStoreSettingsCall = () => {
@@ -2405,7 +2369,7 @@ const StoreSettings = () => {
               </Title>
             </Content>
             <Content className="!w-[20%] flex !gap-2">
-              <Text>{t("labels:status")} : {" "}</Text>
+              <Text>{t("labels:status")} : </Text>
 
               <Status
                 storeId={id}
@@ -2414,10 +2378,8 @@ const StoreSettings = () => {
                 setStoreApiData={setStoreData}
                 className="!inline-block "
                 disableStatus={disableStatus}
-                statusInprogress={storeStatus}
-                setStatusInprogressData={setStatusInprogressData}
-                statusInprogressData={statusInprogressData}
-                setPreviousStatus={setPreviousStatus}
+                statusInprogress={duplicateStoreStatus}
+                setDuplicateStoreStatus={setDuplicateStoreStatus}
               />
             </Content>
           </Content>
