@@ -39,7 +39,7 @@ import DynamicTable from "../../components/DynamicTable/DynamicTable";
 import { validatePositiveNumber } from "../../util/validation";
 
 const { Content } = Layout;
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 const storeSettingAPI = process.env.REACT_APP_STORE_FRONT_SETTINGS_API;
 const storeAPI = process.env.REACT_APP_STORE_API;
@@ -111,7 +111,7 @@ const StoreSettings = () => {
   const [imagesUpload, setImagesUpload] = useState([]);
   const [getImageData, setGetImageData] = useState([]);
   const [validStoreLogo, setValidStoreLogo] = useState(false);
-  const [changeSwitchStatus, setChangeSwitchStatus] = useState("");
+  const [changeSwitchStatus, setChangeSwitchStatus] = useState();
   const [isUpLoading, setIsUpLoading] = useState(false);
   const [
     copyImageOfStoreSettingsCurrency,
@@ -134,6 +134,10 @@ const StoreSettings = () => {
   const [imageOfStoreFooterSettings, setImageOfStoreFooterSettings] =
     useState();
   const [bannerAbsoluteImage, setBannerAbsoluteImage] = useState([]);
+  const [previousStatus, setPreviousStatus] = useState(null);
+  const [storeId, setStoreId] = useState();
+  const [statusInprogressData, setStatusInprogressData] = useState([]);
+  const [storeStatus, setStoreStatus] = useState();
   const instance = axios.create();
 
   const [colorCodeValidation, setColorCodeValidation] = useState({
@@ -152,6 +156,7 @@ const StoreSettings = () => {
   });
   const [onChangeValues, setOnChangeValues] = useState(false);
   const [imageChangeValues, setImageChangeValues] = useState(false);
+
   let defaultDataLimitValues = {
     vendor_limit: 0,
     customer_limit: 0,
@@ -539,9 +544,11 @@ const StoreSettings = () => {
           let selectedStore = response.data.response_body.data.filter(
             (element) => element.store_uuid === id
           );
+          setStatusInprogressData(selectedStore);
           if (selectedStore.length > 0) {
             setStoreName(selectedStore[0].name);
             setChangeSwitchStatus(selectedStore[0].status);
+            setStoreId(selectedStore[0].id);
           }
         }
       })
@@ -549,6 +556,87 @@ const StoreSettings = () => {
         console.log("Server error from getStoreApi Function ", error.response);
       });
   };
+
+  //! another get call for stores for particular store_uuid
+  const findAllStoreData = (statusUUid) => {
+    MarketplaceServices.findAll(
+      storeAPI,
+      {
+        store_id: statusUUid,
+      },
+      false
+    )
+      .then(function (response) {
+        console.log(
+          "Server Response from findByPageStoreApi Function for store uuid: ",
+          response.data.response_body
+        );
+
+        let temp = [...storeData];
+        let index = temp.findIndex((ele) => ele.id == storeId);
+        temp[index]["status"] = response.data.response_body.data[0].status;
+        setStoreData(temp);
+
+        // setInterval(() => {
+        //   setStoreStatusLoading(false);
+        // }, 1000);
+
+        if (
+          response.data.response_body.data[0].status === 2 ||
+          response.data.response_body.data[0].status === 1
+        ) {
+          let duplicateData = [...statusInprogressData];
+          let temp = duplicateData.filter((ele) => ele.id != storeId);
+          if (temp && temp.length > 0) {
+            setStatusInprogressData(temp);
+          } else {
+            setInterval(() => {
+              setStatusInprogressData([]);
+            }, 1000);
+          }
+          if (response.data.response_body.data[0].status === 1) {
+            MarketplaceToaster.showToast(
+              util.getToastObject(
+                `${t("messages:your_store_has_been_successfully_activated")}`,
+                "success"
+              )
+            );
+          } else if (response.data.response_body.data[0].status === 2) {
+            if (previousStatus === 5) {
+              MarketplaceToaster.showToast(
+                util.getToastObject(
+                  `${t(
+                    "messages:your_store_has_been_successfully_deactivated"
+                  )}`,
+                  "success"
+                )
+              );
+            }
+          }
+        }
+      })
+      .catch((error) => {
+        // setStoreStatusLoading(false);
+        console.log(
+          "Server error from findByPageStoreApi Function ",
+          error.response
+        );
+      });
+  };
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (storeData && storeData.length > 0) {
+        findAllStoreData(id);
+      }
+    }, 30000);
+    if (statusInprogressData && statusInprogressData.length > 0) {
+      if (statusInprogressData[0] !== undefined) {
+        setStoreStatus(statusInprogressData[0].status);
+      }
+    }
+    return () => clearInterval(intervalId);
+  }, [statusInprogressData, storeData]);
 
   //! post call for store settings
   const saveStoreSettingsCall = () => {
@@ -2305,40 +2393,35 @@ const StoreSettings = () => {
       e.preventDefault();
     }
   };
-
+  console.log("changeSwitchStatus", changeSwitchStatus);
   return (
     <Content>
       <HeaderForTitle
         title={
           <Content className="flex !w-[80vw]">
-            <Content className="!w-[85%]">
+            <Content className="!w-[80%]">
               <Title level={3} className="!font-normal !mb-0">
                 {storeName}
               </Title>
             </Content>
-            <Content className="!w-[15%]">
+            <Content className="!w-[20%] flex !gap-2">
+              <Text>{t("labels:status")} : {" "}</Text>
+
               <Status
                 storeId={id}
                 storeStatus={changeSwitchStatus === 1 ? true : false}
                 storeApiData={storeData}
-                className="!inline-block"
+                setStoreApiData={setStoreData}
+                className="!inline-block "
                 disableStatus={disableStatus}
-                statusInprogress={changeSwitchStatus}
+                statusInprogress={storeStatus}
+                setStatusInprogressData={setStatusInprogressData}
+                statusInprogressData={statusInprogressData}
+                setPreviousStatus={setPreviousStatus}
               />
             </Content>
           </Content>
         }
-        // titleContent={
-        //   <Content className="text-right flex flex-row-reverse items-center">
-        //     <Status
-        //       storeId={id}
-        //       storeStatus={changeSwitchStatus === 1 ? true : false}
-        //       storeApiData={storeData}
-        //       className="!inline-block"
-        //       disableStatus={disableStatus}
-        //     />
-        //   </Content>
-        // }
         backNavigationPath={`/dashboard/store?m_t=1`}
         showArrowIcon={true}
         showButtons={false}
