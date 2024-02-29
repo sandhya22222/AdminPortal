@@ -2404,8 +2404,9 @@ const StoreSettings = () => {
                 {storeName}
               </Title>
             </Content>
-            <Content className="!w-[20%] flex space-x-2">
-              <Text>Status : </Text>
+            <Content className="!w-[20%] flex !gap-2">
+              <Text>{t("labels:status")} : {" "}</Text>
+
               <Status
                 storeId={id}
                 storeStatus={changeSwitchStatus === 1 ? true : false}
