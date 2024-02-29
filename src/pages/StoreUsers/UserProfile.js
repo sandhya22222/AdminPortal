@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  Avatar,
   Layout,
   Typography,
   Row,
@@ -8,6 +7,7 @@ import {
   Input,
   Button,
   Col,
+  Avatar,
 } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
@@ -30,6 +30,7 @@ const changePasswordAPI = process.env.REACT_APP_CHANGE_PASSWORD_API;
 const storeUsersAPI = process.env.REACT_APP_USERS_API;
 const maxPasswordLength = process.env.REACT_APP_PASSWORD_MAX_LENGTH;
 const minPasswordLength = process.env.REACT_APP_PASSWORD_MIN_LENGTH;
+const portalInfo = JSON.parse(process.env.REACT_APP_PORTAL_INFO);
 
 const UserProfile = () => {
   const { t } = useTranslation();
@@ -38,10 +39,9 @@ const UserProfile = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isNetworkError, setIsNetworkError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
-  const [langDirection, setLangDirection] = useState("ltr");
   const [hideEmail, setHideEmail] = useState("");
   const [email, setEmail] = useState("");
-
+  const [langDirection, setLangDirection] = useState("ltr");
   const [userName, setUserName] = useState();
   const [relmname, setRelmName] = useState();
   // const [createdDate,setCreatedDate]=useState();
@@ -51,30 +51,29 @@ const UserProfile = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [isPasswordValid, setIsPasswordValid] = useState(false);
-  const [isConfirmpasswordValid, setisConfirmpasswordValid] = useState(true);
-  const [isNewpasswordValid, setisNewpasswordValid] = useState(true);
-  const [isCurrentpasswordValid, setisCurrentpasswordValid] = useState(true);
-
+  const [isConfirmPasswordValid, setIsConfirmPasswordValid] = useState(true);
+  const [isNewPasswordValid, setIsNewPasswordValid] = useState(true);
+  const [isCurrentPasswordValid, setIsCurrentPasswordValid] = useState(true);
   const showPasswordChangeModal = () => {
     setIsPasswordChangeModalOpen(true);
   };
 
   // saving password
   const handleOkPasswordChangeModal = () => {
-    //check wether the currrent password is same as in api call
-    // check wether the new password is equal to confirm passsword
+    //check wether the current password is same as in api call
+    // check wether the new password is equal to confirm password
     // make the api call for changing the password
-    setisConfirmpasswordValid(true);
-    setisCurrentpasswordValid(true);
-    setisNewpasswordValid(true);
+    setIsConfirmPasswordValid(true);
+    setIsCurrentPasswordValid(true);
+    setIsNewPasswordValid(true);
     if (currentPassword === "") {
-      setisCurrentpasswordValid(false);
+      setIsCurrentPasswordValid(false);
     }
     if (password === "") {
-      setisNewpasswordValid(false);
+      setIsNewPasswordValid(false);
     }
     if (confirmPassword === "") {
-      setisConfirmpasswordValid(false);
+      setIsConfirmPasswordValid(false);
     }
     if (
       currentPassword !== null &&
@@ -103,25 +102,25 @@ const UserProfile = () => {
     } else {
       MarketplaceToaster.showToast(
         util.getToastObject(
-          `${t("labels:plese_enter_your_current_password")}`,
+          `${t("labels:please_enter_your_current_password")}`,
           "error"
         )
       );
     }
   };
 
-  // handeling Closing password modal
+  // handling Closing password modal
   const handleCancelPasswordChangeModal = () => {
     setIsPasswordChangeModalOpen(false);
-    setisConfirmpasswordValid(true);
-    setisCurrentpasswordValid(true);
-    setisNewpasswordValid(true);
+    setIsConfirmPasswordValid(true);
+    setIsCurrentPasswordValid(true);
+    setIsNewPasswordValid(true);
     setPassword("");
     setConfirmPassword("");
     setCurrentPassword("");
   };
 
-  // fucntion to validate password
+  // function to validate password
   function validatePassword() {
     // Check for at least 12 characters
     if (password.length < 12) {
@@ -149,21 +148,41 @@ const UserProfile = () => {
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
     setPassword(newPassword);
+    if (String(e.target.value) === String(currentPassword)) {
+      setIsNewPasswordValid(false);
+    } else {
+      setIsNewPasswordValid(true);
+    }
   };
   const handleConfirmPasswordChange = (e) => {
     const newPassword = e.target.value;
     setConfirmPassword(newPassword);
+    if (String(e.target.value) === currentPassword) {
+      setIsConfirmPasswordValid(false);
+    } else {
+      setIsConfirmPasswordValid(true);
+    }
   };
-  const handleCurrnetPasswordChange = (e) => {
+  const handleCurrentPasswordChange = (e) => {
     const newPassword = e.target.value;
     setCurrentPassword(newPassword);
+    if (String(e.target.value) === String(confirmPassword)) {
+      setIsConfirmPasswordValid(false);
+    } else {
+      setIsConfirmPasswordValid(true);
+    }
+    if (String(e.target.value) === String(password)) {
+      setIsNewPasswordValid(false);
+    } else {
+      setIsNewPasswordValid(true);
+    }
   };
 
-  console.log("current pwd:", currentPassword);
-  console.log("new password", password);
-  console.log("confirm pwd:", confirmPassword);
+  // console.log("current pwd:", currentPassword);
+  // console.log("new password", password);
+  // console.log("confirm pwd:", confirmPassword);
 
-  // checking wethet the password is valid or not
+  // checking whether the password is valid or not
   useEffect(() => {
     setIsPasswordValid(validatePassword());
   }, [password]);
@@ -171,27 +190,25 @@ const UserProfile = () => {
   const findAllWithoutPageStoreUsers = () => {
     MarketplaceServices.findAllWithoutPage(storeUsersAPI, null, false)
       .then(function (response) {
-        setIsNetworkError(false);
         console.log(
           "get from  store user server response-----> ",
           response.data
         );
         setStoreUsersData(response.data.response_body);
+        setIsNetworkError(false);
         setIsLoading(false);
-        const email = response.data.response_body.email;
-        setEmail(email);
         const name = response.data.response_body.username;
         setUserName(name);
         console.log("Username ---->: ", userName);
         setRelmName(response.data.response_body.relmname);
         console.log("Relm Name : ", relmname);
-        const emailHide =
-          email &&
-          email.replace(
-            /(?<=^\w)\w+(?=\w*?@\w)/,
-            (match) =>
-              match[0] + "*".repeat(match.length - 2) + match[match.length - 1]
-          );
+        const email = response.data.response_body.email;
+        setEmail(email);
+        const emailHide = email.replace(
+          /(?<=^\w)\w+(?=\w*?@\w)/,
+          (match) =>
+            match[0] + "*".repeat(match.length - 2) + match[match.length - 1]
+        );
         setHideEmail(emailHide);
       })
       .catch((error) => {
@@ -211,7 +228,6 @@ const UserProfile = () => {
         }
       });
   };
-
   const changePasswordAPICall = () => {
     MarketplaceServices.save(
       changePasswordAPI,
@@ -223,7 +239,7 @@ const UserProfile = () => {
     )
       .then(function (response) {
         console.log(
-          "response from  change password server response-----> ",
+          "get from  store user server response-----> ",
           response.data
         );
         MarketplaceToaster.showToast(response);
@@ -233,19 +249,19 @@ const UserProfile = () => {
         setIsPasswordChangeModalOpen(false);
       })
       .catch((error) => {
-        console.log("error from change password API ====>", error.response);
+        console.log("error from store all users API ====>", error.response);
         MarketplaceToaster.showToast(error.response);
         setPassword("");
         setCurrentPassword("");
         setConfirmPassword("");
       });
   };
-
   useEffect(() => {
     if (util.getSelectedLanguageDirection()) {
       setLangDirection(util.getSelectedLanguageDirection()?.toLowerCase());
     }
   }, [util.getSelectedLanguageDirection()]);
+
   useEffect(() => {
     findAllWithoutPageStoreUsers();
     window.scroll(0, 0);
@@ -463,10 +479,10 @@ const UserProfile = () => {
               </Row>
               <Row gutter={25}>
                 <Col span={12}>
-                  {/* <Typography className="border border-gray-300 p-2 rounded-md min-h-[38px]">
+                  <Input value={email} disabled />
+                  {/* <Typography className="border-1 p-2 rounded-md min-h-[38px]">
                     {email}
                   </Typography> */}
-                  <Input value={email} disabled />
                 </Col>
                 <Col>
                   <Button
@@ -515,14 +531,17 @@ const UserProfile = () => {
                 <Content>
                   <Typography className="input-label-color py-2">
                     {t("labels:current_password")}
+                    <span className="mandatory-symbol-color text-sm mx-1">
+                      *
+                    </span>
                   </Typography>
                   <Input.Password
                     placeholder={t("placeholders:enter_password")}
-                    status={isCurrentpasswordValid ? "" : "error"}
+                    value={currentPassword}
+                    status={isCurrentPasswordValid ? "" : "error"}
                     maxLength={maxPasswordLength}
                     minLength={minPasswordLength}
-                    value={currentPassword}
-                    onChange={handleCurrnetPasswordChange}
+                    onChange={handleCurrentPasswordChange}
                   />
                 </Content>
               </Col>
@@ -532,20 +551,23 @@ const UserProfile = () => {
                 <Content className="mb-2">
                   <Typography className="input-label-color py-2">
                     {t("labels:new_password")}
+                    <span className="mandatory-symbol-color text-sm mx-1">
+                      *
+                    </span>
                   </Typography>
 
                   <Input.Password
                     placeholder={t("placeholders:enter_your_new_password")}
                     value={password}
+                    maxLength={maxPasswordLength}
+                    minLength={minPasswordLength}
                     status={
-                      isNewpasswordValid
+                      isNewPasswordValid
                         ? password && !isPasswordValid
                           ? "error"
                           : ""
                         : "error"
                     }
-                    maxLength={maxPasswordLength}
-                    minLength={minPasswordLength}
                     onChange={handlePasswordChange}
                   />
                   {password && !isPasswordValid && (
@@ -553,16 +575,24 @@ const UserProfile = () => {
                       {t("labels:please_enter_a_valid_password")}
                     </div>
                   )}
+                  {password && password === currentPassword && (
+                    <div style={{ color: "red" }}>
+                      {t("labels:password_should_not_be_same")}
+                    </div>
+                  )}
                 </Content>
                 <Content>
                   <Typography className="input-label-color py-2">
                     {t("labels:confirm_password")}
+                    <span className="mandatory-symbol-color text-sm mx-1">
+                      *
+                    </span>
                   </Typography>
                   <Input.Password
                     placeholder={t("placeholders:enter_your_confirm_password")}
                     value={confirmPassword}
                     onChange={handleConfirmPasswordChange}
-                    status={isConfirmpasswordValid ? "" : "error"}
+                    status={isConfirmPasswordValid ? "" : "error"}
                     maxLength={maxPasswordLength}
                     minLength={minPasswordLength}
                     className={
@@ -584,6 +614,11 @@ const UserProfile = () => {
                         {t("messages:password_mismatch")}
                       </div>
                     )}
+                  {confirmPassword && confirmPassword === currentPassword && (
+                    <div style={{ color: "red" }}>
+                      {t("labels:password_should_not_be_same")}
+                    </div>
+                  )}
                 </Content>
               </Col>
               <Col span={12} className=" border-l-2 border-gray-300">
@@ -602,7 +637,7 @@ const UserProfile = () => {
                         display: "inline",
                       }}
                     />{" "}
-                    {t("messages:atleast_12_charecters")}
+                    {t("messages:at_least_12_characters")}
                   </p>
                   <p>
                     <IoMdCheckmarkCircleOutline
@@ -629,7 +664,7 @@ const UserProfile = () => {
                         display: "inline",
                       }}
                     />{" "}
-                    {t("messages:one_or_more_special_charecter_or_symbols")}
+                    {t("messages:one_or_more_special_character_or_symbols")}
                   </p>
                   <p>
                     <IoMdCheckmarkCircleOutline
