@@ -217,7 +217,7 @@
   "view_my_store": "View My Store",
   "new_password_and_confirm_password_should_be_same": "New password and confirm password should be same",
   "please_enter_a_valid_password": "Please enter a valid password",
-  "plese_enter_your_current_password": "Plese enter your current password",
+  "please_enter_your_current_password": "Please enter your current password",
   "current_password": "Current password",
   "number_of": "Number of",
   "language_settings":"Language Settings",
@@ -226,5 +226,7 @@
   "activating_store":"Activating Store",
   "deactivating_store":"Deactivating Store",
   "close_message":"Close Message",
-  "processing":"Processing"
+  "processing":"Processing",
+  "password_mismatch": "Password mismatch",
+  "password_should_not_be_same": "Current password and new password should not be same"
 }
