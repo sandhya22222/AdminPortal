@@ -93,5 +93,6 @@
    "deactivation_message":"We're deactivating your store. Come back in a jiffy to check deactivation status ",
    "your_store_has_been_successfully_created":"Your store has been successfully created.",
    "your_store_has_been_successfully_activated":"Your store has been successfully activated.",
-   "your_store_has_been_successfully_deactivated":"Your store has been successfully deactivated."   
+   "your_store_has_been_successfully_deactivated":"Your store has been successfully deactivated.",
+   "activation_unsuccessful":"Activation of your store was unsuccessful."
 }
