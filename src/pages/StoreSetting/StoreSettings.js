@@ -190,7 +190,7 @@ const StoreSettings = () => {
   const permissionValue = util.getPermissionData() || [];
   const [storeLimitValues, setStoreLimitValues] = useState();
   const [analysisCount, setAnalysisCount] = useState();
-
+  const [previousStatus, setPreviousStatus] = useState(null);
   let keyCLoak = sessionStorage.getItem("keycloakData");
   keyCLoak = JSON.parse(keyCLoak);
   let realmName = keyCLoak.clientId.replace(/-client$/, "");
@@ -576,12 +576,21 @@ const StoreSettings = () => {
             )
           );
         } else if (response.data.response_body.data[0].status === 2) {
-          MarketplaceToaster.showToast(
-            util.getToastObject(
-              `${t("messages:your_store_has_been_successfully_deactivated")}`,
-              "success"
-            )
-          );
+          if (previousStatus === 5) {
+            MarketplaceToaster.showToast(
+              util.getToastObject(
+                `${t("messages:your_store_has_been_successfully_deactivated")}`,
+                "success"
+              )
+            );
+          } else if (previousStatus === 4) {
+            MarketplaceToaster.showToast(
+              util.getToastObject(
+                `${t("messages:activation_unsuccessful")}`,
+                "error"
+              )
+            );
+          }
         }
       })
       .catch((error) => {
@@ -2380,6 +2389,7 @@ const StoreSettings = () => {
                 disableStatus={disableStatus}
                 statusInprogress={duplicateStoreStatus}
                 setDuplicateStoreStatus={setDuplicateStoreStatus}
+                setPreviousStatus={setPreviousStatus}
               />
             </Content>
           </Content>

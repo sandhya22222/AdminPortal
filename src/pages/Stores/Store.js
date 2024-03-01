@@ -1201,13 +1201,20 @@ const Stores = () => {
               )
             );
           } else if (response.data.response_body.data[0].status === 2) {
-            if (previousStatus === 5 || previousStatus === 4) {
+            if (previousStatus === 5) {
               MarketplaceToaster.showToast(
                 util.getToastObject(
                   `${t(
                     "messages:your_store_has_been_successfully_deactivated"
                   )}`,
                   "success"
+                )
+              );
+            } else if (previousStatus === 4) {
+              MarketplaceToaster.showToast(
+                util.getToastObject(
+                  `${t("messages:activation_unsuccessful")}`,
+                  "error"
                 )
               );
             } else {
