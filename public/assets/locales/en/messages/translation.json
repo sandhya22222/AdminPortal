@@ -91,5 +91,6 @@
    "patience_is_a_virtue":"Patience is a virtue !",
    "activation_message":"We're activating your store. Come back in a jiffy to check activation status ",
    "deactivation_message":"We're deactivating your store. Come back in a jiffy to check deactivation status ",
-   "your_store_has_been_successfully_created":"Your store has been successfully created."
+   "your_store_has_been_successfully_created":"Your store has been successfully created.",
+   "username_must_contain_minimum_characters":"Please enter the valid username.Username must be of minimum 3 characters"
 }
