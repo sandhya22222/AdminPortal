@@ -300,6 +300,7 @@ const LanguageForm = ({
                 value={txtLanguage}
                 minLength={titleMinLength}
                 maxLength={titleMaxLength}
+                disabled={parseInt(languageStatus) === 1 ? true : false}
                 className={`${
                   isEditLanguageFieldEmpty
                     ? "border-red-400 !border-[0.5px] border-solid focus:border-red-400 hover:border-red-400"
@@ -339,6 +340,7 @@ const LanguageForm = ({
                 value={txtLanguageCode}
                 minLength={languageCodeMinLength}
                 maxLength={languageCodeMaxLength}
+                disabled={parseInt(languageStatus) === 1 ? true : false}
                 className={`${
                   isEditLanguageCodeFieldEmpty
                     ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400"
@@ -375,6 +377,7 @@ const LanguageForm = ({
                 optionType="button"
                 style={{ display: "flex" }}
                 value={scriptDirection}
+                disabled={parseInt(languageStatus) === 1 ? true : false}
                 onChange={(e) => {
                   handleScriptDirectionChange(e.target.value);
                   if (e.target.value !== defaultScriptDirection) {
