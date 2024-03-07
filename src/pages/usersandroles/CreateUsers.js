@@ -232,7 +232,7 @@ const CreateUsers = () => {
       setInvalidUserName(true);
       MarketplaceToaster.showToast(
         util.getToastObject(
-          `${t("messages:please_enter_valid_username")}`,
+          `${t("messages:username_must_contain_minimum_characters")}`,
           "error"
         )
       );

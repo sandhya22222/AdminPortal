@@ -94,5 +94,6 @@
    "your_store_has_been_successfully_created":"Your store has been successfully created.",
    "your_store_has_been_successfully_activated":"Your store has been successfully activated.",
    "your_store_has_been_successfully_deactivated":"Your store has been successfully deactivated.",
-   "activation_unsuccessful":"Activation of your store was unsuccessful."
+   "activation_unsuccessful":"Activation of your store was unsuccessful.",
+   "username_must_contain_minimum_characters":"Please enter the valid username. Username must be of minimum 3 characters"
 }
