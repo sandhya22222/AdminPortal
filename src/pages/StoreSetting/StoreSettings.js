@@ -54,6 +54,8 @@ const dm4sightDataLimitAnalysisDetailsCountAPI =
 const dm4sightClientID = process.env.REACT_APP_4SIGHT_CLIENT_ID;
 const dm4sightBaseURL = process.env.REACT_APP_4SIGHT_BASE_URL;
 const maxDataLimit = process.env.REACT_APP_MAX_DATA_LIMIT;
+const storeSettingsRestoreFactorAPI =
+  process.env.REACT_APP_STORE_FRONT_SETTINGS_RESTORE_FACTOR_API;
 
 const StoreSettings = () => {
   const { t } = useTranslation();
@@ -383,6 +385,157 @@ const StoreSettings = () => {
       });
   };
 
+  //! get call for store Settings Restore Factor API
+  const updateStoreSettingsRestoreApi = () => {
+    setIsLoading(true);
+    MarketplaceServices.update(
+      storeSettingsRestoreFactorAPI,
+      {},
+      {
+        store_uuid: id,
+      }
+    )
+      .then((response) => {
+        setIsLoading(false);
+        setOnChangeValues(false);
+
+        console.log(
+          "success response  for Store Settings Restore Factory ",
+          storeSettingsRestoreFactorAPI,
+          response.data.response_body
+        );
+        MarketplaceToaster.showToast(response);
+        setColorCodeValidation(false);
+        setCopyImageOfStoreSettingsCurrency(
+          response.data.response_body.store_currency[0]
+        );
+        setImageOfStoreSettingsCurrency(
+          response.data.response_body.store_currency[0]
+        );
+        setCopyImageOfStoreSettingsPageTheme(
+          response.data.response_body.store_page_settings[0]
+        );
+        setImageOfStoreSettingsPageTheme(
+          response.data.response_body.store_page_settings[0]
+        );
+        setCopyImageOfStoreHeaderSetting(
+          response.data.response_body.store_header_settings[0]
+        );
+        setImageOfStoreHeaderSettings(
+          response.data.response_body.store_header_settings[0]
+        );
+        setCopyImageOfStoreFooterSetting(
+          response.data.response_body.store_footer_settings[0]
+        );
+        setImageOfStoreFooterSettings(
+          response.data.response_body.store_footer_settings[0]
+        );
+        setCurrencySymbol(response.data.response_body.store_currency[0].symbol);
+        setCurrencyIsoCode(
+          response.data.response_body.store_currency[0].iso_code
+        );
+        setFractionalUnit(
+          response.data.response_body.store_currency[0].fractional_unit
+        );
+        setNumberToBasic(
+          response.data.response_body.store_currency[0].number_to_basic
+        );
+        setPageBackgroundColor(
+          response.data.response_body.store_page_settings[0].bg_color
+        );
+        setPageBgColor(
+          response.data.response_body.store_page_settings[0].bg_color
+        );
+        setForeGroundColor(
+          response.data.response_body.store_page_settings[0].fg_color
+        );
+        setPageFgColor(
+          response.data.response_body.store_page_settings[0].fg_color
+        );
+        setButtonPrimaryBackgroundColor(
+          response.data.response_body.store_page_settings[0]
+            .btn_primary_bg_color
+        );
+        setbtnPrimaryBgColor(
+          response.data.response_body.store_page_settings[0]
+            .btn_primary_bg_color
+        );
+        setButtonPrimaryForegroundColor(
+          response.data.response_body.store_page_settings[0]
+            .btn_primary_fg_color
+        );
+        setbtnPrimaryFgColor(
+          response.data.response_body.store_page_settings[0]
+            .btn_primary_fg_color
+        );
+        setButtonSecondaryBackgroundColor(
+          response.data.response_body.store_page_settings[0]
+            .btn_secondary_bg_color
+        );
+        setbtnSecondaryBgColor(
+          response.data.response_body.store_page_settings[0]
+            .btn_secondary_bg_color
+        );
+        setButtonSecondaryForegroundColor(
+          response.data.response_body.store_page_settings[0]
+            .btn_secondary_fg_color
+        );
+        setbtnSecondaryFgColor(
+          response.data.response_body.store_page_settings[0]
+            .btn_secondary_fg_color
+        );
+        setButtonTeritaryBackgroundColor(
+          response.data.response_body.store_page_settings[0]
+            .btn_tertiary_bg_color
+        );
+        setbtnTeritaryBgColor(
+          response.data.response_body.store_page_settings[0]
+            .btn_tertiary_bg_color
+        );
+        setButtonTeritaryForegroundColor(
+          response.data.response_body.store_page_settings[0]
+            .btn_tertiary_fg_color
+        );
+        setbtnTeritaryFgColor(
+          response.data.response_body.store_page_settings[0]
+            .btn_tertiary_fg_color
+        );
+        setHeaderBackgroundColor(
+          response.data.response_body.store_header_settings[0].bg_color
+        );
+        setHeaderBgColor(
+          response.data.response_body.store_header_settings[0].bg_color
+        );
+        setHeaderForegroundColor(
+          response.data.response_body.store_header_settings[0].fg_color
+        );
+        setHeaderFgColor(
+          response.data.response_body.store_header_settings[0].fg_color
+        );
+        setFooterBackgroundColor(
+          response.data.response_body.store_footer_settings[0].bg_color
+        );
+        setFooterBgColor(
+          response.data.response_body.store_footer_settings[0].bg_color
+        );
+        setFooterForegroundColor(
+          response.data.response_body.store_footer_settings[0].fg_color
+        );
+        setFooterFgColor(
+          response.data.response_body.store_footer_settings[0].fg_color
+        );
+      })
+      .catch((error) => {
+        setIsLoading(false);
+
+        console.log(
+          "ERROR response  for Store Settings Restore Factory ",
+          storeSettingsRestoreFactorAPI,
+          error
+        );
+      });
+  };
+
   const storeLimitValidation = () => {
     const maxLimit = maxDataLimit;
     let count = 10;
@@ -656,6 +809,7 @@ const StoreSettings = () => {
           response.data.response_body
         );
         MarketplaceToaster.showToast(response);
+        setOnChangeValues(false);
         setIsLoading(false);
         setCopyImageOfStoreSettingsCurrency(
           response.data.response_body.store_currency[0]
@@ -3140,12 +3294,20 @@ const StoreSettings = () => {
                       <label className="text-[20px]  mt-2 font-bold select-none">
                         {t("labels:page_theme")}
                       </label>
-                      <Button
-                        className="app-btn-secondary flex justify-center items-center"
-                        onClick={() => openModal()}
-                      >
-                        <EyeOutlined className="" /> {t("labels:preview")}
-                      </Button>
+                      <div className="flex space-x-2">
+                        <Button
+                          className="app-btn-secondary !text-end"
+                          onClick={() => updateStoreSettingsRestoreApi()}
+                        >
+                          {t("labels:reset")}
+                        </Button>
+                        <Button
+                          className="app-btn-secondary flex justify-center items-center"
+                          onClick={() => openModal()}
+                        >
+                          <EyeOutlined className="" /> {t("labels:preview")}
+                        </Button>
+                      </div>
                     </Content>
                     <StoreModal
                       isVisible={isModalOpen}
