@@ -474,13 +474,15 @@ const StoreImages = ({
                   {/* ({t("labels:max")}:{" "}
                   {BannerImagesUploadLength}) */}
                 </Button>
-                <div className="mt-2 text-[#a8a8a8]">
-                  <p className="!mb-0 ">{t("messages:upload_image_content")}</p>
-                  <p className="!mb-2">
-                    {t("messages:please_ensure_that_upload_only_eight_images")}
-                  </p>
-                </div>
               </Upload>
+              <div className="mt-2 text-[#a8a8a8]">
+                <p className="!mb-0 ">{t("messages:upload_image_content")}</p>
+                <p className="!mb-2">
+                  {t("messages:please_ensure_that_upload_only_eight_images", {
+                    BannerImagesUploadLength,
+                  })}
+                </p>
+              </div>
             </>
           )}
           <Modal
@@ -567,17 +569,15 @@ const StoreImages = ({
                     {/* ({t("labels:max")}:{" "}
                     {BannerImagesUploadLength}) */}
                   </Button>
-                  <div className="mt-2 text-[#a8a8a8]">
-                    <p className="!mb-0 ">
-                      {t("messages:upload_image_content")}
-                    </p>
-                    <p className="!mb-0">
-                      {t(
-                        "messages:please_ensure_that_upload_only_eight_images"
-                      )}
-                    </p>
-                  </div>
                 </Upload>
+                <div className="mt-2 text-[#a8a8a8]">
+                  <p className="!mb-0 ">{t("messages:upload_image_content")}</p>
+                  <p className="!mb-0">
+                    {t("messages:please_ensure_that_upload_only_eight_images", {
+                      BannerImagesUploadLength,
+                    })}
+                  </p>
+                </div>
                 <Modal
                   open={previewOpen}
                   title={previewTitle}

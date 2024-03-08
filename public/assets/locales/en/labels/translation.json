@@ -228,5 +228,6 @@
   "close_message":"Close Message",
   "processing":"Processing",
   "password_mismatch": "Password mismatch",
-  "password_should_not_be_same": "Current password and new password should not be same"
+  "password_should_not_be_same": "Current password and new password should not be same",
+  "reset":"Reset"
 }

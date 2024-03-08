@@ -232,7 +232,7 @@ const CreateUsers = () => {
       setInvalidUserName(true);
       MarketplaceToaster.showToast(
         util.getToastObject(
-          `${t("messages:please_enter_valid_username")}`,
+          `${t("messages:username_must_contain_minimum_characters")}`,
           "error"
         )
       );
@@ -277,9 +277,11 @@ const CreateUsers = () => {
     dataObject["lastname"] = lastName;
     // }
     dataObject["email"] = emailId;
-    // if (selectRole) {
-    //   dataObject["groups_mapping"] = [selectRole];
-    // }
+
+    if (selectRole && userName != currentUser) {
+      dataObject["groups_mapping"] = [selectRole];
+    }
+
     MarketplaceServices.update(userAPI, dataObject, {
       user_name: userName,
     })

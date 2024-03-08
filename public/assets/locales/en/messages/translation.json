@@ -21,8 +21,8 @@
     "no_data_available":"No data available",
     "no_changes_were_detected":"No changes were detected",
     "images_saved_successfully":"Images saved successfully",
-    "store_logo_info":"This logo will be used as Store's logo",
-    "banner_logo_info":"These images will be used in the carousel of the store front",
+    "store_logo_info":"This logo will be used as Store's logo. The image will look better if the resolution is 203x63",
+    "banner_logo_info":"These images will be used in the carousel of the store front. The image will look better if the resolution is 1300x600",
     "please_enter_valid_hexadecimal_code":"Please enter valid Hexadecimal Color code",
     "ex_ffffff_for_white_000000_for_black":"ex. #ffffff for white, #000000 for black",
     "reset_to_the_original_value":"Reset to the original value",
@@ -84,7 +84,7 @@
     "one_or_more_numbers":"One or more numbers",
     "password_mismatch":"Password mismatch",
     "upload_image_content":" Accepted image formats include .png, .jpeg, and .jpg, with a size ranging from 1KB to 20MB per image.",
-    "please_ensure_that_upload_only_eight_images":"Please ensure that you upload no more than 8 images.",
+    "please_ensure_that_upload_only_eight_images":"Please ensure that you upload no more than {{BannerImagesUploadLength}} images.",
     "hang_tight_as_we_conjure_up_store":"Hang tight as we conjure up store!",
     "swing_by_in_a_bit_to_witness_the_magic_unfolding":"Swing by in a bit to witness the magic unfolding.",
     "thanks_for_your_patience":"Thanks for your patience !",
@@ -94,5 +94,6 @@
    "your_store_has_been_successfully_created":"Your store has been successfully created.",
    "your_store_has_been_successfully_activated":"Your store has been successfully activated.",
    "your_store_has_been_successfully_deactivated":"Your store has been successfully deactivated.",
-   "activation_unsuccessful":"Activation of your store was unsuccessful."
+   "activation_unsuccessful":"Activation of your store was unsuccessful.",
+   "username_must_contain_minimum_characters":"Please enter the valid username. Username must be of minimum 3 characters"
 }
