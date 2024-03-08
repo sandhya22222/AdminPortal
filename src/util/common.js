@@ -25,7 +25,10 @@ const hasKeyCloakData = () => {
 };
 
 const hasUserLoggedIn = () => {
-  if (window.sessionStorage.getItem("is_loggedIn")) {
+  // if (window.sessionStorage.getItem("is_loggedIn")) {
+  //   return true;
+  // }
+  if (Cookies.get("is_loggedIn")) {
     return true;
   }
 
@@ -95,15 +98,18 @@ const getUserSelectedLngCode = () => {
  */
 
 const setAuthToken = (authToken) => {
-  window.sessionStorage.setItem("access_token", authToken);
+  // window.sessionStorage.setItem("access_token", authToken);
+  Cookies.set("access_token", authToken);
 };
 
 const setRefreshToken = (refreshToken) => {
-  window.sessionStorage.setItem("refresh_token", refreshToken);
+  // window.sessionStorage.setItem("refresh_token", refreshToken);
+  Cookies.set("refresh_token", refreshToken);
 };
 
 const setIsLoggedIn = (value) => {
-  window.sessionStorage.setItem("is_loggedIn", value);
+  // window.sessionStorage.setItem("is_loggedIn", value);
+  Cookies.set("is_loggedIn", value);
 };
 
 const setClient = (value) => {
@@ -115,7 +121,8 @@ const setPermissionData = (value) => {
 };
 
 const setIsAuthorized = (value) => {
-  window.sessionStorage.setItem("isAuthorized", value);
+  // window.sessionStorage.setItem("isAuthorized", value);
+  Cookies.set("isAuthorized", value);
 };
 
 const setUserSelectedLngCode = (value) => {
@@ -220,11 +227,13 @@ const getStoreDefaultLngCode = () => {
  */
 
 const getAuthToken = () => {
-  return window.sessionStorage.getItem("access_token");
+  // return window.sessionStorage.getItem("access_token");
+  return Cookies.get("access_token");
 };
 
 const getRefreshToken = () => {
-  return window.sessionStorage.getItem("refresh_token");
+  // return window.sessionStorage.getItem("refresh_token")
+  return Cookies.get("refresh_token");
 };
 
 /**
@@ -232,11 +241,13 @@ const getRefreshToken = () => {
  */
 
 const removeIsAuthorized = () => {
-  window.sessionStorage.removeItem("isAuthorized");
+  // window.sessionStorage.removeItem("isAuthorized");
+  Cookies.remove("isAuthorized");
 };
 
 const removeAuthToken = () => {
-  window.sessionStorage.removeItem("access_token");
+  // window.sessionStorage.removeItem("access_token");
+  Cookies.remove("access_token");
 };
 
 const removePermission = () => {
@@ -269,7 +280,7 @@ const util = {
   setIsAuthorized,
   getPermissionData,
   setUserSelectedLngCode,
-  removePermission
+  removePermission,
 };
 
 export default util;
