@@ -8,6 +8,7 @@ import {
   Layout,
   Progress,
   Row,
+  Select,
   Skeleton,
   Space,
   Spin,
@@ -56,6 +57,8 @@ const dm4sightBaseURL = process.env.REACT_APP_4SIGHT_BASE_URL;
 const maxDataLimit = process.env.REACT_APP_MAX_DATA_LIMIT;
 const storeSettingsRestoreFactorAPI =
   process.env.REACT_APP_STORE_FRONT_SETTINGS_RESTORE_FACTOR_API;
+const storeCurrencyAPI = process.env.REACT_APP_STORE_CURRENCY_API;
+const currencyAPI = process.env.REACT_APP_CHANGE_CURRENCY_API;
 
 const StoreSettings = () => {
   const { t } = useTranslation();
@@ -115,6 +118,8 @@ const StoreSettings = () => {
   const [validStoreLogo, setValidStoreLogo] = useState(false);
   const [changeSwitchStatus, setChangeSwitchStatus] = useState();
   const [isUpLoading, setIsUpLoading] = useState(false);
+  const [isCurrencyLoading, setIsCurrencyLoading] = useState(false);
+  const [currencyOnChange, setCurrencyOnChange] = useState(false);
   const [
     copyImageOfStoreSettingsCurrency,
     setCopyImageOfStoreSettingsCurrency,
@@ -155,7 +160,7 @@ const StoreSettings = () => {
   });
   const [onChangeValues, setOnChangeValues] = useState(false);
   const [imageChangeValues, setImageChangeValues] = useState(false);
-
+  const [filteredCurrencyData, setFilteredCurrencyData] = useState([]);
   let defaultDataLimitValues = {
     vendor_limit: 0,
     customer_limit: 0,
@@ -193,6 +198,7 @@ const StoreSettings = () => {
   const [storeLimitValues, setStoreLimitValues] = useState();
   const [analysisCount, setAnalysisCount] = useState();
   const [previousStatus, setPreviousStatus] = useState(null);
+  const [currencyData, setCurrencyData] = useState([]);
   let keyCLoak = sessionStorage.getItem("keycloakData");
   keyCLoak = JSON.parse(keyCLoak);
   let realmName = keyCLoak.clientId.replace(/-client$/, "");
@@ -768,14 +774,14 @@ const StoreSettings = () => {
   const saveStoreSettingsCall = () => {
     const postBody = {
       store_id: id,
-      store_currency: [
-        {
-          symbol: currencySymbol,
-          iso_code: currencyIsoCode,
-          fractional_unit: fractionalUnit,
-          number_to_basic: numberToBasic,
-        },
-      ],
+      // store_currency: [
+      //   {
+      //     symbol: currencySymbol,
+      //     iso_code: currencyIsoCode,
+      //     fractional_unit: fractionalUnit,
+      //     number_to_basic: numberToBasic,
+      //   },
+      // ],
       store_page_settings: [
         {
           bg_color: pageBackgroundColor,
@@ -811,12 +817,12 @@ const StoreSettings = () => {
         MarketplaceToaster.showToast(response);
         setOnChangeValues(false);
         setIsLoading(false);
-        setCopyImageOfStoreSettingsCurrency(
-          response.data.response_body.store_currency[0]
-        );
-        setImageOfStoreSettingsCurrency(
-          response.data.response_body.store_currency[0]
-        );
+        // setCopyImageOfStoreSettingsCurrency(
+        //   response.data.response_body.store_currency[0]
+        // );
+        // setImageOfStoreSettingsCurrency(
+        //   response.data.response_body.store_currency[0]
+        // );
         setCopyImageOfStoreSettingsPageTheme(
           response.data.response_body.store_page_settings[0]
         );
@@ -835,16 +841,16 @@ const StoreSettings = () => {
         setImageOfStoreFooterSettings(
           response.data.response_body.store_footer_settings[0]
         );
-        setCurrencySymbol(response.data.response_body.store_currency[0].symbol);
-        setCurrencyIsoCode(
-          response.data.response_body.store_currency[0].iso_code
-        );
-        setFractionalUnit(
-          response.data.response_body.store_currency[0].fractional_unit
-        );
-        setNumberToBasic(
-          response.data.response_body.store_currency[0].number_to_basic
-        );
+        // setCurrencySymbol(response.data.response_body.store_currency[0].symbol);
+        // setCurrencyIsoCode(
+        //   response.data.response_body.store_currency[0].iso_code
+        // );
+        // setFractionalUnit(
+        //   response.data.response_body.store_currency[0].fractional_unit
+        // );
+        // setNumberToBasic(
+        //   response.data.response_body.store_currency[0].number_to_basic
+        // );
         setPageBackgroundColor(
           response.data.response_body.store_page_settings[0].bg_color
         );
@@ -1611,16 +1617,6 @@ const StoreSettings = () => {
         );
       });
   };
-
-  useEffect(() => {
-    findAllStoreApi();
-    findAllStoreLimit();
-    window.scroll(0, 0);
-    if (id) {
-      findAllWithoutPageStoreSettingApi(id);
-      findAllWithoutPageStoreImagesApi(id);
-    }
-  }, []);
 
   useEffect(() => {
     let isScopeAvailable =
@@ -2520,7 +2516,146 @@ const StoreSettings = () => {
       e.preventDefault();
     }
   };
-  console.log("changeSwitchStatus", changeSwitchStatus);
+
+  //!get call of list language
+  const findByPageCurrencyData = () => {
+    MarketplaceServices.findAllWithoutPage(
+      currencyAPI,
+      // { currency_code: currencyIsoCode },
+      null,
+      false
+    )
+      .then(function (response) {
+        console.log(
+          "server Success response from currency API call",
+          response.data.response_body.data
+        );
+
+        currencyDataProcessor(response.data.response_body.data);
+      })
+      .catch((error) => {
+        console.log(
+          "server error response from currency API call",
+          error.response
+        );
+      });
+  };
+
+  //!get call of list language
+  const findAllWithoutCurrencyDataByChange = (value) => {
+    setIsCurrencyLoading(true);
+    MarketplaceServices.findAllWithoutPage(
+      currencyAPI,
+      { currency_code: value },
+      false
+    )
+      .then(function (response) {
+        setIsCurrencyLoading(false);
+        console.log(
+          "server Success response from currency API call",
+          response.data.response_body.data
+        );
+        if (
+          response &&
+          response.data &&
+          response.data.response_body.data.length > 0
+        ) {
+          setCurrencyData(response.data.response_body.data);
+          setCurrencySymbol(response.data.response_body.data[0].symbol);
+        }
+      })
+      .catch((error) => {
+        setIsCurrencyLoading(false);
+        console.log(
+          "server error response from currency API call",
+          error.response
+        );
+      });
+  };
+
+  //! put call for store currency  API
+  const updateStoreCurrencyApi = () => {
+    setIsCurrencyLoading(true);
+    MarketplaceServices.update(
+      storeCurrencyAPI,
+      {
+        store_id: id,
+        currency_id:
+          currencyData && currencyData.length > 0 && currencyData[0].id,
+      },
+      null
+    )
+      .then((response) => {
+        setIsCurrencyLoading(false);
+        setCurrencyOnChange(false);
+
+        console.log(
+          "success response  for Store Settings Restore Factory ",
+          storeSettingsRestoreFactorAPI,
+          response.data.response_body
+        );
+        MarketplaceToaster.showToast(response);
+      })
+      .catch((error) => {
+        setIsCurrencyLoading(false);
+
+        console.log(
+          "ERROR response  for Store Settings Restore Factory ",
+          storeSettingsRestoreFactorAPI,
+          error
+        );
+      });
+  };
+
+  const handleCurrencyChange = (value) => {
+    findAllWithoutCurrencyDataByChange(value);
+    setCurrencyIsoCode(value);
+    setCurrencyOnChange(true);
+  };
+
+  const currencyDataProcessor = (currencyProcessorData) => {
+    let localCurrencyData = [];
+    if (currencyProcessorData && currencyProcessorData.length > 0) {
+      for (var i = 0; i < currencyProcessorData.length; i++) {
+        const temp = {};
+        temp["label"] = currencyProcessorData[i].symbol;
+        temp["value"] = currencyProcessorData[i].iso_currency_code;
+        temp["id"] = currencyProcessorData[i].id;
+        temp["no_of_decimal"] = currencyProcessorData[i].no_of_decimal;
+        temp["minimum_amount"] = currencyProcessorData[i].minimum_amount;
+        temp["unit_price_name"] = currencyProcessorData[i].unit_price_name;
+        temp["symbol"] = currencyProcessorData[i].symbol;
+        temp["unit_conversion"] = currencyProcessorData[i].unit_conversion;
+        temp["iso_currency_code"] = currencyProcessorData[i].iso_currency_code;
+        localCurrencyData.push(temp);
+        setFilteredCurrencyData(localCurrencyData);
+      }
+      return localCurrencyData;
+    } else {
+      return localCurrencyData;
+    }
+  };
+
+  useEffect(() => {
+    const currencyDisplayData = filteredCurrencyData.filter(
+      (ele) => ele.label === currencySymbol
+    );
+    if (currencyDisplayData && currencyDisplayData.length > 0) {
+      setCurrencyData(currencyDisplayData);
+    }
+  }, [filteredCurrencyData]);
+
+  useEffect(() => {
+    findAllStoreApi();
+    findAllStoreLimit();
+    findByPageCurrencyData();
+    window.scroll(0, 0);
+    if (id) {
+      findAllWithoutPageStoreSettingApi(id);
+      findAllWithoutPageStoreImagesApi(id);
+    }
+  }, []);
+
   return (
     <Content>
       <HeaderForTitle
@@ -3115,179 +3250,286 @@ const StoreSettings = () => {
         {hideActionButton ? (
           ""
         ) : (
-          <Spin tip="Please wait!" size="large" spinning={isLoading}>
-            <Content className="bg-white mt-3 p-3 rounded-lg">
-              <label className="text-[20px] font-bold !text-center">
-                {t("labels:currency")}
-              </label>
-              <Divider className="!my-4" />
-              <Row
-                className="mt-2"
-                gutter={{
-                  xs: 8,
-                  sm: 16,
-                  md: 24,
-                  lg: 32,
-                }}
-              >
-                <Col span={4} className="gutter-row">
-                  <label className="text-[13px] mb-2 ml-1 input-label-color">
-                    {t("labels:symbol")}
-                  </label>
-                  <span className="mandatory-symbol-color text-sm !text-center ml-1">
-                    *
-                  </span>
-                  <Input
-                    placeholder={t("placeholders:enter_currency_symbol")}
-                    className={`${
-                      inValidCurrencySymbol
-                        ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
-                        : ""
-                    }`}
-                    // defaultValue={storeSettingData.store_currency["symbol"]}
-                    value={currencySymbol}
-                    maxLength={3}
-                    onChange={(e) => {
-                      const regex = /^[A-Za-z $£€¥₹]*$/;
-                      const inputValue = e.target.value.replace(/\!/g, "");
-
-                      if (regex.test(inputValue) || inputValue === "") {
-                        setCurrencySymbol(inputValue);
-                        setOnChangeValues(true);
-                        setInValidCurrencySymbol(false);
-                        let temp = { ...copyImageOfStoreSettingsCurrency };
-                        temp["symbol"] = inputValue;
-                        setCopyImageOfStoreSettingsCurrency(temp);
-                      } else {
-                        setInValidCurrencySymbol(true);
+          <>
+            <Spin tip="Please wait!" size="large" spinning={isCurrencyLoading}>
+              <Content className="bg-white mt-3 p-3 rounded-lg">
+                <label className="text-[20px] font-bold !text-center mb-4">
+                  {t("labels:currency")}
+                </label>
+                <Content>
+                  <Col span={12}>
+                    <label className="text-[14px] mb-2 ml-1 input-label-color">
+                      {t("labels:choose_store_currency")}
+                    </label>
+                    <Select
+                      showSearch={false}
+                      className="w-80"
+                      placeholder={t("messages:please_choose_a_store_currency")}
+                      value={
+                        currencyData &&
+                        currencyData.length > 0 &&
+                        currencyData[0].symbol
                       }
-                    }}
-                    onBlur={() => {
-                      const trimmed = currencySymbol.trim();
-                      const trimmedUpdate = trimmed.replace(/\s+/g, " ");
-                      setCurrencySymbol(trimmedUpdate);
-                    }}
-                  />
-                </Col>
-                <Col span={4} className="gutter-row">
-                  <label className="text-[13px] mb-2 ml-1 input-label-color">
-                    {t("labels:iso_code")}
-                  </label>
-                  <span className="mandatory-symbol-color text-sm ml-1 !text-center">
-                    *
-                  </span>
-                  <Input
-                    placeholder={t("placeholders:enter_iso_code")}
-                    value={currencyIsoCode}
-                    maxLength={3}
-                    onChange={(e) => {
-                      const regex = /^[A-Za-z]*$/;
-                      if (regex.test(e.target.value)) {
-                        setCurrencyIsoCode(e.target.value);
-                        setInValidCurrencyIsoCode(false);
-                        setOnChangeValues(true);
-                        let temp = { ...copyImageOfStoreSettingsCurrency };
-                        temp["iso_code"] = e.target.value;
-                        setCopyImageOfStoreSettingsCurrency(temp);
-                      } else {
-                        // setCurrencyIsoCode("");
-                        setInValidCurrencyIsoCode(true);
-                      }
-                    }}
-                    onBlur={() => {
-                      const trimmed = currencyIsoCode.trim();
-                      const trimmedUpdate = trimmed.replace(/\s+/g, " ");
-                      setCurrencyIsoCode(trimmedUpdate);
-                    }}
-                    className={`${
-                      inValidCurrencyIsoCode
-                        ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
-                        : ""
-                    }`}
-                  />
-                </Col>
-                <Col span={4} className="gutter-row">
-                  <label className="text-[13px] mb-2 ml-1 input-label-color">
-                    {t("labels:fractional_unit")}
-                  </label>
-                  <span className="mandatory-symbol-color text-sm ml-1 !text-center">
-                    *
-                  </span>
-                  <Input
-                    placeholder={t("placeholders:enter_fractional_unit")}
-                    value={fractionalUnit}
-                    maxLength={10}
-                    onChange={(e) => {
-                      const regex = /^[A-Za-z]*$/;
-                      if (regex.test(e.target.value)) {
-                        setFractionalUnit(e.target.value);
-                        setInValidFractionalUnit(false);
-                        setOnChangeValues(true);
-                        let temp = { ...copyImageOfStoreSettingsCurrency };
-                        temp["fractional_unit"] = e.target.value;
-                        setCopyImageOfStoreSettingsCurrency(temp);
-                      } else {
-                        setInValidFractionalUnit(true);
-                      }
-                    }}
-                    onBlur={() => {
-                      const trimmed = fractionalUnit.trim();
-                      const trimmedUpdate = trimmed.replace(/\s+/g, " ");
-                      setFractionalUnit(trimmedUpdate);
-                    }}
-                    className={`${
-                      inValidFractionalUnit
-                        ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
-                        : ""
-                    }`}
-                  />
-                </Col>
-                <Col span={4} className="gutter-row">
-                  {" "}
-                  <label className="text-[13px] mb-2 ml-1 input-label-color">
-                    {t("labels:number_to_basic")}
-                  </label>
-                  <span className="mandatory-symbol-color text-sm !text-center ml-1">
-                    *
-                  </span>
-                  <InputNumber
-                    placeholder={t("placeholders:enter_number_to_basic")}
-                    value={numberToBasic}
-                    // type="number"
-                    min={1}
-                    minLength={1}
-                    maxLength={99999}
-                    max={99999}
-                    onChange={(e) => {
-                      // setNumberToBasic(e);
-                      if (e !== "" && e !== null && e !== undefined) {
-                        setNumberToBasic(e);
-                        setOnChangeValues(true);
-                      } else {
-                        setNumberToBasic(e);
-                        // setInValidNumberToBasic(true);
-                      }
-                      setInValidNumberToBasic(false);
-
-                      let temp = { ...copyImageOfStoreSettingsCurrency };
-                      temp["number_to_basic"] = e;
-                      setCopyImageOfStoreSettingsCurrency(temp);
-                    }}
-                    onBlur={() => {
-                      const trimmed = numberToBasic.trim();
-                      const trimmedUpdate = trimmed.replace(/\s+/g, " ");
-                      setNumberToBasic(trimmedUpdate);
-                    }}
-                    onKeyDown={numberToBasicLimit}
-                    className={`${
-                      inValidNumberToBasic
-                        ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
-                        : ""
-                    }`}
-                  />
-                </Col>
-              </Row>
-              <Content className="">
+                      onChange={(e) => {
+                        handleCurrencyChange(e);
+                      }}
+                      options={filteredCurrencyData}
+                    />
+                  </Col>
+                </Content>
+                <Divider className="!my-4" />
+                <Title level={4} className="font-normal mb-2">
+                  {t("labels:currency_details")}
+                </Title>
+                {currencyData && currencyData.length > 0 ? (
+                  <div className="w-[100%] !flex-col !gap-2 !justify-start">
+                    <div
+                      className={`w-[14%]  !inline-block   ${
+                        util.getSelectedLanguageDirection()?.toUpperCase() ===
+                        "RTL"
+                          ? "text-left ml-2"
+                          : "text-right mr-2 "
+                      }`}
+                    >
+                      <p className="!text-gray-500 my-3">
+                        {t("labels:currency_code")}{" "}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
+                      </p>
+                      <p className="!text-gray-500 my-3">
+                        {t("labels:unit_conversation")} &nbsp;&nbsp;&nbsp;:
+                      </p>
+                      <p className="!text-gray-500 my-3">
+                        {t("labels:unit_price_name")}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
+                      </p>
+                      <p className="!text-gray-500 my-3">
+                        {t("labels:min_amount")}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                      </p>
+                      <p className="!text-gray-500 my-3">
+                        {t("labels:currency_symbol")}{" "}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                      </p>
+                      <p className="!text-gray-500 my-3">
+                        {t("labels:no_of_decimals")}{" "}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                      </p>
+                    </div>
+                    <div className="w-[50%] !inline-block ml-8">
+                      <p className="!font-semibold my-3">
+                        {currencyData[0].iso_currency_code}
+                      </p>
+                      <p className="!font-semibold my-3">
+                        {currencyData[0].unit_conversion}
+                      </p>
+                      <p className="!font-semibold my-3">
+                        {currencyData[0].unit_price_name}
+                      </p>
+                      <p className="!font-semibold my-3">
+                        {currencyData[0].minimum_amount}
+                      </p>
+                      <p className="!font-semibold my-3">
+                        {currencyData[0].symbol}
+                      </p>
+                      <p className="!font-semibold my-3">
+                        {currencyData[0].no_of_decimal}
+                      </p>
+                    </div>
+                  </div>
+                ) : null}
+                <div>
+                  <Row className="gap-2 !mt-2">
+                    <Col>
+                      <Button
+                        className="app-btn-primary "
+                        onClick={() => updateStoreCurrencyApi()}
+                        disabled={!currencyOnChange}
+                      >
+                        {t("labels:save")}
+                      </Button>
+                    </Col>
+                    <Col className="">
+                      <Button
+                        className=" app-btn-secondary"
+                        disabled={!currencyOnChange}
+                        onClick={() => {
+                          navigate("/dashboard/store");
+                        }}
+                      >
+                        {t("labels:discard")}
+                      </Button>
+                    </Col>
+                  </Row>
+                </div>
+              </Content>
+            </Spin>
+            {/* {" "} */}
+            {/* <Row
+              //   /*className="mt-2"
+              //   gutter={{
+              //     xs: 8,
+              //     sm: 16,
+              //     md: 24,
+              //     lg: 32,
+              //   }}
+              // >
+              //   <Col span={4} className="gutter-row">
+              //     <label className="text-[13px] mb-2 ml-1 input-label-color">
+              //       {t("labels:symbol")}
+              //     </label>
+              //     <span className="mandatory-symbol-color text-sm !text-center ml-1">
+              //       *
+              //     </span>
+              //     <Input
+              //       placeholder={t("placeholders:enter_currency_symbol")}
+              //       className={`${
+              //         inValidCurrencySymbol
+              //           ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
+              //           : ""
+              //       }`}
+              //       // defaultValue={storeSettingData.store_currency["symbol"]}
+              //       value={currencySymbol}
+              //       maxLength={3}
+              //       onChange={(e) => {
+              //         const regex = /^[A-Za-z $£€¥₹]*$/;
+              //         const inputValue = e.target.value.replace(/\!/g, "");
+              //         if (regex.test(inputValue) || inputValue === "") {
+              //           setCurrencySymbol(inputValue);
+              //           setOnChangeValues(true);
+              //           setInValidCurrencySymbol(false);
+              //           let temp = { ...copyImageOfStoreSettingsCurrency };
+              //           temp["symbol"] = inputValue;
+              //           setCopyImageOfStoreSettingsCurrency(temp);
+              //         } else {
+              //           setInValidCurrencySymbol(true);
+              //         }
+              //       }}
+              //       onBlur={() => {
+              //         const trimmed = currencySymbol.trim();
+              //         const trimmedUpdate = trimmed.replace(/\s+/g, " ");
+              //         setCurrencySymbol(trimmedUpdate);
+              //       }}
+              //     />
+              //   </Col>
+              //   <Col span={4} className="gutter-row">
+              //     <label className="text-[13px] mb-2 ml-1 input-label-color">
+              //       {t("labels:iso_code")}
+              //     </label>
+              //     <span className="mandatory-symbol-color text-sm ml-1 !text-center">
+              //       *
+              //     </span>
+              //     <Input
+              //       placeholder={t("placeholders:enter_iso_code")}
+              //       value={currencyIsoCode}
+              //       maxLength={3}
+              //       onChange={(e) => {
+              //         const regex = /^[A-Za-z]*$/;
+              //         if (regex.test(e.target.value)) {
+              //           setCurrencyIsoCode(e.target.value);
+              //           setInValidCurrencyIsoCode(false);
+              //           setOnChangeValues(true);
+              //           let temp = { ...copyImageOfStoreSettingsCurrency };
+              //           temp["iso_code"] = e.target.value;
+              //           setCopyImageOfStoreSettingsCurrency(temp);
+              //         } else {
+              //           // setCurrencyIsoCode("");
+              //           setInValidCurrencyIsoCode(true);
+              //         }
+              //       }}
+              //       onBlur={() => {
+              //         const trimmed = currencyIsoCode.trim();
+              //         const trimmedUpdate = trimmed.replace(/\s+/g, " ");
+              //         setCurrencyIsoCode(trimmedUpdate);
+              //       }}
+              //       className={`${
+              //         inValidCurrencyIsoCode
+              //           ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
+              //           : ""
+              //       }`}
+              //     />
+              //   </Col>
+              //   <Col span={4} className="gutter-row">
+              //     <label className="text-[13px] mb-2 ml-1 input-label-color">
+              //       {t("labels:fractional_unit")}
+              //     </label>
+              //     <span className="mandatory-symbol-color text-sm ml-1 !text-center">
+              //       *
+              //     </span>
+              //     <Input
+              //       placeholder={t("placeholders:enter_fractional_unit")}
+              //       value={fractionalUnit}
+              //       maxLength={10}
+              //       onChange={(e) => {
+              //         const regex = /^[A-Za-z]*$/;
+              //         if (regex.test(e.target.value)) {
+              //           setFractionalUnit(e.target.value);
+              //           setInValidFractionalUnit(false);
+              //           setOnChangeValues(true);
+              //           let temp = { ...copyImageOfStoreSettingsCurrency };
+              //           temp["fractional_unit"] = e.target.value;
+              //           setCopyImageOfStoreSettingsCurrency(temp);
+              //         } else {
+              //           setInValidFractionalUnit(true);
+              //         }
+              //       }}
+              //       onBlur={() => {
+              //         const trimmed = fractionalUnit.trim();
+              //         const trimmedUpdate = trimmed.replace(/\s+/g, " ");
+              //         setFractionalUnit(trimmedUpdate);
+              //       }}
+              //       className={`${
+              //         inValidFractionalUnit
+              //           ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
+              //           : ""
+              //       }`}
+              //     />
+              //   </Col>
+              //   <Col span={4} className="gutter-row">
+              //     {" "}
+              //     <label className="text-[13px] mb-2 ml-1 input-label-color">
+              //       {t("labels:number_to_basic")}
+              //     </label>
+              //     <span className="mandatory-symbol-color text-sm !text-center ml-1">
+              //       *
+              //     </span>
+              //     <InputNumber
+              //       placeholder={t("placeholders:enter_number_to_basic")}
+              //       value={numberToBasic}
+              //       // type="number"
+              //       min={1}
+              //       minLength={1}
+              //       maxLength={99999}
+              //       max={99999}
+              //       onChange={(e) => {
+              //         // setNumberToBasic(e);
+              //         if (e !== "" && e !== null && e !== undefined) {
+              //           setNumberToBasic(e);
+              //           setOnChangeValues(true);
+              //         } else {
+              //           setNumberToBasic(e);
+              //           // setInValidNumberToBasic(true);
+              //         }
+              //         setInValidNumberToBasic(false);
+              //         let temp = { ...copyImageOfStoreSettingsCurrency };
+              //         temp["number_to_basic"] = e;
+              //         setCopyImageOfStoreSettingsCurrency(temp);
+              //       }}
+              //       onBlur={() => {
+              //         const trimmed = numberToBasic.trim();
+              //         const trimmedUpdate = trimmed.replace(/\s+/g, " ");
+              //         setNumberToBasic(trimmedUpdate);
+              //       }}
+              //       onKeyDown={numberToBasicLimit}
+              //       className={`${
+              //         inValidNumberToBasic
+              //           ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
+              //           : ""
+              //       }`}
+              //     />
+              //   </Col>
+              // </Row> */}
+            <Spin tip="Please wait!" size="large" spinning={isLoading}>
+              <Content className="bg-white mt-3 p-3 rounded-lg">
                 <Content className="">
                   <Row className="!mb-4">
                     <Content className="flex justify-between w-full">
@@ -3318,7 +3560,6 @@ const StoreSettings = () => {
                       cancelCallback={() => closeModal()}
                       isSpin={false}
                       className="!h-96"
-                      // hideCloseButton={false}
                     >
                       <Preview
                         headerBackgroundColor={headerBackgroundColor}
@@ -4492,8 +4733,8 @@ const StoreSettings = () => {
                   )}
                 </Content>
               </Content>
-            </Content>
-          </Spin>
+            </Spin>
+          </>
         )}
       </Content>
     </Content>

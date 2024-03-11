@@ -229,5 +229,18 @@
   "processing":"Processing",
   "password_mismatch": "Password mismatch",
   "password_should_not_be_same": "Current password and new password should not be same",
-  "reset":"Reset"
+  "reset":"Reset",
+  "currency_name":"Currency Name",
+  "conversation":"Conversation",
+  "unit_price_name":"Unit Price Name",
+  "min_amount":"Min Amount",
+  "no_of_decimals":"No of Decimals",
+  "edit_currency":"Edit Currency",
+  "make_currency_as_default":"Make currency as default",
+  "delete_currency":"Delete Currency",
+  "currency_symbol":"Currency Symbol",
+  "unit_conversation":"Unit Conversation",
+  "currency_code":"Currency Code",
+  "choose_store_currency":"Choose a Store Currency",
+  "currency_details":"Currency Details"
 }

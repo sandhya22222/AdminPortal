@@ -295,11 +295,9 @@ const Language = () => {
         );
         // MarketplaceToaster.showToast(error.response);
         if (error && error.response && error.response.status === 401) {
-          toast("Session expired", {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
+          MarketplaceToaster.showToast(
+            util.getToastObject(`${t("messages:session_expired")}`, "error")
+          );
         } else {
           if (error.response) {
             setErrorMessage(error.response.data.response_body.message);
