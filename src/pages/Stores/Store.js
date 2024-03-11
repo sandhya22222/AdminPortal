@@ -2371,7 +2371,7 @@ const Stores = () => {
               className="mt-5 mb-3"
               // style={{ "text-align": "-webkit-center" }}
             >
-              <img src={saveStoreConfirmationImage} className="ml-" />
+              <img src={saveStoreConfirmationImage} className="ml-[270px]" />
             </div>
             <div className="!font-medium">
               <p className="!mb-0 ">
