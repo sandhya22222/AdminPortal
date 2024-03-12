@@ -282,9 +282,9 @@ const ListCurrency = () => {
             util.getToastObject(`${t("messages:session_expired")}`, "error")
           );
         } else {
-          if (error.response) {
-            setErrorMessage(error.response.data.response_body.message);
-          }
+          // if (error.response) {
+          //   setErrorMessage(error.response.data.response_body.message);
+          // }
           if (
             error.response.data.response_body.message ===
             "That page contains no results"
@@ -350,7 +350,7 @@ const ListCurrency = () => {
           </Content>
         ) : isNetworkError ? (
           <Content className="pt-[2.3rem] px-3 pb-3 text-center ml-2">
-            <p>{`${t("common:network_error")}`}</p>
+            <p>{`${t("messages:network_error")}`}</p>
           </Content>
         ) : (
           <>
