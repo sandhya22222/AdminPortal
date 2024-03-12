@@ -20,7 +20,7 @@ import { useDispatch } from "react-redux";
 
 import axios from "axios";
 import { StarTwoTone, ReloadOutlined } from "@ant-design/icons";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 //! Import CSS libraries
 

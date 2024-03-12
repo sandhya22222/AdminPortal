@@ -9,7 +9,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import "./services/i18next/1i18n";
 
 import { AuthProvider } from "react-oidc-context";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import "bootstrap/dist/js/bootstrap.min.js";
 import "bootstrap/dist/css/bootstrap.min.css";
