@@ -2593,7 +2593,7 @@ const StoreSettings = () => {
       })
       .catch((error) => {
         setIsCurrencyLoading(false);
-
+        MarketplaceToaster.showToast(error.response);
         console.log(
           "ERROR response  for Store Settings Restore Factory ",
           storeSettingsRestoreFactorAPI,

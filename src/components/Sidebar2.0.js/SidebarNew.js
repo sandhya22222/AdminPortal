@@ -192,10 +192,8 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
             },
             {
               key: "13",
-              // icon: <img src={currencyIcon} />,
-              // inactive_icon: <img src={currencyInActiveIcon} />,
-              icon: <img src={PaymentSettingsIcon} />,
-              inactive_icon: <img src={PaymentTypeIcon} />,
+              icon: <img src={currencyIcon} />,
+              inactive_icon: <img src={currencyInActiveIcon} />,
               label: ` ${t("labels:currency")}`,
               navigate_to: "/dashboard/currency",
               show_in_menu: true,
