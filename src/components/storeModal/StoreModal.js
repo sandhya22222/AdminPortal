@@ -15,6 +15,7 @@ const StoreModal = ({
   isSpin,
   isCancelButtonDisabled,
   isOkButtonDisabled,
+  destroyOnClose,
 }) => {
   const handleOk = () => {
     okCallback();
@@ -62,6 +63,7 @@ const StoreModal = ({
               </Button>,
             ]
       }
+      destroyOnClose={destroyOnClose}
     >
       <Spin tip="Please wait" spinning={isSpin}>
         <Content>{children}</Content>
