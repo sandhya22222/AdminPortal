@@ -35,6 +35,7 @@ import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import { DownOutlined } from "@ant-design/icons";
 
 import LanguageBanner from "./LanguageBanner";
+import MarketplaceToaster from "../../util/marketplaceToaster";
 const { Title, Text, Paragraph } = Typography;
 const { Content } = Layout;
 
