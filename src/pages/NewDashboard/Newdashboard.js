@@ -29,7 +29,7 @@ import {
   BarChartOutlined,
   UnorderedListOutlined,
 } from "@ant-design/icons";
-import { useQuery } from "react-query";
+// import { useQuery } from "@tanstack/react-query";
 
 //! Import CSS libraries
 
@@ -120,7 +120,6 @@ const Newdashboard = () => {
   const [storeLimitValues, setStoreLimitValues] = useState([]);
   const [username, setUsername] = useState("");
   const [langDirection, setLangDirection] = useState("ltr");
-
 
   let keyCLoak = sessionStorage.getItem("keycloakData");
   keyCLoak = JSON.parse(keyCLoak);
@@ -1367,7 +1366,7 @@ const Newdashboard = () => {
 
                 <Content className="flex flex-col  items-baseline h-4 min-w-40 max-w-72 space-x-2 ">
                   <div className="flex justify-between  items-baseline gap-1 ">
-                    { langDirection == "ltr" ? (
+                    {langDirection == "ltr" ? (
                       <div className="">
                         <Title style={{ color: "#4A2D73" }} level={2}>
                           {activeStoreCount ? activeStoreCount : 0}{" "}
@@ -1380,9 +1379,7 @@ const Newdashboard = () => {
                         className={
                           storeLimitValues?.store_limit.toString().length >= 5
                             ? `text-zinc-400 !font-semibold   ${
-                              langDirection == "rtl"
-                                  ? "w-[185px]"
-                                  : "w-60"
+                                langDirection == "rtl" ? "w-[185px]" : "w-60"
                               }`
                             : "text-zinc-400 !font-semibold "
                         }
@@ -1396,7 +1393,7 @@ const Newdashboard = () => {
                         {t("labels:stores")} ({t("labels:max_allowed")})
                       </Text>
                     ) : null}
-                    { langDirection == "rtl" ? (
+                    {langDirection == "rtl" ? (
                       <div className="">
                         <Title style={{ color: "#4A2D73" }} level={2}>
                           {activeStoreCount ? activeStoreCount : 0}{" "}

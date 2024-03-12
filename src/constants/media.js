@@ -43,6 +43,9 @@ import saveStoreConfirmationImage from "../assets/images/common/StoreSaveConfirm
 import storeActiveConfirmationImage from "../assets/images/common/StoreActiveDeactiveConfirmation.svg";
 import currencyIcon from "../assets/images/sidebar/currencyIcon.svg";
 import currencyInActiveIcon from "../assets/images/sidebar/currencyInActive.svg";
+import ConsentEditIcon from "../assets/images/common/consentEditIcon.svg";
+import ConsentPreview from "../assets/images/common/consentPreview.png";
+
 export {
   AppStoreLogo,
   PlayStoreLogo,
@@ -88,5 +91,7 @@ export {
   saveStoreConfirmationImage,
   storeActiveConfirmationImage,
   currencyIcon,
-  currencyInActiveIcon
+  currencyInActiveIcon,
+  ConsentEditIcon,
+  ConsentPreview,
 };
