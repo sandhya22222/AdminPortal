@@ -40,7 +40,6 @@ function Status({
     setIsModalOpen(false);
   };
 
-  console.log("storeStatus", storeStatus);
   useEffect(() => {
     setSwitchStatus(storeStatus);
   }, [storeStatus]);

@@ -53,7 +53,7 @@ const EditCurrency = () => {
     is_default: false,
   });
   const [responseCurrencyData, setResponseCurrencyData] = useState([]);
-
+  const [defaultLoader, setDefaultLoader] = useState(false);
   //!get call of list language
   const findByPageCurrencyData = () => {
     // enabling spinner
@@ -121,15 +121,14 @@ const EditCurrency = () => {
   };
 
   const makeAsDefaultCurrency = () => {
-    setIsLoading(true);
-    // {onChangeDisable === true ?(
     let reqBody = {};
     if (onChangeDisable === true) {
+      setIsLoading(true);
       reqBody = {
-        // is_default: defaultChecked,
         no_of_decimal: currencyDetails.no_of_decimal,
       };
     } else {
+      setDefaultLoader(true);
       reqBody = {
         is_default: defaultChecked,
       };
@@ -138,15 +137,26 @@ const EditCurrency = () => {
       _id: cId,
     })
       .then((response) => {
-        console.log("Currency Default API success response", response);
+        setIsLoading(false);
+        console.log(
+          "Currency Default API success response",
+          response.data.response_body
+        );
         MarketplaceToaster.showToast(response);
         setOnChangeDisable(false);
-        // setIsMakeAsDefault(defaultChecked);
+        const copyOfCurrencyDetails = { ...currencyDetails };
+        copyOfCurrencyDetails.is_default =
+          response && response.data.response_body.is_default;
+        copyOfCurrencyDetails.no_of_decimal =
+          response && response.data.response_body.no_of_decimal;
+        setCurrencyDetails(copyOfCurrencyDetails);
+        setDefaultChecked(response && response.data.response_body.is_default);
         closeCurrencyDefaultWaringModal(false);
-        setIsLoading(false);
+        setDefaultLoader(false);
       })
       .catch((error) => {
         setIsLoading(false);
+        setDefaultLoader(false);
         setOnChangeDisable(false);
         closeCurrencyDefaultWaringModal(false);
         MarketplaceToaster.showToast(error.response);
@@ -169,13 +179,13 @@ const EditCurrency = () => {
     setIsDeleteCurrencyModalOpen(false);
   };
 
-  // opening the default lang warning model pop up
+  // opening the default currency warning model pop up
   const openCurrencyDefaultWaringModal = (e) => {
     setWarningCurrencyDefaultModal(true);
     setDefaultChecked(e);
   };
 
-  // closing the default lang warning model pop up
+  // closing the default currency warning model pop up
   const closeCurrencyDefaultWaringModal = () => {
     setWarningCurrencyDefaultModal(false);
   };
@@ -420,7 +430,7 @@ const EditCurrency = () => {
           closeCurrencyDefaultWaringModal();
           // setIsMakeAsDefault(false);
         }}
-        isSpin={isLoading}
+        isSpin={defaultLoader}
         hideCloseButton={false}
       >
         {
