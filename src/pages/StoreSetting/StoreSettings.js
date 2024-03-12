@@ -2519,11 +2519,7 @@ const StoreSettings = () => {
 
   //!get call of list currency
   const findByPageCurrencyData = () => {
-    MarketplaceServices.findAllWithoutPage(
-      currencyAPI,
-      null,
-      false
-    )
+    MarketplaceServices.findAllWithoutPage(currencyAPI, null, false)
       .then(function (response) {
         console.log(
           "server Success response from currency API call",
