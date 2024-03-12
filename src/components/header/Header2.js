@@ -11,6 +11,7 @@ import {
   Typography,
   Tag,
   Button,
+  Select,
 } from "antd";
 import {
   TranslationOutlined,
@@ -84,18 +85,19 @@ const Header2 = ({ collapsed, setCollapsed }) => {
   if (storeLanguages && storeLanguages.length > 1) {
     storeLanguages.forEach((element) => {
       const languageItem = {};
-      languageItem["key"] = element.language_code;
-      languageItem["label"] = (
-        <Tooltip
-          title={element.language}
-          overlayStyle={{ position: "fixed" }}
-          placement="left"
-        >
-          <div className="!font-normal max-w-[100px] text-ellipsis overflow-hidden">
-            {element.language}
-          </div>
-        </Tooltip>
-      );
+      languageItem["value"] = element.language_code;
+      languageItem["label"] = element.language;
+      // (
+      //   <Tooltip
+      //     title={element.language}
+      //     overlayStyle={{ position: "fixed" }}
+      //     placement="left"
+      //   >
+      //     <div className="!font-normal max-w-[100px] text-ellipsis overflow-hidden">
+      //       {element.language}
+      //     </div>
+      //   </Tooltip>
+      // );
       languageItems.push(languageItem);
     });
   }
@@ -126,14 +128,14 @@ const Header2 = ({ collapsed, setCollapsed }) => {
     }
   };
 
-  const handleLanguageClick = (e) => {
+  const handleLanguageClick = (value) => {
     // Cookies.set("mpaplng", e.key);
     // localStorage.setItem("mpaplng", e.key);
-    util.setUserSelectedLngCode(e.key);
-    setStoreSelectedLngCode(e.key);
+    util.setUserSelectedLngCode(value);
+    setStoreSelectedLngCode(value);
     dispatch(
       fnSelectedLanguage(
-        storeLanguages.find((item) => item.language_code === e.key)
+        storeLanguages.find((item) => item.language_code === value)
       )
     );
     document.body.style.direction = util
@@ -322,10 +324,14 @@ const Header2 = ({ collapsed, setCollapsed }) => {
                     className="!h-8 absolute bottom-[-2px] left-[-30px]"
                   /> */}
                   <Text className="text-lg text-slate-600 pr-1">
-                    {(userName && userName.length>0)
+                    {userName && userName.length > 0
                       ? userName.slice(0, 1).toUpperCase() + userName.slice(1)
-                      : userProfileInfo&& userProfileInfo.length>0 &&userProfileInfo.slice(0, 1).toUpperCase() +
-                      userProfileInfo&& userProfileInfo.length>0 &&userProfileInfo.slice(1)}
+                      : userProfileInfo &&
+                        userProfileInfo.length > 0 &&
+                        userProfileInfo.slice(0, 1).toUpperCase() +
+                          userProfileInfo &&
+                        userProfileInfo.length > 0 &&
+                        userProfileInfo.slice(1)}
                   </Text>
                   <DownOutlined className="text-xs text-slate-600" />
                 </Paragraph>
@@ -336,29 +342,62 @@ const Header2 = ({ collapsed, setCollapsed }) => {
             auth.isAuthenticated &&
             languageItems &&
             languageItems.length > 0 ? (
-              <Dropdown
-                menu={{
-                  items: languageItems,
-                  selectable: true,
-                  defaultSelectedKeys: [storeSelectedLngCode],
-                  onClick: handleLanguageClick,
-                  style: { maxHeight: 200, overflowY: "auto" },
-                }}
-                trigger={["click"]}
-                arrow
-                className="header-text-color cursor-pointer"
-                overlayStyle={{
-                  position: "fixed",
-                  zIndex: 20,
+              // <Dropdown
+              //   menu={{
+              //     items: languageItems,
+              //     selectable: true,
+              //     defaultSelectedKeys: [storeSelectedLngCode],
+              //     onClick: handleLanguageClick,
+              //     style: { maxHeight: 200, overflowY: "auto" },
+              //   }}
+              //   trigger={["click"]}
+              //   arrow
+              //   className="header-text-color cursor-pointer"
+              //   overlayStyle={{
+              //     position: "fixed",
+              //     zIndex: 20,
+              //   }}
+              // >
+              //   <Paragraph className="!mb-0 ">
+              //     <TranslationOutlined
+              //       className="header-text-color"
+              //       style={{ fontSize: "24px" }}
+              //     />
+              //   </Paragraph>
+              // </Dropdown>
+              <Select
+                options={languageItems}
+                bordered={false}
+                // placeholder="Select Language"
+                defaultValue={storeSelectedLngCode}
+                onChange={(value) => handleLanguageClick(value)}
+                style={{
+                  minWidth: "100px",
+                  maxWidth: "100px",
                 }}
               >
-                <Paragraph className="!mb-0 ">
-                  <TranslationOutlined
-                    className="header-text-color"
-                    style={{ fontSize: "24px" }}
-                  />
-                </Paragraph>
-              </Dropdown>
+                {languageItems &&
+                  languageItems.length &&
+                  languageItems.map((option) => (
+                    <Option key={option.value} value={option.value}>
+                      <Tooltip
+                        title={option.label}
+                        overlayStyle={{ position: "fixed", zIndex: 20 }}
+                        placement="left"
+                      >
+                        <span
+                          style={{
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          {option.label}
+                        </span>
+                      </Tooltip>
+                    </Option>
+                  ))}
+              </Select>
             ) : (
               <></>
             )}

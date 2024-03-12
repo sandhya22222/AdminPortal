@@ -2526,8 +2526,13 @@ const StoreSettings = () => {
           "server Success response from currency API call",
           response.data.response_body.data
         );
-
-        currencyDataProcessor(response.data.response_body.data);
+        if (
+          response &&
+          response.data &&
+          response.data.response_body.data.length > 0
+        ) {
+          currencyDataProcessor(response.data.response_body.data);
+        }
       })
       .catch((error) => {
         console.log(
@@ -2614,7 +2619,7 @@ const StoreSettings = () => {
     if (currencyProcessorData && currencyProcessorData.length > 0) {
       for (var i = 0; i < currencyProcessorData.length; i++) {
         const temp = {};
-        temp["label"] = currencyProcessorData[i].symbol;
+        temp["label"] = currencyProcessorData[i].currency_name;
         temp["value"] = currencyProcessorData[i].iso_currency_code;
         temp["id"] = currencyProcessorData[i].id;
         temp["no_of_decimal"] = currencyProcessorData[i].no_of_decimal;
@@ -2623,6 +2628,7 @@ const StoreSettings = () => {
         temp["symbol"] = currencyProcessorData[i].symbol;
         temp["unit_conversion"] = currencyProcessorData[i].unit_conversion;
         temp["iso_currency_code"] = currencyProcessorData[i].iso_currency_code;
+        temp["currency_name"] = currencyProcessorData[i].currency_name;
         localCurrencyData.push(temp);
         setFilteredCurrencyData(localCurrencyData);
       }
@@ -2634,7 +2640,7 @@ const StoreSettings = () => {
 
   useEffect(() => {
     const currencyDisplayData = filteredCurrencyData.filter(
-      (ele) => ele.label === currencySymbol
+      (ele) => ele.symbol === currencySymbol
     );
     if (currencyDisplayData && currencyDisplayData.length > 0) {
       setCurrencyData(currencyDisplayData);
@@ -3260,11 +3266,12 @@ const StoreSettings = () => {
                     <Select
                       showSearch={false}
                       className="w-80"
+                      dropdownStyle={{ zIndex: 1 }}
                       placeholder={t("messages:please_choose_a_store_currency")}
                       value={
                         currencyData &&
                         currencyData.length > 0 &&
-                        currencyData[0].symbol
+                        currencyData[0].currency_name
                       }
                       onChange={(e) => {
                         handleCurrencyChange(e);
