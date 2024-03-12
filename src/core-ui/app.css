@@ -43,9 +43,9 @@
 .ant-select-item-option-selected {
   background-color: var(--mp-input-field-outer-glow-color)!important;
 }
-.ant-select-dropdown {
+/* .ant-select-dropdown {
   z-index: 1 !important;
-}
+} */
 
 .ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
   color: var(--mp-brand-color) !important;
