@@ -38,6 +38,7 @@ import { useAuth } from "react-oidc-context";
 import axios from "axios";
 import DynamicTable from "../../components/DynamicTable/DynamicTable";
 import { validatePositiveNumber } from "../../util/validation";
+import PoliciesSettings from "../PoliciesSettings/PoliciesSettings";
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
@@ -4744,6 +4745,7 @@ const StoreSettings = () => {
           </>
         )}
       </Content>
+      <PoliciesSettings storeName={storeName} />
     </Content>
   );
 };

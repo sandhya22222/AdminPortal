@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import StoreModal from "../../components/storeModal/StoreModal";
 import PolicyCard from "./components/PolicyCard";
 import PreviewAndCustomise from "./components/PreviewAndCustomise";
+import { useRef } from "react";
 
 const { Text, Paragraph, Title } = Typography;
 const CONTACT_INFORMATION = "Contact Information";
@@ -19,6 +20,7 @@ const PoliciesSettings = ({ storeName }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const storeUUID = searchParams.get("id");
   const storeId = searchParams.get("storeId");
+  const newPolicyRef = useRef(null);
 
   const [contactInformation, setContactInformation] = useState([]);
   const [
@@ -42,6 +44,9 @@ const PoliciesSettings = ({ storeName }) => {
 
   const handelAddNewPolicy = () => {
     setAddNewPolicy(true);
+    setTimeout(() => {
+      newPolicyRef.current.scrollIntoView();
+    }, [100]);
   };
   const onContactInfoChange = (e) => {
     if (contactInformation?.length > 0) {
@@ -140,13 +145,15 @@ const PoliciesSettings = ({ storeName }) => {
             })}
 
           {addNewPolicy && (
-            <PolicyCard
-              isNewPolicy
-              refetchUserConsent={refetchUserConsent}
-              setAddNewPolicy={setAddNewPolicy}
-              handelDeletePolicy={handelDeletePolicy}
-              storeId={storeId}
-            />
+            <div ref={newPolicyRef}>
+              <PolicyCard
+                isNewPolicy
+                refetchUserConsent={refetchUserConsent}
+                setAddNewPolicy={setAddNewPolicy}
+                handelDeletePolicy={handelDeletePolicy}
+                storeId={storeId}
+              />
+            </div>
           )}
 
           <Checkbox onChange={onContactInfoChange} checked={addContactInfo}>
