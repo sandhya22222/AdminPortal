@@ -2525,8 +2525,13 @@ const StoreSettings = () => {
           "server Success response from currency API call",
           response.data.response_body.data
         );
-
-        currencyDataProcessor(response.data.response_body.data);
+        if (
+          response &&
+          response.data &&
+          response.data.response_body.data.length > 0
+        ) {
+          currencyDataProcessor(response.data.response_body.data);
+        }
       })
       .catch((error) => {
         console.log(
@@ -2640,7 +2645,6 @@ const StoreSettings = () => {
       setCurrencyData(currencyDisplayData);
     }
   }, [filteredCurrencyData]);
-
 
   useEffect(() => {
     findAllStoreApi();
