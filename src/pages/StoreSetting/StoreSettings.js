@@ -2656,7 +2656,7 @@ const StoreSettings = () => {
       findAllWithoutPageStoreSettingApi(id);
       findAllWithoutPageStoreImagesApi(id);
     }
-  }, []);
+  }, [id]);
 
   return (
     <Content>
