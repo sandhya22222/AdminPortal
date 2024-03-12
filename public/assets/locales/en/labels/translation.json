@@ -242,5 +242,6 @@
   "unit_conversation":"Unit Conversation",
   "currency_code":"Currency Code",
   "choose_store_currency":"Choose a Store Currency",
-  "currency_details":"Currency Details"
+  "currency_details":"Currency Details",
+  "not_available" :"Not available"
 }

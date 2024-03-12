@@ -3312,22 +3312,34 @@ const StoreSettings = () => {
                     </div>
                     <div className="w-[50%] !inline-block ml-8">
                       <p className="!font-semibold my-3">
-                        {currencyData[0].iso_currency_code}
+                        {currencyData[0].iso_currency_code !== null
+                          ? currencyData[0].iso_currency_code
+                          : `${t("labels:not_available")}`}
                       </p>
                       <p className="!font-semibold my-3">
-                        {currencyData[0].unit_conversion}
+                        {currencyData[0].unit_conversion !== null
+                          ? currencyData[0].unit_conversion
+                          : `${t("labels:not_available")}`}
                       </p>
                       <p className="!font-semibold my-3">
-                        {currencyData[0].unit_price_name}
+                        {currencyData[0].unit_price_name !== null
+                          ? currencyData[0].unit_price_name
+                          : `${t("labels:not_available")}`}
                       </p>
                       <p className="!font-semibold my-3">
-                        {currencyData[0].minimum_amount}
+                        {currencyData[0].minimum_amount !== null
+                          ? currencyData[0].minimum_amount
+                          : `${t("labels:not_available")}`}
                       </p>
                       <p className="!font-semibold my-3">
-                        {currencyData[0].symbol}
+                        {currencyData[0].symbol
+                          ? currencyData[0].symbol
+                          : `${t("labels:not_available")}`}
                       </p>
                       <p className="!font-semibold my-3">
-                        {currencyData[0].no_of_decimal}
+                        {currencyData[0].no_of_decimal
+                          ? currencyData[0].no_of_decimal
+                          : `${t("labels:not_available")}`}
                       </p>
                     </div>
                   </div>
