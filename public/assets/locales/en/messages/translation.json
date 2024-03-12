@@ -53,7 +53,7 @@
     "connect_with_your_customers_in_their_preferred_language":"Connect with your customers in their preferred language",
     "unable_to_download_this_format":"Unable to download this format",
     "download_successful":"Download successful",
-    "document_description":"Please upload a language support document in CSV format containing translated values, and will use it to update the respective portals with the new language content.",
+    "document_description":"Please upload a language support document in utf-8 CSV format containing translated values, and will use it to update the respective portals with the new language content.",
     "frontend_document":"Front-end keys refer to a set of values specially intended for use within the user interface (UI) of the application.",
     "backend_document":"Backend keys encompass a collection of values that are exclusively intended for use within the backend infrastructure of the application.",
     "delete_confirmation_message":"Are you absolutely sure you want to delete the image? This action cannot be undone.",

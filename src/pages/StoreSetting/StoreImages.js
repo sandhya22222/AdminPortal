@@ -390,7 +390,7 @@ const StoreImages = ({
                 : "rightTop"
             }
           >
-            <InfoCircleOutlined className="!text-[var(--mp-brand-color-h)]" />
+            {/* <InfoCircleOutlined className="!text-[var(--mp-brand-color-h)]" /> */}
           </Tooltip>
         </Content>
         {/* {reset === true ? (
@@ -409,35 +409,38 @@ const StoreImages = ({
       {imagePathShow === undefined ? (
         <Content>
           {isSingleUpload && isSingleUpload === true ? (
-            <>
-              <Upload
-                className={`${
-                  validStoreLogo
-                    ? "!border-red-400 !border-2 focus:border-red-400 hover:border-red-400 !h-[105px] !w-[105px] rounded-lg"
-                    : "hover:border-[var(--mp-primary-border-color)] hover:text-[var(--mp-brand-color-h)]"
-                }`}
-                listType="picture-card"
-                fileList={fileList}
-                name="file"
-                onPreview={handlePreview}
-                onChange={(e) => {
-                  handleChange(e);
-                }}
-                beforeUpload={() => {
-                  return false;
-                }}
-                afterUpload={() => {
-                  return false;
-                }}
-                accept={supportedFileExtensions}
-                disabled={disabelMediaButton}
-              >
-                {fileList.length >= 1 ? null : uploadButton}
-              </Upload>
-              <div className="mt-2 text-[#a8a8a8]">
+            <Content className="flex gap-4">
+              <div>
+                <Upload
+                  className={`${
+                    validStoreLogo
+                      ? "!border-red-400 !border-2 focus:border-red-400 hover:border-red-400 !h-[105px] !w-[105px] rounded-lg"
+                      : "hover:border-[var(--mp-primary-border-color)] hover:text-[var(--mp-brand-color-h)]"
+                  }`}
+                  listType="picture-card"
+                  fileList={fileList}
+                  name="file"
+                  onPreview={handlePreview}
+                  onChange={(e) => {
+                    handleChange(e);
+                  }}
+                  beforeUpload={() => {
+                    return false;
+                  }}
+                  afterUpload={() => {
+                    return false;
+                  }}
+                  accept={supportedFileExtensions}
+                  disabled={disabelMediaButton}
+                >
+                  {fileList.length >= 1 ? null : uploadButton}
+                </Upload>
+              </div>
+              <div className="mt-4 text-[#a8a8a8]">
+              <p className="!mb-0 ">{t("messages:store_logo_info")}</p>
                 <p className="!mb-0 ">{t("messages:upload_image_content")}</p>
               </div>
-            </>
+            </Content>
           ) : (
             <>
               <Upload
@@ -476,7 +479,8 @@ const StoreImages = ({
                 </Button>
               </Upload>
               <div className="mt-2 text-[#a8a8a8]">
-                <p className="!mb-0 ">{t("messages:upload_image_content")}</p>
+                <p className="mb-0">{t("messages:banner_logo_info")}</p>
+                <p className="!mb-0 ">{t("messages:upload_image_content")} </p>
                 <p className="!mb-2">
                   {t("messages:please_ensure_that_upload_only_eight_images", {
                     BannerImagesUploadLength,
@@ -571,8 +575,11 @@ const StoreImages = ({
                   </Button>
                 </Upload>
                 <div className="mt-2 text-[#a8a8a8]">
-                  <p className="!mb-0 ">{t("messages:upload_image_content")}</p>
-                  <p className="!mb-0">
+                  <p className="mb-0">{t("messages:banner_logo_info")}</p>
+                  <p className="!mb-0 ">
+                    {t("messages:upload_image_content")} &{" "}
+                  </p>
+                  <p className="!mb-2">
                     {t("messages:please_ensure_that_upload_only_eight_images", {
                       BannerImagesUploadLength,
                     })}
