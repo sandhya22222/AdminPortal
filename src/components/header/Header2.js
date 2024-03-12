@@ -48,6 +48,7 @@ import { useAuth } from "react-oidc-context";
 
 const { Header, Content } = Layout;
 const { Text, Paragraph } = Typography;
+const { Option } = Select;
 
 const umsBaseUrl = process.env.REACT_APP_USM_BASE_URL;
 const logoutAPI = process.env.REACT_APP_LOGOUT;
