@@ -2517,11 +2517,10 @@ const StoreSettings = () => {
     }
   };
 
-  //!get call of list language
+  //!get call of list currency
   const findByPageCurrencyData = () => {
     MarketplaceServices.findAllWithoutPage(
       currencyAPI,
-      // { currency_code: currencyIsoCode },
       null,
       false
     )
@@ -2541,7 +2540,7 @@ const StoreSettings = () => {
       });
   };
 
-  //!get call of list language
+  //!get call of list currency
   const findAllWithoutCurrencyDataByChange = (value) => {
     setIsCurrencyLoading(true);
     MarketplaceServices.findAllWithoutPage(
