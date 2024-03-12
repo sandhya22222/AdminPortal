@@ -52,6 +52,9 @@ function Status({
 
   useEffect(() => {
     setIsLoading(false);
+    if (statusInprogress === 1 || statusInprogress === 2) {
+      setActiveConfirmationModalOpen(false);
+    }
   }, []);
 
   const updateStoreStatus = async () => {
@@ -240,15 +243,15 @@ function Status({
         width={800}
       >
         {storeCheckStatus === 4 ? (
-          <Content className="!text-center">
+          <Content className="text-center">
             <Text className=" font-semibold text-[15px]">
               {t("labels:activating_store")}
             </Text>
             <div
               className="mt-5 mb-3"
-              style={{ "text-align": "-webkit-center" }}
+              // style={{ "text-align": "-webkit-center" }}
             >
-              <img src={storeActiveConfirmationImage} className="" />
+              <img src={storeActiveConfirmationImage} className="ml-[270px]" />
             </div>
             <div className="mb-3">
               <p className="!mb-0">{t("messages:patience_is_a_virtue")}</p>
@@ -269,11 +272,8 @@ function Status({
             <Text className=" font-semibold text-[15px]">
               {t("labels:deactivating_store")}
             </Text>
-            <div
-              className="mt-5 mb-3"
-              style={{ "text-align": "-webkit-center" }}
-            >
-              <img src={storeActiveConfirmationImage} className="" />
+            <div className="mt-5 mb-3">
+              <img src={storeActiveConfirmationImage} className="ml-[270px]" />
             </div>
             <div className="mb-3">
               <p className="!mb-0">{t("messages:patience_is_a_virtue")}</p>

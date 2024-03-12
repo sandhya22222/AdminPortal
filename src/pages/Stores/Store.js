@@ -1109,11 +1109,9 @@ const Stores = () => {
           error.response
         );
         if (error && error.response && error.response.status === 401) {
-          toast("Session expired", {
-            position: toast.POSITION.TOP_RIGHT,
-            type: "error",
-            autoClose: 10000,
-          });
+          MarketplaceToaster.showToast(
+            util.getToastObject(`${t("messages:session_expired")}`, "error")
+          );
         } else {
           if (error.response) {
             setErrorMessage(error.response.data.message);
@@ -1172,6 +1170,7 @@ const Stores = () => {
         );
         // setPreviousStatus(response.data.response_body.data[0].status);
         setStoreStatusId();
+        setSaveStoreModalOpen(false);
         let temp = [...storeApiData];
         let index = temp.findIndex((ele) => ele.id == id);
         temp[index]["status"] = response.data.response_body.data[0].status;
@@ -1240,7 +1239,6 @@ const Stores = () => {
     const intervalId = setInterval(() => {
       if (statusInprogressData && statusInprogressData.length > 0) {
         for (var i = 0; i < statusInprogressData.length; i++) {
-          console.log("first", statusInprogressData[i].id);
           setStoreId(statusInprogressData[i].id);
           setStoreStatusLoading(true);
           findAllStoreData(
@@ -1741,7 +1739,6 @@ const Stores = () => {
     window.scrollTo(0, 0);
   }, [searchParams]);
 
-  console.log("tab", tab);
   const handlePageNumberChange = (page, pageSize) => {
     setSearchParams({
       m_t: m_tab_id,
@@ -2372,9 +2369,9 @@ const Stores = () => {
             </Text>
             <div
               className="mt-5 mb-3"
-              style={{ "text-align": "-webkit-center" }}
+              // style={{ "text-align": "-webkit-center" }}
             >
-              <img src={saveStoreConfirmationImage} className="" />
+              <img src={saveStoreConfirmationImage} className="ml-[270px]" />
             </div>
             <div className="!font-medium">
               <p className="!mb-0 ">

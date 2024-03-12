@@ -109,8 +109,8 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
       case "store":
         setSelectedItem("2");
         break;
-      case "user-access-control":
-        setSelectedItem("12");
+      case "currency":
+        setSelectedItem("13");
         break;
       case "user-access-control":
         setSelectedItem("12");
@@ -171,7 +171,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
           label: `${t("labels:settings")}`,
           navigate_to: "/dashboard/",
           show_in_menu: true,
-          childrenKeys: ["3", "5", "6", "12"],
+          childrenKeys: ["3", "13", "5", "6", "12"],
           children: [
             {
               key: "3",
@@ -187,6 +187,14 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                   permissionValue.includes("UI-product-admin"))
                   ? false
                   : true,
+            },
+            {
+              key: "13",
+              icon: <img src={PaymentSettingsIcon} />,
+              inactive_icon: <img src={PaymentTypeIcon} />,
+              label: ` ${t("labels:currency")}`,
+              navigate_to: "/dashboard/currency",
+              show_in_menu: true,
             },
             {
               key: "5",

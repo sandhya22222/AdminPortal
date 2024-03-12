@@ -36,6 +36,8 @@ import StoreLimitComponent from "./pages/adminPlatform/StoreLimitComponent";
 import MarketplaceServices from "./services/axios/MarketplaceServices";
 import NewDashboard from "./pages/NewDashboard/Newdashboard";
 import { useEffect } from "react";
+import ListCurrency from "./pages/storeCurrency/ListCurrency";
+import EditCurrency from "./pages/storeCurrency/EditCurrency";
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 
 // const authFromEnv = process.env.REACT_APP_AUTH;
@@ -59,7 +61,9 @@ const App = () => {
         util.setPermissionData(
           res.data.response_body.resource_access[`${realmNameClient}`].roles
         );
-        setPermissionData(res.data.response_body.resource_access[`${realmNameClient}`].roles)
+        setPermissionData(
+          res.data.response_body.resource_access[`${realmNameClient}`].roles
+        );
       })
       .catch((err) => {
         console.log("get permission api error", err);
@@ -120,13 +124,21 @@ const App = () => {
         />
         <Header2 collapsed={collapsed} setCollapsed={setCollapsed} />
         <Container fluid className="p-0 bg-[#F4F4F4] text-[#393939]">
-        
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/logout" element={<LogOut />} />
 
             {auth.isAuthenticated ? (
-              <Route path="/dashboard" element={<SidebarNew permissionValue={permissionData} collapsed={collapsed} setCollapsed={setCollapsed} />}>
+              <Route
+                path="/dashboard"
+                element={
+                  <SidebarNew
+                    permissionValue={permissionData}
+                    collapsed={collapsed}
+                    setCollapsed={setCollapsed}
+                  />
+                }
+              >
                 <Route path="" element={<NewDashboard />} />
                 <>
                   {/* <Route path="language" element={<Language />} />
@@ -148,7 +160,13 @@ const App = () => {
                     path="store/storesetting"
                     element={<StoreSettings />}
                   />
+                  <Route path="currency" element={<ListCurrency />} />
+                  <Route
+                    path="currency/edit-currency"
+                    element={<EditCurrency />}
+                  />
                   <Route path="preview" element={<Preview />} />
+
                   <Route path="paymenttype" element={<PaymentType />} />
                   <Route
                     path="adminsettings"
