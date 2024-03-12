@@ -41,6 +41,8 @@ import OpenInNew from "../assets/images/sidebar/open-in-new.svg";
 import Collapse from "../assets/images/sidebar/collaps.svg";
 import saveStoreConfirmationImage from "../assets/images/common/StoreSaveConfirmationImage.svg";
 import storeActiveConfirmationImage from "../assets/images/common/StoreActiveDeactiveConfirmation.svg";
+import currencyIcon from "../assets/images/sidebar/currencyIcon.svg";
+import currencyInActiveIcon from "../assets/images/sidebar/currencyInActive.svg";
 export {
   AppStoreLogo,
   PlayStoreLogo,
@@ -85,4 +87,6 @@ export {
   Collapse,
   saveStoreConfirmationImage,
   storeActiveConfirmationImage,
+  currencyIcon,
+  currencyInActiveIcon
 };

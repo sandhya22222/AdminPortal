@@ -16,6 +16,8 @@ import {
   StoreSettings,
   PaymentSettingsIcon,
   OpenInNew,
+  currencyIcon,
+  currencyInActiveIcon,
 } from "../../constants/media";
 import Footer from "./../footer/Footer";
 import { useTranslation } from "react-i18next";
@@ -190,6 +192,8 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
             },
             {
               key: "13",
+              // icon: <img src={currencyIcon} />,
+              // inactive_icon: <img src={currencyInActiveIcon} />,
               icon: <img src={PaymentSettingsIcon} />,
               inactive_icon: <img src={PaymentTypeIcon} />,
               label: ` ${t("labels:currency")}`,
