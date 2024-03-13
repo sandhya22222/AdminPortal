@@ -82,7 +82,6 @@ const PreviewAndCustomise = ({
     if (leadInLine?.trim() !== userConsents?.leading_line) {
       const body = {
         store: storeId,
-        language_code: String(util.getUserSelectedLngCode()).toLowerCase(),
         leading_line: leadInLine?.trim(),
         explicit: true,
       };
@@ -144,13 +143,13 @@ const PreviewAndCustomise = ({
         <>
           <div className=" w-full flex ">
             <div className=" shrink-0">
-              <p className=" !text-black font-bold !text-opacity-40 py-4 ">
+              <Paragraph className=" !text-black font-bold !text-opacity-40 py-4 !mb-0 ">
                 {t("labels:preview")}
-              </p>
+              </Paragraph>
               <div className=" relative w-[600px] h-[507px] ">
                 <img src={ConsentPreview} alt="ConsentPreview" />
                 <div className=" absolute max-w-[440px] w-full bg-white rounded-b-lg top-[304px] !text-[13px] left-[80px] drop-shadow-md p-3">
-                  <p>{leadInLine?.trim()}</p>
+                  <Paragraph className=" !mb-0">{leadInLine?.trim()}</Paragraph>
                   {reorderList?.length > 0 &&
                     reorderList?.map((list, index) => {
                       return (
@@ -174,7 +173,7 @@ const PreviewAndCustomise = ({
                         );
                       })}
                   </div>
-                  <p className=" text-xs text-black">
+                  <p className=" text-xs text-black !mb-0">
                     {t("labels:copyright")} -{" "}
                     {t("labels:torry_harris_integration_solutions")} -{" "}
                     {t("labels:torry_harris_marketplace")} -{" "}
@@ -186,10 +185,10 @@ const PreviewAndCustomise = ({
             </div>
             <div className=" p-[1px] mx-6   self-stretch  bg-black !opacity-5" />
             <div className=" w-full">
-              <p className=" !text-black font-bold !text-opacity-40 pt-4 ">
+              <p className=" !text-black font-bold !text-opacity-40 py-4 !mb-0 ">
                 {t("labels:customisation")}
               </p>
-              <p className=" !text-black font-normal !text-opacity-40 pt-2 ">
+              <p className=" !text-black font-normal !text-opacity-40  !mb-0">
                 {t("labels:lead_in_line")}
               </p>
               <div className=" pt-2">

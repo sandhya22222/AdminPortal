@@ -7,6 +7,6 @@ const useUpdateConsentLead = () => {
     const res = await MarketplaceServices.update(BASE_URL, body);
     return res?.data;
   };
-  return useMutation({ mutationKey: updateConsentLead });
+  return useMutation({ mutationFn: updateConsentLead });
 };
 export default useUpdateConsentLead;
