@@ -45,7 +45,7 @@ const PoliciesSettings = ({ storeName }) => {
   const handelAddNewPolicy = () => {
     setAddNewPolicy(true);
     setTimeout(() => {
-      newPolicyRef.current.scrollIntoView();
+      newPolicyRef.current.scrollIntoView(false);
     }, [100]);
   };
   const onContactInfoChange = (e) => {
