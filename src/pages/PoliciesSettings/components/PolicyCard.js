@@ -10,7 +10,7 @@ import useUpdateUserConsent from "../hooks/useUpdateUserConsent";
 import "react-quill/dist/quill.snow.css";
 import useCreateUserConsent from "../hooks/useCreateUserConsent";
 
-const { Title } = Typography;
+const { Title, Paragraph } = Typography;
 
 const PolicyCard = ({
   consent,
@@ -201,11 +201,12 @@ const PolicyCard = ({
     ? false
     : {
         onChange: handelConsentNameChange,
-        maxLength: 255,
+        maxLength: 254,
         triggerType: ["icon", "text"],
         onCancel: () => setIsTittleEditable(false),
         onEnd: () => setIsTittleEditable(false),
         editing: true,
+        autoSize: { maxRows: 2 },
       };
 
   const policyTitleRef = useRef(null);
@@ -234,27 +235,30 @@ const PolicyCard = ({
       className=" bg-white  pb-6 policy-card max-w-[980px] w-full"
     >
       <div className=" h-[64px] flex justify-between items-center  w-full">
-        <div className=" flex items-center gap-x-5">
+        <div className=" flex items-center gap-x-5 max-w-[60%] w-full">
           {isTittleEditable ? (
-            <div ref={policyTitleRef}>
+            <div ref={policyTitleRef} className="max-w-xs  w-full">
               <Title
                 editable={editableTitle}
-                className=" !font-medium text-base "
-                level={4}
+                className=" !font-medium text-base  "
+                level={5}
               >
                 {consentName || t("labels:untitled_policy")}
               </Title>
             </div>
           ) : (
             <div
-              className={`flex items-center gap-x-2 ${
+              className={`flex items-center gap-x-2 max-w-[60%] ${
                 addContactInfo ? "cursor-default" : "cursor-pointer"
               } `}
               onClick={() => setIsTittleEditable(true)}
             >
-              <p className=" !font-medium text-base !mb-0 " level={4}>
-                {consentName || t("labels:untitled_policy")}
-              </p>
+              <Paragraph
+                className=" !font-medium text-base !mb-0  "
+                ellipsis={{ tooltip: consentName }}
+              >
+                {consentName?.substring(0, 50) || t("labels:untitled_policy")}
+              </Paragraph>
               {!addContactInfo && <img src={ConsentEditIcon} alt="" />}
             </div>
           )}
@@ -277,12 +281,14 @@ const PolicyCard = ({
           )}
         </div>
         {!addContactInfo && (
-          <Button
-            className="app-btn-danger"
-            onClick={() => handelDeletePolicy(consent?.id)}
-          >
-            {t("labels:delete")}
-          </Button>
+          <div className=" max-w-[40%] w-full flex justify-end">
+            <Button
+              className="app-btn-danger"
+              onClick={() => handelDeletePolicy(consent?.id)}
+            >
+              {t("labels:delete")}
+            </Button>
+          </div>
         )}
       </div>
       <div className=" rounded border-[1px] drop-shadow-sm shadow-[#D9D9D9] border-[#D9D9D9] bg-white   w-full">

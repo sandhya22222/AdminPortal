@@ -45,7 +45,7 @@ const PoliciesSettings = ({ storeName }) => {
   const handelAddNewPolicy = () => {
     setAddNewPolicy(true);
     setTimeout(() => {
-      newPolicyRef.current.scrollIntoView();
+      newPolicyRef.current.scrollIntoView(false);
     }, [100]);
   };
   const onContactInfoChange = (e) => {
@@ -114,7 +114,7 @@ const PoliciesSettings = ({ storeName }) => {
       <Title level={3} className="!font-bold">
         {t("messages:policies")}
       </Title>
-      <div className=" flex  w-full justify-between ">
+      <div className=" flex  w-full max-w-[980px] justify-between ">
         <Text>{t("messages:help_info_policies")}</Text>
         <div className=" space-x-2">
           <Button onClick={handelPreviewAndCustomise}>
