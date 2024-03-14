@@ -2638,14 +2638,6 @@ const StoreSettings = () => {
     }
   };
 
-  useEffect(() => {
-    const currencyDisplayData = filteredCurrencyData.filter(
-      (ele) => ele.symbol === currencySymbol
-    );
-    if (currencyDisplayData && currencyDisplayData.length > 0) {
-      setCurrencyData(currencyDisplayData);
-    }
-  }, [filteredCurrencyData]);
 
   useEffect(() => {
     findAllStoreApi();
@@ -2657,6 +2649,22 @@ const StoreSettings = () => {
       findAllWithoutPageStoreImagesApi(id);
     }
   }, [id]);
+
+  useEffect(() => {
+    console.log("filteredCurrencyData", filteredCurrencyData);
+    const currencyDisplayData =
+      filteredCurrencyData &&
+      filteredCurrencyData.length > 0 &&
+      filteredCurrencyData.filter((ele) => ele.symbol === currencySymbol);
+    if (
+      currencyDisplayData !== false &&
+      currencyDisplayData &&
+      currencyDisplayData.length > 0
+    ) {
+      setCurrencyData(currencyDisplayData);
+    }
+    console.log("currencyDisplayData", currencyDisplayData);
+  }, [filteredCurrencyData]);
 
   return (
     <Content>
