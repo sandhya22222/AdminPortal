@@ -743,14 +743,15 @@ const StoreSettings = () => {
                 "success"
               )
             );
-          } else if (previousStatus === 4) {
-            MarketplaceToaster.showToast(
-              util.getToastObject(
-                `${t("messages:activation_unsuccessful")}`,
-                "error"
-              )
-            );
           }
+          //   else if (previousStatus === 4) {
+          //     MarketplaceToaster.showToast(
+          //       util.getToastObject(
+          //         `${t("messages:activation_unsuccessful")}`,
+          //         "error"
+          //       )
+          //     );
+          //   }
         }
       })
       .catch((error) => {
@@ -2639,15 +2640,6 @@ const StoreSettings = () => {
   };
 
   useEffect(() => {
-    const currencyDisplayData = filteredCurrencyData.filter(
-      (ele) => ele.symbol === currencySymbol
-    );
-    if (currencyDisplayData && currencyDisplayData.length > 0) {
-      setCurrencyData(currencyDisplayData);
-    }
-  }, [filteredCurrencyData]);
-
-  useEffect(() => {
     findAllStoreApi();
     findAllStoreLimit();
     findByPageCurrencyData();
@@ -2657,6 +2649,21 @@ const StoreSettings = () => {
       findAllWithoutPageStoreImagesApi(id);
     }
   }, [id]);
+
+  useEffect(() => {
+    console.log("filteredCurrencyData", filteredCurrencyData);
+    const currencyDisplayData =
+      filteredCurrencyData &&
+      filteredCurrencyData.length > 0 &&
+      filteredCurrencyData.filter((ele) => ele.symbol === currencySymbol);
+    if (
+      currencyDisplayData !== false &&
+      currencyDisplayData &&
+      currencyDisplayData.length > 0
+    ) {
+      setCurrencyData(currencyDisplayData);
+    }
+  }, [filteredCurrencyData, currencySymbol]);
 
   return (
     <Content>

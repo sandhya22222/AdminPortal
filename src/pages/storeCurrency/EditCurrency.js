@@ -63,7 +63,7 @@ const EditCurrency = () => {
         setIsLoading(false);
         console.log(
           "server Success response from currency API call",
-          response.data.response_body.data.filter((ele) => ele.id === cId)
+          response.data.response_body.data
         );
         const currencyData = response.data.response_body.data;
 
@@ -146,15 +146,16 @@ const EditCurrency = () => {
         setOnChangeDisable(false);
         const copyOfCurrencyDetails = { ...currencyDetails };
         copyOfCurrencyDetails.is_default =
-          response && response.data.response_body.is_default;
+        response && response.data.response_body.is_default;
         copyOfCurrencyDetails.no_of_decimal =
-          response && response.data.response_body.no_of_decimal;
-        setCurrencyDetails(copyOfCurrencyDetails);
+        response && response.data.response_body.no_of_decimal;
+        setCurrencyDetails(copyOfCurrencyDetails);      
         setDefaultChecked(response && response.data.response_body.is_default);
         closeCurrencyDefaultWaringModal(false);
         setDefaultLoader(false);
       })
       .catch((error) => {
+        console.log("Currency Default API error response", error);
         setIsLoading(false);
         setDefaultLoader(false);
         setOnChangeDisable(false);
@@ -190,17 +191,22 @@ const EditCurrency = () => {
     setWarningCurrencyDefaultModal(false);
   };
 
-  const validationForCurrencyPutCall = () => {
-    if (
-      responseCurrencyData[0].no_of_decimal === currencyDetails.no_of_decimal
-    ) {
-      MarketplaceToaster.showToast(
-        util.getToastObject(`${t("messages:no_changes_were_detected")}`, "info")
-      );
-    } else {
-      makeAsDefaultCurrency();
-    }
-  };
+
+  // const validationForCurrencyPutCall = () => {
+  //   console.log(
+  //     "responseCurrencyData",
+  //     responseCurrencyData[0].no_of_decimal === currencyDetails.no_of_decimal
+  //   );
+  //   if (
+  //     responseCurrencyData[0].no_of_decimal === currencyDetails.no_of_decimal
+  //   ) {
+  //     MarketplaceToaster.showToast(
+  //       util.getToastObject(`${t("messages:no_changes_were_detected")}`, "info")
+  //     );
+  //   } else {
+  //     makeAsDefaultCurrency();
+  //   }
+  // };
 
   useEffect(() => {
     findByPageCurrencyData();
@@ -360,7 +366,7 @@ const EditCurrency = () => {
                 <Button
                   className="app-btn-primary"
                   disabled={!onChangeDisable}
-                  onClick={() => validationForCurrencyPutCall()}
+                  onClick={() => makeAsDefaultCurrency()}
                 >
                   {t("labels:save")}
                 </Button>
