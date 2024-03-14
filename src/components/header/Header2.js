@@ -83,7 +83,7 @@ const Header2 = ({ collapsed, setCollapsed }) => {
     (state) => state.reducerUserProfileInfo.userProfileInfo
   );
   const languageItems = [];
-  if (storeLanguages && storeLanguages.length > 1) {
+  if (storeLanguages && storeLanguages.length > 0) {
     storeLanguages.forEach((element) => {
       const languageItem = {};
       languageItem["value"] = element.language_code;
