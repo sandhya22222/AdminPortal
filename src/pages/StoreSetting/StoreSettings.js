@@ -2663,8 +2663,7 @@ const StoreSettings = () => {
     ) {
       setCurrencyData(currencyDisplayData);
     }
-    console.log("currencyDisplayData", currencyDisplayData);
-  }, [filteredCurrencyData]);
+  }, [filteredCurrencyData, currencySymbol]);
 
   return (
     <Content>
