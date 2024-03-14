@@ -1208,14 +1208,16 @@ const Stores = () => {
                   "success"
                 )
               );
-            } else if (previousStatus === 4) {
-              MarketplaceToaster.showToast(
-                util.getToastObject(
-                  `${t("messages:activation_unsuccessful")}`,
-                  "error"
-                )
-              );
-            } else {
+            }
+            // else if (previousStatus === 4) {
+            //   MarketplaceToaster.showToast(
+            //     util.getToastObject(
+            //       `${t("messages:activation_unsuccessful")}`,
+            //       "error"
+            //     )
+            //   );
+            // }
+            else {
               MarketplaceToaster.showToast(
                 util.getToastObject(
                   `${t("messages:your_store_has_been_successfully_created")}`,

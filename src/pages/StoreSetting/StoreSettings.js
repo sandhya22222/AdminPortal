@@ -743,14 +743,15 @@ const StoreSettings = () => {
                 "success"
               )
             );
-          } else if (previousStatus === 4) {
-            MarketplaceToaster.showToast(
-              util.getToastObject(
-                `${t("messages:activation_unsuccessful")}`,
-                "error"
-              )
-            );
           }
+          //   else if (previousStatus === 4) {
+          //     MarketplaceToaster.showToast(
+          //       util.getToastObject(
+          //         `${t("messages:activation_unsuccessful")}`,
+          //         "error"
+          //       )
+          //     );
+          //   }
         }
       })
       .catch((error) => {
@@ -2637,7 +2638,6 @@ const StoreSettings = () => {
       return localCurrencyData;
     }
   };
-
 
   useEffect(() => {
     findAllStoreApi();
