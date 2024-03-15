@@ -168,7 +168,7 @@ const PolicyCard = ({
             });
             setTimeout(() => {
               setDescriptionModified(false);
-            }, [500]);
+            }, [300]);
           },
           onError: (err) => {
             toast(
@@ -282,10 +282,7 @@ const PolicyCard = ({
         </div>
         {!addContactInfo && (
           <div className=" max-w-[40%] w-full flex justify-end">
-            <Button
-              className="app-btn-danger"
-              onClick={() => handelDeletePolicy(consent?.id)}
-            >
+            <Button danger onClick={() => handelDeletePolicy(consent?.id)}>
               {t("labels:delete")}
             </Button>
           </div>
