@@ -116,5 +116,7 @@
   "delete_confirmation": "Are you sure you want to delete the policy?",
   "order_policies": "Drag sort the order of the policies",
   "error_updating_Leadin_line": "Error updating Lead in Line",
-  "error_updating_consent_order": "Error updating consent order"
+  "error_updating_consent_order": "Error updating consent order",
+  "restore_settings_warning_msg":"You are about to reset your theme to the default colors.",
+  "restore_settings_modal_msg":"This action will remove any custom color changes you've made."
 }
