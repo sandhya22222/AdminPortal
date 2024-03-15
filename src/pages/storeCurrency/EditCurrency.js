@@ -350,6 +350,7 @@ const EditCurrency = () => {
                   max={4294967295}
                   minLength={1}
                   maxLength={4294967295}
+                  disabled
                   placeholder="Enter no of decimals"
                   value={currencyDetails.no_of_decimal}
                   onChange={(e) => {
@@ -361,7 +362,7 @@ const EditCurrency = () => {
                 />
               </Col>
             </Row>
-            <Row className="mb-3 gap-3">
+            {/* <Row className="mb-3 gap-3">
               <Col>
                 <Button
                   className="app-btn-primary"
@@ -380,7 +381,7 @@ const EditCurrency = () => {
                   {t("labels:discard")}
                 </Button>
               </Col>
-            </Row>
+            </Row> */}
           </Content>
         </Spin>
       </Content>

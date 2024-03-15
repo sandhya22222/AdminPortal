@@ -250,5 +250,6 @@
   "last_updated": "Last updated",
   "confirm": "Confirm",
   "customisation": "Customisation",
-  "lead_in_line": "Lead In Line"
+  "lead_in_line": "Lead In Line",
+  "reset_default":"Reset Theme to Default"
 }

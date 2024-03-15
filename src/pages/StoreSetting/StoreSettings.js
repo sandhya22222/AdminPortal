@@ -162,6 +162,8 @@ const StoreSettings = () => {
   const [onChangeValues, setOnChangeValues] = useState(false);
   const [imageChangeValues, setImageChangeValues] = useState(false);
   const [filteredCurrencyData, setFilteredCurrencyData] = useState([]);
+  const [resetModalOpen, setResetModalOpen] = useState(false);
+  const [resetLoader, setResetLoader] = useState(false);
   let defaultDataLimitValues = {
     vendor_limit: 0,
     customer_limit: 0,
@@ -394,7 +396,7 @@ const StoreSettings = () => {
 
   //! get call for store Settings Restore Factor API
   const updateStoreSettingsRestoreApi = () => {
-    setIsLoading(true);
+    setResetLoader(true);
     MarketplaceServices.update(
       storeSettingsRestoreFactorAPI,
       {},
@@ -403,9 +405,9 @@ const StoreSettings = () => {
       }
     )
       .then((response) => {
-        setIsLoading(false);
         setOnChangeValues(false);
-
+        setResetModalOpen(false);
+        setResetLoader(false);
         console.log(
           "success response  for Store Settings Restore Factory ",
           storeSettingsRestoreFactorAPI,
@@ -533,8 +535,7 @@ const StoreSettings = () => {
         );
       })
       .catch((error) => {
-        setIsLoading(false);
-
+        setResetLoader(false);
         console.log(
           "ERROR response  for Store Settings Restore Factory ",
           storeSettingsRestoreFactorAPI,
@@ -2639,6 +2640,10 @@ const StoreSettings = () => {
     }
   };
 
+  const closeResetWaringModal = () => {
+    setResetModalOpen(false);
+  };
+
   useEffect(() => {
     findAllStoreApi();
     findAllStoreLimit();
@@ -3266,13 +3271,13 @@ const StoreSettings = () => {
                   {t("labels:currency")}
                 </label>
                 <Content>
-                  <Col span={12}>
+                  <Col span={8}>
                     <label className="text-[14px] mb-2 ml-1 input-label-color">
                       {t("labels:choose_store_currency")}
                     </label>
                     <Select
                       showSearch={false}
-                      className="w-80"
+                      className="w-100"
                       dropdownStyle={{ zIndex: 1 }}
                       placeholder={t("messages:please_choose_a_store_currency")}
                       value={
@@ -3294,35 +3299,36 @@ const StoreSettings = () => {
                 {currencyData && currencyData.length > 0 ? (
                   <div className="w-[100%] !flex-col !gap-2 !justify-start">
                     <div
-                      className={`w-[14%]  !inline-block   ${
+                      className={`justify-items-start  !inline-block   ${
                         util.getSelectedLanguageDirection()?.toUpperCase() ===
                         "RTL"
                           ? "text-left ml-2"
                           : "text-right mr-2 "
                       }`}
                     >
-                      <p className="!text-gray-500 my-3">
+                      <p className="!text-gray-500 my-3 flex">
                         {t("labels:currency_code")}{" "}
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
+                        <span className="ml-11">:</span>
                       </p>
-                      <p className="!text-gray-500 my-3">
-                        {t("labels:unit_conversation")} &nbsp;&nbsp;&nbsp;:
+                      <p className="!text-gray-500 my-3 flex">
+                        {t("labels:unit_conversation")}
+                        <span className="ml-6">:</span>
                       </p>
-                      <p className="!text-gray-500 my-3">
+                      <p className="!text-gray-500 my-3 flex">
                         {t("labels:unit_price_name")}
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
+                        <span className="ml-9">:</span>
                       </p>
-                      <p className="!text-gray-500 my-3">
+                      <p className="!text-gray-500 my-3 flex">
                         {t("labels:min_amount")}
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                        <span className="ml-[60px]">:</span>
                       </p>
-                      <p className="!text-gray-500 my-3">
-                        {t("labels:currency_symbol")}{" "}
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                      <p className="!text-gray-500 my-3 flex">
+                        {t("labels:currency_symbol")}
+                        <span className="ml-8">:</span>
                       </p>
-                      <p className="!text-gray-500 my-3">
-                        {t("labels:no_of_decimals")}{" "}
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                      <p className="!text-gray-500 my-3 flex">
+                        {t("labels:no_of_decimals")}
+                        <span className="ml-10">:</span>
                       </p>
                     </div>
                     <div className="w-[50%] !inline-block ml-8">
@@ -3561,7 +3567,7 @@ const StoreSettings = () => {
                       <div className="flex space-x-2">
                         <Button
                           className="app-btn-secondary !text-end"
-                          onClick={() => updateStoreSettingsRestoreApi()}
+                          onClick={() => setResetModalOpen(true)}
                         >
                           {t("labels:reset")}
                         </Button>
@@ -4754,6 +4760,25 @@ const StoreSettings = () => {
                     </Row>
                   )}
                 </Content>
+                <StoreModal
+                  isVisible={resetModalOpen}
+                  okButtonText={t("labels:yes")}
+                  cancelButtonText={t("labels:cancel")}
+                  title={t("labels:reset_default")}
+                  okCallback={() => updateStoreSettingsRestoreApi()}
+                  cancelCallback={() => {
+                    closeResetWaringModal();
+                  }}
+                  isSpin={resetLoader}
+                  hideCloseButton={false}
+                >
+                  {
+                    <div>
+                      <p className="!mb-0">{t("messages:restore_settings_warning_msg")}</p>
+                      <p>{t("messages:restore_settings_modal_msg")}</p>
+                    </div>
+                  }
+                </StoreModal>
               </Content>
             </Spin>
           </>

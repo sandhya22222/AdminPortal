@@ -73,6 +73,14 @@
   color: var(--mp-input-field-value-color) !important;
 }
 
+.ant-input[disabled]:hover {
+  border-color: #d9d9d9 !important
+}
+
+.ant-input-number-disabled{
+ color: var(--mp-input-field-value-color) !important
+}
+
 ::placeholder {
   color: var(--mp-input-field-placeholder-color) !important;
 }
