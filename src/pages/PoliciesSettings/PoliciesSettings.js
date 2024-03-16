@@ -1,4 +1,4 @@
-import { Alert, Button, Checkbox, Skeleton, Typography } from "antd";
+import { Alert, Button, Checkbox, Empty, Skeleton, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import "./policiesSettings.css";
 import { useState } from "react";
@@ -36,6 +36,7 @@ const PoliciesSettings = ({ storeName }) => {
     status: userConsentStatus,
     error: userConsentError,
     refetch: refetchUserConsent,
+    isFetched: isUserConsentFetched,
   } = useGetUserConsent({
     storeId: storeUUID,
   });
@@ -60,19 +61,19 @@ const PoliciesSettings = ({ storeName }) => {
   useEffect(() => {
     let tempContactInformation = [];
     const tempPoliciesWithoutContactInformation = [];
-    if (userConsentStatus === "success") {
+    if (userConsentStatus === "success" || isUserConsentFetched) {
       userConsents?.userconsent_data?.forEach((consent) => {
         if (consent?.name === CONTACT_INFORMATION) {
           tempContactInformation = [consent];
         } else tempPoliciesWithoutContactInformation.push(consent);
       });
       setContactInformation(tempContactInformation);
-      setPoliciesWithoutContactInformation(
-        tempPoliciesWithoutContactInformation
-      );
+      setPoliciesWithoutContactInformation([
+        ...tempPoliciesWithoutContactInformation,
+      ]);
       if (tempContactInformation?.length > 0) setContactInfo(true);
     }
-  }, [userConsentStatus, userConsents]);
+  }, [isUserConsentFetched, userConsentStatus, userConsents]);
 
   const handelDeletePolicy = (userConsentId) => {
     if (userConsentId) setDeletePolicy(userConsentId);
@@ -117,7 +118,10 @@ const PoliciesSettings = ({ storeName }) => {
       <div className=" flex  w-full max-w-[980px] justify-between ">
         <Text>{t("messages:help_info_policies")}</Text>
         <div className=" space-x-2">
-          <Button onClick={handelPreviewAndCustomise}>
+          <Button
+            onClick={handelPreviewAndCustomise}
+            disabled={userConsents?.userconsent_data?.length <= 0}
+          >
             {t("labels:preview_and_customise")}
           </Button>
           <Button className="app-btn-primary " onClick={handelAddNewPolicy}>
@@ -144,7 +148,7 @@ const PoliciesSettings = ({ storeName }) => {
               );
             })}
 
-          {addNewPolicy && (
+          {addNewPolicy ? (
             <div ref={newPolicyRef}>
               <PolicyCard
                 isNewPolicy
@@ -154,7 +158,11 @@ const PoliciesSettings = ({ storeName }) => {
                 storeId={storeId}
               />
             </div>
-          )}
+          ) : userConsents?.userconsent_data?.length <= 0 ? (
+            <div className=" py-3">
+              <Empty description={false} />
+            </div>
+          ) : null}
 
           <Checkbox onChange={onContactInfoChange} checked={addContactInfo}>
             Display contact information

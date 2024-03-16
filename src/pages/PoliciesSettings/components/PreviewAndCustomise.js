@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 
 import { ConsentPreview } from "../../../constants/media";
-import { Typography, Input, Button, Spin } from "antd";
+import { Typography, Input, Button, Spin, Switch, Checkbox } from "antd";
 import { useEffect, useState } from "react";
 import useUpdateConsentLead from "../hooks/useUpdateConsentLead";
 import util from "../../../util/common";
@@ -20,18 +20,26 @@ const PreviewAndCustomise = ({
   storeId,
 }) => {
   const { t } = useTranslation();
-  const { data: userConsents, status: userConsentsStatus } =
-    useGetStoreUserConsent({
-      storeName,
-    });
+  const {
+    data: userConsents,
+    status: userConsentsStatus,
+    refetch: refetchUserConsents,
+  } = useGetStoreUserConsent({
+    storeName,
+  });
   const [leadInLine, setLeadInLine] = useState("");
   const [reorderList, setReorderList] = useState([]);
   const [draggedItem, setDraggedItem] = useState(null);
   const [draggedOverItem, setDraggedOverItem] = useState(null);
   const [isListReordered, setIsListReordered] = useState(false);
+  const [explicit, setExplicit] = useState(false);
 
-  const { mutate: UpdateConsentLead } = useUpdateConsentLead();
-  const { mutate: updateConsentsOrder } = useUpdateConsentsOrder();
+  const { mutateAsync: UpdateConsentLead, status: UpdateConsentLeadStatus } =
+    useUpdateConsentLead();
+  const {
+    mutateAsync: updateConsentsOrder,
+    status: updateConsentsOrderStatus,
+  } = useUpdateConsentsOrder();
   const handelLeadInLine = (e) => {
     setLeadInLine(e.target.value);
   };
@@ -41,7 +49,11 @@ const PreviewAndCustomise = ({
       userConsents?.userconsent_data?.length > 0 &&
       userConsentsStatus === "success"
     ) {
-      setLeadInLine(userConsents?.leading_line);
+      setLeadInLine(
+        userConsents?.leading_line ||
+          "I have read and agreed to the following policies."
+      );
+      setExplicit(userConsents?.explicit);
       const tempReorderList = [];
       userConsents?.userconsent_data?.forEach((consent) => {
         tempReorderList.push({
@@ -78,60 +90,79 @@ const PreviewAndCustomise = ({
   };
 
   const handelSave = () => {
-    let updateStatus = "success";
-    if (leadInLine?.trim() !== userConsents?.leading_line) {
-      const body = {
-        store: storeId,
-        leading_line: leadInLine?.trim(),
-        explicit: true,
-      };
-      UpdateConsentLead(
-        { body },
-        {
-          onError: (err) => {
-            toast(
-              err?.response?.data?.message ||
-                t("messages:error_updating_Leadin_line"),
-              {
-                type: "error",
-              }
-            );
-            updateStatus = "error";
-          },
-        }
-      );
-    }
-    if (reorderList?.length > 0 && isListReordered) {
-      const body = { user_consent_order: [] };
-      reorderList?.forEach((consent, index) => {
-        body.user_consent_order.push({
-          userconsent_id: consent.key,
-          ordering: index + 1,
+    const updateLeadInLineAndExplicit = async () => {
+      if (
+        leadInLine?.trim() !== userConsents?.leading_line ||
+        explicit !== userConsents?.explicit
+      ) {
+        const body = {
+          store: storeId,
+          leading_line: leadInLine?.trim(),
+          explicit: !!explicit,
+        };
+        await UpdateConsentLead(
+          { body },
+          {
+            onError: (err) => {
+              toast(
+                err?.response?.data?.message ||
+                  t("messages:error_updating_Leadin_line"),
+                {
+                  type: "error",
+                }
+              );
+              Promise.reject();
+            },
+          }
+        );
+      }
+    };
+    const updateConsentOrder = async () => {
+      if (reorderList?.length > 0 && isListReordered) {
+        const body = { user_consent_order: [] };
+        reorderList?.forEach((consent, index) => {
+          body.user_consent_order.push({
+            userconsent_id: consent.key,
+            ordering: index + 1,
+          });
         });
-      });
-      console.log(body, "body");
-      updateConsentsOrder(
-        { body },
-        {
-          onError: (err) => {
-            toast(
-              err?.response?.data?.message ||
-                t("messages:error_updating_consent_order"),
-              {
-                type: "error",
-              }
-            );
-            updateStatus = "error";
-          },
-        }
-      );
-    }
-    if (updateStatus !== "error") {
-      refetchUserConsent();
-      closeModal();
-    }
+        console.log(body, "body");
+        await updateConsentsOrder(
+          { body },
+          {
+            onError: (err) => {
+              toast(
+                err?.response?.data?.message ||
+                  t("messages:error_updating_consent_order"),
+                {
+                  type: "error",
+                }
+              );
+              Promise.reject();
+            },
+          }
+        );
+      }
+    };
+    Promise.allSettled([
+      updateLeadInLineAndExplicit(),
+      updateConsentOrder(),
+    ]).then((values) => {
+      const checkIfPromiseResolved = [];
+      values?.forEach((value) => checkIfPromiseResolved.push(value?.status));
+      if (!checkIfPromiseResolved?.includes("rejected")) {
+        setTimeout(() => {
+          refetchUserConsent();
+          refetchUserConsents();
+          closeModal();
+        }, [300]);
+      }
+    });
   };
 
+  const handelExplicitChange = (checked) => {
+    setExplicit(checked);
+  };
   return (
     <>
       {userConsentsStatus === "pending" && (
@@ -143,24 +174,27 @@ const PreviewAndCustomise = ({
         <>
           <div className=" w-full flex ">
             <div className=" shrink-0">
-              <Paragraph className=" !text-black font-bold !text-opacity-40 py-4 !mb-0 ">
+              <Paragraph className=" !text-black font-bold !text-opacity-40 py-3 !mb-0 ">
                 {t("labels:preview")}
               </Paragraph>
               <div className=" relative w-[600px] h-[507px] ">
                 <img src={ConsentPreview} alt="ConsentPreview" />
-                <div className=" absolute max-w-[440px] w-full bg-white rounded-b-lg top-[304px] !text-[13px] left-[80px] drop-shadow-md p-3">
-                  <Paragraph className=" !mb-0">{leadInLine?.trim()}</Paragraph>
-                  {reorderList?.length > 0 &&
-                    reorderList?.map((list, index) => {
-                      return (
-                        <span key={list?.key} className=" text-[#1890FF] ">
-                          <span className=" text-black">
-                            {index !== 0 ? ", " : ""}
+                <div className=" absolute max-w-[440px] flex w-full items-start gap-x-2 bg-white rounded-b-lg top-[304px] !text-[13px] left-[80px] drop-shadow-md p-3">
+                  {explicit ? <Checkbox /> : null}
+                  <div>
+                    <span className=" mr-1">{leadInLine?.trim()}</span>
+                    {reorderList?.length > 0 &&
+                      reorderList?.map((list, index) => {
+                        return (
+                          <span key={list?.key} className=" text-[#1890FF] ">
+                            <span className=" text-black">
+                              {index !== 0 ? ", " : ""}
+                            </span>
+                            {list?.name}
                           </span>
-                          {list?.name}
-                        </span>
-                      );
-                    })}
+                        );
+                      })}
+                  </div>
                 </div>
                 <div className=" absolute bottom-0 w-full bg-[#D9D9D9] py-2 px-2">
                   <div className=" !text-xs flex items-center pb-2 gap-y-2 gap-x-8 flex-wrap justify-center">
@@ -185,9 +219,19 @@ const PreviewAndCustomise = ({
             </div>
             <div className=" p-[1px] mx-6   self-stretch  bg-black !opacity-5" />
             <div className=" w-full">
-              <p className=" !text-black font-bold !text-opacity-40 py-4 !mb-0 ">
+              <p className=" !text-black font-bold !text-opacity-40 py-3 !mb-0 ">
                 {t("labels:customisation")}
               </p>
+              <p className=" !text-black font-normal !text-opacity-40 mb-2  ">
+                {t("labels:consent_explicit")}
+              </p>
+              <Switch
+                checked={explicit}
+                onChange={handelExplicitChange}
+                className={` mb-4 ${
+                  explicit ? "!bg-green-500" : "!bg-gray-400"
+                }`}
+              />
               <p className=" !text-black font-normal !text-opacity-40  !mb-0">
                 {t("labels:lead_in_line")}
               </p>
@@ -205,7 +249,7 @@ const PreviewAndCustomise = ({
                 <p className=" !text-base text-black !text-opacity-80 font-medium">
                   {t("messages:order_policies")}
                 </p>
-                <div className=" mt-2 max-w-[280px] w-full">
+                <div className=" mt-2 max-w-[280px]  h-[300px] overflow-y-auto w-full">
                   {reorderList?.length > 0 &&
                     reorderList?.map((list, index) => {
                       return (
@@ -249,8 +293,18 @@ const PreviewAndCustomise = ({
             </div>
           </div>
           <div className=" flex justify-end">
-            <Button className="app-btn-primary  uppercase" onClick={handelSave}>
-              {t("common:ok")}
+            <Button
+              className="app-btn-primary  uppercase"
+              loading={
+                updateConsentsOrderStatus === "pending" ||
+                UpdateConsentLeadStatus === "pending"
+              }
+              onClick={handelSave}
+            >
+              {updateConsentsOrderStatus === "pending" ||
+              UpdateConsentLeadStatus === "pending"
+                ? ""
+                : t("common:ok")}
             </Button>
           </div>
         </>
