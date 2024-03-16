@@ -257,8 +257,12 @@ const UserProfile = () => {
       .catch((error) => {
         console.log("error from store all users API ====>", error.response);
         MarketplaceToaster.showToast(error.response);
-        if(Number(error.response.status) === 400){
-          setIsCurrentPasswordValid(false)
+        if (error.response.status === 400 &&  error.response.data.response_code === "UMS-000079-09") {
+          setIsCurrentPasswordValid(false);
+        }
+        if (Number(error.response.status) === 400 && error.response.data.response_code === "UMS-000079-04") {
+          setIsConfirmPasswordValid(false);
+          setIsNewPasswordValid(false);
         }
         setPassword("");
         setCurrentPassword("");
