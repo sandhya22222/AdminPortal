@@ -102,14 +102,14 @@
 }
 
 .ant-btn.ant-btn-sm {
-  background-color: var(--mp-primary-color) !important;
+  /* background-color: var(--mp-primary-color) !important; */
   border-radius: 4px;
   font-size: 14px;
   height: 24px;
   /* padding: 0px 7px; */
 }
 .ant-btn.ant-btn-sm:hover {
-  background-color: var(--mp-primary-color-h) !important;
+  /* background-color: var(--mp-primary-color-h) !important; */
   border-radius: 4px;
   font-size: 14px;
   height: 24px;
