@@ -1,4 +1,12 @@
-import { Alert, Button, Checkbox, Empty, Skeleton, Typography } from "antd";
+import {
+  Alert,
+  Button,
+  Checkbox,
+  Empty,
+  Modal,
+  Skeleton,
+  Typography,
+} from "antd";
 import { useTranslation } from "react-i18next";
 import "./policiesSettings.css";
 import { useState } from "react";
@@ -188,15 +196,30 @@ const PoliciesSettings = ({ storeName }) => {
           )}
         </div>
       )}
-      <StoreModal
-        isVisible={deletePolicy}
-        cancelCallback={() => setDeletePolicy(null)}
-        okCallback={() => deletePolicyById(deletePolicy)}
-        title={t("messages:delete_confirmation")}
+      <Modal
+        title={t("labels:delete_policies")}
         isSpin={false}
-        okButtonText={t("labels:confirm")}
-        cancelButtonText={t("labels:cancel")}
-      />
+        open={deletePolicy}
+        width={"446px"}
+        centered={true}
+        onCancel={() => setDeletePolicy(null)}
+        footer={[
+          <Button onClick={() => setDeletePolicy(null)}>
+            {t("labels:cancel")}
+          </Button>,
+          <Button
+            danger
+            className=" app-btn-danger"
+            onClick={() => deletePolicyById(deletePolicy)}
+          >
+            {t("labels:yes")}
+          </Button>,
+        ]}
+      >
+        <Text className="!text-[#333333]">
+          {t("messages:delete_confirmation")}
+        </Text>
+      </Modal>
       <StoreModal
         isVisible={previewAndCustomise}
         title={t("labels:preview_and_customise")}

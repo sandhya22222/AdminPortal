@@ -179,31 +179,53 @@ const PreviewAndCustomise = ({
               </Paragraph>
               <div className=" relative w-[600px] h-[507px] ">
                 <img src={ConsentPreview} alt="ConsentPreview" />
-                <div className=" absolute max-w-[440px] flex w-full items-start gap-x-2 bg-white rounded-b-lg top-[304px] !text-[13px] left-[80px] drop-shadow-md p-3">
+                <div className=" absolute max-w-[440px] flex w-full items-start gap-x-2 bg-white rounded-b-lg top-[304px] !text-[13px] left-[80px] max-h-[114px] overflow-y-auto drop-shadow-md p-3">
                   {explicit ? <Checkbox /> : null}
-                  <div>
+                  <div className={` ${explicit ? "w-[90%]" : " w-full"} `}>
                     <span className=" mr-1">{leadInLine?.trim()}</span>
                     {reorderList?.length > 0 &&
                       reorderList?.map((list, index) => {
                         return (
-                          <span key={list?.key} className=" text-[#1890FF] ">
-                            <span className=" text-black">
-                              {index !== 0 ? ", " : ""}
-                            </span>
-                            {list?.name}
+                          <span key={list?.key} className="">
+                            <Text
+                              ellipsis={{
+                                tooltip: {
+                                  title: list.name,
+                                  mouseLeaveDelay: 0,
+                                  mouseEnterDelay: 0.5,
+                                },
+                              }}
+                              className=" text-[#1890FF] text-[13px] "
+                            >
+                              <span className=" text-black">
+                                {index !== 0 ? ", " : ""}
+                              </span>
+                              {list?.name}
+                            </Text>
                           </span>
                         );
                       })}
                   </div>
                 </div>
                 <div className=" absolute bottom-0 w-full bg-[#D9D9D9] py-2 px-2">
-                  <div className=" !text-xs flex items-center pb-2 gap-y-2 gap-x-8 flex-wrap justify-center">
+                  <div className=" !text-xs flex items-center pb-2 gap-y-2 gap-x-8 max-h-[48px] overflow-y-auto flex-wrap justify-center">
                     {reorderList?.length > 0 &&
                       reorderList?.map((list, index) => {
                         return (
-                          <span key={list?.key} className=" text-[#1890FF] ">
-                            {list?.name}
-                          </span>
+                          <div className=" max-w-[260px]" key={list?.key}>
+                            <Text
+                              ellipsis={{
+                                tooltip: {
+                                  title: list.name,
+                                  mouseLeaveDelay: 0,
+                                  mouseEnterDelay: 0.5,
+                                },
+                              }}
+                              className=" text-[#1890FF] text-xs  "
+                            >
+                              {list?.name}
+                            </Text>
+                          </div>
                         );
                       })}
                   </div>
@@ -249,7 +271,7 @@ const PreviewAndCustomise = ({
                 <p className=" !text-base text-black !text-opacity-80 font-medium">
                   {t("messages:order_policies")}
                 </p>
-                <div className=" mt-2 max-w-[280px]  h-[300px] overflow-y-auto w-full">
+                <div className=" mt-2 w-[280px]  h-[300px] overflow-y-auto ">
                   {reorderList?.length > 0 &&
                     reorderList?.map((list, index) => {
                       return (
@@ -268,23 +290,38 @@ const PreviewAndCustomise = ({
                           }}
                           draggable
                         >
-                          <svg
-                            width="16"
-                            height="17"
-                            viewBox="0 0 16 17"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M15.0003 2.21191H1.00028C0.921708 2.21191 0.857422 2.2762 0.857422 2.35477V3.49763C0.857422 3.5762 0.921708 3.64049 1.00028 3.64049H15.0003C15.0789 3.64049 15.1431 3.5762 15.1431 3.49763V2.35477C15.1431 2.2762 15.0789 2.21191 15.0003 2.21191ZM15.0003 13.3548H1.00028C0.921708 13.3548 0.857422 13.4191 0.857422 13.4976V14.6405C0.857422 14.7191 0.921708 14.7833 1.00028 14.7833H15.0003C15.0789 14.7833 15.1431 14.7191 15.1431 14.6405V13.4976C15.1431 13.4191 15.0789 13.3548 15.0003 13.3548ZM15.0003 7.78334H1.00028C0.921708 7.78334 0.857422 7.84763 0.857422 7.9262V9.06906C0.857422 9.14763 0.921708 9.21192 1.00028 9.21192H15.0003C15.0789 9.21192 15.1431 9.14763 15.1431 9.06906V7.9262C15.1431 7.84763 15.0789 7.78334 15.0003 7.78334Z"
-                              fill="black"
-                              fillOpacity="0.45"
-                            />
-                          </svg>
-
-                          <p className=" !text-sm text-black !text-opacity-80 !mb-0">
-                            {list.name}
-                          </p>
+                          <div className=" shrink-0">
+                            <svg
+                              width="16"
+                              height="17"
+                              viewBox="0 0 16 17"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M15.0003 2.21191H1.00028C0.921708 2.21191 0.857422 2.2762 0.857422 2.35477V3.49763C0.857422 3.5762 0.921708 3.64049 1.00028 3.64049H15.0003C15.0789 3.64049 15.1431 3.5762 15.1431 3.49763V2.35477C15.1431 2.2762 15.0789 2.21191 15.0003 2.21191ZM15.0003 13.3548H1.00028C0.921708 13.3548 0.857422 13.4191 0.857422 13.4976V14.6405C0.857422 14.7191 0.921708 14.7833 1.00028 14.7833H15.0003C15.0789 14.7833 15.1431 14.7191 15.1431 14.6405V13.4976C15.1431 13.4191 15.0789 13.3548 15.0003 13.3548ZM15.0003 7.78334H1.00028C0.921708 7.78334 0.857422 7.84763 0.857422 7.9262V9.06906C0.857422 9.14763 0.921708 9.21192 1.00028 9.21192H15.0003C15.0789 9.21192 15.1431 9.14763 15.1431 9.06906V7.9262C15.1431 7.84763 15.0789 7.78334 15.0003 7.78334Z"
+                                fill="black"
+                                fillOpacity="0.45"
+                              />
+                            </svg>
+                          </div>
+                          <div className=" w-[90%]">
+                            <Text
+                              className=" !text-sm text-black !text-opacity-80 !mb-0"
+                              ellipsis={{
+                                tooltip: {
+                                  title: list.name,
+                                  mouseLeaveDelay: 0,
+                                  placement: "right",
+                                  autoAdjustOverflow: false,
+                                  overlayClassName: "max-w-[200px]",
+                                  mouseEnterDelay: 0.5,
+                                },
+                              }}
+                            >
+                              {list.name}
+                            </Text>
+                          </div>
                         </div>
                       );
                     })}
