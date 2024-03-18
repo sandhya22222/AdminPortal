@@ -53,7 +53,7 @@
   "connect_with_your_customers_in_their_preferred_language": "Connect with your customers in their preferred language",
   "unable_to_download_this_format": "Unable to download this format",
   "download_successful": "Download successful",
-  "document_description":"Please upload a language support document in utf-8 CSV format containing translated values, and will use it to update the respective portals with the new language content.",
+  "document_description": "Please upload a language support document in utf-8 CSV format containing translated values, and will use it to update the respective portals with the new language content.",
   "frontend_document": "Front-end keys refer to a set of values specially intended for use within the user interface (UI) of the application.",
   "backend_document": "Backend keys encompass a collection of values that are exclusively intended for use within the backend infrastructure of the application.",
   "delete_confirmation_message": "Are you absolutely sure you want to delete the image? This action cannot be undone.",
@@ -113,10 +113,10 @@
   "policy_saved_successfully": "Policy saved successfully",
   "error_saving_policy": "Error Saving Policy",
   "contact_info": "Mandatory if you are selling into the European Union.",
-  "delete_confirmation": "Are you sure you want to delete the policy?",
+  "delete_confirmation": "This will permanently delete the policy. Are you sure you want to proceed?",
   "order_policies": "Drag sort the order of the policies",
   "error_updating_Leadin_line": "Error updating Lead in Line",
   "error_updating_consent_order": "Error updating consent order",
-  "restore_settings_warning_msg":"You are about to reset your theme to the default colors.",
-  "restore_settings_modal_msg":"This action will remove any custom color changes you've made."
+  "restore_settings_warning_msg": "You are about to reset your theme to the default colors.",
+  "restore_settings_modal_msg": "This action will remove any custom color changes you've made."
 }
