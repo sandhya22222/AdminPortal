@@ -201,12 +201,13 @@ const PolicyCard = ({
     ? false
     : {
         onChange: handelConsentNameChange,
-        maxLength: 254,
+        maxLength: 100,
         triggerType: ["icon", "text"],
         onCancel: () => setIsTittleEditable(false),
         onEnd: () => setIsTittleEditable(false),
         editing: true,
         autoSize: { maxRows: 2 },
+        enterIcon: false,
       };
 
   const policyTitleRef = useRef(null);
