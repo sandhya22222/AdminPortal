@@ -201,7 +201,7 @@ const PolicyCard = ({
     ? false
     : {
         onChange: handelConsentNameChange,
-        maxLength: 254,
+        maxLength: 100,
         triggerType: ["icon", "text"],
         onCancel: () => setIsTittleEditable(false),
         onEnd: () => setIsTittleEditable(false),
