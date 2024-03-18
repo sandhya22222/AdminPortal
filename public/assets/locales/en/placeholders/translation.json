@@ -17,5 +17,6 @@
     "role_name_placeholder":"Enter role name",
     "role_description_placeholder":"Enter role description",
     "enter_your_new_password":"Enter your new password",
-    "enter_your_confirm_password":"Enter your confirm password"
+    "enter_your_confirm_password":"Enter your confirm password",
+    "select_language":"Select language"
 }
