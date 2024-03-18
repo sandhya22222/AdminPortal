@@ -207,6 +207,7 @@ const PolicyCard = ({
         onEnd: () => setIsTittleEditable(false),
         editing: true,
         autoSize: { maxRows: 2 },
+        enterIcon: false,
       };
 
   const policyTitleRef = useRef(null);
