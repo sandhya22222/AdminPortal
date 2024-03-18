@@ -21,8 +21,8 @@
   "no_data_available": "No data available",
   "no_changes_were_detected": "No changes were detected",
   "images_saved_successfully": "Images saved successfully",
-  "store_logo_info": "This logo will be used as Store's logo. The image will look better if the resolution is 203x63.",
-  "banner_logo_info": "These images will be used in the carousel of the store front. The image will look better if the resolution is 1300x600.",
+  "store_logo_info": "This image will be used as Store's logo.",
+  "banner_logo_info": "These images will be used in the carousel of the store front.",
   "please_enter_valid_hexadecimal_code": "Please enter valid Hexadecimal Color code",
   "ex_ffffff_for_white_000000_for_black": "ex. #ffffff for white, #000000 for black",
   "reset_to_the_original_value": "Reset to the original value",
@@ -118,5 +118,7 @@
   "error_updating_Leadin_line": "Error updating Lead in Line",
   "error_updating_consent_order": "Error updating consent order",
   "restore_settings_warning_msg":"You are about to reset your theme to the default colors.",
-  "restore_settings_modal_msg":"This action will remove any custom color changes you've made."
+  "restore_settings_modal_msg":"This action will remove any custom color changes you've made.",
+  "store_logo_resolution":"The image will look better if the resolution is 203x63.",
+  "banner_logo_resolution":"The image will look better if the resolution is 1300x600."
 }

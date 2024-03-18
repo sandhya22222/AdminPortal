@@ -437,8 +437,13 @@ const StoreImages = ({
                 </Upload>
               </div>
               <div className="mt-4 text-[#a8a8a8]">
-              <p className="!mb-0 ">{t("messages:store_logo_info")}</p>
-                <p className="!mb-0 ">{t("messages:upload_image_content")}</p>
+                <ul className="list-disc ">
+                  <li className="!mb-0 ">{t("messages:store_logo_info")}</li>
+                  <li>{t("messages:store_logo_resolution")}</li>
+                  <li className="!mb-0 ">
+                    {t("messages:upload_image_content")}
+                  </li>
+                </ul>
               </div>
             </Content>
           ) : (
@@ -479,13 +484,20 @@ const StoreImages = ({
                 </Button>
               </Upload>
               <div className="mt-2 text-[#a8a8a8]">
-                <p className="mb-0">{t("messages:banner_logo_info")}</p>
-                <p className="!mb-0 ">{t("messages:upload_image_content")} </p>
-                <p className="!mb-2">
-                  {t("messages:please_ensure_that_upload_only_eight_images", {
-                    BannerImagesUploadLength,
-                  })}
-                </p>
+                <ul className="list-disc pl-[17px]">
+                  <li className="mb-0">{t("messages:banner_logo_info")}</li>
+                  <li className="mb-0">
+                    {t("messages:banner_logo_resolution")}
+                  </li>
+                  <li className="!mb-0 ">
+                    {t("messages:upload_image_content")}
+                  </li>
+                  <li className="!mb-2">
+                    {t("messages:please_ensure_that_upload_only_eight_images", {
+                      BannerImagesUploadLength,
+                    })}
+                  </li>
+                </ul>
               </div>
             </>
           )}
@@ -575,15 +587,23 @@ const StoreImages = ({
                   </Button>
                 </Upload>
                 <div className="mt-2 text-[#a8a8a8]">
-                  <p className="mb-0">{t("messages:banner_logo_info")}</p>
-                  <p className="!mb-0 ">
-                    {t("messages:upload_image_content")} &{" "}
-                  </p>
-                  <p className="!mb-2">
-                    {t("messages:please_ensure_that_upload_only_eight_images", {
-                      BannerImagesUploadLength,
-                    })}
-                  </p>
+                  <ul className="list-disc pl-[17px]">
+                    <li className="mb-0">{t("messages:banner_logo_info")}</li>
+                    <li className="mb-0">
+                      {t("messages:banner_logo_resolution")}
+                    </li>
+                    <li className="!mb-0 ">
+                      {t("messages:upload_image_content")}
+                    </li>
+                    <li className="!mb-2">
+                      {t(
+                        "messages:please_ensure_that_upload_only_eight_images",
+                        {
+                          BannerImagesUploadLength,
+                        }
+                      )}
+                    </li>
+                  </ul>
                 </div>
                 <Modal
                   open={previewOpen}

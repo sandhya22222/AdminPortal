@@ -76,6 +76,10 @@ const Header2 = ({ collapsed, setCollapsed }) => {
     (state) => state.reducerSelectedLanguage.selectedLanguage
   );
 
+  const [defaultLanguageCode, setDefaultLanguageCode] = useState(
+    selectedLanguage && selectedLanguage.language_code
+  );
+
   const [storeSelectedLngCode, setStoreSelectedLngCode] = useState(
     selectedLanguage && selectedLanguage.language_code
   );
@@ -235,6 +239,7 @@ const Header2 = ({ collapsed, setCollapsed }) => {
   }, []);
   useEffect(() => {
     setStoreSelectedLngCode(selectedLanguage && selectedLanguage.language_code);
+    setDefaultLanguageCode(util.getUserSelectedLngCode());
   }, [selectedLanguage]);
 
   const multilingualNameChanging = (value) => {
@@ -367,15 +372,22 @@ const Header2 = ({ collapsed, setCollapsed }) => {
               //   </Paragraph>
               // </Dropdown>
               <Select
-                options={languageItems}
+                // options={languageItems}
                 bordered={false}
-                // placeholder="Select Language"
-                defaultValue={storeSelectedLngCode}
+                placeholder={t("placeholders:select_language")}
+                defaultValue={
+                  storeSelectedLngCode
+                    ? storeSelectedLngCode
+                    : defaultLanguageCode
+                }
                 onChange={(value) => handleLanguageClick(value)}
                 style={{
                   minWidth: "100px",
                   maxWidth: "100px",
                 }}
+                disabled={
+                  languageItems && languageItems.length === 1 ? true : false
+                }
               >
                 {languageItems &&
                   languageItems.length &&
@@ -383,7 +395,7 @@ const Header2 = ({ collapsed, setCollapsed }) => {
                     <Option key={option.value} value={option.value}>
                       <Tooltip
                         title={option.label}
-                        overlayStyle={{ position: "fixed", zIndex: 20 }}
+                        overlayStyle={{ position: "fixed" }}
                         placement="left"
                       >
                         <span

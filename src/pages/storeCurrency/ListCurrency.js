@@ -271,7 +271,7 @@ const ListCurrency = () => {
       })
       .catch((error) => {
         setIsLoading(false);
-        setIsNetworkError(false);
+        setIsNetworkError(true);
         console.log(
           "server error response from currency API call",
           error.response
