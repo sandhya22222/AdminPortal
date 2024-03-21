@@ -12,6 +12,48 @@ import useCreateUserConsent from "../hooks/useCreateUserConsent";
 
 const { Title, Paragraph } = Typography;
 
+const modules = {
+  toolbar: [
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    // [{ size: ["small", false, "large", "huge"] }], // custom dropdown
+    ["bold", "italic", "underline", "strike"], // toggled buttons
+    ["blockquote"],
+    ["link"],
+    // [{ header: 1 }, { header: 2 }], // custom button values
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ script: "sub" }, { script: "super" }], // superscript/subscript
+    [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+    // [{ direction: "rtl" }], // text direction
+    [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+    [{ align: [] }],
+    ["clean"],
+  ],
+};
+
+const formats = [
+  "background",
+  "bold",
+  "color",
+  "font",
+  "code",
+  "italic",
+  "link",
+  "size",
+  "strike",
+  "underline",
+  "blockquote",
+  "header",
+  "indent",
+  "list",
+  "align",
+  "direction",
+  // 'code-block',
+  // 'formula',
+  // 'image'
+  // 'video',
+  "script",
+];
+
 const PolicyCard = ({
   consent,
   refetchUserConsent,
@@ -100,27 +142,6 @@ const PolicyCard = ({
     setConsentName(consent?.name);
   };
 
-  const modules = useMemo(
-    () => ({
-      toolbar: [
-        [{ header: [1, 2, 3, 4, 5, 6, false] }],
-        // [{ size: ["small", false, "large", "huge"] }], // custom dropdown
-        ["bold", "italic", "underline", "strike"], // toggled buttons
-        ["blockquote", "code-block"],
-        ["link"],
-        // [{ header: 1 }, { header: 2 }], // custom button values
-        [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
-        [{ script: "sub" }, { script: "super" }], // superscript/subscript
-        [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
-        // [{ direction: "rtl" }], // text direction
-        [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-        [{ align: [] }],
-        ["clean"],
-      ],
-    }),
-    []
-  );
-
   const handelDescriptionChange = (val) => {
     setDescription(val);
     if (!descriptionModified) setDescriptionModified(true);
@@ -185,7 +206,8 @@ const PolicyCard = ({
 
   const handelCancelDescription = () => {
     setDescriptionModified(false);
-    setDescription();
+    setDescription(consent?.description);
+    handelCancelPolicyName();
   };
 
   const getDate = (date) => {
@@ -295,6 +317,7 @@ const PolicyCard = ({
           value={description}
           onChange={handelDescriptionChange}
           modules={modules}
+          formats={formats}
         />
       </div>
       <p className=" mt-2 text-[#000000] text-opacity-50">
