@@ -255,7 +255,8 @@ const PreviewAndCustomise = ({
                 }`}
               />
               <p className=" !text-black font-normal !text-opacity-40  !mb-0">
-                {t("labels:lead_in_line")}
+                {t("labels:lead_in_line")}{" "}
+                <span className=" text-red-500">*</span>
               </p>
               <div className=" pt-2">
                 <TextArea
@@ -337,6 +338,7 @@ const PreviewAndCustomise = ({
                 UpdateConsentLeadStatus === "pending"
               }
               onClick={handelSave}
+              disabled={!leadInLine?.trim()}
             >
               {updateConsentsOrderStatus === "pending" ||
               UpdateConsentLeadStatus === "pending"
