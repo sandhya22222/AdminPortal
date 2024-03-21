@@ -636,7 +636,7 @@ const StoreImages = ({
       >
         {
           <div>
-            <p>{t("messages:confirm_image_deletion")}</p>
+            <p className="!mb-0">{t("messages:confirm_image_deletion")}</p>
             <p>{t("messages:delete_confirmation_message")}</p>
           </div>
         }

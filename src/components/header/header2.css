@@ -13,3 +13,15 @@
   display: block !important;
   cursor: pointer !important;
 }
+
+.custom-select.ant-select {
+  border-color: transparent !important; /* Remove default border */
+}
+
+.custom-select.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector {
+  border-color: transparent !important; /* Remove border on focus */
+}
+
+.custom-select.ant-select:not(.ant-select-disabled):hover .ant-select-selector {
+  border-color: transparent !important; /* Remove border on hover */
+}
