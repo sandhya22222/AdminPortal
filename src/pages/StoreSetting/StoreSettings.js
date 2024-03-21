@@ -2217,20 +2217,20 @@ const StoreSettings = () => {
             keyName === "vendor_limit"
               ? t("labels:active_vendors")
               : keyName === "customer_limit"
-              ? t("labels:onboarded_customers")
-              : keyName === "product_limit"
-              ? t("labels:published_products")
-              : keyName === "order_limit_per_day"
-              ? t("labels:orders")
-              : keyName === "langauge_limit"
-              ? t("labels:active_languages")
-              : keyName === "product_template_limit"
-              ? t("labels:active_templates")
-              : keyName === "store_users_limit"
-              ? t("labels:store_users")
-              : keyName === "vendor_users_limit"
-              ? t("labels:vendor_users")
-              : null;
+                ? t("labels:onboarded_customers")
+                : keyName === "product_limit"
+                  ? t("labels:published_products")
+                  : keyName === "order_limit_per_day"
+                    ? t("labels:orders")
+                    : keyName === "langauge_limit"
+                      ? t("labels:active_languages")
+                      : keyName === "product_template_limit"
+                        ? t("labels:active_templates")
+                        : keyName === "store_users_limit"
+                          ? t("labels:store_users")
+                          : keyName === "vendor_users_limit"
+                            ? t("labels:vendor_users")
+                            : null;
           return (
             <Content className="flex !flex-col">
               {/* {`${count} of ${total} ${labelText !== null ? labelText : ""}`} */}
@@ -4774,7 +4774,9 @@ const StoreSettings = () => {
                 >
                   {
                     <div>
-                      <p className="!mb-0">{t("messages:restore_settings_warning_msg")}</p>
+                      <p className="!mb-0">
+                        {t("messages:restore_settings_warning_msg")}
+                      </p>
                       <p>{t("messages:restore_settings_modal_msg")}</p>
                     </div>
                   }
@@ -4784,7 +4786,10 @@ const StoreSettings = () => {
           </>
         )}
       </Content>
-      <PoliciesSettings storeName={storeName} />
+      {auth.isAuthenticated &&
+      permissionValue?.includes("create_user_consent_v3") ? (
+        <PoliciesSettings storeName={storeName} />
+      ) : null}
     </Content>
   );
 };
