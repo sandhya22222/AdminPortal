@@ -329,95 +329,86 @@ const Header2 = ({ collapsed, setCollapsed }) => {
                     src={AdminIcon}
                     className="!h-8 absolute bottom-[-2px] left-[-30px]"
                   /> */}
-                  <Text className="text-lg text-slate-600 pr-1">
-                    {userName && userName.length > 0
-                      ? userName.slice(0, 1).toUpperCase() + userName.slice(1)
-                      : userProfileInfo &&
-                        userProfileInfo.length > 0 &&
-                        userProfileInfo.slice(0, 1).toUpperCase() +
-                          userProfileInfo &&
-                        userProfileInfo.length > 0 &&
-                        userProfileInfo.slice(1)}
-                  </Text>
-                  <DownOutlined className="text-xs text-slate-600" />
-                </Paragraph>
-              </Dropdown>
-            )}
-            {/* Display language dropdown only if store has more than 1 language.  */}
-            {multilingualFunctionalityEnabled === "true" &&
-            auth.isAuthenticated &&
-            languageItems &&
-            languageItems.length > 0 ? (
-              // <Dropdown
-              //   menu={{
-              //     items: languageItems,
-              //     selectable: true,
-              //     defaultSelectedKeys: [storeSelectedLngCode],
-              //     onClick: handleLanguageClick,
-              //     style: { maxHeight: 200, overflowY: "auto" },
-              //   }}
-              //   trigger={["click"]}
-              //   arrow
-              //   className="header-text-color cursor-pointer"
-              //   overlayStyle={{
-              //     position: "fixed",
-              //     zIndex: 20,
-              //   }}
-              // >
-              //   <Paragraph className="!mb-0 ">
-              //     <TranslationOutlined
-              //       className="header-text-color"
-              //       style={{ fontSize: "24px" }}
-              //     />
-              //   </Paragraph>
-              // </Dropdown>
-              <Select
-                // options={languageItems}
-                bordered={false}
-                placeholder={t("placeholders:select_language")}
-                defaultValue={
-                  storeSelectedLngCode
-                    ? storeSelectedLngCode
-                    : defaultLanguageCode
-                }
-                onChange={(value) => handleLanguageClick(value)}
-                style={{
-                  minWidth: "100px",
-                  maxWidth: "100px",
-                }}
-                disabled={
-                  languageItems && languageItems.length === 1 ? true : false
-                }
-              >
-                {languageItems &&
-                  languageItems.length &&
-                  languageItems.map((option) => (
-                    <Option key={option.value} value={option.value}>
-                      <Tooltip
-                        title={option.label}
-                        overlayStyle={{ position: "fixed" }}
-                        placement="left"
-                      >
-                        <span
-                          style={{
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
-                          }}
-                        >
-                          {option.label}
-                        </span>
-                      </Tooltip>
-                    </Option>
-                  ))}
-              </Select>
-            ) : (
-              <></>
-            )}
-          </Content>
+                                    <Text className='text-lg text-slate-600 pr-1'>
+                                        {userName && userName.length > 0
+                                            ? userName.slice(0, 1).toUpperCase() + userName.slice(1)
+                                            : userProfileInfo &&
+                                              userProfileInfo.length > 0 &&
+                                              userProfileInfo.slice(0, 1).toUpperCase() + userProfileInfo &&
+                                              userProfileInfo.length > 0 &&
+                                              userProfileInfo.slice(1)}
+                                    </Text>
+                                    <DownOutlined className='text-xs text-slate-600' />
+                                </Paragraph>
+                            </Dropdown>
+                        )}
+                        {/* Display language dropdown only if store has more than 1 language.  */}
+                        {multilingualFunctionalityEnabled === 'true' &&
+                        auth.isAuthenticated &&
+                        languageItems &&
+                        languageItems.length > 0 ? (
+                            // <Dropdown
+                            //   menu={{
+                            //     items: languageItems,
+                            //     selectable: true,
+                            //     defaultSelectedKeys: [storeSelectedLngCode],
+                            //     onClick: handleLanguageClick,
+                            //     style: { maxHeight: 200, overflowY: "auto" },
+                            //   }}
+                            //   trigger={["click"]}
+                            //   arrow
+                            //   className="header-text-color cursor-pointer"
+                            //   overlayStyle={{
+                            //     position: "fixed",
+                            //     zIndex: 20,
+                            //   }}
+                            // >
+                            //   <Paragraph className="!mb-0 ">
+                            //     <TranslationOutlined
+                            //       className="header-text-color"
+                            //       style={{ fontSize: "24px" }}
+                            //     />
+                            //   </Paragraph>
+                            // </Dropdown>
+                            <Select
+                                // options={languageItems}
+                                bordered={false}
+                                placeholder={t('placeholders:select_language')}
+                                defaultValue={storeSelectedLngCode ? storeSelectedLngCode : defaultLanguageCode}
+                                onChange={(value) => handleLanguageClick(value)}
+                                style={{
+                                    minWidth: '100px',
+                                    maxWidth: '100px',
+                                }}
+                                dropdownStyle={{ position: 'fixed' }}
+                                disabled={languageItems && languageItems.length === 1 ? true : false}>
+                                {languageItems &&
+                                    languageItems.length &&
+                                    languageItems.map((option) => (
+                                        <Option key={option.value} value={option.value}>
+                                            <Tooltip
+                                                title={option.label}
+                                                overlayStyle={{ position: 'fixed' }}
+                                                placement='left'>
+                                                <span
+                                                    style={{
+                                                        overflow: 'hidden',
+                                                        textOverflow: 'ellipsis',
+                                                        whiteSpace: 'nowrap',
+                                                    }}>
+                                                    {option.label}
+                                                </span>
+                                            </Tooltip>
+                                        </Option>
+                                    ))}
+                            </Select>
+                        ) : (
+                            <></>
+                        )}
+                    </Content>
+                </Content>
+            </Header>
         </Content>
-      </Header>
-    </Content>
   );
 };
 
