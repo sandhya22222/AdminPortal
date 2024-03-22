@@ -4787,7 +4787,7 @@ const StoreSettings = () => {
         )}
       </Content>
       {auth.isAuthenticated &&
-      permissionValue?.includes("create_user_consent_v3") ? (
+      permissionValue?.includes("UI-user-access-control") ? (
         <PoliciesSettings storeName={storeName} />
       ) : null}
     </Content>

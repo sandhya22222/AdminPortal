@@ -128,11 +128,18 @@ const PoliciesSettings = ({ storeName }) => {
         <div className=" space-x-2">
           <Button
             onClick={handelPreviewAndCustomise}
-            disabled={userConsents?.userconsent_data?.length <= 0}
+            disabled={
+              userConsentStatus !== "success" ||
+              userConsents?.userconsent_data?.length <= 0
+            }
           >
             {t("labels:preview_and_customise")}
           </Button>
-          <Button className="app-btn-primary " onClick={handelAddNewPolicy}>
+          <Button
+            className="app-btn-primary "
+            onClick={handelAddNewPolicy}
+            disabled={userConsentStatus !== "success"}
+          >
             {t("labels:add_new_policy")}
           </Button>
         </div>
@@ -194,6 +201,12 @@ const PoliciesSettings = ({ storeName }) => {
               storeId={storeId}
             />
           )}
+        </div>
+      )}
+
+      {userConsentStatus === "error" && (
+        <div className=" text-center mt-5 mb-4">
+          <Text>{t("messages:network_error")}</Text>
         </div>
       )}
       <Modal
