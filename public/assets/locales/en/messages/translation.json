@@ -114,11 +114,11 @@
   "error_saving_policy": "Error Saving Policy",
   "contact_info": "Mandatory if you are selling into the European Union.",
   "delete_confirmation": "This will permanently delete the policy. Are you sure you want to proceed?",
-  "order_policies": "Drag sort the order of the policies",
+  "order_policies": "Drag to sort the order of the policies",
   "error_updating_Leadin_line": "Error updating Lead in Line",
   "error_updating_consent_order": "Error updating consent order",
-  "restore_settings_warning_msg":"You are about to reset your theme to the default colors.",
-  "store_logo_resolution":"The image will look better if the resolution is 203x63.",
-  "banner_logo_resolution":"The image will look better if the resolution is 1300x600.",
+  "restore_settings_warning_msg": "You are about to reset your theme to the default colors.",
+  "store_logo_resolution": "The image will look better if the resolution is 203x63.",
+  "banner_logo_resolution": "The image will look better if the resolution is 1300x600.",
   "restore_settings_modal_msg": "This action will remove any custom color changes you've made."
 }
