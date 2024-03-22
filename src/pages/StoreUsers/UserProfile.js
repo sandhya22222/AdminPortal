@@ -34,7 +34,7 @@ const portalInfo = JSON.parse(process.env.REACT_APP_PORTAL_INFO);
 
 const UserProfile = () => {
   const { t } = useTranslation();
-  usePageTitle(t("labels:profile"));
+  usePageTitle(t("labels:my_profile"));
   const [storeUsersData, setStoreUsersData] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [isNetworkError, setIsNetworkError] = useState(false);
@@ -257,10 +257,16 @@ const UserProfile = () => {
       .catch((error) => {
         console.log("error from store all users API ====>", error.response);
         MarketplaceToaster.showToast(error.response);
-        if (error.response.status === 400 &&  error.response.data.response_code === "UMS-000079-09") {
+        if (
+          error.response.status === 400 &&
+          error.response.data.response_code === "UMS-000079-09"
+        ) {
           setIsCurrentPasswordValid(false);
         }
-        if (Number(error.response.status) === 400 && error.response.data.response_code === "UMS-000079-04") {
+        if (
+          Number(error.response.status) === 400 &&
+          error.response.data.response_code === "UMS-000079-04"
+        ) {
           setIsConfirmPasswordValid(false);
           setIsNewPasswordValid(false);
         }
@@ -294,20 +300,20 @@ const UserProfile = () => {
     <Content>
       <HeaderForTitle
         title={
-          <Content className=''>
-            <Title level={3} className='!font-normal'>
+          <Content className="">
+            <Title level={3} className="!font-normal">
               {t("labels:profile")}
             </Title>
           </Content>
         }
       />
-      <Content className='mt-[9rem] '>
+      <Content className="mt-[9rem] ">
         {isLoading ? (
-          <Content className=' bg-white p-3 !mx-4 '>
+          <Content className=" bg-white p-3 !mx-4 ">
             <SkeletonComponent />
           </Content>
         ) : isNetworkError ? (
-          <Content className='p-3 text-center !mx-4 bg-[#F4F4F4]'>
+          <Content className="p-3 text-center !mx-4 bg-[#F4F4F4]">
             <p>{t("messages:network_error")}</p>
           </Content>
         ) : (
@@ -406,9 +412,9 @@ const UserProfile = () => {
           //     </Content>
           //   </Content>
           // </Content>
-          <Content className='mx-3 my-24'>
-            <Content className='w-[100%] bg-white my-3 p-2 rounded-md shadow-sm'>
-              <div className='flex gap-2'>
+          <Content className="mx-3 my-24">
+            <Content className="w-[100%] bg-white my-3 p-2 rounded-md shadow-sm">
+              <div className="flex gap-2">
                 {/* <img
                   src={
                     "https://images.unsplash.com/photo-1566275529824-cca6d008f3da?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cGhvdG98ZW58MHx8MHx8fDA%3D"
@@ -417,9 +423,9 @@ const UserProfile = () => {
                   className="w-16 aspect-square rounded-[50%] overflow-hidden"
                 /> */}
                 <Avatar size={64} icon={<UserOutlined />} />
-                <div className='flex flex-col justify-center'>
-                  <Typography className='input-label-color  m-0 items-center'>
-                    <span className='text-3xl'>
+                <div className="flex flex-col justify-center">
+                  <Typography className="input-label-color  m-0 items-center">
+                    <span className="text-3xl">
                       {storeUsersData &&
                       storeUsersData.username &&
                       storeUsersData.username.length > 0
@@ -435,7 +441,7 @@ const UserProfile = () => {
                       ).replace(/(\w{3} \d{1,2}) (\d{4})/, "$1, $2")}
                     </span>
                   </Typography>
-                  <Typography className='text-black !mt-1 !mb-0 !mx-0'>
+                  <Typography className="text-black !mt-1 !mb-0 !mx-0">
                     {storeUsersData &&
                       storeUsersData.groups.length > 0 &&
                       storeUsersData.groups.map((ele) => (
@@ -446,20 +452,20 @@ const UserProfile = () => {
               </div>
             </Content>
 
-            <Content className='w-[100%] bg-white my-4 p-3 rounded-md shadow-sm'>
-              <Row gutter={25} className='pb-2'>
+            <Content className="w-[100%] bg-white my-4 p-3 rounded-md shadow-sm">
+              <Row gutter={25} className="pb-2">
                 <Col span={12}>
-                  <Typography className='input-label-color'>
+                  <Typography className="input-label-color">
                     {t("labels:first_name")}
                   </Typography>
                 </Col>
                 <Col>
-                  <Typography className='input-label-color'>
+                  <Typography className="input-label-color">
                     {t("labels:last_name")}
                   </Typography>
                 </Col>
               </Row>
-              <Row gutter={25} className='pb-2'>
+              <Row gutter={25} className="pb-2">
                 <Col span={12}>
                   <Input
                     value={storeUsersData && storeUsersData.firstName}
@@ -483,9 +489,9 @@ const UserProfile = () => {
                   </Typography>
                 </Col> */}
               </Row>
-              <Row className='pb-2'>
+              <Row className="pb-2">
                 <Col>
-                  <Typography className='input-label-color'>
+                  <Typography className="input-label-color">
                     {t("labels:email")}
                   </Typography>
                 </Col>
@@ -500,13 +506,13 @@ const UserProfile = () => {
                 <Col>
                   <Button
                     onClick={showPasswordChangeModal}
-                    className='app-btn-secondary'
+                    className="app-btn-secondary"
                   >
                     {t("labels:change_password")}
                   </Button>
                 </Col>
               </Row>
-              <Typography className='input-label-color py-2'>
+              <Typography className="input-label-color py-2">
                 {t("labels:profile_picture")}
               </Typography>
               {/* <img
@@ -516,7 +522,7 @@ const UserProfile = () => {
                 alt="Profile"
                 className=" w-24 aspect-square "
               /> */}
-              <Avatar shape='square' size={64} icon={<UserOutlined />} />
+              <Avatar shape="square" size={64} icon={<UserOutlined />} />
             </Content>
           </Content>
         )}
@@ -542,13 +548,13 @@ const UserProfile = () => {
           width={1000}
         >
           <hr />
-          <Content className='mt-2'>
+          <Content className="mt-2">
             <Row gutter={50}>
               <Col span={12}>
                 <Content>
-                  <Typography className='input-label-color py-2'>
+                  <Typography className="input-label-color py-2">
                     {t("labels:current_password")}
-                    <span className='mandatory-symbol-color text-sm mx-1'>
+                    <span className="mandatory-symbol-color text-sm mx-1">
                       *
                     </span>
                   </Typography>
@@ -563,12 +569,12 @@ const UserProfile = () => {
                 </Content>
               </Col>
             </Row>
-            <Row gutter={50} className='mt-6 mb-2'>
+            <Row gutter={50} className="mt-6 mb-2">
               <Col span={12}>
-                <Content className='mb-2'>
-                  <Typography className='input-label-color py-2'>
+                <Content className="mb-2">
+                  <Typography className="input-label-color py-2">
                     {t("labels:new_password")}
-                    <span className='mandatory-symbol-color text-sm mx-1'>
+                    <span className="mandatory-symbol-color text-sm mx-1">
                       *
                     </span>
                   </Typography>
@@ -599,9 +605,9 @@ const UserProfile = () => {
                   )}
                 </Content>
                 <Content>
-                  <Typography className='input-label-color py-2'>
+                  <Typography className="input-label-color py-2">
                     {t("labels:confirm_password")}
-                    <span className='mandatory-symbol-color text-sm mx-1'>
+                    <span className="mandatory-symbol-color text-sm mx-1">
                       *
                     </span>
                   </Typography>
@@ -638,7 +644,7 @@ const UserProfile = () => {
                   )}
                 </Content>
               </Col>
-              <Col span={12} className=' border-l-2 border-gray-300'>
+              <Col span={12} className=" border-l-2 border-gray-300">
                 <Content>
                   <Title level={5}>
                     {t("labels:your_password_must_contain")}

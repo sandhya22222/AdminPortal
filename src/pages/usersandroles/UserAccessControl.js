@@ -514,10 +514,10 @@ const UserAccessControl = () => {
                     searchParams.get("tab") === "0"
                       ? "0"
                       : searchParams.get("tab") === "1"
-                      ? "1"
-                      : searchParams.get("tab") === "2"
-                      ? "2"
-                      : "0"
+                        ? "1"
+                        : searchParams.get("tab") === "2"
+                          ? "2"
+                          : "0"
                   }
                   handleTabChangeFunction={handleMainTabChange}
                   tabType={"line"}
@@ -625,7 +625,7 @@ const UserAccessControl = () => {
       <StoreModal
         isVisible={showGroupModal}
         okButtonText={null}
-        title={""}
+        title={t("labels:warning")}
         cancelButtonText={null}
         cancelCallback={() => setShowGroupModal(false)}
         width={700}
@@ -639,9 +639,9 @@ const UserAccessControl = () => {
       </StoreModal>
       <StoreModal
         isVisible={showDeleteModal}
-        okButtonText={`${t("labels:ok")}`}
+        okButtonText={`${t("labels:yes")}`}
         cancelButtonText={`${t("labels:cancel")}`}
-        title={""}
+        title={t("labels:warning")}
         okCallback={() => removeGroup()}
         cancelCallback={() => setShowDeleteModal(false)}
         isSpin={deleteModalLoading}
@@ -650,9 +650,9 @@ const UserAccessControl = () => {
       </StoreModal>
       <StoreModal
         isVisible={showDeleteUserModal}
-        okButtonText={`${t("labels:ok")}`}
+        okButtonText={`${t("labels:yes")}`}
         cancelButtonText={`${t("labels:cancel")}`}
-        title={""}
+        title={t("labels:warning")}
         okCallback={() => removeUser()}
         cancelCallback={() => setShowDeleteUserModal(false)}
         isSpin={deleteModalLoading}
@@ -661,9 +661,9 @@ const UserAccessControl = () => {
       </StoreModal>
       <StoreModal
         isVisible={showUserEnableDisableModal}
-        okButtonText={`${t("labels:ok")}`}
+        okButtonText={`${t("labels:yes")}`}
         cancelButtonText={`${t("labels:cancel")}`}
-        title={""}
+        title={t("labels:warning")}
         okCallback={() => enableDisableUserFromServer()}
         cancelCallback={() => setShowUserEnableDisableModal(false)}
         isSpin={deleteModalLoading}
