@@ -389,7 +389,22 @@ const UserAccessControl = () => {
         MarketplaceToaster.showToast(response);
         setDeleteModalLoading(false);
         setShowUserEnableDisableModal(false);
-        window.location.reload();
+        // window.location.reload();
+        var presentTab = searchParams.get("tab");
+        var pageNumber = searchParams.get("page")
+          ? searchParams.get("page")
+          : 1;
+        var pageLimit = searchParams.get("limit")
+          ? searchParams.get("limit")
+          : itemsPerPageFromEnv;
+
+        setIsLoading(true);
+        if (presentTab == "1") {
+          findAllGroupLists(parseInt(pageNumber), parseInt(pageLimit));
+        } else if (presentTab == "2") {
+        } else {
+          findAllUsersLists(parseInt(pageNumber), parseInt(pageLimit));
+        }
       })
       .catch((error) => {
         console.log("update server response of user enable");
