@@ -3,48 +3,40 @@ import {
   Badge,
   Button,
   Col,
-  Empty,
+  Image,
   Layout,
   Tag,
   Tooltip,
   Typography,
-  Dropdown,
-  Space,
 } from "antd";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { toast } from "react-toastify";
 //! Import user defined components
 import DmPagination from "../../components/DmPagination/DmPagination";
 import DynamicTable from "../../components/DynamicTable/DynamicTable";
 import SkeletonComponent from "../../components/Skeleton/SkeletonComponent";
 import HeaderForTitle from "../../components/header/HeaderForTitle";
-import PageSpinner from "../../components/spinner/PageSpinner";
 import util from "../../util/common";
 import {
   DownloadIcon,
-  DownloadIconDisable,
   EditIcon,
   plusIcon,
   starIcon,
-  DropdownIcon,
 } from "../../constants/media";
 import { usePageTitle } from "../../hooks/usePageTitle";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
-import { DownOutlined } from "@ant-design/icons";
 
 import LanguageBanner from "./LanguageBanner";
 import MarketplaceToaster from "../../util/marketplaceToaster";
-const { Title, Text, Paragraph } = Typography;
+const { Title, Text } = Typography;
 const { Content } = Layout;
 
 const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API;
 const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE);
 const LanguageDownloadAPI =
   process.env.REACT_APP_DOWNLOAD_LANGUAGE_TRANSLATION_CSV;
-const downloadBackendKeysAPI =
-  process.env.REACT_APP_DOWNLOAD_ADMIN_BACKEND_MESSAGE_DETAILS;
+
 const Language = () => {
   const { t } = useTranslation();
 
@@ -56,14 +48,15 @@ const Language = () => {
   const [isNetworkErrorLanguage, setIsNetworkErrorLanguage] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [totalLanguageCount, setTotalLanguageCount] = useState();
-  const [showAddLanguageBtn, setShowAddLanguageBtn] = useState(false);
-  const [showLanguageList, setShowLanguageList] = useState(false);
-  const [errorMessage, setErrorMessage] = useState();
 
   const StarIcon = () => {
     return (
       <>
-        <img src={starIcon} className="mr-1 flex !items-center" />
+        <Image
+          src={starIcon}
+          className="mr-1 flex !items-center"
+          preview={false}
+        />
       </>
     );
   };
@@ -158,7 +151,7 @@ const Language = () => {
         return (
           <>
             <Text>
-              {record.status == 2 ? (
+              {record.status === 2 ? (
                 <Badge status="default" text={t("labels:inactive")} />
               ) : (
                 <Badge status="success" text={t("labels:active")} />
@@ -182,9 +175,10 @@ const Language = () => {
               findAllSupportDocumentTemplateDownload(2, record.language_code);
             }}
           >
-            <img
+            <Image
               src={DownloadIcon}
               className="!text-xs !w-[10px]  !items-center"
+              preview={false}
             />
             {t("labels:download_document")}
           </Button>
@@ -228,50 +222,42 @@ const Language = () => {
       },
     },
   ];
-
-  const items = [
-    {
-      key: 1,
-      label: `${t("labels:get_frontend_support_template")}`,
-    },
-    {
-      key: 2,
-      label: `${t("labels:get_backend_support_template")}`,
-    },
-  ];
-
-  let tempArray = [];
-  {
-    languageData &&
-      languageData.length > 0 &&
-      languageData.map((element, index) => {
-        var Id = element.id;
-        var Language = element.language;
-        var LanguageCode = element.language_code;
-        var Writing_script_direction = element.writing_script_direction;
-        var Native_name = element.native_name;
-        var Lang_support_docs = element.lang_support_docs;
-        var Language_document_path = element.lang_support_docs_path;
-        var Dm_language_regex = element.language_regex;
-        var is_default = element.is_default;
-        var status = element.status;
-        tempArray &&
-          tempArray.push({
-            key: index,
-            id: Id,
-            language: Language,
-            language_code: LanguageCode,
-            writing_script_direction: Writing_script_direction,
-            native_name: Native_name,
-            lang_support_docs: Lang_support_docs,
-            dm_language_regex: Dm_language_regex,
-            lang_support_docs_path: Language_document_path,
-            is_default: is_default,
-            status: status,
-          });
-      });
-    console.log("tempArray", tempArray);
-  }
+  const languageTableData = (filteredData) => {
+    let tempArray = [];
+    if (filteredData && filteredData.length > 0) {
+      filteredData &&
+        filteredData.length > 0 &&
+        filteredData.map((element, index) => {
+          var Id = element.id;
+          var Language = element.language;
+          var LanguageCode = element.language_code;
+          var Writing_script_direction = element.writing_script_direction;
+          var Native_name = element.native_name;
+          var Lang_support_docs = element.lang_support_docs;
+          var Language_document_path = element.lang_support_docs_path;
+          var Dm_language_regex = element.language_regex;
+          var is_default = element.is_default;
+          var status = element.status;
+          tempArray &&
+            tempArray.push({
+              key: index,
+              id: Id,
+              language: Language,
+              language_code: LanguageCode,
+              writing_script_direction: Writing_script_direction,
+              native_name: Native_name,
+              lang_support_docs: Lang_support_docs,
+              dm_language_regex: Dm_language_regex,
+              lang_support_docs_path: Language_document_path,
+              is_default: is_default,
+              status: status,
+            });
+        });
+      return tempArray;
+    } else {
+      return tempArray;
+    }
+  };
   //!get call of list language
   const findByPageLanguageData = (page, limit) => {
     // enabling spinner
@@ -282,9 +268,11 @@ const Language = () => {
         setIsNetworkErrorLanguage(false);
         console.log(
           "server Success response from language API call",
-          response.data
+          response.data.response_body.data
         );
-        setLanguageData(response.data.response_body.data);
+        if (response && response.data.response_body.data.length > 0) {
+          setLanguageData(languageTableData(response.data.response_body.data));
+        }
         setTotalLanguageCount(response.data.response_body.count);
       })
       .catch((error) => {
@@ -300,9 +288,6 @@ const Language = () => {
             util.getToastObject(`${t("messages:session_expired")}`, "error")
           );
         } else {
-          if (error.response) {
-            setErrorMessage(error.response.data.response_body.message);
-          }
           if (
             error.response.data.response_body.message ===
             "That page contains no results"
@@ -359,7 +344,7 @@ const Language = () => {
   //!dynamic table data
   const tablePropsData = {
     table_header: columns,
-    table_content: tempArray && tempArray,
+    table_content: languageData,
     search_settings: {
       is_enabled: false,
       search_title: "Search by language",
@@ -393,40 +378,6 @@ const Language = () => {
     );
     window.scrollTo(0, 0);
   }, [searchParams]);
-
-  const downloadBEKeysFile = () => {
-    // setIsSpinningForBEUpload(true);
-    MarketplaceServices.findMedia(downloadBackendKeysAPI, {
-      "is-format": 1,
-    })
-      .then(function (response) {
-        // setIsSpinningForBEUpload(false);
-        console.log(
-          "Server Response from DocumentTemplateDownload Function: ",
-          response.data
-        );
-        const fileURL = window.URL.createObjectURL(response.data);
-        let alink = document.createElement("a");
-        alink.href = fileURL;
-        alink.download = "backend_keys_document.csv";
-        alink.click();
-      })
-      .catch((error) => {
-        // setIsSpinningForBEUpload(false);
-        console.log(
-          "Server error from DocumentTemplateDownload Function ",
-          error.response
-        );
-      });
-  };
-
-  const handleOnclickForDownloadDocument = (e) => {
-    {
-      e.key == 1
-        ? findAllSupportDocumentTemplateDownload(1, null)
-        : downloadBEKeysFile();
-    }
-  };
 
   return (
     <Content>
@@ -488,8 +439,16 @@ const Language = () => {
         />
       </Content>
       <Content className="p-3 mt-[7.0rem]">
-        {languageData && languageData.length > 0 ? (
-          <>
+        {isLoading ? (
+          <Content className=" bg-white p-3 ">
+            <SkeletonComponent />
+          </Content>
+        ) : isNetworkErrorLanguage ? (
+          <Content className="p-3 text-center mb-3 bg-[#F4F4F4]">
+            <p>{t("messages:network_error")}</p>
+          </Content>
+        ) : (
+          <Content>
             <Content className="bg-white p-2">
               <Content>
                 <DynamicTable tableComponentData={tablePropsData} />
@@ -522,7 +481,7 @@ const Language = () => {
               </Content>
             </Content>
             {languageData &&
-            languageData.length == 1 &&
+            languageData.length === 1 &&
             languageData[0].language_code &&
             totalLanguageCount &&
             totalLanguageCount <= pageLimit ? (
@@ -530,22 +489,6 @@ const Language = () => {
                 <LanguageBanner></LanguageBanner>
               </Content>
             ) : null}
-          </>
-        ) : isLoading ? (
-          <Content className=" bg-white p-3 ">
-            <SkeletonComponent />
-          </Content>
-        ) : isNetworkErrorLanguage ? (
-          <Content className="p-3 text-center mb-3 bg-[#F4F4F4]">
-            <p>{t("messages:network_error")}</p>
-          </Content>
-        ) : languageData && languageData.length === 0 ? (
-          <div className="w-[100%] p-5 flex items-center justify-center !bg-white">
-            <Empty description={errorMessage} />
-          </div>
-        ) : (
-          <Content className="text-center bg-white p-3">
-            <PageSpinner />
           </Content>
         )}
       </Content>
