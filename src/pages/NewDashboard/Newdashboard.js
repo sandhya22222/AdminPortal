@@ -1367,7 +1367,9 @@ const Newdashboard = () => {
                 <Content className="flex flex-col  items-baseline h-4 min-w-40 max-w-72 space-x-2 ">
                   <div className="flex justify-between  items-baseline gap-1 ">
                     {langDirection == "ltr" ? (
-                      <div className="">
+                      <div
+                        className={activeStoreCount > 9 ? "min-w-[34px]" : ""}
+                      >
                         <Title style={{ color: "#4A2D73" }} level={2}>
                           {activeStoreCount ? activeStoreCount : 0}{" "}
                         </Title>
@@ -1404,9 +1406,8 @@ const Newdashboard = () => {
                 </Content>
                 {storeLimitValues?.store_limit ? (
                   <Progress
-                    style={{ paddingTop: "10px", marginTop: "25px" }}
+                    style={{ paddingTop: "10px", width: "72%" }}
                     strokeColor={"#4A2D73"}
-                    className="w-32 "
                     size="small"
                     percent={
                       (activeStoreCount / storeLimitValues?.store_limit) * 100
@@ -1459,11 +1460,9 @@ const Newdashboard = () => {
           </Content>
         ) : (
           <Content>
-            <Content className="flex gap-3"></Content>
-
             <Content
               hidden={dm4sightEnabled === "true" ? false : true}
-              className="flex justify-between !mt-14"
+              className="flex justify-between mt-[45px]"
             >
               <Content className="!w-[65%] m-1 bg-[#ffff] p-4  shadow-sm rounded-md justify-center">
                 <Content className="flex items-center justify-between mb-1">
