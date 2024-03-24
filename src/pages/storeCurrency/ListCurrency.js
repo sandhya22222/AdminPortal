@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Layout, Typography, Button, Row, Col, Tag, Tooltip } from "antd";
+import { Layout, Typography, Button, Row, Col, Tag, Tooltip, Image } from "antd";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 //! Import user defined components
@@ -10,6 +10,7 @@ import MarketplaceServices from "../../services/axios/MarketplaceServices";
 import DynamicTable from "../../components/DynamicTable/DynamicTable";
 import SkeletonComponent from "../../components/Skeleton/SkeletonComponent";
 import DmPagination from "../../components/DmPagination/DmPagination";
+import { usePageTitle } from "../../hooks/usePageTitle";
 import util from "../../util/common";
 import { EditIcon, starIcon } from "../../constants/media";
 
@@ -21,6 +22,7 @@ const { Title, Text } = Typography;
 const ListCurrency = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  usePageTitle(t("labels:currency"));
 
   const [isLoading, setIsLoading] = useState(false);
   const [isNetworkError, setIsNetworkError] = useState(false);
@@ -66,7 +68,7 @@ const ListCurrency = () => {
             {record.isDefault === true ? (
               <Tag
                 icon={
-                  <img src={starIcon} className="mr-1 flex !items-center" />
+                  <Image preview={false} src={starIcon} className="mr-1 flex !items-center" />
                 }
                 className="inline-flex items-center"
                 color="#FB8500"
@@ -234,8 +236,8 @@ const ListCurrency = () => {
     table_content: listCurrencyData,
     search_settings: {
       is_enabled: false,
-      search_title: "Search by language",
-      search_data: ["language"],
+      search_title: "Search by currency",
+      search_data: ["currency"],
     },
     filter_settings: {
       is_enabled: false,

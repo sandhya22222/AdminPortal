@@ -448,7 +448,8 @@ const Stores = () => {
               }
               min={0}
               max={maxDataLimit}
-              onKeyPress={(e) => {
+              maxLength={10}
+              onKeyDown={(e) => {
                 validatePositiveNumber(e, /[0-9]/);
               }}
               onChange={(value) => {
@@ -456,16 +457,6 @@ const Stores = () => {
                 copyofStoreLimitValues[keyName] = value;
                 setStoreLimitValues(copyofStoreLimitValues);
               }}
-              // onPaste={(e) => {
-              //   // Prevent pasting non-numeric characters and limit to 12 characters
-              //   e.preventDefault();
-              //   const pastedValue = e.clipboardData
-              //     .getData("text/plain")
-              //     .replace(/[^0-9]/g, "")
-              //     .substring(0, 12);
-              //   document.execCommand("insertText", false, pastedValue);
-              // }}
-
               onPaste={(e) => {
                 e.preventDefault();
 
@@ -480,18 +471,6 @@ const Stores = () => {
                   setStoreLimitValues(copyOfStoreLimitValues);
                 }
               }}
-              // onPaste={(e) => {
-              //   // Prevent pasting non-numeric characters and limit to 12 characters
-              //   e.preventDefault();
-              //   const pastedValue = e.clipboardData
-              //     .getData("text/plain")
-              //     .replace(/[^0-9]/g, "")
-              //     .substring(0, 12);
-              //   const updatedValue = parseInt(pastedValue, 10) || 0; // Ensure it's a valid number
-              //   let copyofStoreLimitValues = { ...storeLimitValues };
-              //   copyofStoreLimitValues[keyName] = updatedValue;
-              //   setStoreLimitValues(copyofStoreLimitValues);
-              // }}
               disabled={!superAdmin}
               className="w-28"
               placeholder={t("labels:placeholder_unlimited")}
@@ -595,7 +574,8 @@ const Stores = () => {
                 }
                 min={0}
                 max={maxDataLimit}
-                onKeyPress={(e) => {
+                maxLength={10}
+                onKeyDown={(e) => {
                   validatePositiveNumber(e, /[0-9]/);
                 }}
                 onChange={(value) => {

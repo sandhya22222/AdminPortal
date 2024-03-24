@@ -389,7 +389,22 @@ const UserAccessControl = () => {
         MarketplaceToaster.showToast(response);
         setDeleteModalLoading(false);
         setShowUserEnableDisableModal(false);
-        window.location.reload();
+        // window.location.reload();
+        var presentTab = searchParams.get("tab");
+        var pageNumber = searchParams.get("page")
+          ? searchParams.get("page")
+          : 1;
+        var pageLimit = searchParams.get("limit")
+          ? searchParams.get("limit")
+          : itemsPerPageFromEnv;
+
+        setIsLoading(true);
+        if (presentTab == "1") {
+          findAllGroupLists(parseInt(pageNumber), parseInt(pageLimit));
+        } else if (presentTab == "2") {
+        } else {
+          findAllUsersLists(parseInt(pageNumber), parseInt(pageLimit));
+        }
       })
       .catch((error) => {
         console.log("update server response of user enable");
@@ -499,10 +514,10 @@ const UserAccessControl = () => {
                     searchParams.get("tab") === "0"
                       ? "0"
                       : searchParams.get("tab") === "1"
-                      ? "1"
-                      : searchParams.get("tab") === "2"
-                      ? "2"
-                      : "0"
+                        ? "1"
+                        : searchParams.get("tab") === "2"
+                          ? "2"
+                          : "0"
                   }
                   handleTabChangeFunction={handleMainTabChange}
                   tabType={"line"}
@@ -610,7 +625,7 @@ const UserAccessControl = () => {
       <StoreModal
         isVisible={showGroupModal}
         okButtonText={null}
-        title={""}
+        title={t("labels:warning")}
         cancelButtonText={null}
         cancelCallback={() => setShowGroupModal(false)}
         width={700}
@@ -624,9 +639,9 @@ const UserAccessControl = () => {
       </StoreModal>
       <StoreModal
         isVisible={showDeleteModal}
-        okButtonText={`${t("labels:ok")}`}
+        okButtonText={`${t("labels:yes")}`}
         cancelButtonText={`${t("labels:cancel")}`}
-        title={""}
+        title={t("labels:warning")}
         okCallback={() => removeGroup()}
         cancelCallback={() => setShowDeleteModal(false)}
         isSpin={deleteModalLoading}
@@ -635,9 +650,9 @@ const UserAccessControl = () => {
       </StoreModal>
       <StoreModal
         isVisible={showDeleteUserModal}
-        okButtonText={`${t("labels:ok")}`}
+        okButtonText={`${t("labels:yes")}`}
         cancelButtonText={`${t("labels:cancel")}`}
-        title={""}
+        title={t("labels:warning")}
         okCallback={() => removeUser()}
         cancelCallback={() => setShowDeleteUserModal(false)}
         isSpin={deleteModalLoading}
@@ -646,9 +661,9 @@ const UserAccessControl = () => {
       </StoreModal>
       <StoreModal
         isVisible={showUserEnableDisableModal}
-        okButtonText={`${t("labels:ok")}`}
+        okButtonText={`${t("labels:yes")}`}
         cancelButtonText={`${t("labels:cancel")}`}
-        title={""}
+        title={t("labels:warning")}
         okCallback={() => enableDisableUserFromServer()}
         cancelCallback={() => setShowUserEnableDisableModal(false)}
         isSpin={deleteModalLoading}
