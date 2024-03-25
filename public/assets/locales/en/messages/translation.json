@@ -120,5 +120,6 @@
   "restore_settings_warning_msg": "You are about to reset your theme to the default colors.",
   "store_logo_resolution": "The image will look better if the resolution is 203x63.",
   "banner_logo_resolution": "The image will look better if the resolution is 1300x600.",
-  "restore_settings_modal_msg": "This action will remove any custom color changes you've made."
+  "restore_settings_modal_msg": "This action will remove any custom color changes you've made.",
+  "color_validation":"Please provide the valid color code"
 }
