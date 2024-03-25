@@ -1455,11 +1455,9 @@ const StoreSettings = () => {
       colorCodeValidation.footerBgValidation === true ||
       colorCodeValidation.footerTextValidation === true
     ) {
-      toast("Please provide the valid color value", {
-        position: toast.POSITION.TOP_RIGHT,
-        type: "error",
-        autoClose: 10000,
-      });
+      MarketplaceToaster.showToast(
+        util.getToastObject(`${t("messages:color_validation")}`, "error")
+      );
     } else if (count === 4) {
       saveStoreSettingsCall();
     }
@@ -4616,7 +4614,7 @@ const StoreSettings = () => {
                               >
                                 <UndoOutlined
                                   onClick={() => {
-                                    setFooterBackgroundColor(headerFgColor);
+                                    setFooterBackgroundColor(footerBgColor);
                                     let temp = { ...colorCodeValidation };
                                     temp["footerBgValidation"] = false;
                                     setColorCodeValidation(temp);
