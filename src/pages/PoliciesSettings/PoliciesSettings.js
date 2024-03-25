@@ -220,7 +220,10 @@ const PoliciesSettings = ({ storeName }) => {
         centered={true}
         onCancel={() => setDeletePolicy(null)}
         footer={[
-          <Button onClick={() => setDeletePolicy(null)}>
+          <Button
+            onClick={() => setDeletePolicy(null)}
+            disabled={deleteStoreUserConsentStatus === "pending"}
+          >
             {t("labels:cancel")}
           </Button>,
           <Button
