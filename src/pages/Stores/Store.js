@@ -144,6 +144,7 @@ const Stores = () => {
   const [radioValue, setRadioValue] = useState(1);
   const [value, setValue] = useState(tab ? tab : 0);
   const [previousStatus, setPreviousStatus] = useState(null);
+  const [errorField, setErrorField] = useState("");
   const searchInput = useRef(null);
   const auth = useAuth();
   const permissionValue = util.getPermissionData() || [];
@@ -211,6 +212,10 @@ const Stores = () => {
   useEffect(() => {
     setRadioValue(tab);
   }, []);
+
+  useEffect(() => {
+    setErrorField("");
+  }, [currentTab]);
 
   useEffect(() => {
     // console.log("location..", window.sessionStorage.getItem("currentStoretab"))
@@ -419,26 +424,6 @@ const Stores = () => {
                 />
               </Tooltip>
             </div>
-            {/* <InputNumber
-              value={
-                storeLimitValues?.[keyName] > 0
-                  ? storeLimitValues?.[keyName]
-                  : ""
-              }
-              min={0}
-              onKeyPress={(e) => {
-                validatePositiveNumber(e, /[0-9]/);
-              }}
-              onChange={(value) => {
-                let copyofStoreimitValues = { ...storeLimitValues };
-                copyofStoreimitValues[keyName] = value;
-                setStoreLimitValues(copyofStoreimitValues);
-                console.log("value", value);
-              }}
-              disabled={!superAdmin}
-              className="w-28"
-              placeholder={t("labels:placeholder_unlimited")}
-            /> */}
 
             <InputNumber
               value={
@@ -539,7 +524,6 @@ const Stores = () => {
 
   const StoreTableColumnThreshold2 = [
     {
-      // title: `${t("labels:name")}`,
       title: `${t("labels:limits")}`,
       dataIndex: "limits",
       key: "limits",
@@ -572,9 +556,13 @@ const Stores = () => {
                     ? storeLimitValues?.[keyName]
                     : ""
                 }
+                status={keyName === errorField ? "error" : ""}
                 min={0}
                 max={maxDataLimit}
                 maxLength={10}
+                onFocus={() => {
+                  setErrorField("");
+                }}
                 onKeyDown={(e) => {
                   validatePositiveNumber(e, /[0-9]/);
                 }}
@@ -583,7 +571,9 @@ const Stores = () => {
                   copyofStoreimitValues[keyName] = value;
                   setStoreLimitValues(copyofStoreimitValues);
                 }}
+              
                 onPaste={(e) => {
+                  setErrorField("");
                   // Prevent pasting non-numeric characters and limit to 12 characters
                   e.preventDefault();
                   const pastedValue = e.clipboardData
@@ -593,7 +583,7 @@ const Stores = () => {
                   document.execCommand("insertText", false, pastedValue);
                 }}
                 disabled={!superAdmin}
-                className="w-28"
+                className={"w-28"}
                 placeholder={t("labels:placeholder_unlimited")}
               />
             </Content>
@@ -887,24 +877,6 @@ const Stores = () => {
           "," +
           "store_limit",
       },
-      // {
-      //   key: "2",
-      //   limits: `${t("labels:maximum_language_activation_limit")},${
-      //     storeLimitValues?.dm_language_limit
-      //   },dm_language_limit`,
-      //   stats:
-      //     analysisCount?.lang_count +
-      //     " of " +
-      //     storeLimitValues?.dm_language_limit,
-      // },
-      // {
-      //   key: "3",
-      //   limits: `${t("labels:maximum_user_limit")},${
-      //     storeLimitValues?.dm_user_limit
-      //   },dm_user_limit`,
-      //   stats:
-      //     analysisCount?.user_count + " of " + storeLimitValues?.dm_user_limit,
-      // },
     ],
     pagenationSettings: pagination,
     search_settings: {
@@ -1599,7 +1571,6 @@ const Stores = () => {
         MarketplaceToaster.showToast(error.response);
       });
   };
-
   //! Post call for the store store limit api
   const saveStoreLimit = () => {
     const postBody = storeLimitValues;
@@ -1607,10 +1578,21 @@ const Stores = () => {
       .then((response) => {
         setDuplicateStoreLimitValues(response.data.response_body);
         console.log("response meeeeeeeeee", response);
+        setErrorField("");
         MarketplaceToaster.showToast(response);
       })
       .catch((error) => {
         console.log("Error Response From storelimit", error.response);
+        console.log("errory", error.response.data.response_body.message);
+        let errField = error.response.data.response_body.message.split(
+          " "
+        )?.[0];
+        if (errField === "language_limit") {
+          setErrorField("langauge_limit");
+        } else {
+          setErrorField(errField);
+        }
+        // console.log("errorField", errorField);
         MarketplaceToaster.showToast(error.response);
       });
   };
@@ -1639,6 +1621,7 @@ const Stores = () => {
       duplicateStoreLimitValues?.langauge_limit ===
         storeLimitValues?.langauge_limit
     ) {
+      setErrorField("");
       MarketplaceToaster.showToast(
         util.getToastObject(`${t("messages:no_changes_were_detected")}`, "info")
       );
