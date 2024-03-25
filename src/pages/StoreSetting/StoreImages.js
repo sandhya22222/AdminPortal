@@ -5,19 +5,16 @@ import {
   Layout,
   Modal,
   Button,
-  Skeleton,
   Tooltip,
+  Image
 } from "antd";
 import {
   PlusOutlined,
-  InfoCircleOutlined,
   UploadOutlined,
 } from "@ant-design/icons";
-import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { fnAbsoluteStoreImageInfo } from "../../services/redux/actions/ActionStoreImages";
 import { useTranslation } from "react-i18next";
-import useAuthorization from "../../hooks/useAuthorization";
 import StoreModal from "../../components/storeModal/StoreModal";
 import { TiDelete } from "react-icons/ti";
 import MarketplaceServices from "../../services/axios/MarketplaceServices";
@@ -26,10 +23,7 @@ import MarketplaceToaster from "../../util/marketplaceToaster";
 import util from "../../util/common";
 const { Title } = Typography;
 const { Content } = Layout;
-const { Image } = Skeleton;
 
-const storeBannerImageAPI = process.env.REACT_APP_STORE_BANNER_IMAGES_API;
-const storeAbsoluteImgesAPI = process.env.REACT_APP_STORE_ABSOLUTE_IMAGES_API;
 const storeDeleteImagesAPI = process.env.REACT_APP_STORE_DELETE_IMAGES_API;
 const baseURL = process.env.REACT_APP_BASE_URL;
 const BannerImagesUploadLength = process.env.REACT_APP_BANNER_IMAGES_MAX_LENGTH;
@@ -49,7 +43,6 @@ const StoreImages = ({
   setImageChangeValues,
   disabelMediaButton,
 }) => {
-  const authorizationHeader = useAuthorization();
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const absoluteStoreImageInfo = useSelector(
@@ -532,7 +525,7 @@ const StoreImages = ({
                     }
                   >
                     {/* <div className="grid grid-cols-4 gap-4"> */}
-                    <img src={ele} className="!w-24 !h-26 " />
+                    <Image src={ele} className="!w-24 !h-26 " />
                     {/* </div> */}
                     <TiDelete
                       className="!absolute !cursor-pointer !right-[-5px] !z-5  !top-[-10px] !text-2xl !text-red-600 !shadow-lg  hover:translate-"
