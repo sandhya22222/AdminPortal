@@ -49,7 +49,10 @@ const PoliciesSettings = ({ storeName }) => {
     storeId: storeUUID,
   });
 
-  const { mutate: deleteStoreUserConsent } = useDeleteUserConsent();
+  const {
+    mutate: deleteStoreUserConsent,
+    status: deleteStoreUserConsentStatus,
+  } = useDeleteUserConsent();
 
   const handelAddNewPolicy = () => {
     setAddNewPolicy(true);
@@ -217,13 +220,17 @@ const PoliciesSettings = ({ storeName }) => {
         centered={true}
         onCancel={() => setDeletePolicy(null)}
         footer={[
-          <Button onClick={() => setDeletePolicy(null)}>
+          <Button
+            onClick={() => setDeletePolicy(null)}
+            disabled={deleteStoreUserConsentStatus === "pending"}
+          >
             {t("labels:cancel")}
           </Button>,
           <Button
             danger
             className=" app-btn-danger"
             onClick={() => deletePolicyById(deletePolicy)}
+            loading={deleteStoreUserConsentStatus === "pending"}
           >
             {t("labels:yes")}
           </Button>,
