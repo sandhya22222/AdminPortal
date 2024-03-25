@@ -98,8 +98,8 @@ const getUserSelectedLngCode = () => {
  */
 
 const setAuthToken = (authToken) => {
-  // window.sessionStorage.setItem("access_token", authToken);
-  Cookies.set("access_token", authToken);
+  // window.sessionStorage.setItem("aaccess_token", authToken);
+  Cookies.set("aaccess_token", authToken);
 };
 
 const setRefreshToken = (refreshToken) => {
@@ -227,8 +227,8 @@ const getStoreDefaultLngCode = () => {
  */
 
 const getAuthToken = () => {
-  // return window.sessionStorage.getItem("access_token");
-  return Cookies.get("access_token");
+  // return window.sessionStorage.getItem("aaccess_token");
+  return Cookies.get("aaccess_token");
 };
 
 const getRefreshToken = () => {
@@ -246,8 +246,8 @@ const removeIsAuthorized = () => {
 };
 
 const removeAuthToken = () => {
-  // window.sessionStorage.removeItem("access_token");
-  Cookies.remove("access_token");
+  // window.sessionStorage.removeItem("aaccess_token");
+  Cookies.remove("aaccess_token");
 };
 
 const removePermission = () => {

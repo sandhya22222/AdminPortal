@@ -28,8 +28,8 @@ import Cookies from "js-cookie";
 
 const useAuthorization = () => {
   const authorizationValue =
-    // window.sessionStorage.getItem("access_token") || null;
-    Cookies.get("access_token") || null;
+    // window.sessionStorage.getItem("aaccess_token") || null;
+    Cookies.get("aaccess_token") || null;
 
   const authorizationHeader = {
     headers: {
