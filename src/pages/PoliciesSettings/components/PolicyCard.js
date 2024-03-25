@@ -65,8 +65,10 @@ const PolicyCard = ({
   storeId,
 }) => {
   const { t } = useTranslation();
-  const { mutate: UpdateUserConsent } = useUpdateUserConsent();
-  const { mutate: createNewUserConsent } = useCreateUserConsent();
+  const { mutate: UpdateUserConsent, status: UpdateUserConsentStatus } =
+    useUpdateUserConsent();
+  const { mutate: createNewUserConsent, status: createNewUserConsentStatus } =
+    useCreateUserConsent();
 
   const [consentName, setConsentName] = useState(consent?.name || policyName);
   const [description, setDescription] = useState(consent?.description);
@@ -332,10 +334,20 @@ const PolicyCard = ({
             className="app-btn-primary "
             disabled={!(consentName?.trim() && description?.trim())}
             onClick={handelSaveDescription}
+            loading={
+              createNewUserConsentStatus === "pending" ||
+              UpdateUserConsentStatus === "pending"
+            }
           >
             {t("labels:save")}
           </Button>
-          <Button onClick={handelCancelDescription}>
+          <Button
+            onClick={handelCancelDescription}
+            disabled={
+              createNewUserConsentStatus === "pending" ||
+              UpdateUserConsentStatus === "pending"
+            }
+          >
             {t("labels:cancel")}
           </Button>
         </div>

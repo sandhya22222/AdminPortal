@@ -49,7 +49,10 @@ const PoliciesSettings = ({ storeName }) => {
     storeId: storeUUID,
   });
 
-  const { mutate: deleteStoreUserConsent } = useDeleteUserConsent();
+  const {
+    mutate: deleteStoreUserConsent,
+    status: deleteStoreUserConsentStatus,
+  } = useDeleteUserConsent();
 
   const handelAddNewPolicy = () => {
     setAddNewPolicy(true);
@@ -224,6 +227,7 @@ const PoliciesSettings = ({ storeName }) => {
             danger
             className=" app-btn-danger"
             onClick={() => deletePolicyById(deletePolicy)}
+            loading={deleteStoreUserConsentStatus === "pending"}
           >
             {t("labels:yes")}
           </Button>,
