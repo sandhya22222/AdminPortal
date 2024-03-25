@@ -437,6 +437,10 @@ const Stores = () => {
               onKeyDown={(e) => {
                 validatePositiveNumber(e, /[0-9]/);
               }}
+              status={keyName === errorField ? "error" : ""}
+              onFocus={() => {
+                setErrorField("");
+              }}
               onChange={(value) => {
                 let copyofStoreLimitValues = { ...storeLimitValues };
                 copyofStoreLimitValues[keyName] = value;
@@ -444,6 +448,7 @@ const Stores = () => {
               }}
               onPaste={(e) => {
                 e.preventDefault();
+                setErrorField("");
 
                 const pastedText = e.clipboardData.getData("text/plain");
                 const numericValue = pastedText.replace(/[^0-9]/g, "");
@@ -571,7 +576,6 @@ const Stores = () => {
                   copyofStoreimitValues[keyName] = value;
                   setStoreLimitValues(copyofStoreimitValues);
                 }}
-              
                 onPaste={(e) => {
                   setErrorField("");
                   // Prevent pasting non-numeric characters and limit to 12 characters
@@ -1589,10 +1593,12 @@ const Stores = () => {
         )?.[0];
         if (errField === "language_limit") {
           setErrorField("langauge_limit");
+        } else if (errField === "Store") {
+          setErrorField("store_limit");
         } else {
           setErrorField(errField);
         }
-        // console.log("errorField", errorField);
+        console.log("errorField", errField);
         MarketplaceToaster.showToast(error.response);
       });
   };
