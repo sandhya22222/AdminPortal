@@ -70,7 +70,7 @@ export const SetupInterceptors = (http) => {
       // const status = error?.response?.status || 0;
       // const resBaseURL = error?.response?.config?.baseURL;
       // if (resBaseURL.retry === baseURL && status === 401) {
-      //   if (localStorage.getItem("aaccess_token")) {
+      //   if (localStorage.getItem("ap_access_token")) {
       //     localStorage.clear();
       //     window.location.assign("/");
       //     return Promise.reject(error);
