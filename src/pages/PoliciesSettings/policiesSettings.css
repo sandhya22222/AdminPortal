@@ -1,3 +1,7 @@
 .policy-card .ql-editor {
   height: 320px !important;
+  overflow: auto !important;
+}
+.policy-card .ql-container {
+  overflow: hidden;
 }
