@@ -25,10 +25,10 @@ const hasKeyCloakData = () => {
 };
 
 const hasUserLoggedIn = () => {
-  // if (window.sessionStorage.getItem("is_loggedIn")) {
+  // if (window.sessionStorage.getItem("ap_is_logged_in")) {
   //   return true;
   // }
-  if (Cookies.get("is_loggedIn")) {
+  if (Cookies.get("ap_is_logged_in")) {
     return true;
   }
 
@@ -98,18 +98,18 @@ const getUserSelectedLngCode = () => {
  */
 
 const setAuthToken = (authToken) => {
-  // window.sessionStorage.setItem("aaccess_token", authToken);
-  Cookies.set("aaccess_token", authToken);
+  // window.sessionStorage.setItem("ap_access_token", authToken);
+  Cookies.set("ap_access_token", authToken);
 };
 
 const setRefreshToken = (refreshToken) => {
-  // window.sessionStorage.setItem("refresh_token", refreshToken);
-  Cookies.set("refresh_token", refreshToken);
+  // window.sessionStorage.setItem("ap_refresh_token", refreshToken);
+  Cookies.set("ap_refresh_token", refreshToken);
 };
 
 const setIsLoggedIn = (value) => {
-  // window.sessionStorage.setItem("is_loggedIn", value);
-  Cookies.set("is_loggedIn", value);
+  // window.sessionStorage.setItem("ap_is_logged_in", value);
+  Cookies.set("ap_is_logged_in", value);
 };
 
 const setClient = (value) => {
@@ -121,8 +121,8 @@ const setPermissionData = (value) => {
 };
 
 const setIsAuthorized = (value) => {
-  // window.sessionStorage.setItem("isAuthorized", value);
-  Cookies.set("isAuthorized", value);
+  // window.sessionStorage.setItem("ap_is_authorized", value);
+  Cookies.set("ap_is_authorized", value);
 };
 
 const setUserSelectedLngCode = (value) => {
@@ -227,13 +227,13 @@ const getStoreDefaultLngCode = () => {
  */
 
 const getAuthToken = () => {
-  // return window.sessionStorage.getItem("aaccess_token");
-  return Cookies.get("aaccess_token");
+  // return window.sessionStorage.getItem("ap_access_token");
+  return Cookies.get("ap_access_token");
 };
 
 const getRefreshToken = () => {
-  // return window.sessionStorage.getItem("refresh_token")
-  return Cookies.get("refresh_token");
+  // return window.sessionStorage.getItem("ap_refresh_token")
+  return Cookies.get("ap_refresh_token");
 };
 
 /**
@@ -241,13 +241,13 @@ const getRefreshToken = () => {
  */
 
 const removeIsAuthorized = () => {
-  // window.sessionStorage.removeItem("isAuthorized");
-  Cookies.remove("isAuthorized");
+  // window.sessionStorage.removeItem("ap_is_authorized");
+  Cookies.remove("ap_is_authorized");
 };
 
 const removeAuthToken = () => {
-  // window.sessionStorage.removeItem("aaccess_token");
-  Cookies.remove("aaccess_token");
+  // window.sessionStorage.removeItem("ap_access_token");
+  Cookies.remove("ap_access_token");
 };
 
 const removePermission = () => {

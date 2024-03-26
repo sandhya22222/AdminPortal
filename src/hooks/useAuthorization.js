@@ -17,7 +17,7 @@ import Cookies from "js-cookie";
 
 //   useEffect(() => {
 //     const storedAuthorizationValue =
-//       window.sessionStorage.getItem("refresh_token");
+//       window.sessionStorage.getItem("ap_refresh_token");
 //     setValue(storedAuthorizationValue || null);
 //   }, []);
 
@@ -28,8 +28,8 @@ import Cookies from "js-cookie";
 
 const useAuthorization = () => {
   const authorizationValue =
-    // window.sessionStorage.getItem("aaccess_token") || null;
-    Cookies.get("aaccess_token") || null;
+    // window.sessionStorage.getItem("ap_access_token") || null;
+    Cookies.get("ap_access_token") || null;
 
   const authorizationHeader = {
     headers: {

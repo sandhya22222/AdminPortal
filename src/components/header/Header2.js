@@ -68,7 +68,7 @@ const Header2 = ({ collapsed, setCollapsed }) => {
 
   const [userName, setUserName] = useState();
 
-  // const isUserLoggedIn = sessionStorage.getItem("is_loggedIn");
+  // const isUserLoggedIn = sessionStorage.getItem("ap_is_logged_in");
   const storeLanguages = useSelector(
     (state) => state.reducerStoreLanguage.storeLanguage
   );
