@@ -105,7 +105,7 @@ const PoliciesSettings = ({ storeName }) => {
           },
           onError: (err) => {
             toast(
-              err?.response?.data?.message ||
+              err?.response?.data?.response_message ||
                 t("messages:error_deleting_policy"),
               {
                 type: "error",

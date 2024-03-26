@@ -130,7 +130,8 @@ const PolicyCard = ({
           onError: (err) => {
             setConsentName(consent?.name);
             toast(
-              err?.response?.data?.message || t("messages:error_updating_name"),
+              err?.response?.data?.response_message ||
+                t("messages:error_updating_name"),
               {
                 type: "error",
               }
@@ -197,7 +198,8 @@ const PolicyCard = ({
           },
           onError: (err) => {
             toast(
-              err?.response?.data?.message || t("messages:error_saving_policy"),
+              err?.response?.data?.response_message ||
+                t("messages:error_saving_policy"),
               {
                 type: "error",
               }
@@ -270,7 +272,7 @@ const PolicyCard = ({
                 className=" !font-medium text-base  "
                 level={5}
               >
-                {consentName || t("labels:untitled_policy")}
+                {consentName}
               </Title>
             </div>
           ) : (
@@ -315,13 +317,17 @@ const PolicyCard = ({
           </div>
         )}
       </div>
-      <div className=" rounded border-[1px] drop-shadow-sm shadow-[#D9D9D9] border-[#D9D9D9] bg-white   w-full">
+      <div
+        className=" rounded border-[1px] drop-shadow-sm shadow-[#D9D9D9] border-[#D9D9D9] bg-white   w-full"
+        data-text-editor={"policyCard"}
+      >
         <ReactQuill
           theme="snow"
           value={description}
           onChange={handelDescriptionChange}
           modules={modules}
           formats={formats}
+          bounds={`[data-text-editor=policyCard]`}
         />
       </div>
       <p className=" mt-2 text-[#000000] text-opacity-50">
