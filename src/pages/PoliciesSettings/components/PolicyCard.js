@@ -152,7 +152,7 @@ const PolicyCard = ({
   };
 
   const handelCancelPolicyName = () => {
-    setConsentName(consent?.name);
+    if (!addContactInfo) setConsentName(consent?.name);
   };
 
   const handelDescriptionChange = (val) => {
