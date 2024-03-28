@@ -269,7 +269,7 @@ const PolicyCard = ({
             <div ref={policyTitleRef} className="max-w-xs  w-full">
               <Title
                 editable={editableTitle}
-                className=" !font-medium text-base  "
+                className=" !font-medium text-base !inset-0 !my-0  "
                 level={5}
               >
                 {consentName}
