@@ -80,10 +80,10 @@ const ListCurrency = () => {
                   <Image
                     preview={false}
                     src={starIcon}
-                    className="mr-1 flex !items-center"
+                    className="mr-1 flex !items-center "
                   />
                 }
-                className="inline-flex items-center"
+                className="inline-flex items-center gap-1"
                 color="#FB8500"
               >
                 {t("labels:default")}
