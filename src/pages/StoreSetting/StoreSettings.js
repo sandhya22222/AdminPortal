@@ -3562,7 +3562,7 @@ const StoreSettings = () => {
                       <label className="text-[20px]  mt-2 font-bold select-none">
                         {t("labels:page_theme")}
                       </label>
-                      <div className="flex space-x-2">
+                      <div className="flex gap-3">
                         <Button
                           className="app-btn-secondary !text-end"
                           onClick={() => setResetModalOpen(true)}

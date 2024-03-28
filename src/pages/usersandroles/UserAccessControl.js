@@ -646,7 +646,7 @@ const UserAccessControl = () => {
         cancelCallback={() => setShowDeleteModal(false)}
         isSpin={deleteModalLoading}
       >
-        {<div> {t("messages:are_you_sure_you_want_delete_the_group")} ?</div>}
+        {<div> {t("messages:are_you_sure_you_want_delete_the_group")}?</div>}
       </StoreModal>
       <StoreModal
         isVisible={showDeleteUserModal}
@@ -657,7 +657,7 @@ const UserAccessControl = () => {
         cancelCallback={() => setShowDeleteUserModal(false)}
         isSpin={deleteModalLoading}
       >
-        {<div> {t("messages:are_you_sure_you_want_delete_the_user")} ?</div>}
+        {<div> {t("messages:are_you_sure_you_want_delete_the_user")}?</div>}
       </StoreModal>
       <StoreModal
         isVisible={showUserEnableDisableModal}
@@ -671,9 +671,9 @@ const UserAccessControl = () => {
         {
           <div>
             {selectedUserData.status === true ? (
-              <p>{t("messages:are_you_sure_you_want_disable_status")} ?</p>
+              <p>{t("messages:are_you_sure_you_want_disable_status")}?</p>
             ) : (
-              <p>{t("messages:are_you_sure_you_want_enable_status")} ?</p>
+              <p>{t("messages:are_you_sure_you_want_enable_status")}?</p>
             )}
           </div>
         }

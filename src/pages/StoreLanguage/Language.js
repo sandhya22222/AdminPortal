@@ -92,7 +92,7 @@ const Language = () => {
             {record.is_default ? (
               <Tag
                 icon={<StarIcon />}
-                className="inline-flex items-center"
+                className="inline-flex items-center gap-1"
                 color="#FB8500"
               >
                 {t("labels:default")}

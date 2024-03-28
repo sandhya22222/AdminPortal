@@ -1588,9 +1588,8 @@ const Stores = () => {
       .catch((error) => {
         console.log("Error Response From storelimit", error.response);
         console.log("errory", error.response.data.response_body.message);
-        let errField = error.response.data.response_body.message.split(
-          " "
-        )?.[0];
+        let errField =
+          error.response.data.response_body.message.split(" ")?.[0];
         if (errField === "language_limit") {
           setErrorField("langauge_limit");
         } else if (errField === "Store") {
