@@ -1,7 +1,7 @@
 import { Button, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { useEffect, useMemo, useRef, useState } from "react";
-import ReactQuill from "react-quill";
+import ReactQuill, { Quill } from "react-quill";
 import moment from "moment/moment";
 import { toast } from "react-toastify";
 
@@ -11,6 +11,15 @@ import "react-quill/dist/quill.snow.css";
 import useCreateUserConsent from "../hooks/useCreateUserConsent";
 
 const { Title, Paragraph } = Typography;
+const Link = Quill.import("formats/link");
+Link.sanitize = function (url) {
+  const trimmedURL = url?.trim();
+  // quill by default creates relative links if scheme is missing.
+  if (!trimmedURL.startsWith("http://") && !trimmedURL.startsWith("https://")) {
+    return `https://${trimmedURL}`;
+  }
+  return trimmedURL;
+};
 
 const modules = {
   toolbar: [
