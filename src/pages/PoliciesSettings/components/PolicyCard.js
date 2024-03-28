@@ -112,7 +112,6 @@ const PolicyCard = ({
             }, [300]);
           },
           onError: (err) => {
-            setConsentName(consent?.name);
             toast(
               err?.response?.data?.response_message ||
                 t("messages:error_updating_name"),
@@ -137,7 +136,6 @@ const PolicyCard = ({
             });
           },
           onError: (err) => {
-            setConsentName(consent?.name);
             toast(
               err?.response?.data?.response_message ||
                 t("messages:error_updating_name"),
@@ -181,7 +179,6 @@ const PolicyCard = ({
             }, [100]);
           },
           onError: (err) => {
-            setConsentName(consent?.name);
             toast(
               err?.response?.data?.response_message ||
                 t("messages:error_saving_policy"),
