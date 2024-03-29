@@ -1685,6 +1685,7 @@ const StoreSettings = () => {
             }}
             className={"w-28"}
             max={maxDataLimit}
+            maxLength={10}
             onChange={(value) => {
               // let number = /^[0-9]*$/.test(e.target.value);
               // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1728,6 +1729,7 @@ const StoreSettings = () => {
             }}
             className={"w-28"}
             max={maxDataLimit}
+            maxLength={10}
             onChange={(value) => {
               // let number = /^[0-9]*$/.test(e.target.value);
               // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1770,6 +1772,7 @@ const StoreSettings = () => {
             }}
             className={"w-28"}
             max={maxDataLimit}
+            maxLength={10}
             onChange={(value) => {
               // let number = /^[0-9]*$/.test(e.target.value);
               // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1812,6 +1815,7 @@ const StoreSettings = () => {
             }}
             className={"w-28"}
             max={maxDataLimit}
+            maxLength={10}
             onChange={(value) => {
               // let number = /^[0-9]*$/.test(e.target.value);
               // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1856,6 +1860,7 @@ const StoreSettings = () => {
             }}
             className={"w-28"}
             max={maxDataLimit}
+            maxLength={10}
             onChange={(value) => {
               // let number = /^[0-9]*$/.test(e.target.value);
               // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1898,6 +1903,7 @@ const StoreSettings = () => {
             }}
             className={"w-28"}
             max={maxDataLimit}
+            maxLength={10}
             onChange={(value) => {
               // let number = /^[0-9]*$/.test(e.target.value);
               // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1942,6 +1948,7 @@ const StoreSettings = () => {
             }}
             className={"w-28"}
             max={maxDataLimit}
+            maxLength={10}
             onChange={(value) => {
               // let number = /^[0-9]*$/.test(e.target.value);
               // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -1987,6 +1994,7 @@ const StoreSettings = () => {
             }}
             className={"w-28"}
             max={maxDataLimit}
+            maxLength={10}
             onChange={(value) => {
               // let number = /^[0-9]*$/.test(e.target.value);
               // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -2032,6 +2040,7 @@ const StoreSettings = () => {
             }}
             className={"w-28"}
             max={maxDataLimit}
+            maxLength={10}
             onChange={(value) => {
               // let number = /^[0-9]*$/.test(e.target.value);
               // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
@@ -2077,6 +2086,7 @@ const StoreSettings = () => {
             }}
             className={"w-28"}
             max={maxDataLimit}
+            maxLength={10}
             onChange={(value) => {
               // let number = /^[0-9]*$/.test(e.target.value);
               // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
