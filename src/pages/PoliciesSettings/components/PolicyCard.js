@@ -1,7 +1,7 @@
 import { Button, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { useEffect, useMemo, useRef, useState } from "react";
-import ReactQuill from "react-quill";
+import ReactQuill, { Quill } from "react-quill";
 import moment from "moment/moment";
 import { toast } from "react-toastify";
 
@@ -11,6 +11,15 @@ import "react-quill/dist/quill.snow.css";
 import useCreateUserConsent from "../hooks/useCreateUserConsent";
 
 const { Title, Paragraph } = Typography;
+const Link = Quill.import("formats/link");
+Link.sanitize = function (url) {
+  const trimmedURL = url?.trim();
+  // quill by default creates relative links if scheme is missing.
+  if (!trimmedURL.startsWith("http://") && !trimmedURL.startsWith("https://")) {
+    return `https://${trimmedURL}`;
+  }
+  return trimmedURL;
+};
 
 const modules = {
   toolbar: [
@@ -103,7 +112,6 @@ const PolicyCard = ({
             }, [300]);
           },
           onError: (err) => {
-            setConsentName(consent?.name);
             toast(
               err?.response?.data?.response_message ||
                 t("messages:error_updating_name"),
@@ -128,7 +136,6 @@ const PolicyCard = ({
             });
           },
           onError: (err) => {
-            setConsentName(consent?.name);
             toast(
               err?.response?.data?.response_message ||
                 t("messages:error_updating_name"),
@@ -143,7 +150,7 @@ const PolicyCard = ({
   };
 
   const handelCancelPolicyName = () => {
-    setConsentName(consent?.name);
+    if (!addContactInfo) setConsentName(consent?.name);
   };
 
   const handelDescriptionChange = (val) => {
@@ -172,7 +179,6 @@ const PolicyCard = ({
             }, [100]);
           },
           onError: (err) => {
-            setConsentName(consent?.name);
             toast(
               err?.response?.data?.response_message ||
                 t("messages:error_saving_policy"),
@@ -269,7 +275,7 @@ const PolicyCard = ({
             <div ref={policyTitleRef} className="max-w-xs  w-full">
               <Title
                 editable={editableTitle}
-                className=" !font-medium text-base  "
+                className=" !font-medium text-base !inset-0 !my-0  "
                 level={5}
               >
                 {consentName}
