@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Layout, Typography, Button, Row, Col, Tag, Tooltip, Image } from "antd";
+import {
+  Layout,
+  Typography,
+  Button,
+  Row,
+  Col,
+  Tag,
+  Tooltip,
+  Image,
+} from "antd";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 //! Import user defined components
@@ -68,9 +77,13 @@ const ListCurrency = () => {
             {record.isDefault === true ? (
               <Tag
                 icon={
-                  <Image preview={false} src={starIcon} className="mr-1 flex !items-center" />
+                  <Image
+                    preview={false}
+                    src={starIcon}
+                    className="mr-1 flex !items-center "
+                  />
                 }
-                className="inline-flex items-center"
+                className="inline-flex items-center gap-1"
                 color="#FB8500"
               >
                 {t("labels:default")}
@@ -157,22 +170,22 @@ const ListCurrency = () => {
       render: (text, record) => {
         return (
           <Col className="whitespace-nowrap !text-center">
-            <Tooltip title={t("labels:edit_currency")}>
-              <Button
-                type="text"
-                className="app-btn-icon"
+            <Tooltip title={t("labels:view_details")}>
+              <div
+                className="app-btn-icon cursor-pointer"
                 onClick={() => {
                   navigate(`/dashboard/currency/edit-currency?k=${record.key}`);
                 }}
               >
-                <Content className=" flex justify-center align-items-center">
-                  <img
+                {/* <Content className=" flex justify-center align-items-center"> */}
+                {/* <img
                     src={EditIcon}
                     alt="Edit Icon"
                     className=" !w-[12px] !text-center !text-sm cursor-pointer"
-                  />
-                </Content>
-              </Button>
+                  /> */}
+                {t("labels:view_details")}
+                {/* </Content> */}
+              </div>
             </Tooltip>
           </Col>
         );

@@ -128,7 +128,7 @@ const PoliciesSettings = ({ storeName }) => {
       </Title>
       <div className=" flex  w-full max-w-[980px] justify-between ">
         <Text>{t("messages:help_info_policies")}</Text>
-        <div className=" space-x-2">
+        <div className="flex !gap-2">
           <Button
             onClick={handelPreviewAndCustomise}
             disabled={
