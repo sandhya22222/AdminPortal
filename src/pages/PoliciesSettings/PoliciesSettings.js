@@ -5,6 +5,7 @@ import {
   Empty,
   Modal,
   Skeleton,
+  Tooltip,
   Typography,
 } from "antd";
 import { useTranslation } from "react-i18next";
@@ -19,6 +20,7 @@ import StoreModal from "../../components/storeModal/StoreModal";
 import PolicyCard from "./components/PolicyCard";
 import PreviewAndCustomise from "./components/PreviewAndCustomise";
 import { useRef } from "react";
+import { RiInformationFill } from "react-icons/ri";
 
 const { Text, Paragraph, Title } = Typography;
 const CONTACT_INFORMATION = "Contact Information";
@@ -181,10 +183,14 @@ const PoliciesSettings = ({ storeName }) => {
               <Empty description={false} />
             </div>
           ) : null}
-
-          <Checkbox onChange={onContactInfoChange} checked={addContactInfo}>
-            Display contact information
-          </Checkbox>
+          <div className=" flex items-center ">
+            <Checkbox onChange={onContactInfoChange} checked={addContactInfo}>
+              Display contact information
+            </Checkbox>
+            <Tooltip title={t("messages:contact_policy_info")}>
+              <RiInformationFill className=" text-[#1677ff] text-base cursor-pointer" />
+            </Tooltip>
+          </div>
           <div>
             <Alert
               message={t("messages:contact_info")}
