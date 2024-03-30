@@ -121,6 +121,20 @@ const CreateUsers = () => {
         console.log("server error response of user post call");
         MarketplaceToaster.showToast(error.response);
         setIsLoading(false);
+        if (error.response?.status === 400) {
+          if (error.response?.data?.response_code === "UMS-000002-04") {
+            setInvalidEmailId(true);
+            setInvalidUserName(true);
+          } else if (error.response?.data?.response_code === "UMS-000002-16") {
+            // userName
+            setInvalidUserName(true);
+            setInvalidEmailId(false);
+          } else if (error.response?.data?.response_code === "UMS-000002-17") {
+            // email
+            setInvalidEmailId(true);
+            setInvalidUserName(false);
+          }
+        }
       });
   };
 
@@ -295,6 +309,21 @@ const CreateUsers = () => {
         console.log("server error response of user put call");
         MarketplaceToaster.showToast(error.response);
         setIsLoading(false);
+        if (error.response?.status === 400) {
+          if (error.response?.data?.response_code === "UMS-000002-04") {
+            setInvalidEmailId(true);
+            setInvalidUserName(true);
+            console.log("working fineeeee");
+          } else if (error.response?.data?.response_code === "UMS-000002-16") {
+            // userName
+            setInvalidUserName(true);
+            setInvalidEmailId(false);
+          } else if (error.response?.data?.response_code === "UMS-000002-17") {
+            // email
+            setInvalidEmailId(true);
+            setInvalidUserName(false);
+          }
+        }
       });
   };
 
@@ -666,7 +695,11 @@ const CreateUsers = () => {
                       </Typography>
                       <Content>
                         <Select
-                          disabled={pageAction === "edit" ? userName == currentUser : false}
+                          disabled={
+                            pageAction === "edit"
+                              ? userName == currentUser
+                              : false
+                          }
                           style={{
                             width: 665,
                           }}
