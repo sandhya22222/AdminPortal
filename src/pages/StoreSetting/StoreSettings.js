@@ -1115,6 +1115,7 @@ const StoreSettings = () => {
       })
       .catch((error) => {
         console.log("Error Response From storeSettingPostCall", error.response);
+        dataLimitErrorHandling(error?.response?.data?.response_code)
         setIsStoreDataLimitSaving(false);
         MarketplaceToaster.showToast(error.response);
       });
@@ -1665,6 +1666,40 @@ const StoreSettings = () => {
       });
   }, []);
 
+  const dataLimitErrorHandling = (errorResponseCode) => {
+    switch (errorResponseCode) {
+      case "AMS-000028-04":
+        setInvalidVendorLimit(true);
+        break;
+      case "AMS-000028-05":
+        setInvalidCustomerLimit(true);
+        break;
+      case "AMS-000028-06":
+        setInvalidProductLimit(true);
+        break;
+      case "AMS-000028-08":
+        setInvalidOrderLimit(true);
+        break;
+      case "AMS-000028-07":
+        setInvalidLanguageLimit(true);
+        break;
+      case "AMS-000028-09":
+        setInvalidProductTemplateLimit(true);
+        break;
+      case "AMS-000028-12":
+        setInvalidVendorUserLimit(true);
+        break;
+      case "AMS-000028-21":
+        setInvalidMaxProductLimit(true);
+        break;
+      case "AMS-000028-23":
+        setInvalidMaxTemplateLimit(true);
+        break;
+      default:
+        return ""
+    }
+  }
+
   const getStoreRestrictionControl = (key) => {
     switch (key) {
       case "vendor_limit":
@@ -2153,6 +2188,8 @@ const StoreSettings = () => {
           />
         );
         break;
+        default:
+          return null
     }
   };
 
