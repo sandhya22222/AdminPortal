@@ -324,7 +324,7 @@ const PolicyCard = ({
         )}
       </div>
       <div
-        className=" rounded border-[1px] drop-shadow-sm shadow-[#D9D9D9] border-[#D9D9D9] bg-white   w-full"
+        className=" rounded border-[1px] drop-shadow-sm shadow-[#D9D9D9] border-[#D9D9D9] overflow-hidden bg-white   w-full"
         data-text-editor={"policyCard"}
       >
         <ReactQuill
