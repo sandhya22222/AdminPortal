@@ -151,7 +151,7 @@ const Language = () => {
         return (
           <>
             <Text>
-              {record.status === 2 ? (
+              {record.status == 2 ? (
                 <Badge status="default" text={t("labels:inactive")} />
               ) : (
                 <Badge status="success" text={t("labels:active")} />
