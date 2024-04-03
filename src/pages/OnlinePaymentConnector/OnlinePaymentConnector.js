@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react'
 
 const OnlinePaymentConnector = () => {
-  return <div>OnlinePaymentConnector</div>;
-};
+    return <div>OnlinePaymentConnector</div>
+}
 
-export default OnlinePaymentConnector;
+export default OnlinePaymentConnector

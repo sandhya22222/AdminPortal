@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { Favicon } from "../constants/media";
+import { useEffect } from 'react'
+import { Favicon } from '../constants/media'
 
 /**
  * ! useFavicon is a custom hook designed to update app Favicon.
@@ -14,13 +14,13 @@ import { Favicon } from "../constants/media";
  * */
 
 export const useFavicon = () => {
-  useEffect(() => {
-    let link = document.querySelector("link[rel~='icon']");
-    if (!link) {
-      link = document.createElement("link");
-      link.rel = "icon";
-      document.getElementsByTagName("head")[0].appendChild(link);
-    }
-    link.href = Favicon;
-  }, []);
-};
+    useEffect(() => {
+        let link = document.querySelector("link[rel~='icon']")
+        if (!link) {
+            link = document.createElement('link')
+            link.rel = 'icon'
+            document.getElementsByTagName('head')[0].appendChild(link)
+        }
+        link.href = Favicon
+    }, [])
+}

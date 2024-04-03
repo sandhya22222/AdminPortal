@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { useTranslation } from "react-i18next";
+import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 /**
  * ! usePageTitle is a custom hook designed to update page title.
  * ! The main purpose of this custom hook is to change the page title based on which current active page.
@@ -13,13 +13,13 @@ import { useTranslation } from "react-i18next";
  * */
 
 export const usePageTitle = (newTitle) => {
-  const { t } = useTranslation();
-  newTitle = `${t("labels:admin_portal")} - ` + newTitle;
-  useEffect(() => {
-    const prevTitle = document.title;
-    document.title = newTitle;
-    return () => {
-      document.title = prevTitle;
-    };
-  }, [newTitle]);
-};
+    const { t } = useTranslation()
+    newTitle = `${t('labels:admin_portal')} - ` + newTitle
+    useEffect(() => {
+        const prevTitle = document.title
+        document.title = newTitle
+        return () => {
+            document.title = prevTitle
+        }
+    }, [newTitle])
+}

@@ -1,6 +1,6 @@
-import React from "react";
-import { Tabs } from "antd";
-import "./DmTabAntDesign.css";
+import React from 'react'
+import { Tabs } from 'antd'
+import './DmTabAntDesign.css'
 
 /**
  * ? Use of this component
@@ -32,39 +32,32 @@ import "./DmTabAntDesign.css";
  * 5) tabType - If you want border to the tabs then give tabType = "line".
  * */
 
-const { TabPane } = Tabs;
+const { TabPane } = Tabs
 
 const DmTabAntDesign = ({
-  tabData,
-  handleTabChangeFunction,
-  defaultSelectedTabKey,
-  activeKey,
-  tabBarPosition,
-  tabType,
+    tabData,
+    handleTabChangeFunction,
+    defaultSelectedTabKey,
+    activeKey,
+    tabBarPosition,
+    tabType,
 }) => {
-  return (
-    <Tabs
-      defaultActiveKey={defaultSelectedTabKey}
-      onTabClick={handleTabChangeFunction}
-      tabPosition={tabBarPosition}
-      activeKey={activeKey}
-      type={tabType}
-    >
-      {tabData &&
-        tabData.length > 0 &&
-        tabData.map((element) => {
-          return (
-            <TabPane
-              tab={element.tabTitle}
-              key={element.tabId}
-              style={{ outline: "none" }}
-            ></TabPane>
-          );
-        })}
-    </Tabs>
-  );
-};
+    return (
+        <Tabs
+            defaultActiveKey={defaultSelectedTabKey}
+            onTabClick={handleTabChangeFunction}
+            tabPosition={tabBarPosition}
+            activeKey={activeKey}
+            type={tabType}>
+            {tabData &&
+                tabData.length > 0 &&
+                tabData.map((element) => {
+                    return <TabPane tab={element.tabTitle} key={element.tabId} style={{ outline: 'none' }}></TabPane>
+                })}
+        </Tabs>
+    )
+}
 
-export default DmTabAntDesign;
+export default DmTabAntDesign
 
 //! Note- it there will be card in type then tabPosition
