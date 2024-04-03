@@ -39,6 +39,8 @@
         "web-vitals": "^2.1.4"
     },
     "scripts": {
+        "prettier:format": "prettier --write --ignore-unknown .",
+        "prettier:check": "prettier . --check",
         "start:dev": "env-cmd -f .env.dev react-scripts start",
         "build:dev": "env-cmd -f .env.dev react-scripts build",
         "start:qa": "env-cmd -f .env.qa react-scripts start",

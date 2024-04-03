@@ -7,13 +7,19 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 git clone http://gitserver/digit-market/dm-admin-portal.git
 
 Run below script to download all the dependencies & setup ready to run the project.
+
 ### `npm install`
 
 **Note: This project is modified to run on different environments such as `development`, `production` etc. The below scrips must use any of the configured environment to start the application**
+
 ## Available Environments
+
 ### `dev`
+
 ### `prod`
+
 ### `qa`
+
 ## Available Scripts
 
 In the project directory, you can run:

@@ -1,27 +1,27 @@
 .headerIcon {
-  vertical-align: 0.2em !important;
+    vertical-align: 0.2em !important;
 }
 
-
-.headerWidth{
-  width: -webkit-fill-available;
-  width: -moz-available;    
+.headerWidth {
+    width: -webkit-fill-available;
+    width: -moz-available;
 }
 
 .ant-image {
-  position: relative !important;
-  display: block !important;
-  cursor: pointer !important;
+    position: relative !important;
+    display: block !important;
+    cursor: pointer !important;
 }
 
 .custom-select.ant-select {
-  border-color: transparent !important; /* Remove default border */
+    border-color: transparent !important; /* Remove default border */
 }
 
-.custom-select.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector {
-  border-color: transparent !important; /* Remove border on focus */
+.custom-select.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input)
+    .ant-select-selector {
+    border-color: transparent !important; /* Remove border on focus */
 }
 
 .custom-select.ant-select:not(.ant-select-disabled):hover .ant-select-selector {
-  border-color: transparent !important; /* Remove border on hover */
+    border-color: transparent !important; /* Remove border on hover */
 }
