@@ -1,6 +1,5 @@
 import React from 'react'
 import { Layout, Skeleton, Space } from 'antd'
-import SkeletonInput from 'antd/lib/skeleton/Input'
 
 const { Content } = Layout
 

@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import { Layout, Pagination } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE)
 
 const { Content } = Layout
 export default function DmPagination({

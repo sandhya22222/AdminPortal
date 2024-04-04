@@ -1,6 +1,5 @@
 import { toast } from 'react-toastify'
 import moment from 'moment'
-// import CategoryTabData from "../constants/CategoryTabData";
 // to get image URL using image path
 const baseUrl = process.env.REACT_APP_BASE_URL
 const absoluteImageUrl = process.env.REACT_APP_ABSOLUTE_IMAGE_API
@@ -444,11 +443,6 @@ export const getParentChildrenData = (dataProcessorData, storeProductTypes, isBu
             }
             return copyDataProcessorData
         }
-        // }
-        // else if (dataProcessorData && dataProcessorData.length > 1) {
-        //   const categorylists= getParentChildrenCategories(dataProcessorData,storeProductTypes,isButtonRequired,dataProcessorData[0].value);
-        //   return categorylists;
-        // }
     } else {
         return []
     }

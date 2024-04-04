@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Layout, Typography, Skeleton, Table, Button, Switch, Tooltip } from 'antd'
-// import DeleteIcon from "@mui/icons-material/Delete";
-// import EditIcon from "@mui/icons-material/Edit";
 import { DeleteOutlined } from '@ant-design/icons'
 // import { MdEdit } from "react-icons/md";
 import { useTranslation } from 'react-i18next'
@@ -14,10 +12,8 @@ import DmPagination from '../../components/DmPagination/DmPagination'
 import CreateGroup from './CreateGroup'
 import StoreModal from '../../components/storeModal/StoreModal'
 import MarketplaceToaster from '../../util/marketplaceToaster'
-import { EditIcon } from '../../constants/media'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import { MdEdit } from 'react-icons/md'
-// import { DeleteIcon } from "../../constants/media";
 
 const { Content } = Layout
 const { Title, Paragraph } = Typography
@@ -28,16 +24,13 @@ const usersAllAPI = process.env.REACT_APP_USERS_ALL_API
 const userAPI = process.env.REACT_APP_USERS_API
 const updateUserStatusAPI = process.env.REACT_APP_USER_STATUS_API
 const currentUserDetailsAPI = process.env.REACT_APP_USER_PROFILE_API
-const portalInfo = JSON.parse(process.env.REACT_APP_PORTAL_INFO)
 
 const UserAccessControl = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const [searchParams, setSearchParams] = useSearchParams()
-    let tabId = searchParams.get('tab')
     const [isLoading, setIsLoading] = useState(false)
     const [isNetworkError, setIsNetworkError] = useState(false)
-    const [langDirection, setLangDirection] = useState('ltr')
     const [serverDataCount, setServerDataCount] = useState()
     const [usersServerData, setUsersServerData] = useState([])
     const [groupServerData, setGroupServerData] = useState([])
@@ -67,8 +60,6 @@ const UserAccessControl = () => {
 
     //! changing the tab
     const handleMainTabChange = (tabId) => {
-        //setIsLoading(true);
-
         setSearchParams({
             tab: tabId,
             page: 1,
@@ -170,21 +161,7 @@ const UserAccessControl = () => {
                                     placement='bottom'
                                     title={`${t('labels:delete_user')}`}
                                     overlayStyle={{ zIndex: 1 }}>
-                                    {/* <DeleteIcon
-                  className="app-delete-icon mt-[6px] cursor-pointer"
-                  onClick={() => openUserDeleteModal(record.username)}
-                /> */}
-                                    <DeleteOutlined
-                                        onClick={() => openUserDeleteModal(record.username)}
-                                        // role={"button"}
-                                        // className="app-delete-icon mt-[6px] cursor-pointer"
-                                        // className="text-base ml-[7px] anticon-delete-custom-border"
-                                    />
-                                    {/* <img
-                  src={DeleteIcon}
-                  className="!app-delete-icon mt-[6px] cursor-pointer"
-                  alt="icon"
-                /> */}
+                                    <DeleteOutlined onClick={() => openUserDeleteModal(record.username)} />
                                 </Tooltip>
                             </Button>
                         )}
@@ -201,13 +178,6 @@ const UserAccessControl = () => {
                                         `/dashboard/user-access-control/edit-user?id=${record.id}&uname=${currentUserDetailsAPIData?.preferred_username}`
                                     )
                                 }}>
-                                {/* <Content className=" flex justify-center align-items-center">
-                  <img
-                    src={EditIcon}
-                    alt="Edit Icon"
-                    className=" !w-[12px] !text-center !text-sm cursor-pointer pt-[5px]"
-                  />
-                </Content> */}
                                 <MdEdit />
                             </Button>
                         </Tooltip>
@@ -238,63 +208,7 @@ const UserAccessControl = () => {
                 return <Content>{String(record.name).replaceAll('-', ' ')}</Content>
             },
         },
-        // {
-        //   title: <Content>{t("users_roles:group_path")}</Content>,
-        //   dataIndex: "path",
-        //   key: "path",
-        //   render: (text, record) => {
-        //     return <Content>{record.path}</Content>;
-        //   },
-        // },
-        // {
-        //   title: `${t("labels:action")}`,
-        //   dataIndex: "",
-        //   key: "",
-        //   render: (text, record) => {
-        //     return (
-        //       <Content className="flex">
-        //         <Content>
-        //           <Button className="app-btn-icon" type="text">
-        //             <Tooltip
-        //               placement="bottom"
-        //               title={`${t("labels:edit")}` + ` ` + `${record.name}`}
-        //               overlayStyle={{ zIndex: 1 }}
-        //             >
-        //               {/* <EditIcon
-        //                 className="app-btn-link mt-[6px]"
-        //                 onClick={() => {
-        //                   setGroupName(record.name);
-        //                   setShowGroupModal(true);
-        //                 }}
-        //               />{" "} */}
-        //             </Tooltip>
-        //           </Button>
-        //         </Content>
-        //         <Content>
-        //           <Button className="app-btn-icon" type="text">
-        //             <Tooltip
-        //               placement="bottom"
-        //               title={`${t("labels:delete")}` + ` ` + `${record.name}`}
-        //               overlayStyle={{ zIndex: 1 }}
-        //             >
-        //               {/* <DeleteIcon
-        //                 className="app-delete-icon mt-[6px] cursor-pointer"
-        //                 onClick={() => openGroupDeleteModal(record.name)}
-        //               /> */}
-        //             </Tooltip>
-        //           </Button>
-        //         </Content>
-        //       </Content>
-        //     );
-        //   },
-        // },
     ]
-
-    //Group Delete modal open function
-    const openGroupDeleteModal = (groupId) => {
-        setShowDeleteModal(true)
-        setShowGroupId(groupId)
-    }
 
     //User Delete modal open function
     const openUserDeleteModal = (userName) => {
@@ -486,29 +400,8 @@ const UserAccessControl = () => {
                                         onClick={() => navigate('/dashboard/user-access-control/add-user?')}>
                                         {t('labels:add_user')}
                                     </Button>
-                                ) : searchParams.get('tab') === '2' ? null : null}
-                                {/* // (
-                //   <Button
-                //     className="app-btn-primary !h-8 hover:!h-8"
-                //     onClick={() =>
-                //       navigate("/dashboard/user-access-control/add-user?")
-                //     }
-                //   >
-                //     {t("labels:add_user")}
-                //   </Button>
-                // )} */}
+                                ) : null}
                             </>
-                            {/* : searchParams.get("tab") === "1" ? (
-                  <Button
-                    className="app-btn-primary !h-8 hover:!h-8"
-                    onClick={() => {
-                      setShowGroupModal(true);
-                      setGroupName("");
-                    }}
-                  >
-                    {t("users_roles:add_group")}
-                  </Button>
-                )  */}
                         </Content>
                     </Content>
                 }

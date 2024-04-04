@@ -1,8 +1,8 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Typography, Layout } from 'antd'
-const { Content, Footer } = Layout
-const { Text, Paragraph } = Typography
+const { Content } = Layout
+const {  Paragraph } = Typography
 
 const portalInfo = JSON.parse(process.env.REACT_APP_PORTAL_INFO)
 

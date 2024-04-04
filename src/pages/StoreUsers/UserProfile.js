@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Layout, Typography, Row, Skeleton, Input, Button, Col, Avatar } from 'antd'
+import { Layout, Typography, Row, Input, Button, Col, Avatar } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
-import { Link } from 'react-router-dom'
-import moment from 'moment'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import HeaderForTitle from '../../components/header/HeaderForTitle'
 import { getGenerateDateAndTime } from '../../util/util'
@@ -16,12 +14,11 @@ import MarketplaceToaster from '../../util/marketplaceToaster'
 import SkeletonComponent from '../../components/Skeleton/SkeletonComponent'
 
 const { Content } = Layout
-const { Text, Title } = Typography
+const { Title } = Typography
 const changePasswordAPI = process.env.REACT_APP_CHANGE_PASSWORD_API
 const storeUsersAPI = process.env.REACT_APP_USERS_API
 const maxPasswordLength = process.env.REACT_APP_PASSWORD_MAX_LENGTH
 const minPasswordLength = process.env.REACT_APP_PASSWORD_MIN_LENGTH
-const portalInfo = JSON.parse(process.env.REACT_APP_PORTAL_INFO)
 
 const UserProfile = () => {
     const { t } = useTranslation()
@@ -29,13 +26,9 @@ const UserProfile = () => {
     const [storeUsersData, setStoreUsersData] = useState()
     const [isLoading, setIsLoading] = useState(true)
     const [isNetworkError, setIsNetworkError] = useState(false)
-    const [errorMessage, setErrorMessage] = useState()
-    const [hideEmail, setHideEmail] = useState('')
     const [email, setEmail] = useState('')
-    const [langDirection, setLangDirection] = useState('ltr')
     const [userName, setUserName] = useState()
     const [relmname, setRelmName] = useState()
-    // const [createdDate,setCreatedDate]=useState();
     const [isPasswordChangeModalOpen, setIsPasswordChangeModalOpen] = useState(false)
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
@@ -161,10 +154,6 @@ const UserProfile = () => {
         }
     }
 
-    // console.log("current pwd:", currentPassword);
-    // console.log("new password", password);
-    // console.log("confirm pwd:", confirmPassword);
-
     // checking whether the password is valid or not
     useEffect(() => {
         setIsPasswordValid(validatePassword())
@@ -184,11 +173,6 @@ const UserProfile = () => {
                 console.log('Relm Name : ', relmname)
                 const email = response.data.response_body.email
                 setEmail(email)
-                const emailHide = email.replace(
-                    /(?<=^\w)\w+(?=\w*?@\w)/,
-                    (match) => match[0] + '*'.repeat(match.length - 2) + match[match.length - 1]
-                )
-                setHideEmail(emailHide)
             })
             .catch((error) => {
                 console.log('error from store all users API ====>', error.response)
@@ -200,10 +184,6 @@ const UserProfile = () => {
                         type: 'error',
                         autoClose: 10000,
                     })
-                } else {
-                    if (error.response) {
-                        setErrorMessage(error.response.data.message)
-                    }
                 }
             })
     }
@@ -239,25 +219,11 @@ const UserProfile = () => {
                 setConfirmPassword('')
             })
     }
-    useEffect(() => {
-        if (util.getSelectedLanguageDirection()) {
-            setLangDirection(util.getSelectedLanguageDirection()?.toLowerCase())
-        }
-    }, [util.getSelectedLanguageDirection()])
 
     useEffect(() => {
         findAllWithoutPageStoreUsers()
         window.scroll(0, 0)
     }, [])
-
-    const formatTimestamp = (timestamp) => {
-        const timestampInSeconds = timestamp.length > 10 ? timestamp / 1000 : timestamp
-        const momentObject = moment.unix(timestampInSeconds)
-
-        // Use format with 'D MMMM YYYY' to display only the date
-        const formattedDate = momentObject.format('D MMMM YYYY')
-        return formattedDate
-    }
 
     return (
         <Content>
@@ -280,111 +246,9 @@ const UserProfile = () => {
                         <p>{t('messages:network_error')}</p>
                     </Content>
                 ) : (
-                    // <Content className="!text-center !p-6 !mx-[17rem]">
-                    //   <Content className="inline-block">
-                    //     <Content className="shadow-sm  bg-[#FFFFFF] !rounded-2xl flex flex-col items-center px-8 py-10 w-[500px]">
-                    //       {/* <Row className="mb-2">
-                    //         <Avatar size={104} icon={<UserOutlined />} />
-                    //       </Row>
-                    //       </Row> */}
-                    //       <Row className="mb-2">
-                    //         <Text className="font-medium text-lg">
-                    //           {storeUsersData && storeUsersData.username}
-                    //         </Text>
-                    //       </Row>
-                    //       <Row className="font-semibold mb-3">
-                    //         <Text to="">{hideEmail && hideEmail}</Text>
-                    //       </Row>
-                    //       <Content className="flex flex-col items-center">
-                    //         <Row className="mb-2">
-                    //           <Content className="text-md font-medium flex text-right">
-                    //             {t("labels:role")}:{" "}
-                    //           </Content>
-                    //           <Content
-                    //             className={`text-md font-medium ${
-                    //               langDirection === "rtl" ? "!mr-1" : ""
-                    //             }`}
-                    //           >
-                    //             {storeUsersData &&
-                    //               storeUsersData.groups.length > 0 &&
-                    //               storeUsersData.groups.map((ele) => (
-                    //                 <span className="ml-1">
-                    //                   {/* {ele.name === "" || ele.name === undefined
-                    //                     ? "NA"
-                    //                     : ele.name} */}
-                    //                     {ele.name}
-                    //                 </span>
-                    //               ))}
-                    //           </Content>
-                    //         </Row>
-                    //         <Row className="mb-2">
-                    //           <Content className="text-md font-medium">
-                    //             {t("labels:first_name")}:{" "}
-                    //           </Content>
-                    //           <Content
-                    //             className={`text-md font-medium ${
-                    //               langDirection === "rtl" ? "!mr-1" : "!ml-1"
-                    //             }`}
-                    //           >
-                    //             {/* {(storeUsersData && storeUsersData.firstName === "") ||
-                    //             (storeUsersData && storeUsersData.firstName === undefined)
-                    //               ? "NA"
-                    //               : storeUsersData && storeUsersData.firstName} */}
-                    //               {storeUsersData && storeUsersData.firstName}
-                    //           </Content>
-                    //         </Row>
-                    //         <Row className=" mb-2">
-                    //           <Content className="text-md font-medium">
-                    //             {t("labels:last_name")}:{" "}
-                    //           </Content>
-                    //           <Content
-                    //             className={`text-md font-medium ${
-                    //               langDirection === "rtl" ? "!mr-1" : "!ml-1"
-                    //             }`}
-                    //           >
-                    //             {/* {(storeUsersData && storeUsersData.lastName === "") ||
-                    //             (storeUsersData && storeUsersData.lastName === undefined)
-                    //               ? "NA"
-                    //               : storeUsersData && storeUsersData.lastName} */}
-                    //               {storeUsersData && storeUsersData.lastName}
-                    //           </Content>
-                    //         </Row>
-                    //         <Row className="">
-                    //           <Content className="text-md font-medium">
-                    //             {t("labels:onboarded_on")}:{" "}
-                    //             {/* {getGenerateDateAndTime(
-                    //               storeUsersData && storeUsersData.createdTimestamp,
-                    //               "D MMMM YYYY"
-                    //             )} */}
-                    //           </Content>
-                    //           <Content
-                    //             className={`text-md font-medium ${
-                    //               langDirection === "rtl" ? "!mr-1" : "!ml-1"
-                    //             }`}
-                    //           >
-                    //             {/* {moment(
-                    //               storeUsersData && storeUsersData.createdTimestamp
-                    //             ).format("D MMMM YYYY")} */}
-                    //             {formatTimestamp(
-                    //               storeUsersData &&
-                    //                 storeUsersData.createdTimestamp.toString()
-                    //             )}
-                    //           </Content>
-                    //         </Row>
-                    //       </Content>
-                    //     </Content>
-                    //   </Content>
-                    // </Content>
                     <Content className='mx-3 my-24'>
                         <Content className='w-[100%] bg-white my-3 p-2 rounded-md shadow-sm'>
                             <div className='flex gap-2'>
-                                {/* <img
-                  src={
-                    "https://images.unsplash.com/photo-1566275529824-cca6d008f3da?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cGhvdG98ZW58MHx8MHx8fDA%3D"
-                  }
-                  alt="Profile"
-                  className="w-16 aspect-square rounded-[50%] overflow-hidden"
-                /> */}
                                 <Avatar size={64} icon={<UserOutlined />} />
                                 <div className='flex flex-col justify-center'>
                                     <Typography className='input-label-color  m-0 items-center'>
@@ -431,16 +295,6 @@ const UserProfile = () => {
                                 <Col span={12}>
                                     <Input value={storeUsersData && storeUsersData.lastName} disabled />
                                 </Col>
-                                {/* <Col span={12}>
-                  <Typography className="border border-gray-300 p-2 rounded-md min-h-[38px]">
-                    {storeUsersData && storeUsersData.firstName}
-                  </Typography>
-                </Col>
-                <Col span={12}>
-                  <Typography className="border border-gray-300 p-2 rounded-md min-h-[38px]">
-                    {storeUsersData && storeUsersData.lastName}
-                  </Typography>
-                </Col> */}
                             </Row>
                             <Row className='pb-2'>
                                 <Col>
@@ -450,9 +304,6 @@ const UserProfile = () => {
                             <Row gutter={25}>
                                 <Col span={12}>
                                     <Input value={email} disabled />
-                                    {/* <Typography className="border-1 p-2 rounded-md min-h-[38px]">
-                    {email}
-                  </Typography> */}
                                 </Col>
                                 <Col>
                                     <Button onClick={showPasswordChangeModal} className='app-btn-secondary'>
@@ -461,13 +312,6 @@ const UserProfile = () => {
                                 </Col>
                             </Row>
                             <Typography className='input-label-color py-2'>{t('labels:profile_picture')}</Typography>
-                            {/* <img
-                src={
-                  "https://images.unsplash.com/photo-1566275529824-cca6d008f3da?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cGhvdG98ZW58MHx8MHx8fDA%3D"
-                }
-                alt="Profile"
-                className=" w-24 aspect-square "
-              /> */}
                             <Avatar shape='square' size={64} icon={<UserOutlined />} />
                         </Content>
                     </Content>

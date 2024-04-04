@@ -8,7 +8,6 @@ const PageSpinner = () => {
                 type='border'
                 color='info'
                 size='lg'
-                // children={<span className="visually-hidden">Loading...</span>}
             ></Spinner>
         </Container>
     )

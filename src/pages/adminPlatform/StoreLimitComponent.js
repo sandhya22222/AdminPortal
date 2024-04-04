@@ -3,12 +3,11 @@ import { Button, Col, Input, Layout, Row, Skeleton, Spin, Typography } from 'ant
 import { useTranslation } from 'react-i18next'
 import HeaderForTitle from '../../components/header/HeaderForTitle'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import { useEffect } from 'react'
 const { Content } = Layout
-const { Text, Title } = Typography
+const {  Title } = Typography
 const storeLimitApi = process.env.REACT_APP_STORE_PLATFORM_LIMIT_API
 
 function StoreLimitComponent() {
@@ -22,7 +21,6 @@ function StoreLimitComponent() {
     }
     const [storeLimitValues, setStoreLimitValues] = useState(defaultStoreLimitValues)
     const { t } = useTranslation()
-    // const navigate = useNavigate();
 
     //! get call of store limit API
     const findAllStoreLimit = () => {
@@ -188,20 +186,6 @@ function StoreLimitComponent() {
                                         {t('labels:save')}
                                     </Button>
                                 </Col>
-                                {/* <Col className="">
-                  <Button
-                    // className=" app-btn-secondary"
-                    className={
-                        isStoreLimitChanged ? "app-btn-secondary" : "!opacity-75"
-                    }
-                    disabled={!isStoreLimitChanged}
-                    onClick={() => {
-                      navigate("/dashboard/adminsettings");
-                    }}
-                  >
-                    {t("labels:discard")}
-                  </Button>
-                </Col> */}
                             </Row>
                         </Content>
                     </Content>

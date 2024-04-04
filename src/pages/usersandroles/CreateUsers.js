@@ -16,8 +16,6 @@ const userAPI = process.env.REACT_APP_USERS_API
 const groupsAPI = process.env.REACT_APP_GROUPS_API
 const userNameMinLength = process.env.REACT_APP_USERNAME_MIN_LENGTH
 const userNameMaxLength = process.env.REACT_APP_USERNAME_MAX_LENGTH
-const passwordMinLength = process.env.REACT_APP_PASSWORD_MIN_LENGTH
-const passwordMaxLength = process.env.REACT_APP_PASSWORD_MAX_LENGTH
 const nameMinLength = process.env.REACT_APP_NAME_MIN_LENGTH
 const nameMaxLength = process.env.REACT_APP_NAME_MAX_LENGTH
 const emailMaxLength = process.env.REACT_APP_EMAIL_MAX_LENGTH
@@ -31,23 +29,17 @@ const CreateUsers = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const { pathname } = useLocation()
-    const search = useLocation().search
     const [isLoading, setIsLoading] = useState(false)
-    const [isGroupsLoading, setIsGroupsLoading] = useState(true)
-    const [isGroupsNetworkError, setIsGroupsNetworkError] = useState(false)
     const [pageAction, setPageAction] = useState()
     const [selectRole, setSelectRole] = useState()
-    // const [selectType, setSelectType] = useState();
     const [groupsServerData, setGroupsServerData] = useState([])
     const [userName, setUserName] = useState('')
     const [emailId, setEmailId] = useState('')
-    const [password, setPassword] = useState('')
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [userStatus, setUserStatus] = useState(false)
     const [invalidUserName, setInvalidUserName] = useState(false)
     const [invalidEmailId, setInvalidEmailId] = useState(false)
-    const [invalidPassword, setInValidPassword] = useState(false)
     const [invalidRole, setInvalidRole] = useState(false)
     const [roleSelectData, setRoleSelectData] = useState([])
     const [searchParams, setSearchParams] = useSearchParams()
@@ -66,13 +58,11 @@ const CreateUsers = () => {
             .then(function (response) {
                 console.log('Groups get call response-->', response.data.response_body)
                 setGroupsServerData(response.data.response_body)
-                setIsGroupsLoading(false)
-                setIsGroupsNetworkError(false)
+
             })
             .catch(function (error) {
                 console.log('grouplist get error call response-->', error)
-                setIsGroupsLoading(false)
-                setIsGroupsNetworkError(true)
+
             })
     }
 
@@ -80,10 +70,8 @@ const CreateUsers = () => {
     const handlePostUsers = () => {
         setIsLoading(true)
         let dataObject = {}
-        // dataObject["realmname"] = sessionStorage.getItem("client");
         dataObject['username'] = userName
         dataObject['email'] = emailId
-        // dataObject["password"] = password;
         dataObject['status'] = true
         if (firstName !== '') {
             dataObject['firstname'] = firstName
@@ -94,10 +82,6 @@ const CreateUsers = () => {
         if (selectRole !== undefined && selectRole !== '') {
             dataObject['groups_mapping'] = selectRole
         }
-        // if (selectType !== undefined && selectRole !== "") {
-        //   dataObject["type"] = selectType;
-        // }
-
         MarketplaceServices.save(userAPI, dataObject, null)
             .then(function (response) {
                 console.log('server response of user post call', response)
@@ -128,21 +112,16 @@ const CreateUsers = () => {
 
     // validation of user form
     const userFormValidation = () => {
-        // const emailRegex = /^[a-zA-Z0-9_.+-]{3,64}@[A-Za-z\-]{3,255}\.[A-Za-z]{2,3}$/;
         const emailRegex = new RegExp(emailRegexPattern)
-        const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{12,64}$/
         const userNameRegex = /^[A-Za-z0-9_\- ]+$/
         let count = 3
         if (
             userName === '' ||
             emailId === '' ||
-            // password === "" ||
             selectRole === undefined
         ) {
             count--
-            // if (password === "") {
-            //   setInValidPassword(true);
-            // }
+            
             if (emailId === '') {
                 setInvalidEmailId(true)
             }
@@ -156,63 +135,7 @@ const CreateUsers = () => {
                 util.getToastObject(`${t('messages:please_enter_the_values_for_the_mandatory_fields')}`, 'error')
             )
         }
-        // else if (userName != "" && emailId === "" && password === "") {
-        //   count--;
-        //   setInValidPassword(true);
-        //   setInvalidEmailId(true);
-        //   MarketplaceToaster.showToast(
-        //     util.getToastObject(
-        //       `${t("messages:please_enter_the_values_for_the_mandatory_fields")}`,
-        //       "error"
-        //     )
-        //   );
-        // } else if (userName != "" && emailId != "" && password === "") {
-        //   count--;
-        //   setInValidPassword(true);
-        //   MarketplaceToaster.showToast(
-        //     util.getToastObject(
-        //       `${t("messages:please_enter_the_values_for_the_mandatory_fields")}`,
-        //       "error"
-        //     )
-        //   );
-        // } else if (userName != "" && emailId === "" && password != "") {
-        //   count--;
-        //   MarketplaceToaster.showToast(
-        //     util.getToastObject(
-        //       `${t("messages:please_enter_the_values_for_the_mandatory_fields")}`,
-        //       "error"
-        //     )
-        //   );
-        // } else if (userName === "" && emailId != "" && password != "") {
-        //   count--;
-        //   setInvalidUserName(true);
-        //   MarketplaceToaster.showToast(
-        //     util.getToastObject(
-        //       `${t("messages:please_enter_the_values_for_the_mandatory_fields")}`,
-        //       "error"
-        //     )
-        //   );
-        // } else if (userName === "" && emailId === "" && password != "") {
-        //   count--;
-        //   setInvalidUserName(true);
-        //   setInvalidEmailId(true);
-        //   MarketplaceToaster.showToast(
-        //     util.getToastObject(
-        //       `${t("messages:please_enter_the_values_for_the_mandatory_fields")}`,
-        //       "error"
-        //     )
-        //   );
-        // } else if (userName === "" && emailId != "" && password === "") {
-        //   count--;
-        //   setInvalidUserName(true);
-        //   setInValidPassword(true);
-        //   MarketplaceToaster.showToast(
-        //     util.getToastObject(
-        //       `${t("messages:please_enter_the_values_for_the_mandatory_fields")}`,
-        //       "error"
-        //     )
-        //   );
-        // }
+      
         else if (userNameRegex.test(userName) === false) {
             count--
             setInvalidUserName(true)
@@ -231,19 +154,6 @@ const CreateUsers = () => {
                 util.getToastObject(`${t('messages:please_enter_the_valid_email_address')}`, 'error')
             )
         }
-        // else if (passwordRegex.test(password) === false) {
-        //   count--;
-        //   setInValidPassword(true);
-
-        //   MarketplaceToaster.showToast(
-        //     util.getToastObject(
-        //       `${t(
-        //         "messages:password_must_contain_minimum_of"
-        //       )} ${passwordMinLength}  ${t("messages:password_error_message")}`,
-        //       "error"
-        //     )
-        //   );
-        // }
 
         if (count === 3) {
             handlePostUsers()
@@ -254,12 +164,9 @@ const CreateUsers = () => {
     const handlePutUsers = () => {
         setIsLoading(true)
         let dataObject = {}
-        // if (firstName !== "") {
         dataObject['firstname'] = firstName
-        // }
-        // if (lastName !== "") {
+     
         dataObject['lastname'] = lastName
-        // }
         dataObject['email'] = emailId
 
         if (selectRole && userName != currentUser) {
@@ -298,8 +205,7 @@ const CreateUsers = () => {
     }
 
     const userFormValidationEdit = () => {
-        // console.log("emailRegexPattern", new RegExp(emailRegexPattern))
-        // const emailRegex = /^[a-zA-Z0-9_.+-]{3,64}@[A-Za-z\-]{3,255}\.[A-Za-z]{2,3}$/;
+
         const emailRegex = new RegExp(emailRegexPattern)
         let count = 1
         if (emailId === '') {
@@ -332,20 +238,9 @@ const CreateUsers = () => {
     const handleChangeRole = (value) => {
         setSelectRole(value)
         setInvalidRole(false)
-        // if (pageAction != "add") {
-        setIsUserDetailsEditted(true)
-        // /}
-    }
-
-    //handle change of type select
-    // const handleChangeType = (value) => {
-    //   setSelectType(value);
-    // };
-    //*Handler for the status change(Active and Inactive)
-    const onChange = (checked) => {
-        setUserStatus(checked)
         setIsUserDetailsEditted(true)
     }
+    
 
     //useEffect to form the data for the role dropdown
     useEffect(() => {
@@ -494,9 +389,7 @@ const CreateUsers = () => {
                                                         const regex = /^[a-zA-Z]*$/ // only allow letters
                                                         if (regex.test(value)) {
                                                             setFirstName(e.target.value)
-                                                            // if (pageAction != "add") {
                                                             setIsUserDetailsEditted(true)
-                                                            // }
                                                         }
                                                     }}
                                                     minLength={nameMinLength}
@@ -518,9 +411,7 @@ const CreateUsers = () => {
                                                         const regex = /^[a-zA-Z]*$/ // only allow letters
                                                         if (regex.test(value)) {
                                                             setLastName(e.target.value)
-                                                            // if (pageAction != "add") {
                                                             setIsUserDetailsEditted(true)
-                                                            // }
                                                         }
                                                     }}
                                                     minLength={nameMinLength}
@@ -547,9 +438,7 @@ const CreateUsers = () => {
                                                 onChange={(e) => {
                                                     setEmailId(e.target.value.toLowerCase())
                                                     setInvalidEmailId(false)
-                                                    // if (pageAction != "add") {
                                                     setIsUserDetailsEditted(true)
-                                                    // }
                                                 }}
                                                 onBlur={(e) => {
                                                     setEmailId(e.target.value.trim().replace(/\s+/g, ' '))
@@ -560,70 +449,9 @@ const CreateUsers = () => {
                                             />
                                         </Content>
                                     </Content>
-                                    {/* {pageAction !== "add" ? (
-                    ""
-                  ) : (
-                    <Content className="my-3">
-                      <Typography className="input-label-color mb-2 flex gap-1">
-                        {t("labels:password")}
-                        <span className="mandatory-symbol-color text-sm ">
-                          *
-                        </span>
-                      </Typography>
-
-                      <Content>
-                        <Input.Password
-                          className={`${
-                            invalidPassword
-                              ? "border-red-400  border-[1px] rounded-lg border-solid focus:border-red-400 hover:border-red-400"
-                              : " border-solid border-[#C6C6C6]"
-                          }`}
-                          value={password}
-                          disabled={pageAction !== "add" ? true : false}
-                          onChange={(e) => {
-                            setPassword(e.target.value);
-                            setInValidPassword(false);
-                            setIsUserDetailsEditted(true);
-                          }}
-                          onBlur={(e) => {
-                            setPassword(
-                              e.target.value.trim().replace(/\s+/g, " ")
-                            );
-                          }}
-                          minLength={passwordMinLength}
-                          maxLength={passwordMaxLength}
-                          autoComplete="new-password"
-                          placeholder={t("placeholders:enter_password")}
-                        />
-                      </Content>
-                    </Content>
-                  )} */}
+                                 
                                     <Content className='flex my-3'>
-                                        {/* {pageAction !== "add" ? (
-                      ""
-                    ) : (
-                      <Content>
-                        <Typography className="input-label-color mb-2 flex gap-1">
-                          {t("labels:status")}
-                        </Typography>
-                        <Content>
-                          <Switch
-                            disabled={pageAction !== "add" ? true : false}
-                            className={
-                              userStatus === true
-                                ? "!bg-green-500"
-                                : "!bg-gray-400"
-                            }
-                            checked={userStatus}
-                            onChange={onChange}
-                            // onClick={() => {
-                            //   openModal(switchStatus);
-                            // }}
-                          />
-                        </Content>
-                      </Content>
-                    )} */}
-
+                                        
                                         <Content className=''>
                                             <Typography className='input-label-color mb-2 flex gap-1'>
                                                 {t('labels:role')}
@@ -636,10 +464,7 @@ const CreateUsers = () => {
                                                         width: 665,
                                                     }}
                                                     allowClear
-                                                    // onClear={() => {
-                                                    //   console.log("cleared");
-                                                    //   setSelectRole("");
-                                                    // }}
+                                                    
                                                     status={invalidRole ? 'error' : ''}
                                                     placeholder={t('labels:select_a_role')}
                                                     value={selectRole}
@@ -662,7 +487,6 @@ const CreateUsers = () => {
                                                 pageAction === 'add'
                                                     ? userName != '' ||
                                                       emailId != '' ||
-                                                      password != '' ||
                                                       firstName != '' ||
                                                       lastName != '' ||
                                                       userStatus ||
