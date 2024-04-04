@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { Modal, Button, Spin, Layout } from 'antd'
-import './StoreModal.css'
 const { Content } = Layout
 const StoreModal = ({
     okCallback,

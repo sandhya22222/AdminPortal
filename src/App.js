@@ -9,17 +9,11 @@ import './core-ui/buttons.css'
 import LoadingMarkup from './components/loader/LoadingMarkup'
 import Header2 from './components/header/Header2'
 import Home from './pages/home/Home'
-import Dashboard from './pages/dashboard/Dashboard'
 import { useFavicon } from './hooks/useFavicon'
 import axios from 'axios'
 import Store from './pages/Stores/Store'
-// import Sidebar from "./components/sidebar/Sidebar";
-// import Language from "./pages/languages/Language";
-import AddLanguage from './pages/languages/AddLanguage'
-import EditLanguage from './pages/languages/EditLanguage'
 import SidebarNew from './components/Sidebar2.0.js/SidebarNew'
 import PaymentType from './pages/PaymentType/PaymentType'
-import OnlinePaymentConnector from './pages/OnlinePaymentConnector/OnlinePaymentConnector'
 import StoreSettings from './pages/StoreSetting/StoreSettings'
 import Preview from './pages/StoreSetting/Preview'
 import UserProfile from './pages/StoreUsers/UserProfile'
@@ -139,7 +133,6 @@ const App = () => {
                                     <Route path='paymenttype' element={<PaymentType />} />
                                     <Route path='adminsettings' element={<StoreLimitComponent />} />
                                     <Route path='userprofile' element={<UserProfile />} />
-                                    {/* <Route path="newDashboard" element={<NewDashboard />} /> */}
 
                                     <Route path='user-access-control'>
                                         <Route path='list-user-roles' element={<UserAccessControl />} />
@@ -148,7 +141,6 @@ const App = () => {
                                         <Route path='add-roles' element={<CreateRoles />} />
                                         <Route path='edit-roles' element={<CreateRoles />} />
                                     </Route>
-                                    <Route path='onlinepaymentconnector' element={<OnlinePaymentConnector />} />
                                 </>
                             </Route>
                         ) : (

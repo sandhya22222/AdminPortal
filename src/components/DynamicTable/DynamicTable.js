@@ -4,7 +4,6 @@ import { Button, Skeleton } from 'antd'
 import { Layout, Table, Row, Col, Input, Space, Checkbox, Select, Typography } from 'antd'
 import { sortObjectArrayByKey, deepCopy } from '../../util/util'
 import { AiFillFilter } from 'react-icons/ai'
-// import "./DynamicTable.css";
 const { Content } = Layout
 const { Search } = Input
 const { Text } = Typography

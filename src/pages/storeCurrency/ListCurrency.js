@@ -12,7 +12,7 @@ import SkeletonComponent from '../../components/Skeleton/SkeletonComponent'
 import DmPagination from '../../components/DmPagination/DmPagination'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import util from '../../util/common'
-import { EditIcon, starIcon } from '../../constants/media'
+import { starIcon } from '../../constants/media'
 
 const currencyAPI = process.env.REACT_APP_CHANGE_CURRENCY_API
 const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE)
@@ -147,14 +147,7 @@ const ListCurrency = () => {
                                 onClick={() => {
                                     navigate(`/dashboard/currency/edit-currency?k=${record.key}`)
                                 }}>
-                                {/* <Content className=" flex justify-center align-items-center"> */}
-                                {/* <img
-                    src={EditIcon}
-                    alt="Edit Icon"
-                    className=" !w-[12px] !text-center !text-sm cursor-pointer"
-                  /> */}
                                 {t('labels:view_details')}
-                                {/* </Content> */}
                             </div>
                         </Tooltip>
                     </Col>

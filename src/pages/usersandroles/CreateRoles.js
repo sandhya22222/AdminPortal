@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Layout, Typography, Button, Input, Row, Col, Spin, Tooltip } from 'antd'
 
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import HeaderForTitle from '../../components/header/HeaderForTitle'
 
@@ -9,15 +9,14 @@ import HeaderForTitle from '../../components/header/HeaderForTitle'
 
 const titleMaxLength = parseInt(process.env.REACT_APP_TITLE_MAX_LENGTH)
 
-const { Paragraph, Title } = Typography
+const { Title } = Typography
 const { Content } = Layout
 const { TextArea } = Input
 
 const CreateRoles = () => {
     const { t } = useTranslation()
     const { pathname } = useLocation()
-    const search = useLocation().search
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading] = useState(false)
     const [pageAction, setPageAction] = useState()
 
     const roleFormValidation = () => {}

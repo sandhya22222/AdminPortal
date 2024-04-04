@@ -117,7 +117,7 @@ const Language = () => {
                 return (
                     <>
                         <Text>
-                            {record.status == 2 ? (
+                            {String(record.status) === '2' ? (
                                 <Badge status='default' text={t('labels:inactive')} />
                             ) : (
                                 <Badge status='success' text={t('labels:active')} />
@@ -236,7 +236,6 @@ const Language = () => {
                 setIsLoading(false)
                 setIsNetworkErrorLanguage(true)
                 console.log('server error response from language API call', error.response)
-                // MarketplaceToaster.showToast(error.response);
                 if (error && error.response && error.response.status === 401) {
                     MarketplaceToaster.showToast(util.getToastObject(`${t('messages:session_expired')}`, 'error'))
                 } else {
@@ -333,35 +332,6 @@ const Language = () => {
                     }
                     titleContent={
                         <Content className=' !flex items-center !justify-end gap-3'>
-                            {/* <Button
-                className="app-btn-secondary"
-                onClick={() => findAllSupportDocumentTemplateDownload(1, "en")}
-              >
-                <Content className=" flex gap-2">
-                  <img
-                    src={tableDropDownArrow}
-                    className=" !w-4 !items-center"
-                  />
-
-                  {t("labels:download_support_document_template")}
-                </Content>
-              </Button> */}
-                            {/* <Dropdown
-                menu={{
-                  items,
-                  onClick: handleOnclickForDownloadDocument,
-                }}
-                className="app-btn-link"
-                placement="bottomRight"
-                arrow
-              >
-                <a onClick={(e) => e.preventDefault()}>
-                  <Space>
-                    {t("labels:download_support_document_template")}
-                    <DownOutlined className="!ml-[4px]" />
-                  </Space>
-                </a>
-              </Dropdown> */}
                             <Button
                                 className='app-btn-primary flex align-items-center'
                                 onClick={() => navigate('/dashboard/language/language-settings')}>

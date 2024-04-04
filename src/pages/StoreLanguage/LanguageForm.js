@@ -47,88 +47,86 @@ const LanguageForm = ({
         postBody['language_code'] = txtLanguageCode.trim()
         postBody['writing_script_direction'] = scriptDirection
         setIsLoading(true)
-        {
-            languageCode === undefined || languageCode === null
-                ? MarketplaceServices.save(languageAPI, postBody)
-                      .then((res) => {
-                          console.log('Language API post call response', res.data)
-                          MarketplaceToaster.showToast(res)
-                          if (res.status === 201) {
-                              if (res.data) {
-                                  // MarketplaceToaster.showToast(res);
-                                  setOnChangeValues(false)
-                                  navigate(
-                                      `/dashboard/language/language-settings?k=${
-                                          res.data.response_body[0].id
-                                      }&n=${res.data.response_body[0].language}&c=${
-                                          res.data.response_body[0].language_code
-                                      }&s=${res.data.response_body[0].status}&d=${
-                                          res.data.response_body[0].is_default === false ? 0 : 1
-                                      }`
-                                  )
-                                  setLanguageName(res.data.response_body[0].language)
-                                  setLanguageStatus(res.data.response_body[0].status)
-                              }
-                              // disabling spinner
-                              setIsLoading(false)
+        languageCode === undefined || languageCode === null
+            ? MarketplaceServices.save(languageAPI, postBody)
+                  .then((res) => {
+                      console.log('Language API post call response', res.data)
+                      MarketplaceToaster.showToast(res)
+                      if (res.status === 201) {
+                          if (res.data) {
+                              // MarketplaceToaster.showToast(res);
+                              setOnChangeValues(false)
+                              navigate(
+                                  `/dashboard/language/language-settings?k=${
+                                      res.data.response_body[0].id
+                                  }&n=${res.data.response_body[0].language}&c=${
+                                      res.data.response_body[0].language_code
+                                  }&s=${res.data.response_body[0].status}&d=${
+                                      res.data.response_body[0].is_default === false ? 0 : 1
+                                  }`
+                              )
+                              setLanguageName(res.data.response_body[0].language)
+                              setLanguageStatus(res.data.response_body[0].status)
                           }
-                      })
-                      .catch((error) => {
                           // disabling spinner
                           setIsLoading(false)
-                          console.log('error response of post language API', error.response)
-                          MarketplaceToaster.showToast(error.response)
-                      })
-                : MarketplaceServices.update(languageAPI, postBody, { _id: languageId })
-                      .then((res) => {
-                          console.log('Language API put call response', res.data.response_body[0])
-                          if (res.status === 201) {
-                              if (res.data) {
-                                  navigate(
-                                      `/dashboard/language/language-settings?k=${
-                                          res.data.response_body[0].id
-                                      }&n=${res.data.response_body[0].language}&c=${
-                                          res.data.response_body[0].language_code
-                                      }&s=${languageStatus}&d=${res.data.response_body[0].is_default === false ? 0 : 1}`
-                                  )
+                      }
+                  })
+                  .catch((error) => {
+                      // disabling spinner
+                      setIsLoading(false)
+                      console.log('error response of post language API', error.response)
+                      MarketplaceToaster.showToast(error.response)
+                  })
+            : MarketplaceServices.update(languageAPI, postBody, { _id: languageId })
+                  .then((res) => {
+                      console.log('Language API put call response', res.data.response_body[0])
+                      if (res.status === 201) {
+                          if (res.data) {
+                              navigate(
+                                  `/dashboard/language/language-settings?k=${
+                                      res.data.response_body[0].id
+                                  }&n=${res.data.response_body[0].language}&c=${
+                                      res.data.response_body[0].language_code
+                                  }&s=${languageStatus}&d=${res.data.response_body[0].is_default === false ? 0 : 1}`
+                              )
+                              if (
+                                  selectedLanguage &&
+                                  selectedLanguage.language_code === res.data.response_body[0].language_code
+                              ) {
+                                  let updatedScriptDirection = { ...selectedLanguage }
+                                  updatedScriptDirection.writing_script_direction =
+                                      res.data.response_body[0].writing_script_direction
+                                  dispatch(fnSelectedLanguage(updatedScriptDirection))
                                   if (
                                       selectedLanguage &&
-                                      selectedLanguage.language_code === res.data.response_body[0].language_code
-                                  ) {
-                                      let updatedScriptDirection = { ...selectedLanguage }
-                                      updatedScriptDirection.writing_script_direction =
+                                      selectedLanguage.writing_script_direction !==
                                           res.data.response_body[0].writing_script_direction
-                                      dispatch(fnSelectedLanguage(updatedScriptDirection))
-                                      if (
-                                          selectedLanguage &&
-                                          selectedLanguage.writing_script_direction !==
-                                              res.data.response_body[0].writing_script_direction
-                                      ) {
-                                          setTimeout(function () {
-                                              navigate(0)
-                                          }, 500)
-                                      }
+                                  ) {
+                                      setTimeout(function () {
+                                          navigate(0)
+                                      }, 500)
                                   }
-
-                                  setLanguageName(res.data.response_body[0].language)
-                                  setDefaultScriptDirection(res.data.response_body[0].writing_script_direction)
-                                  setDefaultTxtLanguage(res.data.response_body[0].language)
-                                  setDefaultTxtLanguageCode(res.data.response_body[0].language_code)
-                                  MarketplaceToaster.showToast(res)
                               }
-                              setOnChangeValues(false)
-                              // disabling spinner
-                              setIsLoading(false)
+
+                              setLanguageName(res.data.response_body[0].language)
+                              setDefaultScriptDirection(res.data.response_body[0].writing_script_direction)
+                              setDefaultTxtLanguage(res.data.response_body[0].language)
+                              setDefaultTxtLanguageCode(res.data.response_body[0].language_code)
+                              MarketplaceToaster.showToast(res)
                           }
-                      })
-                      .catch((error) => {
+                          setOnChangeValues(false)
                           // disabling spinner
                           setIsLoading(false)
-                          console.log('error response of put language API', error)
+                      }
+                  })
+                  .catch((error) => {
+                      // disabling spinner
+                      setIsLoading(false)
+                      console.log('error response of put language API', error)
 
-                          MarketplaceToaster.showToast(error.response)
-                      })
-        }
+                      MarketplaceToaster.showToast(error.response)
+                  })
     }
 
     //!Validation for language post call

@@ -18,7 +18,7 @@ function LanguageBanner() {
             <Button
                 className='app-btn-primary !my-[1.5rem] !flex !justify-items-center'
                 onClick={() => navigate('/dashboard/language/language-settings')}>
-                <img src={plusIcon} className='!text-xs !w-3 my-1 mr-2 !items-center' />
+                <img src={plusIcon} alt='plusIcon' className='!text-xs !w-3 my-1 mr-2 !items-center' />
                 <div className='mr-[10px]'>{t('labels:add_language')}</div>
             </Button>
         </Content>

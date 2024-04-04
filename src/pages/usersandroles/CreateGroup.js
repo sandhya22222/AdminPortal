@@ -16,7 +16,7 @@ const CreateGroup = ({ groupNameProps, setShowGroupModal }) => {
     const [groupName, setGroupName] = useState('')
     const [invalidGroupName, setInvalidGroupName] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
-    const [key, setKey] = useState(0)
+    const [ setKey] = useState(0)
 
     //!Handle discard button
     const handleDiscardBtn = () => {

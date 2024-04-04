@@ -1,6 +1,5 @@
 import React from 'react'
 import { Tabs } from 'antd'
-import './DmTabAntDesign.css'
 
 /**
  * ? Use of this component

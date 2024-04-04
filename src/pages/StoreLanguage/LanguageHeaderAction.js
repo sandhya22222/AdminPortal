@@ -1,19 +1,17 @@
 import { CheckCircleFilled } from '@ant-design/icons'
-import { Button, Checkbox, Col, Layout, Row, Space, Switch, Typography } from 'antd'
+import { Button, Checkbox, Layout, Space, Switch, Typography } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { toast } from 'react-toastify'
 import StoreModal from '../../components/storeModal/StoreModal'
 import { crossIcon } from '../../constants/media'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
-// import MarketplaceAppConfig from "../../util/MarketplaceMutlitenancy";
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { fnStoreLanguage, fnSelectedLanguage } from '../../services/redux/actions/ActionStoreLanguage'
 import util from '../../util/common'
 const { Content } = Layout
-const { Title, Text } = Typography
+const { Title } = Typography
 const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API
 const languageEditStatusAPI = process.env.REACT_APP_STORE_LANGUAGE_STATUS_API
 
@@ -29,20 +27,20 @@ function LanguageHeaderAction({ languageId, languageCode, languageStatus, langua
     const [islanguageDeleting, setIslanguageDeleting] = useState(false)
     const [showSuccessModal, setShowSuccessModal] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const [switchStatus, setSwitchStatus] = useState(languageStatus == 2 ? false : true)
+    const [switchStatus, setSwitchStatus] = useState(parseInt(languageStatus) === 2 ? false : true)
     const [changeSwitchStatus, setChangeSwitchStatus] = useState('')
     const [isLoading, setIsLoading] = useState(false)
-    const [isMakeAsDefault, setIsMakeAsDefault] = useState(languageDefault == '1' ? true : false)
+    const [isMakeAsDefault, setIsMakeAsDefault] = useState(String(languageDefault) === '1' ? true : false)
     const [defaultChecked, setDefaultChecked] = useState(false)
     const [warningLanguageDefaultModal, setWarningLanguageDefaultModal] = useState(false)
     const [searchParams, setSearchParams] = useSearchParams()
     const [languageReload, setLanguageReload] = useState()
     useEffect(() => {
-        setSwitchStatus(languageStatus == 2 ? false : true)
+        setSwitchStatus(parseInt(languageStatus) === 2 ? false : true)
     }, [languageStatus])
 
     useEffect(() => {
-        setIsMakeAsDefault(languageDefault == '1' ? true : false)
+        setIsMakeAsDefault(String(languageDefault) === '1' ? true : false)
     }, [languageDefault])
 
     // closing the delete warning model pop up
@@ -125,7 +123,6 @@ function LanguageHeaderAction({ languageId, languageCode, languageStatus, langua
                     s: changeSwitchStatus === true ? 1 : 2,
                     d: searchParams.get('d'),
                 })
-                // let successBody = {message: response.data.response_message, errorType: "success"}
             })
             .catch((error) => {
                 console.log('error from the status', error)
@@ -145,16 +142,9 @@ function LanguageHeaderAction({ languageId, languageCode, languageStatus, langua
         })
             .then((response) => {
                 MarketplaceToaster.showToast(response)
-                // let successBody = {message: response.data.response_message, errorType: "success"}
-                // MarketplaceToaster.showToast("", successBody);
                 setIsMakeAsDefault(defaultChecked)
-                closeLanguageDefaultWaringModal(false)
+                closeLanguageDefaultWaringModal()
                 setIsLoading(false)
-                // searchParams.get("k");
-                // searchParams.get("n");
-                // searchParams.get("c");
-                // searchParams.get("s");
-                // searchParams.get("d");
                 setSearchParams({
                     k: searchParams.get('k'),
                     n: searchParams.get('n'),
@@ -214,12 +204,11 @@ function LanguageHeaderAction({ languageId, languageCode, languageStatus, langua
                 }
                 // disabling spinner
                 setIslanguageDeleting(false)
-                // MarketplaceToaster.showToast(response);
             })
             .catch((error) => {
                 // disabling spinner
                 setIslanguageDeleting(false)
-                // console.log("response from delete===>", error.response);
+                console.log('response from delete===>', error.response)
                 MarketplaceToaster.showToast(error.response)
             })
     }
@@ -252,7 +241,7 @@ function LanguageHeaderAction({ languageId, languageCode, languageStatus, langua
                         onChange={(e) => {
                             openLanguageDefaultWaringModal(e.target.checked)
                         }}
-                        disabled={switchStatus & !isMakeAsDefault ? false : true}></Checkbox>
+                        disabled={switchStatus && !isMakeAsDefault ? false : true}></Checkbox>
                     <Typography> {t('labels:default_language_label')}</Typography>
                 </Space>
             </Content>
@@ -302,10 +291,6 @@ function LanguageHeaderAction({ languageId, languageCode, languageStatus, langua
                         <Button
                             className='app-btn-primary'
                             onClick={() => {
-                                // navigate(
-                                //   `/dashboard/language`
-                                //   //   ?${MarketplaceAppConfig.getStore("")}
-                                // );
                                 if ((selectedLanguage && selectedLanguage.id) === parseInt(languageReload)) {
                                     window.location.href = '/dashboard/language'
                                 } else {

@@ -25,9 +25,6 @@
     border-color: var(--mp-brand-color) !important;
 }
 
-/* .ant-select-selector {
-  border-color: var(--mp-brand-color) !important;
-} */
 .ant-select-selector:hover {
     border-color: var(--mp-brand-color) !important;
 }
@@ -54,9 +51,6 @@
 .ant-input-number:hover {
     border-color: var(--mp-brand-color) !important;
 }
-/* .ant-select-dropdown {
-  z-index: 1 !important;
-} */
 
 .ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
     color: var(--mp-brand-color) !important;
