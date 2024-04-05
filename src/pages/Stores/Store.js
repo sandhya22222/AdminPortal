@@ -839,7 +839,7 @@ const Stores = () => {
             MarketplaceToaster.showToast(
                 util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
             )
-        }else if (storeEmail === '' && storeUserName !== '' && name !== '') {
+        } else if (storeEmail === '' && storeUserName !== '' && name !== '') {
             setInValidEmail(true)
             count--
             MarketplaceToaster.showToast(
@@ -1042,7 +1042,7 @@ const Stores = () => {
     }
 
     return (
-        <Content className=''>         
+        <Content className=''>
             <Content className=''>
                 <HeaderForTitle
                     title={

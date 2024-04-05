@@ -309,8 +309,6 @@ const StoreSettings = () => {
                 setCopyImageOfStoreHeaderSetting(response.data.response_body.store_header_settings[0])
                 setImageOfStoreHeaderSettings(response.data.response_body.store_header_settings[0])
                 setCopyImageOfStoreFooterSetting(response.data.response_body.store_footer_settings[0])
-                setCurrencySymbol(response.data.response_body.store_currency[0].symbol)
-
                 setImageOfStoreFooterSettings(response.data.response_body.store_footer_settings[0])
                 setPageBackgroundColor(response.data.response_body.store_page_settings[0].bg_color)
                 setPageBgColor(response.data.response_body.store_page_settings[0].bg_color)
@@ -1671,7 +1669,7 @@ const StoreSettings = () => {
                                             className={'app-btn-secondary'}
                                             disabled={imagesUpload && imagesUpload.length > 0 ? false : true}
                                             onClick={() => {
-                                                navigate('/dashboard/store')
+                                                navigate('/dashboard/store?m_t=1')
                                             }}>
                                             {t('labels:discard')}
                                         </Button>
@@ -1722,7 +1720,7 @@ const StoreSettings = () => {
                                                 }
                                                 disabled={!isStoreDataLimitChanged}
                                                 onClick={() => {
-                                                    navigate('/dashboard/store')
+                                                    navigate('/dashboard/store?m_t=1')
                                                 }}>
                                                 {t('labels:discard')}
                                             </Button>
@@ -1847,7 +1845,7 @@ const StoreSettings = () => {
                                                 className=' app-btn-secondary'
                                                 disabled={!currencyOnChange}
                                                 onClick={() => {
-                                                    navigate('/dashboard/store')
+                                                    navigate('/dashboard/store?m_t=1')
                                                 }}>
                                                 {t('labels:discard')}
                                             </Button>
@@ -2948,7 +2946,7 @@ const StoreSettings = () => {
                                                     }
                                                     disabled={!onChangeValues}
                                                     onClick={() => {
-                                                        navigate('/dashboard/store')
+                                                        navigate('/dashboard/store?m_t=1')
                                                     }}>
                                                     {t('labels:discard')}
                                                 </Button>
