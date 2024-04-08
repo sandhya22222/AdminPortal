@@ -37,7 +37,6 @@ const EditCurrency = () => {
         no_of_decimal: 1,
         is_default: false,
     })
-    const [responseCurrencyData, setResponseCurrencyData] = useState([])
     const [defaultLoader, setDefaultLoader] = useState(false)
     //!get call of list language
     const findByPageCurrencyData = () => {
@@ -51,7 +50,6 @@ const EditCurrency = () => {
 
                 const filteredCurrencyData =
                     currencyData && currencyData.length > 0 && currencyData.filter((ele) => ele.id === parseInt(cId))
-                setResponseCurrencyData(filteredCurrencyData)
                 let copyOfCurrencyDetails = { ...currencyDetails }
                 copyOfCurrencyDetails.currency_name = filteredCurrencyData[0].currency_name
                 copyOfCurrencyDetails.symbol = filteredCurrencyData[0].symbol
