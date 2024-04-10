@@ -43,9 +43,10 @@ const { Content } = Layout
 const instance = axios.create()
 
 const Dashboard = () => {
+    const { t } = useTranslation()
+
     const auth = useAuth()
     usePageTitle(t('labels:dashboard'))
-    const { t } = useTranslation()
     const [dashboardData, setDashboardData] = useState()
     const [dashboardDataLoading, setDashboardDataLoading] = useState(true)
     const [dashboardDataNetWorkError, setDashboardDataNetWorkError] = useState(false)
@@ -1068,7 +1069,7 @@ const Dashboard = () => {
                                     }}
                                 />
                             </Content>
-                        </Content>                       
+                        </Content>
                     </Content>
                 )}
             </Content>

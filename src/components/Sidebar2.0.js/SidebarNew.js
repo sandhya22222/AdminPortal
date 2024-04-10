@@ -189,7 +189,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
 
     return (
         <Layout>
-            <div>
+            <div className='!w-[20%]'>
                 <Affix offsetTop={48}>
                     <Sider
                         trigger={null}
