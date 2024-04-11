@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { Switch, Space, Row, Col, Layout, Button, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
 import StoreModal from '../../components/storeModal/StoreModal'
-import useAuthorization from '../../hooks/useAuthorization'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import { storeActiveConfirmationImage } from '../../constants/media'
@@ -106,27 +105,6 @@ function Status({
                         setActiveCount(duplicateActiveCall)
                     }
                 }
-                // if (changeSwitchStatus) {
-                //   storeApiData &&
-                //     storeApiData.length > 0 &&
-                //     storeApiData.forEach((element) => {
-                //       if (element.store_uuid == response.config.params.store_id) {
-                //         element.status = 1;
-                //       }
-                //     });
-                //   if (setStoreApiData !== undefined) {
-                //     setStoreApiData(storeApiData);
-                //   }
-                // } else {
-                //   storeApiData.forEach((element) => {
-                //     if (element.store_uuid == response.config.params.store_id) {
-                //       element.status = 2;
-                //     }
-                //   });
-                //   if (setStoreApiData !== undefined) {
-                //     setStoreApiData(storeApiData);
-                //   }
-                // }
                 if (tabId > 0 && selectedTabTableContent && selectedTabTableContent.length > 0) {
                     setSelectedTabTableContent(
                         selectedTabTableContent.filter((element) => element.id !== response.config.params.store_id)
@@ -191,15 +169,12 @@ function Status({
                             checked={switchStatus}
                             onChange={onChange}
                             onClick={() => {
-                                openModal(switchStatus)
+                                openModal()
                             }}
                             disabled={disableStatus || statusInprogress === 3}
                         />
                     </Space>
                 </Col>
-                {/* <div className={statusInprogress === 3 ? "opacity-30" : ""}>
-            {switchStatus ? `${t("labels:active")}` : `${t("labels:inactive")}`}
-          </div> */}
             </Row>
             <StoreModal isVisible={activeConfirmationModalOpen} isSpin={false} hideCloseButton={false} width={800}>
                 {storeCheckStatus === 4 ? (
@@ -209,7 +184,7 @@ function Status({
                             className='mt-5 mb-3'
                             // style={{ "text-align": "-webkit-center" }}
                         >
-                            <img src={storeActiveConfirmationImage} className='ml-[270px]' />
+                            <img src={storeActiveConfirmationImage} alt='storeActiveConfirmationImage' className='ml-[270px]' />
                         </div>
                         <div className='mb-3'>
                             <p className='!mb-0'>{t('messages:patience_is_a_virtue')}</p>
@@ -228,7 +203,7 @@ function Status({
                     <Content className='!text-center'>
                         <Text className=' font-semibold text-[15px]'>{t('labels:deactivating_store')}</Text>
                         <div className='mt-5 mb-3'>
-                            <img src={storeActiveConfirmationImage} className='ml-[270px]' />
+                            <img src={storeActiveConfirmationImage} alt='storeActiveConfirmationImage' className='ml-[270px]' />
                         </div>
                         <div className='mb-3'>
                             <p className='!mb-0'>{t('messages:patience_is_a_virtue')}</p>

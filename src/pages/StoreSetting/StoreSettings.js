@@ -16,13 +16,12 @@ import {
     Typography,
 } from 'antd'
 import { useTranslation } from 'react-i18next'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { ArrowLeftOutlined, EyeOutlined, UndoOutlined } from '@ant-design/icons'
+import { EyeOutlined, UndoOutlined } from '@ant-design/icons'
 
 import HeaderForTitle from '../../components/header/HeaderForTitle'
 import StoreModal from '../../components/storeModal/StoreModal'
-import useAuthorization from '../../hooks/useAuthorization'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import util from '../../util/common'
@@ -45,7 +44,6 @@ const storeImagesAPI = process.env.REACT_APP_STORE_IMAGES_API
 const storeBannerImageAPI = process.env.REACT_APP_STORE_BANNER_IMAGES_API
 const storeLimitAPI = process.env.REACT_APP_STORE_LIMIT
 const storePlatformAPI = process.env.REACT_APP_STORE_PLATFORM_LIMIT_API
-const dm4sightAnalysisCountAPI = process.env.REACT_APP_4SIGHT_GETANALYSISCOUNT_API
 const dm4sightDataLimitAnalysisDetailsCountAPI = process.env.REACT_APP_4SIGHT_GET_DATA_ANALYSISDETAIL_API
 const dm4sightClientID = process.env.REACT_APP_4SIGHT_CLIENT_ID
 const dm4sightBaseURL = process.env.REACT_APP_4SIGHT_BASE_URL
@@ -62,24 +60,16 @@ const StoreSettings = () => {
 
     const id = new URLSearchParams(search).get('id')
     const storeIdFromUrl = new URLSearchParams(search).get('storeId')
-    const authorizationHeader = useAuthorization()
 
     const [storeData, setStoreData] = useState()
     const [storeName, setStoreName] = useState()
     const [currencySymbol, setCurrencySymbol] = useState('')
-    const [inValidCurrencySymbol, setInValidCurrencySymbol] = useState(false)
-    const [currencyIsoCode, setCurrencyIsoCode] = useState('')
-    const [inValidCurrencyIsoCode, setInValidCurrencyIsoCode] = useState(false)
-    const [fractionalUnit, setFractionalUnit] = useState('')
-    const [inValidFractionalUnit, setInValidFractionalUnit] = useState(false)
-    const [numberToBasic, setNumberToBasic] = useState(null)
-    const [inValidNumberToBasic, setInValidNumberToBasic] = useState(false)
     const [pageBackgroundColor, setPageBackgroundColor] = useState('#EBEBEB')
     const [pageBgColor, setPageBgColor] = useState('#EBEBEB')
     const [foreGroundColor, setForeGroundColor] = useState('#333333')
     const [pageFgColor, setPageFgColor] = useState('#333333')
     const [buttonPrimaryBackgroundColor, setButtonPrimaryBackgroundColor] = useState('#000000')
-    const [btnPrimaryBgColor, setbtnPrimaryBgColor] = useState('#000000')
+    const [btnPrimaryBgColor, setBtnPrimaryBgColor] = useState('#000000')
     const [buttonSecondaryBackgroundColor, setButtonSecondaryBackgroundColor] = useState('#000000')
     const [btnSecondaryBgColor, setbtnSecondaryBgColor] = useState('#000000')
     const [buttonTeritaryBackgroundColor, setButtonTeritaryBackgroundColor] = useState('#000000')
@@ -108,11 +98,9 @@ const StoreSettings = () => {
     const [isUpLoading, setIsUpLoading] = useState(false)
     const [isCurrencyLoading, setIsCurrencyLoading] = useState(false)
     const [currencyOnChange, setCurrencyOnChange] = useState(false)
-    const [copyImageOfStoreSettingsCurrency, setCopyImageOfStoreSettingsCurrency] = useState()
     const [copyImageOfStoreSettingsPageTheme, setCopyImageOfStoreSettingsPageTheme] = useState()
     const [copyImageOfStoreHeaderSetting, setCopyImageOfStoreHeaderSetting] = useState()
     const [copyImageOfStoreFooterSetting, setCopyImageOfStoreFooterSetting] = useState()
-    const [imageOfStoreSettingsCurrency, setImageOfStoreSettingsCurrency] = useState()
     const [imageOfStoreSettingsPageTheme, setImageOfStoreSettingsPageTheme] = useState()
     const [imageOfStoreHeaderSettings, setImageOfStoreHeaderSettings] = useState()
     const [imageOfStoreFooterSettings, setImageOfStoreFooterSettings] = useState()
@@ -197,10 +185,6 @@ const StoreSettings = () => {
         })
             .then(function (response) {
                 console.log('Get response of Store setting--->', response.data.response_body.store_settings_data[0])
-                setCopyImageOfStoreSettingsCurrency(
-                    response.data.response_body.store_settings_data[0].store_currency[0]
-                )
-                setImageOfStoreSettingsCurrency(response.data.response_body.store_settings_data[0].store_currency[0])
                 setCopyImageOfStoreSettingsPageTheme(
                     response.data.response_body.store_settings_data[0].store_page_settings[0]
                 )
@@ -220,9 +204,7 @@ const StoreSettings = () => {
                     response.data.response_body.store_settings_data[0].store_footer_settings[0]
                 )
                 setCurrencySymbol(response.data.response_body.store_settings_data[0].store_currency[0].symbol)
-                setCurrencyIsoCode(response.data.response_body.store_settings_data[0].store_currency[0].iso_code)
-                setFractionalUnit(response.data.response_body.store_settings_data[0].store_currency[0].fractional_unit)
-                setNumberToBasic(response.data.response_body.store_settings_data[0].store_currency[0].number_to_basic)
+
                 setPageBackgroundColor(
                     response.data.response_body.store_settings_data[0].store_page_settings[0].bg_color
                 )
@@ -232,7 +214,7 @@ const StoreSettings = () => {
                 setButtonPrimaryBackgroundColor(
                     response.data.response_body.store_settings_data[0].store_page_settings[0].btn_primary_bg_color
                 )
-                setbtnPrimaryBgColor(
+                setBtnPrimaryBgColor(
                     response.data.response_body.store_settings_data[0].store_page_settings[0].btn_primary_bg_color
                 )
                 setButtonPrimaryForegroundColor(
@@ -285,10 +267,6 @@ const StoreSettings = () => {
             .catch((error) => {
                 console.log('error response from store settings API', error)
                 if (error.response === undefined) {
-                    setCurrencySymbol('')
-                    setCurrencyIsoCode('')
-                    setFractionalUnit('')
-                    setNumberToBasic(null)
                     setPageBackgroundColor('#EBEBEB')
                     setButtonPrimaryBackgroundColor('#000000')
                     setButtonSecondaryBackgroundColor('#000000')
@@ -326,24 +304,18 @@ const StoreSettings = () => {
                 )
                 MarketplaceToaster.showToast(response)
                 setColorCodeValidation(false)
-                setCopyImageOfStoreSettingsCurrency(response.data.response_body.store_currency[0])
-                setImageOfStoreSettingsCurrency(response.data.response_body.store_currency[0])
                 setCopyImageOfStoreSettingsPageTheme(response.data.response_body.store_page_settings[0])
                 setImageOfStoreSettingsPageTheme(response.data.response_body.store_page_settings[0])
                 setCopyImageOfStoreHeaderSetting(response.data.response_body.store_header_settings[0])
                 setImageOfStoreHeaderSettings(response.data.response_body.store_header_settings[0])
                 setCopyImageOfStoreFooterSetting(response.data.response_body.store_footer_settings[0])
                 setImageOfStoreFooterSettings(response.data.response_body.store_footer_settings[0])
-                setCurrencySymbol(response.data.response_body.store_currency[0].symbol)
-                setCurrencyIsoCode(response.data.response_body.store_currency[0].iso_code)
-                setFractionalUnit(response.data.response_body.store_currency[0].fractional_unit)
-                setNumberToBasic(response.data.response_body.store_currency[0].number_to_basic)
                 setPageBackgroundColor(response.data.response_body.store_page_settings[0].bg_color)
                 setPageBgColor(response.data.response_body.store_page_settings[0].bg_color)
                 setForeGroundColor(response.data.response_body.store_page_settings[0].fg_color)
                 setPageFgColor(response.data.response_body.store_page_settings[0].fg_color)
                 setButtonPrimaryBackgroundColor(response.data.response_body.store_page_settings[0].btn_primary_bg_color)
-                setbtnPrimaryBgColor(response.data.response_body.store_page_settings[0].btn_primary_bg_color)
+                setBtnPrimaryBgColor(response.data.response_body.store_page_settings[0].btn_primary_bg_color)
                 setButtonPrimaryForegroundColor(response.data.response_body.store_page_settings[0].btn_primary_fg_color)
                 setbtnPrimaryFgColor(response.data.response_body.store_page_settings[0].btn_primary_fg_color)
                 setButtonSecondaryBackgroundColor(
@@ -381,136 +353,86 @@ const StoreSettings = () => {
         const maxLimit = maxDataLimit
         let count = 10
         let copyofStoreDataLimitValue = { ...storeDataLimitValues }
-        if (copyofStoreDataLimitValue.vendor_limit != '' && copyofStoreDataLimitValue.vendor_limit > maxLimit) {
+        if (copyofStoreDataLimitValue.vendor_limit !== '' && copyofStoreDataLimitValue.vendor_limit > maxLimit) {
             count--
             setInvalidVendorLimit(true)
-            MarketplaceToaster.showToast(
-                util.getToastObject(
-                    `${t('messages:vendor_limit_error_message')}`,
-                    // `Vendor limit should be less then 2147483647`,
-                    'error'
-                )
-            )
+            MarketplaceToaster.showToast(util.getToastObject(`${t('messages:vendor_limit_error_message')}`, 'error'))
         } else if (
-            copyofStoreDataLimitValue.customer_limit != '' &&
+            copyofStoreDataLimitValue.customer_limit !== '' &&
             parseInt(copyofStoreDataLimitValue.customer_limit) > maxLimit
         ) {
             count--
             setInvalidCustomerLimit(true)
-            MarketplaceToaster.showToast(
-                util.getToastObject(
-                    `${t('messages:customer_limit_error_message')}`,
-                    // `Customer limit should be less then 2147483647`,
-                    'error'
-                )
-            )
+            MarketplaceToaster.showToast(util.getToastObject(`${t('messages:customer_limit_error_message')}`, 'error'))
         } else if (
-            copyofStoreDataLimitValue.product_limit != '' &&
+            copyofStoreDataLimitValue.product_limit !== '' &&
             parseInt(copyofStoreDataLimitValue.product_limit) > maxLimit
         ) {
             count--
             setInvalidProductLimit(true)
-            MarketplaceToaster.showToast(
-                util.getToastObject(
-                    `${t('messages:product_limit_error_message')}`,
-                    // `Product limit should be less then 2147483647`,
-                    'error'
-                )
-            )
+            MarketplaceToaster.showToast(util.getToastObject(`${t('messages:product_limit_error_message')}`, 'error'))
         } else if (
-            copyofStoreDataLimitValue.order_limit_per_day != '' &&
+            copyofStoreDataLimitValue.order_limit_per_day !== '' &&
             parseInt(copyofStoreDataLimitValue.order_limit_per_day) > maxLimit
         ) {
             count--
             setInvalidOrderLimit(true)
-            MarketplaceToaster.showToast(
-                util.getToastObject(
-                    `${t('messages:order_limit_error_message')}`,
-                    // `Order limit should be less then 2147483647`,
-                    'error'
-                )
-            )
+            MarketplaceToaster.showToast(util.getToastObject(`${t('messages:order_limit_error_message')}`, 'error'))
         } else if (
-            copyofStoreDataLimitValue.langauge_limit != '' &&
+            copyofStoreDataLimitValue.langauge_limit !== '' &&
             parseInt(copyofStoreDataLimitValue.langauge_limit) > maxLimit
         ) {
             count--
             setInvalidLanguageLimit(true)
-            MarketplaceToaster.showToast(
-                util.getToastObject(
-                    `${t('messages:language_limit_error_message')}`,
-                    // `Language limit should be less then 2147483647`,
-                    'error'
-                )
-            )
+            MarketplaceToaster.showToast(util.getToastObject(`${t('messages:language_limit_error_message')}`, 'error'))
         } else if (
-            copyofStoreDataLimitValue.product_template_limit != '' &&
+            copyofStoreDataLimitValue.product_template_limit !== '' &&
             parseInt(copyofStoreDataLimitValue.product_template_limit) > maxLimit
         ) {
             count--
             setInvalidProductTemplateLimit(true)
             MarketplaceToaster.showToast(
-                util.getToastObject(
-                    `${t('messages:product_template_limit_error_message')}`,
-                    // `Product template limit should be less then 2147483647`,
-                    'error'
-                )
+                util.getToastObject(`${t('messages:product_template_limit_error_message')}`, 'error')
             )
         } else if (
-            copyofStoreDataLimitValue.store_users_limit != '' &&
+            copyofStoreDataLimitValue.store_users_limit !== '' &&
             parseInt(copyofStoreDataLimitValue.store_users_limit) > maxLimit
         ) {
             count--
             setInvalidStoreUserLimit(true)
             MarketplaceToaster.showToast(
-                util.getToastObject(
-                    `${t('messages:store_user_limit_error_message')}`,
-                    // `Store user limit should be less then 2147483647`,
-                    'error'
-                )
+                util.getToastObject(`${t('messages:store_user_limit_error_message')}`, 'error')
             )
         } else if (
-            copyofStoreDataLimitValue.vendor_users_limit != '' &&
+            copyofStoreDataLimitValue.vendor_users_limit !== '' &&
             parseInt(copyofStoreDataLimitValue.vendor_users_limit) > maxLimit
         ) {
             count--
             setInvalidVendorUserLimit(true)
             MarketplaceToaster.showToast(
-                util.getToastObject(
-                    `${t('messages:vendor_user_limit_error_message')}`,
-                    // `Vendor user limit should be less then 2147483647`,
-                    'error'
-                )
+                util.getToastObject(`${t('messages:vendor_user_limit_error_message')}`, 'error')
             )
         } else if (
-            copyofStoreDataLimitValue.max_products_per_vendor != '' &&
+            copyofStoreDataLimitValue.max_products_per_vendor !== '' &&
             parseInt(copyofStoreDataLimitValue.max_products_per_vendor) > maxLimit
         ) {
             count--
             setInvalidMaxProductLimit(true)
             MarketplaceToaster.showToast(
-                util.getToastObject(
-                    `${t('messages:max_product_limit_error_message')}`,
-                    // `Max product per limit should be less then 2147483647`,
-                    'error'
-                )
+                util.getToastObject(`${t('messages:max_product_limit_error_message')}`, 'error')
             )
         } else if (
-            copyofStoreDataLimitValue.max_templates_per_vendor != '' &&
+            copyofStoreDataLimitValue.max_templates_per_vendor !== '' &&
             parseInt(copyofStoreDataLimitValue.max_templates_per_vendor) > maxLimit
         ) {
             count--
             setInvalidMaxTemplateLimit(true)
             MarketplaceToaster.showToast(
-                util.getToastObject(
-                    `${t('messages:max_product_template_limit_error_message')}`,
-                    // `Max product template per limit should be less then 2147483647`,
-                    'error'
-                )
+                util.getToastObject(`${t('messages:max_product_template_limit_error_message')}`, 'error')
             )
         }
 
-        if (count == 10) {
+        if (count === 10) {
             saveStoreDataLimit()
         }
     }
@@ -563,14 +485,6 @@ const StoreSettings = () => {
                             )
                         )
                     }
-                    //   else if (previousStatus === 4) {
-                    //     MarketplaceToaster.showToast(
-                    //       util.getToastObject(
-                    //         `${t("messages:activation_unsuccessful")}`,
-                    //         "error"
-                    //       )
-                    //     );
-                    //   }
                 }
             })
             .catch((error) => {
@@ -592,14 +506,6 @@ const StoreSettings = () => {
     const saveStoreSettingsCall = () => {
         const postBody = {
             store_id: id,
-            // store_currency: [
-            //   {
-            //     symbol: currencySymbol,
-            //     iso_code: currencyIsoCode,
-            //     fractional_unit: fractionalUnit,
-            //     number_to_basic: numberToBasic,
-            //   },
-            // ],
             store_page_settings: [
                 {
                     bg_color: pageBackgroundColor,
@@ -632,34 +538,18 @@ const StoreSettings = () => {
                 MarketplaceToaster.showToast(response)
                 setOnChangeValues(false)
                 setIsLoading(false)
-                // setCopyImageOfStoreSettingsCurrency(
-                //   response.data.response_body.store_currency[0]
-                // );
-                // setImageOfStoreSettingsCurrency(
-                //   response.data.response_body.store_currency[0]
-                // );
                 setCopyImageOfStoreSettingsPageTheme(response.data.response_body.store_page_settings[0])
                 setImageOfStoreSettingsPageTheme(response.data.response_body.store_page_settings[0])
                 setCopyImageOfStoreHeaderSetting(response.data.response_body.store_header_settings[0])
                 setImageOfStoreHeaderSettings(response.data.response_body.store_header_settings[0])
                 setCopyImageOfStoreFooterSetting(response.data.response_body.store_footer_settings[0])
                 setImageOfStoreFooterSettings(response.data.response_body.store_footer_settings[0])
-                // setCurrencySymbol(response.data.response_body.store_currency[0].symbol);
-                // setCurrencyIsoCode(
-                //   response.data.response_body.store_currency[0].iso_code
-                // );
-                // setFractionalUnit(
-                //   response.data.response_body.store_currency[0].fractional_unit
-                // );
-                // setNumberToBasic(
-                //   response.data.response_body.store_currency[0].number_to_basic
-                // );
                 setPageBackgroundColor(response.data.response_body.store_page_settings[0].bg_color)
                 setPageBgColor(response.data.response_body.store_page_settings[0].bg_color)
                 setForeGroundColor(response.data.response_body.store_page_settings[0].fg_color)
                 setPageFgColor(response.data.response_body.store_page_settings[0].fg_color)
                 setButtonPrimaryBackgroundColor(response.data.response_body.store_page_settings[0].btn_primary_bg_color)
-                setbtnPrimaryBgColor(response.data.response_body.store_page_settings[0].btn_primary_bg_color)
+                setBtnPrimaryBgColor(response.data.response_body.store_page_settings[0].btn_primary_bg_color)
                 setButtonPrimaryForegroundColor(response.data.response_body.store_page_settings[0].btn_primary_fg_color)
                 setbtnPrimaryFgColor(response.data.response_body.store_page_settings[0].btn_primary_fg_color)
                 setButtonSecondaryBackgroundColor(
@@ -701,7 +591,7 @@ const StoreSettings = () => {
                 console.log('Server Response from store limit API: ', response.data.response_body)
                 if (response && response.data.response_body && response.data.response_body.data.length > 0) {
                     let selectedStoreDataLimit = response.data.response_body.data.filter(
-                        (element) => element.store == storeIdFromUrl
+                        (element) => element.store === storeIdFromUrl
                     )
                     if (selectedStoreDataLimit.length > 0) {
                         let selectedDataLimit = selectedStoreDataLimit[0]
@@ -728,72 +618,27 @@ const StoreSettings = () => {
 
     //! Post call for the store data limit api
     const saveStoreDataLimit = () => {
-        // const postBody = {
-        //   vendor_limit:
-        //     storeDataLimitValues.vendor_limit == ""
-        //       ? 0
-        //       : parseInt(storeDataLimitValues.vendor_limit),
-        //   customer_limit:
-        //     storeDataLimitValues.customer_limit == ""
-        //       ? 0
-        //       : parseInt(storeDataLimitValues.customer_limit),
-        //   product_limit:
-        //     storeDataLimitValues.product_limit == ""
-        //       ? 0
-        //       : parseInt(storeDataLimitValues.product_limit),
-        //   order_limit_per_day:
-        //     storeDataLimitValues.order_limit_per_day == ""
-        //       ? 0
-        //       : parseInt(storeDataLimitValues.order_limit_per_day),
-        //   langauge_limit:
-        //     storeDataLimitValues.langauge_limit == ""
-        //       ? 0
-        //       : parseInt(storeDataLimitValues.langauge_limit),
-        //   product_template_limit:
-        //     storeDataLimitValues.product_template_limit == ""
-        //       ? 0
-        //       : parseInt(storeDataLimitValues.product_template_limit),
-        //   store_users_limit:
-        //     storeDataLimitValues.store_users_limit == ""
-        //       ? 0
-        //       : parseInt(storeDataLimitValues.store_users_limit),
-        //   vendor_users_limit:
-        //     storeDataLimitValues.vendor_users_limit == ""
-        //       ? 0
-        //       : parseInt(storeDataLimitValues.vendor_users_limit),
-        //   max_products_per_vendor:
-        //     storeDataLimitValues.max_products_per_vendor == ""
-        //       ? 0
-        //       : parseInt(storeDataLimitValues.max_products_per_vendor),
-        //   max_templates_per_vendor:
-        //     storeDataLimitValues.max_templates_per_vendor == ""
-        //       ? 0
-        //       : parseInt(storeDataLimitValues.max_templates_per_vendor),
-        //   default_store_commission:
-        //     storeDataLimitValues.default_store_commission == ""
-        //       ? 0
-        //       : parseFloat(storeDataLimitValues.default_store_commission),
-        //   store: storeIdFromUrl,
-        // };
         const postBody = {
-            vendor_limit: storeDataLimitValues.vendor_limit == '' ? 0 : storeDataLimitValues.vendor_limit,
-            customer_limit: storeDataLimitValues.customer_limit == '' ? 0 : storeDataLimitValues.customer_limit,
-            product_limit: storeDataLimitValues.product_limit == '' ? 0 : storeDataLimitValues.product_limit,
+            vendor_limit: storeDataLimitValues.vendor_limit === '' ? 0 : storeDataLimitValues.vendor_limit,
+            customer_limit: storeDataLimitValues.customer_limit === '' ? 0 : storeDataLimitValues.customer_limit,
+            product_limit: storeDataLimitValues.product_limit === '' ? 0 : storeDataLimitValues.product_limit,
             order_limit_per_day:
-                storeDataLimitValues.order_limit_per_day == '' ? 0 : storeDataLimitValues.order_limit_per_day,
-            langauge_limit: storeDataLimitValues.langauge_limit == '' ? 0 : storeDataLimitValues.langauge_limit,
+                storeDataLimitValues.order_limit_per_day === '' ? 0 : storeDataLimitValues.order_limit_per_day,
+            langauge_limit: storeDataLimitValues.langauge_limit === '' ? 0 : storeDataLimitValues.langauge_limit,
             product_template_limit:
-                storeDataLimitValues.product_template_limit == '' ? 0 : storeDataLimitValues.product_template_limit,
+                storeDataLimitValues.product_template_limit === '' ? 0 : storeDataLimitValues.product_template_limit,
             store_users_limit:
-                storeDataLimitValues.store_users_limit == '' ? 0 : storeDataLimitValues.store_users_limit,
+                storeDataLimitValues.store_users_limit === '' ? 0 : storeDataLimitValues.store_users_limit,
             vendor_users_limit:
-                storeDataLimitValues.vendor_users_limit == '' ? 0 : storeDataLimitValues.vendor_users_limit,
+                storeDataLimitValues.vendor_users_limit === '' ? 0 : storeDataLimitValues.vendor_users_limit,
             max_products_per_vendor:
-                storeDataLimitValues.max_products_per_vendor == '' ? 0 : storeDataLimitValues.max_products_per_vendor,
+                storeDataLimitValues.max_products_per_vendor === '' ? 0 : storeDataLimitValues.max_products_per_vendor,
             max_templates_per_vendor:
-                storeDataLimitValues.max_templates_per_vendor == '' ? 0 : storeDataLimitValues.max_templates_per_vendor,
+                storeDataLimitValues.max_templates_per_vendor === ''
+                    ? 0
+                    : storeDataLimitValues.max_templates_per_vendor,
             default_store_commission:
-                storeDataLimitValues.default_store_commission == ''
+                storeDataLimitValues.default_store_commission === ''
                     ? 0
                     : parseFloat(storeDataLimitValues.default_store_commission),
             store: storeIdFromUrl,
@@ -830,137 +675,8 @@ const StoreSettings = () => {
 
     //! validations of store settings API
     const validatePostStoreSetting = () => {
-        let count = 4
-        if (currencySymbol === '' && currencyIsoCode === '' && fractionalUnit === '' && numberToBasic === null) {
-            count--
-            setInValidCurrencySymbol(true)
-            setInValidCurrencyIsoCode(true)
-            setInValidFractionalUnit(true)
-            setInValidNumberToBasic(true)
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        } else if (currencySymbol !== '' && currencyIsoCode === '' && fractionalUnit === '' && numberToBasic === null) {
-            count--
-            setInValidNumberToBasic(true)
-            setInValidCurrencyIsoCode(true)
-            setInValidFractionalUnit(true)
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        } else if (currencySymbol === '' && currencyIsoCode !== '' && fractionalUnit === '' && numberToBasic === null) {
-            count--
-            setInValidNumberToBasic(true)
-            setInValidCurrencySymbol(true)
-            setInValidFractionalUnit(true)
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        } else if (currencySymbol === '' && currencyIsoCode == '' && fractionalUnit !== '' && numberToBasic === null) {
-            count--
-            setInValidNumberToBasic(true)
-            setInValidCurrencySymbol(true)
-            setInValidCurrencyIsoCode(true)
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        } else if (currencySymbol === '' && currencyIsoCode == '' && fractionalUnit === '' && numberToBasic !== null) {
-            count--
-            setInValidFractionalUnit(true)
-            setInValidCurrencySymbol(true)
-            setInValidCurrencyIsoCode(true)
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        } else if (currencySymbol === '' && currencyIsoCode === '' && fractionalUnit !== '' && numberToBasic !== null) {
-            count--
-            setInValidCurrencySymbol(true)
-            setInValidCurrencyIsoCode(true)
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        } else if (currencySymbol === '' && currencyIsoCode !== '' && fractionalUnit === '' && numberToBasic !== null) {
-            count--
-            setInValidCurrencySymbol(true)
-            setInValidFractionalUnit(true)
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        } else if (currencySymbol === '' && currencyIsoCode !== '' && fractionalUnit !== '' && numberToBasic === null) {
-            count--
-            setInValidCurrencySymbol(true)
-            setInValidNumberToBasic(true)
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        } else if (currencySymbol === '' && currencyIsoCode === '' && fractionalUnit !== '' && numberToBasic !== null) {
-            count--
-            setInValidCurrencySymbol(true)
-            setInValidCurrencyIsoCode(true)
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        } else if (currencySymbol !== '' && currencyIsoCode === '' && fractionalUnit === '' && numberToBasic !== null) {
-            count--
-            setInValidCurrencyIsoCode(true)
-            setInValidFractionalUnit(true)
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        } else if (currencySymbol !== '' && currencyIsoCode === '' && fractionalUnit !== '' && numberToBasic === null) {
-            count--
-            setInValidCurrencyIsoCode(true)
-            setInValidNumberToBasic(true)
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        } else if (currencySymbol === '' && currencyIsoCode !== '' && fractionalUnit === '' && numberToBasic !== null) {
-            count--
-            setInValidCurrencySymbol(true)
-            setInValidFractionalUnit(true)
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        } else if (currencySymbol !== '' && currencyIsoCode !== '' && fractionalUnit === '' && numberToBasic === null) {
-            count--
-            setInValidFractionalUnit(true)
-            setInValidNumberToBasic(true)
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        } else if (currencySymbol === '' || currencySymbol === undefined || currencySymbol === null) {
-            count--
-            setInValidCurrencySymbol(true)
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        } else if (currencyIsoCode === '' || currencyIsoCode === undefined || currencyIsoCode === null) {
-            count--
-            setInValidCurrencyIsoCode(true)
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        } else if (fractionalUnit === '' || fractionalUnit === undefined || fractionalUnit === null) {
-            count--
-            setInValidFractionalUnit(true)
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        } else if (numberToBasic === '' || numberToBasic === undefined || numberToBasic === null) {
-            count--
-            setInValidNumberToBasic(true)
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        } else if (
-            (imageOfStoreSettingsCurrency && imageOfStoreSettingsCurrency.symbol) ===
-                (copyImageOfStoreSettingsCurrency && copyImageOfStoreSettingsCurrency.symbol) &&
-            (imageOfStoreSettingsCurrency && imageOfStoreSettingsCurrency.iso_code) ===
-                (copyImageOfStoreSettingsCurrency && copyImageOfStoreSettingsCurrency.iso_code) &&
-            (imageOfStoreSettingsCurrency && imageOfStoreSettingsCurrency.fractional_unit) ===
-                (copyImageOfStoreSettingsCurrency && copyImageOfStoreSettingsCurrency.fractional_unit) &&
-            (imageOfStoreSettingsCurrency && imageOfStoreSettingsCurrency.number_to_basic) ===
-                (copyImageOfStoreSettingsCurrency && copyImageOfStoreSettingsCurrency.number_to_basic) &&
+        let count = 2
+        if (
             (imageOfStoreSettingsPageTheme && imageOfStoreSettingsPageTheme.bg_color) ===
                 (copyImageOfStoreSettingsPageTheme && copyImageOfStoreSettingsPageTheme.bg_color) &&
             (imageOfStoreSettingsPageTheme && imageOfStoreSettingsPageTheme.btn_primary_bg_color) ===
@@ -987,6 +703,7 @@ const StoreSettings = () => {
                 (copyImageOfStoreFooterSetting && copyImageOfStoreFooterSetting.fg_color) &&
             imagesUpload.length === 0
         ) {
+            count--
             MarketplaceToaster.showToast(util.getToastObject(`${t('messages:no_changes_were_detected')}`, 'info'))
         } else if (
             colorCodeValidation.pageBgColorValidation === true ||
@@ -1002,8 +719,9 @@ const StoreSettings = () => {
             colorCodeValidation.footerBgValidation === true ||
             colorCodeValidation.footerTextValidation === true
         ) {
+            count--
             MarketplaceToaster.showToast(util.getToastObject(`${t('messages:color_validation')}`, 'error'))
-        } else if (count === 4) {
+        } else if (count === 2) {
             saveStoreSettingsCall()
         }
     }
@@ -1038,20 +756,20 @@ const StoreSettings = () => {
         const formData = new FormData()
         if (imagesUpload && imagesUpload.length > 0) {
             for (var i = 0; i < imagesUpload.length; i++) {
-                if (imagesUpload[i].type == 'store_logo') {
+                if (imagesUpload[i].type === 'store_logo') {
                     formData.append('store_logo', imagesUpload[i].imageValue)
-                } else if (imagesUpload[i].type == 'banner_images') {
+                } else if (imagesUpload[i].type === 'banner_images') {
                     let localBannerImagesUpload = imagesUpload[i].imageValue
                     for (var j = 0; j < localBannerImagesUpload.length; j++) {
                         formData.append('banner_images', localBannerImagesUpload[j])
                     }
-                } else if (imagesUpload[i].type == 'search_logo') {
+                } else if (imagesUpload[i].type === 'search_logo') {
                     formData.append('search_logo', imagesUpload[i].imageValue)
-                } else if (imagesUpload[i].type == 'customer_logo') {
+                } else if (imagesUpload[i].type === 'customer_logo') {
                     formData.append('customer_logo', imagesUpload[i].imageValue)
-                } else if (imagesUpload[i].type == 'cart_logo') {
+                } else if (imagesUpload[i].type === 'cart_logo') {
                     formData.append('cart_logo', imagesUpload[i].imageValue)
-                } else if (imagesUpload[i].type == 'wishlist_logo') {
+                } else if (imagesUpload[i].type === 'wishlist_logo') {
                     formData.append('wishlist_logo', imagesUpload[i].imageValue)
                 }
             }
@@ -1084,23 +802,22 @@ const StoreSettings = () => {
     //!put call of store images
     const updateStoreLogoImageCall = () => {
         const formData = new FormData()
-        // imagesUpload.filter((ele) => typeof ele.imageValue.status === "undefined");
         if (imagesUpload && imagesUpload.length > 0) {
             for (var i = 0; i < imagesUpload.length; i++) {
-                if (imagesUpload[i].type == 'store_logo') {
+                if (imagesUpload[i].type === 'store_logo') {
                     formData.append('store_logo', imagesUpload[i].imageValue)
-                } else if (imagesUpload[i].type == 'banner_images') {
+                } else if (imagesUpload[i].type === 'banner_images') {
                     let localBannerImagesUpload = imagesUpload[i].imageValue
                     for (var j = 0; j < localBannerImagesUpload.length; j++) {
                         formData.append('banner_images', localBannerImagesUpload[j])
                     }
-                } else if (imagesUpload[i].type == 'search_logo') {
+                } else if (imagesUpload[i].type === 'search_logo') {
                     formData.append('search_logo', imagesUpload[i].imageValue)
-                } else if (imagesUpload[i].type == 'customer_logo') {
+                } else if (imagesUpload[i].type === 'customer_logo') {
                     formData.append('customer_logo', imagesUpload[i].imageValue)
-                } else if (imagesUpload[i].type == 'cart_logo') {
+                } else if (imagesUpload[i].type === 'cart_logo') {
                     formData.append('cart_logo', imagesUpload[i].imageValue)
-                } else if (imagesUpload[i].type == 'wishlist_logo') {
+                } else if (imagesUpload[i].type === 'wishlist_logo') {
                     formData.append('wishlist_logo', imagesUpload[i].imageValue)
                 }
             }
@@ -1175,13 +892,11 @@ const StoreSettings = () => {
                         setAnalysisCount(res.data)
                     })
                     .catch((error) => {
-                        // setIsLoading(false);
                         setIsStoreLimitDataLoading(false)
                         console.log('Server error from 4sight api ', error.response)
                     })
             })
             .catch((error) => {
-                // setIsLoading(false);
                 setIsStoreLimitDataLoading(false)
                 console.log('Server error from store limit API ', error.response)
             })
@@ -1239,19 +954,6 @@ const StoreSettings = () => {
                         max={maxDataLimit}
                         maxLength={10}
                         onChange={(value) => {
-                            // let number = /^[0-9]*$/.test(e.target.value);
-                            // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-                            // // to allow only 10 digits
-                            // if (number && e.target.value.length <= 10) {
-                            //   copyofStoreDataLimitValue.vendor_limit = e.target.value;
-                            //   setIsStoreDataLimitChanged(true);
-                            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-                            //   setInvalidVendorLimit(false);
-                            // } else if (e.target.value === "") {
-                            //   copyofStoreDataLimitValue.vendor_limit = e.target.value;
-                            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-                            //   setInvalidVendorLimit(false);
-                            // }
                             let copyofStoreDataLimitValue = { ...storeDataLimitValues }
                             copyofStoreDataLimitValue.vendor_limit = value
                             setStoreDataLimitValues(copyofStoreDataLimitValue)
@@ -1261,7 +963,6 @@ const StoreSettings = () => {
                         status={invalidVendorLimit ? 'error' : ''}
                     />
                 )
-                break
             case 'customer_limit':
                 return (
                     <InputNumber
@@ -1279,19 +980,6 @@ const StoreSettings = () => {
                         max={maxDataLimit}
                         maxLength={10}
                         onChange={(value) => {
-                            // let number = /^[0-9]*$/.test(e.target.value);
-                            // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-                            // // to allow only 10 digits
-                            // if (number && e.target.value.length <= 10) {
-                            //   copyofStoreDataLimitValue.customer_limit = e.target.value;
-                            //   setIsStoreDataLimitChanged(true);
-                            //   setInvalidCustomerLimit(false)
-                            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-                            // } else if (e.target.value === "") {
-                            //   copyofStoreDataLimitValue.customer_limit = e.target.value;
-                            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-                            //   setInvalidCustomerLimit(false)
-                            // }
                             let copyofStoreDataLimitValue = { ...storeDataLimitValues }
                             copyofStoreDataLimitValue.customer_limit = value
                             setStoreDataLimitValues(copyofStoreDataLimitValue)
@@ -1300,7 +988,6 @@ const StoreSettings = () => {
                         }}
                     />
                 )
-                break
             case 'product_limit':
                 return (
                     <InputNumber
@@ -1318,19 +1005,6 @@ const StoreSettings = () => {
                         max={maxDataLimit}
                         maxLength={10}
                         onChange={(value) => {
-                            // let number = /^[0-9]*$/.test(e.target.value);
-                            // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-                            // // to allow only 10 digits
-                            // if (number && e.target.value.length <= 10) {
-                            //   copyofStoreDataLimitValue.product_limit = e.target.value;
-                            //   setIsStoreDataLimitChanged(true);
-                            //   setInvalidProductLimit(false)
-                            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-                            // } else if (e.target.value === "") {
-                            //   setInvalidProductLimit(false)
-                            //   copyofStoreDataLimitValue.product_limit = e.target.value;
-                            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-                            // }
                             let copyofStoreDataLimitValue = { ...storeDataLimitValues }
                             copyofStoreDataLimitValue.product_limit = value
                             setStoreDataLimitValues(copyofStoreDataLimitValue)
@@ -1339,7 +1013,6 @@ const StoreSettings = () => {
                         }}
                     />
                 )
-                break
             case 'order_limit_per_day':
                 return (
                     <InputNumber
@@ -1359,21 +1032,6 @@ const StoreSettings = () => {
                         max={maxDataLimit}
                         maxLength={10}
                         onChange={(value) => {
-                            // let number = /^[0-9]*$/.test(e.target.value);
-                            // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-                            // // to allow only 10 digits
-                            // if (number && e.target.value.length <= 10) {
-                            //   copyofStoreDataLimitValue.order_limit_per_day =
-                            //     e.target.value;
-                            //   setIsStoreDataLimitChanged(true);
-                            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-                            //   setInvalidOrderLimit(false);
-                            // } else if (e.target.value === "") {
-                            //   copyofStoreDataLimitValue.order_limit_per_day =
-                            //     e.target.value;
-                            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-                            //   setInvalidOrderLimit(false);
-                            // }
                             let copyofStoreDataLimitValue = { ...storeDataLimitValues }
                             copyofStoreDataLimitValue.order_limit_per_day = value
                             setStoreDataLimitValues(copyofStoreDataLimitValue)
@@ -1382,7 +1040,6 @@ const StoreSettings = () => {
                         }}
                     />
                 )
-                break
             case 'langauge_limit':
                 return (
                     <InputNumber
@@ -1400,19 +1057,6 @@ const StoreSettings = () => {
                         max={maxDataLimit}
                         maxLength={10}
                         onChange={(value) => {
-                            // let number = /^[0-9]*$/.test(e.target.value);
-                            // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-                            // // to allow only 10 digits
-                            // if (number && e.target.value.length <= 10) {
-                            //   copyofStoreDataLimitValue.langauge_limit = e.target.value;
-                            //   setIsStoreDataLimitChanged(true);
-                            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-                            //   setInvalidLanguageLimit(false);
-                            // } else if (e.target.value === "") {
-                            //   copyofStoreDataLimitValue.langauge_limit = e.target.value;
-                            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-                            //   setInvalidLanguageLimit(false);
-                            // }
                             let copyofStoreDataLimitValue = { ...storeDataLimitValues }
                             copyofStoreDataLimitValue.langauge_limit = value
                             setStoreDataLimitValues(copyofStoreDataLimitValue)
@@ -1421,7 +1065,6 @@ const StoreSettings = () => {
                         }}
                     />
                 )
-                break
             case 'product_template_limit':
                 return (
                     <InputNumber
@@ -1443,21 +1086,6 @@ const StoreSettings = () => {
                         max={maxDataLimit}
                         maxLength={10}
                         onChange={(value) => {
-                            // let number = /^[0-9]*$/.test(e.target.value);
-                            // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-                            // // to allow only 10 digits
-                            // if (number && e.target.value.length <= 10) {
-                            //   copyofStoreDataLimitValue.product_template_limit =
-                            //     e.target.value;
-                            //   setIsStoreDataLimitChanged(true);
-                            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-                            //   setInvalidProductTemplateLimit(false);
-                            // } else if (e.target.value === "") {
-                            //   copyofStoreDataLimitValue.product_template_limit =
-                            //     e.target.value;
-                            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-                            //   setInvalidProductTemplateLimit(false);
-                            // }
                             let copyofStoreDataLimitValue = { ...storeDataLimitValues }
                             copyofStoreDataLimitValue.product_template_limit = value
                             setStoreDataLimitValues(copyofStoreDataLimitValue)
@@ -1466,7 +1094,6 @@ const StoreSettings = () => {
                         }}
                     />
                 )
-                break
             case 'store_users_limit':
                 return (
                     <InputNumber
@@ -1484,22 +1111,6 @@ const StoreSettings = () => {
                         max={maxDataLimit}
                         maxLength={10}
                         onChange={(value) => {
-                            // let number = /^[0-9]*$/.test(e.target.value);
-                            // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-                            // // to allow only 10 digits
-                            // if (number && e.target.value.length <= 10) {
-                            //   copyofStoreDataLimitValue.store_users_limit =
-                            //     e.target.value;
-                            //   setIsStoreDataLimitChanged(true);
-                            //   setInvalidStoreUserLimit(false);
-                            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-                            // } else if (e.target.value === "") {
-                            //   // setIsStoreDataLimitChanged(false);
-                            //   copyofStoreDataLimitValue.store_users_limit =
-                            //     e.target.value;
-                            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-                            //   setInvalidStoreUserLimit(false);
-                            // }
                             let copyofStoreDataLimitValue = { ...storeDataLimitValues }
                             copyofStoreDataLimitValue.store_users_limit = value
                             setStoreDataLimitValues(copyofStoreDataLimitValue)
@@ -1508,7 +1119,6 @@ const StoreSettings = () => {
                         }}
                     />
                 )
-                break
             case 'vendor_users_limit':
                 return (
                     <InputNumber
@@ -1528,22 +1138,6 @@ const StoreSettings = () => {
                         max={maxDataLimit}
                         maxLength={10}
                         onChange={(value) => {
-                            // let number = /^[0-9]*$/.test(e.target.value);
-                            // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-                            // // to allow only 10 digits
-                            // if (number && e.target.value.length <= 10) {
-                            //   copyofStoreDataLimitValue.vendor_users_limit =
-                            //     e.target.value;
-                            //   setIsStoreDataLimitChanged(true);
-                            //   setInvalidVendorUserLimit(false);
-                            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-                            // } else if (e.target.value === "") {
-                            //   // setIsStoreDataLimitChanged(false);
-                            //   copyofStoreDataLimitValue.vendor_users_limit =
-                            //     e.target.value;
-                            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-                            //   setInvalidVendorUserLimit(false);
-                            // }
                             let copyofStoreDataLimitValue = { ...storeDataLimitValues }
                             copyofStoreDataLimitValue.vendor_users_limit = value
                             setStoreDataLimitValues(copyofStoreDataLimitValue)
@@ -1552,7 +1146,6 @@ const StoreSettings = () => {
                         }}
                     />
                 )
-                break
             case 'maximum_vendor_product_limit':
                 return (
                     <InputNumber
@@ -1574,22 +1167,6 @@ const StoreSettings = () => {
                         max={maxDataLimit}
                         maxLength={10}
                         onChange={(value) => {
-                            // let number = /^[0-9]*$/.test(e.target.value);
-                            // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-                            // // to allow only 10 digits
-                            // if (number && e.target.value.length <= 10) {
-                            //   copyofStoreDataLimitValue.max_products_per_vendor =
-                            //     e.target.value;
-                            //   setIsStoreDataLimitChanged(true);
-                            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-                            //   setInvalidMaxProductLimit(false);
-                            // } else if (e.target.value === "") {
-                            //   // setIsStoreDataLimitChanged(false);
-                            //   copyofStoreDataLimitValue.max_products_per_vendor =
-                            //     e.target.value;
-                            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-                            //   setInvalidMaxProductLimit(false);
-                            // }
                             let copyofStoreDataLimitValue = { ...storeDataLimitValues }
                             copyofStoreDataLimitValue.max_products_per_vendor = value
                             setStoreDataLimitValues(copyofStoreDataLimitValue)
@@ -1598,7 +1175,6 @@ const StoreSettings = () => {
                         }}
                     />
                 )
-                break
             case 'maximum_vendor_product_template_limit':
                 return (
                     <InputNumber
@@ -1620,22 +1196,7 @@ const StoreSettings = () => {
                         max={maxDataLimit}
                         maxLength={10}
                         onChange={(value) => {
-                            // let number = /^[0-9]*$/.test(e.target.value);
-                            // let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-                            // // to allow only 10 digits
-                            // if (number && e.target.value.length <= 10) {
-                            //   copyofStoreDataLimitValue.max_templates_per_vendor =
-                            //     e.target.value;
                             setIsStoreDataLimitChanged(true)
-                            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-                            //   setInvalidMaxTemplateLimit(false);
-                            // } else if (e.target.value === "") {
-                            //   // setIsStoreDataLimitChanged(false);
-                            //   copyofStoreDataLimitValue.max_templates_per_vendor =
-                            //     e.target.value;
-                            //   setStoreDataLimitValues(copyofStoreDataLimitValue);
-                            //   setInvalidMaxTemplateLimit(false)
-                            // }
                             let copyofStoreDataLimitValue = { ...storeDataLimitValues }
                             copyofStoreDataLimitValue.max_templates_per_vendor = value
                             setStoreDataLimitValues(copyofStoreDataLimitValue)
@@ -1644,7 +1205,6 @@ const StoreSettings = () => {
                         }}
                     />
                 )
-                break
             case 'default_vendor_commission':
                 return (
                     <InputNumber
@@ -1661,20 +1221,6 @@ const StoreSettings = () => {
                         onPaste={(e) => {
                             validatePositiveNumber(e, /[0-9]/)
                         }}
-                        // onPaste={(e) => {
-                        //   e.preventDefault();
-
-                        //   const pastedText = e.clipboardData.getData("text/plain");
-                        //   const numericValue = pastedText.replace(/[^0-9]/g, "");
-                        //   const truncatedValue = numericValue.substring(0, 12);
-
-                        //   // Check if the resulting value is a positive number
-                        //   if (/^[0-9]+$/.test(truncatedValue)) {
-                        //     let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-                        //     copyofStoreDataLimitValue.default_store_commission = truncatedValue;
-                        //     setStoreDataLimitValues(copyofStoreDataLimitValue);
-                        //   }
-                        // }}
                         className={'w-28'}
                         onChange={(value) => {
                             let copyofStoreDataLimitValue = { ...storeDataLimitValues }
@@ -1684,7 +1230,6 @@ const StoreSettings = () => {
                         }}
                     />
                 )
-                break
             default:
                 return null
         }
@@ -1692,7 +1237,6 @@ const StoreSettings = () => {
 
     const StoreTableColumnThreshold = [
         {
-            // title: `${t("labels:name")}`,
             title: `${t('labels:limit_set_by_admin_name')}`,
             dataIndex: 'limits',
             key: 'limits',
@@ -1717,28 +1261,18 @@ const StoreSettings = () => {
             },
         },
         {
-            // title: `${t("labels:name")}`,
             title: `${t('labels:override_limit_name')}`,
             dataIndex: 'limitfields',
             key: 'limitfields',
             width: '30%',
             render: (text) => {
                 const [labelname, value, key] = text.split(',')
-                if (key !== 'default_vendor_commission') {
-                    return (
-                        <Content className='flex flex-col'>
-                            <label className='text-[13px] mb-3 input-label-color'>{labelname}</label>
-                            {getStoreRestrictionControl(key)}
-                        </Content>
-                    )
-                } else {
-                    return (
-                        <Content className='flex flex-col'>
-                            <label className='text-[13px] mb-3 input-label-color'>{labelname}</label>
-                            {getStoreRestrictionControl(key)}
-                        </Content>
-                    )
-                }
+                return (
+                    <Content className='flex flex-col'>
+                        <label className='text-[13px] mb-3 input-label-color'>{labelname}</label>
+                        {getStoreRestrictionControl(key)}
+                    </Content>
+                )
             },
         },
         {
@@ -1769,7 +1303,6 @@ const StoreSettings = () => {
                                           : null
                     return (
                         <Content className='flex !flex-col'>
-                            {/* {`${count} of ${total} ${labelText !== null ? labelText : ""}`} */}
                             <div
                                 className={
                                     util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
@@ -1785,8 +1318,6 @@ const StoreSettings = () => {
                                 ) : (
                                     ''
                                 )}
-                                {/* // <p>{total > 0 ? t("labels:of") : ""}</p>
-                // <p>{total > 0 ? total : ""}</p> */}
                                 <p>{labelText !== null ? labelText : ''}</p>
                             </div>
                             <div>
@@ -1820,26 +1351,6 @@ const StoreSettings = () => {
     const tablePropsThreshold = {
         table_header: StoreTableColumnThreshold,
         table_content: [
-            // {
-            //   key: "1",
-            //   limits: `Maximum Store Creation Limit,${storeLimitValues?.store_limit}`,
-            //   stats:
-            //     analysisCount?.store_count + " of " + storeLimitValues?.store_limit,
-            // },
-            // {
-            //   key: "2",
-            //   limits: `Maximum Language Activation Limit,${storeLimitValues?.dm_language_limit}`,
-            //   stats:
-            //     analysisCount?.lang_count +
-            //     " of " +
-            //     storeLimitValues?.dm_language_limit,
-            // },
-            // {
-            //   key: "3",
-            //   limits: `Maximum User Limit,${storeLimitValues?.dm_user_limit}`,
-            //   stats:
-            //     analysisCount?.user_count + " of " + storeLimitValues?.dm_user_limit,
-            // },
             {
                 key: '4',
                 limitfields: `${t('labels:vendor_limit')},${
@@ -1899,47 +1410,6 @@ const StoreSettings = () => {
                     ',' +
                     'product_template_limit',
             },
-
-            // stats:
-            // analysisCount?.lang_count +
-            // "," +
-            // storeLimitValues?.langauge_limit +
-            // "," +
-            // "langauge_limit",
-            // {
-            //   key: "10",
-            //   limitfields: `${t("labels:store_users_limit")},${
-            //     storeDataLimitValues.store_users_limit > 0
-            //       ? storeDataLimitValues.store_users_limit
-            //       : ""
-            //   },store_users_limit`,
-            //   limits: `${t("labels:max_store_user_limit")},${
-            //     storeLimitValues?.store_users_limit
-            //   }`,
-            //   stats:
-            //     analysisCount?.store_user_count +
-            //     "," +
-            //     storeLimitValues?.store_users_limit +
-            //     "," +
-            //     "store_users_limit",
-            // },
-            // {
-            //   key: "11",
-            //   limitfields: `${t("labels:vendor_users_limit")},${
-            //     storeDataLimitValues.vendor_users_limit > 0
-            //       ? storeDataLimitValues.vendor_users_limit
-            //       : ""
-            //   },vendor_users_limit`,
-            //   limits: `${t("labels:max_vendor_user_limit")},${
-            //     storeLimitValues?.store_users_limit
-            //   }`,
-            //   // stats:
-            //   //   analysisCount?.vendor_user_count +
-            //   //   "," +
-            //   //   storeLimitValues?.vendor_users_limit +
-            //   //   "," +
-            //   //   "vendor_users_limit",
-            // },
             {
                 key: '12',
                 limitfields: `${t('labels:maximum_vendor_product_limit')},${
@@ -1966,11 +1436,6 @@ const StoreSettings = () => {
                 limits: null,
                 stats: null,
             },
-            // {
-            //   key: "11",
-            //   limits: `Maximum Vendor Users Limit,${storeLimitValues?.vendor_users_limit}`,
-            //   stats: analysisCount?.vendor_users_count + " of " + storeLimitValues?.vendor_users_limit,
-            // },
         ],
         pagenationSettings: pagination,
         search_settings: {
@@ -1988,26 +1453,6 @@ const StoreSettings = () => {
             sorting_title: 'Sorting by',
             sorting_data: [],
         },
-    }
-
-    const numberToBasicLimit = (e) => {
-        const { key, keyCode } = e
-        const { value } = e.target
-        if (value.length >= 5 && keyCode !== 8) {
-            e.preventDefault() // Prevents the input event from being fired, except for Backspace key
-        }
-        if (
-            !(
-                e.key === 'Backspace' ||
-                e.key === 'Delete' ||
-                e.key === 'ArrowLeft' ||
-                e.key === 'ArrowRight' ||
-                e.key === 'Tab' ||
-                (e.key >= '0' && e.key <= '9')
-            )
-        ) {
-            e.preventDefault()
-        }
     }
 
     //!get call of list currency
@@ -2073,7 +1518,6 @@ const StoreSettings = () => {
 
     const handleCurrencyChange = (value) => {
         findAllWithoutCurrencyDataByChange(value)
-        setCurrencyIsoCode(value)
         setCurrencyOnChange(true)
     }
 
@@ -2117,7 +1561,6 @@ const StoreSettings = () => {
     }, [id])
 
     useEffect(() => {
-        console.log('filteredCurrencyData', filteredCurrencyData)
         const currencyDisplayData =
             filteredCurrencyData &&
             filteredCurrencyData.length > 0 &&
@@ -2182,12 +1625,6 @@ const StoreSettings = () => {
                                         disabelMediaButton={disableMediaButton}
                                     />
                                 </Col>
-                                {/* <StoreMedia
-                title={`${t("stores:Store-Logo")}`}
-                type={"store_logo"}
-                getImageData={getImageData && getImageData}
-                setGetImageData={setGetImageData}
-              /> */}
                             </Row>
                             <StoreImages
                                 title={`${t('labels:banner_logo')}`}
@@ -2201,12 +1638,6 @@ const StoreSettings = () => {
                                 setImageChangeValues={setImageChangeValues}
                                 disabelMediaButton={disableMediaButton}
                             />
-                            {/* <StoreMedia
-              title="Banner Images"
-              type={"banner_images"}
-              getImageData={getImageData && getImageData}
-              setGetImageData={setGetImageData}
-            /> */}
                             <Content className='mt-4'>
                                 <Row className='gap-2'>
                                     <Col>
@@ -2235,11 +1666,10 @@ const StoreSettings = () => {
                                     </Col>
                                     <Col className=''>
                                         <Button
-                                            // className=" app-btn-secondary"
                                             className={'app-btn-secondary'}
                                             disabled={imagesUpload && imagesUpload.length > 0 ? false : true}
                                             onClick={() => {
-                                                navigate('/dashboard/store')
+                                                navigate('/dashboard/store?m_t=1')
                                             }}>
                                             {t('labels:discard')}
                                         </Button>
@@ -2249,398 +1679,6 @@ const StoreSettings = () => {
                         </Content>
                     </Spin>
                 )}
-
-                {/* <Spin tip="Please wait!" size="large" spinning={isStoreDataLimitSaving}> */}
-                {/* <Content className="bg-white mt-3 p-3 !rounded-md"> */}
-                {/* <label className="text-[20px] mb-2 font-bold">
-              {t("labels:thershold_limit")}
-            </label> */}
-                {/* <Row
-              gutter={{
-                xs: 8,
-                sm: 16,
-                md: 24,
-                lg: 32,
-              }}
-            >
-              <Col>
-                <label className="text-[13px] mb-2 ml-1 input-label-color">
-                  {t("labels:vendor_limit")}
-                </label>
-                <Input
-                  placeholder={t("labels:placeholder_unlimited")}
-                  value={
-                    storeDataLimitValues.vendor_limit > 0
-                      ? storeDataLimitValues.vendor_limit
-                      : ""
-                  }
-                  disabled={hideActionButton}
-                  onChange={(e) => {
-                    let number = /^[0-9]*$/.test(e.target.value);
-                    let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-                    // to allow only 10 digits
-                    if (number && e.target.value.length <= 10) {
-                      copyofStoreDataLimitValue.vendor_limit = e.target.value;
-                      setIsStoreDataLimitChanged(true);
-                      setStoreDataLimitValues(copyofStoreDataLimitValue);
-                      setInvalidVendorLimit(false);
-                    } else if (e.target.value === "") {
-                      copyofStoreDataLimitValue.vendor_limit = e.target.value;
-                      setStoreDataLimitValues(copyofStoreDataLimitValue);
-                      setInvalidVendorLimit(false);
-                    }
-                  }}
-                  status={invalidVendorLimit ? "error" : ""}
-                />
-                <Content className="mt-2">
-                  <label className="text-[13px] mb-2 ml-1 input-label-color">
-                    {t("labels:customer_limit")}
-                  </label>
-                  <Input
-                    placeholder={t("labels:placeholder_unlimited")}
-                    disabled={hideActionButton}
-                    value={
-                      storeDataLimitValues.customer_limit > 0
-                        ? storeDataLimitValues.customer_limit
-                        : ""
-                    }
-                    status={invalidCustomerLimit ? "error" : ""}
-                    onChange={(e) => {
-                      let number = /^[0-9]*$/.test(e.target.value);
-                      let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-                      // to allow only 10 digits
-                      if (number && e.target.value.length <= 10) {
-                        copyofStoreDataLimitValue.customer_limit = e.target.value;
-                        setIsStoreDataLimitChanged(true);
-                        setInvalidCustomerLimit(false)
-                        setStoreDataLimitValues(copyofStoreDataLimitValue);
-                      } else if (e.target.value === "") {
-                        copyofStoreDataLimitValue.customer_limit = e.target.value;
-                        setStoreDataLimitValues(copyofStoreDataLimitValue);
-                        setInvalidCustomerLimit(false)
-                      }
-                    }}
-                  />
-                </Content>
-                <Content className="mt-2">
-                  <label className="text-[13px] mb-2 ml-1 input-label-color">
-                    {t("labels:product_limit")}
-                  </label>
-                  <Input
-                    disabled={hideActionButton}
-                    placeholder={t("labels:placeholder_unlimited")}
-                    value={
-                      storeDataLimitValues.product_limit > 0
-                        ? storeDataLimitValues.product_limit
-                        : ""
-                    }
-                    status={invalidProductLimit ? "error" : ""}
-                    onChange={(e) => {
-                      let number = /^[0-9]*$/.test(e.target.value);
-                      let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-                      // to allow only 10 digits
-                      if (number && e.target.value.length <= 10) {
-                        copyofStoreDataLimitValue.product_limit = e.target.value;
-                        setIsStoreDataLimitChanged(true);
-                        setInvalidProductLimit(false)
-                        setStoreDataLimitValues(copyofStoreDataLimitValue);
-                      } else if (e.target.value === "") {
-                        setInvalidProductLimit(false)
-                        copyofStoreDataLimitValue.product_limit = e.target.value;
-                        setStoreDataLimitValues(copyofStoreDataLimitValue);
-                      }
-                    }}
-                  />
-                </Content>
-                <Content className="mt-2">
-                  <label className="text-[13px] mb-2 ml-1 input-label-color whitespace-nowrap">
-                    {t("labels:order_limit_per_day")}
-                  </label>
-                  <Input
-                    disabled={hideActionButton}
-                    placeholder={t("labels:placeholder_unlimited")}
-                    value={
-                      storeDataLimitValues.order_limit_per_day > 0
-                        ? storeDataLimitValues.order_limit_per_day
-                        : ""
-                    }
-                    status={invalidOrderLimit ? "error" : ""}
-                    onChange={(e) => {
-                      let number = /^[0-9]*$/.test(e.target.value);
-                      let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-                      // to allow only 10 digits
-                      if (number && e.target.value.length <= 10) {
-                        copyofStoreDataLimitValue.order_limit_per_day =
-                          e.target.value;
-                        setIsStoreDataLimitChanged(true);
-                        setStoreDataLimitValues(copyofStoreDataLimitValue);
-                        setInvalidOrderLimit(false);
-                      } else if (e.target.value === "") {
-                        copyofStoreDataLimitValue.order_limit_per_day =
-                          e.target.value;
-                        setStoreDataLimitValues(copyofStoreDataLimitValue);
-                        setInvalidOrderLimit(false);
-                      }
-                    }}
-                  />
-                </Content>
-                <Content className="mt-2">
-                  <label className="text-[13px] mb-2 ml-1 input-label-color">
-                    {t("labels:langauge_limit")}
-                  </label>
-                  <Input
-                    disabled={hideActionButton}
-                    placeholder={t("labels:placeholder_unlimited")}
-                    value={
-                      storeDataLimitValues.langauge_limit > 0
-                        ? storeDataLimitValues.langauge_limit
-                        : ""
-                    }
-                    status={invalidLanguageLimit ? "error" : ""}
-                    onChange={(e) => {
-                      let number = /^[0-9]*$/.test(e.target.value);
-                      let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-                      // to allow only 10 digits
-                      if (number && e.target.value.length <= 10) {
-                        copyofStoreDataLimitValue.langauge_limit = e.target.value;
-                        setIsStoreDataLimitChanged(true);
-                        setStoreDataLimitValues(copyofStoreDataLimitValue);
-                        setInvalidLanguageLimit(false);
-                      } else if (e.target.value === "") {
-                        copyofStoreDataLimitValue.langauge_limit = e.target.value;
-                        setStoreDataLimitValues(copyofStoreDataLimitValue);
-                        setInvalidLanguageLimit(false);
-                      }
-                    }}
-                  />
-                </Content>
-                <Content className="mt-2">
-                  <label className="text-[13px]  mb-2 ml-1 input-label-color">
-                    {t("labels:product_template_limit")}
-                  </label>
-                  <Input
-                    disabled={hideActionButton}
-                    placeholder={t("labels:placeholder_unlimited")}
-                    value={
-                      storeDataLimitValues.product_template_limit > 0
-                        ? storeDataLimitValues.product_template_limit
-                        : ""
-                    }
-                    status={invalidProductTemplateLimit ? "error" : ""}
-                    onChange={(e) => {
-                      let number = /^[0-9]*$/.test(e.target.value);
-                      let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-                      // to allow only 10 digits
-                      if (number && e.target.value.length <= 10) {
-                        copyofStoreDataLimitValue.product_template_limit =
-                          e.target.value;
-                        setIsStoreDataLimitChanged(true);
-                        setStoreDataLimitValues(copyofStoreDataLimitValue);
-                        setInvalidProductTemplateLimit(false);
-                      } else if (e.target.value === "") {
-                        copyofStoreDataLimitValue.product_template_limit =
-                          e.target.value;
-                        setStoreDataLimitValues(copyofStoreDataLimitValue);
-                        setInvalidProductTemplateLimit(false);
-                      }
-                    }}
-                  />
-                </Content>
-              </Col>
-              <Col>              
-                <Content>
-                  <label className="text-[13px] mb-2 ml-1 input-label-color">
-                    {t("labels:store_users_limit")}
-                  </label>
-                  <Input
-                    placeholder={t("labels:placeholder_unlimited")}
-                    disabled={hideActionButton}
-                    value={
-                      storeDataLimitValues.store_users_limit > 0
-                        ? storeDataLimitValues.store_users_limit
-                        : ""
-                    }
-                    status={invalidStoreUserLimit ? "error" : ""}
-                    onChange={(e) => {
-                      let number = /^[0-9]*$/.test(e.target.value);
-                      let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-                      // to allow only 10 digits
-                      if (number && e.target.value.length <= 10) {
-                        copyofStoreDataLimitValue.store_users_limit =
-                          e.target.value;
-                        setIsStoreDataLimitChanged(true);
-                        setInvalidStoreUserLimit(false);
-                        setStoreDataLimitValues(copyofStoreDataLimitValue);
-                      } else if (e.target.value === "") {
-                        // setIsStoreDataLimitChanged(false);
-                        copyofStoreDataLimitValue.store_users_limit =
-                          e.target.value;
-                        setStoreDataLimitValues(copyofStoreDataLimitValue);
-                        setInvalidStoreUserLimit(false);
-                      }
-                    }}
-                  />
-                </Content>
-                <Content className="mt-2">
-                  <label className="text-[13px] mb-2 ml-1 input-label-color">
-                    {t("labels:vendor_users_limit")}
-                  </label>
-                  <Input
-                    disabled={hideActionButton}
-                    placeholder={t("labels:placeholder_unlimited")}
-                    value={
-                      storeDataLimitValues.vendor_users_limit > 0
-                        ? storeDataLimitValues.vendor_users_limit
-                        : ""
-                    }
-                    status={invalidVendorUserLimit ? "error" : ""}
-                    onChange={(e) => {
-                      let number = /^[0-9]*$/.test(e.target.value);
-                      let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-                      // to allow only 10 digits
-                      if (number && e.target.value.length <= 10) {
-                        copyofStoreDataLimitValue.vendor_users_limit =
-                          e.target.value;
-                        setIsStoreDataLimitChanged(true);
-                        setInvalidVendorUserLimit(false);
-                        setStoreDataLimitValues(copyofStoreDataLimitValue);
-                      } else if (e.target.value === "") {
-                        // setIsStoreDataLimitChanged(false);
-                        copyofStoreDataLimitValue.vendor_users_limit =
-                          e.target.value;
-                        setStoreDataLimitValues(copyofStoreDataLimitValue);
-                        setInvalidVendorUserLimit(false);
-                      }
-                    }}
-                  />
-                </Content>
-                <Content className="mt-2">
-                  <label className="text-[13px] mb-2 ml-1 input-label-color">
-                    {t("labels:maximum_vendor_product_limit")}
-                  </label>
-                  <Input
-                    disabled={hideActionButton}
-                    placeholder={t("labels:placeholder_unlimited")}
-                    value={
-                      storeDataLimitValues.max_products_per_vendor > 0
-                        ? storeDataLimitValues.max_products_per_vendor
-                        : ""
-                    }
-                    status={invalidMaxProductLimit ? "error" : ""}
-                    onChange={(e) => {
-                      let number = /^[0-9]*$/.test(e.target.value);
-                      let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-                      // to allow only 10 digits
-                      if (number && e.target.value.length <= 10) {
-                        copyofStoreDataLimitValue.max_products_per_vendor =
-                          e.target.value;
-                        setIsStoreDataLimitChanged(true);
-                        setStoreDataLimitValues(copyofStoreDataLimitValue);
-                        setInvalidMaxProductLimit(false);
-                      } else if (e.target.value === "") {
-                        // setIsStoreDataLimitChanged(false);
-                        copyofStoreDataLimitValue.max_products_per_vendor =
-                          e.target.value;
-                        setStoreDataLimitValues(copyofStoreDataLimitValue);
-                        setInvalidMaxProductLimit(false);
-                      }
-                    }}
-                  />
-                </Content>
-                <Content className="mt-2">
-                  <label className="text-[13px] mb-2 ml-1 input-label-color">
-                    {t("labels:maximum_vendor_product_template_limit")}
-                  </label>
-                  <Input
-                    disabled={hideActionButton}
-                    placeholder={t("labels:placeholder_unlimited")}
-                    value={
-                      storeDataLimitValues.max_templates_per_vendor > 0
-                        ? storeDataLimitValues.max_templates_per_vendor
-                        : ""
-                    }
-                    status={invalidMaxTemplateLimit ? "error" : ""}
-                    onChange={(e) => {
-                      let number = /^[0-9]*$/.test(e.target.value);
-                      let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-                      // to allow only 10 digits
-                      if (number && e.target.value.length <= 10) {
-                        copyofStoreDataLimitValue.max_templates_per_vendor =
-                          e.target.value;
-                        setIsStoreDataLimitChanged(true);
-                        setStoreDataLimitValues(copyofStoreDataLimitValue);
-                        setInvalidMaxTemplateLimit(false);
-                      } else if (e.target.value === "") {
-                        // setIsStoreDataLimitChanged(false);
-                        copyofStoreDataLimitValue.max_templates_per_vendor =
-                          e.target.value;
-                        setStoreDataLimitValues(copyofStoreDataLimitValue);
-                        setInvalidMaxTemplateLimit(false)
-                      }
-                    }}
-                  />
-                </Content>
-                <Content className="mt-2">
-                  <label className="text-[13px] mb-2 ml-1 input-label-color">
-                    {t("labels:default_vendor_commission")}
-                  </label>
-                  <InputNumber
-                    disabled={hideActionButton}
-                    className="w-[100%]"
-                    value={storeDataLimitValues.default_store_commission}
-                    min={0}
-                    max={100}
-                    step="0.1"
-                    formatter={(value) => `${value}%`}
-                    parser={(value) => value.replace("%", "")}
-                    onChange={(value) => {
-                      let copyofStoreDataLimitValue = { ...storeDataLimitValues };
-                      copyofStoreDataLimitValue.default_store_commission = value;
-                      setStoreDataLimitValues(copyofStoreDataLimitValue);
-                      setIsStoreDataLimitChanged(true);
-                    }}
-                  />
-                </Content>
-              </Col>
-            </Row> */}
-                {/* <Content className="mt-4">
-              {hideActionButton ? "" :
-              <Row className="gap-2">
-                <Col>
-                  <Button
-                    className={
-                      isStoreDataLimitChanged
-                        ? "app-btn-primary"
-                        : "!opacity-75"
-                    }
-                    disabled={!isStoreDataLimitChanged}
-                    onClick={() => {
-                      storeLimitValidation();
-                    }}
-                  >
-                    {t("labels:save")}
-                  </Button>
-                </Col>
-                <Col className="">
-                  <Button
-                    // className=" app-btn-secondary"
-                    className={
-                      isStoreDataLimitChanged
-                        ? "app-btn-secondary"
-                        : "!opacity-75"
-                    }
-                    disabled={!isStoreDataLimitChanged}
-                    onClick={() => {
-                      navigate("/dashboard/store");
-                    }}
-                  >
-                    {t("labels:discard")}
-                  </Button>
-                </Col>
-              </Row>}
-            </Content> */}
-                {/* </Content> */}
-                {/* </Spin> */}
                 {isStoreLimitDataLoading ? (
                     <Content className='bg-white p-3 !rounded-md mt-[2.0rem]'>
                         <Skeleton
@@ -2648,7 +1686,6 @@ const StoreSettings = () => {
                             paragraph={{
                                 rows: 6,
                             }}></Skeleton>
-                        {/* <SkeletonComponent Layout="layout1" /> */}
                     </Content>
                 ) : (
                     <Spin tip='Please wait!' size='large' spinning={isStoreDataLimitSaving}>
@@ -2678,13 +1715,12 @@ const StoreSettings = () => {
                                         </Col>
                                         <Col className=''>
                                             <Button
-                                                // className=" app-btn-secondary"
                                                 className={
                                                     isStoreDataLimitChanged ? 'app-btn-secondary' : '!opacity-75'
                                                 }
                                                 disabled={!isStoreDataLimitChanged}
                                                 onClick={() => {
-                                                    navigate('/dashboard/store')
+                                                    navigate('/dashboard/store?m_t=1')
                                                 }}>
                                                 {t('labels:discard')}
                                             </Button>
@@ -2809,7 +1845,7 @@ const StoreSettings = () => {
                                                 className=' app-btn-secondary'
                                                 disabled={!currencyOnChange}
                                                 onClick={() => {
-                                                    navigate('/dashboard/store')
+                                                    navigate('/dashboard/store?m_t=1')
                                                 }}>
                                                 {t('labels:discard')}
                                             </Button>
@@ -2818,171 +1854,6 @@ const StoreSettings = () => {
                                 </div>
                             </Content>
                         </Spin>
-                        {/* {" "} */}
-                        {/* <Row
-              //   /*className="mt-2"
-              //   gutter={{
-              //     xs: 8,
-              //     sm: 16,
-              //     md: 24,
-              //     lg: 32,
-              //   }}
-              // >
-              //   <Col span={4} className="gutter-row">
-              //     <label className="text-[13px] mb-2 ml-1 input-label-color">
-              //       {t("labels:symbol")}
-              //     </label>
-              //     <span className="mandatory-symbol-color text-sm !text-center ml-1">
-              //       *
-              //     </span>
-              //     <Input
-              //       placeholder={t("placeholders:enter_currency_symbol")}
-              //       className={`${
-              //         inValidCurrencySymbol
-              //           ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
-              //           : ""
-              //       }`}
-              //       // defaultValue={storeSettingData.store_currency["symbol"]}
-              //       value={currencySymbol}
-              //       maxLength={3}
-              //       onChange={(e) => {
-              //         const regex = /^[A-Za-z $£€¥₹]*$/;
-              //         const inputValue = e.target.value.replace(/\!/g, "");
-              //         if (regex.test(inputValue) || inputValue === "") {
-              //           setCurrencySymbol(inputValue);
-              //           setOnChangeValues(true);
-              //           setInValidCurrencySymbol(false);
-              //           let temp = { ...copyImageOfStoreSettingsCurrency };
-              //           temp["symbol"] = inputValue;
-              //           setCopyImageOfStoreSettingsCurrency(temp);
-              //         } else {
-              //           setInValidCurrencySymbol(true);
-              //         }
-              //       }}
-              //       onBlur={() => {
-              //         const trimmed = currencySymbol.trim();
-              //         const trimmedUpdate = trimmed.replace(/\s+/g, " ");
-              //         setCurrencySymbol(trimmedUpdate);
-              //       }}
-              //     />
-              //   </Col>
-              //   <Col span={4} className="gutter-row">
-              //     <label className="text-[13px] mb-2 ml-1 input-label-color">
-              //       {t("labels:iso_code")}
-              //     </label>
-              //     <span className="mandatory-symbol-color text-sm ml-1 !text-center">
-              //       *
-              //     </span>
-              //     <Input
-              //       placeholder={t("placeholders:enter_iso_code")}
-              //       value={currencyIsoCode}
-              //       maxLength={3}
-              //       onChange={(e) => {
-              //         const regex = /^[A-Za-z]*$/;
-              //         if (regex.test(e.target.value)) {
-              //           setCurrencyIsoCode(e.target.value);
-              //           setInValidCurrencyIsoCode(false);
-              //           setOnChangeValues(true);
-              //           let temp = { ...copyImageOfStoreSettingsCurrency };
-              //           temp["iso_code"] = e.target.value;
-              //           setCopyImageOfStoreSettingsCurrency(temp);
-              //         } else {
-              //           // setCurrencyIsoCode("");
-              //           setInValidCurrencyIsoCode(true);
-              //         }
-              //       }}
-              //       onBlur={() => {
-              //         const trimmed = currencyIsoCode.trim();
-              //         const trimmedUpdate = trimmed.replace(/\s+/g, " ");
-              //         setCurrencyIsoCode(trimmedUpdate);
-              //       }}
-              //       className={`${
-              //         inValidCurrencyIsoCode
-              //           ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
-              //           : ""
-              //       }`}
-              //     />
-              //   </Col>
-              //   <Col span={4} className="gutter-row">
-              //     <label className="text-[13px] mb-2 ml-1 input-label-color">
-              //       {t("labels:fractional_unit")}
-              //     </label>
-              //     <span className="mandatory-symbol-color text-sm ml-1 !text-center">
-              //       *
-              //     </span>
-              //     <Input
-              //       placeholder={t("placeholders:enter_fractional_unit")}
-              //       value={fractionalUnit}
-              //       maxLength={10}
-              //       onChange={(e) => {
-              //         const regex = /^[A-Za-z]*$/;
-              //         if (regex.test(e.target.value)) {
-              //           setFractionalUnit(e.target.value);
-              //           setInValidFractionalUnit(false);
-              //           setOnChangeValues(true);
-              //           let temp = { ...copyImageOfStoreSettingsCurrency };
-              //           temp["fractional_unit"] = e.target.value;
-              //           setCopyImageOfStoreSettingsCurrency(temp);
-              //         } else {
-              //           setInValidFractionalUnit(true);
-              //         }
-              //       }}
-              //       onBlur={() => {
-              //         const trimmed = fractionalUnit.trim();
-              //         const trimmedUpdate = trimmed.replace(/\s+/g, " ");
-              //         setFractionalUnit(trimmedUpdate);
-              //       }}
-              //       className={`${
-              //         inValidFractionalUnit
-              //           ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
-              //           : ""
-              //       }`}
-              //     />
-              //   </Col>
-              //   <Col span={4} className="gutter-row">
-              //     {" "}
-              //     <label className="text-[13px] mb-2 ml-1 input-label-color">
-              //       {t("labels:number_to_basic")}
-              //     </label>
-              //     <span className="mandatory-symbol-color text-sm !text-center ml-1">
-              //       *
-              //     </span>
-              //     <InputNumber
-              //       placeholder={t("placeholders:enter_number_to_basic")}
-              //       value={numberToBasic}
-              //       // type="number"
-              //       min={1}
-              //       minLength={1}
-              //       maxLength={99999}
-              //       max={99999}
-              //       onChange={(e) => {
-              //         // setNumberToBasic(e);
-              //         if (e !== "" && e !== null && e !== undefined) {
-              //           setNumberToBasic(e);
-              //           setOnChangeValues(true);
-              //         } else {
-              //           setNumberToBasic(e);
-              //           // setInValidNumberToBasic(true);
-              //         }
-              //         setInValidNumberToBasic(false);
-              //         let temp = { ...copyImageOfStoreSettingsCurrency };
-              //         temp["number_to_basic"] = e;
-              //         setCopyImageOfStoreSettingsCurrency(temp);
-              //       }}
-              //       onBlur={() => {
-              //         const trimmed = numberToBasic.trim();
-              //         const trimmedUpdate = trimmed.replace(/\s+/g, " ");
-              //         setNumberToBasic(trimmedUpdate);
-              //       }}
-              //       onKeyDown={numberToBasicLimit}
-              //       className={`${
-              //         inValidNumberToBasic
-              //           ? "border-red-400  border-solid focus:border-red-400 hover:border-red-400"
-              //           : ""
-              //       }`}
-              //     />
-              //   </Col>
-              // </Row> */}
                         <Spin tip='Please wait!' size='large' spinning={isLoading}>
                             <Content className='bg-white mt-3 p-3 rounded-lg'>
                                 <Content className=''>
@@ -3053,7 +1924,6 @@ const StoreSettings = () => {
                                                             setPageBackgroundColor(e.target.value)
                                                             setOnChangeValues(true)
                                                         }
-                                                        // setPageBackgroundColor(e.target.value);
                                                         let temp = { ...copyImageOfStoreSettingsPageTheme }
                                                         temp['bg_color'] = e.target.value
                                                         setCopyImageOfStoreSettingsPageTheme(temp)
@@ -3086,7 +1956,6 @@ const StoreSettings = () => {
                                                                 setPageBackgroundColor(numericValue)
                                                                 setOnChangeValues(true)
                                                             }
-                                                            // setPageBackgroundColor(e.target.value);
                                                             let temp = {
                                                                 ...copyImageOfStoreSettingsPageTheme,
                                                             }
@@ -3138,7 +2007,6 @@ const StoreSettings = () => {
                                                             setForeGroundColor(e.target.value)
                                                             setOnChangeValues(true)
                                                         }
-                                                        // setForeGroundColor(e.target.value);
                                                         let temp = { ...copyImageOfStoreSettingsPageTheme }
                                                         temp['fg_color'] = e.target.value
                                                         setCopyImageOfStoreSettingsPageTheme(temp)
@@ -3171,7 +2039,6 @@ const StoreSettings = () => {
                                                                 setForeGroundColor(numericValue)
                                                                 setOnChangeValues(true)
                                                             }
-                                                            // setForeGroundColor(e.target.value);
                                                             let temp = {
                                                                 ...copyImageOfStoreSettingsPageTheme,
                                                             }
@@ -3226,7 +2093,6 @@ const StoreSettings = () => {
                                                             setButtonPrimaryBackgroundColor(e.target.value)
                                                             setOnChangeValues(true)
                                                         }
-                                                        // setButtonPrimaryBackgroundColor(e.target.value);
                                                         let temp = { ...copyImageOfStoreSettingsPageTheme }
                                                         temp['btn_primary_bg_color'] = e.target.value
                                                         setCopyImageOfStoreSettingsPageTheme(temp)
@@ -3258,7 +2124,6 @@ const StoreSettings = () => {
                                                                 setButtonPrimaryBackgroundColor(numericValue)
                                                                 setOnChangeValues(true)
                                                             }
-                                                            // setButtonPrimaryBackgroundColor(e.target.value);
                                                             let temp = {
                                                                 ...copyImageOfStoreSettingsPageTheme,
                                                             }
@@ -3313,7 +2178,6 @@ const StoreSettings = () => {
                                                             setButtonSecondaryBackgroundColor(e.target.value)
                                                             setOnChangeValues(true)
                                                         }
-                                                        // setButtonSecondaryBackgroundColor(e.target.value);
                                                         let temp = { ...copyImageOfStoreSettingsPageTheme }
                                                         temp['btn_secondary_bg_color'] = e.target.value
                                                         setCopyImageOfStoreSettingsPageTheme(temp)
@@ -3345,8 +2209,6 @@ const StoreSettings = () => {
                                                                 setButtonSecondaryBackgroundColor(numericValue)
                                                                 setOnChangeValues(true)
                                                             }
-
-                                                            // setButtonSecondaryBackgroundColor(e.target.value);
                                                             let temp = {
                                                                 ...copyImageOfStoreSettingsPageTheme,
                                                             }
@@ -3401,7 +2263,6 @@ const StoreSettings = () => {
                                                             setButtonTeritaryBackgroundColor(e.target.value)
                                                             setOnChangeValues(true)
                                                         }
-                                                        // setButtonTeritaryBackgroundColor(e.target.value);
                                                         let temp = { ...copyImageOfStoreSettingsPageTheme }
                                                         temp['btn_tertiary_bg_color'] = e.target.value
                                                         setCopyImageOfStoreSettingsPageTheme(temp)
@@ -3433,7 +2294,6 @@ const StoreSettings = () => {
                                                                 setButtonTeritaryBackgroundColor(numericValue)
                                                                 setOnChangeValues(true)
                                                             }
-                                                            // setButtonTeritaryBackgroundColor(e.target.value);
                                                             let temp = {
                                                                 ...copyImageOfStoreSettingsPageTheme,
                                                             }
@@ -3490,7 +2350,6 @@ const StoreSettings = () => {
                                                             setButtonPrimaryForegroundColor(e.target.value)
                                                             setOnChangeValues(true)
                                                         }
-                                                        // setButtonPrimaryForegroundColor(e.target.value);
                                                         let temp = { ...copyImageOfStoreSettingsPageTheme }
                                                         temp['btn_primary_fg_color'] = e.target.value
                                                         setCopyImageOfStoreSettingsPageTheme(temp)
@@ -3522,7 +2381,6 @@ const StoreSettings = () => {
                                                                 setButtonPrimaryForegroundColor(numericValue)
                                                                 setOnChangeValues(true)
                                                             }
-                                                            // setButtonPrimaryForegroundColor(e.target.value);
                                                             let temp = {
                                                                 ...copyImageOfStoreSettingsPageTheme,
                                                             }
@@ -3577,7 +2435,6 @@ const StoreSettings = () => {
                                                             setButtonSecondaryForegroundColor(e.target.value)
                                                             setOnChangeValues(true)
                                                         }
-                                                        // setButtonSecondaryForegroundColor(e.target.value);
                                                         let temp = { ...copyImageOfStoreSettingsPageTheme }
                                                         temp['btn_secondary_fg_color'] = e.target.value
                                                         setCopyImageOfStoreSettingsPageTheme(temp)
@@ -3609,7 +2466,6 @@ const StoreSettings = () => {
                                                                 setButtonSecondaryForegroundColor(numericValue)
                                                                 setOnChangeValues(true)
                                                             }
-                                                            // setButtonSecondaryForegroundColor(e.target.value);
                                                             let temp = {
                                                                 ...copyImageOfStoreSettingsPageTheme,
                                                             }
@@ -3664,7 +2520,6 @@ const StoreSettings = () => {
                                                             setButtonTeritaryForegroundColor(e.target.value)
                                                             setOnChangeValues(true)
                                                         }
-                                                        // setButtonTeritaryForegroundColor(e.target.value);
                                                         let temp = { ...copyImageOfStoreSettingsPageTheme }
                                                         temp['btn_tertiary_fg_color'] = e.target.value
                                                         setCopyImageOfStoreSettingsPageTheme(temp)
@@ -3696,7 +2551,6 @@ const StoreSettings = () => {
                                                                 setButtonTeritaryForegroundColor(numericValue)
                                                                 setOnChangeValues(true)
                                                             }
-                                                            // setButtonTeritaryForegroundColor(e.target.value);
                                                             let temp = {
                                                                 ...copyImageOfStoreSettingsPageTheme,
                                                             }
@@ -3758,7 +2612,6 @@ const StoreSettings = () => {
                                                             setHeaderBackgroundColor(e.target.value)
                                                             setOnChangeValues(true)
                                                         }
-                                                        // setHeaderBackgroundColor(e.target.value);
                                                         let temp = { ...copyImageOfStoreHeaderSetting }
                                                         temp['bg_color'] = e.target.value
                                                         setCopyImageOfStoreHeaderSetting(temp)
@@ -3790,7 +2643,6 @@ const StoreSettings = () => {
                                                                 setHeaderBackgroundColor(numericValue)
                                                                 setOnChangeValues(true)
                                                             }
-                                                            // setHeaderBackgroundColor(e.target.value);
                                                             let temp = { ...copyImageOfStoreHeaderSetting }
                                                             temp['bg_color'] = numericValue
                                                             setCopyImageOfStoreHeaderSetting(temp)
@@ -3873,7 +2725,6 @@ const StoreSettings = () => {
                                                                 setHeaderForegroundColor(numericValue)
                                                                 setOnChangeValues(true)
                                                             }
-                                                            // setHeaderForegroundColor(e.target.value);
                                                             let temp = { ...copyImageOfStoreHeaderSetting }
                                                             temp['fg_color'] = numericValue
                                                             setCopyImageOfStoreHeaderSetting(temp)
@@ -3931,7 +2782,6 @@ const StoreSettings = () => {
                                                             setFooterBackgroundColor(e.target.value)
                                                             setOnChangeValues(true)
                                                         }
-                                                        // setFooterBackgroundColor(e.target.value);
                                                         let temp = { ...copyImageOfStoreFooterSetting }
                                                         temp['bg_color'] = e.target.value
                                                         setCopyImageOfStoreFooterSetting(temp)
@@ -4096,7 +2946,7 @@ const StoreSettings = () => {
                                                     }
                                                     disabled={!onChangeValues}
                                                     onClick={() => {
-                                                        navigate('/dashboard/store')
+                                                        navigate('/dashboard/store?m_t=1')
                                                     }}>
                                                     {t('labels:discard')}
                                                 </Button>

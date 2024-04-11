@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react'
-import { Nav, Collapse, NavbarBrand, Navbar } from 'reactstrap'
-import { Button, Layout, Menu, Typography } from 'antd'
+import React from 'react'
+import { Button, Layout } from 'antd'
 import { marketPlaceLogo } from '../../constants/media'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import util from '../../util/common'
 import { useTranslation } from 'react-i18next'
-const { Header, Content, Sider } = Layout
-const { Text } = Typography
+const { Header, Content } = Layout
 const Preview = ({
     headerBackgroundColor,
     headerForegroundColor,
@@ -32,28 +30,24 @@ const Preview = ({
                         className='!h-16 flex'
                         style={{
                             backgroundColor: headerBackgroundColor,
-                            // color: headerForegroundColor,
                         }}
                         mode='horizontal'>
                         <div className='flex justify-start !w-[39%] p-2'>
                             {getImageData && getImageData.length > 0 ? (
                                 absoluteStoreImageInfo && absoluteStoreImageInfo.type === 'store_logo' ? (
-                                    <img className='' src={absoluteStoreImageInfo && absoluteStoreImageInfo.value} />
+                                    <img
+                                        className=''
+                                        src={absoluteStoreImageInfo && absoluteStoreImageInfo.value}
+                                        alt='absoluteStoreImageInfo && absoluteStoreImageInfo.value'
+                                    />
                                 ) : (
-                                    <img className=' ' src={marketPlaceLogo} />
+                                    <img className=' ' src={marketPlaceLogo} alt='marketPlaceLogo' />
                                 )
                             ) : (
-                                <img className='' src={marketPlaceLogo} />
+                                <img className='' src={marketPlaceLogo} alt='marketPlaceLogo' />
                             )}
                         </div>
-                        <div
-                            // className={
-                            //   util.getSelectedLanguageDirection()?.toUpperCase() === "RTL"
-                            //     ? "text-lg !flex !justify-items-center pl-44"
-                            //     : "text-lg !flex !justify-items-center pr-44"
-                            // }
-                            className='!flex !justify-center text-lg !mt-4'
-                            style={{ color: headerForegroundColor }}>
+                        <div className='!flex !justify-center text-lg !mt-4' style={{ color: headerForegroundColor }}>
                             {t('labels:header_content_of_the_page')}
                         </div>
                     </Content>

@@ -6,10 +6,8 @@ import { CheckCircleFilled } from '@ant-design/icons'
 import HeaderForTitle from '../../components/header/HeaderForTitle'
 import { useTranslation } from 'react-i18next'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
-import { crossIcon } from '../../constants/media'
 import StoreModal from '../../components/storeModal/StoreModal'
 import MarketplaceToaster from '../../util/marketplaceToaster'
-import util from '../../util/common'
 const { Content } = Layout
 const { Title } = Typography
 
@@ -39,7 +37,6 @@ const EditCurrency = () => {
         no_of_decimal: 1,
         is_default: false,
     })
-    const [responseCurrencyData, setResponseCurrencyData] = useState([])
     const [defaultLoader, setDefaultLoader] = useState(false)
     //!get call of list language
     const findByPageCurrencyData = () => {
@@ -53,7 +50,6 @@ const EditCurrency = () => {
 
                 const filteredCurrencyData =
                     currencyData && currencyData.length > 0 && currencyData.filter((ele) => ele.id === parseInt(cId))
-                setResponseCurrencyData(filteredCurrencyData)
                 let copyOfCurrencyDetails = { ...currencyDetails }
                 copyOfCurrencyDetails.currency_name = filteredCurrencyData[0].currency_name
                 copyOfCurrencyDetails.symbol = filteredCurrencyData[0].symbol
@@ -119,7 +115,7 @@ const EditCurrency = () => {
                 copyOfCurrencyDetails.no_of_decimal = response && response.data.response_body.no_of_decimal
                 setCurrencyDetails(copyOfCurrencyDetails)
                 setDefaultChecked(response && response.data.response_body.is_default)
-                closeCurrencyDefaultWaringModal(false)
+                closeCurrencyDefaultWaringModal()
                 setDefaultLoader(false)
             })
             .catch((error) => {
@@ -127,7 +123,7 @@ const EditCurrency = () => {
                 setIsLoading(false)
                 setDefaultLoader(false)
                 setOnChangeDisable(false)
-                closeCurrencyDefaultWaringModal(false)
+                closeCurrencyDefaultWaringModal()
                 MarketplaceToaster.showToast(error.response)
             })
     }
@@ -158,22 +154,6 @@ const EditCurrency = () => {
     const closeCurrencyDefaultWaringModal = () => {
         setWarningCurrencyDefaultModal(false)
     }
-
-    // const validationForCurrencyPutCall = () => {
-    //   console.log(
-    //     "responseCurrencyData",
-    //     responseCurrencyData[0].no_of_decimal === currencyDetails.no_of_decimal
-    //   );
-    //   if (
-    //     responseCurrencyData[0].no_of_decimal === currencyDetails.no_of_decimal
-    //   ) {
-    //     MarketplaceToaster.showToast(
-    //       util.getToastObject(`${t("messages:no_changes_were_detected")}`, "info")
-    //     );
-    //   } else {
-    //     makeAsDefaultCurrency();
-    //   }
-    // };
 
     useEffect(() => {
         findByPageCurrencyData()
@@ -206,24 +186,6 @@ const EditCurrency = () => {
                                     <Typography> {t('labels:make_currency_as_default')}</Typography>
                                 </Space>
                             </Content>
-                            {/* This content is related to currency remove */}
-                            {/* <Content>
-                {/* {!isMakeAsDefault ? ( 
-              <Button
-                className="app-btn-danger  flex gap-2 !justify-items-center !items-center"
-                onClick={() => {
-                  openDeleteModal();
-                }}
-              >
-                <img
-                  src={crossIcon}
-                  alt="plusIconWithAddLanguage"
-                  className=""
-                />
-                <div className="">{t("labels:delete_currency")}</div>
-              </Button>
-               ) : null}
-              </Content>  */}
                         </Content>
                     }
                     backNavigationPath={`/dashboard/currency`}

@@ -1,41 +1,28 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import Cookies from 'js-cookie'
-import { Layout, Tooltip, Image, Dropdown, Avatar, Typography, Tag, Button, Select } from 'antd'
-import { TranslationOutlined, DownOutlined, UserOutlined, LogoutOutlined, LoginOutlined } from '@ant-design/icons'
+import { Layout, Tooltip, Dropdown, Typography, Tag, Button, Select } from 'antd'
+import {DownOutlined, UserOutlined, LogoutOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import './header2.css'
 
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
 //! Import user defined services
-import { fnUserLoggedInInfo } from '../../services/redux/actions/ActionsUser'
 import {
     fnSelectedLanguage,
     fnStoreLanguage,
     fnDefaultLanguage,
 } from '../../services/redux/actions/ActionStoreLanguage'
 import { fnUserProfileInfo } from '../../services/redux/actions/ActionUserProfile'
-import {
-    BrandLogo,
-    AdminIcon,
-    DmBrandLogo,
-    marketPlaceLogo,
-    ProfileIcon,
-    menuIcon,
-    BackBurgerIcon,
-    Collapse,
-} from '../../constants/media'
+import { marketPlaceLogo, BackBurgerIcon, Collapse } from '../../constants/media'
 
 import util from '../../util/common'
 import { useAuth } from 'react-oidc-context'
 
 const { Header, Content } = Layout
-const { Text, Paragraph } = Typography
+const {  Paragraph } = Typography
 const { Option } = Select
 
-const umsBaseUrl = process.env.REACT_APP_USM_BASE_URL
-const logoutAPI = process.env.REACT_APP_LOGOUT
 const multilingualFunctionalityEnabled = process.env.REACT_APP_IS_MULTILINGUAL_ENABLED
 const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API
 const storeUsersAPI = process.env.REACT_APP_USERS_API
@@ -65,17 +52,6 @@ const Header2 = ({ collapsed, setCollapsed }) => {
             const languageItem = {}
             languageItem['value'] = element.language_code
             languageItem['label'] = element.language
-            // (
-            //   <Tooltip
-            //     title={element.language}
-            //     overlayStyle={{ position: "fixed" }}
-            //     placement="left"
-            //   >
-            //     <div className="!font-normal max-w-[100px] text-ellipsis overflow-hidden">
-            //       {element.language}
-            //     </div>
-            //   </Tooltip>
-            // );
             languageItems.push(languageItem)
         })
     }
@@ -107,8 +83,6 @@ const Header2 = ({ collapsed, setCollapsed }) => {
     }
 
     const handleLanguageClick = (value) => {
-        // Cookies.set("mpaplng", e.key);
-        // localStorage.setItem("mpaplng", e.key);
         util.setUserSelectedLngCode(value)
         setStoreSelectedLngCode(value)
         dispatch(fnSelectedLanguage(storeLanguages.find((item) => item.language_code === value)))
@@ -129,8 +103,6 @@ const Header2 = ({ collapsed, setCollapsed }) => {
                     dispatch(fnSelectedLanguage(userSelectedLanguage))
                     document.body.style.direction =
                         userSelectedLanguage && userSelectedLanguage.writing_script_direction?.toLowerCase()
-                    // Cookies.set("mpaplng", defaultLanguage.language_code);
-                    // localStorage.setItem("mpaplng", defaultLanguage.language_code);
                 }
                 if (util.getUserSelectedLngCode()) {
                     let selectedLanguagePresentOrNot =
@@ -209,7 +181,7 @@ const Header2 = ({ collapsed, setCollapsed }) => {
                             type='text'
                             icon={
                                 collapsed ? (
-                                    <img src={Collapse} />
+                                    <img src={Collapse} alt='Collapse' />
                                 ) : (
                                     <img
                                         className={`  ${
@@ -240,6 +212,7 @@ const Header2 = ({ collapsed, setCollapsed }) => {
                         <a href='/dashboard'>
                             <img
                                 //width={180}
+                                alt='marketPlaceLogo'
                                 preview={false}
                                 src={marketPlaceLogo}
                                 className='!h-[32px]'
@@ -268,10 +241,6 @@ const Header2 = ({ collapsed, setCollapsed }) => {
                                 className='cursor-pointer header-text-color'
                                 overlayStyle={{ position: 'fixed', zIndex: 20 }}>
                                 <Paragraph className='inline-block !mb-0 relative'>
-                                    {/* <Avatar
-                    src={AdminIcon}
-                    className="!h-8 absolute bottom-[-2px] left-[-30px]"
-                  /> */}
                                     <Text className='text-lg text-slate-600 pr-1'>
                                         {userName && userName.length > 0
                                             ? userName.slice(0, 1).toUpperCase() + userName.slice(1)
@@ -289,32 +258,8 @@ const Header2 = ({ collapsed, setCollapsed }) => {
                         {multilingualFunctionalityEnabled === 'true' &&
                         auth.isAuthenticated &&
                         languageItems &&
-                        languageItems.length > 0 ? (
-                            // <Dropdown
-                            //   menu={{
-                            //     items: languageItems,
-                            //     selectable: true,
-                            //     defaultSelectedKeys: [storeSelectedLngCode],
-                            //     onClick: handleLanguageClick,
-                            //     style: { maxHeight: 200, overflowY: "auto" },
-                            //   }}
-                            //   trigger={["click"]}
-                            //   arrow
-                            //   className="header-text-color cursor-pointer"
-                            //   overlayStyle={{
-                            //     position: "fixed",
-                            //     zIndex: 20,
-                            //   }}
-                            // >
-                            //   <Paragraph className="!mb-0 ">
-                            //     <TranslationOutlined
-                            //       className="header-text-color"
-                            //       style={{ fontSize: "24px" }}
-                            //     />
-                            //   </Paragraph>
-                            // </Dropdown>
+                        languageItems.length > 0 ? (                     
                             <Select
-                                // options={languageItems}
                                 bordered={false}
                                 placeholder={t('placeholders:select_language')}
                                 defaultValue={storeSelectedLngCode ? storeSelectedLngCode : defaultLanguageCode}
@@ -327,7 +272,7 @@ const Header2 = ({ collapsed, setCollapsed }) => {
                                 disabled={languageItems && languageItems.length === 1 ? true : false}
                                 className='custom-select'>
                                 {languageItems &&
-                                    languageItems.length &&
+                                    languageItems.length > 0 &&
                                     languageItems.map((option) => (
                                         <Option key={option.value} value={option.value}>
                                             <Tooltip

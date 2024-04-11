@@ -1,4 +1,4 @@
-import { SearchOutlined, UserOutlined } from '@ant-design/icons'
+import { UserOutlined } from '@ant-design/icons'
 import {
     Button,
     Col,
@@ -8,7 +8,6 @@ import {
     Layout,
     Row,
     Skeleton,
-    Space,
     Spin,
     Tooltip,
     Typography,
@@ -19,18 +18,15 @@ import {
     Table,
     Badge,
 } from 'antd'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import validator from 'validator'
-import { MdInfo, MdStore, MdBusiness, MdDomainDisabled, MdSettings, MdPlusOne } from 'react-icons/md'
-import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
-import { toast } from 'react-toastify'
+import { MdInfo, MdSettings } from 'react-icons/md'
+import { Link, useLocation, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { DeleteIcon, saveStoreConfirmationImage } from '../../constants/media'
+import { saveStoreConfirmationImage } from '../../constants/media'
 import { InfoCircleTwoTone } from '@ant-design/icons'
 //! Import user defined components
-import Highlighter from 'react-highlight-words'
 import DmPagination from '../../components/DmPagination/DmPagination'
-import DmTabAntDesign from '../../components/DmTabAntDesign/DmTabAntDesign'
 import DynamicTable from '../../components/DynamicTable/DynamicTable'
 import HeaderForTitle from '../../components/header/HeaderForTitle'
 import StoreModal from '../../components/storeModal/StoreModal'
@@ -49,12 +45,8 @@ const { Title, Text } = Typography
 //! Get all required details from .env file
 const storeAPI = process.env.REACT_APP_STORE_API
 const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE)
-const titleMinLength = process.env.REACT_APP_TITLE_MIN_LENGTH
-const titleMaxLength = process.env.REACT_APP_TITLE_MAX_LENGTH
 const emailMinLength = process.env.REACT_APP_EMAIL_MIN_LENGTH
 const emailMaxLength = process.env.REACT_APP_EMAIL_MAX_LENGTH
-const passwordMinLength = process.env.REACT_APP_PASSWORD_MIN_LENGTH
-const passwordMaxLength = process.env.REACT_APP_PASSWORD_MAX_LENGTH
 const storeNameMinLength = process.env.REACT_APP_STORE_NAME_MIN_LENGTH
 const storeNameMaxLength = process.env.REACT_APP_STORE_NAME_MAX_LENGTH
 const userNameMinLength = process.env.REACT_APP_USERNAME_MIN_LENGTH
@@ -71,11 +63,7 @@ const Stores = () => {
     const { t } = useTranslation()
     usePageTitle(t('labels:stores'))
     const instance = axios.create()
-
-    const params = useParams()
-    const navigate = useNavigate()
     const search = useLocation().search
-    // const store_id = new URLSearchParams(search).get("store_id");
     const m_tab_id = new URLSearchParams(search).get('m_t')
     const tab = new URLSearchParams(search).get('tab')
     const [searchParams, setSearchParams] = useSearchParams()
@@ -86,50 +74,32 @@ const Stores = () => {
     const [storeApiData, setStoreApiData] = useState([])
     const [name, setName] = useState('')
     const [inValidName, setInValidName] = useState('')
-    const [editName, setEditName] = useState('')
-    const [inValidEditName, setInValidEditName] = useState('')
     const [drawerAction, setDrawerAction] = useState()
     const [postData, setPostData] = useState(null)
     const [selectedTabTableContent, setSelectedTabTableContent] = useState([])
-    const [serverStoreName, setServerStoreName] = useState()
-    const [storeEditId, setStoreEditId] = useState()
-    const [isPaginationDataLoaded, setIsPaginationDataLoaded] = useState(true)
-    const [errorMessage, setErrorMessage] = useState()
     const [storeEmail, setStoreEmail] = useState('')
     const [storeUserName, setStoreUserName] = useState('')
-    const [storePassword, setStorePassword] = useState('')
-    const [storeEditEmail, setStoreEditEmail] = useState('')
-    const [storeEditUserName, setStoreEditUserName] = useState('')
-    const [storeEditPassword, setStoreEditPassword] = useState('')
     const [inValidEmail, setInValidEmail] = useState(false)
     const [inValidUserName, setInValidUserName] = useState(false)
-    const [inValidPassword, setInValidPassword] = useState(false)
     const [isDeleteStoreModalOpen, setIsDeleteStoreModalOpen] = useState(false)
     const [deleteStoreID, setDeleteStoreID] = useState('')
     const [activeCount, setActiveCount] = useState('')
-    const [showStoreErrorMessage, setShowStoreErrorMessage] = useState(false)
     const [onChangeValues, setOnChangeValues] = useState(false)
-    const [onChangeEditValues, setOnChangeEditValues] = useState(false)
     const [currentTab, setCurrentTab] = useState(1)
     const [storeLimitValues, setStoreLimitValues] = useState()
     const [duplicateStoreLimitValues, setDuplicateStoreLimitValues] = useState([])
     const [analysisCount, setAnalysisCount] = useState()
     const [countForStore, setCountForStore] = useState()
-    const [searchText, setSearchText] = useState('')
-    const [searchedColumn, setSearchedColumn] = useState('')
     const [isStoreDeleting, setIsStoreDeleting] = useState(false)
     const [superAdmin, setSuperAdmin] = useState(false)
     const [hideAddStoreButton, setHideAddStoreButton] = useState(false)
     const [saveStoreModalOpen, setSaveStoreModalOpen] = useState(false)
     const [storeStatusLoading, setStoreStatusLoading] = useState(false)
-    const [storeStatusId, setStoreStatusId] = useState()
     const [storeId, setStoreId] = useState()
     const [statusInprogressData, setStatusInprogressData] = useState([])
-    const [radioValue, setRadioValue] = useState(1)
     const [value, setValue] = useState(tab ? tab : 0)
     const [previousStatus, setPreviousStatus] = useState(null)
     const [errorField, setErrorField] = useState('')
-    const searchInput = useRef(null)
     const auth = useAuth()
     const permissionValue = util.getPermissionData() || []
     let keyCLoak = sessionStorage.getItem('keycloakData')
@@ -162,14 +132,8 @@ const Stores = () => {
             })
     }
 
-    const handleSearch = (selectedKeys, confirm, dataIndex) => {
-        confirm()
-        setSearchText(selectedKeys[0])
-        setSearchedColumn(dataIndex)
-    }
     const handleRadioChange = (e) => {
         setValue(e.target.value)
-        setRadioValue(e.target.value)
         setSearchParams({
             m_t: m_tab_id,
             tab: e.target.value,
@@ -179,148 +143,22 @@ const Stores = () => {
         console.log('object status', e.target.value)
     }
 
-    const onChange = (e) => {
-        console.log('radio checked', e.target.value)
-        setValue(e.target.value)
-        setRadioValue(e.target.value)
-    }
-
-    useEffect(() => {
-        setRadioValue(tab)
-    }, [])
-
     useEffect(() => {
         setErrorField('')
     }, [currentTab])
 
     useEffect(() => {
-        // console.log("location..", window.sessionStorage.getItem("currentStoretab"))
         if (window.sessionStorage.getItem('currentStoretab') == 1) {
             setCurrentTab(1)
         }
     }, [window.sessionStorage.getItem('currentStoretab')])
 
-    const storeTabData = [
-        {
-            tabId: 0,
-            tabIcon: <MdStore className='!text-2xl !text-[#FCC32A] ' />,
-            tabTitle: (
-                <div className='flex gap-2 '>
-                    <div className=''>{t('labels:all')}</div>
-                    {/* <div className="rounded-full bg-[#E2F1FC] !px-2  flex justify-center">
-            {activeCount && activeCount.totalStores}
-          </div>{" "} */}
-                </div>
-            ),
-        },
-        {
-            tabId: 1,
-            tabIcon: <MdBusiness className='!text-2xl ' />,
-            tabTitle: (
-                <div
-                    className={
-                        util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'flex gap-2 mr-5' : 'flex gap-2'
-                    }>
-                    <div className=''>{t('labels:active')}</div>
-                    {/* <div className="rounded-full bg-[#E2F1FC] !px-2 flex justify-center ">
-            {activeCount && activeCount.activeStores}
-          </div>{" "} */}
-                </div>
-            ),
-        },
-        {
-            tabId: 2,
-            tabIcon: <MdDomainDisabled className='!text-2xl ' />,
-            tabTitle: (
-                <div className='flex gap-2'>
-                    <div className=''>{t('labels:inactive')}</div>
-                    {/* <div className="rounded-full bg-[#E2F1FC] !px-2 flex justify-center ">
-            {activeCount && activeCount.inactiveStores}
-          </div>{" "} */}
-                </div>
-            ),
-        },
-    ]
-
-    const handleReset = (clearFilters) => {
-        clearFilters()
-        setSearchText('')
-    }
-
-    const getColumnSearchProps = (dataIndex) => ({
-        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
-            <div
-                style={{
-                    padding: 8,
-                }}
-                onKeyDown={(e) => e.stopPropagation()}>
-                <Input
-                    ref={searchInput}
-                    placeholder={`Search ${dataIndex}`}
-                    value={selectedKeys[0]}
-                    onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-                    onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-                    style={{
-                        marginBottom: 8,
-                        display: 'block',
-                    }}
-                />
-                <Space>
-                    <Button
-                        className='app-btn-primary'
-                        onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-                        icon={<SearchOutlined />}
-                        size='small'
-                        style={{
-                            width: 90,
-                        }}>
-                        Search
-                    </Button>
-                    <Button
-                        onClick={() => clearFilters && handleReset(clearFilters)}
-                        size='small'
-                        style={{
-                            width: 90,
-                        }}>
-                        Reset
-                    </Button>
-                </Space>
-            </div>
-        ),
-        filterIcon: (filtered) => (
-            <SearchOutlined
-                style={{
-                    color: filtered ? '#1890ff' : undefined,
-                }}
-            />
-        ),
-        onFilter: (value, record) => record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
-        onFilterDropdownOpenChange: (visible) => {
-            if (visible) {
-                setTimeout(() => searchInput.current?.select(), 100)
-            }
-        },
-        render: (text) =>
-            searchedColumn === dataIndex ? (
-                <Highlighter
-                    highlightStyle={{
-                        backgroundColor: '#ffc069',
-                        padding: 0,
-                    }}
-                    searchWords={[searchText]}
-                    autoEscape
-                    textToHighlight={text ? text.toString() : ''}
-                />
-            ) : (
-                text
-            ),
-    })
     useEffect(() => {
         getCurrentUserDetails()
     }, [])
 
     useEffect(() => {
-        if (currentTab == 2) {
+        if (parseInt(currentTab) === 2) {
             console.log('storeLimitApi', storeLimitApi)
             MarketplaceServices.findAll(storeLimitApi)
                 .then(function (response) {
@@ -428,8 +266,6 @@ const Stores = () => {
                     <Content>
                         {count !== 'undefined' && total !== 'undefined' ? (
                             <Content className='flex flex-col'>
-                                {/* {count} {total > 0 ? " of " + total : null}{" "}
-                {keyName === "store_limit" ? t("labels:active_stores") : null} */}
                                 <div
                                     className={
                                         util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
@@ -445,8 +281,6 @@ const Stores = () => {
                                     ) : (
                                         ''
                                     )}
-                                    {/* <p>{total > 0 ? t("labels:of") : ""}</p>
-                  <p>{total > 0 ? total : null}</p> */}
                                     <p>{keyName === 'store_limit' ? t('labels:active_stores') : null}</p>
                                 </div>
                                 {total > 0 ? (
@@ -475,7 +309,7 @@ const Stores = () => {
             key: 'limits',
             width: '30%',
             render: (text) => {
-                const [limitName, limitValue, keyName, tooltip] = text.split(',')
+                const [limitName, keyName, tooltip] = text.split(',')
                 return (
                     <Content className='flex flex-col gap-2'>
                         <div className='flex gap-2 items-center'>
@@ -612,16 +446,6 @@ const Stores = () => {
             render: (text, record) => {
                 return (
                     <Content className='whitespace-nowrap flex align-middle'>
-                        {/* <Tooltip title={t("stores:Edit-Store")}>
-              <img
-                src={EditIcon}
-                className=" !text-xl cursor-pointer"
-                onClick={() => {
-                  showEditDrawer(record.id);
-                }}
-              />
-            </Tooltip> */}
-
                         {hideAddStoreButton ? (
                             <Link
                                 to={{
@@ -666,42 +490,12 @@ const Stores = () => {
                                 }
                             </Button>
                         )}
-
-                        {/* {record.status === "InActive" ? (
-              <Button
-                className="app-btn-text flex align-items-center ml-2 justify-center"
-                type="text"
-              >
-                <Tooltip title={t("labels:delete_store")}>
-                  <img
-                    src={DeleteIcon}
-                    className="!text-xl cursor-pointer"
-                    onClick={() => {
-                      openDeleteModal(record.id);
-                    }}
-                  />
-                </Tooltip>
-              </Button>
-            ) : null} */}
                     </Content>
                 )
             },
         },
     ]
 
-    //! status of stores like active or inactive
-    const statusForStores = {
-        1: 'Active',
-        2: 'InActive',
-    }
-    //! handleTabChangeStore to get the data according to the status
-    const handleTabChangeStore = (status) => {
-        setSearchParams({
-            tab: status,
-            page: 1,
-            limit: parseInt(searchParams.get('limit')) ? parseInt(searchParams.get('limit')) : pageLimit,
-        })
-    }
     //!pagination
     const pagination = [
         {
@@ -744,43 +538,6 @@ const Stores = () => {
         }
     }, [storeApiData])
 
-    //! tablepropsData to render the table columns,data,pagination
-    const tablePropsData = {
-        table_header: StoreTableColumn,
-        table_content: selectedTabTableContent,
-        pagenationSettings: pagination,
-        search_settings: {
-            is_enabled: false,
-            search_title: 'Search by name',
-            search_data: ['name'],
-        },
-        filter_settings: {
-            is_enabled: false,
-            filter_title: "Filter's",
-            filter_data: [],
-        },
-        sorting_settings: {
-            is_enabled: false,
-            sorting_title: 'Sorting by',
-            sorting_data: [],
-        },
-    }
-
-    // const StoreTableColumnThreshold = [
-    //   {
-    //     // title: `${t("labels:name")}`,
-    //     title: "Limits",
-    //     dataIndex: "limits",
-    //     key: "limits",
-    //     width: "30%",
-    //   },
-    //   {
-    //     title: "Stats",
-    //     dataIndex: "stats",
-    //     key: "stats",
-    //     width: "20%",
-    //   },
-    // ];
     const tablePropsThreshold1 = {
         table_header: StoreTableColumnThreshold1,
         table_content: [
@@ -850,18 +607,6 @@ const Stores = () => {
                     storeLimitValues?.product_template_limit
                 },product_template_limit, ${t('labels:product_template_limit_tooltip')}`,
             },
-            // {
-            //   key: "7",
-            //   limits: `${t("labels:max_store_user_limit")},${
-            //     storeLimitValues?.store_users_limit
-            //   },store_users_limit`,
-            // },
-            // {
-            //   key: "8",
-            //   limits: `${t("labels:max_vendor_user_limit")},${
-            //     storeLimitValues?.vendor_users_limit
-            //   },vendor_users_limit`,
-            // },
         ],
         pagenationSettings: pagination,
         search_settings: {
@@ -888,37 +633,15 @@ const Stores = () => {
         setInValidName(false)
         setInValidEmail(false)
         setInValidUserName(false)
-        setInValidPassword(false)
-        setShowStoreErrorMessage(false)
         setOnChangeValues(false)
-    }
-    //!edit drawer
-    const showEditDrawer = (id) => {
-        setOnChangeEditValues(false)
-        setStoreEditId(id)
-        setOpen(true)
-        setDrawerAction('put')
-        setEditName(
-            storeApiData &&
-                storeApiData.length > 0 &&
-                storeApiData.filter((element) => element.store_uuid === id)[0].name
-        )
-        setInValidEditName(false)
     }
 
     const onClose = () => {
         setOpen(false)
         setName('')
         setStoreEmail('')
-        setStorePassword('')
         setStoreUserName('')
         setOnChangeValues(false)
-    }
-
-    //! opening the delete popup model
-    const openDeleteModal = (id) => {
-        setIsDeleteStoreModalOpen(true)
-        setDeleteStoreID(id)
     }
 
     //! closing the delete popup model
@@ -957,7 +680,6 @@ const Stores = () => {
                 setIsLoading(false)
                 console.log('Server Response from findByPageStoreApi Function: ', response.data.response_body)
                 setStoreApiData(response.data.response_body.data)
-                setIsPaginationDataLoaded(false)
                 setCountForStore(response.data.response_body.count)
             })
             .catch((error) => {
@@ -967,9 +689,6 @@ const Stores = () => {
                 if (error && error.response && error.response.status === 401) {
                     MarketplaceToaster.showToast(util.getToastObject(`${t('messages:session_expired')}`, 'error'))
                 } else {
-                    if (error.response) {
-                        setErrorMessage(error.response.data.message)
-                    }
                     if (error && error.response === undefined) {
                         setSearchParams({
                             m_t: parseInt(searchParams.get('m_t')),
@@ -992,7 +711,6 @@ const Stores = () => {
 
     //!useEffect for getting the table in table without refreshing
     useEffect(() => {
-        console.log('postData', postData)
         if (postData != null) {
             if (storeApiData.length < pageLimit) {
                 const temp = [...storeApiData]
@@ -1022,8 +740,6 @@ const Stores = () => {
                     'Server Response from findByPageStoreApi Function for store uuid: ',
                     response.data.response_body
                 )
-                // setPreviousStatus(response.data.response_body.data[0].status);
-                setStoreStatusId()
                 setSaveStoreModalOpen(false)
                 let temp = [...storeApiData]
                 let index = temp.findIndex((ele) => ele.id == id)
@@ -1060,16 +776,7 @@ const Stores = () => {
                                     'success'
                                 )
                             )
-                        }
-                        // else if (previousStatus === 4) {
-                        //   MarketplaceToaster.showToast(
-                        //     util.getToastObject(
-                        //       `${t("messages:activation_unsuccessful")}`,
-                        //       "error"
-                        //     )
-                        //   );
-                        // }
-                        else {
+                        } else {
                             MarketplaceToaster.showToast(
                                 util.getToastObject(
                                     `${t('messages:your_store_has_been_successfully_created')}`,
@@ -1102,68 +809,8 @@ const Stores = () => {
     //! validation for post call
     const validateStorePostField = () => {
         const emailRegex = new RegExp(emailRegexPattern)
-        const pattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{12,64}$/
-        // /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!_%*?&])[A-Za-z\d@$!_%*?&]{6,15}$/;
-        let count = 4
-        if (
-            storeEmail === '' &&
-            storeUserName === '' &&
-            // storePassword === "" &&
-            name === ''
-        ) {
-            setInValidEmail(true)
-            setInValidUserName(true)
-            // setInValidPassword(true);
-            setInValidName(true)
-            count--
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        } else if (
-            storeEmail === '' &&
-            storeUserName === '' &&
-            // storePassword === "" &&
-            name !== ''
-        ) {
-            setInValidEmail(true)
-            setInValidUserName(true)
-            // setInValidPassword(true);
-            count--
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        } else if (
-            storeEmail !== '' &&
-            storeUserName === '' &&
-            // storePassword === "" &&
-            name === ''
-        ) {
-            setInValidUserName(true)
-            // setInValidPassword(true);
-            setInValidName(true)
-            count--
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        } else if (
-            storeEmail === '' &&
-            storeUserName !== '' &&
-            // storePassword === "" &&
-            name === ''
-        ) {
-            setInValidEmail(true)
-            // setInValidPassword(true);
-            setInValidName(true)
-            count--
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        } else if (
-            storeEmail === '' &&
-            storeUserName === '' &&
-            // storePassword !== "" &&
-            name === ''
-        ) {
+        let count = 3
+        if (storeEmail === '' && storeUserName === '' && name === '') {
             setInValidEmail(true)
             setInValidUserName(true)
             setInValidName(true)
@@ -1171,128 +818,46 @@ const Stores = () => {
             MarketplaceToaster.showToast(
                 util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
             )
-        } else if (
-            storeEmail === '' &&
-            storeUserName === '' &&
-            // storePassword !== "" &&
-            name !== ''
-        ) {
+        } else if (storeEmail === '' && storeUserName === '' && name !== '') {
             setInValidEmail(true)
             setInValidUserName(true)
             count--
             MarketplaceToaster.showToast(
                 util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
             )
-        } else if (
-            storeEmail === '' &&
-            storeUserName !== '' &&
-            // storePassword === "" &&
-            name !== ''
-        ) {
+        } else if (storeEmail !== '' && storeUserName === '' && name === '') {
+            setInValidUserName(true)
+            setInValidName(true)
+            count--
+            MarketplaceToaster.showToast(
+                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
+            )
+        } else if (storeEmail === '' && storeUserName !== '' && name === '') {
             setInValidEmail(true)
-            // setInValidPassword(true);
-            count--
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        } else if (
-            storeEmail !== '' &&
-            storeUserName === '' &&
-            // storePassword === "" &&
-            name !== ''
-        ) {
-            setInValidUserName(true)
-            // setInValidPassword(true);
-            count--
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        } else if (
-            storeEmail !== '' &&
-            storeUserName === '' &&
-            // storePassword !== "" &&
-            name === ''
-        ) {
             setInValidName(true)
-            setInValidUserName(true)
             count--
             MarketplaceToaster.showToast(
                 util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
             )
-        } else if (
-            storeEmail !== '' &&
-            storeUserName !== '' &&
-            // storePassword === "" &&
-            name === ''
-        ) {
-            setInValidName(true)
-            // setInValidPassword(true);
-            count--
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        } else if (
-            storeEmail === '' &&
-            storeUserName !== '' &&
-            // storePassword !== "" &&
-            name === ''
-        ) {
-            setInValidName(true)
+        } else if (storeEmail === '' && storeUserName !== '' && name !== '') {
             setInValidEmail(true)
             count--
             MarketplaceToaster.showToast(
                 util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
             )
-        } else if (
-            storeEmail !== '' &&
-            storeUserName !== '' &&
-            // storePassword !== "" &&
-            name === ''
-        ) {
+        } else if (storeEmail !== '' && storeUserName === '' && name !== '') {
+            setInValidUserName(true)
+            count--
+            MarketplaceToaster.showToast(
+                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
+            )
+        } else if (storeEmail !== '' && storeUserName !== '' && name === '') {
             setInValidName(true)
             count--
             MarketplaceToaster.showToast(
                 util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
             )
         } else if (
-            storeEmail === '' &&
-            storeUserName !== '' &&
-            // storePassword !== "" &&
-            name !== ''
-        ) {
-            setInValidEmail(true)
-            count--
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        } else if (
-            storeEmail !== '' &&
-            storeUserName === '' &&
-            // storePassword !== "" &&
-            name !== ''
-        ) {
-            setInValidUserName(true)
-            count--
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        }
-        // else if (
-        //   storeEmail !== "" &&
-        //   storeUserName !== "" &&
-        //   storePassword === "" &&
-        //   name !== ""
-        // ) {
-        //   setInValidPassword(true);
-        //   count--;
-        //   MarketplaceToaster.showToast(
-        //     util.getToastObject(
-        //       `${t("messages:please_provide_values_for_the_mandatory_fields")}`,
-        //       "error"
-        //     )
-        //   );
-        // }
-        else if (
             name &&
             validator.isLength(name.trim(), {
                 min: storeNameMinLength,
@@ -1333,19 +898,7 @@ const Stores = () => {
                 )
             )
         }
-        // else if (storePassword && pattern.test(storePassword) === false) {
-        //   setInValidPassword(true);
-        //   count--;
-        //   MarketplaceToaster.showToast(
-        //     util.getToastObject(
-        //       `${t(
-        //         "messages:password_must_contain_minimum_of"
-        //       )} ${passwordMinLength} ${t("messages:password_error_message")}`,
-        //       "error"
-        //     )
-        //   );
-        // }
-        if (count === 4) {
+        if (count === 3) {
             saveStoreData()
         }
     }
@@ -1356,19 +909,16 @@ const Stores = () => {
             name: name.trim(),
             username: storeUserName.trim(),
             email: storeEmail.trim(),
-            // password: storePassword.trim(),
         }
         setIsUpLoading(true)
         MarketplaceServices.save(storeAPI, postBody)
             .then((response) => {
-                // MarketplaceToaster.showToast(response);
                 setSaveStoreModalOpen(true)
                 setIsUpLoading(false)
                 onClose()
                 setName('')
                 setStoreEmail('')
                 setStoreUserName('')
-                setStorePassword('')
                 console.log('Server Success Response From stores', response.data.response_body)
                 const postFilteredData = [...statusInprogressData]
                 postFilteredData.push(response.data.response_body)
@@ -1383,36 +933,6 @@ const Stores = () => {
             })
     }
 
-    //!put call for stores
-    const updateStoreData = () => {
-        const putObject = {
-            name: editName,
-        }
-        setIsUpLoading(true)
-        console.log('editStoreData() Endpoint:', storeAPI, putObject)
-        console.log('editStoreData() putBody:', putObject)
-        MarketplaceServices.update(storeAPI, putObject, {
-            store_id: storeEditId,
-        })
-            .then((response) => {
-                console.log('put response', response.data, storeApiData)
-                MarketplaceToaster.showToast(response)
-                setIsUpLoading(false)
-                let copyofStoreAPIData = [...storeApiData]
-                copyofStoreAPIData.forEach((obj) => {
-                    if (obj.id === response.data.id) {
-                        obj.name = response.data.name
-                    }
-                })
-                setStoreApiData(copyofStoreAPIData)
-                setServerStoreName(response.data.name)
-                onClose()
-            })
-            .catch((error) => {
-                setIsUpLoading(false)
-                MarketplaceToaster.showToast(error.response)
-            })
-    }
     //! Post call for the store store limit api
     const saveStoreLimit = () => {
         const postBody = storeLimitValues
@@ -1461,57 +981,6 @@ const Stores = () => {
     }
 
     useEffect(() => {
-        if (storeEditId) {
-            var storeData =
-                storeApiData &&
-                storeApiData.length > 0 &&
-                storeApiData.filter((element) => element.store_uuid === storeEditId)
-            if (storeData && storeData.length > 0) {
-                setEditName(storeData[0].name)
-                setServerStoreName(storeData[0].name)
-            }
-        }
-    }, [storeEditId])
-
-    //! validation for put call
-    const validateStorePutField = () => {
-        // const emailRegex = new RegExp(emailRegexPattern)
-        if (editName === '' || editName === null || editName === undefined) {
-            setInValidEditName(true)
-            toast(`Please enter the store name`, {
-                position: toast.POSITION.TOP_RIGHT,
-                type: 'error',
-                autoClose: 10000,
-            })
-        } else if (
-            editName &&
-            validator.isLength(editName.trim(), {
-                min: storeNameMinLength,
-                max: storeNameMaxLength,
-            }) === false
-        ) {
-            setInValidEditName(true)
-            // count--;
-            toast(
-                `Store name must contain minimum of ${storeNameMinLength}, maximum of ${storeNameMaxLength} characters`,
-                {
-                    position: toast.POSITION.TOP_RIGHT,
-                    type: 'error',
-                    autoClose: 10000,
-                }
-            )
-        } else if (editName === serverStoreName) {
-            toast(`No changes were detected`, {
-                position: toast.POSITION.TOP_RIGHT,
-                type: 'info',
-                autoClose: 10000,
-            })
-        } else {
-            updateStoreData()
-        }
-    }
-
-    useEffect(() => {
         findByPageStoreApi(
             searchParams.get('page') ? parseInt(searchParams.get('page')) : 1,
             searchParams.get('limit') ? parseInt(searchParams.get('limit')) : pageLimit,
@@ -1520,13 +989,10 @@ const Stores = () => {
                 : ''
         )
         let mainTab = searchParams.get('m_t')
-        if (mainTab == undefined || mainTab == null) {
+        if (mainTab === undefined || mainTab === null) {
             setCurrentTab(1)
         } else {
             setCurrentTab(mainTab)
-            // if (mainTab == 1) {
-            //   setValue(1);
-            // }
         }
         window.scrollTo(0, 0)
     }, [searchParams])
@@ -1575,31 +1041,8 @@ const Stores = () => {
             })
     }
 
-    const handleKeyDown = (e) => {
-        // Prevent spaces from being entered by checking the key code
-        if (e.keyCode === 32) {
-            e.preventDefault()
-        }
-    }
-
     return (
         <Content className=''>
-            <StoreModal
-                isVisible={isDeleteStoreModalOpen}
-                okButtonText={t('labels:yes')}
-                cancelButtonText={t('labels:cancel')}
-                title={t('labels:warning')}
-                okCallback={() => removeStore()}
-                cancelCallback={() => closeDeleteModal()}
-                isSpin={isStoreDeleting}
-                hideCloseButton={false}>
-                {
-                    <div>
-                        <p>{t('messages:confirm_store_deletion')}</p>
-                        <p>{t('messages:store_deletion_confirmation_message')}</p>
-                    </div>
-                }
-            </StoreModal>
             <Content className=''>
                 <HeaderForTitle
                     title={
@@ -1608,7 +1051,7 @@ const Stores = () => {
                         </Title>
                     }
                     titleContent={
-                        currentTab == 1 ? (
+                        parseInt(currentTab) === 1 ? (
                             hideAddStoreButton ? (
                                 ''
                             ) : (
@@ -1622,7 +1065,6 @@ const Stores = () => {
                         !isLoading && (
                             <Content className='!h-10 !mt-7'>
                                 <Tabs
-                                    // defaultActiveKey={currentTab}
                                     activeKey={currentTab}
                                     items={[
                                         {
@@ -1642,19 +1084,6 @@ const Stores = () => {
                                         sessionStorage.setItem('currentStoretab', key)
                                     }}
                                 />
-
-                                {/* <DmTabAntDesign
-                  tabData={storeTabData}
-                  handleTabChangeFunction={handleTabChangeStore}
-                  activeKey={
-                    // searchParams.get("tab") ? searchParams.get("tab") : "0"
-                    tab_id === null ? "0" : String(tab_id)
-                    // String(tab_id)
-                  }
-                  // totalItemsCount={countForStore}
-                  tabType={"line"}
-                  tabBarPosition={"top"}
-                /> */}
                             </Content>
                         )
                     }
@@ -1683,7 +1112,6 @@ const Stores = () => {
                             <Spin tip={t('labels:please_wait')} size='large' spinning={isUpLoading}>
                                 <label className='text-[13px] mb-2 ml-1 input-label-color' id='labStNam'>
                                     {t('labels:store_name')}
-                                    {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
                                 </label>
                                 <span className='mandatory-symbol-color text-sm ml-1'>*</span>
                                 <Input
@@ -1697,18 +1125,15 @@ const Stores = () => {
                                             : 'mb-[0.5rem]'
                                     }`}
                                     onChange={(e) => {
-                                        // const alphaWithSpacesRegex = /^[A-Za-z\s]+$/;
                                         const alphaWithoutSpaces = /^[a-zA-Z0-9]+$/
                                         if (
                                             e.target.value !== '' &&
                                             validator.matches(e.target.value, alphaWithoutSpaces)
                                         ) {
-                                            // setShowStoreErrorMessage(true);
                                             setName(e.target.value)
                                             setOnChangeValues(true)
                                         } else if (e.target.value === '') {
                                             setName(e.target.value)
-                                            // setShowStoreErrorMessage(false);
                                             setOnChangeValues(false)
                                         }
                                         setInValidName(false)
@@ -1719,15 +1144,6 @@ const Stores = () => {
                                         setName(trimmedUpdate)
                                     }}
                                 />
-
-                                {/* {showStoreErrorMessage === true ? (
-                            <p className="text-red-600 text-sm">
-                              {t(
-                                "stores:Please-enter-alphabetic-characters-only"
-                              )}
-                            </p>
-                          ) : null} */}
-
                                 <Divider orientation='left' orientationMargin='0'>
                                     {t('labels:store_administrator_details')}
                                 </Divider>
@@ -1747,7 +1163,6 @@ const Stores = () => {
                                             : 'mb-6'
                                     }`}
                                     onChange={(e) => {
-                                        // setStoreEmail(e.target.value);
                                         setInValidEmail(false)
                                         if (e.target.value === '') {
                                             setOnChangeValues(false)
@@ -1773,7 +1188,6 @@ const Stores = () => {
                                     value={storeUserName}
                                     minLength={userNameMinLength}
                                     maxLength={userNameMaxLength}
-                                    // suffix={`${storeUserName.length}/15`}
                                     className={`${
                                         inValidUserName
                                             ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-10'
@@ -1797,43 +1211,6 @@ const Stores = () => {
                                         setStoreUserName(trimmedUpdate)
                                     }}
                                 />
-
-                                {/* <label
-                  className="text-[13px] mb-2 ml-1 input-label-color"
-                  id="labStPwd"
-                >
-                  {t("labels:password")}
-                </label>
-                <span className="mandatory-symbol-color text-sm ml-1">*</span>
-                <Input.Password
-                  placeholder={t("placeholders:enter_password")}
-                  value={storePassword}
-                  minLength={passwordMinLength}
-                  maxLength={passwordMaxLength}
-                  className={`${
-                    inValidPassword
-                      ? "border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-10"
-                      : "mb-10"
-                  }`}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    // setStorePassword(e.target.value);
-                    setInValidPassword(false);
-                    // setOnChangeValues(true);
-                    if (e.target.value === "") {
-                      setOnChangeValues(false);
-                      setStorePassword(e.target.value);
-                    } else {
-                      setOnChangeValues(true);
-                      setStorePassword(e.target.value);
-                    }
-                  }}
-                  onKeyDown={handleKeyDown}
-                  onBlur={() => {
-                    const trimmed = storePassword.trim();
-                    setStorePassword(trimmed);
-                  }}
-                /> */}
                                 <Button
                                     className={onChangeValues ? 'app-btn-primary' : '!opacity-75'}
                                     disabled={!onChangeValues}
@@ -1844,143 +1221,7 @@ const Stores = () => {
                                 </Button>
                             </Spin>
                         </>
-                    ) : (
-                        <>
-                            <Row>
-                                <Col span={1} className='flex items-start mt-[3px]'>
-                                    <MdInfo className='!text-[var(--mp-brand-color-h)] text-[16px]' />
-                                </Col>
-                                <Col span={23} className='align-center mb-3'>
-                                    <Text className=' mr-1 font-bold'> {t('labels:note')}:</Text>
-                                    <Text>{t('messages:edit_store_description')}</Text>
-                                </Col>
-                            </Row>
-                            <Spin tip={t('labels:please_wait')} size='large' spinning={isUpLoading}>
-                                <label className='text-[13px] mb-2 ml-1 input-label-color' id='labStNam'>
-                                    Store Name
-                                    {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
-                                </label>
-                                <span className='mandatory-symbol-color text-sm ml-1'>*</span>
-                                <Input
-                                    value={editName}
-                                    placeholder={t('placeholders:enter_store_name')}
-                                    className={`${
-                                        inValidEditName
-                                            ? 'border-red-400  border-solid focus:border-red-400 hover:border-red-400 mb-6'
-                                            : 'mb-6'
-                                    }`}
-                                    minLength={storeNameMinLength}
-                                    maxLength={storeNameMaxLength}
-                                    onChange={(e) => {
-                                        // const alphaWithSpacesRegex = /^[A-Za-z\s]+$/;
-                                        const alphaWithoutSpaces = /^[a-zA-Z0-9]+$/
-                                        if (
-                                            e.target.value !== '' &&
-                                            validator.matches(e.target.value, alphaWithoutSpaces)
-                                        ) {
-                                            // setShowStoreErrorMessage(true);
-                                            setEditName(e.target.value)
-                                            setOnChangeEditValues(true)
-                                            setInValidEditName(false)
-                                        } else if (e.target.value === '') {
-                                            setEditName(e.target.value)
-                                            // setShowStoreErrorMessage(false);
-                                            setOnChangeEditValues(true)
-                                        }
-                                    }}
-                                    onBlur={() => {
-                                        const trimmed = editName.trim()
-                                        const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
-                                        setEditName(trimmedUpdate)
-                                    }}
-                                />
-                                <Divider orientation='left' orientationMargin='0'>
-                                    {t('labels:store_administrator_details')}
-                                </Divider>
-                                <label className='text-[13px] mb-2 ml-1 input-label-color' id='labStEmail'>
-                                    {' '}
-                                    {t('labels:email')}
-                                </label>
-                                <span className='mandatory-symbol-color text-sm ml-1'>*</span>
-                                <Input
-                                    placeholder={t('placeholders:enter_email')}
-                                    value={storeEditEmail}
-                                    maxLength={30}
-                                    disabled
-                                    className='mb-6'
-                                    onChange={(e) => {
-                                        // handleEmailChange(e);
-                                        const { value } = e.target
-                                        const regex = /^[a-zA-Z0-9_.-@]*$/
-                                        if (regex.test(value)) {
-                                            setStoreEditEmail(value)
-                                            setOnChangeEditValues(true)
-                                        } else {
-                                            toast(`${t('stores:please_enter_the_valid_email_address')}`, {
-                                                position: toast.POSITION.TOP_RIGHT,
-                                                type: 'warning',
-                                            })
-                                        }
-                                    }}
-                                />
-                                <label className='text-[13px] mb-2 ml-1 input-label-color' id='labStUseName'>
-                                    Username
-                                </label>
-                                <span className='mandatory-symbol-color text-sm ml-1'>*</span>
-                                <Input
-                                    placeholder={t('placeholders:enter_username')}
-                                    value={storeEditUserName}
-                                    maxLength={10}
-                                    className='mb-6'
-                                    prefix={<UserOutlined className='site-form-item-icon' />}
-                                    suffix={`${storeEditUserName.length}/10`}
-                                    disabled
-                                    onChange={(e) => {
-                                        const { value } = e.target
-                                        const regex = /^[a-zA-Z0-9_-]*$/ // only allow letters and numbers
-                                        if (regex.test(value)) {
-                                            setStoreEditUserName(value)
-                                            setOnChangeEditValues(true)
-                                        } else {
-                                            toast('Please enter only alphabets, numbers, underscore, and hyphen.', {
-                                                position: toast.POSITION.TOP_RIGHT,
-                                                type: 'warning',
-                                            })
-                                        }
-                                    }}
-                                    onBlur={() => {
-                                        const trimmed = storeEditUserName.trim()
-                                        const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
-                                        setStoreEditUserName(trimmedUpdate)
-                                    }}
-                                />
-                                <label className='text-[13px] mb-2 ml-1 .input-label-color' id='labStPwd'>
-                                    Password
-                                    {/* <sup className="text-red-600 text-sm pl-1">*</sup> */}
-                                </label>
-                                <span className='mandatory-symbol-color text-sm ml-1'>*</span>
-                                <Input.Password
-                                    placeholder={t('placeholders:enter_password')}
-                                    value={storeEditPassword}
-                                    maxLength={6}
-                                    disabled
-                                    className='mb-10'
-                                    onChange={(e) => {
-                                        setStoreEditPassword(e.target.value)
-                                        setOnChangeEditValues(true)
-                                    }}
-                                />
-                                <Button
-                                    className={onChangeEditValues ? 'app-btn-primary' : '!opacity-75'}
-                                    onClick={() => {
-                                        validateStorePutField()
-                                    }}
-                                    disabled={!onChangeEditValues}>
-                                    {t('labels:update')}
-                                </Button>
-                            </Spin>
-                        </>
-                    )}
+                    ) : null}
                 </Drawer>
             </Content>
             <Content className='!p-3'>
@@ -1991,7 +1232,6 @@ const Stores = () => {
                             paragraph={{
                                 rows: 6,
                             }}></Skeleton>
-                        {/* <SkeletonComponent Layout="layout1" /> */}
                     </Content>
                 ) : isNetworkError ? (
                     <Content className='!mt-[1.7rem] !text-center bg-white p-3 !rounded-md'>
@@ -2000,7 +1240,7 @@ const Stores = () => {
                 ) : (
                     <Content className=''>
                         <Content>
-                            {currentTab == 1 ? (
+                            {parseInt(currentTab) === 1 ? (
                                 <Content className='bg-white '>
                                     <Radio.Group
                                         className='mt-3 mr-4 flex float-right mb-2'
@@ -2018,7 +1258,7 @@ const Stores = () => {
                                         pagination={false}
                                     />
                                 </Content>
-                            ) : currentTab == 2 ? (
+                            ) : parseInt(currentTab) === 2 ? (
                                 <>
                                     <Content>
                                         <Title level={5}>{t('labels:account_restrictions')}</Title>
@@ -2049,11 +1289,11 @@ const Stores = () => {
                                 </>
                             ) : (
                                 <Content className='!mt-[1.7rem] !text-center bg-white p-3 !rounded-md'>
-                                    {t('messages:no_data_available')}
+                                    {t('messages:store_network_error')}
                                 </Content>
                             )}
                         </Content>
-                        {m_tab_id == 1 ? (
+                        {parseInt(m_tab_id) === 1 ? (
                             <Content className=' grid justify-items-end'>
                                 {countForStore && countForStore >= pageLimit ? (
                                     <DmPagination
@@ -2084,11 +1324,12 @@ const Stores = () => {
                 {
                     <Content className='!text-center'>
                         <Text className=' font-semibold text-[15px]'>{t('labels:building_store')}</Text>
-                        <div
-                            className='mt-5 mb-3'
-                            // style={{ "text-align": "-webkit-center" }}
-                        >
-                            <img src={saveStoreConfirmationImage} className='ml-[220px]' />
+                        <div className='mt-5 mb-3'>
+                            <img
+                                src={saveStoreConfirmationImage}
+                                alt='saveStoreConfirmationImage'
+                                className='ml-[220px]'
+                            />
                         </div>
                         <div className='!font-medium'>
                             <p className='!mb-0 '>{t('messages:hang_tight_as_we_conjure_up_store')}</p>
@@ -2103,6 +1344,22 @@ const Stores = () => {
                             {t('labels:close_message')}
                         </Button>
                     </Content>
+                }
+            </StoreModal>
+            <StoreModal
+                isVisible={isDeleteStoreModalOpen}
+                okButtonText={t('labels:yes')}
+                cancelButtonText={t('labels:cancel')}
+                title={t('labels:warning')}
+                okCallback={() => removeStore()}
+                cancelCallback={() => closeDeleteModal()}
+                isSpin={isStoreDeleting}
+                hideCloseButton={false}>
+                {
+                    <div>
+                        <p>{t('messages:confirm_store_deletion')}</p>
+                        <p>{t('messages:store_deletion_confirmation_message')}</p>
+                    </div>
                 }
             </StoreModal>
         </Content>

@@ -1,11 +1,11 @@
 //! Import libraries
-import { Badge, Button, Col, Image, Layout, Tag, Tooltip, Typography } from 'antd'
+import { Badge, Button, Col, Image, Layout, Tag, Tooltip, Typography, Table } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 //! Import user defined components
 import DmPagination from '../../components/DmPagination/DmPagination'
-import DynamicTable from '../../components/DynamicTable/DynamicTable'
 import SkeletonComponent from '../../components/Skeleton/SkeletonComponent'
 import HeaderForTitle from '../../components/header/HeaderForTitle'
 import util from '../../util/common'
@@ -14,7 +14,6 @@ import { usePageTitle } from '../../hooks/usePageTitle'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
 
 import LanguageBanner from './LanguageBanner'
-import MarketplaceToaster from '../../util/marketplaceToaster'
 const { Title, Text } = Typography
 const { Content } = Layout
 
@@ -28,11 +27,11 @@ const Language = () => {
     usePageTitle(t('labels:language_settings'))
     const navigate = useNavigate()
 
-    const [isLoading, setIsLoading] = useState(false)
-    const [languageData, setLanguageData] = useState([])
-    const [isNetworkErrorLanguage, setIsNetworkErrorLanguage] = useState(false)
-    const [searchParams, setSearchParams] = useSearchParams()
-    const [totalLanguageCount, setTotalLanguageCount] = useState()
+    //! declaring useState variables here
+    const [languagePaginationData, setLanguagePaginationData] = useState({
+        pageNumber: 1,
+        pageSize: pageLimit,
+    })
 
     const StarIcon = () => {
         return (
@@ -117,7 +116,7 @@ const Language = () => {
                 return (
                     <>
                         <Text>
-                            {record.status == 2 ? (
+                            {String(record.status) === '2' ? (
                                 <Badge status='default' text={t('labels:inactive')} />
                             ) : (
                                 <Badge status='success' text={t('labels:active')} />
@@ -182,73 +181,24 @@ const Language = () => {
             },
         },
     ]
-    const languageTableData = (filteredData) => {
-        let tempArray = []
-        if (filteredData && filteredData.length > 0) {
-            filteredData &&
-                filteredData.length > 0 &&
-                filteredData.map((element, index) => {
-                    var Id = element.id
-                    var Language = element.language
-                    var LanguageCode = element.language_code
-                    var Writing_script_direction = element.writing_script_direction
-                    var Native_name = element.native_name
-                    var Lang_support_docs = element.lang_support_docs
-                    var Language_document_path = element.lang_support_docs_path
-                    var Dm_language_regex = element.language_regex
-                    var is_default = element.is_default
-                    var status = element.status
-                    tempArray &&
-                        tempArray.push({
-                            key: index,
-                            id: Id,
-                            language: Language,
-                            language_code: LanguageCode,
-                            writing_script_direction: Writing_script_direction,
-                            native_name: Native_name,
-                            lang_support_docs: Lang_support_docs,
-                            dm_language_regex: Dm_language_regex,
-                            lang_support_docs_path: Language_document_path,
-                            is_default: is_default,
-                            status: status,
-                        })
-                })
-            return tempArray
-        } else {
-            return tempArray
-        }
+
+    const findByPageLanguageData = async (page, limit) => {
+        // Fetcher function
+        const res = await MarketplaceServices.findByPage(languageAPI, null, page, limit, false)
+        return res?.data?.response_body
     }
-    //!get call of list language
-    const findByPageLanguageData = (page, limit) => {
-        // enabling spinner
-        setIsLoading(true)
-        MarketplaceServices.findByPage(languageAPI, null, page, limit, false)
-            .then(function (response) {
-                setIsLoading(false)
-                setIsNetworkErrorLanguage(false)
-                console.log('server Success response from language API call', response.data.response_body.data)
-                if (response && response.data.response_body.data.length > 0) {
-                    setLanguageData(languageTableData(response.data.response_body.data))
-                }
-                setTotalLanguageCount(response.data.response_body.count)
-            })
-            .catch((error) => {
-                setIsLoading(false)
-                setIsNetworkErrorLanguage(true)
-                console.log('server error response from language API call', error.response)
-                // MarketplaceToaster.showToast(error.response);
-                if (error && error.response && error.response.status === 401) {
-                    MarketplaceToaster.showToast(util.getToastObject(`${t('messages:session_expired')}`, 'error'))
-                } else {
-                    if (error.response.data.response_body.message === 'That page contains no results') {
-                        setSearchParams({
-                            page: 1,
-                            limit: parseInt(searchParams.get('limit')),
-                        })
-                    }
-                }
-            })
-    }
+
+    //! Using the useQuery hook to fetch the currency Data
+    const {
+        data: languageData,
+        isLoading,
+        isError: isNetworkErrorLanguage,
+    } = useQuery({
+        queryKey: ['language'],
+        queryFn: () => findByPageLanguageData(languagePaginationData.pageNumber, languagePaginationData.pageSize),
+        refetchOnWindowFocus: false,
+        retry: false,
+    })
 
     //! get call of get document template API
     const findAllSupportDocumentTemplateDownload = (formatOption, langCode) => {
@@ -269,56 +219,16 @@ const Language = () => {
             })
     }
 
-    const ProductSortingOption = [
-        {
-            sortType: 'asc',
-            sortKey: 'id',
-            title: 'Title A-Z',
-            default: true,
-        },
-        {
-            sortType: 'desc',
-            sortKey: 'id',
-            title: 'Title Z-A',
-            default: false,
-        },
-    ]
-
-    //!dynamic table data
-    const tablePropsData = {
-        table_header: columns,
-        table_content: languageData,
-        search_settings: {
-            is_enabled: false,
-            search_title: 'Search by language',
-            search_data: ['language'],
-        },
-        filter_settings: {
-            is_enabled: false,
-            filter_title: 'filter by',
-            filter_data: [],
-        },
-        sorting_settings: {
-            is_enabled: false,
-            sorting_title: 'Sorting by',
-            sorting_data: ProductSortingOption,
-        },
-    }
-
     const handlePageNumberChange = (page, pageSize) => {
-        setSearchParams({
-            page: parseInt(page) ? parseInt(page) : 1,
-            limit: parseInt(pageSize) ? parseInt(pageSize) : pageLimit,
+        setLanguagePaginationData({
+            pageNumber: page,
+            pageSize: pageSize,
         })
     }
 
     useEffect(() => {
-        findByPageLanguageData(
-            searchParams.get('page') ? parseInt(searchParams.get('page')) : 1,
-            searchParams.get('limit') ? parseInt(searchParams.get('limit')) : pageLimit
-        )
         window.scrollTo(0, 0)
-    }, [searchParams])
+    }, [])
 
     return (
         <Content>
@@ -333,35 +243,6 @@ const Language = () => {
                     }
                     titleContent={
                         <Content className=' !flex items-center !justify-end gap-3'>
-                            {/* <Button
-                className="app-btn-secondary"
-                onClick={() => findAllSupportDocumentTemplateDownload(1, "en")}
-              >
-                <Content className=" flex gap-2">
-                  <img
-                    src={tableDropDownArrow}
-                    className=" !w-4 !items-center"
-                  />
-
-                  {t("labels:download_support_document_template")}
-                </Content>
-              </Button> */}
-                            {/* <Dropdown
-                menu={{
-                  items,
-                  onClick: handleOnclickForDownloadDocument,
-                }}
-                className="app-btn-link"
-                placement="bottomRight"
-                arrow
-              >
-                <a onClick={(e) => e.preventDefault()}>
-                  <Space>
-                    {t("labels:download_support_document_template")}
-                    <DownOutlined className="!ml-[4px]" />
-                  </Space>
-                </a>
-              </Dropdown> */}
                             <Button
                                 className='app-btn-primary flex align-items-center'
                                 onClick={() => navigate('/dashboard/language/language-settings')}>
@@ -385,23 +266,14 @@ const Language = () => {
                     <Content>
                         <Content className='bg-white p-2'>
                             <Content>
-                                <DynamicTable tableComponentData={tablePropsData} />
-                                {totalLanguageCount && totalLanguageCount >= pageLimit ? (
+                                <Table dataSource={languageData?.data} columns={columns} pagination={false} />
+                                {languageData?.count >= pageLimit ? (
                                     <Content className=' grid justify-items-end'>
                                         <DmPagination
-                                            currentPage={
-                                                searchParams.get('page') ? parseInt(searchParams.get('page')) : 1
-                                            }
-                                            presentPage={
-                                                searchParams.get('page') ? parseInt(searchParams.get('page')) : 1
-                                            }
-                                            totalItemsCount={totalLanguageCount}
+                                            currentPage={languagePaginationData.pageNumber}
+                                            totalItemsCount={languageData?.count}
                                             pageLimit={pageLimit}
-                                            pageSize={
-                                                searchParams.get('limit')
-                                                    ? parseInt(searchParams.get('limit'))
-                                                    : pageLimit
-                                            }
+                                            pageSize={languagePaginationData.pageSize}
                                             handlePageNumberChange={handlePageNumberChange}
                                             showSizeChanger={true}
                                             showTotal={true}
@@ -411,10 +283,9 @@ const Language = () => {
                             </Content>
                         </Content>
                         {languageData &&
-                        languageData.length === 1 &&
-                        languageData[0].language_code &&
-                        totalLanguageCount &&
-                        totalLanguageCount <= pageLimit ? (
+                        languageData?.data.length === 1 &&
+                        languageData?.data[0].language_code &&
+                        languageData?.count <= pageLimit ? (
                             <Content className='bg-white mt-4 p-2'>
                                 <LanguageBanner></LanguageBanner>
                             </Content>

@@ -27,16 +27,6 @@ export const validatePositiveNumber = (e, regex) => {
     ) {
         e.preventDefault()
     }
-    // const key = e.keyCode || e.which;
-    // const keyChar = String.fromCharCode(key);
-    // // const regex = /[0-9]|\./;
-    // if (
-    //   !regex.test(keyChar) ||
-    //   e.target.value.length >= 10 ||
-    //   (keyChar === "." && e.target.value.includes("."))
-    // ) {
-    //   e.preventDefault();
-    // }
 }
 
 const validator = {

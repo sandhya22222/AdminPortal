@@ -1,5 +1,5 @@
-import { CheckCircleFilled, InboxOutlined, UploadOutlined } from '@ant-design/icons'
-import { Button, Card, Layout, Spin, Typography, Upload, Image } from 'antd'
+import { CheckCircleFilled, UploadOutlined } from '@ant-design/icons'
+import { Button, Card, Layout, Spin, Typography, Upload } from 'antd'
 import React, { useState } from 'react'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import { CloseOutlined } from '@ant-design/icons'
@@ -11,13 +11,11 @@ import {
     tableIcon,
     FrontEndKeysDownloadIcon,
     BackendKeysDownloadIcon,
-    tableDropDownArrow,
     DownloadIconDisable,
 } from '../../constants/media'
 import util from '../../util/common'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 
-const { Title } = Typography
 const storeLanguageKeysUploadAPI = process.env.REACT_APP_UPLOAD_LANGUAGE_TRANSLATION_CSV
 const LanguageDownloadApiCsv = process.env.REACT_APP_DOWNLOAD_LANGUAGE_TRANSLATION_CSV
 const LanguageDownloadApiZip = process.env.REACT_APP_DOWNLOAD_LANGUAGE_TRANSLATION_ZIP
@@ -25,20 +23,15 @@ const AdminBackendKeyUploadAPI = process.env.REACT_APP_UPLOAD_ADMIN_BACKEND_MESS
 const downloadBackendKeysAPI = process.env.REACT_APP_DOWNLOAD_ADMIN_BACKEND_MESSAGE_DETAILS
 const LanguageDownloadAPI = process.env.REACT_APP_DOWNLOAD_LANGUAGE_TRANSLATION_CSV
 function LanguageDocUpload({ langCode }) {
-    const [languageKeyFile, setLanguageKeyFile] = useState()
     const [chooseDownloadModalVisible, setChooseDownloadModalVisible] = useState(false)
     const [showSuccessModal, setShowSuccessModal] = useState(false)
     const [isSpinning, setIsSpinning] = useState(false)
     const [isBEKeysUploadModalOpen, setIsBEKeysUploadModalOpen] = useState(false)
-    const [uploadSuccess, setUploadSuccess] = useState(false)
-    const [uploadBEKeysSuccess, setUploadSBEKeySuccess] = useState(false)
-
     const [isSpinningForBEUpload, setIsSpinningForBEUpload] = useState(false)
 
     const { t } = useTranslation()
     const { Content } = Layout
     const { Title, Text } = Typography
-    const { Dragger } = Upload
 
     const uploadStoreLanguageKeys = (languageFile) => {
         setIsSpinning(true)
@@ -63,7 +56,6 @@ function LanguageDocUpload({ langCode }) {
             .then(function (response) {
                 setIsSpinning(false)
                 setShowSuccessModal(true)
-                setUploadSuccess(true)
             })
             .catch((error) => {
                 setIsSpinning(false)
@@ -96,7 +88,6 @@ function LanguageDocUpload({ langCode }) {
                 console.log('success response for backend keys upload', response)
                 setIsSpinningForBEUpload(false)
                 setIsBEKeysUploadModalOpen(true)
-                setUploadSBEKeySuccess(true)
             })
             .catch((error) => {
                 setIsSpinningForBEUpload(false)
@@ -105,7 +96,6 @@ function LanguageDocUpload({ langCode }) {
     }
 
     const handleFileChange = (file) => {
-        setLanguageKeyFile(file)
         if (file.status !== 'removed') {
             uploadStoreLanguageKeys(file)
         }
@@ -122,7 +112,6 @@ function LanguageDocUpload({ langCode }) {
             language_code: languageCode,
         })
             .then(function (response) {
-                // setIsSpinningForBEUpload(false);
                 console.log('Server Response from DocumentTemplateDownload Function: ', response.data)
                 const fileURL = window.URL.createObjectURL(response.data)
                 let alink = document.createElement('a')
@@ -133,7 +122,6 @@ function LanguageDocUpload({ langCode }) {
                 MarketplaceToaster.showToast(util.getToastObject(t('messages:download_successful'), 'success'))
             })
             .catch((error) => {
-                // setIsSpinningForBEUpload(false);
                 MarketplaceToaster.showToast(util.getToastObject(t('messages:unable_to_download_this_format'), 'error'))
                 console.log('Server error from DocumentTemplateDownload Function ', error.response)
             })
@@ -200,7 +188,6 @@ function LanguageDocUpload({ langCode }) {
 
     //! get call of get document template API
     const findAllSupportDocumentTemplateDownload = (isFormat, languageCode) => {
-        // setIsSpinning(true);
         MarketplaceServices.findMedia(LanguageDownloadAPI, {
             'is-format': isFormat,
             language_code: languageCode,
@@ -239,7 +226,7 @@ function LanguageDocUpload({ langCode }) {
             <p className='mt-2 w-[80%]'>{t('messages:document_description')}</p>
             <Content className='!flex gap-4'>
                 <>
-                    <img src={FrontEndKeysDownloadIcon} className='w-[8%] h-[8%] mt-2' />
+                    <img src={FrontEndKeysDownloadIcon} alt='FrontEndKeysDownloadIcon' className='w-[8%] h-[8%] mt-2' />
                 </>
                 <Content className=''>
                     <Content className='flex justify-between'>
@@ -249,7 +236,7 @@ function LanguageDocUpload({ langCode }) {
                         <Button
                             className='app-btn-secondary flex gap-2 !items-center mb-1'
                             onClick={() => findAllSupportDocumentTemplateDownload(1, null)}>
-                            <img src={DownloadIconDisable} className=' !w-2' />
+                            <img src={DownloadIconDisable} alt='DownloadIconDisable' className=' !w-2' />
                             {t('labels:get_frontend_support_template')}
                         </Button>
                     </Content>
@@ -292,7 +279,7 @@ function LanguageDocUpload({ langCode }) {
             </Content>
             <Content className=' mt-4 !flex gap-4'>
                 <>
-                    <img src={BackendKeysDownloadIcon} className='w-[8%] h-[8%] mt-2' />
+                    <img src={BackendKeysDownloadIcon} alt='BackendKeysDownloadIcon' className='w-[8%] h-[8%] mt-2' />
                 </>
                 <Content className=''>
                     <Content className='flex justify-between '>
@@ -302,7 +289,7 @@ function LanguageDocUpload({ langCode }) {
                         <Button
                             className='app-btn-secondary flex gap-2 !items-center !mb-1'
                             onClick={() => downloadBEKeysFile(1, null)}>
-                            <img src={DownloadIconDisable} className=' !w-2' />
+                            <img src={DownloadIconDisable} alt='DownloadIconDisable' className=' !w-2' />
                             {t('labels:get_backend_support_template')}
                         </Button>
                     </Content>

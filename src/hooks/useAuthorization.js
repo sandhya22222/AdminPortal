@@ -12,20 +12,6 @@ import Cookies from 'js-cookie'
  * ?  const authorizationHeader = useAuthorization();
  * */
 
-// function useAuthorization() {
-//   const [value, setValue] = useState(null);
-
-//   useEffect(() => {
-//     const storedAuthorizationValue =
-//       window.sessionStorage.getItem("ap_refresh_token");
-//     setValue(storedAuthorizationValue || null);
-//   }, []);
-
-//   return value;
-// }
-
-// export default useAuthorization;
-
 const useAuthorization = () => {
     const authorizationValue =
         // window.sessionStorage.getItem("ap_access_token") || null;

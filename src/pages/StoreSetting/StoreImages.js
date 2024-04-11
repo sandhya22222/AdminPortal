@@ -36,8 +36,6 @@ const StoreImages = ({
     const { t } = useTranslation()
     const absoluteStoreImageInfo = useSelector((state) => state.reducerAbsoluteStoreImageInfo.absoluteStoreImageInfo)
 
-    // In Get call response of absolute image
-    // if(absoluteImageData && absoluteImageData.length>0){
     const [fileList, setFileList] = useState([])
     const [previewOpen, setPreviewOpen] = useState(false)
     const [previewImage, setPreviewImage] = useState('')
@@ -171,8 +169,6 @@ const StoreImages = ({
         }
     }
 
-    console.log('getImageData in Store images component', getImageData)
-
     useEffect(() => {
         if (getImageData && getImageData !== undefined) {
             if (type === 'store_logo') {
@@ -184,7 +180,6 @@ const StoreImages = ({
                 }
             }
             if (type === 'banner_images') {
-                // findAllWithoutPageStoreBannerImageApi();
             }
             if (type === 'customer_logo') {
                 let temp = getImageData && getImageData.customer_logo_path
@@ -281,15 +276,8 @@ const StoreImages = ({
         setIsDeleteImageModalOpen(false)
     }
 
-    // opening the delete popup model
-    const openDeleteModal = (id) => {
-        setIsDeleteImageModalOpen(true)
-        // setDeleteLanguageID(id);
-    }
-
     //!delete function of language
     const removeMedia = (index) => {
-        // debugger;
         setIsImageDeleting(true)
         console.log('index', index)
         let dataObject = {}
@@ -342,7 +330,7 @@ const StoreImages = ({
     useEffect(() => {
         setBannerImagesLength(bannerAbsoluteImage && bannerAbsoluteImage.length)
     }, [bannerAbsoluteImage])
-    console.log('bannerImagesLength', bannerImagesLength)
+
     return (
         <Content className=' mb-2'>
             <Content className='flex !mb-3 gap-1'>
@@ -353,25 +341,10 @@ const StoreImages = ({
                     <Tooltip
                         title={InfoCircleText}
                         overlayStyle={{ zIndex: 1, position: 'fixed' }}
-                        // placement="leftTop"
                         placement={
                             util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'leftTop' : 'rightTop'
-                        }>
-                        {/* <InfoCircleOutlined className="!text-[var(--mp-brand-color-h)]" /> */}
-                    </Tooltip>
+                        }></Tooltip>
                 </Content>
-                {/* {reset === true ? (
-          <Content>
-            <Tooltip title="Reset to the previous image">
-              <UndoOutlined
-                className="ml-4  !text-lg text-blue-600"
-                onClick={() => {
-                  setImagePathShow(copyImagePath);
-                }}
-              />
-            </Tooltip>
-          </Content>
-        ) : null} */}
             </Content>
             {imagePathShow === undefined ? (
                 <Content>
@@ -428,7 +401,6 @@ const StoreImages = ({
                                 accept={supportedFileExtensions}
                                 onChange={(e) => {
                                     handleChange(e)
-                                    // setImageChangeValues(true);
                                 }}
                                 openFileDialogOnClick={bannerImagesLength < BannerImagesUploadLength ? true : false}
                                 disabled={disabelMediaButton}>
@@ -437,8 +409,6 @@ const StoreImages = ({
                                     className='font-semibold app-btn-secondary flex justify-center items-center'>
                                     <UploadOutlined className='' />
                                     {t('labels:click_to_upload')}
-                                    {/* ({t("labels:max")}:{" "}
-                  {BannerImagesUploadLength}) */}
                                 </Button>
                             </Upload>
                             <div className='mt-2 text-[#a8a8a8]'>
@@ -478,9 +448,7 @@ const StoreImages = ({
                                                 ? '!relative !ml-6'
                                                 : '!relative '
                                         }>
-                                        {/* <div className="grid grid-cols-4 gap-4"> */}
                                         <Image src={ele} className='!w-24 !h-26 ' />
-                                        {/* </div> */}
                                         <TiDelete
                                             className='!absolute !cursor-pointer !right-[-5px] !z-5  !top-[-10px] !text-2xl !text-red-600 !shadow-lg  hover:translate-'
                                             onClick={() => {
@@ -512,7 +480,6 @@ const StoreImages = ({
                                     accept={supportedFileExtensions}
                                     onChange={(e) => {
                                         handleChange(e)
-                                        // setImageChangeValues(true);
                                     }}
                                     openFileDialogOnClick={bannerImagesLength < BannerImagesUploadLength ? true : false}
                                     disabled={disabelMediaButton}>
@@ -521,8 +488,6 @@ const StoreImages = ({
                                         className='font-semibold app-btn-secondary flex justify-center items-center'>
                                         <UploadOutlined className='' />
                                         {t('labels:click_to_upload')}
-                                        {/* ({t("labels:max")}:{" "}
-                    {BannerImagesUploadLength}) */}
                                     </Button>
                                 </Upload>
                                 <div className='mt-2 text-[#a8a8a8]'>

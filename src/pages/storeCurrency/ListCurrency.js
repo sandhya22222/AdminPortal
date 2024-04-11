@@ -1,40 +1,40 @@
-import React, { useEffect, useState } from 'react'
-import { Layout, Typography, Button, Row, Col, Tag, Tooltip, Image } from 'antd'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+//! Import libraries
+import React, { useState, useEffect } from 'react'
+import { Layout, Typography, Col, Tag, Tooltip, Image, Table } from 'antd'
+import { useNavigate } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 
 //! Import user defined components
 import HeaderForTitle from '../../components/header/HeaderForTitle'
 import { useTranslation } from 'react-i18next'
-import MarketplaceToaster from '../../util/marketplaceToaster'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
-import DynamicTable from '../../components/DynamicTable/DynamicTable'
 import SkeletonComponent from '../../components/Skeleton/SkeletonComponent'
 import DmPagination from '../../components/DmPagination/DmPagination'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import util from '../../util/common'
-import { EditIcon, starIcon } from '../../constants/media'
+import { starIcon } from '../../constants/media'
 
+//! Get all required details from .env file
 const currencyAPI = process.env.REACT_APP_CHANGE_CURRENCY_API
 const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE)
 
+//! Destructure the ant design components
 const { Content } = Layout
 const { Title, Text } = Typography
+
 const ListCurrency = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     usePageTitle(t('labels:currency'))
 
-    const [isLoading, setIsLoading] = useState(false)
-    const [isNetworkError, setIsNetworkError] = useState(false)
-    const [searchParams, setSearchParams] = useSearchParams()
-    const [listCurrencyData, setListCurrencyData] = useState([])
-    const [currencyCount, setCurrencyCount] = useState()
+    //! declaring useState variables here
     const [currencyPaginationData, setCurrencyPaginationData] = useState({
         pageNumber: 1,
         pageSize: pageLimit,
     })
 
-    const columns = [
+    //! columns for currency
+    const listCurrencyColumns = [
         {
             title: `${t('labels:currency_name')}`,
             dataIndex: 'currencyName',
@@ -45,17 +45,17 @@ const ListCurrency = () => {
                 return (
                     <Content className='inline-block'>
                         <Tooltip
-                            title={record.currencyName}
+                            title={record.currency_name}
                             overlayStyle={{ zIndex: 1 }}
                             placement={util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'left' : 'right'}>
                             <Text
                                 className={`mx-1
-                   ${record.isDefault === true ? '!max-w-[80px]' : '!max-w-[150px]'} `}
+                   ${record.is_default === true ? '!max-w-[80px]' : '!max-w-[150px]'} `}
                                 ellipsis={true}>
-                                {record.currencyName}
+                                {record.currency_name}
                             </Text>
                         </Tooltip>
-                        {record.isDefault === true ? (
+                        {record.is_default === true ? (
                             <Tag
                                 icon={<Image preview={false} src={starIcon} className='mr-1 flex !items-center ' />}
                                 className='inline-flex items-center gap-1'
@@ -77,9 +77,9 @@ const ListCurrency = () => {
             render: (text, record) => {
                 return (
                     <>
-                        <Tooltip title={record.currencyCode}>
-                            <Text className='max-w-xs' ellipsis={{ tooltip: record.currencyCode }}>
-                                {record.currencyCode}
+                        <Tooltip title={record.iso_currency_code}>
+                            <Text className='max-w-xs' ellipsis={{ tooltip: record.iso_currency_code }}>
+                                {record.iso_currency_code}
                             </Text>
                         </Tooltip>
                     </>
@@ -93,7 +93,7 @@ const ListCurrency = () => {
             ellipsis: true,
             width: '12%',
             render: (text, record) => {
-                return <>{record.conversation}</>
+                return <>{record.unit_conversion}</>
             },
         },
         {
@@ -102,7 +102,7 @@ const ListCurrency = () => {
             key: 'unitPriceName',
             width: '16%',
             render: (text, record) => {
-                return <>{record.priceName}</>
+                return <>{record.unit_price_name}</>
             },
         },
         {
@@ -111,7 +111,7 @@ const ListCurrency = () => {
             key: 'minAmount',
             width: '12%',
             render: (text, record) => {
-                return <>{record.minAmount}</>
+                return <>{record.minimum_amount}</>
             },
         },
         {
@@ -129,7 +129,7 @@ const ListCurrency = () => {
             key: 'noOfDecimals',
             width: '14%',
             render: (text, record) => {
-                return <>{record.noOfDecimals}</>
+                return <>{record.no_of_decimal}</>
             },
         },
         {
@@ -145,16 +145,9 @@ const ListCurrency = () => {
                             <div
                                 className='app-btn-icon cursor-pointer'
                                 onClick={() => {
-                                    navigate(`/dashboard/currency/edit-currency?k=${record.key}`)
+                                    navigate(`/dashboard/currency/edit-currency?k=${record.id}`)
                                 }}>
-                                {/* <Content className=" flex justify-center align-items-center"> */}
-                                {/* <img
-                    src={EditIcon}
-                    alt="Edit Icon"
-                    className=" !w-[12px] !text-center !text-sm cursor-pointer"
-                  /> */}
                                 {t('labels:view_details')}
-                                {/* </Content> */}
                             </div>
                         </Tooltip>
                     </Col>
@@ -163,114 +156,26 @@ const ListCurrency = () => {
         },
     ]
 
-    //!currency  to get the table data
-    const currencyTableData = (filteredData) => {
-        const tempArray = []
-        if (filteredData && filteredData.length > 0) {
-            filteredData &&
-                filteredData.length > 0 &&
-                filteredData.map((element, index) => {
-                    var id = element.id
-                    var currencyName = element.currency_name
-                    var currencyCode = element.iso_currency_code
-                    var conversation = element.unit_conversion
-                    var priceName = element.unit_price_name
-                    var minAmount = element.minimum_amount
-                    var symbol = element.symbol
-                    var noOfDecimals = element.no_of_decimal
-                    var isDefault = element.is_default
-                    tempArray &&
-                        tempArray.push({
-                            key: id,
-                            currencyName: currencyName,
-                            currencyCode: currencyCode,
-                            conversation: conversation,
-                            priceName: priceName,
-                            minAmount: minAmount,
-                            symbol: symbol,
-                            noOfDecimals: noOfDecimals,
-                            isDefault: isDefault,
-                        })
-                })
-            return tempArray
-        } else {
-            return tempArray
-        }
+    //!doing get call for currency using React Query
+    const findByPageCurrencyData = async (page, limit) => {
+        // Fetcher function
+        const res = await MarketplaceServices.findByPage(currencyAPI, null, page, limit, false)
+        return res?.data?.response_body
     }
 
-    const ProductSortingOption = [
-        {
-            sortType: 'asc',
-            sortKey: 'id',
-            title: 'Title A-Z',
-            default: true,
-        },
-        {
-            sortType: 'desc',
-            sortKey: 'id',
-            title: 'Title Z-A',
-            default: false,
-        },
-    ]
+    //! Using the useQuery hook to fetch the currency Data
+    const {
+        data: listCurrencyData,
+        isError: isNetworkError,
+        isLoading,
+    } = useQuery({
+        queryKey: ['currency'],
+        queryFn: () => findByPageCurrencyData(currencyPaginationData.pageNumber, currencyPaginationData.pageSize),
+        refetchOnWindowFocus: false,
+        retry: false,
+    })
 
-    //!dynamic table data
-    const tablePropsData = {
-        table_header: columns,
-        table_content: listCurrencyData,
-        search_settings: {
-            is_enabled: false,
-            search_title: 'Search by currency',
-            search_data: ['currency'],
-        },
-        filter_settings: {
-            is_enabled: false,
-            filter_title: 'filter by',
-            filter_data: [],
-        },
-        sorting_settings: {
-            is_enabled: false,
-            sorting_title: 'Sorting by',
-            sorting_data: ProductSortingOption,
-        },
-    }
-
-    //!get call of list language
-    const findByPageCurrencyData = (page, limit) => {
-        // enabling spinner
-        setIsLoading(true)
-        setIsNetworkError(true)
-        MarketplaceServices.findByPage(currencyAPI, null, page, limit, false)
-            .then(function (response) {
-                setIsLoading(false)
-                setIsNetworkError(false)
-                console.log('server Success response from currency API call', response.data.response_body)
-                if (response && response.data.response_body.data.length > 0) {
-                    setListCurrencyData(currencyTableData(response.data.response_body.data))
-                }
-                setCurrencyCount(response.data.response_body.count)
-            })
-            .catch((error) => {
-                setIsLoading(false)
-                setIsNetworkError(true)
-                console.log('server error response from currency API call', error.response)
-                // MarketplaceToaster.showToast(error.response);
-                if (error && error.response && error.response.status === 401) {
-                    MarketplaceToaster.showToast(util.getToastObject(`${t('messages:session_expired')}`, 'error'))
-                } else {
-                    // if (error.response) {
-                    //   setErrorMessage(error.response.data.response_body.message);
-                    // }
-                    if (error.response.data.response_body.message === 'That page contains no results') {
-                        setSearchParams({
-                            page: 1,
-                            limit: parseInt(searchParams.get('limit')),
-                        })
-                    }
-                }
-            })
-    }
-
-    //!InvoiceDetails pagination onchange function
+    //!currency pagination onchange function , when we change the page number this onChange function will trigger
     const handleCurrencyPageNumberChange = (page, pageSize) => {
         setCurrencyPaginationData({
             pageNumber: page,
@@ -279,9 +184,10 @@ const ListCurrency = () => {
     }
 
     useEffect(() => {
-        findByPageCurrencyData(currencyPaginationData.pageNumber, currencyPaginationData.pageSize)
-    }, [currencyPaginationData])
+        window.scrollTo(0, 0)
+    }, [])
 
+    //!JSX for list currency page
     return (
         <Content>
             <Content>
@@ -293,23 +199,7 @@ const ListCurrency = () => {
                             </Title>
                         </Content>
                     }
-                    titleContent={
-                        <Content className=' !flex items-center !justify-end gap-3'>
-                            {/* <Button
-                className="app-btn-primary flex align-items-center"
-                onClick={() =>
-                  navigate("/dashboard/language/language-settings")
-                }
-              >
-                <img
-                  src={plusIcon}
-                  alt="plusIconWithAddLanguage"
-                  className=" !w-3 mr-2 items-center"
-                />
-                <div className="mr-[10px]">{t("labels:add_language")}</div>
-              </Button> */}
-                        </Content>
-                    }
+                    titleContent={<Content className=' !flex items-center !justify-end gap-3'></Content>}
                 />
             </Content>
             <Content className='p-3 mt-[7.0rem]'>
@@ -318,17 +208,17 @@ const ListCurrency = () => {
                         <SkeletonComponent />
                     </Content>
                 ) : isNetworkError ? (
-                    <Content className='pt-[2.3rem] px-3 pb-3 text-center ml-2'>
+                    <Content className='pt-[2.3rem] px-3 pb-3 text-center ml-2 '>
                         <p>{`${t('messages:network_error')}`}</p>
                     </Content>
                 ) : (
                     <>
-                        <DynamicTable tableComponentData={tablePropsData} />
-                        {currencyCount && currencyCount >= pageLimit ? (
+                        <Table dataSource={listCurrencyData?.data} columns={listCurrencyColumns} pagination={false} />
+                        {listCurrencyData && listCurrencyData?.count >= pageLimit ? (
                             <Content className=' grid justify-items-end'>
                                 <DmPagination
                                     currentPage={currencyPaginationData.pageNumber}
-                                    totalItemsCount={currencyCount}
+                                    totalItemsCount={listCurrencyData?.count}
                                     pageSize={currencyPaginationData.pageSize}
                                     handlePageNumberChange={handleCurrencyPageNumberChange}
                                     showSizeChanger={true}
