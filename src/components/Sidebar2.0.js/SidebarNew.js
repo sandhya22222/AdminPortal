@@ -16,7 +16,7 @@ import {
     currencyIcon,
     currencyInActiveIcon,
 } from '../../constants/media'
-import Footer from './../footer/Footer'
+import NewFooter from './../footer/Footer'
 import { useTranslation } from 'react-i18next'
 //! Import CSS libraries
 
@@ -188,8 +188,8 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
     }, [permissionValue])
 
     return (
-        <Layout>
-            <div className='!w-[20%]'>
+        <Layout className=''>
+            <div className='' style={{ width: '252px' }}>
                 <Affix offsetTop={48}>
                     <Sider
                         trigger={null}
@@ -282,9 +282,9 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                     </Sider>
                 </Affix>
             </div>
-            <Layout className='site-layout !w-[80%]'>
+            <Layout className='site-layout w-[80%]'>
                 <Outlet />
-                <Footer />
+                <NewFooter />
             </Layout>
         </Layout>
     )
