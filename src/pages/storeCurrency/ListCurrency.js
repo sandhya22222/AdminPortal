@@ -190,18 +190,16 @@ const ListCurrency = () => {
     //!JSX for list currency page
     return (
         <Content>
-            <Content>
-                <HeaderForTitle
-                    title={
-                        <Content className=''>
-                            <Title level={3} className='!font-normal'>
-                                {t('labels:currency')}
-                            </Title>
-                        </Content>
-                    }
-                    titleContent={<Content className=' !flex items-center !justify-end gap-3'></Content>}
-                />
-            </Content>
+            <HeaderForTitle
+                title={
+                    <Content className=''>
+                        <Title level={3} className='!font-normal'>
+                            {t('labels:currency')}
+                        </Title>
+                    </Content>
+                }
+                titleContent={<Content className=' !flex items-center !justify-end gap-3'></Content>}
+            />
             <Content className='p-3 mt-[7.0rem]'>
                 {isLoading ? (
                     <Content className=' bg-white text-center !p-2'>

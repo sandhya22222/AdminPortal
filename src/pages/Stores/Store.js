@@ -1043,187 +1043,183 @@ const Stores = () => {
 
     return (
         <Content className=''>
-            <Content className=''>
-                <HeaderForTitle
-                    title={
-                        <Title level={3} className='!font-normal'>
-                            {t('labels:stores')}
-                        </Title>
-                    }
-                    titleContent={
-                        parseInt(currentTab) === 1 ? (
-                            hideAddStoreButton ? (
-                                ''
-                            ) : (
-                                <Button className='app-btn-primary !h-8 !hover:h-[32px]' onClick={showAddDrawer}>
-                                    {t('labels:add_store')}
-                                </Button>
-                            )
-                        ) : null
-                    }
-                    headerContent={
-                        !isLoading && (
-                            <Content className='!h-10 !mt-7'>
-                                <Tabs
-                                    activeKey={currentTab}
-                                    items={[
-                                        {
-                                            key: '1',
-                                            label: `${t('labels:my_stores')}`,
-                                        },
-                                        {
-                                            key: '2',
-                                            label: <span className='!mr-3'>{t('labels:threshold_configuration')}</span>,
-                                        },
-                                    ]}
-                                    onChange={(key) => {
-                                        setCurrentTab(key)
-                                        setSearchParams({
-                                            m_t: key,
-                                        })
-                                        sessionStorage.setItem('currentStoretab', key)
-                                    }}
-                                />
-                            </Content>
+            <HeaderForTitle
+                title={
+                    <Title level={3} className='!font-normal'>
+                        {t('labels:stores')}
+                    </Title>
+                }
+                titleContent={
+                    parseInt(currentTab) === 1 ? (
+                        hideAddStoreButton ? (
+                            ''
+                        ) : (
+                            <Button className='app-btn-primary !h-8 !hover:h-[32px]' onClick={showAddDrawer}>
+                                {t('labels:add_store')}
+                            </Button>
                         )
-                    }
-                />
-                <Drawer
-                    title={
-                        drawerAction && drawerAction === 'post'
-                            ? `${t('labels:add_store')}`
-                            : `${t('labels:edit_store')}`
-                    }
-                    placement={util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'left' : 'right'}
-                    onClose={onClose}
-                    open={open}
-                    width={'40%'}>
-                    {drawerAction && drawerAction === 'post' ? (
-                        <>
-                            <Row>
-                                <Col span={1} className='flex items-start mt-[3px]'>
-                                    <MdInfo className='!text-[var(--mp-brand-color-h)] text-[16px]' />
-                                </Col>
-                                <Col span={23} className='align-center mb-3'>
-                                    <Text className=' mr-1 font-bold'> {t('labels:note')}: </Text>
-                                    <Text>{t('messages:add_store_description')}</Text>
-                                </Col>
-                            </Row>
-                            <Spin tip={t('labels:please_wait')} size='large' spinning={isUpLoading}>
-                                <label className='text-[13px] mb-2 ml-1 input-label-color' id='labStNam'>
-                                    {t('labels:store_name')}
-                                </label>
-                                <span className='mandatory-symbol-color text-sm ml-1'>*</span>
-                                <Input
-                                    placeholder={t('placeholders:enter_store_name')}
-                                    value={name}
-                                    minLength={storeNameMinLength}
-                                    maxLength={storeNameMaxLength}
-                                    className={`${
-                                        inValidName
-                                            ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-[0.5rem]'
-                                            : 'mb-[0.5rem]'
-                                    }`}
-                                    onChange={(e) => {
-                                        const alphaWithoutSpaces = /^[a-zA-Z0-9]+$/
-                                        if (
-                                            e.target.value !== '' &&
-                                            validator.matches(e.target.value, alphaWithoutSpaces)
-                                        ) {
-                                            setName(e.target.value)
-                                            setOnChangeValues(true)
-                                        } else if (e.target.value === '') {
-                                            setName(e.target.value)
-                                            setOnChangeValues(false)
-                                        }
-                                        setInValidName(false)
-                                    }}
-                                    onBlur={() => {
-                                        const trimmed = name.trim()
-                                        const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
-                                        setName(trimmedUpdate)
-                                    }}
-                                />
-                                <Divider orientation='left' orientationMargin='0'>
-                                    {t('labels:store_administrator_details')}
-                                </Divider>
+                    ) : null
+                }
+                headerContent={
+                    !isLoading && (
+                        <Content className='!h-10 !mt-7'>
+                            <Tabs
+                                activeKey={currentTab}
+                                items={[
+                                    {
+                                        key: '1',
+                                        label: `${t('labels:my_stores')}`,
+                                    },
+                                    {
+                                        key: '2',
+                                        label: <span className='!mr-3'>{t('labels:threshold_configuration')}</span>,
+                                    },
+                                ]}
+                                onChange={(key) => {
+                                    setCurrentTab(key)
+                                    setSearchParams({
+                                        m_t: key,
+                                    })
+                                    sessionStorage.setItem('currentStoretab', key)
+                                }}
+                            />
+                        </Content>
+                    )
+                }
+            />
+            <Drawer
+                title={
+                    drawerAction && drawerAction === 'post' ? `${t('labels:add_store')}` : `${t('labels:edit_store')}`
+                }
+                placement={util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'left' : 'right'}
+                onClose={onClose}
+                open={open}
+                width={'40%'}>
+                {drawerAction && drawerAction === 'post' ? (
+                    <>
+                        <Row>
+                            <Col span={1} className='flex items-start mt-[3px]'>
+                                <MdInfo className='!text-[var(--mp-brand-color-h)] text-[16px]' />
+                            </Col>
+                            <Col span={23} className='align-center mb-3'>
+                                <Text className=' mr-1 font-bold'> {t('labels:note')}: </Text>
+                                <Text>{t('messages:add_store_description')}</Text>
+                            </Col>
+                        </Row>
+                        <Spin tip={t('labels:please_wait')} size='large' spinning={isUpLoading}>
+                            <label className='text-[13px] mb-2 ml-1 input-label-color' id='labStNam'>
+                                {t('labels:store_name')}
+                            </label>
+                            <span className='mandatory-symbol-color text-sm ml-1'>*</span>
+                            <Input
+                                placeholder={t('placeholders:enter_store_name')}
+                                value={name}
+                                minLength={storeNameMinLength}
+                                maxLength={storeNameMaxLength}
+                                className={`${
+                                    inValidName
+                                        ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-[0.5rem]'
+                                        : 'mb-[0.5rem]'
+                                }`}
+                                onChange={(e) => {
+                                    const alphaWithoutSpaces = /^[a-zA-Z0-9]+$/
+                                    if (
+                                        e.target.value !== '' &&
+                                        validator.matches(e.target.value, alphaWithoutSpaces)
+                                    ) {
+                                        setName(e.target.value)
+                                        setOnChangeValues(true)
+                                    } else if (e.target.value === '') {
+                                        setName(e.target.value)
+                                        setOnChangeValues(false)
+                                    }
+                                    setInValidName(false)
+                                }}
+                                onBlur={() => {
+                                    const trimmed = name.trim()
+                                    const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
+                                    setName(trimmedUpdate)
+                                }}
+                            />
+                            <Divider orientation='left' orientationMargin='0'>
+                                {t('labels:store_administrator_details')}
+                            </Divider>
 
-                                <label className='text-[13px] mb-2 ml-1 input-label-color' id='labStEmail'>
-                                    {t('labels:email')}
-                                </label>
-                                <span className='mandatory-symbol-color text-sm ml-1'>*</span>
-                                <Input
-                                    placeholder={t('placeholders:enter_email')}
-                                    value={storeEmail}
-                                    minLength={emailMinLength}
-                                    maxLength={emailMaxLength}
-                                    className={`${
-                                        inValidEmail
-                                            ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-6'
-                                            : 'mb-6'
-                                    }`}
-                                    onChange={(e) => {
-                                        setInValidEmail(false)
-                                        if (e.target.value === '') {
-                                            setOnChangeValues(false)
-                                            setStoreEmail(e.target.value)
-                                        } else {
-                                            setOnChangeValues(true)
-                                            setStoreEmail(e.target.value)
-                                        }
-                                    }}
-                                    onBlur={() => {
-                                        const trimmed = storeEmail.trim()
-                                        const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
-                                        setStoreEmail(trimmedUpdate)
-                                    }}
-                                />
+                            <label className='text-[13px] mb-2 ml-1 input-label-color' id='labStEmail'>
+                                {t('labels:email')}
+                            </label>
+                            <span className='mandatory-symbol-color text-sm ml-1'>*</span>
+                            <Input
+                                placeholder={t('placeholders:enter_email')}
+                                value={storeEmail}
+                                minLength={emailMinLength}
+                                maxLength={emailMaxLength}
+                                className={`${
+                                    inValidEmail
+                                        ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-6'
+                                        : 'mb-6'
+                                }`}
+                                onChange={(e) => {
+                                    setInValidEmail(false)
+                                    if (e.target.value === '') {
+                                        setOnChangeValues(false)
+                                        setStoreEmail(e.target.value)
+                                    } else {
+                                        setOnChangeValues(true)
+                                        setStoreEmail(e.target.value)
+                                    }
+                                }}
+                                onBlur={() => {
+                                    const trimmed = storeEmail.trim()
+                                    const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
+                                    setStoreEmail(trimmedUpdate)
+                                }}
+                            />
 
-                                <label className='text-[13px] mb-2 ml-1 input-label-color' id='labStUseName'>
-                                    {t('labels:username')}
-                                </label>
-                                <span className='mandatory-symbol-color text-sm ml-1'>*</span>
-                                <Input
-                                    placeholder={t('placeholders:enter_username')}
-                                    value={storeUserName}
-                                    minLength={userNameMinLength}
-                                    maxLength={userNameMaxLength}
-                                    className={`${
-                                        inValidUserName
-                                            ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-10'
-                                            : 'mb-10'
-                                    }`}
-                                    prefix={<UserOutlined className='site-form-item-icon' />}
-                                    onChange={(e) => {
-                                        const regex = /^[A-Za-z0-9_\- ]+$/
-                                        if (e.target.value !== '' && validator.matches(e.target.value, regex)) {
-                                            setInValidUserName(false)
-                                            setStoreUserName(String(e.target.value).toLowerCase())
-                                            setOnChangeValues(true)
-                                        } else if (e.target.value === '') {
-                                            setStoreUserName(e.target.value)
-                                            setOnChangeValues(false)
-                                        }
-                                    }}
-                                    onBlur={() => {
-                                        const trimmed = storeUserName.trim()
-                                        const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
-                                        setStoreUserName(trimmedUpdate)
-                                    }}
-                                />
-                                <Button
-                                    className={onChangeValues ? 'app-btn-primary' : '!opacity-75'}
-                                    disabled={!onChangeValues}
-                                    onClick={() => {
-                                        validateStorePostField()
-                                    }}>
-                                    {t('labels:save')}
-                                </Button>
-                            </Spin>
-                        </>
-                    ) : null}
-                </Drawer>
-            </Content>
+                            <label className='text-[13px] mb-2 ml-1 input-label-color' id='labStUseName'>
+                                {t('labels:username')}
+                            </label>
+                            <span className='mandatory-symbol-color text-sm ml-1'>*</span>
+                            <Input
+                                placeholder={t('placeholders:enter_username')}
+                                value={storeUserName}
+                                minLength={userNameMinLength}
+                                maxLength={userNameMaxLength}
+                                className={`${
+                                    inValidUserName
+                                        ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-10'
+                                        : 'mb-10'
+                                }`}
+                                prefix={<UserOutlined className='site-form-item-icon' />}
+                                onChange={(e) => {
+                                    const regex = /^[A-Za-z0-9_\- ]+$/
+                                    if (e.target.value !== '' && validator.matches(e.target.value, regex)) {
+                                        setInValidUserName(false)
+                                        setStoreUserName(String(e.target.value).toLowerCase())
+                                        setOnChangeValues(true)
+                                    } else if (e.target.value === '') {
+                                        setStoreUserName(e.target.value)
+                                        setOnChangeValues(false)
+                                    }
+                                }}
+                                onBlur={() => {
+                                    const trimmed = storeUserName.trim()
+                                    const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
+                                    setStoreUserName(trimmedUpdate)
+                                }}
+                            />
+                            <Button
+                                className={onChangeValues ? 'app-btn-primary' : '!opacity-75'}
+                                disabled={!onChangeValues}
+                                onClick={() => {
+                                    validateStorePostField()
+                                }}>
+                                {t('labels:save')}
+                            </Button>
+                        </Spin>
+                    </>
+                ) : null}
+            </Drawer>
             <Content className='!p-3'>
                 {isLoading ? (
                     <Content className='bg-white p-3 !rounded-md mt-[2.0rem]'>
@@ -1238,7 +1234,7 @@ const Stores = () => {
                         {t('messages:store_network_error')}
                     </Content>
                 ) : (
-                    <Content className=''>
+                    <>
                         <Content>
                             {parseInt(currentTab) === 1 ? (
                                 <Content className='bg-white '>
@@ -1317,7 +1313,7 @@ const Stores = () => {
                                 ) : null}
                             </Content>
                         ) : null}
-                    </Content>
+                    </>
                 )}
             </Content>
             <StoreModal isVisible={saveStoreModalOpen} isSpin={false} hideCloseButton={false} width={800}>

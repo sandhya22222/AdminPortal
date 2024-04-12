@@ -232,28 +232,26 @@ const Language = () => {
 
     return (
         <Content>
-            <Content>
-                <HeaderForTitle
-                    title={
-                        <Content className=''>
-                            <Title level={3} className='!font-normal'>
-                                {t('labels:languages')}
-                            </Title>
-                        </Content>
-                    }
-                    titleContent={
-                        <Content className=' !flex items-center !justify-end gap-3'>
-                            <Button
-                                className='app-btn-primary flex align-items-center'
-                                onClick={() => navigate('/dashboard/language/language-settings')}>
-                                <img src={plusIcon} alt='plusIconWithAddLanguage' className=' !w-3 mr-2 items-center' />
-                                <div className='mr-[10px]'>{t('labels:add_language')}</div>
-                            </Button>
-                        </Content>
-                    }
-                />
-            </Content>
-            <Content className='p-3 mt-[7.0rem]'>
+            <HeaderForTitle
+                title={
+                    <Content className=''>
+                        <Title level={3} className='!font-normal'>
+                            {t('labels:languages')}
+                        </Title>
+                    </Content>
+                }
+                titleContent={
+                    <Content className=' !flex items-center !justify-end gap-3'>
+                        <Button
+                            className='app-btn-primary flex align-items-center'
+                            onClick={() => navigate('/dashboard/language/language-settings')}>
+                            <img src={plusIcon} alt='plusIconWithAddLanguage' className=' !w-3 mr-2 items-center' />
+                            <div className='mr-[10px]'>{t('labels:add_language')}</div>
+                        </Button>
+                    </Content>
+                }
+            />
+            <Content className='!p-3 mt-[7.0rem]'>
                 {isLoading ? (
                     <Content className=' bg-white p-3 '>
                         <SkeletonComponent />
@@ -263,24 +261,22 @@ const Language = () => {
                         <p>{t('messages:network_error')}</p>
                     </Content>
                 ) : (
-                    <Content>
+                    <>
                         <Content className='bg-white p-2'>
-                            <Content>
-                                <Table dataSource={languageData?.data} columns={columns} pagination={false} />
-                                {languageData?.count >= pageLimit ? (
-                                    <Content className=' grid justify-items-end'>
-                                        <DmPagination
-                                            currentPage={languagePaginationData.pageNumber}
-                                            totalItemsCount={languageData?.count}
-                                            pageLimit={pageLimit}
-                                            pageSize={languagePaginationData.pageSize}
-                                            handlePageNumberChange={handlePageNumberChange}
-                                            showSizeChanger={true}
-                                            showTotal={true}
-                                        />
-                                    </Content>
-                                ) : null}
-                            </Content>
+                            <Table dataSource={languageData?.data} columns={columns} pagination={false} />
+                            {languageData?.count >= pageLimit ? (
+                                <Content className=' grid justify-items-end'>
+                                    <DmPagination
+                                        currentPage={languagePaginationData.pageNumber}
+                                        totalItemsCount={languageData?.count}
+                                        pageLimit={pageLimit}
+                                        pageSize={languagePaginationData.pageSize}
+                                        handlePageNumberChange={handlePageNumberChange}
+                                        showSizeChanger={true}
+                                        showTotal={true}
+                                    />
+                                </Content>
+                            ) : null}
                         </Content>
                         {languageData &&
                         languageData?.data.length === 1 &&
@@ -290,7 +286,7 @@ const Language = () => {
                                 <LanguageBanner></LanguageBanner>
                             </Content>
                         ) : null}
-                    </Content>
+                    </>
                 )}
             </Content>
         </Content>
