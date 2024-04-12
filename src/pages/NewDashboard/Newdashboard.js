@@ -302,7 +302,7 @@ const Newdashboard = () => {
                     <Content>
                         <Content
                             hidden={dm4sightEnabled === 'true' ? false : true}
-                            className='flex justify-between mt-[45px]'>
+                            className='flex justify-between mt-[65px]'>
                             <Content className='!w-[65%] m-1 bg-[#ffff] p-4  shadow-sm rounded-md justify-center'>
                                 <Content className='flex items-center justify-between mb-1'>
                                     <Title level={4} className='!m-0  !text-black flex gap-2'>
