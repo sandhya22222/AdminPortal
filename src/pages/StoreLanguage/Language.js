@@ -188,7 +188,7 @@ const Language = () => {
         return res?.data?.response_body
     }
 
-    //! Using the useQuery hook to fetch the currency Data
+    //! Using the useQuery hook to fetch the language Data
     const {
         data: languageData,
         isLoading,
