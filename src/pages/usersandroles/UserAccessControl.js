@@ -4,7 +4,7 @@ import { DeleteOutlined } from '@ant-design/icons'
 // import { MdEdit } from "react-icons/md";
 import { useTranslation } from 'react-i18next'
 import { useSearchParams, useNavigate } from 'react-router-dom'
-
+import { useQuery } from '@tanstack/react-query'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import HeaderForTitle from '../../components/header/HeaderForTitle'
 import DmTabAntDesign from '../../components/DmTabAntDesign/DmTabAntDesign'
@@ -29,11 +29,11 @@ const UserAccessControl = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const [searchParams, setSearchParams] = useSearchParams()
-    const [isLoading, setIsLoading] = useState(false)
-    const [isNetworkError, setIsNetworkError] = useState(false)
-    const [serverDataCount, setServerDataCount] = useState()
-    const [usersServerData, setUsersServerData] = useState([])
-    const [groupServerData, setGroupServerData] = useState([])
+    // const [isLoading, setIsLoading] = useState(false)
+    // const [isNetworkError, setIsNetworkError] = useState(false)
+    // const [serverDataCount, setServerDataCount] = useState()
+    // const [usersServerData, setUsersServerData] = useState([])
+    // const [groupServerData, setGroupServerData] = useState([])
     const [showGroupModal, setShowGroupModal] = useState(false)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [groupId, setShowGroupId] = useState()
@@ -205,7 +205,6 @@ const UserAccessControl = () => {
             ellipsis: true,
 
             render: (text, record) => {
-                console.log('record', record)
                 return <Content>{String(record.name).replaceAll('-', ' ')}</Content>
             },
         },
@@ -287,7 +286,7 @@ const UserAccessControl = () => {
                 var pageNumber = searchParams.get('page') ? searchParams.get('page') : 1
                 var pageLimit = searchParams.get('limit') ? searchParams.get('limit') : itemsPerPageFromEnv
 
-                setIsLoading(true)
+                // setIsLoading(true)
                 if (parseInt(presentTab) === '1') {
                     findAllGroupLists(parseInt(pageNumber), parseInt(pageLimit))
                 } else if (parseInt(presentTab) === '2') {
@@ -303,63 +302,46 @@ const UserAccessControl = () => {
     }
 
     //Get call of groups
-    const findAllGroupLists = (pageNumber, pageLimit) => {
-        MarketplaceServices.findByPage(groupsAPI, null, pageNumber, pageLimit, true)
-
-            .then(function (response) {
-                console.log('grouplist get call response-->', response.data.response_body)
-                setServerDataCount(response.data.response_body && response.data.response_body.length)
-                setGroupServerData(response.data.response_body)
-                setIsLoading(false)
-                setIsNetworkError(false)
-            })
-            .catch(function (error) {
-                console.log('grouplist get error call response-->', error)
-                setIsLoading(false)
-                setIsNetworkError(true)
-            })
+    const findAllGroupLists = async (page, limit) => {
+        // Fetcher function
+        const res = await MarketplaceServices.findByPage(groupsAPI, null, page, limit, false)
+        return res?.data?.response_body
     }
 
-    //Get call of users
-    const findAllUsersLists = (pageNumber, pageLimit) => {
-        MarketplaceServices.findByPage(usersAllAPI, null, pageNumber, pageLimit, true)
-            .then(function (response) {
-                console.log('userslist get call response-->', response.data.response_body.users)
-                setServerDataCount(response.data.response_body && response.data.response_body.count)
+    //! Using the useQuery hook to fetch the group list server Data
+    const {
+        data: groupServerData,
+        isLoading,
+        isError: isNetworkError,
+    } = useQuery({
+        queryKey: ['groupList'],
+        queryFn: () =>
+            findAllGroupLists(
+                searchParams.get('page') ? searchParams.get('page') : 1,
+                searchParams.get('limit') ? searchParams.get('limit') : itemsPerPageFromEnv
+            ),
+        refetchOnWindowFocus: false,
+        retry: false,
+    })
 
-                setUsersServerData(response.data.response_body.users)
-                setIsLoading(false)
-                setIsNetworkError(false)
-            })
-            .catch(function (error) {
-                console.log('userslist get error call response-->', error)
-                setIsLoading(false)
-                setIsNetworkError(true)
-            })
+    //Get call of groups
+    const findAllUsersLists = async (page, limit) => {
+        // Fetcher function
+        const res = await MarketplaceServices.findByPage(usersAllAPI, null, page, limit, false)
+        return res?.data?.response_body
     }
 
-    //Useeffect to call get calls
-    useEffect(() => {
-        var presentTab = searchParams.get('tab')
-        var pageNumber = searchParams.get('page') ? searchParams.get('page') : 1
-        var pageLimit = searchParams.get('limit') ? searchParams.get('limit') : itemsPerPageFromEnv
-
-        setIsLoading(true)
-        if (parseInt(presentTab) === 1) {
-            findAllGroupLists(parseInt(pageNumber), parseInt(pageLimit))
-        } else if (parseInt(presentTab) === 2) {
-        } else {
-            findAllUsersLists(parseInt(pageNumber), parseInt(pageLimit))
-        }
-    }, [searchParams])
-
-    useEffect(() => {
-        setSearchParams({
-            tab: searchParams.get('tab') ? searchParams.get('tab') : 0,
-            page: searchParams.get('page') ? searchParams.get('page') : 1,
-            limit: searchParams.get('limit') ? searchParams.get('limit') : itemsPerPageFromEnv,
-        })
-    }, [])
+    //! Using the useQuery hook to fetch the group list server Data
+    const { data: usersServerData } = useQuery({
+        queryKey: ['userData'],
+        queryFn: () =>
+            findAllUsersLists(
+                searchParams.get('page') ? searchParams.get('page') : 1,
+                searchParams.get('limit') ? searchParams.get('limit') : itemsPerPageFromEnv
+            ),
+        refetchOnWindowFocus: false,
+        retry: false,
+    })
 
     return (
         <Content>
@@ -424,34 +406,67 @@ const UserAccessControl = () => {
                     </Content>
                 ) : (
                     <Content className=' bg-white'>
-                        {searchParams.get('tab') === '1' ? (
-                            <Table dataSource={groupServerData} columns={groupColumns} pagination={false} />
-                        ) : searchParams.get('tab') === '2' ? null : (
-                            <Table dataSource={usersServerData} columns={usersColumns} pagination={false} />
+                        {parseInt(searchParams.get('tab')) === 1 ? (
+                            <>
+                                <Table dataSource={groupServerData} columns={groupColumns} pagination={false} />
+                                {groupServerData?.length > itemsPerPageFromEnv ? (
+                                    <Content className='!grid !justify-items-end'>
+                                        <DmPagination
+                                            currentPage={
+                                                parseInt(searchParams.get('page'))
+                                                    ? parseInt(searchParams.get('page'))
+                                                    : 1
+                                            }
+                                            presentPage={
+                                                parseInt(searchParams.get('page'))
+                                                    ? parseInt(searchParams.get('page'))
+                                                    : 1
+                                            }
+                                            totalItemsCount={groupServerData?.length}
+                                            defaultPageSize={itemsPerPageFromEnv}
+                                            pageSize={
+                                                parseInt(searchParams.get('limit'))
+                                                    ? parseInt(searchParams.get('limit'))
+                                                    : itemsPerPageFromEnv
+                                            }
+                                            handlePageNumberChange={handlePageNumberChange}
+                                            showSizeChanger={true}
+                                            showTotal={true}
+                                        />
+                                    </Content>
+                                ) : null}
+                            </>
+                        ) : parseInt(searchParams.get('tab')) === 2 ? null : (
+                            <>
+                                <Table dataSource={usersServerData?.users} columns={usersColumns} pagination={false} />
+                                {usersServerData?.count > itemsPerPageFromEnv ? (
+                                    <Content className='!grid !justify-items-end'>
+                                        <DmPagination
+                                            currentPage={
+                                                parseInt(searchParams.get('page'))
+                                                    ? parseInt(searchParams.get('page'))
+                                                    : 1
+                                            }
+                                            presentPage={
+                                                parseInt(searchParams.get('page'))
+                                                    ? parseInt(searchParams.get('page'))
+                                                    : 1
+                                            }
+                                            totalItemsCount={usersServerData?.count}
+                                            defaultPageSize={itemsPerPageFromEnv}
+                                            pageSize={
+                                                parseInt(searchParams.get('limit'))
+                                                    ? parseInt(searchParams.get('limit'))
+                                                    : itemsPerPageFromEnv
+                                            }
+                                            handlePageNumberChange={handlePageNumberChange}
+                                            showSizeChanger={true}
+                                            showTotal={true}
+                                        />
+                                    </Content>
+                                ) : null}
+                            </>
                         )}
-
-                        {serverDataCount > itemsPerPageFromEnv ? (
-                            <Content className='!grid !justify-items-end'>
-                                <DmPagination
-                                    currentPage={
-                                        parseInt(searchParams.get('page')) ? parseInt(searchParams.get('page')) : 1
-                                    }
-                                    presentPage={
-                                        parseInt(searchParams.get('page')) ? parseInt(searchParams.get('page')) : 1
-                                    }
-                                    totalItemsCount={serverDataCount}
-                                    defaultPageSize={itemsPerPageFromEnv}
-                                    pageSize={
-                                        parseInt(searchParams.get('limit'))
-                                            ? parseInt(searchParams.get('limit'))
-                                            : itemsPerPageFromEnv
-                                    }
-                                    handlePageNumberChange={handlePageNumberChange}
-                                    showSizeChanger={true}
-                                    showTotal={true}
-                                />
-                            </Content>
-                        ) : null}
                     </Content>
                 )}
             </Content>
