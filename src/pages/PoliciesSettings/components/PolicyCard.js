@@ -1,10 +1,9 @@
-import { Button, Typography } from 'antd'
+import { Button, Typography, Input } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import ReactQuill, { Quill } from 'react-quill'
 import moment from 'moment/moment'
 import { toast } from 'react-toastify'
-
 import { ConsentEditIcon } from '../../../constants/media'
 import useUpdateUserConsent from '../hooks/useUpdateUserConsent'
 import 'react-quill/dist/quill.snow.css'
@@ -62,16 +61,17 @@ const formats = [
     // 'video',
     'script',
 ]
+const CONSENT_NAME_LENGTH = 100
 
 const PolicyCard = ({
     consent,
     refetchUserConsent,
     isNewPolicy,
     setAddNewPolicy,
-    addContactInfo,
     policyName,
     handelDeletePolicy,
     storeId,
+    policyType,
 }) => {
     const { t } = useTranslation()
     const { mutate: UpdateUserConsent, status: UpdateUserConsentStatus } = useUpdateUserConsent()
@@ -79,80 +79,38 @@ const PolicyCard = ({
 
     const [consentName, setConsentName] = useState(consent?.name || policyName)
     const [description, setDescription] = useState(consent?.description)
+    const [descriptionText, setDescriptionText] = useState(consent?.description)
     const [descriptionModified, setDescriptionModified] = useState(false)
-    const [isTittleEditable, setIsTittleEditable] = useState(false)
+
     const isConsentNameChanged = isNewPolicy ? !!consentName : consentName?.trim() !== consent?.name?.trim()
-    console.log(isConsentNameChanged, 'isConsentNameChanged')
+
     const handelConsentNameChange = (name) => {
-        if (name?.trim() === '') setConsentName(consent?.name)
-        else setConsentName(name)
+        if (name?.length > CONSENT_NAME_LENGTH) return
+        setConsentName(name)
     }
-
-    const handelSavePolicyName = () => {
-        const body = {
-            name: consentName?.trim(),
-            display_name: consentName?.trim(),
-            store: storeId,
-        }
-        if (isNewPolicy) {
-            createNewUserConsent(
-                { body },
-                {
-                    onSuccess: () => {
-                        refetchUserConsent()
-                        toast(t('messages:successfully_renamed_title'), {
-                            type: 'success',
-                        })
-                        setTimeout(() => {
-                            setAddNewPolicy(false)
-                        }, [300])
-                    },
-                    onError: (err) => {
-                        toast(err?.response?.data?.response_message || t('messages:error_updating_name'), {
-                            type: 'error',
-                        })
-                    },
-                }
-            )
-        } else {
-            UpdateUserConsent(
-                {
-                    body,
-                    userConsentId: consent?.id,
-                },
-                {
-                    onSuccess: () => {
-                        refetchUserConsent()
-                        toast(t('messages:successfully_renamed_title'), {
-                            type: 'success',
-                        })
-                    },
-                    onError: (err) => {
-                        toast(err?.response?.data?.response_message || t('messages:error_updating_name'), {
-                            type: 'error',
-                        })
-                    },
-                }
-            )
-        }
-    }
-
     const handelCancelPolicyName = () => {
-        if (!addContactInfo) setConsentName(consent?.name)
+        if (policyType !== 'CONTACT_POLICY') {
+            setConsentName(consent?.name || '')
+        }
     }
 
-    const handelDescriptionChange = (val) => {
-        setDescription(val)
+    const handelDescriptionChange = (content, delta, source, editor) => {
+        setDescription(content)
+        setDescriptionText(editor.getText(content)?.trim())
         if (!descriptionModified) setDescriptionModified(true)
     }
 
-    const handelSaveDescription = () => {
+    const handelSaveConsent = () => {
         const body = {
             store: Number(storeId),
-            description: description,
-            name: consentName?.trim(),
-            display_name: consentName?.trim(),
         }
+
+        if (isConsentNameChanged) {
+            body.name = consentName?.trim()
+            body.display_name = consentName?.trim()
+        }
+        if (descriptionModified) body.description = description
+
         if (isNewPolicy) {
             createNewUserConsent(
                 { body },
@@ -199,6 +157,7 @@ const PolicyCard = ({
     const handelCancelDescription = () => {
         setDescriptionModified(false)
         setDescription(consent?.description)
+        setDescriptionText(consent?.description)
         handelCancelPolicyName()
     }
 
@@ -211,75 +170,26 @@ const PolicyCard = ({
         }
     }
 
-    const editableTitle = addContactInfo
-        ? false
-        : {
-              onChange: handelConsentNameChange,
-              maxLength: 100,
-              triggerType: ['icon', 'text'],
-              onCancel: () => setIsTittleEditable(false),
-              onEnd: () => setIsTittleEditable(false),
-              editing: true,
-              autoSize: { maxRows: 2 },
-              enterIcon: false,
-          }
-
-    const policyTitleRef = useRef(null)
-    useEffect(() => {
-        /**
-         * Alert if clicked on outside of element
-         */
-        function handleClickOutside(event) {
-            if (policyTitleRef.current && !policyTitleRef.current.contains(event.target)) {
-                setIsTittleEditable(false)
-            }
-        }
-        // Bind the event listener
-        document.addEventListener('mousedown', handleClickOutside)
-        return () => {
-            // Unbind the event listener on clean up
-            document.removeEventListener('mousedown', handleClickOutside)
-        }
-    }, [policyTitleRef])
     return (
         <div key={consent?.id} className=' bg-white  pb-6 policy-card max-w-[980px] w-full'>
             <div className=' h-[64px] flex justify-between items-center  w-full'>
-                <div className=' flex items-center gap-x-5 max-w-[60%] w-full'>
-                    {isTittleEditable ? (
-                        <div ref={policyTitleRef} className='max-w-xs  w-full'>
-                            <Title
-                                editable={editableTitle}
-                                className=' !font-medium text-base !inset-0 !my-0  '
-                                level={5}>
-                                {consentName}
-                            </Title>
-                        </div>
-                    ) : (
-                        <div
-                            className={`flex items-center gap-x-2 max-w-[60%] ${
-                                addContactInfo ? 'cursor-default' : 'cursor-pointer'
-                            } `}
-                            onClick={() => setIsTittleEditable(true)}>
+                <div className=' flex items-center gap-x-5 max-w-[40%] w-full'>
+                    {policyType === 'CONTACT_POLICY' ? (
+                        <div className={`flex items-center gap-x-2 max-w-[60%] cursor-default `}>
                             <Paragraph className=' !font-medium text-base !mb-0  ' ellipsis={{ tooltip: consentName }}>
                                 {consentName?.substring(0, 50) || t('labels:untitled_policy')}
                             </Paragraph>
-                            {!addContactInfo && <img src={ConsentEditIcon} alt='' />}
                         </div>
-                    )}
-                    {isConsentNameChanged && !descriptionModified && !addContactInfo && (
-                        <div className=' flex items-center gap-x-2'>
-                            <Button size='small' className='app-btn-primary ' onClick={handelSavePolicyName}>
-                                {t('labels:save')}
-                            </Button>
-                            <button
-                                className='app-btn-secondary bg-white border rounded px-2'
-                                onClick={handelCancelPolicyName}>
-                                {t('labels:cancel')}
-                            </button>
-                        </div>
+                    ) : (
+                        <Input
+                            placeholder={t('labels:untitled_policy')}
+                            autoFocus={isNewPolicy}
+                            onChange={(e) => handelConsentNameChange(e.target?.value)}
+                            value={consentName}
+                        />
                     )}
                 </div>
-                {!addContactInfo && (
+                {policyType !== 'CONTACT_POLICY' && (
                     <div className=' max-w-[40%] w-full flex justify-end'>
                         <Button danger onClick={() => handelDeletePolicy(consent?.id)}>
                             {t('labels:delete')}
@@ -302,12 +212,12 @@ const PolicyCard = ({
             <p className=' mt-2 text-[#000000] text-opacity-50'>
                 {t('labels:last_updated')} : {isNewPolicy ? '' : getDate(consent?.updated_on) || ''}
             </p>
-            {descriptionModified && (
+            {descriptionModified || isConsentNameChanged ? (
                 <div className=' space-x-2 mt-6'>
                     <Button
                         className='app-btn-primary '
-                        disabled={!(consentName?.trim() && description?.trim())}
-                        onClick={handelSaveDescription}
+                        disabled={!(consentName?.trim() && descriptionText?.trim())}
+                        onClick={handelSaveConsent}
                         loading={createNewUserConsentStatus === 'pending' || UpdateUserConsentStatus === 'pending'}>
                         {t('labels:save')}
                     </Button>
@@ -317,7 +227,7 @@ const PolicyCard = ({
                         {t('labels:cancel')}
                     </Button>
                 </div>
-            )}
+            ) : null}
         </div>
     )
 }
