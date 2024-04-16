@@ -133,6 +133,7 @@ const PoliciesSettings = ({ storeName }) => {
                             return (
                                 <div key={consent?.id}>
                                     <PolicyCard
+                                        policyType='SAVED_POLICY'
                                         consent={consent}
                                         refetchUserConsent={refetchUserConsent}
                                         handelDeletePolicy={handelDeletePolicy}
@@ -145,6 +146,7 @@ const PoliciesSettings = ({ storeName }) => {
                     {addNewPolicy ? (
                         <div ref={newPolicyRef}>
                             <PolicyCard
+                                policyType='NEW_POLICY'
                                 isNewPolicy
                                 refetchUserConsent={refetchUserConsent}
                                 setAddNewPolicy={setAddNewPolicy}
@@ -175,9 +177,9 @@ const PoliciesSettings = ({ storeName }) => {
                     </div>
                     {addContactInfo && (
                         <PolicyCard
+                            policyType='CONTACT_POLICY'
                             refetchUserConsent={refetchUserConsent}
                             consent={contactInformation?.[0] || null}
-                            addContactInfo={addContactInfo}
                             policyName={CONTACT_INFORMATION}
                             isNewPolicy={contactInformation?.length === 0}
                             key={contactInformation?.[0]?.id || 'addContactInfo'}
