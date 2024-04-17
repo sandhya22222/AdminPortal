@@ -12,6 +12,7 @@ import StoreModal from '../../components/storeModal/StoreModal'
 import { IoMdCheckmarkCircleOutline } from 'react-icons/io'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import SkeletonComponent from '../../components/Skeleton/SkeletonComponent'
+import useGetStoreUserData from '../../hooks/useGetStoreUsersData'
 
 const { Content } = Layout
 const { Title } = Typography
@@ -23,7 +24,8 @@ const minPasswordLength = process.env.REACT_APP_PASSWORD_MIN_LENGTH
 const UserProfile = () => {
     const { t } = useTranslation()
     usePageTitle(t('labels:my_profile'))
-    const [storeUsersData, setStoreUsersData] = useState()
+    const { data: storeUsersData, status: userDataStatus } = useGetStoreUserData()
+
     const [isLoading, setIsLoading] = useState(true)
     const [isNetworkError, setIsNetworkError] = useState(false)
     const [email, setEmail] = useState('')
@@ -163,7 +165,7 @@ const UserProfile = () => {
         MarketplaceServices.findAllWithoutPage(storeUsersAPI, null, false)
             .then(function (response) {
                 console.log('get from  store user server response-----> ', response.data)
-                setStoreUsersData(response.data.response_body)
+                // setStoreUsersData(response.data.response_body)
                 setIsNetworkError(false)
                 setIsLoading(false)
                 const name = response.data.response_body.username
@@ -221,7 +223,7 @@ const UserProfile = () => {
     }
 
     useEffect(() => {
-        findAllWithoutPageStoreUsers()
+        // findAllWithoutPageStoreUsers()
         window.scroll(0, 0)
     }, [])
 
@@ -237,11 +239,11 @@ const UserProfile = () => {
                 }
             />
             <Content className='mt-[9rem] '>
-                {isLoading ? (
+                {userDataStatus === 'pending' ? (
                     <Content className=' bg-white p-3 !mx-4 '>
                         <SkeletonComponent />
                     </Content>
-                ) : isNetworkError ? (
+                ) : userDataStatus === 'error' ? (
                     <Content className='p-3 text-center !mx-4 bg-[#F4F4F4]'>
                         <p>{t('messages:network_error')}</p>
                     </Content>
@@ -271,8 +273,8 @@ const UserProfile = () => {
                                     <Typography className='text-black !mt-1 !mb-0 !mx-0'>
                                         {storeUsersData &&
                                             storeUsersData.groups.length > 0 &&
-                                            storeUsersData.groups.map((ele) => (
-                                                <span>{ele.name.replace(/-/g, ' ')}</span>
+                                            storeUsersData.groups.map((ele,index) => (
+                                                <span key={index}>{ele.name.replace(/-/g, ' ')}</span>
                                             ))}
                                     </Typography>
                                 </div>
@@ -303,7 +305,7 @@ const UserProfile = () => {
                             </Row>
                             <Row gutter={25}>
                                 <Col span={12}>
-                                    <Input value={email} disabled />
+                                    <Input value={storeUsersData.email} disabled />
                                 </Col>
                                 <Col>
                                     <Button onClick={showPasswordChangeModal} className='app-btn-secondary'>
