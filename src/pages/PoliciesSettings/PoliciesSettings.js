@@ -12,6 +12,7 @@ import PolicyCard from './components/PolicyCard'
 import PreviewAndCustomise from './components/PreviewAndCustomise'
 import { useRef } from 'react'
 import { RiInformationFill } from 'react-icons/ri'
+import PolicyHistory from './components/PolicyHistory'
 
 const { Text, Paragraph, Title } = Typography
 const CONTACT_INFORMATION = 'Contact Information'
@@ -22,7 +23,6 @@ const PoliciesSettings = ({ storeName }) => {
     const storeUUID = searchParams.get('id')
     const storeId = searchParams.get('storeId')
     const newPolicyRef = useRef(null)
-
     const [contactInformation, setContactInformation] = useState([])
     const [policiesWithoutContactInformation, setPoliciesWithoutContactInformation] = useState([])
     const [addNewPolicy, setAddNewPolicy] = useState(false)
@@ -38,9 +38,11 @@ const PoliciesSettings = ({ storeName }) => {
     } = useGetUserConsent({
         storeId: storeUUID,
     })
-
     const { mutate: deleteStoreUserConsent, status: deleteStoreUserConsentStatus } = useDeleteUserConsent()
-
+    const [isPolicyhistory, setIsPolicyHistory] = useState(false)
+    const handlePolicyHistory = () => {
+        setIsPolicyHistory(true)
+    }
     const handelAddNewPolicy = () => {
         setAddNewPolicy(true)
         setTimeout(() => {
@@ -110,6 +112,11 @@ const PoliciesSettings = ({ storeName }) => {
             <div className=' flex  w-full max-w-[980px] justify-between '>
                 <Text>{t('messages:help_info_policies')}</Text>
                 <div className='flex !gap-2'>
+                    <Button
+                        onClick={handlePolicyHistory}
+                        disabled={userConsentStatus !== 'success' || userConsents?.userconsent_data?.length <= 0}>
+                        {t('labels:policy_history')}
+                    </Button>
                     <Button
                         onClick={handelPreviewAndCustomise}
                         disabled={userConsentStatus !== 'success' || userConsents?.userconsent_data?.length <= 0}>
@@ -229,6 +236,15 @@ const PoliciesSettings = ({ storeName }) => {
                     storeId={storeId}
                     storeName={storeName}
                 />
+            </StoreModal>
+            <StoreModal
+                isVisible={isPolicyhistory}
+                title={t('labels:policy_history')}
+                isSpin={false}
+                cancelCallback={() => setIsPolicyHistory(null)}
+                width={1088}
+                destroyOnClose={true}>
+                <PolicyHistory></PolicyHistory>
             </StoreModal>
         </section>
     )

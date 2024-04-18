@@ -1,13 +1,18 @@
-import { Button, Typography, Input } from 'antd'
-import { useTranslation } from 'react-i18next'
-import { useEffect, useMemo, useRef, useState } from 'react'
-import ReactQuill, { Quill } from 'react-quill'
+import { DownOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons'
+import { Button, Dropdown, Input, Space, Typography } from 'antd'
 import moment from 'moment/moment'
-import { toast } from 'react-toastify'
-import { ConsentEditIcon } from '../../../constants/media'
-import useUpdateUserConsent from '../hooks/useUpdateUserConsent'
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { RiTranslate2 } from 'react-icons/ri'
+import ReactQuill, { Quill } from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
+import { toast } from 'react-toastify'
 import useCreateUserConsent from '../hooks/useCreateUserConsent'
+import useUpdateUserConsent from '../hooks/useUpdateUserConsent'
+import StoreModal from '../../../components/storeModal/StoreModal'
+import VersionHistory from './VersionHistory'
+import AddVersion from './AddVersion'
+import TranslatePolicy from './TranslatePolicy'
 
 const { Title, Paragraph } = Typography
 const Link = Quill.import('formats/link')
@@ -83,7 +88,20 @@ const PolicyCard = ({
     const [descriptionModified, setDescriptionModified] = useState(false)
 
     const isConsentNameChanged = isNewPolicy ? !!consentName : consentName?.trim() !== consent?.name?.trim()
+    const [versionHistory, setVersionHistory] = useState(false)
+    const [addVersion, setAddVersion] = useState(false)
+    const [translatePolicy, setTranslatePolicy] = useState(false)
+    const addVersionHandler = () => {
+        setAddVersion(true)
+    }
 
+    const handleVersionHistory = () => {
+        setVersionHistory(true)
+    }
+
+    const handleTranslateVersion = () => {
+        setTranslatePolicy(true)
+    }
     const handelConsentNameChange = (name) => {
         if (name?.length > CONSENT_NAME_LENGTH) return
         setConsentName(name)
@@ -171,9 +189,74 @@ const PolicyCard = ({
     }
 
     return (
-        <div key={consent?.id} className=' bg-white  pb-6 policy-card max-w-[980px] w-full'>
+        <div
+            key={consent?.id}
+            className=' bg-white  pb-6 policy-card max-w-[980px] w-full shadow-md rounded-md mb-3 px-4 pt-2'>
             <div className=' h-[64px] flex justify-between items-center  w-full'>
-                <div className=' flex items-center gap-x-5 max-w-[40%] w-full'>
+                <div className={`flex items-center gap-x-2 max-w-[60%] cursor-default `}>
+                    <Paragraph className=' !font-medium text-base !mb-0  ' ellipsis={{ tooltip: consentName }}>
+                        {consentName?.substring(0, 50) || t('labels:untitled_policy')}
+                    </Paragraph>
+                </div>
+                <div className='flex justify-end'>
+                    <div className='flex items-center'>
+                        <Dropdown
+                            className='w-[90px]'
+                            menu={{
+                                items: [
+                                    {
+                                        label: `${t('labels:view_version_history')}`,
+                                        key: 'view_version_history',
+                                        icon: <EyeOutlined />,
+                                    },
+                                ],
+                                onClick: handleVersionHistory,
+                            }}>
+                            <Space>
+                                Version 1.0
+                                <DownOutlined />
+                            </Space>
+                        </Dropdown>
+                    </div>
+                    <div className='mx-2'>
+                        <Button
+                            icon={<PlusOutlined />}
+                            disabled={
+                                descriptionModified ||
+                                isConsentNameChanged ||
+                                !(consentName?.trim() && descriptionText?.trim())
+                            }
+                            onClick={addVersionHandler}>
+                            {t('labels:add_version')}
+                        </Button>
+                    </div>
+                    <div className={policyType !== 'CONTACT_POLICY' ? 'mr-2' : ''}>
+                        <Button
+                            className='flex items-center'
+                            icon={<RiTranslate2 />}
+                            disabled={
+                                descriptionModified ||
+                                isConsentNameChanged ||
+                                !(consentName?.trim() && descriptionText?.trim())
+                            }
+                            onClick={handleTranslateVersion}>
+                            {t('labels:translate')}
+                        </Button>
+                    </div>
+                    <div>
+                        {policyType !== 'CONTACT_POLICY' && (
+                            <div>
+                                <Button danger onClick={() => handelDeletePolicy(consent?.id)}>
+                                    {t('labels:delete')}
+                                </Button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
+            <div>
+                <label className='text-[13px] mb-3 input-label-color'>{t('labels:policy_title')}</label>
+                <div className=' flex items-center gap-x-5 max-w-[40%] w-full pb-3'>
                     {policyType === 'CONTACT_POLICY' ? (
                         <div className={`flex items-center gap-x-2 max-w-[60%] cursor-default `}>
                             <Paragraph className=' !font-medium text-base !mb-0  ' ellipsis={{ tooltip: consentName }}>
@@ -182,6 +265,7 @@ const PolicyCard = ({
                         </div>
                     ) : (
                         <Input
+                            disabled={!isNewPolicy}
                             placeholder={t('labels:untitled_policy')}
                             autoFocus={isNewPolicy}
                             onChange={(e) => handelConsentNameChange(e.target?.value)}
@@ -189,25 +273,21 @@ const PolicyCard = ({
                         />
                     )}
                 </div>
-                {policyType !== 'CONTACT_POLICY' && (
-                    <div className=' max-w-[40%] w-full flex justify-end'>
-                        <Button danger onClick={() => handelDeletePolicy(consent?.id)}>
-                            {t('labels:delete')}
-                        </Button>
-                    </div>
-                )}
-            </div>
-            <div
-                className=' rounded border-[1px] drop-shadow-sm shadow-[#D9D9D9] border-[#D9D9D9] overflow-hidden bg-white   w-full'
-                data-text-editor={'policyCard'}>
-                <ReactQuill
-                    theme='snow'
-                    value={description}
-                    onChange={handelDescriptionChange}
-                    modules={modules}
-                    formats={formats}
-                    bounds={`[data-text-editor=policyCard]`}
-                />
+                <label className='text-[13px] mb-3 input-label-color'>{t('labels:policy_description')}</label>
+                <div
+                    className=' rounded border-[1px] drop-shadow-sm shadow-[#D9D9D9] border-[#D9D9D9] overflow-hidden bg-white   w-full'
+                    data-text-editor={'policyCard'}>
+                    <ReactQuill
+                        theme='snow'
+                        value={description}
+                        className={!isNewPolicy ? 'opacity-40 bg-[#00000014]' : ''}
+                        readOnly={!isNewPolicy}
+                        onChange={handelDescriptionChange}
+                        modules={modules}
+                        formats={formats}
+                        bounds={`[data-text-editor=policyCard]`}
+                    />
+                </div>
             </div>
             <p className=' mt-2 text-[#000000] text-opacity-50'>
                 {t('labels:last_updated')} : {isNewPolicy ? '' : getDate(consent?.updated_on) || ''}
@@ -228,6 +308,33 @@ const PolicyCard = ({
                     </Button>
                 </div>
             ) : null}
+            <StoreModal
+                isVisible={versionHistory}
+                title={t('labels:version_history')}
+                isSpin={false}
+                cancelCallback={() => setVersionHistory(false)}
+                width={1088}
+                destroyOnClose={true}>
+                <VersionHistory></VersionHistory>
+            </StoreModal>
+            <StoreModal
+                isVisible={addVersion}
+                title={t('labels:add_version')}
+                isSpin={false}
+                cancelCallback={() => setAddVersion(false)}
+                width={1088}
+                destroyOnClose={true}>
+                <AddVersion></AddVersion>
+            </StoreModal>
+            <StoreModal
+                isVisible={translatePolicy}
+                title={t('labels:translate')}
+                isSpin={false}
+                cancelCallback={() => setTranslatePolicy(false)}
+                width={1088}
+                destroyOnClose={true}>
+                <TranslatePolicy></TranslatePolicy>
+            </StoreModal>
         </div>
     )
 }
