@@ -33,7 +33,9 @@ import currencyIcon from '../assets/images/sidebar/currencyIcon.svg'
 import currencyInActiveIcon from '../assets/images/sidebar/currencyInActive.svg'
 import ConsentEditIcon from '../assets/images/common/consentEditIcon.svg'
 import ConsentPreview from '../assets/images/common/consentPreview.png'
-
+import PolicyBanner from '../assets/images/common/policyBanner.svg'
+import CopyTextImage from '../assets/images/common/copyText.svg'
+import CheckGreen from '../assets/images/common/checkgreen.svg'
 export {
     LoginBackground,
     Favicon,
@@ -70,4 +72,7 @@ export {
     currencyInActiveIcon,
     ConsentEditIcon,
     ConsentPreview,
+    PolicyBanner,
+    CopyTextImage,
+    CheckGreen,
 }

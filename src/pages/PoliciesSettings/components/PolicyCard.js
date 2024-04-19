@@ -14,7 +14,7 @@ import VersionHistory from './VersionHistory'
 import AddVersion from './AddVersion'
 import TranslatePolicy from './TranslatePolicy'
 
-const { Title, Paragraph } = Typography
+const { Paragraph } = Typography
 const Link = Quill.import('formats/link')
 Link.sanitize = function (url) {
     const trimmedURL = url?.trim()
@@ -255,24 +255,20 @@ const PolicyCard = ({
                 </div>
             </div>
             <div>
-                <label className='text-[13px] mb-3 input-label-color'>{t('labels:policy_title')}</label>
-                <div className=' flex items-center gap-x-5 max-w-[40%] w-full pb-3'>
-                    {policyType === 'CONTACT_POLICY' ? (
-                        <div className={`flex items-center gap-x-2 max-w-[60%] cursor-default `}>
-                            <Paragraph className=' !font-medium text-base !mb-0  ' ellipsis={{ tooltip: consentName }}>
-                                {consentName?.substring(0, 50) || t('labels:untitled_policy')}
-                            </Paragraph>
+                {policyType !== 'CONTACT_POLICY' && (
+                    <>
+                        <label className='text-[13px] mb-3 input-label-color'>{t('labels:policy_title')}</label>
+                        <div className=' flex items-center gap-x-5 max-w-[40%] w-full pb-3'>
+                            <Input
+                                disabled={!isNewPolicy}
+                                placeholder={t('labels:untitled_policy')}
+                                autoFocus={isNewPolicy}
+                                onChange={(e) => handelConsentNameChange(e.target?.value)}
+                                value={consentName}
+                            />
                         </div>
-                    ) : (
-                        <Input
-                            disabled={!isNewPolicy}
-                            placeholder={t('labels:untitled_policy')}
-                            autoFocus={isNewPolicy}
-                            onChange={(e) => handelConsentNameChange(e.target?.value)}
-                            value={consentName}
-                        />
-                    )}
-                </div>
+                    </>
+                )}
                 <label className='text-[13px] mb-3 input-label-color'>{t('labels:policy_description')}</label>
                 <div
                     className=' rounded border-[1px] drop-shadow-sm shadow-[#D9D9D9] border-[#D9D9D9] overflow-hidden bg-white   w-full'
@@ -313,7 +309,7 @@ const PolicyCard = ({
                 title={t('labels:version_history')}
                 isSpin={false}
                 cancelCallback={() => setVersionHistory(false)}
-                width={1088}
+                width={900}
                 destroyOnClose={true}>
                 <VersionHistory></VersionHistory>
             </StoreModal>
@@ -322,7 +318,7 @@ const PolicyCard = ({
                 title={t('labels:add_version')}
                 isSpin={false}
                 cancelCallback={() => setAddVersion(false)}
-                width={1088}
+                width={400}
                 destroyOnClose={true}>
                 <AddVersion></AddVersion>
             </StoreModal>

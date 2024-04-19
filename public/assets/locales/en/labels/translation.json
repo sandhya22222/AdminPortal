@@ -259,7 +259,10 @@
     "view_version_history": "View Version History",
     "create_new_version": "Create New Version",
     "add_version": "Add Version",
-    "translate" : "Translate",
+    "translate": "Translate",
     "policy_title": "Policy Title",
-    "policy_description": "Policy Description"
+    "policy_description": "Policy Description",
+    "translate_from": "Translate From:",
+    "translate_to": "Translate To:",
+    "language_translated": "Languages translated"
 }

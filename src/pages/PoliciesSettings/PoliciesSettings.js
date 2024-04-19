@@ -1,20 +1,19 @@
-import { Alert, Button, Checkbox, Empty, Modal, Skeleton, Tooltip, Typography } from 'antd'
+import { Alert, Button, Checkbox, Modal, Skeleton, Tooltip, Typography } from 'antd'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import './policiesSettings.css'
-import { useState } from 'react'
-import useGetUserConsent from './hooks/useGetUserConsent'
+import { RiInformationFill } from 'react-icons/ri'
 import { useSearchParams } from 'react-router-dom'
-import useDeleteUserConsent from './hooks/useDeleteUserConsent'
-import { useEffect } from 'react'
 import { toast } from 'react-toastify'
 import StoreModal from '../../components/storeModal/StoreModal'
 import PolicyCard from './components/PolicyCard'
-import PreviewAndCustomise from './components/PreviewAndCustomise'
-import { useRef } from 'react'
-import { RiInformationFill } from 'react-icons/ri'
 import PolicyHistory from './components/PolicyHistory'
+import PreviewAndCustomise from './components/PreviewAndCustomise'
+import VersionBanner from './components/VersionBanner'
+import useDeleteUserConsent from './hooks/useDeleteUserConsent'
+import useGetUserConsent from './hooks/useGetUserConsent'
+import './policiesSettings.css'
 
-const { Text, Paragraph, Title } = Typography
+const { Text, Title } = Typography
 const CONTACT_INFORMATION = 'Contact Information'
 
 const PoliciesSettings = ({ storeName }) => {
@@ -106,11 +105,10 @@ const PoliciesSettings = ({ storeName }) => {
 
     return (
         <section className=' !p-3 bg-white rounded-lg m-3'>
-            <Title level={3} className='!font-bold'>
-                {t('messages:policies')}
-            </Title>
             <div className=' flex  w-full max-w-[980px] justify-between '>
-                <Text>{t('messages:help_info_policies')}</Text>
+                <Title level={3} className='!font-bold m-0'>
+                    {t('messages:policies')}
+                </Title>
                 <div className='flex !gap-2'>
                     <Button
                         onClick={handlePolicyHistory}
@@ -123,11 +121,19 @@ const PoliciesSettings = ({ storeName }) => {
                         {t('labels:preview_and_customise')}
                     </Button>
                     <Button
-                        className='app-btn-primary '
+                        className='app-btn-primary'
                         onClick={handelAddNewPolicy}
                         disabled={userConsentStatus !== 'success'}>
                         {t('labels:add_new_policy')}
                     </Button>
+                </div>
+            </div>
+            <div className='mt-3 max-w-[1000px] '>
+                <div>
+                    <Text>{t('messages:help_info_policies')}</Text>
+                </div>
+                <div className='mt-3'>
+                    <Text>{t('messages:policy_bonus_note')}</Text>
                 </div>
             </div>
             <div className=' mt-3'>
@@ -163,12 +169,12 @@ const PoliciesSettings = ({ storeName }) => {
                         </div>
                     ) : userConsents?.userconsent_data?.length <= 0 ? (
                         <div className=' py-3'>
-                            <Empty description={false} />
+                            <VersionBanner addPolicyHandler={handelAddNewPolicy}></VersionBanner>
                         </div>
                     ) : null}
                     <div className=' flex items-center '>
                         <Checkbox onChange={onContactInfoChange} checked={addContactInfo}>
-                            Display contact information
+                            {t('messages:display_contact')}
                         </Checkbox>
                         <Tooltip title={t('messages:contact_policy_info')}>
                             <RiInformationFill className=' text-[#1677ff] text-base cursor-pointer' />
@@ -242,7 +248,7 @@ const PoliciesSettings = ({ storeName }) => {
                 title={t('labels:policy_history')}
                 isSpin={false}
                 cancelCallback={() => setIsPolicyHistory(null)}
-                width={1088}
+                width={900}
                 destroyOnClose={true}>
                 <PolicyHistory></PolicyHistory>
             </StoreModal>
