@@ -77,17 +77,20 @@ const PolicyCard = ({
     handelDeletePolicy,
     storeId,
     policyType,
+    consentDetails,
 }) => {
     const { t } = useTranslation()
     const { mutate: UpdateUserConsent, status: UpdateUserConsentStatus } = useUpdateUserConsent()
     const { mutate: createNewUserConsent, status: createNewUserConsentStatus } = useCreateUserConsent()
 
-    const [consentName, setConsentName] = useState(consent?.name || policyName)
-    const [description, setDescription] = useState(consent?.description)
-    const [descriptionText, setDescriptionText] = useState(consent?.description)
+    const [consentName, setConsentName] = useState(consentDetails?.consent_name || policyName)
+    const [description, setDescription] = useState(consentDetails?.consent_discription)
+    const [descriptionText, setDescriptionText] = useState(consentDetails?.consent_discription)
     const [descriptionModified, setDescriptionModified] = useState(false)
-
-    const isConsentNameChanged = isNewPolicy ? !!consentName : consentName?.trim() !== consent?.name?.trim()
+    const [consentVersionName, setConsentVersionName] = useState(consentDetails?.version_name)
+    const isConsentNameChanged = isNewPolicy
+        ? !!consentName
+        : consentName?.trim() !== consentDetails?.consent_name?.trim()
     const [versionHistory, setVersionHistory] = useState(false)
     const [addVersion, setAddVersion] = useState(false)
     const [translatePolicy, setTranslatePolicy] = useState(false)
@@ -108,7 +111,7 @@ const PolicyCard = ({
     }
     const handelCancelPolicyName = () => {
         if (policyType !== 'CONTACT_POLICY') {
-            setConsentName(consent?.name || '')
+            setConsentName(consent?.cons || '')
         }
     }
 
@@ -124,10 +127,9 @@ const PolicyCard = ({
         }
 
         if (isConsentNameChanged) {
-            body.name = consentName?.trim()
-            body.display_name = consentName?.trim()
+            body.consent_name = consentName?.trim()
         }
-        if (descriptionModified) body.description = description
+        if (descriptionModified) body.consent_description = description
 
         if (isNewPolicy) {
             createNewUserConsent(
@@ -174,8 +176,8 @@ const PolicyCard = ({
 
     const handelCancelDescription = () => {
         setDescriptionModified(false)
-        setDescription(consent?.description)
-        setDescriptionText(consent?.description)
+        setDescription(consentDetails?.consent_discription)
+        setDescriptionText(consentDetails?.consent_discription)
         handelCancelPolicyName()
     }
 
@@ -213,7 +215,7 @@ const PolicyCard = ({
                                 onClick: handleVersionHistory,
                             }}>
                             <Space>
-                                Version 1.0
+                                {consentVersionName}
                                 <DownOutlined />
                             </Space>
                         </Dropdown>
@@ -278,7 +280,7 @@ const PolicyCard = ({
                         value={description}
                         className={!isNewPolicy ? 'opacity-40 bg-[#00000014]' : ''}
                         readOnly={!isNewPolicy}
-                        onChange={handelDescriptionChange}
+                        onChange={isNewPolicy && handelDescriptionChange}
                         modules={modules}
                         formats={formats}
                         bounds={`[data-text-editor=policyCard]`}
@@ -311,7 +313,7 @@ const PolicyCard = ({
                 cancelCallback={() => setVersionHistory(false)}
                 width={900}
                 destroyOnClose={true}>
-                <VersionHistory></VersionHistory>
+                <VersionHistory setConsentVersionName={setConsentVersionName}></VersionHistory>
             </StoreModal>
             <StoreModal
                 isVisible={addVersion}
@@ -320,7 +322,7 @@ const PolicyCard = ({
                 cancelCallback={() => setAddVersion(false)}
                 width={400}
                 destroyOnClose={true}>
-                <AddVersion></AddVersion>
+                <AddVersion setConsentVersionName={setConsentVersionName} versionNumber={consentDetails?.version_number} storeId={storeId} consentId={consent?.id} setAddVersion={setAddVersion} ></AddVersion>
             </StoreModal>
             <StoreModal
                 isVisible={translatePolicy}

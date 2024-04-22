@@ -62,7 +62,7 @@ const PoliciesSettings = ({ storeName }) => {
         const tempPoliciesWithoutContactInformation = []
         if (userConsentStatus === 'success' || isUserConsentFetched) {
             userConsents?.userconsent_data?.forEach((consent) => {
-                if (consent?.name === CONTACT_INFORMATION) {
+                if (consent?.version_details[0]?.consent_name === CONTACT_INFORMATION) {
                     tempContactInformation = [consent]
                 } else tempPoliciesWithoutContactInformation.push(consent)
             })
@@ -151,6 +151,7 @@ const PoliciesSettings = ({ storeName }) => {
                                         refetchUserConsent={refetchUserConsent}
                                         handelDeletePolicy={handelDeletePolicy}
                                         storeId={storeId}
+                                        consentDetails = {consent?.version_details?.[0]}
                                     />
                                 </div>
                             )
