@@ -15,7 +15,7 @@ import SkeletonComponent from '../../components/Skeleton/SkeletonComponent'
 import useGetStoreUserData from '../../hooks/useGetStoreUsersData'
 
 const { Content } = Layout
-const { Title } = Typography
+const { Text, Title } = Typography
 const changePasswordAPI = process.env.REACT_APP_CHANGE_PASSWORD_API
 const storeUsersAPI = process.env.REACT_APP_USERS_API
 const maxPasswordLength = process.env.REACT_APP_PASSWORD_MAX_LENGTH
@@ -229,16 +229,8 @@ const UserProfile = () => {
 
     return (
         <Content>
-            <HeaderForTitle
-                title={
-                    <Content className=''>
-                        <Title level={3} className='!font-normal'>
-                            {t('labels:profile')}
-                        </Title>
-                    </Content>
-                }
-            />
-            <Content className='mt-[9rem] '>
+           
+            <Content>
                 {userDataStatus === 'pending' ? (
                     <Content className=' bg-white p-3 !mx-4 '>
                         <SkeletonComponent />
@@ -248,7 +240,8 @@ const UserProfile = () => {
                         <p>{t('messages:network_error')}</p>
                     </Content>
                 ) : (
-                    <Content className='mx-3 my-24'>
+                    <Content className='mr-4 mt-3'>
+                         <Text className=' !text-xl !font-medium'>{t('labels:profile_information')}</Text>
                         <Content className='w-[100%] bg-white my-3 p-2 rounded-md shadow-sm'>
                             <div className='flex gap-2'>
                                 <Avatar size={64} icon={<UserOutlined />} />
