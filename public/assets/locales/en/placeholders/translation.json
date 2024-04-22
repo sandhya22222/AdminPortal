@@ -13,7 +13,7 @@
     "enter_iso_code": "E.g. INR, USD ,GBP",
     "enter_fractional_unit": "E.g. paisa, cent",
     "enter_number_to_basic": "E.g. 100",
-    "user_name_placeholder": "Enter user name",
+    "user_name_placeholder": "Enter your user name",
     "role_name_placeholder": "Enter role name",
     "role_description_placeholder": "Enter role description",
     "enter_your_new_password": "Enter your new password",
