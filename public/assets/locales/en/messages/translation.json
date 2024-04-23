@@ -129,5 +129,7 @@
     "add_version_note": "To create a new version, you can only increase the version number. Decreasing digits isn't allowed.",
     "not_updated_yet": "Not updated yet",
     "last_update_info": "The date and time of publication will be shown under 'Last Updated.'",
-    "please_add_description": "Please add description to save"
+    "please_add_description": "Please add description to save",
+    "policy_confirmation_message": "Are you sure you want to publish the new policy?",
+    "policy_confirmation_note": "This action will update the policy displayed in both the store footer and the login form."
 }

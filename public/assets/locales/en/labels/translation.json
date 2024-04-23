@@ -265,5 +265,6 @@
     "translate_from": "Translate From:",
     "translate_to": "Translate To:",
     "language_translated": "Languages translated",
-    "publish": "Publish"
+    "publish": "Publish",
+    "publish_policy_confirmation": "Publishing Policy Confirmation"
 }

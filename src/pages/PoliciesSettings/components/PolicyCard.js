@@ -90,6 +90,7 @@ const PolicyCard = ({
     const [descriptionText, setDescriptionText] = useState(consentDetails?.consent_discription)
     const [descriptionModified, setDescriptionModified] = useState(false)
     const [consentVersionName, setConsentVersionName] = useState(consentDetails?.version_name || 'Version 1.0')
+    const [policyConfirmation, setPolicyConfirmation] = useState(false)
     const isConsentNameChanged = isNewPolicy
         ? !!consentName
         : consentName?.trim() !== consentDetails?.consent_name?.trim()
@@ -113,7 +114,7 @@ const PolicyCard = ({
     }
     const handelCancelPolicyName = () => {
         if (policyType !== 'CONTACT_POLICY') {
-            setConsentName(consent?.cons || '')
+            setConsentName(consentDetails?.consent_name || '')
         }
     }
 
@@ -135,6 +136,7 @@ const PolicyCard = ({
                     toast(t('Policy updated successfully'), {
                         type: 'success',
                     })
+                    setPolicyConfirmation(false)
                 },
                 onError: (err) => {
                     toast(err?.response?.data?.response_message || t('messages:error_saving_policy'), {
@@ -177,7 +179,7 @@ const PolicyCard = ({
             )
         } else {
             UpdateUserConsent(
-                { body, userConsentId: consent?.id },
+                { body, userConsentVersionId: consentDetails?.id },
                 {
                     onSuccess: () => {
                         refetchUserConsent()
@@ -203,6 +205,10 @@ const PolicyCard = ({
         setDescription(consentDetails?.consent_discription)
         setDescriptionText(consentDetails?.consent_discription)
         handelCancelPolicyName()
+    }
+
+    const handlePublishModelConfirmation = () => {
+        setPolicyConfirmation(true)
     }
 
     const getDate = (date) => {
@@ -294,7 +300,7 @@ const PolicyCard = ({
                         value={description}
                         className={policyStatus === 2 ? 'opacity-40 bg-[#00000014]' : ''}
                         readOnly={policyStatus === 2}
-                        onChange={handelDescriptionChange}
+                        onChange={(policyStatus === 1 || isNewPolicy) && handelDescriptionChange}
                         modules={modules}
                         formats={formats}
                         bounds={`[data-text-editor=policyCard]`}
@@ -326,33 +332,39 @@ const PolicyCard = ({
                         <Button
                             className='app-btn-primary '
                             disabled={!(consentName?.trim() && descriptionText?.trim())}
-                            onClick={policyStatus === 1 ? handelPublishConsent : handelSaveConsent}
-                            loading={
-                                createNewUserConsentStatus === 'pending' ||
-                                UpdateUserConsentStatus === 'pending' ||
-                                publishUserConsentStatus === 'pending'
-                            }>
-                            {policyStatus === 1 ? t('labels:publish') : t('labels:save')}
+                            onClick={
+                                policyStatus === 1 && !isConsentNameChanged && !descriptionModified
+                                    ? handlePublishModelConfirmation
+                                    : handelSaveConsent
+                            }
+                            loading={createNewUserConsentStatus === 'pending' || UpdateUserConsentStatus === 'pending'}>
+                            {policyStatus === 1 && !isConsentNameChanged && !descriptionModified
+                                ? t('labels:publish')
+                                : t('labels:save')}
                         </Button>
                     </Tooltip>
-                    <Button
-                        onClick={handelCancelDescription}
-                        disabled={
-                            createNewUserConsentStatus === 'pending' ||
-                            UpdateUserConsentStatus === 'pending' ||
-                            !(consentName?.trim() && descriptionText?.trim())
-                        }>
-                        {t('labels:save')} & {t('labels:publish')}
-                    </Button>
-                    <Button
-                        onClick={handelCancelDescription}
-                        disabled={
-                            createNewUserConsentStatus === 'pending' ||
-                            UpdateUserConsentStatus === 'pending' ||
-                            !(consentName?.trim() && descriptionText?.trim())
-                        }>
-                        {t('labels:cancel')}
-                    </Button>
+                    {(policyStatus !== 1 || isConsentNameChanged || descriptionModified) && (
+                        <>
+                            <Button
+                                onClick={handelCancelDescription}
+                                disabled={
+                                    createNewUserConsentStatus === 'pending' ||
+                                    UpdateUserConsentStatus === 'pending' ||
+                                    !(consentName?.trim() && descriptionText?.trim())
+                                }>
+                                {t('labels:save')} & {t('labels:publish')}
+                            </Button>
+                            <Button
+                                onClick={handelCancelDescription}
+                                disabled={
+                                    createNewUserConsentStatus === 'pending' ||
+                                    UpdateUserConsentStatus === 'pending' ||
+                                    !(consentName?.trim() && descriptionText?.trim())
+                                }>
+                                {t('labels:cancel')}
+                            </Button>
+                        </>
+                    )}
                 </div>
             ) : null}
             <StoreModal
@@ -386,6 +398,21 @@ const PolicyCard = ({
                 width={1088}
                 destroyOnClose={true}>
                 <TranslatePolicy></TranslatePolicy>
+            </StoreModal>
+            <StoreModal
+                isVisible={policyConfirmation}
+                title={t('labels:publish_policy_confirmation')}
+                isSpin={publishUserConsentStatus === 'pending'}
+                cancelCallback={() => setPolicyConfirmation(false)}
+                width={500}
+                okButtonText={t('labels:publish')}
+                cancelButtonText={t('labels:cancel')}
+                okCallback={() => handelPublishConsent()}
+                destroyOnClose={true}>
+                <div className='pt-4'>
+                    <p>{t('messages:policy_confirmation_message')}</p>
+                    <p>{t('messages:policy_confirmation_note')}</p>
+                </div>
             </StoreModal>
         </div>
     )
