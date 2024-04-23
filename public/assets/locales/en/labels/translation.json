@@ -264,5 +264,6 @@
     "policy_description": "Policy Description",
     "translate_from": "Translate From:",
     "translate_to": "Translate To:",
-    "language_translated": "Languages translated"
+    "language_translated": "Languages translated",
+    "publish": "Publish"
 }

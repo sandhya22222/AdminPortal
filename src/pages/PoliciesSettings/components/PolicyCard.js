@@ -1,18 +1,19 @@
 import { DownOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons'
-import { Button, Dropdown, Input, Space, Typography } from 'antd'
+import { Button, Dropdown, Input, Space, Tooltip, Typography } from 'antd'
 import moment from 'moment/moment'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { RiTranslate2 } from 'react-icons/ri'
+import { RiInformationFill, RiTranslate2 } from 'react-icons/ri'
 import ReactQuill, { Quill } from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { toast } from 'react-toastify'
+import StoreModal from '../../../components/storeModal/StoreModal'
 import useCreateUserConsent from '../hooks/useCreateUserConsent'
 import useUpdateUserConsent from '../hooks/useUpdateUserConsent'
-import StoreModal from '../../../components/storeModal/StoreModal'
-import VersionHistory from './VersionHistory'
 import AddVersion from './AddVersion'
 import TranslatePolicy from './TranslatePolicy'
+import VersionHistory from './VersionHistory'
+import usePublishUserConsent from '../hooks/usePublishUserConsent'
 
 const { Paragraph } = Typography
 const Link = Quill.import('formats/link')
@@ -78,16 +79,17 @@ const PolicyCard = ({
     storeId,
     policyType,
     consentDetails,
+    policyStatus,
 }) => {
     const { t } = useTranslation()
     const { mutate: UpdateUserConsent, status: UpdateUserConsentStatus } = useUpdateUserConsent()
     const { mutate: createNewUserConsent, status: createNewUserConsentStatus } = useCreateUserConsent()
-
+    const { mutate: publishUserConsent, status: publishUserConsentStatus } = usePublishUserConsent()
     const [consentName, setConsentName] = useState(consentDetails?.consent_name || policyName)
     const [description, setDescription] = useState(consentDetails?.consent_discription)
     const [descriptionText, setDescriptionText] = useState(consentDetails?.consent_discription)
     const [descriptionModified, setDescriptionModified] = useState(false)
-    const [consentVersionName, setConsentVersionName] = useState(consentDetails?.version_name)
+    const [consentVersionName, setConsentVersionName] = useState(consentDetails?.version_name || 'Version 1.0')
     const isConsentNameChanged = isNewPolicy
         ? !!consentName
         : consentName?.trim() !== consentDetails?.consent_name?.trim()
@@ -119,6 +121,28 @@ const PolicyCard = ({
         setDescription(content)
         setDescriptionText(editor.getText(content)?.trim())
         if (!descriptionModified) setDescriptionModified(true)
+    }
+
+    const handelPublishConsent = () => {
+        const body = {
+            status: 2,
+        }
+        publishUserConsent(
+            { body, userConsentVersionId: consentDetails?.id },
+            {
+                onSuccess: () => {
+                    refetchUserConsent()
+                    toast(t('Policy updated successfully'), {
+                        type: 'success',
+                    })
+                },
+                onError: (err) => {
+                    toast(err?.response?.data?.response_message || t('messages:error_saving_policy'), {
+                        type: 'error',
+                    })
+                },
+            }
+        )
     }
 
     const handelSaveConsent = () => {
@@ -204,6 +228,7 @@ const PolicyCard = ({
                     <div className='flex items-center'>
                         <Dropdown
                             className='w-[90px]'
+                            disabled={!(policyStatus === 2)}
                             menu={{
                                 items: [
                                     {
@@ -216,19 +241,12 @@ const PolicyCard = ({
                             }}>
                             <Space>
                                 {consentVersionName}
-                                <DownOutlined />
+                                <DownOutlined className={!(policyStatus === 2) ? '!text-[#857e7e40]' : ''} />
                             </Space>
                         </Dropdown>
                     </div>
                     <div className='mx-2'>
-                        <Button
-                            icon={<PlusOutlined />}
-                            disabled={
-                                descriptionModified ||
-                                isConsentNameChanged ||
-                                !(consentName?.trim() && descriptionText?.trim())
-                            }
-                            onClick={addVersionHandler}>
+                        <Button icon={<PlusOutlined />} disabled={!(policyStatus === 2)} onClick={addVersionHandler}>
                             {t('labels:add_version')}
                         </Button>
                     </div>
@@ -236,11 +254,7 @@ const PolicyCard = ({
                         <Button
                             className='flex items-center'
                             icon={<RiTranslate2 />}
-                            disabled={
-                                descriptionModified ||
-                                isConsentNameChanged ||
-                                !(consentName?.trim() && descriptionText?.trim())
-                            }
+                            disabled={!(policyStatus === 2)}
                             onClick={handleTranslateVersion}>
                             {t('labels:translate')}
                         </Button>
@@ -262,9 +276,9 @@ const PolicyCard = ({
                         <label className='text-[13px] mb-3 input-label-color'>{t('labels:policy_title')}</label>
                         <div className=' flex items-center gap-x-5 max-w-[40%] w-full pb-3'>
                             <Input
-                                disabled={!isNewPolicy}
+                                disabled={policyStatus === 2}
                                 placeholder={t('labels:untitled_policy')}
-                                autoFocus={isNewPolicy}
+                                autoFocus={policyStatus === 2}
                                 onChange={(e) => handelConsentNameChange(e.target?.value)}
                                 value={consentName}
                             />
@@ -278,30 +292,65 @@ const PolicyCard = ({
                     <ReactQuill
                         theme='snow'
                         value={description}
-                        className={!isNewPolicy ? 'opacity-40 bg-[#00000014]' : ''}
-                        readOnly={!isNewPolicy}
-                        onChange={isNewPolicy && handelDescriptionChange}
+                        className={policyStatus === 2 ? 'opacity-40 bg-[#00000014]' : ''}
+                        readOnly={policyStatus === 2}
+                        onChange={handelDescriptionChange}
                         modules={modules}
                         formats={formats}
                         bounds={`[data-text-editor=policyCard]`}
                     />
                 </div>
             </div>
-            <p className=' mt-2 text-[#000000] text-opacity-50'>
-                {t('labels:last_updated')} : {isNewPolicy ? '' : getDate(consent?.updated_on) || ''}
-            </p>
-            {descriptionModified || isConsentNameChanged ? (
+            <div className=' mt-2 flex items-center text-[#000000] text-opacity-50'>
+                <Tooltip
+                    overlayStyle={{ position: 'fixed', maxWidth: '2000px' }}
+                    placement='right'
+                    title={<span className='whitespace-nowrap'>{t('messages:last_update_info')}</span>}>
+                    <RiInformationFill className=' text-base mr-1 cursor-pointer' />
+                </Tooltip>
+                {t('labels:last_updated')} :{' '}
+                {!(policyStatus === 2) ? <>{t('messages:not_updated_yet')}</> : getDate(consent?.updated_on) || ''}
+            </div>
+            {policyStatus !== 2 ? (
                 <div className=' space-x-2 mt-6'>
+                    <Tooltip
+                        overlayStyle={{ position: 'fixed', maxWidth: '2000px' }}
+                        placement='right'
+                        title={
+                            !descriptionText?.trim() && consentName?.trim() ? (
+                                <span className='whitespace-nowrap'>{t('messages:please_add_description')}</span>
+                            ) : (
+                                ''
+                            )
+                        }>
+                        <Button
+                            className='app-btn-primary '
+                            disabled={!(consentName?.trim() && descriptionText?.trim())}
+                            onClick={policyStatus === 1 ? handelPublishConsent : handelSaveConsent}
+                            loading={
+                                createNewUserConsentStatus === 'pending' ||
+                                UpdateUserConsentStatus === 'pending' ||
+                                publishUserConsentStatus === 'pending'
+                            }>
+                            {policyStatus === 1 ? t('labels:publish') : t('labels:save')}
+                        </Button>
+                    </Tooltip>
                     <Button
-                        className='app-btn-primary '
-                        disabled={!(consentName?.trim() && descriptionText?.trim())}
-                        onClick={handelSaveConsent}
-                        loading={createNewUserConsentStatus === 'pending' || UpdateUserConsentStatus === 'pending'}>
-                        {t('labels:save')}
+                        onClick={handelCancelDescription}
+                        disabled={
+                            createNewUserConsentStatus === 'pending' ||
+                            UpdateUserConsentStatus === 'pending' ||
+                            !(consentName?.trim() && descriptionText?.trim())
+                        }>
+                        {t('labels:save')} & {t('labels:publish')}
                     </Button>
                     <Button
                         onClick={handelCancelDescription}
-                        disabled={createNewUserConsentStatus === 'pending' || UpdateUserConsentStatus === 'pending'}>
+                        disabled={
+                            createNewUserConsentStatus === 'pending' ||
+                            UpdateUserConsentStatus === 'pending' ||
+                            !(consentName?.trim() && descriptionText?.trim())
+                        }>
                         {t('labels:cancel')}
                     </Button>
                 </div>
@@ -313,7 +362,7 @@ const PolicyCard = ({
                 cancelCallback={() => setVersionHistory(false)}
                 width={900}
                 destroyOnClose={true}>
-                <VersionHistory setConsentVersionName={setConsentVersionName}></VersionHistory>
+                <VersionHistory userConsentId={consent?.id}></VersionHistory>
             </StoreModal>
             <StoreModal
                 isVisible={addVersion}
@@ -322,7 +371,12 @@ const PolicyCard = ({
                 cancelCallback={() => setAddVersion(false)}
                 width={400}
                 destroyOnClose={true}>
-                <AddVersion setConsentVersionName={setConsentVersionName} versionNumber={consentDetails?.version_number} storeId={storeId} consentId={consent?.id} setAddVersion={setAddVersion} ></AddVersion>
+                <AddVersion
+                    versionNumber={consentDetails?.version_number}
+                    storeId={storeId}
+                    consentId={consent?.id}
+                    refetchUserConsent={refetchUserConsent}
+                    setAddVersion={setAddVersion}></AddVersion>
             </StoreModal>
             <StoreModal
                 isVisible={translatePolicy}

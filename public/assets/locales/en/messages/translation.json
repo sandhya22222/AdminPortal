@@ -125,6 +125,9 @@
     "contact_policy_info": "Unchecking the 'Display contact information' option leads to deletion of this policy.",
     "policy_bonus_note": "Bonus: Add essential contact information for users who need help.  (This is mandatory for businesses in the EU!)",
     "policy_banner_image_note": "Craft policies and terms to display in your store's policy section.",
-    "display_contact":"Display contact information",
-    "add_version_note":"To create a new version, you can only increase the version number. Decreasing digits isn't allowed."
+    "display_contact": "Display contact information",
+    "add_version_note": "To create a new version, you can only increase the version number. Decreasing digits isn't allowed.",
+    "not_updated_yet": "Not updated yet",
+    "last_update_info": "The date and time of publication will be shown under 'Last Updated.'",
+    "please_add_description": "Please add description to save"
 }

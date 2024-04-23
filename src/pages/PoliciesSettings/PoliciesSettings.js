@@ -25,6 +25,7 @@ const PoliciesSettings = ({ storeName }) => {
     const [contactInformation, setContactInformation] = useState([])
     const [policiesWithoutContactInformation, setPoliciesWithoutContactInformation] = useState([])
     const [addNewPolicy, setAddNewPolicy] = useState(false)
+    const [publishNewPolicy, setPublishNewPolicy] = useState(false)
     const [addContactInfo, setContactInfo] = useState(false)
     const [deletePolicy, setDeletePolicy] = useState(null)
     const [previewAndCustomise, setPreviewAndCustomise] = useState(null)
@@ -151,7 +152,8 @@ const PoliciesSettings = ({ storeName }) => {
                                         refetchUserConsent={refetchUserConsent}
                                         handelDeletePolicy={handelDeletePolicy}
                                         storeId={storeId}
-                                        consentDetails = {consent?.version_details?.[0]}
+                                        consentDetails={consent?.version_details?.[0]}
+                                        policyStatus={consent?.version_details?.[0]?.status}
                                     />
                                 </div>
                             )

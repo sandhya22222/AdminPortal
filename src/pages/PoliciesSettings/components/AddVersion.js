@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import useCreateVersion from '../hooks/useCreateVersion'
 
-function AddVersion({ setConsentVersionName, versionNumber, storeId, consentId, setAddVersion }) {
+function AddVersion({ versionNumber, storeId, consentId, setAddVersion, refetchUserConsent }) {
     const [inputValuefirst, setInputValueFirst] = useState()
     const [inputValueSecond, setInputValueSecond] = useState()
     const { t } = useTranslation()
@@ -20,7 +20,15 @@ function AddVersion({ setConsentVersionName, versionNumber, storeId, consentId, 
     }, [versionNumber])
 
     useEffect(() => {
-        if (String(versionNumber) !== inputValuefirst + '.' + inputValueSecond) setVersionNumberChanged(true)
+        if (
+            inputValuefirst &&
+            inputValueSecond &&
+            (String(versionNumber) === '1' ? '1.0' : String(versionNumber)) !== inputValuefirst + '.' + inputValueSecond
+        ) {
+            setVersionNumberChanged(true)
+        } else {
+            setVersionNumberChanged(false)
+        }
     }, [inputValuefirst, inputValueSecond])
 
     const inputHandlerfirst = (value) => {
@@ -44,7 +52,8 @@ function AddVersion({ setConsentVersionName, versionNumber, storeId, consentId, 
             { body },
             {
                 onSuccess: () => {
-                    toast(t('version updated successfully'), {
+                    refetchUserConsent()
+                    toast(t('version added successfully'), {
                         type: 'success',
                     })
                     setAddVersion(false)
@@ -67,12 +76,12 @@ function AddVersion({ setConsentVersionName, versionNumber, storeId, consentId, 
                     style={{ width: '60px', margin: '0 8px 0 14px' }}
                     value={inputValuefirst}
                     onChange={inputHandlerfirst}
-                    min={inputValuefirst}
+                    min={String(versionNumber).split('.')[0]}
                 />
                 <InputNumber
                     style={{ width: '60px' }}
                     value={inputValueSecond}
-                    min={inputValueSecond}
+                    min={String(versionNumber).split('.')[1] || '0'}
                     onChange={inputHandlerSecond}
                 />
             </div>
@@ -80,6 +89,7 @@ function AddVersion({ setConsentVersionName, versionNumber, storeId, consentId, 
                 <Button
                     className='app-btn-primary'
                     onClick={handelSaveVersion}
+                    disabled={!versionNumberChanged}
                     loading={createNewVersionStatus === 'pending'}>
                     {t('labels:add_version')}
                 </Button>
