@@ -1,19 +1,20 @@
-import { Alert, Button, Checkbox, Empty, Modal, Skeleton, Tooltip, Typography } from 'antd'
+import { Alert, Button, Checkbox, Modal, Skeleton, Tooltip, Typography } from 'antd'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import './policiesSettings.css'
-import { useState } from 'react'
-import useGetUserConsent from './hooks/useGetUserConsent'
-import { useSearchParams } from 'react-router-dom'
-import useDeleteUserConsent from './hooks/useDeleteUserConsent'
-import { useEffect } from 'react'
-import { toast } from 'react-toastify'
-import StoreModal from '../../components/storeModal/StoreModal'
-import PolicyCard from './components/PolicyCard'
-import PreviewAndCustomise from './components/PreviewAndCustomise'
-import { useRef } from 'react'
 import { RiInformationFill } from 'react-icons/ri'
+import { useSearchParams } from 'react-router-dom'
+import StoreModal from '../../components/storeModal/StoreModal'
+import MarketplaceToaster from '../../util/marketplaceToaster'
+import PolicyCard from './components/PolicyCard'
+import PolicyHistory from './components/PolicyHistory'
+import PreviewAndCustomise from './components/PreviewAndCustomise'
+import VersionBanner from './components/VersionBanner'
+import useDeleteUserConsent from './hooks/useDeleteUserConsent'
+import useGetUserConsent from './hooks/useGetUserConsent'
+import './policiesSettings.css'
+import { toast } from 'react-toastify'
 
-const { Text, Paragraph, Title } = Typography
+const { Text, Title } = Typography
 const CONTACT_INFORMATION = 'Contact Information'
 
 const PoliciesSettings = ({ storeName }) => {
@@ -22,7 +23,6 @@ const PoliciesSettings = ({ storeName }) => {
     const storeUUID = searchParams.get('id')
     const storeId = searchParams.get('storeId')
     const newPolicyRef = useRef(null)
-
     const [contactInformation, setContactInformation] = useState([])
     const [policiesWithoutContactInformation, setPoliciesWithoutContactInformation] = useState([])
     const [addNewPolicy, setAddNewPolicy] = useState(false)
@@ -38,9 +38,11 @@ const PoliciesSettings = ({ storeName }) => {
     } = useGetUserConsent({
         storeId: storeUUID,
     })
-
     const { mutate: deleteStoreUserConsent, status: deleteStoreUserConsentStatus } = useDeleteUserConsent()
-
+    const [isPolicyhistory, setIsPolicyHistory] = useState(false)
+    const handlePolicyHistory = () => {
+        setIsPolicyHistory(true)
+    }
     const handelAddNewPolicy = () => {
         setAddNewPolicy(true)
         setTimeout(() => {
@@ -61,7 +63,7 @@ const PoliciesSettings = ({ storeName }) => {
         const tempPoliciesWithoutContactInformation = []
         if (userConsentStatus === 'success' || isUserConsentFetched) {
             userConsents?.userconsent_data?.forEach((consent) => {
-                if (consent?.name === CONTACT_INFORMATION) {
+                if (consent?.version_details[0]?.consent_name === CONTACT_INFORMATION) {
                     tempContactInformation = [consent]
                 } else tempPoliciesWithoutContactInformation.push(consent)
             })
@@ -80,18 +82,20 @@ const PoliciesSettings = ({ storeName }) => {
             deleteStoreUserConsent(
                 { userConsentId },
                 {
-                    onSuccess: () => {
+                    onSuccess: (response) => {
                         refetchUserConsent()
                         setContactInfo(false)
-                        toast(t('messages:policy_deleted_successfully'), {
+                        // MarketplaceToaster.showToast(response?.response_body?.message)
+                        toast(response?.response_body?.message, {
                             type: 'success',
                         })
                         setDeletePolicy(null)
                     },
                     onError: (err) => {
-                        toast(err?.response?.data?.response_message || t('messages:error_deleting_policy'), {
-                            type: 'error',
-                        })
+                        MarketplaceToaster.showToast(err?.response)
+                        // toast(err?.response?.data?.response_message || t('messages:error_deleting_policy'), {
+                        //     type: 'error',
+                        // })
                     },
                 }
             )
@@ -103,24 +107,36 @@ const PoliciesSettings = ({ storeName }) => {
     }
 
     return (
-        <section className=' !p-3 bg-white rounded-lg m-3'>
-            <Title level={3} className='!font-bold'>
-                {t('messages:policies')}
-            </Title>
-            <div className=' flex  w-full max-w-[980px] justify-between '>
-                <Text>{t('messages:help_info_policies')}</Text>
+        <section className=' !p-5 bg-white rounded-lg m-3'>
+            <div className=' flex  w-full  justify-between '>
+                <Title level={3} className='!font-bold m-0'>
+                    {t('messages:policies')}
+                </Title>
                 <div className='flex !gap-2'>
+                    <Button
+                        onClick={handlePolicyHistory}
+                        disabled={userConsentStatus !== 'success' || userConsents?.userconsent_data?.length <= 0}>
+                        {t('labels:policy_history')}
+                    </Button>
                     <Button
                         onClick={handelPreviewAndCustomise}
                         disabled={userConsentStatus !== 'success' || userConsents?.userconsent_data?.length <= 0}>
                         {t('labels:preview_and_customise')}
                     </Button>
                     <Button
-                        className='app-btn-primary '
+                        className='app-btn-primary'
                         onClick={handelAddNewPolicy}
                         disabled={userConsentStatus !== 'success'}>
                         {t('labels:add_new_policy')}
                     </Button>
+                </div>
+            </div>
+            <div className='mt-3 max-w-[1000px] '>
+                <div>
+                    <Text>{t('messages:help_info_policies')}</Text>
+                </div>
+                <div className='mt-3'>
+                    <Text>{t('messages:policy_bonus_note')}</Text>
                 </div>
             </div>
             <div className=' mt-3'>
@@ -138,6 +154,8 @@ const PoliciesSettings = ({ storeName }) => {
                                         refetchUserConsent={refetchUserConsent}
                                         handelDeletePolicy={handelDeletePolicy}
                                         storeId={storeId}
+                                        consentDetails={consent?.version_details?.[0]}
+                                        policyStatus={consent?.version_details?.[0]?.status}
                                     />
                                 </div>
                             )
@@ -156,12 +174,12 @@ const PoliciesSettings = ({ storeName }) => {
                         </div>
                     ) : userConsents?.userconsent_data?.length <= 0 ? (
                         <div className=' py-3'>
-                            <Empty description={false} />
+                            <VersionBanner addPolicyHandler={handelAddNewPolicy}></VersionBanner>
                         </div>
                     ) : null}
                     <div className=' flex items-center '>
                         <Checkbox onChange={onContactInfoChange} checked={addContactInfo}>
-                            Display contact information
+                            {t('messages:display_contact')}
                         </Checkbox>
                         <Tooltip title={t('messages:contact_policy_info')}>
                             <RiInformationFill className=' text-[#1677ff] text-base cursor-pointer' />
@@ -184,6 +202,8 @@ const PoliciesSettings = ({ storeName }) => {
                             isNewPolicy={contactInformation?.length === 0}
                             key={contactInformation?.[0]?.id || 'addContactInfo'}
                             storeId={storeId}
+                            consentDetails={contactInformation?.[0]?.version_details?.[0]}
+                            policyStatus={contactInformation?.[0]?.version_details?.[0]?.status}
                         />
                     )}
                 </div>
@@ -229,6 +249,15 @@ const PoliciesSettings = ({ storeName }) => {
                     storeId={storeId}
                     storeName={storeName}
                 />
+            </StoreModal>
+            <StoreModal
+                isVisible={isPolicyhistory}
+                title={t('labels:policy_history')}
+                isSpin={false}
+                cancelCallback={() => setIsPolicyHistory(null)}
+                width={900}
+                destroyOnClose={true}>
+                <PolicyHistory></PolicyHistory>
             </StoreModal>
         </section>
     )
