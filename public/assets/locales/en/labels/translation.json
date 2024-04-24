@@ -266,5 +266,6 @@
     "translate_to": "Translate To:",
     "language_translated": "Languages translated",
     "publish": "Publish",
-    "publish_policy_confirmation": "Publishing Policy Confirmation"
+    "publish_policy_confirmation": "Publishing Policy Confirmation",
+    "delete_policy": "Delete Policy"
 }

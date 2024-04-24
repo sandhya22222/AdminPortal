@@ -2,10 +2,12 @@ import { Button, Skeleton, Tabs, Typography } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { CheckGreen, CopyTextImage } from '../../../constants/media'
 import useGetUserConsentVersionDetails from '../hooks/useGetUserConsentVersionDetails'
+import StoreModal from '../../../components/storeModal/StoreModal'
+import AddVersion from './AddVersion'
+import moment from 'moment/moment'
 
-function VersionHistory({ userConsentId }) {
+function VersionHistory({ userConsentId, refetchUserConsent, setVersionHistory }) {
     const { t } = useTranslation()
     const {
         data: userConsentVersionData,
@@ -17,17 +19,21 @@ function VersionHistory({ userConsentId }) {
     const [activeKey, setActiveKey] = useState('0')
     const [userConsentVersionDetails, setUserConsentVersionDetails] = useState([])
     const [versionTabData, setVersionTabData] = useState([])
+    const [addVersion, setAddVersion] = useState(false)
 
-    // const versionData = [
-    //     { id: '0', version: 'V2.0', timestamp: '17 March 2024, 13:00' },
-    //     { id: '1', version: 'V1.5', timestamp: '18 March 2024, 12:00' },
-    //     { id: '2', version: 'V1.8', timestamp: '19 March 2024, 14:00' },
-    // ]
+    const getDate = (date) => {
+        try {
+            const formattedDate = moment(date).format('D MMM YYYY')
+            return formattedDate
+        } catch (error) {
+            return ''
+        }
+    }
 
     const handleTabChange = (key) => {
         setActiveKey(key)
         setUserConsentVersionDetails(
-            userConsentVersionData?.userconsent_version_details?.filter((data) => String(data.id) === activeKey)[0]
+            userConsentVersionData?.userconsent_version_details?.filter((data) => String(data.id) === key)[0]
         )
     }
 
@@ -35,12 +41,14 @@ function VersionHistory({ userConsentId }) {
         let versionData = []
         if (userConsentVersionStatus === 'success' || isUserConsentVersionDetailsFetched) {
             console.log('userConsentVersionData.....', userConsentVersionData)
-            userConsentVersionData?.userconsent_version_details?.forEach((data) => {
-                versionData.push({
-                    id: data.id,
-                    version: data.version_number,
+            userConsentVersionData?.userconsent_version_details
+                ?.sort((a, b) => b.id - a.id)
+                ?.forEach((data) => {
+                    versionData.push({
+                        id: data.id,
+                        version: data.version_number,
+                    })
                 })
-            })
             setVersionTabData(versionData)
             setUserConsentVersionDetails(userConsentVersionData?.userconsent_version_details?.[0])
             setActiveKey(String(userConsentVersionData?.userconsent_version_details?.[0]?.id))
@@ -75,7 +83,7 @@ function VersionHistory({ userConsentId }) {
                                             }}>
                                             {data?.version === 1 ? 'V1.0' : 'V' + data?.version}
                                         </div>
-                                        <div>{'17 March 2024, 13:00'}</div>
+                                        <div>{getDate(userConsentVersionDetails?.created_on)}</div>
                                     </div>
                                 }></Tabs.TabPane>
                         ))}
@@ -86,13 +94,15 @@ function VersionHistory({ userConsentId }) {
                         </div>
                         <div>
                             <TextArea
-                                className='!w-[650px] !h-[450px]'
+                                className='!w-[700px] !h-[450px]'
                                 placeholder={'Enter offer description here'}
                                 value={userConsentVersionDetails?.consent_discription}
                             />
-                            <p className='py-2 text-[#000000] text-opacity-50'>{t('labels:last_updated')}</p>
+                            <p className='py-2 text-[#000000] text-opacity-50'>
+                                {t('labels:last_updated') + ': ' + getDate(userConsentVersionDetails?.updated_on)}
+                            </p>
                             <div className='mt-4 flex justify-end'>
-                                <Button className='app-btn-primary' onClick={''}>
+                                <Button className='app-btn-primary' onClick={() => setAddVersion(true)}>
                                     {t('labels:create_new_version')}
                                 </Button>
                             </div>
@@ -100,6 +110,23 @@ function VersionHistory({ userConsentId }) {
                     </div>
                 </div>
             )}
+            <StoreModal
+                isVisible={addVersion}
+                title={t('labels:add_version')}
+                isSpin={false}
+                cancelCallback={() => setAddVersion(false)}
+                width={400}
+                destroyOnClose={true}>
+                <AddVersion
+                    versionNumber={userConsentVersionDetails?.version_number}
+                    storeId={userConsentVersionDetails?.store_id}
+                    consentId={userConsentId}
+                    refetchUserConsent={refetchUserConsent}
+                    setAddVersion={setAddVersion}
+                    setVersionHistory={setVersionHistory}
+                    versionId={userConsentVersionDetails?.id}
+                    versionfrom={true}></AddVersion>
+            </StoreModal>
         </div>
     )
 }

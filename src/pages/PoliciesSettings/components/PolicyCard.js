@@ -3,7 +3,7 @@ import { Button, Dropdown, Input, Space, Tooltip, Typography } from 'antd'
 import moment from 'moment/moment'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { RiInformationFill, RiTranslate2 } from 'react-icons/ri'
+import { RiInformationFill, RiTranslate2, RiDeleteBin6Fill } from 'react-icons/ri'
 import ReactQuill, { Quill } from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { toast } from 'react-toastify'
@@ -14,6 +14,7 @@ import AddVersion from './AddVersion'
 import TranslatePolicy from './TranslatePolicy'
 import VersionHistory from './VersionHistory'
 import usePublishUserConsent from '../hooks/usePublishUserConsent'
+import MarketplaceToaster from '../../../util/marketplaceToaster'
 
 const { Paragraph } = Typography
 const Link = Quill.import('formats/link')
@@ -89,7 +90,6 @@ const PolicyCard = ({
     const [description, setDescription] = useState(consentDetails?.consent_discription)
     const [descriptionText, setDescriptionText] = useState(consentDetails?.consent_discription)
     const [descriptionModified, setDescriptionModified] = useState(false)
-    const [consentVersionName, setConsentVersionName] = useState(consentDetails?.version_name || 'Version 1.0')
     const [policyConfirmation, setPolicyConfirmation] = useState(false)
     const isConsentNameChanged = isNewPolicy
         ? !!consentName
@@ -131,17 +131,19 @@ const PolicyCard = ({
         publishUserConsent(
             { body, userConsentVersionId: consentDetails?.id },
             {
-                onSuccess: () => {
+                onSuccess: (response) => {
                     refetchUserConsent()
-                    toast(t('Policy updated successfully'), {
-                        type: 'success',
-                    })
+                    MarketplaceToaster.showToast(response)
+                    // toast(t('Policy updated successfully'), {
+                    //     type: 'success',
+                    // })
                     setPolicyConfirmation(false)
                 },
                 onError: (err) => {
-                    toast(err?.response?.data?.response_message || t('messages:error_saving_policy'), {
-                        type: 'error',
-                    })
+                    MarketplaceToaster.showToast(err.response)
+                    // toast(err?.response?.data?.response_message || t('messages:error_saving_policy'), {
+                    //     type: 'error',
+                    // })
                 },
             }
         )
@@ -161,19 +163,21 @@ const PolicyCard = ({
             createNewUserConsent(
                 { body },
                 {
-                    onSuccess: () => {
+                    onSuccess: (response) => {
                         refetchUserConsent()
-                        toast(t('messages:policy_saved_successfully'), {
-                            type: 'success',
-                        })
+                        MarketplaceToaster.showToast(response)
+                        // toast(t('messages:policy_saved_successfully'), {
+                        //     type: 'success',
+                        // })
                         setTimeout(() => {
                             setAddNewPolicy(false)
                         }, [100])
                     },
                     onError: (err) => {
-                        toast(err?.response?.data?.response_message || t('messages:error_saving_policy'), {
-                            type: 'error',
-                        })
+                        MarketplaceToaster.showToast(err?.response)
+                        // toast(err?.response?.data?.response_message || t('messages:error_saving_policy'), {
+                        //     type: 'error',
+                        // })
                     },
                 }
             )
@@ -181,19 +185,21 @@ const PolicyCard = ({
             UpdateUserConsent(
                 { body, userConsentVersionId: consentDetails?.id },
                 {
-                    onSuccess: () => {
+                    onSuccess: (response) => {
+                        MarketplaceToaster.showToast(response)
                         refetchUserConsent()
-                        toast(t('messages:policy_saved_successfully'), {
-                            type: 'success',
-                        })
+                        // toast(t('messages:policy_saved_successfully'), {
+                        //     type: 'success',
+                        // })
                         setTimeout(() => {
                             setDescriptionModified(false)
                         }, [300])
                     },
                     onError: (err) => {
-                        toast(err?.response?.data?.response_message || t('messages:error_saving_policy'), {
-                            type: 'error',
-                        })
+                        MarketplaceToaster.showToast(err?.response)
+                        // toast(err?.response?.data?.response_message || t('messages:error_saving_policy'), {
+                        //     type: 'error',
+                        // })
                     },
                 }
             )
@@ -221,9 +227,7 @@ const PolicyCard = ({
     }
 
     return (
-        <div
-            key={consent?.id}
-            className=' bg-white  pb-6 policy-card max-w-[980px] w-full shadow-md rounded-md mb-3 px-4 pt-2'>
+        <div key={consent?.id} className=' bg-white  pb-6 policy-card w-full shadow-md rounded-md mb-3 px-4 pt-2'>
             <div className=' h-[64px] flex justify-between items-center  w-full'>
                 <div className={`flex items-center gap-x-2 max-w-[60%] cursor-default `}>
                     <Paragraph className=' !font-medium text-base !mb-0  ' ellipsis={{ tooltip: consentName }}>
@@ -244,9 +248,11 @@ const PolicyCard = ({
                                     },
                                 ],
                                 onClick: handleVersionHistory,
-                            }}>
+                            }}
+                            placement='bottomRight'
+                            arrow>
                             <Space>
-                                {consentVersionName}
+                                {consentDetails?.version_name || 'Version 1.0'}
                                 <DownOutlined className={!(policyStatus === 2) ? '!text-[#857e7e40]' : ''} />
                             </Space>
                         </Dropdown>
@@ -268,8 +274,12 @@ const PolicyCard = ({
                     <div>
                         {policyType !== 'CONTACT_POLICY' && (
                             <div>
-                                <Button danger onClick={() => handelDeletePolicy(consent?.id)}>
-                                    {t('labels:delete')}
+                                <Button
+                                    danger
+                                    className='flex items-center'
+                                    icon={<RiDeleteBin6Fill />}
+                                    onClick={() => handelDeletePolicy(consent?.id)}>
+                                    {t('labels:delete_policy')}
                                 </Button>
                             </div>
                         )}
@@ -344,26 +354,15 @@ const PolicyCard = ({
                         </Button>
                     </Tooltip>
                     {(policyStatus !== 1 || isConsentNameChanged || descriptionModified) && (
-                        <>
-                            <Button
-                                onClick={handelCancelDescription}
-                                disabled={
-                                    createNewUserConsentStatus === 'pending' ||
-                                    UpdateUserConsentStatus === 'pending' ||
-                                    !(consentName?.trim() && descriptionText?.trim())
-                                }>
-                                {t('labels:save')} & {t('labels:publish')}
-                            </Button>
-                            <Button
-                                onClick={handelCancelDescription}
-                                disabled={
-                                    createNewUserConsentStatus === 'pending' ||
-                                    UpdateUserConsentStatus === 'pending' ||
-                                    !(consentName?.trim() && descriptionText?.trim())
-                                }>
-                                {t('labels:cancel')}
-                            </Button>
-                        </>
+                        <Button
+                            onClick={handelCancelDescription}
+                            disabled={
+                                createNewUserConsentStatus === 'pending' ||
+                                UpdateUserConsentStatus === 'pending' ||
+                                !(consentName?.trim() && descriptionText?.trim())
+                            }>
+                            {t('labels:cancel')}
+                        </Button>
                     )}
                 </div>
             ) : null}
@@ -374,7 +373,10 @@ const PolicyCard = ({
                 cancelCallback={() => setVersionHistory(false)}
                 width={900}
                 destroyOnClose={true}>
-                <VersionHistory userConsentId={consent?.id}></VersionHistory>
+                <VersionHistory
+                    userConsentId={consent?.id}
+                    refetchUserConsent={refetchUserConsent}
+                    setVersionHistory={setVersionHistory}></VersionHistory>
             </StoreModal>
             <StoreModal
                 isVisible={addVersion}

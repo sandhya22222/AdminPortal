@@ -7,6 +7,7 @@ import useUpdateConsentLead from '../hooks/useUpdateConsentLead'
 import useUpdateConsentsOrder from '../hooks/useUpdateConsentsOrder'
 import { toast } from 'react-toastify'
 import useGetStoreUserConsent from '../hooks/useGetStoreUserConsent'
+import MarketplaceToaster from '../../../util/marketplaceToaster'
 
 const { Text, Paragraph } = Typography
 const { TextArea } = Input
@@ -85,9 +86,10 @@ const PreviewAndCustomise = ({ closeModal, refetchUserConsent, storeName, storeI
                     { body },
                     {
                         onError: (err) => {
-                            toast(err?.response?.data?.message || t('messages:error_updating_Leadin_line'), {
-                                type: 'error',
-                            })
+                            MarketplaceToaster.showToast(err?.response)
+                            // toast(err?.response?.data?.message || t('messages:error_updating_Leadin_line'), {
+                            //     type: 'error',
+                            // })
                             Promise.reject()
                         },
                     }
@@ -108,9 +110,10 @@ const PreviewAndCustomise = ({ closeModal, refetchUserConsent, storeName, storeI
                     { body },
                     {
                         onError: (err) => {
-                            toast(err?.response?.data?.message || t('messages:error_updating_consent_order'), {
-                                type: 'error',
-                            })
+                            MarketplaceToaster.showToast(err?.response)
+                            // toast(err?.response?.data?.message || t('messages:error_updating_consent_order'), {
+                            //     type: 'error',
+                            // })
                             Promise.reject()
                         },
                     }

@@ -3,8 +3,8 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { RiInformationFill } from 'react-icons/ri'
 import { useSearchParams } from 'react-router-dom'
-import { toast } from 'react-toastify'
 import StoreModal from '../../components/storeModal/StoreModal'
+import MarketplaceToaster from '../../util/marketplaceToaster'
 import PolicyCard from './components/PolicyCard'
 import PolicyHistory from './components/PolicyHistory'
 import PreviewAndCustomise from './components/PreviewAndCustomise'
@@ -12,6 +12,7 @@ import VersionBanner from './components/VersionBanner'
 import useDeleteUserConsent from './hooks/useDeleteUserConsent'
 import useGetUserConsent from './hooks/useGetUserConsent'
 import './policiesSettings.css'
+import { toast } from 'react-toastify'
 
 const { Text, Title } = Typography
 const CONTACT_INFORMATION = 'Contact Information'
@@ -25,7 +26,6 @@ const PoliciesSettings = ({ storeName }) => {
     const [contactInformation, setContactInformation] = useState([])
     const [policiesWithoutContactInformation, setPoliciesWithoutContactInformation] = useState([])
     const [addNewPolicy, setAddNewPolicy] = useState(false)
-    const [publishNewPolicy, setPublishNewPolicy] = useState(false)
     const [addContactInfo, setContactInfo] = useState(false)
     const [deletePolicy, setDeletePolicy] = useState(null)
     const [previewAndCustomise, setPreviewAndCustomise] = useState(null)
@@ -82,18 +82,20 @@ const PoliciesSettings = ({ storeName }) => {
             deleteStoreUserConsent(
                 { userConsentId },
                 {
-                    onSuccess: () => {
+                    onSuccess: (response) => {
                         refetchUserConsent()
                         setContactInfo(false)
-                        toast(t('messages:policy_deleted_successfully'), {
-                            type: 'success',
-                        })
+                        MarketplaceToaster.showToast(response)
+                        // toast(t('messages:policy_deleted_successfully'), {
+                        //     type: 'success',
+                        // })
                         setDeletePolicy(null)
                     },
                     onError: (err) => {
-                        toast(err?.response?.data?.response_message || t('messages:error_deleting_policy'), {
-                            type: 'error',
-                        })
+                        MarketplaceToaster.showToast(err?.response)
+                        // toast(err?.response?.data?.response_message || t('messages:error_deleting_policy'), {
+                        //     type: 'error',
+                        // })
                     },
                 }
             )
@@ -105,8 +107,8 @@ const PoliciesSettings = ({ storeName }) => {
     }
 
     return (
-        <section className=' !p-3 bg-white rounded-lg m-3'>
-            <div className=' flex  w-full max-w-[980px] justify-between '>
+        <section className=' !p-5 bg-white rounded-lg m-3'>
+            <div className=' flex  w-full  justify-between '>
                 <Title level={3} className='!font-bold m-0'>
                     {t('messages:policies')}
                 </Title>
@@ -200,6 +202,8 @@ const PoliciesSettings = ({ storeName }) => {
                             isNewPolicy={contactInformation?.length === 0}
                             key={contactInformation?.[0]?.id || 'addContactInfo'}
                             storeId={storeId}
+                            consentDetails={contactInformation?.[0]?.version_details?.[0]}
+                            policyStatus={contactInformation?.[0]?.version_details?.[0]?.status}
                         />
                     )}
                 </div>

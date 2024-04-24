@@ -3,8 +3,18 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import useCreateVersion from '../hooks/useCreateVersion'
+import MarketplaceToaster from '../../../util/marketplaceToaster'
 
-function AddVersion({ versionNumber, storeId, consentId, setAddVersion, refetchUserConsent }) {
+function AddVersion({
+    versionNumber,
+    storeId,
+    consentId,
+    setAddVersion,
+    refetchUserConsent,
+    setVersionHistory,
+    versionfrom,
+    versionId,
+}) {
     const [inputValuefirst, setInputValueFirst] = useState()
     const [inputValueSecond, setInputValueSecond] = useState()
     const { t } = useTranslation()
@@ -48,20 +58,22 @@ function AddVersion({ versionNumber, storeId, consentId, setAddVersion, refetchU
             body.version_number = parseFloat(inputValuefirst + '.' + inputValueSecond)
         }
 
+        // if (versionfrom) body.version_from = versionId
+
         createNewVersion(
             { body },
             {
-                onSuccess: () => {
+                onSuccess: (response) => {
+                    MarketplaceToaster.showToast(response)
                     refetchUserConsent()
-                    toast(t('version added successfully'), {
-                        type: 'success',
-                    })
+                    // toast(t('version added successfully'), {
+                    //     type: 'success',
+                    // })
                     setAddVersion(false)
+                    if (setVersionHistory) setVersionHistory(false)
                 },
                 onError: (err) => {
-                    toast(err?.response?.data?.response_message || t('messages:error_saving_policy'), {
-                        type: 'error',
-                    })
+                    MarketplaceToaster.showToast(err?.response)
                 },
             }
         )
