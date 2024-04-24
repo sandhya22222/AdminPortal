@@ -85,10 +85,10 @@ const PoliciesSettings = ({ storeName }) => {
                     onSuccess: (response) => {
                         refetchUserConsent()
                         setContactInfo(false)
-                        MarketplaceToaster.showToast(response)
-                        // toast(t('messages:policy_deleted_successfully'), {
-                        //     type: 'success',
-                        // })
+                        // MarketplaceToaster.showToast(response?.response_body?.message)
+                        toast(response?.response_body?.message, {
+                            type: 'success',
+                        })
                         setDeletePolicy(null)
                     },
                     onError: (err) => {

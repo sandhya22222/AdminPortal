@@ -186,11 +186,11 @@ const PolicyCard = ({
                 { body, userConsentVersionId: consentDetails?.id },
                 {
                     onSuccess: (response) => {
-                        MarketplaceToaster.showToast(response)
+                        // MarketplaceToaster.showToast(response?.response_message)
                         refetchUserConsent()
-                        // toast(t('messages:policy_saved_successfully'), {
-                        //     type: 'success',
-                        // })
+                        toast(response?.response_message, {
+                            type: 'success',
+                        })
                         setTimeout(() => {
                             setDescriptionModified(false)
                         }, [300])
