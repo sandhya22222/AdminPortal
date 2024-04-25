@@ -32,6 +32,7 @@ import NewDashboard from './pages/NewDashboard/Newdashboard'
 import { useEffect } from 'react'
 import ListCurrency from './pages/storeCurrency/ListCurrency'
 import EditCurrency from './pages/storeCurrency/EditCurrency'
+import MyProfile from './pages/StoreUsers/MyProfile'
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL
 
 // const authFromEnv = process.env.REACT_APP_AUTH;
@@ -132,7 +133,7 @@ const App = () => {
 
                                     <Route path='paymenttype' element={<PaymentType />} />
                                     <Route path='adminsettings' element={<StoreLimitComponent />} />
-                                    <Route path='userprofile' element={<UserProfile />} />
+                                    <Route path='userprofile' element={<MyProfile />} />
 
                                     <Route path='user-access-control'>
                                         <Route path='list-user-roles' element={<UserAccessControl />} />
