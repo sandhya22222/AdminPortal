@@ -1,13 +1,12 @@
 import { useMutation } from '@tanstack/react-query'
 import MarketplaceServices from '../../../services/axios/MarketplaceServices'
-const BASE_URL = process.env.REACT_APP_USER_CONSENT
-const URL = process.env.REACT_APP_USER_CONSENT_NEW
+const versionUrl = process.env.REACT_APP_USER_CONSENT_VERSION
 
-const useCreateUserConsent = () => {
+const useCreateVersion = () => {
     const createUserConsent = async ({ body }) => {
-        const res = await MarketplaceServices.save(URL, body)
+        const res = await MarketplaceServices.save(versionUrl, body)
         return res
     }
     return useMutation({ mutationFn: createUserConsent })
 }
-export default useCreateUserConsent
+export default useCreateVersion
