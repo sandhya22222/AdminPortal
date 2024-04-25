@@ -123,6 +123,8 @@
     "restore_settings_modal_msg": "This action will remove any custom color changes you've made.",
     "color_validation": "Please provide the valid color code",
     "contact_policy_info": "Unchecking the 'Display contact information' option leads to deletion of this policy.",
+    "policies_description_Not_available": "Policies Description Not Available",
+    "no_policies_available": "No Policies Available",
     "policy_bonus_note": "Bonus: Add essential contact information for users who need help.  (This is mandatory for businesses in the EU!)",
     "policy_banner_image_note": "Craft policies and terms to display in your store's policy section.",
     "display_contact": "Display contact information",
