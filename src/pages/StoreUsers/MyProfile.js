@@ -1,5 +1,5 @@
 import { Tabs, Typography, Layout } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import HeaderForTitle from '../../components/header/HeaderForTitle'
