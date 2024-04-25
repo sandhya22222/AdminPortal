@@ -237,7 +237,7 @@ const PolicyCard = ({
                 <div className='flex justify-end'>
                     <div className='flex items-center'>
                         <Dropdown
-                            className='w-[90px]'
+                            className='w-[96px]'
                             disabled={!(policyStatus === 2)}
                             menu={{
                                 items: [

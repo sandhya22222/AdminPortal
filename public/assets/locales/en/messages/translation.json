@@ -131,5 +131,6 @@
     "last_update_info": "The date and time of publication will be shown under 'Last Updated.'",
     "please_add_description": "Please add description to save",
     "policy_confirmation_message": "Are you sure you want to publish the new policy?",
-    "policy_confirmation_note": "This action will update the policy displayed in both the store footer and the login form."
+    "policy_confirmation_note": "This action will update the policy displayed in both the store footer and the login form.",
+    "poicy_warning" : "You can only publish up to “10 Policies”. Please delete some policies to create more and publish."
 }

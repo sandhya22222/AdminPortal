@@ -1,11 +1,12 @@
 import { Button, Skeleton, Tabs, Typography } from 'antd'
-import TextArea from 'antd/es/input/TextArea'
+import moment from 'moment/moment'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import useGetUserConsentVersionDetails from '../hooks/useGetUserConsentVersionDetails'
+import ReactQuill from 'react-quill'
 import StoreModal from '../../../components/storeModal/StoreModal'
+import useGetUserConsentVersionDetails from '../hooks/useGetUserConsentVersionDetails'
 import AddVersion from './AddVersion'
-import moment from 'moment/moment'
+import '../policiesSettings.css'
 
 function VersionHistory({ userConsentId, refetchUserConsent, setVersionHistory }) {
     const { t } = useTranslation()
@@ -62,42 +63,47 @@ function VersionHistory({ userConsentId, refetchUserConsent, setVersionHistory }
             </div>
             {userConsentVersionStatus === 'success' && (
                 <div className='flex justify-between'>
-                    <Tabs
-                        defaultActiveKey={'0'}
-                        activeKey={activeKey}
-                        onChange={handleTabChange}
-                        tabPosition={'left'}
-                        className='!mb-0'>
-                        {versionTabData?.map((data) => (
-                            <Tabs.TabPane
-                                key={data?.id}
-                                tab={
-                                    <div className='flex flex-col items-start'>
-                                        <div
-                                            style={{
-                                                maxWidth: '100px',
-                                                display: 'inline-block',
-                                                overflow: 'hidden',
-                                                textOverflow: 'ellipsis',
-                                                whiteSpace: 'nowrap',
-                                            }}>
-                                            {data?.version === 1 ? 'V1.0' : 'V' + data?.version}
+                    <div className='h-[530px] w-[200px] overflow-y-auto overflow-x-hidden'>
+                        <Tabs
+                            defaultActiveKey={'0'}
+                            activeKey={activeKey}
+                            onChange={handleTabChange}
+                            tabPosition={'left'}
+                            className='!mb-0'>
+                            {versionTabData?.map((data) => (
+                                <Tabs.TabPane
+                                    key={data?.id}
+                                    tab={
+                                        <div className='flex flex-col items-start'>
+                                            <div
+                                                style={{
+                                                    maxWidth: '100px',
+                                                    display: 'inline-block',
+                                                    overflow: 'hidden',
+                                                    textOverflow: 'ellipsis',
+                                                    whiteSpace: 'nowrap',
+                                                }}>
+                                                {data?.version === 1 ? 'V1.0' : 'V' + data?.version}
+                                            </div>
+                                            <div>{getDate(userConsentVersionDetails?.created_on)}</div>
                                         </div>
-                                        <div>{getDate(userConsentVersionDetails?.created_on)}</div>
-                                    </div>
-                                }></Tabs.TabPane>
-                        ))}
-                    </Tabs>
+                                    }></Tabs.TabPane>
+                            ))}
+                        </Tabs>
+                    </div>
                     <div>
                         <div className='flex items-center justify-between pb-3'>
                             <Typography.Title level={5}>{userConsentVersionDetails?.consent_name}</Typography.Title>
                         </div>
                         <div>
-                            <TextArea
-                                className='!w-[700px] !h-[450px]'
-                                placeholder={'Enter offer description here'}
-                                value={userConsentVersionDetails?.consent_discription}
-                            />
+                            <div className='!w-[700px] '>
+                                <ReactQuill
+                                    value={userConsentVersionDetails?.consent_discription}
+                                    modules={{ toolbar: false }}
+                                    readOnly={true}
+                                    style={{ width: '100%', height: '400px' }}
+                                />
+                            </div>
                             <p className='py-2 text-[#000000] text-opacity-50'>
                                 {t('labels:last_updated') + ': ' + getDate(userConsentVersionDetails?.updated_on)}
                             </p>
