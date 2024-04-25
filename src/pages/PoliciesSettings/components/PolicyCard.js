@@ -231,7 +231,9 @@ const PolicyCard = ({
          */
         function handleClickOutside(event) {
             if (policyTitleRef.current && !policyTitleRef.current.contains(event.target)) {
-                setIsTittleEditable(false)
+                setTimeout(() => {
+                    setIsTittleEditable(false)
+                }, [1])
             }
         }
         // Bind the event listener
