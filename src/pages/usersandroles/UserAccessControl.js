@@ -287,9 +287,9 @@ const UserAccessControl = () => {
                 var pageLimit = searchParams.get('limit') ? searchParams.get('limit') : itemsPerPageFromEnv
 
                 // setIsLoading(true)
-                if (parseInt(presentTab) === '1') {
+                if (parseInt(presentTab) === 1) {
                     findAllGroupLists(parseInt(pageNumber), parseInt(pageLimit))
-                } else if (parseInt(presentTab) === '2') {
+                } else if (parseInt(presentTab) === 2) {
                 } else {
                     findAllUsersLists(parseInt(pageNumber), parseInt(pageLimit))
                 }
