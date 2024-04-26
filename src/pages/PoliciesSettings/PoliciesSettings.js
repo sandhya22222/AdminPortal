@@ -179,6 +179,11 @@ const PoliciesSettings = ({ storeName }) => {
                                         storeId={storeId}
                                         consentDetails={consent?.version_details?.[0]}
                                         policyStatus={consent?.version_details?.[0]?.status}
+                                        version={
+                                            consent?.version_details?.[0]?.version_number === 1
+                                                ? 'V1.0'
+                                                : 'V' + consent?.version_details?.[0]?.version_number
+                                        }
                                     />
                                 </div>
                             )
@@ -227,6 +232,11 @@ const PoliciesSettings = ({ storeName }) => {
                             storeId={storeId}
                             consentDetails={contactInformation?.[0]?.version_details?.[0]}
                             policyStatus={contactInformation?.[0]?.version_details?.[0]?.status}
+                            version={
+                                contactInformation?.[0]?.version_details?.[0]?.version_number === 1
+                                    ? 'V1.0'
+                                    : 'V' + contactInformation?.[0]?.version_details?.[0]?.version_number
+                            }
                         />
                     )}
                 </div>

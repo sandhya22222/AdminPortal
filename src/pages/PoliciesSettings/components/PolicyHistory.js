@@ -1,12 +1,13 @@
 import { DownOutlined } from '@ant-design/icons'
-import { Dropdown, Skeleton, Space, Tabs } from 'antd'
-import TextArea from 'antd/es/input/TextArea'
+import { Dropdown, Skeleton, Space, Tabs, Typography } from 'antd'
 import moment from 'moment/moment'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import useGetPolicyHistory from '../hooks/useGetPolicyHistory'
 import ReactQuill from 'react-quill'
+
+const { Text } = Typography
 
 function PolicyHistory() {
     const { t } = useTranslation()
@@ -108,7 +109,18 @@ function PolicyHistory() {
                                                     textOverflow: 'ellipsis',
                                                     whiteSpace: 'nowrap',
                                                 }}>
-                                                {data?.policyTitle}
+                                                <Text
+                                                    ellipsis={{
+                                                        tooltip: {
+                                                            title: data?.policyTitle,
+                                                            mouseLeaveDelay: 0,
+                                                            mouseEnterDelay: 0.5,   
+                                                            placement:"left"
+                                                        },
+                                                    }}
+                                                    className='text-[13px] '>
+                                                    {data?.policyTitle}
+                                                </Text>
                                             </div>
                                         </div>
                                     }></Tabs.TabPane>
