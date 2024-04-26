@@ -309,7 +309,7 @@ const Stores = () => {
             key: 'limits',
             width: '30%',
             render: (text) => {
-                const [limitName, keyName, tooltip] = text.split(',')
+                const [limitName, limitValue, keyName, tooltip] = text.split(',')
                 return (
                     <Content className='flex flex-col gap-2'>
                         <div className='flex gap-2 items-center'>
