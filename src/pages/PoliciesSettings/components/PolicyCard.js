@@ -391,8 +391,7 @@ const PolicyCard = ({
                 <VersionHistory
                     userConsentId={consent?.id}
                     refetchUserConsent={refetchUserConsent}
-                    setVersionHistory={setVersionHistory}
-                    ></VersionHistory>
+                    setVersionHistory={setVersionHistory}></VersionHistory>
             </StoreModal>
             <StoreModal
                 isVisible={addVersion}
@@ -415,7 +414,13 @@ const PolicyCard = ({
                 cancelCallback={() => setTranslatePolicy(false)}
                 width={1088}
                 destroyOnClose={true}>
-                <TranslatePolicy></TranslatePolicy>
+                <TranslatePolicy
+                    userConsentVersionId={consentDetails?.id}
+                    userConsentBaseName={consentDetails?.consent_name}
+                    userConsentBaseDescription={consentDetails?.consent_discription}
+                    storeId={storeId}
+                    setTranslatePolicy={setTranslatePolicy}
+                    ></TranslatePolicy>
             </StoreModal>
             <StoreModal
                 isVisible={policyConfirmation}
