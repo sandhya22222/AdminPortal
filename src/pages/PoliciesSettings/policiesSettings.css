@@ -2,3 +2,7 @@
     height: 320px !important;
     overflow: auto !important;
 }
+
+.policy-tag .ant-tag-close-icon {
+    color: #00000073 !important; /* Change the color of the close icon */
+}

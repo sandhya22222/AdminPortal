@@ -1,7 +1,7 @@
-import { Alert, Button, Checkbox, Modal, Skeleton, Tooltip, Typography } from 'antd'
+import { Alert, Button, Checkbox, Modal, Skeleton, Tag, Tooltip, Typography } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { RiInformationFill } from 'react-icons/ri'
+import { RiInformationFill, RiCloseCircleFill } from 'react-icons/ri'
 import { useSearchParams } from 'react-router-dom'
 import StoreModal from '../../components/storeModal/StoreModal'
 import MarketplaceToaster from '../../util/marketplaceToaster'
@@ -28,6 +28,7 @@ const PoliciesSettings = ({ storeName }) => {
     const [addNewPolicy, setAddNewPolicy] = useState(false)
     const [addContactInfo, setContactInfo] = useState(false)
     const [deletePolicy, setDeletePolicy] = useState(null)
+    const [policyWarning, setPolicyWarning] = useState(false)
     const [previewAndCustomise, setPreviewAndCustomise] = useState(null)
     const {
         data: userConsents,
@@ -44,10 +45,14 @@ const PoliciesSettings = ({ storeName }) => {
         setIsPolicyHistory(true)
     }
     const handelAddNewPolicy = () => {
-        setAddNewPolicy(true)
-        setTimeout(() => {
-            newPolicyRef.current.scrollIntoView(false)
-        }, [100])
+        if (userConsents?.count < 10) {
+            setAddNewPolicy(true)
+            setTimeout(() => {
+                newPolicyRef.current.scrollIntoView(false)
+            }, [100])
+        } else {
+            setPolicyWarning(true)
+        }
     }
     const onContactInfoChange = (e) => {
         if (contactInformation?.length > 0) {
@@ -90,6 +95,7 @@ const PoliciesSettings = ({ storeName }) => {
                             type: 'success',
                         })
                         setDeletePolicy(null)
+                        setPolicyWarning(false)
                     },
                     onError: (err) => {
                         MarketplaceToaster.showToast(err?.response)
@@ -108,6 +114,23 @@ const PoliciesSettings = ({ storeName }) => {
 
     return (
         <section className=' !p-5 bg-white rounded-lg m-3'>
+            <div className='mb-4'>
+                {policyWarning && (
+                    <Tag
+                        color='magenta'
+                        className='text-black text-[14px] policy-tag w-full flex justify-between px-2 py-2'
+                        closable
+                        onClose={() => setPolicyWarning(false)}>
+                        <div className='flex items-center'>
+                            <div className='pr-2'>
+                                {' '}
+                                <RiCloseCircleFill className='text-[#FF4D4F] text-base' />
+                            </div>
+                            {t('messages:poicy_warning')}
+                        </div>
+                    </Tag>
+                )}
+            </div>
             <div className=' flex  w-full  justify-between '>
                 <Title level={3} className='!font-bold m-0'>
                     {t('messages:policies')}
