@@ -1,33 +1,32 @@
 .ant-menu-item-selected {
-  background-color: var(--mp-brand-color-h) !important;
+    background-color: var(--mp-brand-color-h) !important;
 }
 
 .ant-menu-item:not(.ant-menu-item-selected):active {
-  background-color: var(--mp-brand-color-h) !important;
+    background-color: var(--mp-brand-color-h) !important;
 }
 
 .ant-menu-item-active {
-  background-color: var(--mp-brand-color-h) !important;
+    background-color: var(--mp-brand-color-h) !important;
 }
 
 .ant-menu-item .ant-menu-item-selected {
-  background-color: var(--mp-brand-color-h) !important;
+    background-color: var(--mp-brand-color-h) !important;
 }
 
 .ant-menu .ant-menu-item .ant-menu-item-icon {
-  min-width: 20px !important;
+    min-width: 20px !important;
 }
 
-.ant-menu-vertical >.ant-menu-item {
-  height: 49px !important;
-  line-height: 12px !important;
+.ant-menu-vertical > .ant-menu-item {
+    height: 49px !important;
+    line-height: 12px !important;
 }
 
-.ant-menu-submenu-title{
-  padding-left: 15px !important;
+.ant-menu-submenu-title {
+    padding-left: 15px !important;
 }
 
 .ant-menu-dark.ant-menu-inline .ant-menu-sub.ant-menu-inline {
-  background: unset !important;
-  }
-
+    background: unset !important;
+}

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import Cookies from 'js-cookie'
 
 /**
  * ! useAuthorization is a custom hook designed to get session storage value for session storage(refresh_token) .
@@ -12,30 +12,18 @@ import { useState, useEffect } from "react";
  * ?  const authorizationHeader = useAuthorization();
  * */
 
-// function useAuthorization() {
-//   const [value, setValue] = useState(null);
-
-//   useEffect(() => {
-//     const storedAuthorizationValue =
-//       window.sessionStorage.getItem("refresh_token");
-//     setValue(storedAuthorizationValue || null);
-//   }, []);
-
-//   return value;
-// }
-
-// export default useAuthorization;
-
 const useAuthorization = () => {
-  const autohrizationValue =
-    window.sessionStorage.getItem("access_token") || null;
-  const autorizationHeader = {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: autohrizationValue,
-    },
-  };
-  return autorizationHeader;
-};
+    const authorizationValue =
+        // window.sessionStorage.getItem("ap_access_token") || null;
+        Cookies.get('ap_access_token') || null
 
-export default useAuthorization;
+    const authorizationHeader = {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: authorizationValue,
+        },
+    }
+    return authorizationHeader
+}
+
+export default useAuthorization

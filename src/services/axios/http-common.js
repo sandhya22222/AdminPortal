@@ -1,12 +1,12 @@
-import axios from "axios";
-import SetupInterceptors from "./SetupInterceptors";
+import axios from 'axios'
+import SetupInterceptors from './SetupInterceptors'
 
-const baseURL = process.env.REACT_APP_BASE_URL;
+const baseURL = process.env.REACT_APP_BASE_URL
 
 const http = axios.create({
-  baseURL: baseURL,
-});
+    baseURL: baseURL,
+})
 
-SetupInterceptors(http);
+SetupInterceptors(http)
 
-export default http;
+export default http
