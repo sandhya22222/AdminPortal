@@ -10,13 +10,11 @@ const portalInfo = JSON.parse(process.env.REACT_APP_PORTAL_INFO)
 const NewFooter = () => {
     const { t } = useTranslation()
     const { data: userConsentData } = useGetStoreAdminConsent()
-
     return (
         <div className='bg-[#D9D9D9] !min-h-0 text-center p-[3px]'>
             <div className=' text-xs  gap-x-3  flex overflow-y-auto items-center flex-wrap justify-center'>
                 {userConsentData && userConsentData.length > 0
                     ? userConsentData?.map((data, index) => {
-                          console.log('index', index)
                           return (
                               <>
                                   {index <= 3 ? (
@@ -47,7 +45,9 @@ const NewFooter = () => {
                       })
                     : null}
                 {userConsentData && userConsentData.length > 4 ? (
-                    <Link to={`/dashboard/userprofile?tab=policies&subtab=1`}>{t('labels:show_more')}</Link>
+                    <Link to={`/dashboard/userprofile?tab=policies&subtab=${userConsentData && userConsentData[0].id}`}>
+                        {t('labels:show_more')}
+                    </Link>
                 ) : null}
             </div>
             <Paragraph className='footer-text-color text-xs pt-1 !mb-0'>

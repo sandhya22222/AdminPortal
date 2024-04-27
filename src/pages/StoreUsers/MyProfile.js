@@ -54,8 +54,8 @@ const MyProfile = () => {
                     </Content>
                 }
             />
-            <div className='px-6 pb-6 pt-24 mt-10'>
-                <div className=' w-full bg-white rounded shadow-sm h-screen flex  justify-start'>
+            <div className='!px-6 !pb-6 !pt-24 !mt-10'>
+                <div className=' w-full bg-white rounded shadow-sm !h-screen flex  justify-start'>
                     <div className=' py-4 h-full'>
                         <Tabs
                             items={myProfileTabData}

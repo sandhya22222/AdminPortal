@@ -190,3 +190,12 @@ a {
     float: none;
     vertical-align: sub;
 }
+
+.ql-snow {
+    border: 0px !important;
+}
+
+.ql-editor {
+    min-height: 150px !important;
+    padding: 0px !important;
+}

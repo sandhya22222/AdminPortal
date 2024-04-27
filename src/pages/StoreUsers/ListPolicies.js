@@ -7,6 +7,7 @@ import util from '../../util/common'
 import DisplayPolicy from './DisplayPolicy'
 const { Content } = Layout
 const { Text } = Typography
+
 const ListPolicies = ({ searchParams, setSearchParams }) => {
     const { t } = useTranslation()
     const [policiesTab, setPoliciesTab] = useState([])
@@ -59,14 +60,9 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
             subtab: tabKey,
         })
     }
+
     return (
-        <Content className='overflow-hidden w-full  h-full'>
-            <div
-                className={`${
-                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-4' : ''
-                } !text-xl !font-medium !pt-4`}>
-                {t('labels:policies')}
-            </div>
+        <Content className='overflow-hidden w-full h-full'>
             {storeAdminStatus === 'pending' && (
                 <Skeleton
                     active
@@ -78,35 +74,41 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
             {storeAdminStatus === 'success' && (
                 <>
                     {policiesTab?.length > 0 && (
-                        <div className=' h-full flex w-full'>
-                          <div className='w-[80%]'>
-                            {isLoading ? (
-                                <div className='p-3 !rounded-md '>
-                                    <Skeleton
-                                        active
-                                        paragraph={{
-                                            rows: 4,
-                                        }}></Skeleton>
+                        <div className='flex w-full h-full'>
+                            <div className='w-[80%]'>
+                                <div
+                                    className={`${
+                                        util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-4' : ''
+                                    } !text-xl !font-medium !mt-4`}>
+                                    {t('labels:policies')}
                                 </div>
-                            ) : (
-                                <>
-                                    {consentDescriptionStatus === 'success' && (
-                                        <div className='h-full   overflow-y-auto  mt-3'>
-                                            <DisplayPolicy policy={consentDescription?.[0].version_details} />
-                                        </div>
-                                    )}
-                                </>
-                            )}
+                                {isLoading ? (
+                                    <div className='p-3 !rounded-md '>
+                                        <Skeleton
+                                            active
+                                            paragraph={{
+                                                rows: 4,
+                                            }}></Skeleton>
+                                    </div>
+                                ) : (
+                                    <>
+                                        {consentDescriptionStatus === 'success' && (
+                                            <div className='max-h-[500px] overflow-y-auto pb-24  mt-3'>
+                                                <DisplayPolicy policy={consentDescription?.[0].version_details} />
+                                            </div>
+                                        )}
+                                    </>
+                                )}
                             </div>
-                            <div className='!mt-0 '>
-                            <Tabs
-                                items={policiesTab}
-                                tabPosition={'right'}
-                                activeKey={searchParams.get('subtab') || String(policiesTab?.[0].key)}
-                                onTabClick={handelPoliciesTabChange}
-                                type='line'
-                                className=''
-                            />
+                            <div className='py-4'>
+                                <Tabs
+                                    items={policiesTab}
+                                    tabPosition={'right'}
+                                    activeKey={searchParams.get('subtab') || String(policiesTab?.[0].key)}
+                                    onTabClick={handelPoliciesTabChange}
+                                    type='line'
+                                    className='max-h-[550px] '
+                                />
                             </div>
                         </div>
                     )}
