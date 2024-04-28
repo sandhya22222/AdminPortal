@@ -58,7 +58,7 @@ function AddVersion({
             body.version_number = parseFloat(inputValuefirst + '.' + inputValueSecond)
         }
 
-        //  if (versionfrom) body.version_from = versionId
+        if (versionfrom) body.version_from = versionId
 
         createNewVersion(
             { body },

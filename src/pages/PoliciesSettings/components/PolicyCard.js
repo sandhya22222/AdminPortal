@@ -1,9 +1,9 @@
 import { DownOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons'
 import { Button, Dropdown, Input, Space, Tooltip, Typography } from 'antd'
 import moment from 'moment/moment'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { RiInformationFill, RiTranslate2, RiDeleteBin6Fill } from 'react-icons/ri'
+import { RiInformationFill, RiTranslate2, RiDeleteBin6Fill, RiInformationLine } from 'react-icons/ri'
 import ReactQuill, { Quill } from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { toast } from 'react-toastify'
@@ -81,6 +81,7 @@ const PolicyCard = ({
     policyType,
     consentDetails,
     policyStatus,
+    version,
 }) => {
     const { t } = useTranslation()
     const { mutate: UpdateUserConsent, status: UpdateUserConsentStatus } = useUpdateUserConsent()
@@ -97,6 +98,15 @@ const PolicyCard = ({
     const [versionHistory, setVersionHistory] = useState(false)
     const [addVersion, setAddVersion] = useState(false)
     const [translatePolicy, setTranslatePolicy] = useState(false)
+    const [policyChangeWarning, setPolicyChangeWarning] = useState(false)
+
+    useEffect(() => {
+        if (consentDetails?.consent_name && consentDetails?.consent_discription) {
+            setConsentName(consentDetails?.consent_name)
+            setDescription(consentDetails?.consent_discription)
+        }
+    }, [consentDetails])
+
     const addVersionHandler = () => {
         setAddVersion(true)
     }
@@ -116,6 +126,7 @@ const PolicyCard = ({
         if (policyType !== 'CONTACT_POLICY') {
             setConsentName(consentDetails?.consent_name || '')
         }
+        setPolicyChangeWarning(false)
     }
 
     const handelDescriptionChange = (content, delta, source, editor) => {
@@ -215,6 +226,10 @@ const PolicyCard = ({
 
     const handlePublishModelConfirmation = () => {
         setPolicyConfirmation(true)
+    }
+
+    const handlePolicyChangeWarningModal = () => {
+        setPolicyChangeWarning(true)
     }
 
     const getDate = (date) => {
@@ -355,7 +370,7 @@ const PolicyCard = ({
                     </Tooltip>
                     {(policyStatus !== 1 || isConsentNameChanged || descriptionModified) && (
                         <Button
-                            onClick={handelCancelDescription}
+                            onClick={policyStatus === 1 ? handlePolicyChangeWarningModal : handelCancelDescription}
                             disabled={
                                 createNewUserConsentStatus === 'pending' ||
                                 UpdateUserConsentStatus === 'pending' ||
@@ -399,7 +414,13 @@ const PolicyCard = ({
                 cancelCallback={() => setTranslatePolicy(false)}
                 width={1088}
                 destroyOnClose={true}>
-                <TranslatePolicy></TranslatePolicy>
+                <TranslatePolicy
+                    userConsentVersionId={consentDetails?.id}
+                    userConsentBaseName={consentDetails?.consent_name}
+                    userConsentBaseDescription={consentDetails?.consent_discription}
+                    storeId={storeId}
+                    setTranslatePolicy={setTranslatePolicy}
+                    ></TranslatePolicy>
             </StoreModal>
             <StoreModal
                 isVisible={policyConfirmation}
@@ -414,6 +435,32 @@ const PolicyCard = ({
                 <div className='pt-4'>
                     <p>{t('messages:policy_confirmation_message')}</p>
                     <p>{t('messages:policy_confirmation_note')}</p>
+                </div>
+            </StoreModal>
+            <StoreModal
+                isVisible={policyChangeWarning}
+                title={
+                    <div className='flex items-center'>
+                        <RiInformationLine className='text-2xl mr-2' />
+                        {t('labels:confirm')}
+                    </div>
+                }
+                isSpin={false}
+                cancelCallback={() => setPolicyChangeWarning(false)}
+                okCallback={() => handelCancelDescription()}
+                width={400}
+                okButtonText={t('labels:proceed')}
+                cancelButtonText={t('labels:cancel')}
+                destroyOnClose={true}
+                hideCloseButton={false}>
+                <div className='pl-[30px]'>
+                    <p>
+                        {t('messages:policy_change_warning_info', {
+                            version,
+                        })}
+                        <br />
+                        {t('messages:policy_change_warning_message')}
+                    </p>
                 </div>
             </StoreModal>
         </div>
