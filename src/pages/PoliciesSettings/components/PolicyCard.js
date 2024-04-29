@@ -1,5 +1,5 @@
 import { DownOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons'
-import { Button, Dropdown, Input, Space, Tooltip, Typography } from 'antd'
+import { Button, Divider, Dropdown, Input, Space, Tooltip, Typography } from 'antd'
 import moment from 'moment/moment'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -88,8 +88,8 @@ const PolicyCard = ({
     const { mutate: createNewUserConsent, status: createNewUserConsentStatus } = useCreateUserConsent()
     const { mutate: publishUserConsent, status: publishUserConsentStatus } = usePublishUserConsent()
     const [consentName, setConsentName] = useState(consentDetails?.consent_name || policyName)
-    const [description, setDescription] = useState(consentDetails?.consent_discription)
-    const [descriptionText, setDescriptionText] = useState(consentDetails?.consent_discription)
+    const [description, setDescription] = useState(consentDetails?.consent_description)
+    const [descriptionText, setDescriptionText] = useState(consentDetails?.consent_description)
     const [descriptionModified, setDescriptionModified] = useState(false)
     const [policyConfirmation, setPolicyConfirmation] = useState(false)
     const isConsentNameChanged = isNewPolicy
@@ -101,9 +101,9 @@ const PolicyCard = ({
     const [policyChangeWarning, setPolicyChangeWarning] = useState(false)
 
     useEffect(() => {
-        if (consentDetails?.consent_name && consentDetails?.consent_discription) {
+        if (consentDetails?.consent_name && consentDetails?.consent_description) {
             setConsentName(consentDetails?.consent_name)
-            setDescription(consentDetails?.consent_discription)
+            setDescription(consentDetails?.consent_description)
         }
     }, [consentDetails])
 
@@ -219,8 +219,8 @@ const PolicyCard = ({
 
     const handelCancelDescription = () => {
         setDescriptionModified(false)
-        setDescription(consentDetails?.consent_discription)
-        setDescriptionText(consentDetails?.consent_discription)
+        setDescription(consentDetails?.consent_description)
+        setDescriptionText(consentDetails?.consent_description)
         handelCancelPolicyName()
     }
 
@@ -383,7 +383,13 @@ const PolicyCard = ({
             ) : null}
             <StoreModal
                 isVisible={versionHistory}
-                title={t('labels:version_history')}
+                removePadding={true}
+                title={
+                    <div>
+                        <div className='px-4 py-3'>{t('labels:version_history')}</div>
+                        <Divider style={{ margin: 0, width: '100%' }} type='horizontal' />
+                    </div>
+                }
                 isSpin={false}
                 cancelCallback={() => setVersionHistory(false)}
                 width={900}
@@ -417,10 +423,9 @@ const PolicyCard = ({
                 <TranslatePolicy
                     userConsentVersionId={consentDetails?.id}
                     userConsentBaseName={consentDetails?.consent_name}
-                    userConsentBaseDescription={consentDetails?.consent_discription}
+                    userConsentBaseDescription={consentDetails?.consent_description}
                     storeId={storeId}
-                    setTranslatePolicy={setTranslatePolicy}
-                    ></TranslatePolicy>
+                    setTranslatePolicy={setTranslatePolicy}></TranslatePolicy>
             </StoreModal>
             <StoreModal
                 isVisible={policyConfirmation}
