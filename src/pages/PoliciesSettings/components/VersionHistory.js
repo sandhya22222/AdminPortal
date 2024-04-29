@@ -58,11 +58,11 @@ function VersionHistory({ userConsentId, refetchUserConsent, setVersionHistory }
 
     return (
         <div>
-            <div className=' mt-3'>
+            <div className='px-3 pt-2'>
                 <Skeleton loading={userConsentVersionStatus === 'pending'} active />
             </div>
             {userConsentVersionStatus === 'success' && (
-                <div className='flex justify-between'>
+                <div className='flex justify-between pt-1 pl-2 pr-6 pb-4'>
                     <div className='h-[530px] w-[200px] overflow-y-auto overflow-x-hidden'>
                         <Tabs
                             defaultActiveKey={'0'}
