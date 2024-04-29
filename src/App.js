@@ -6,7 +6,6 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
 import './core-ui/app.css'
 import './core-ui/buttons.css'
-import LoadingMarkup from './components/loader/LoadingMarkup'
 import Header2 from './components/header/Header2'
 import Home from './pages/home/Home'
 import { useFavicon } from './hooks/useFavicon'
@@ -98,59 +97,57 @@ const App = () => {
     }
 
     return (
-        <Suspense fallback={<LoadingMarkup />}>
-            <Router>
-                <ToastContainer
-                    rtl={util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? true : false}
-                    position={util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'top-left' : 'top-right'}
-                />
-                <Header2 collapsed={collapsed} setCollapsed={setCollapsed} />
-                <Container fluid className='p-0 bg-[#F4F4F4] text-[#393939]'>
-                    <Routes>
-                        <Route path='/' element={<Home />} />
-                        <Route path='/logout' element={<LogOut />} />
+        <Router>
+            <ToastContainer
+                rtl={util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? true : false}
+                position={util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'top-left' : 'top-right'}
+            />
+            <Header2 collapsed={collapsed} setCollapsed={setCollapsed} />
+            <Container fluid className='p-0 bg-[#F4F4F4] text-[#393939]'>
+                <Routes>
+                    <Route path='/' element={<Home />} />
+                    <Route path='/logout' element={<LogOut />} />
 
-                        {auth.isAuthenticated ? (
-                            <Route
-                                path='/dashboard'
-                                element={
-                                    <SidebarNew
-                                        permissionValue={permissionData}
-                                        collapsed={collapsed}
-                                        setCollapsed={setCollapsed}
-                                    />
-                                }>
-                                <Route path='' element={<NewDashboard />} />
-                                <>
-                                    <Route path='language' element={<Language />} />
-                                    <Route path='language/language-settings' element={<LanguageSettings />} />
-                                    <Route path='store' element={<Store />} />
-                                    <Route path='store/storesetting' element={<StoreSettings />} />
-                                    <Route path='currency' element={<ListCurrency />} />
-                                    <Route path='currency/edit-currency' element={<EditCurrency />} />
-                                    <Route path='preview' element={<Preview />} />
+                    {auth.isAuthenticated ? (
+                        <Route
+                            path='/dashboard'
+                            element={
+                                <SidebarNew
+                                    permissionValue={permissionData}
+                                    collapsed={collapsed}
+                                    setCollapsed={setCollapsed}
+                                />
+                            }>
+                            <Route path='' element={<NewDashboard />} />
+                            <>
+                                <Route path='language' element={<Language />} />
+                                <Route path='language/language-settings' element={<LanguageSettings />} />
+                                <Route path='store' element={<Store />} />
+                                <Route path='store/storesetting' element={<StoreSettings />} />
+                                <Route path='currency' element={<ListCurrency />} />
+                                <Route path='currency/edit-currency' element={<EditCurrency />} />
+                                <Route path='preview' element={<Preview />} />
 
-                                    <Route path='paymenttype' element={<PaymentType />} />
-                                    <Route path='adminsettings' element={<StoreLimitComponent />} />
-                                    <Route path='userprofile' element={<UserProfile />} />
+                                <Route path='paymenttype' element={<PaymentType />} />
+                                <Route path='adminsettings' element={<StoreLimitComponent />} />
+                                <Route path='userprofile' element={<UserProfile />} />
 
-                                    <Route path='user-access-control'>
-                                        <Route path='list-user-roles' element={<UserAccessControl />} />
-                                        <Route path='add-user' element={<CreateUsers />} />
-                                        <Route path='edit-user' element={<CreateUsers />} />
-                                        <Route path='add-roles' element={<CreateRoles />} />
-                                        <Route path='edit-roles' element={<CreateRoles />} />
-                                    </Route>
-                                </>
-                            </Route>
-                        ) : (
-                            <>{void auth.signinRedirect()}</>
-                        )}
-                    </Routes>
-                </Container>
-            </Router>
-            {/* <Footer /> */}
-        </Suspense>
+                                <Route path='user-access-control'>
+                                    <Route path='list-user-roles' element={<UserAccessControl />} />
+                                    <Route path='add-user' element={<CreateUsers />} />
+                                    <Route path='edit-user' element={<CreateUsers />} />
+                                    <Route path='add-roles' element={<CreateRoles />} />
+                                    <Route path='edit-roles' element={<CreateRoles />} />
+                                </Route>
+                            </>
+                        </Route>
+                    ) : (
+                        <>{void auth.signinRedirect()}</>
+                    )}
+                </Routes>
+            </Container>
+        </Router>
+        //     {/* <Footer /> */}
     )
 }
 
