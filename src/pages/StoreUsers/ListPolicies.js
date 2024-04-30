@@ -1,25 +1,22 @@
-import { Empty, Layout, Skeleton, Tabs, Typography } from 'antd'
+import { Empty, Layout, Skeleton, Tabs, Typography, Anchor, Row, Col } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import useGetStoreAdminConsent from '../../hooks/useGetStoreAdminConsent'
-import useGetStoreAdminConsentDescription from '../../hooks/useGetStoreAdminConsentDescription'
+import { useLocation } from 'react-router-dom'
 import util from '../../util/common'
-import DisplayPolicy from './DisplayPolicy'
+import ReactQuill from 'react-quill'
+import './DisplayPolicy.css'
+import { getGenerateDateAndTime } from '../../util/util'
 const { Content } = Layout
-const { Text } = Typography
 
 const ListPolicies = ({ searchParams, setSearchParams }) => {
+    const search = useLocation().search
+    const subTabData = new URLSearchParams(search).get('subtab')
     const { t } = useTranslation()
     const [policiesTab, setPoliciesTab] = useState([])
-
     const { data: storeAdminConsent, status: storeAdminStatus } = useGetStoreAdminConsent()
-    const {
-        data: consentDescription,
-        status: consentDescriptionStatus,
-        isLoading,
-    } = useGetStoreAdminConsentDescription({
-        adminConsentId: searchParams.get('subtab') || policiesTab?.[0]?.key,
-    })
+    const [policyLink, setPolicyLink] = useState('')
+
     useEffect(() => {
         if (searchParams.get('subtab')) window.scrollTo(0, 0)
     }, [searchParams])
@@ -30,23 +27,25 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
             storeAdminConsent?.forEach((consent) => {
                 if (consent?.version_details?.consent_display_name) {
                     tempTabData.push({
-                        key: String(consent?.id),
-                        label: (
-                            <div className=' max-w-[150px]'>
-                                <Text
-                                    ellipsis={{
-                                        tooltip: {
-                                            title: consent?.version_details?.consent_display_name,
-                                            mouseLeaveDelay: 0,
-                                            mouseEnterDelay: 0.5,
-                                        },
-                                    }}
-                                    className=' font-medium  !text-base '>
-                                    {consent?.version_details?.consent_display_name}
-                                </Text>
-                            </div>
-                        ),
-                        value: consent?.name,
+                        key: `${String(consent?.id)}`,
+                        // title: (
+                        //     <div className=' max-w-[130px]'>
+                        //         <Text
+                        //             ellipsis={{
+                        //                 tooltip: {
+                        //                     title: consent?.version_details?.consent_display_name,
+                        //                     mouseLeaveDelay: 0,
+                        //                     mouseEnterDelay: 0.5,
+                        //                     zIndex: 1,
+                        //                 },
+                        //             }}
+                        //             className=' '>
+                        //             {consent?.version_details?.consent_display_name}
+                        //         </Text>
+                        //     </div>
+                        // ),
+                        title: consent?.version_details?.consent_display_name,
+                        href: `#${String(consent?.id)}`,
                     })
                 }
             })
@@ -54,15 +53,34 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
         }
     }, [storeAdminConsent, storeAdminStatus])
 
-    const handelPoliciesTabChange = (tabKey) => {
+    const getCurrentAnchor = (link) => {
+        if (link !== '' && link !== null && link !== undefined) {
+            return link
+        } else {
+            return policyLink
+        }
+    }
+
+    const handleClick = (e, link) => {
+        e.preventDefault()
+        setPolicyLink(link.href)
+        const hashValue = link.href.slice(1)
         setSearchParams({
             tab: searchParams.get('tab'),
-            subtab: tabKey,
+            subtab: hashValue,
         })
     }
 
+    useEffect(() => {
+        if (subTabData !== undefined && subTabData !== null) {
+            setPolicyLink(`#${String(subTabData)}`)
+        } else {
+            setPolicyLink(`#${String(storeAdminConsent && storeAdminConsent[0].id)}`)
+        }
+    }, [subTabData])
+
     return (
-        <Content className='overflow-hidden w-full h-full'>
+        <Content className=' w-full h-full'>
             {storeAdminStatus === 'pending' && (
                 <Skeleton
                     active
@@ -73,44 +91,53 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
             )}
             {storeAdminStatus === 'success' && (
                 <>
+                    <div
+                        className={`${
+                            util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-4' : ''
+                        } !text-xl !font-medium !mt-4 mb-4  `}>
+                        {t('labels:policies')}
+                    </div>
                     {policiesTab?.length > 0 && (
-                        <div className='flex w-full h-full'>
-                            <div className='w-[80%]'>
-                                <div
-                                    className={`${
-                                        util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-4' : ''
-                                    } !text-xl !font-medium !mt-4`}>
-                                    {t('labels:policies')}
+                        <Row className=''>
+                            <Col className='' span={19}>
+                                <div className=' '>
+                                    {storeAdminConsent && storeAdminConsent.length > 0
+                                        ? storeAdminConsent?.map((data, index) => {
+                                              return (
+                                                  <Content id={String(data?.id)} className={''}>
+                                                      <div className={` !text-lg !font-semibold mb-3 `}>
+                                                          {data?.version_details?.consent_display_name}:
+                                                      </div>
+                                                      <div className={` !text-sm !font-semibold mb-2`}>
+                                                          {t('labels:last_updated')}:{' '}
+                                                          {getGenerateDateAndTime(data?.updated_on, 'D MMMM YYYY')}
+                                                      </div>
+                                                      <ReactQuill
+                                                          value={data?.version_details?.consent_display_description}
+                                                          modules={{ toolbar: false }}
+                                                          readOnly
+                                                          className='mb-3 mr-2 text-base editor'
+                                                      />
+                                                  </Content>
+                                              )
+                                          })
+                                        : null}
                                 </div>
-                                {isLoading ? (
-                                    <div className='p-3 !rounded-md '>
-                                        <Skeleton
-                                            active
-                                            paragraph={{
-                                                rows: 4,
-                                            }}></Skeleton>
-                                    </div>
-                                ) : (
-                                    <>
-                                        {consentDescriptionStatus === 'success' && (
-                                            <div className='max-h-[500px] overflow-y-auto pb-24  mt-3'>
-                                                <DisplayPolicy policy={consentDescription?.[0].version_details} />
-                                            </div>
-                                        )}
-                                    </>
-                                )}
-                            </div>
-                            <div className='py-4'>
-                                <Tabs
-                                    items={policiesTab}
-                                    tabPosition={'right'}
-                                    activeKey={searchParams.get('subtab') || String(policiesTab?.[0].key)}
-                                    onTabClick={handelPoliciesTabChange}
-                                    type='line'
-                                    className='max-h-[550px] '
-                                />
-                            </div>
-                        </div>
+                            </Col>
+                            <Col span={5} className='py-4   px-2 '>
+                                <div style={{ position: 'sticky', top: '120px' }}>
+                                    <Anchor
+                                        affix={false}
+                                        className='!no-underline'
+                                        showInkInFixed={true}
+                                        targetOffset={130}
+                                        items={policiesTab}
+                                        getCurrentAnchor={getCurrentAnchor}
+                                        onClick={handleClick}
+                                    />
+                                </div>
+                            </Col>
+                        </Row>
                     )}
                     {policiesTab?.length === 0 && (
                         <div className='  flex justify-center pt-20'>
