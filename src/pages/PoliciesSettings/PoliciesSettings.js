@@ -91,7 +91,7 @@ const PoliciesSettings = ({ storeName }) => {
                         refetchUserConsent()
                         setContactInfo(false)
                         // MarketplaceToaster.showToast(response?.response_body?.message)
-                        toast(response?.response_body?.message, {
+                        toast(response?.response_message, {
                             type: 'success',
                         })
                         setDeletePolicy(null)
@@ -184,6 +184,7 @@ const PoliciesSettings = ({ storeName }) => {
                                                 ? 'V1.0'
                                                 : 'V' + consent?.version_details?.[0]?.version_number
                                         }
+                                        storeUUID={storeUUID}
                                     />
                                 </div>
                             )
@@ -198,6 +199,7 @@ const PoliciesSettings = ({ storeName }) => {
                                 setAddNewPolicy={setAddNewPolicy}
                                 handelDeletePolicy={handelDeletePolicy}
                                 storeId={storeId}
+                                storeUUID={storeUUID}
                             />
                         </div>
                     ) : userConsents?.userconsent_data?.length <= 0 ? (
@@ -237,6 +239,7 @@ const PoliciesSettings = ({ storeName }) => {
                                     ? 'V1.0'
                                     : 'V' + contactInformation?.[0]?.version_details?.[0]?.version_number
                             }
+                            storeUUID={storeUUID}
                         />
                     )}
                 </div>

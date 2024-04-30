@@ -7,6 +7,8 @@ import MarketplaceToaster from '../../../util/marketplaceToaster'
 import useCreateVersionDisplayname from '../hooks/useCreateVersionDisplayname'
 import useGetUserConsentVersionDisplayName from '../hooks/useGetUserConsentVersionDisplayName'
 import useUpdateVersionDisplayname from '../hooks/useUpdateVersionDisplayname'
+import useGetStoreLanguage from '../hooks/useGetStoreLanguage'
+import { useSelector } from 'react-redux'
 
 const Link = Quill.import('formats/link')
 Link.sanitize = function (url) {
@@ -59,16 +61,14 @@ const formats = [
     'script',
 ]
 
-const languages = [
-    { label: 'English', key: 'en' },
-    { label: 'Hindi', key: 'hi' },
-]
 function TranslatePolicy({
     userConsentVersionId,
     userConsentBaseName,
     userConsentBaseDescription,
     storeId,
     setTranslatePolicy,
+    storeUUID,
+    refetchUserConsent,
 }) {
     const { t } = useTranslation()
     const {
@@ -78,56 +78,100 @@ function TranslatePolicy({
     } = useGetUserConsentVersionDisplayName({
         userConsentVersionId,
     })
-    const [actionType, setActionType] = useState('save')
+    const { data: userConsentLanguageData, status: userConsentLanguageStatus } = useGetStoreLanguage({
+        storeUUID,
+    })
     const [isContentDisplayNameChanged, setIsContentDisplayNameChanged] = useState(false)
     const [isContentDescriptionDisplayNameChanged, setIsContentDescriptionDisplayNameChanged] = useState(false)
-    const [consentTitleDisplayName, setConsentTitleDisplayName] = useState('')
-    const [consentDescriptionDisplayName, setConsentDescriptionDisplayName] = useState('')
-    const [consentDescriptionDisplayNameText, setConsentDescriptionDisplayNameText] = useState('')
-    const [translatedVersionId, setTranslatedVersionId] = useState()
     const [translateSuccessMessage, setTranslateSuccessMessage] = useState('')
-    const [copyOfConsentDisplayName, setCopyOfConsentDisplayName] = useState('')
-    const [copyOfConsentDescriptionDisplayName, setCopyOfConsentDescriptionDisplayName] = useState('')
-    const [selectedLanguage, setSelectedLanguage] = useState(languages?.[0])
+    const [consentDisplayNameData, setConsentDisplayNameData] = useState([])
+    const [selectedConsentDisplayNameData, setSelectedConsentDisplayNameData] = useState()
+    const [languages, setlanguages] = useState([{ label: 'English', key: 'en' }])
+    const [selectedLanguage, setSelectedLanguage] = useState({ label: 'English', key: 'en' })
 
     const { mutate: updateVersionDisplayName, status: updateDisplayNameStatus } = useUpdateVersionDisplayname()
     const { mutate: createVersionDisplayName, status: createDisplayNameStatus } = useCreateVersionDisplayname()
+    //! selected Language from Redux
+    const selectedLanguageFromReduxState = useSelector((state) => state.reducerSelectedLanguage.selectedLanguage)
+
+    console.log('selected language from redux', selectedLanguageFromReduxState)
+
+    const userconsentVersionDisplayNameProcessor = (userConsentLanguageData) => {
+        return (userConsentLanguageData?.data || []).map((data) => ({
+            language: data?.language || 'English',
+            language_code: data?.language_code || 'en',
+            actionType: 'save',
+            consentTitleDisplayName: '',
+            consentDescriptionDisplayName: '',
+            consentDescriptionDisplayNameText: '',
+            translatedVersionId: '',
+            copyOfConsentDisplayName: '',
+            copyOfConsentDescriptionDisplayName: '',
+        }))
+    }
 
     useEffect(() => {
-        if (userConsentVersionDisplaynameDataStatus === 'success' || isUserConsentVersionDisplayNameFetched) {
-            console.log('displayNameData...', userConsentVersionDisplaynameData)
-            if (userConsentVersionDisplaynameData?.User_Consent_Version_Displaynames?.length > 0) {
-                setActionType(
-                    userConsentVersionDisplaynameData?.User_Consent_Version_Displaynames?.length <= 0
-                        ? 'save'
-                        : 'update'
+        if (
+            (userConsentVersionDisplaynameDataStatus === 'success' && userConsentLanguageStatus === 'success') ||
+            isUserConsentVersionDisplayNameFetched
+        ) {
+            if (userConsentLanguageData?.data?.length > 0) {
+                setlanguages(
+                    userConsentLanguageData?.data?.map((data) => {
+                        let obj = {}
+                        obj['label'] = data.language
+                        obj['key'] = data.language_code
+                        return obj
+                    })
                 )
-                setConsentTitleDisplayName(
-                    userConsentVersionDisplaynameData?.User_Consent_Version_Displaynames?.[0]?.display_name
-                )
-                setConsentDescriptionDisplayName(
-                    userConsentVersionDisplaynameData?.User_Consent_Version_Displaynames?.[0]?.display_description
-                )
-                setConsentDescriptionDisplayNameText(
-                    userConsentVersionDisplaynameData?.User_Consent_Version_Displaynames?.[0]?.display_description
-                )
-                setTranslatedVersionId(userConsentVersionDisplaynameData?.User_Consent_Version_Displaynames?.[0].id)
-                setCopyOfConsentDisplayName(
-                    userConsentVersionDisplaynameData?.User_Consent_Version_Displaynames?.[0]?.display_name
-                )
-                setCopyOfConsentDescriptionDisplayName(
-                    userConsentVersionDisplaynameData?.User_Consent_Version_Displaynames?.[0]?.display_description
-                )
+            }
+            if (
+                userConsentVersionDisplaynameData?.User_Consent_Version_Displaynames?.length > 0 &&
+                userConsentLanguageData?.data?.length > 0
+            ) {
+                let storeLanguages = userconsentVersionDisplayNameProcessor(userConsentLanguageData)
+                userConsentVersionDisplaynameData?.User_Consent_Version_Displaynames?.forEach((displayNames) => {
+                    storeLanguages.forEach((data) => {
+                        if (data.language_code === displayNames.language_code) {
+                            data.language_code = displayNames.language_code
+                            data.actionType = 'update'
+                            data.consentDescriptionDisplayName = displayNames.display_description
+                            data.consentTitleDisplayName = displayNames.display_name
+                            data.consentDescriptionDisplayNameText = displayNames.display_description
+                            data.copyOfConsentDescriptionDisplayName = displayNames.display_description
+                            data.copyOfConsentDisplayName = displayNames.display_name
+                            data.translatedVersionId = displayNames.id
+                        }
+                    })
+                })
+                setConsentDisplayNameData(storeLanguages)
+                setSelectedConsentDisplayNameData(storeLanguages[0])
+            } else {
+                // For intially render of the translate pop up filled with default data
+                let processedData = userconsentVersionDisplayNameProcessor(userConsentLanguageData)
+                setConsentDisplayNameData(processedData)
+                setSelectedConsentDisplayNameData(processedData[0])
             }
         }
     }, [
         userConsentVersionDisplaynameData,
         userConsentVersionDisplaynameDataStatus,
         isUserConsentVersionDisplayNameFetched,
+        userConsentLanguageData,
     ])
+
+    console.log(
+        'displayNameData...',
+        userConsentVersionDisplaynameData,
+        userConsentLanguageData?.data,
+        languages,
+        consentDisplayNameData
+    )
 
     const handleMenuClick = (e) => {
         setSelectedLanguage(languages?.filter((data) => data.key === e.key)?.[0])
+        setSelectedConsentDisplayNameData(consentDisplayNameData?.filter((data) => data.language_code === e.key)?.[0])
+        setTranslateSuccessMessage('')
     }
 
     const handelSaveConsentDisplayName = () => {
@@ -136,10 +180,10 @@ function TranslatePolicy({
                 {
                     store: Number(storeId),
                     version: userConsentVersionId,
-                    language_code: 'en',
-                    display_name: consentTitleDisplayName,
+                    language_code: selectedLanguage.key,
+                    display_name: selectedConsentDisplayNameData.consentTitleDisplayName,
                     version_display_name: 'Version_displayname',
-                    display_description: consentDescriptionDisplayName,
+                    display_description: selectedConsentDisplayNameData.consentDescriptionDisplayName,
                 },
             ],
         }
@@ -147,27 +191,43 @@ function TranslatePolicy({
         const putbody = {
             userconsentversions_displayname: [
                 {
-                    id: translatedVersionId,
-                    language_code: 'en',
-                    display_name: consentTitleDisplayName,
+                    id: selectedConsentDisplayNameData.translatedVersionId,
+                    language_code: selectedLanguage.key,
+                    display_name: selectedConsentDisplayNameData.consentTitleDisplayName,
                     version_display_name: 'Version_displayname',
-                    display_description: consentDescriptionDisplayName,
+                    display_description: selectedConsentDisplayNameData.consentDescriptionDisplayName,
                 },
             ],
         }
 
-        if (actionType === 'save') {
+        if (selectedConsentDisplayNameData.actionType === 'save') {
             createVersionDisplayName(
                 { body: postbody },
                 {
                     onSuccess: (response) => {
-                        setTranslateSuccessMessage(response?.data?.response_message)
-                        setIsContentDescriptionDisplayNameChanged(false)
-                        setIsContentDisplayNameChanged(false)
-                        setCopyOfConsentDisplayName(response?.data?.response_body?.[0]?.display_name)
-                        setCopyOfConsentDescriptionDisplayName(response?.data?.response_body?.[0]?.display_description)
-                        setActionType('update')
-                        setTranslatedVersionId(response?.data?.response_body?.[0]?.id)
+                        const responseData = response?.data?.response_body?.[0]
+                        if (responseData) {
+                            setTranslateSuccessMessage(response?.data?.response_message)
+                            setIsContentDescriptionDisplayNameChanged(false)
+                            setIsContentDisplayNameChanged(false)
+                            let copyOfSelectedConsentDisplayNameData = { ...selectedConsentDisplayNameData }
+                            let copyOfConsentDisplayNameData = [...consentDisplayNameData]
+                            copyOfSelectedConsentDisplayNameData.copyOfConsentDisplayName = responseData?.display_name
+                            copyOfSelectedConsentDisplayNameData.copyOfConsentDescriptionDisplayName =
+                                responseData?.display_description
+                            copyOfSelectedConsentDisplayNameData.actionType = 'update'
+                            copyOfSelectedConsentDisplayNameData.translatedVersionId = responseData?.id
+                            copyOfConsentDisplayNameData.forEach((data) => {
+                                if (data.language_code === responseData?.language_code) {
+                                    data.copyOfConsentDisplayName = responseData?.display_name
+                                    data.copyOfConsentDescriptionDisplayName = responseData?.display_description
+                                    data.actionType = 'update'
+                                    data.translatedVersionId = responseData?.id
+                                }
+                            })
+                            setSelectedConsentDisplayNameData(copyOfSelectedConsentDisplayNameData)
+                            setConsentDisplayNameData(copyOfConsentDisplayNameData)
+                        }
                     },
                     onError: (err) => {
                         MarketplaceToaster.showToast(err?.response)
@@ -179,15 +239,29 @@ function TranslatePolicy({
                 { body: putbody, userConsentVersionId: userConsentVersionId },
                 {
                     onSuccess: (response) => {
-                        setTranslateSuccessMessage(response?.response_message)
-                        setIsContentDescriptionDisplayNameChanged(false)
-                        setIsContentDisplayNameChanged(false)
-                        setCopyOfConsentDisplayName(
-                            response?.response_body?.userconsentversions_displaynames?.[0]?.display_name
-                        )
-                        setCopyOfConsentDescriptionDisplayName(
-                            response?.response_body?.userconsentversions_displaynames?.[0]?.display_description
-                        )
+                        const responseData = response?.response_body?.userconsentversions_displaynames?.[0]
+                        if (responseData) {
+                            setTranslateSuccessMessage(response?.response_message)
+                            setIsContentDescriptionDisplayNameChanged(false)
+                            setIsContentDisplayNameChanged(false)
+                            let copyOfSelectedConsentDisplayNameData = { ...selectedConsentDisplayNameData }
+                            let copyOfConsentDisplayNameData = [...consentDisplayNameData]
+                            copyOfSelectedConsentDisplayNameData.copyOfConsentDisplayName = responseData?.display_name
+                            copyOfSelectedConsentDisplayNameData.copyOfConsentDescriptionDisplayName =
+                                responseData?.display_description
+                            copyOfSelectedConsentDisplayNameData.actionType = 'update'
+                            copyOfSelectedConsentDisplayNameData.translatedVersionId = responseData?.id
+                            copyOfConsentDisplayNameData.forEach((data) => {
+                                if (data.language_code === responseData?.language_code) {
+                                    data.copyOfConsentDisplayName = responseData?.display_name
+                                    data.copyOfConsentDescriptionDisplayName = responseData?.display_description
+                                    data.actionType = 'update'
+                                    data.translatedVersionId = responseData?.id
+                                }
+                            })
+                            setSelectedConsentDisplayNameData(copyOfSelectedConsentDisplayNameData)
+                            setConsentDisplayNameData(copyOfConsentDisplayNameData)
+                        }
                     },
                     onError: (err) => {
                         MarketplaceToaster.showToast(err?.response)
@@ -198,9 +272,21 @@ function TranslatePolicy({
     }
 
     const consentNameHandler = (name) => {
-        setConsentTitleDisplayName(name)
+        let copyOfSelectedConsentDisplayNameData = { ...selectedConsentDisplayNameData }
+        let copyOfConsentDisplayNameData = [...consentDisplayNameData]
+        copyOfConsentDisplayNameData.forEach((data) => {
+            if (data.language_code === copyOfSelectedConsentDisplayNameData.language_code) {
+                data.consentTitleDisplayName = name
+            }
+        })
+        copyOfSelectedConsentDisplayNameData.consentTitleDisplayName = name
+        setConsentDisplayNameData(copyOfConsentDisplayNameData)
+        setSelectedConsentDisplayNameData(copyOfSelectedConsentDisplayNameData)
         setTranslateSuccessMessage('')
-        if (actionType !== 'save' && copyOfConsentDisplayName !== name) {
+        if (
+            selectedConsentDisplayNameData.actionType !== 'save' &&
+            selectedConsentDisplayNameData.copyOfConsentDisplayName !== name
+        ) {
             setIsContentDisplayNameChanged(true)
         } else {
             setIsContentDisplayNameChanged(false)
@@ -208,13 +294,29 @@ function TranslatePolicy({
     }
 
     const consentDescriptionHandler = (content, delta, source, editor) => {
-        setConsentDescriptionDisplayName(content)
-        setConsentDescriptionDisplayNameText(editor.getText(content)?.trim())
-        setTranslateSuccessMessage('')
-        if (actionType !== 'save' && copyOfConsentDescriptionDisplayName !== content?.trim()) {
-            setIsContentDescriptionDisplayNameChanged(true)
-        } else {
-            setIsContentDescriptionDisplayNameChanged(false)
+        console.log('source...', source)
+        if (source === 'user') {
+            let copyOfSelectedConsentDisplayNameData = { ...selectedConsentDisplayNameData }
+            let copyOfConsentDisplayNameData = [...consentDisplayNameData]
+            copyOfConsentDisplayNameData.forEach((data) => {
+                if (data.language_code === copyOfSelectedConsentDisplayNameData.language_code) {
+                    data.consentDescriptionDisplayName = content
+                    data.consentDescriptionDisplayNameText = editor.getText(content)?.trim()
+                }
+            })
+            copyOfSelectedConsentDisplayNameData.consentDescriptionDisplayName = content
+            copyOfSelectedConsentDisplayNameData.consentDescriptionDisplayNameText = editor.getText(content)?.trim()
+            setSelectedConsentDisplayNameData(copyOfSelectedConsentDisplayNameData)
+            setSelectedConsentDisplayNameData(copyOfSelectedConsentDisplayNameData)
+            setTranslateSuccessMessage('')
+            if (
+                selectedConsentDisplayNameData.actionType !== 'save' &&
+                selectedConsentDisplayNameData.copyOfConsentDescriptionDisplayName !== content?.trim()
+            ) {
+                setIsContentDescriptionDisplayNameChanged(true)
+            } else {
+                setIsContentDescriptionDisplayNameChanged(false)
+            }
         }
     }
     const language = 'English'
@@ -237,7 +339,8 @@ function TranslatePolicy({
             <div className='mt-3'>
                 {userConsentVersionDisplaynameDataStatus === 'pending' ||
                 updateDisplayNameStatus === 'pending' ||
-                createDisplayNameStatus === 'pending' ? (
+                createDisplayNameStatus === 'pending' ||
+                userConsentLanguageStatus === 'pending' ? (
                     <Skeleton active />
                 ) : (
                     <>
@@ -287,7 +390,7 @@ function TranslatePolicy({
                                             <Input
                                                 placeholder={'Enter policy title here'}
                                                 onChange={(e) => consentNameHandler(e.target?.value)}
-                                                value={consentTitleDisplayName}
+                                                value={selectedConsentDisplayNameData?.consentTitleDisplayName}
                                             />
                                         </div>
                                         <label className='text-[14px] mb-3 input-label-color'>
@@ -299,7 +402,7 @@ function TranslatePolicy({
                                             <ReactQuill
                                                 theme='snow'
                                                 style={{ width: '100%', height: '270px' }}
-                                                value={consentDescriptionDisplayName}
+                                                value={selectedConsentDisplayNameData?.consentDescriptionDisplayName}
                                                 onChange={consentDescriptionHandler}
                                                 modules={modules}
                                                 formats={formats}
@@ -310,19 +413,25 @@ function TranslatePolicy({
                                     </div>
                                 </div>
                                 <div className='flex justify-end'>
-                                    <Button onClick={() => setTranslatePolicy(false)} disabled={''} className='mx-2'>
+                                    <Button
+                                        onClick={() => {
+                                            setTranslatePolicy(false)
+                                            refetchUserConsent()
+                                        }}
+                                        disabled={''}
+                                        className='mx-2'>
                                         {t('labels:cancel')}
                                     </Button>
                                     <Button
                                         className='app-btn-primary '
                                         disabled={
                                             !(
-                                                consentTitleDisplayName.trim() &&
-                                                consentDescriptionDisplayNameText.trim()
+                                                selectedConsentDisplayNameData?.consentTitleDisplayName?.trim() &&
+                                                selectedConsentDisplayNameData?.consentDescriptionDisplayNameText?.trim()
                                             ) ||
                                             (!isContentDisplayNameChanged &&
                                                 !isContentDescriptionDisplayNameChanged &&
-                                                actionType !== 'save')
+                                                selectedConsentDisplayNameData?.actionType !== 'save')
                                         }
                                         onClick={handelSaveConsentDisplayName}>
                                         {t('labels:save')}

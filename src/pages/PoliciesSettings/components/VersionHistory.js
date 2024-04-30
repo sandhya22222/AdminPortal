@@ -93,7 +93,7 @@ function VersionHistory({ userConsentId, refetchUserConsent, setVersionHistory }
                     </div>
                     <div>
                         <div className='flex items-center justify-between pb-3'>
-                            <Typography.Title level={5}>{userConsentVersionDetails?.consent_name}</Typography.Title>
+                            <Typography.Title level={5}>{userConsentVersionDetails?.consent_display_name}</Typography.Title>
                         </div>
                         <div>
                             <div className='!w-[700px] '>

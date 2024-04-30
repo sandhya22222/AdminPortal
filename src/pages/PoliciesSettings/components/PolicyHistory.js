@@ -39,7 +39,7 @@ function PolicyHistory() {
         policiesWithoutContactInformation.forEach((policyData) => {
             let obj = {
                 id: String(policyData.id),
-                policyTitle: policyData.consent_name,
+                policyTitle: policyData.consent_display_name,
             }
             versionDetails.forEach((versionData) => {
                 if (policyData.user_consent_id === versionData.consent_id) {
