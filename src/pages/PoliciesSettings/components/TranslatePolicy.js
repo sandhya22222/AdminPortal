@@ -1,5 +1,5 @@
 import { CheckCircleOutlined, DownOutlined } from '@ant-design/icons'
-import { Button, Dropdown, Input, Skeleton, Space, Tag, Typography } from 'antd'
+import { Button, Dropdown, Input, Progress, Skeleton, Space, Tag, Typography } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import ReactQuill, { Quill } from 'react-quill'
@@ -381,6 +381,28 @@ function TranslatePolicy({
                                                         </Space>
                                                     </Dropdown>
                                                 </div>
+                                            </div>
+                                            <div className='w-[60%] '>
+                                                <Progress
+                                                    style={{ width: '50%', marginRight: '8px' }}
+                                                    strokeColor={'#4A2D73'}
+                                                    size='small'
+                                                    percent={
+                                                        (consentDisplayNameData?.filter(
+                                                            (data) => data.translatedVersionId !== ''
+                                                        ).length /
+                                                            consentDisplayNameData?.length) *
+                                                        100
+                                                    }
+                                                    showInfo={false}
+                                                />
+                                                <span>
+                                                    {`${
+                                                        consentDisplayNameData?.filter(
+                                                            (data) => data.translatedVersionId !== ''
+                                                        ).length
+                                                    } of ${consentDisplayNameData?.length} Languages translated`}
+                                                </span>
                                             </div>
                                         </div>
                                         <label className='text-[14px] mb-3 input-label-color'>
