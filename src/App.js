@@ -131,7 +131,7 @@ const App = () => {
 
                                 <Route path='paymenttype' element={<PaymentType />} />
                                 <Route path='adminsettings' element={<StoreLimitComponent />} />
-                                <Route path='userprofile' element={<UserProfile />} />
+                                <Route path='userprofile' element={<MyProfile />} />
 
                                 <Route path='user-access-control'>
                                     <Route path='list-user-roles' element={<UserAccessControl />} />
