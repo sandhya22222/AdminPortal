@@ -39,7 +39,7 @@ function PolicyHistory() {
         policiesWithoutContactInformation.forEach((policyData) => {
             let obj = {
                 id: String(policyData.id),
-                policyTitle: policyData.consent_name,
+                policyTitle: policyData.consent_display_name,
             }
             versionDetails.forEach((versionData) => {
                 if (policyData.user_consent_id === versionData.consent_id) {
@@ -89,7 +89,7 @@ function PolicyHistory() {
     }
 
     return (
-        <div className='flex justify-between pt-4'>
+        <div className='flex justify-between pl-2 pr-6 pb-2 pt-2'>
             {policyData?.length <= 0 ? (
                 <Skeleton active />
             ) : (
@@ -114,8 +114,8 @@ function PolicyHistory() {
                                                         tooltip: {
                                                             title: data?.policyTitle,
                                                             mouseLeaveDelay: 0,
-                                                            mouseEnterDelay: 0.5,   
-                                                            placement:"left"
+                                                            mouseEnterDelay: 0.5,
+                                                            placement: 'left',
                                                         },
                                                     }}
                                                     className='text-[13px] '>

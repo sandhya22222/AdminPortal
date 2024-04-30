@@ -1,4 +1,4 @@
-import { Alert, Button, Checkbox, Modal, Skeleton, Tag, Tooltip, Typography } from 'antd'
+import { Alert, Button, Checkbox, Divider, Modal, Skeleton, Tag, Tooltip, Typography } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { RiInformationFill, RiCloseCircleFill } from 'react-icons/ri'
@@ -91,7 +91,7 @@ const PoliciesSettings = ({ storeName }) => {
                         refetchUserConsent()
                         setContactInfo(false)
                         // MarketplaceToaster.showToast(response?.response_body?.message)
-                        toast(response?.response_body?.message, {
+                        toast(response?.response_message, {
                             type: 'success',
                         })
                         setDeletePolicy(null)
@@ -184,6 +184,7 @@ const PoliciesSettings = ({ storeName }) => {
                                                 ? 'V1.0'
                                                 : 'V' + consent?.version_details?.[0]?.version_number
                                         }
+                                        storeUUID={storeUUID}
                                     />
                                 </div>
                             )
@@ -198,6 +199,7 @@ const PoliciesSettings = ({ storeName }) => {
                                 setAddNewPolicy={setAddNewPolicy}
                                 handelDeletePolicy={handelDeletePolicy}
                                 storeId={storeId}
+                                storeUUID={storeUUID}
                             />
                         </div>
                     ) : userConsents?.userconsent_data?.length <= 0 ? (
@@ -237,6 +239,7 @@ const PoliciesSettings = ({ storeName }) => {
                                     ? 'V1.0'
                                     : 'V' + contactInformation?.[0]?.version_details?.[0]?.version_number
                             }
+                            storeUUID={storeUUID}
                         />
                     )}
                 </div>
@@ -285,7 +288,13 @@ const PoliciesSettings = ({ storeName }) => {
             </StoreModal>
             <StoreModal
                 isVisible={isPolicyhistory}
-                title={t('labels:policy_history')}
+                removePadding={true}
+                title={
+                    <div>
+                        <div className='px-4 py-3'>{t('labels:policy_history')}</div>
+                        <Divider style={{ margin: 0, width: '100%' }} type='horizontal' />
+                    </div>
+                }
                 isSpin={false}
                 cancelCallback={() => setIsPolicyHistory(null)}
                 width={900}

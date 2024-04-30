@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { Modal, Button, Spin, Layout } from 'antd'
+import './StoreModal.css'
 const { Content } = Layout
 const StoreModal = ({
     okCallback,
@@ -15,6 +16,7 @@ const StoreModal = ({
     isCancelButtonDisabled,
     isOkButtonDisabled,
     destroyOnClose,
+    removePadding,
 }) => {
     const handleOk = () => {
         okCallback()
@@ -34,6 +36,7 @@ const StoreModal = ({
             maskClosable={hideCloseButton}
             onCancel={handleCancel}
             width={width}
+            className={removePadding ? 'custom-modal' : ''}
             footer={
                 okButtonText == null
                     ? null
