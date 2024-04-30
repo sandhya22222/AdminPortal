@@ -44,7 +44,7 @@ const MyProfile = () => {
         })
     }
     return (
-        <div>
+        <Content>
             <HeaderForTitle
                 title={
                     <Content className=''>
@@ -55,8 +55,8 @@ const MyProfile = () => {
                 }
             />
             <div className='!px-6 !pb-6 !pt-24 !mt-10'>
-                <div className=' w-full bg-white rounded shadow-sm !h-screen flex  justify-start'>
-                    <div className=' py-4 h-full'>
+                <div className=' w-full bg-white rounded shadow-sm  flex  justify-start'>
+                    <div className=' py-4 h-full top-[110px] sticky  '>
                         <Tabs
                             items={myProfileTabData}
                             tabPosition={'left'}
@@ -75,7 +75,7 @@ const MyProfile = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </Content>
     )
 }
 export default MyProfile

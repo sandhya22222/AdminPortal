@@ -3,7 +3,6 @@ import { LoadingOutlined } from '@ant-design/icons'
 import { Affix, Layout, Menu, Spin } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-
 import {
     PaymentTypeIcon,
     ProfileIcon,
@@ -25,9 +24,10 @@ import { useTranslation } from 'react-i18next'
 //! Import user defined CSS
 import './sidebarnew.css'
 import { useAuth } from 'react-oidc-context'
+import util from '../../util/common'
 
 //! Destructure the components
-const { Sider } = Layout
+const { Sider, Content } = Layout
 
 const antIcon = <LoadingOutlined className='text-[10px] hidden' spin />
 const pageLimitFromENV = process.env.REACT_APP_ITEM_PER_PAGE
@@ -282,10 +282,15 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                     </Sider>
                 </Affix>
             </div>
-            <Layout className='site-layout w-[80%]'>
-                <Outlet />
-                <NewFooter />
-            </Layout>
+            <Content
+                className={`relative min-h-screen transition-all `}>
+                <Content className='!bg-[#F4F4F4] !mb-12'>
+                    <Outlet />
+                </Content>
+                <Content className='!mt-14 absolute bottom-0 !w-[100%]'>
+                    <NewFooter />
+                </Content>
+            </Content>
         </Layout>
     )
 }
