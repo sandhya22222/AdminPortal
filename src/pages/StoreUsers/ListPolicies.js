@@ -125,7 +125,11 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
                                 </div>
                             </Col>
                             <Col span={5} className='py-4   px-2 '>
-                                <div style={{ position: 'sticky', top: '120px' }}>
+                                <div
+                                    style={{
+                                        position: 'sticky',
+                                        top: `${storeAdminConsent && storeAdminConsent.length > 10 ? '120px' : '60px'}`,
+                                    }}>
                                     <Anchor
                                         affix={false}
                                         className='!no-underline'
