@@ -96,9 +96,9 @@ function VersionHistory({ userConsentId, refetchUserConsent, setVersionHistory }
                             <Typography.Title level={5}>{userConsentVersionDetails?.consent_display_name}</Typography.Title>
                         </div>
                         <div>
-                            <div className='!w-[700px] '>
+                            <div className='!w-[700px] rounded border-[1px]'>
                                 <ReactQuill
-                                    value={userConsentVersionDetails?.consent_discription}
+                                    value={userConsentVersionDetails?.consent_display_description}
                                     modules={{ toolbar: false }}
                                     readOnly={true}
                                     style={{ width: '100%', height: '400px' }}

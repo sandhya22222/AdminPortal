@@ -257,7 +257,11 @@ const PolicyCard = ({
     }
 
     return (
-        <div key={consent?.id} className=' bg-white  pb-6 policy-card w-full shadow-md rounded-md mb-3 px-4 pt-2'>
+        <div
+            key={consent?.id}
+            className=' bg-white pb-6 policy-card w-full mb-3 px-4 mt-2'
+            style={{ boxShadow: 'rgb(217, 217, 217) 0px 0px 10px', borderRadius: '10px' }}
+            >
             <div className=' h-[64px] flex justify-between items-center  w-full'>
                 <div className={`flex items-center gap-x-2 max-w-[60%] cursor-default `}>
                     <Paragraph className=' !font-medium text-base !mb-0  ' ellipsis={{ tooltip: consentName }}>
