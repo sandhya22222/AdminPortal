@@ -65,7 +65,7 @@ function PolicyHistory() {
             setSelectedPolicyData(processedData[0])
             setActiveKey(processedData[0]?.id)
             setDropDownLabel(processedData[0]?.versionDataForDropdown[0]?.label)
-            setPolicyDescription(processedData[0]?.versionDetails[0]?.consent_discription)
+            setPolicyDescription(processedData[0]?.versionDetails[0]?.consent_display_description)
             setPolicyUpdatedOn(processedData[0]?.versionDetails[0]?.updated_on)
         }
     }, [policiesWithoutContactInformation, versionDetails])
@@ -74,7 +74,7 @@ function PolicyHistory() {
         setActiveKey(key)
         let selectedPolicyTab = policyData?.filter((data) => data.id === key)[0]
         setSelectedPolicyData(selectedPolicyTab)
-        setPolicyDescription(selectedPolicyTab.versionDetails[0]?.consent_discription)
+        setPolicyDescription(selectedPolicyTab.versionDetails[0]?.consent_display_description)
         setPolicyUpdatedOn(selectedPolicyTab.versionDetails[0]?.updated_on)
     }
 
@@ -84,7 +84,7 @@ function PolicyHistory() {
             (data) => data.version_number == e.key
         )[0]
         setDropDownLabel(e.key == 1 ? 'V1.0' : 'V' + e.key)
-        setPolicyDescription(selectedVersionDetails.consent_discription)
+        setPolicyDescription(selectedVersionDetails.consent_display_description)
         setPolicyUpdatedOn(selectedVersionDetails.updated_on)
     }
 
@@ -140,7 +140,7 @@ function PolicyHistory() {
                             </Space>
                         </Dropdown>
                         <div>
-                            <div className='!w-[680px]'>
+                            <div className='!w-[680px] rounded border-[1px]'>
                                 <ReactQuill
                                     value={policyDescription}
                                     modules={{ toolbar: false }}

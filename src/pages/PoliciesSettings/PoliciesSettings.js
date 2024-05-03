@@ -113,194 +113,202 @@ const PoliciesSettings = ({ storeName }) => {
     }
 
     return (
-        <section className=' !p-5 bg-white rounded-lg m-3'>
-            <div className='mb-4'>
-                {policyWarning && (
-                    <Tag
-                        color='magenta'
-                        className='text-black text-[14px] policy-tag w-full flex justify-between px-2 py-2'
-                        closable
-                        onClose={() => setPolicyWarning(false)}>
-                        <div className='flex items-center'>
-                            <div className='pr-2'>
-                                {' '}
-                                <RiCloseCircleFill className='text-[#FF4D4F] text-base' />
-                            </div>
-                            {t('messages:poicy_warning')}
-                        </div>
-                    </Tag>
-                )}
-            </div>
-            <div className=' flex  w-full  justify-between '>
-                <Title level={3} className='!font-bold m-0'>
-                    {t('messages:policies')}
-                </Title>
-                <div className='flex !gap-2'>
-                    <Button
-                        onClick={handlePolicyHistory}
-                        disabled={userConsentStatus !== 'success' || userConsents?.userconsent_data?.length <= 0}>
-                        {t('labels:policy_history')}
-                    </Button>
-                    <Button
-                        onClick={handelPreviewAndCustomise}
-                        disabled={userConsentStatus !== 'success' || userConsents?.userconsent_data?.length <= 0}>
-                        {t('labels:preview_and_customise')}
-                    </Button>
-                    <Button
-                        className='app-btn-primary'
-                        onClick={handelAddNewPolicy}
-                        disabled={userConsentStatus !== 'success'}>
-                        {t('labels:add_new_policy')}
-                    </Button>
-                </div>
-            </div>
-            <div className='mt-3 max-w-[1000px] '>
-                <div>
-                    <Text>{t('messages:help_info_policies')}</Text>
-                </div>
-                <div className='mt-3'>
-                    <Text>{t('messages:policy_bonus_note')}</Text>
-                </div>
-            </div>
-            <div className=' mt-3'>
-                <Skeleton loading={userConsentStatus === 'pending'} active />
-            </div>
-            {userConsentStatus === 'success' && (
-                <div>
-                    {policiesWithoutContactInformation?.length > 0 &&
-                        policiesWithoutContactInformation?.map((consent) => {
-                            return (
-                                <div key={consent?.id}>
-                                    <PolicyCard
-                                        policyType='SAVED_POLICY'
-                                        consent={consent}
-                                        refetchUserConsent={refetchUserConsent}
-                                        handelDeletePolicy={handelDeletePolicy}
-                                        storeId={storeId}
-                                        consentDetails={consent?.version_details?.[0]}
-                                        policyStatus={consent?.version_details?.[0]?.status}
-                                        version={
-                                            consent?.version_details?.[0]?.version_number === 1
-                                                ? 'V1.0'
-                                                : 'V' + consent?.version_details?.[0]?.version_number
-                                        }
-                                        storeUUID={storeUUID}
-                                    />
+        <section className=' bg-white rounded-lg m-3'>
+            <div className='sticky w-full !p-[22px] z-50 top-[6.2rem] bg-white !h-auto '>
+                <div className='mb-4'>
+                    {policyWarning && (
+                        <Tag
+                            color='magenta'
+                            className='text-black text-[14px] policy-tag w-full flex justify-between px-2 py-2'
+                            closable
+                            onClose={() => setPolicyWarning(false)}>
+                            <div className='flex items-center'>
+                                <div className='pr-2'>
+                                    {' '}
+                                    <RiCloseCircleFill className='text-[#FF4D4F] text-base' />
                                 </div>
-                            )
-                        })}
-
-                    {addNewPolicy ? (
-                        <div ref={newPolicyRef}>
-                            <PolicyCard
-                                policyType='NEW_POLICY'
-                                isNewPolicy
-                                refetchUserConsent={refetchUserConsent}
-                                setAddNewPolicy={setAddNewPolicy}
-                                handelDeletePolicy={handelDeletePolicy}
-                                storeId={storeId}
-                                storeUUID={storeUUID}
-                            />
-                        </div>
-                    ) : userConsents?.userconsent_data?.length <= 0 ? (
-                        <div className=' py-3'>
-                            <VersionBanner addPolicyHandler={handelAddNewPolicy}></VersionBanner>
-                        </div>
-                    ) : null}
-                    <div className=' flex items-center '>
-                        <Checkbox onChange={onContactInfoChange} checked={addContactInfo}>
-                            {t('messages:display_contact')}
-                        </Checkbox>
-                        <Tooltip title={t('messages:contact_policy_info')}>
-                            <RiInformationFill className=' text-[#1677ff] text-base cursor-pointer' />
-                        </Tooltip>
-                    </div>
-                    <div>
-                        <Alert
-                            message={t('messages:contact_info')}
-                            type='info'
-                            showIcon
-                            className=' mt-2 ml-7 w-[395px]'
-                        />
-                    </div>
-                    {addContactInfo && (
-                        <PolicyCard
-                            policyType='CONTACT_POLICY'
-                            refetchUserConsent={refetchUserConsent}
-                            consent={contactInformation?.[0] || null}
-                            policyName={CONTACT_INFORMATION}
-                            isNewPolicy={contactInformation?.length === 0}
-                            key={contactInformation?.[0]?.id || 'addContactInfo'}
-                            storeId={storeId}
-                            consentDetails={contactInformation?.[0]?.version_details?.[0]}
-                            policyStatus={contactInformation?.[0]?.version_details?.[0]?.status}
-                            version={
-                                contactInformation?.[0]?.version_details?.[0]?.version_number === 1
-                                    ? 'V1.0'
-                                    : 'V' + contactInformation?.[0]?.version_details?.[0]?.version_number
-                            }
-                            storeUUID={storeUUID}
-                        />
+                                {t('messages:poicy_warning')}
+                            </div>
+                        </Tag>
                     )}
                 </div>
-            )}
-
-            {userConsentStatus === 'error' && (
-                <div className=' text-center mt-5 mb-4'>
-                    <Text>{t('messages:network_error')}</Text>
-                </div>
-            )}
-            <Modal
-                title={t('labels:delete_policies')}
-                isSpin={false}
-                open={deletePolicy}
-                width={'446px'}
-                centered={true}
-                onCancel={() => setDeletePolicy(null)}
-                footer={[
-                    <Button onClick={() => setDeletePolicy(null)} disabled={deleteStoreUserConsentStatus === 'pending'}>
-                        {t('labels:cancel')}
-                    </Button>,
-                    <Button
-                        danger
-                        className=' app-btn-danger'
-                        onClick={() => deletePolicyById(deletePolicy)}
-                        loading={deleteStoreUserConsentStatus === 'pending'}>
-                        {t('labels:yes')}
-                    </Button>,
-                ]}>
-                <Text className='!text-[#333333]'>{t('messages:delete_confirmation')}</Text>
-            </Modal>
-            <StoreModal
-                isVisible={previewAndCustomise}
-                title={t('labels:preview_and_customise')}
-                isSpin={false}
-                cancelCallback={() => setPreviewAndCustomise(null)}
-                width={1088}
-                destroyOnClose={true}>
-                <PreviewAndCustomise
-                    userConsents={userConsents}
-                    closeModal={() => setPreviewAndCustomise(null)}
-                    refetchUserConsent={refetchUserConsent}
-                    storeId={storeId}
-                    storeName={storeName}
-                />
-            </StoreModal>
-            <StoreModal
-                isVisible={isPolicyhistory}
-                removePadding={true}
-                title={
-                    <div>
-                        <div className='px-4 py-3'>{t('labels:policy_history')}</div>
-                        <Divider style={{ margin: 0, width: '100%' }} type='horizontal' />
+                <div className=' flex  w-full  justify-between '>
+                    <Title level={3} className='!font-bold m-0 '>
+                        {t('messages:policies')}
+                    </Title>
+                    <div className='flex !gap-2'>
+                        <Button
+                            onClick={handlePolicyHistory}
+                            disabled={userConsentStatus !== 'success' || userConsents?.userconsent_data?.length <= 0}>
+                            {t('labels:policy_history')}
+                        </Button>
+                        <Button
+                            onClick={handelPreviewAndCustomise}
+                            disabled={userConsentStatus !== 'success' || userConsents?.userconsent_data?.length <= 0}>
+                            {t('labels:preview_and_customise')}
+                        </Button>
+                        <Button
+                            className='app-btn-primary'
+                            onClick={handelAddNewPolicy}
+                            disabled={userConsentStatus !== 'success'}>
+                            {t('labels:add_new_policy')}
+                        </Button>
                     </div>
-                }
-                isSpin={false}
-                cancelCallback={() => setIsPolicyHistory(null)}
-                width={900}
-                destroyOnClose={true}>
-                <PolicyHistory></PolicyHistory>
-            </StoreModal>
+                </div>
+                <div className='mt-3 max-w-[1000px] '>
+                    <div>
+                        <Text className='input-label-color'>{t('messages:help_info_policies')}</Text>
+                    </div>
+                    <div className='mt-3'>
+                        <Text className='input-label-color'>{t('messages:policy_bonus_note')}</Text>
+                    </div>
+                </div>
+            </div>
+            <div className='!p-5'>
+                <div className=' mt-3'>
+                    <Skeleton loading={userConsentStatus === 'pending'} active />
+                </div>
+                {userConsentStatus === 'success' && (
+                    <div>
+                        {policiesWithoutContactInformation?.length > 0 &&
+                            policiesWithoutContactInformation?.map((consent) => {
+                                return (
+                                    <div key={consent?.id}>
+                                        <PolicyCard
+                                            policyType='SAVED_POLICY'
+                                            consent={consent}
+                                            refetchUserConsent={refetchUserConsent}
+                                            handelDeletePolicy={handelDeletePolicy}
+                                            storeId={storeId}
+                                            consentDetails={consent?.version_details?.[0]}
+                                            policyStatus={consent?.version_details?.[0]?.status}
+                                            version={
+                                                consent?.version_details?.[0]?.version_number === 1
+                                                    ? 'V1.0'
+                                                    : 'V' + consent?.version_details?.[0]?.version_number
+                                            }
+                                            storeUUID={storeUUID}
+                                        />
+                                    </div>
+                                )
+                            })}
+
+                        {addNewPolicy ? (
+                            <div ref={newPolicyRef}>
+                                <PolicyCard
+                                    policyType='NEW_POLICY'
+                                    isNewPolicy
+                                    refetchUserConsent={refetchUserConsent}
+                                    setAddNewPolicy={setAddNewPolicy}
+                                    handelDeletePolicy={handelDeletePolicy}
+                                    storeId={storeId}
+                                    storeUUID={storeUUID}
+                                />
+                            </div>
+                        ) : userConsents?.userconsent_data?.length <= 0 ? (
+                            <div className=' py-3'>
+                                <VersionBanner addPolicyHandler={handelAddNewPolicy}></VersionBanner>
+                            </div>
+                        ) : null}
+                        <div className=' flex items-center '>
+                            <Checkbox onChange={onContactInfoChange} checked={addContactInfo}>
+                                {t('messages:display_contact')}
+                            </Checkbox>
+                            <Tooltip title={t('messages:contact_policy_info')}>
+                                <RiInformationFill className=' text-[#1677ff] text-base cursor-pointer' />
+                            </Tooltip>
+                        </div>
+                        <div>
+                            <Alert
+                                message={t('messages:contact_info')}
+                                type='info'
+                                showIcon
+                                className=' mt-2 ml-7 w-[395px]'
+                            />
+                        </div>
+                        {addContactInfo && (
+                            <div className='pl-[1.7rem]'>
+                                <PolicyCard
+                                    policyType='CONTACT_POLICY'
+                                    refetchUserConsent={refetchUserConsent}
+                                    consent={contactInformation?.[0] || null}
+                                    policyName={CONTACT_INFORMATION}
+                                    isNewPolicy={contactInformation?.length === 0}
+                                    key={contactInformation?.[0]?.id || 'addContactInfo'}
+                                    storeId={storeId}
+                                    consentDetails={contactInformation?.[0]?.version_details?.[0]}
+                                    policyStatus={contactInformation?.[0]?.version_details?.[0]?.status}
+                                    version={
+                                        contactInformation?.[0]?.version_details?.[0]?.version_number === 1
+                                            ? 'V1.0'
+                                            : 'V' + contactInformation?.[0]?.version_details?.[0]?.version_number
+                                    }
+                                    storeUUID={storeUUID}
+                                />
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                {userConsentStatus === 'error' && (
+                    <div className=' text-center mt-5 mb-4'>
+                        <Text>{t('messages:network_error')}</Text>
+                    </div>
+                )}
+                <Modal
+                    title={t('labels:delete_policies')}
+                    isSpin={false}
+                    open={deletePolicy}
+                    width={'446px'}
+                    centered={true}
+                    onCancel={() => setDeletePolicy(null)}
+                    footer={[
+                        <Button
+                            onClick={() => setDeletePolicy(null)}
+                            disabled={deleteStoreUserConsentStatus === 'pending'}>
+                            {t('labels:cancel')}
+                        </Button>,
+                        <Button
+                            danger
+                            className=' app-btn-danger'
+                            onClick={() => deletePolicyById(deletePolicy)}
+                            loading={deleteStoreUserConsentStatus === 'pending'}>
+                            {t('labels:yes')}
+                        </Button>,
+                    ]}>
+                    <Text className='!text-[#333333]'>{t('messages:delete_confirmation')}</Text>
+                </Modal>
+                <StoreModal
+                    isVisible={previewAndCustomise}
+                    title={t('labels:preview_and_customise')}
+                    isSpin={false}
+                    cancelCallback={() => setPreviewAndCustomise(null)}
+                    width={1088}
+                    destroyOnClose={true}>
+                    <PreviewAndCustomise
+                        userConsents={userConsents}
+                        closeModal={() => setPreviewAndCustomise(null)}
+                        refetchUserConsent={refetchUserConsent}
+                        storeId={storeId}
+                        storeName={storeName}
+                    />
+                </StoreModal>
+                <StoreModal
+                    isVisible={isPolicyhistory}
+                    removePadding={true}
+                    title={
+                        <div>
+                            <div className='px-4 py-3'>{t('labels:policy_history')}</div>
+                            <Divider style={{ margin: 0, width: '100%' }} type='horizontal' />
+                        </div>
+                    }
+                    isSpin={false}
+                    cancelCallback={() => setIsPolicyHistory(null)}
+                    width={900}
+                    destroyOnClose={true}>
+                    <PolicyHistory></PolicyHistory>
+                </StoreModal>
+            </div>
         </section>
     )
 }
