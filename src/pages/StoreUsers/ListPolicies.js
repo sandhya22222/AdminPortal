@@ -1,4 +1,4 @@
-import { Empty, Layout, Skeleton, Tabs, Typography, Anchor, Row, Col } from 'antd'
+import { Empty, Layout, Skeleton, Anchor, Row, Col } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import useGetStoreAdminConsent from '../../hooks/useGetStoreAdminConsent'
@@ -75,12 +75,11 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
         if (subTabData !== undefined && subTabData !== null) {
             setPolicyLink(`#${String(subTabData)}`)
         } else {
-            setPolicyLink(`#${String(storeAdminConsent && storeAdminConsent[0].id)}`)
+            setPolicyLink(`#${String(storeAdminConsent && storeAdminConsent.length > 0 && storeAdminConsent[0].id)}`)
         }
-    }, [subTabData])
-
+    }, [subTabData, storeAdminConsent])
     return (
-        <Content className=' w-full h-full'>
+        <Content className=' w-full h-full '>
             {storeAdminStatus === 'pending' && (
                 <Skeleton
                     active
@@ -103,8 +102,9 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
                                 <div className=' '>
                                     {storeAdminConsent && storeAdminConsent.length > 0
                                         ? storeAdminConsent?.map((data, index) => {
+                                              console.log('data', data)
                                               return (
-                                                  <Content id={String(data?.id)} className={''}>
+                                                  <Content id={String(data && data?.id)} className={''}>
                                                       <div className={` !text-lg !font-semibold mb-3 `}>
                                                           {data?.version_details?.consent_display_name}:
                                                       </div>
@@ -116,7 +116,7 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
                                                           value={data?.version_details?.consent_display_description}
                                                           modules={{ toolbar: false }}
                                                           readOnly
-                                                          className='mb-3 mr-2 text-base editor'
+                                                          className='mb-3 mr-2 text-base editor quill'
                                                       />
                                                   </Content>
                                               )
@@ -144,7 +144,7 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
                         </Row>
                     )}
                     {policiesTab?.length === 0 && (
-                        <div className='  flex justify-center pt-20'>
+                        <div className='  flex justify-center mb-3'>
                             <Empty description={t('messages:no_policies_available')} />
                         </div>
                     )}
