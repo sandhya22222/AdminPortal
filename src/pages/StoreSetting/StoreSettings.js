@@ -923,7 +923,26 @@ const StoreSettings = () => {
                 setInvalidProductTemplateLimit(true)
                 break
             case 'AMS-000028-12':
+                setInvalidVendorLimit(true)
                 setInvalidVendorUserLimit(true)
+                break
+            case 'AMS-000028-13':
+                setInvalidProductLimit(true)
+                break
+            case 'AMS-000028-14':
+                setInvalidProductTemplateLimit(true)
+                break
+            case 'AMS-000028-15':
+                setInvalidLanguageLimit(true)
+                break
+            case 'AMS-000028-16':
+                setInvalidCustomerLimit(true)
+                break
+            case 'AMS-000028-17':
+                break
+            case 'AMS-000028-18':
+                break
+            case 'AMS-000028-19':
                 break
             case 'AMS-000028-21':
                 setInvalidMaxProductLimit(true)
@@ -1209,12 +1228,18 @@ const StoreSettings = () => {
                 return (
                     <InputNumber
                         disabled={hideActionButton}
-                        value={storeDataLimitValues.default_store_commission}
+                        value={
+                            storeDataLimitValues.default_store_commission
+                                ? storeDataLimitValues.default_store_commission
+                                : 0
+                        }
                         min={0}
                         max={100}
-                        step='0.1'
-                        formatter={(value) => (value ? `${value}%` : '')}
-                        parser={(value) => (value ? value.replace('%', '') : '')}
+                        maxLength={3}
+                        // step='0.1'
+                        addonAfter='%'
+                        // formatter={(value) => (value ? `${value}%` : '')}
+                        // parser={(value) => (value ? value.replace('%', '') : '')}
                         onKeyPress={(e) => {
                             validatePositiveNumber(e, /[0-9]/)
                         }}
