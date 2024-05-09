@@ -3,19 +3,19 @@ import { Button, Divider, Dropdown, Input, Space, Tooltip, Typography } from 'an
 import moment from 'moment/moment'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { RiInformationFill, RiTranslate2, RiDeleteBin6Fill, RiInformationLine } from 'react-icons/ri'
+import { RiDeleteBin6Fill, RiInformationFill, RiInformationLine, RiTranslate2 } from 'react-icons/ri'
 import ReactQuill, { Quill } from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { toast } from 'react-toastify'
 import StoreModal from '../../../components/storeModal/StoreModal'
+import MarketplaceToaster from '../../../util/marketplaceToaster'
 import useCreateUserConsent from '../hooks/useCreateUserConsent'
+import usePublishUserConsent from '../hooks/usePublishUserConsent'
 import useUpdateUserConsent from '../hooks/useUpdateUserConsent'
 import AddVersion from './AddVersion'
 import TranslatePolicy from './TranslatePolicy'
 import VersionHistory from './VersionHistory'
-import usePublishUserConsent from '../hooks/usePublishUserConsent'
-import MarketplaceToaster from '../../../util/marketplaceToaster'
-
+const { Text } = Typography
 const { Paragraph } = Typography
 const Link = Quill.import('formats/link')
 Link.sanitize = function (url) {
@@ -249,7 +249,7 @@ const PolicyCard = ({
 
     const getDate = (date) => {
         try {
-            const formattedDate = moment(date).format('D MMM YYYY')
+            const formattedDate = moment(date).format('D MMM YYYY h:mm:ss')
             return formattedDate
         } catch (error) {
             return ''
@@ -260,13 +260,30 @@ const PolicyCard = ({
         <div
             key={consent?.id}
             className=' bg-white pb-6 policy-card w-full mb-3 px-4 mt-2'
-            style={{ boxShadow: 'rgb(217, 217, 217) 0px 0px 10px', borderRadius: '10px' }}
-            >
+            style={{ boxShadow: 'rgb(217, 217, 217) 0px 0px 10px', borderRadius: '10px' }}>
             <div className=' h-[64px] flex justify-between items-center  w-full'>
-                <div className={`flex items-center gap-x-2 max-w-[60%] cursor-default `}>
-                    <Paragraph className=' !font-medium text-base !mb-0  ' ellipsis={{ tooltip: consentName }}>
+                <div
+                    className={`gap-x-2 cursor-default `}
+                    style={{
+                        maxWidth: '360px',
+                        display: 'inline-block',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                    }}
+                    >
+                    <Text
+                        className=' !font-medium text-base !mb-0 '
+                        ellipsis={{
+                            tooltip: {
+                                title: consentName,
+                                mouseLeaveDelay: 0,
+                                mouseEnterDelay: 0.5,
+                                placement: 'right',
+                            },
+                        }}>
                         {consentName?.substring(0, 50) || t('labels:untitled_policy')}
-                    </Paragraph>
+                    </Text>
                 </div>
                 <div className='flex justify-end'>
                     <div className='flex items-center'>
@@ -365,7 +382,11 @@ const PolicyCard = ({
                     <RiInformationFill className=' text-base mr-1 cursor-pointer' />
                 </Tooltip>
                 {t('labels:last_updated')} :{' '}
-                {!(policyStatus === 2) ? <>{t('messages:not_updated_yet')}</> : getDate(consent?.updated_on) || ''}
+                {!(policyStatus === 2) ? (
+                    <>{t('messages:not_updated_yet')}</>
+                ) : (
+                    <span className='font-semibold'>{getDate(consent?.updated_on) || ''}</span>
+                )}
             </div>
             {policyStatus !== 2 ? (
                 <div className=' space-x-2 mt-6'>

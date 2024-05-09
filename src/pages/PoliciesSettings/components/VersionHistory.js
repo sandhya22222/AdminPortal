@@ -24,7 +24,7 @@ function VersionHistory({ userConsentId, refetchUserConsent, setVersionHistory }
 
     const getDate = (date) => {
         try {
-            const formattedDate = moment(date).format('D MMM YYYY')
+            const formattedDate = moment(date).format('D MMM YYYY h:mm:ss')
             return formattedDate
         } catch (error) {
             return ''
