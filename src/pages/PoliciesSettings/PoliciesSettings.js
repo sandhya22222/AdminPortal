@@ -114,7 +114,7 @@ const PoliciesSettings = ({ storeName }) => {
 
     return (
         <section className=' bg-white rounded-lg m-3'>
-            <div className='sticky w-full !p-[22px] z-50 top-[6.2rem] bg-white !h-auto '>
+            <div className=' w-full !p-[22px]   bg-white !h-auto '>
                 <div className='mb-4'>
                     {policyWarning && (
                         <Tag
