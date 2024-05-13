@@ -287,16 +287,15 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
             {/* </Affix> */}
             {/* </div> */}
             <Content
-                className={`relative min-h-screen transition-all ${
+                className={`flex flex-col min-h-screen transition-all ${
                     util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
                         ? `${collapsed ? 'mr-[80px]' : 'mr-[252px]'}`
                         : `${collapsed ? 'ml-[80px]' : 'ml-[252px]'}`
-                }
-`}>
-                <Content className='!bg-[#F4F4F4] !mb-12'>
+                }`}>
+                <Content className='!bg-[#F4F4F4]  flex-grow'>
                     <Outlet />
                 </Content>
-                <Content className='!mt-14 absolute bottom-0 !w-[100%]'>
+                <Content className='flex-grow-0  !w-[100%]'>
                     <NewFooter />
                 </Content>
             </Content>

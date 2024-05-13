@@ -229,7 +229,6 @@ const UserProfile = () => {
 
     return (
         <Content>
-           
             <Content>
                 {userDataStatus === 'pending' ? (
                     <Content className=' bg-white p-3 !mx-4 '>
@@ -240,76 +239,81 @@ const UserProfile = () => {
                         <p>{t('messages:network_error')}</p>
                     </Content>
                 ) : (
-                    <Content className='mr-4 mt-3'>
-                         <Text className=' !text-xl !font-medium'>{t('labels:profile_information')}</Text>
-                        <Content className='w-[100%] bg-white my-3 p-2 rounded-md shadow-sm'>
-                            <div className='flex gap-2'>
-                                <Avatar size={64} icon={<UserOutlined />} />
-                                <div className='flex flex-col justify-center'>
-                                    <Typography className='input-label-color  m-0 items-center'>
-                                        <span className='text-3xl'>
-                                            {storeUsersData &&
-                                            storeUsersData.username &&
-                                            storeUsersData.username.length > 0
-                                                ? storeUsersData.username.slice(0, 1).toUpperCase() +
-                                                  storeUsersData.username.slice(1)
-                                                : null}
-                                        </span>{' '}
-                                        <span>
-                                            {t('labels:onboarded_on')}{' '}
-                                            {getGenerateDateAndTime(
-                                                storeUsersData && storeUsersData.createdTimestamp,
-                                                'MMM D YYYY'
-                                            ).replace(/(\w{3} \d{1,2}) (\d{4})/, '$1, $2')}
-                                        </span>
-                                    </Typography>
-                                    <Typography className='text-black !mt-1 !mb-0 !mx-0'>
+                    <div className=' my-3 mr-3 border-1 border-solid border-brandGray rounded-lg'>
+                        <div className='  border-b border-solid border-brandGray'>
+                            <Title className='!mb-4 !mt-6 !mx-3 !font-semibold !text-lg'>
+                                {t('labels:profile_information')}
+                            </Title>
+                        </div>
+                        <div className='mx-6 mb-6'>
+                            <div className='my-6 flex gap-4 items-center'>
+                                <Avatar shape='square' size={100} icon={<UserOutlined />} />
+                                <div className='gap-2 flex flex-col '>
+                                    <div className=' font-semibold text-base'>
+                                        {storeUsersData && storeUsersData.username && storeUsersData.username.length > 0
+                                            ? storeUsersData.username.slice(0, 1).toUpperCase() +
+                                              storeUsersData.username.slice(1)
+                                            : null}
+                                    </div>
+                                    <div className='text-brandGray1'>
                                         {storeUsersData &&
                                             storeUsersData.groups.length > 0 &&
-                                            storeUsersData.groups.map((ele,index) => (
+                                            storeUsersData.groups.map((ele, index) => (
                                                 <span key={index}>{ele.name.replace(/-/g, ' ')}</span>
                                             ))}
-                                    </Typography>
+                                    </div>
+                                    <div className='text-brandGray1'>
+                                        {t('labels:onboarded_on')}{' '}
+                                        {getGenerateDateAndTime(
+                                            storeUsersData && storeUsersData.createdTimestamp,
+                                            'MMM D YYYY'
+                                        ).replace(/(\w{3} \d{1,2}) (\d{4})/, '$1, $2')}
+                                    </div>
                                 </div>
                             </div>
-                        </Content>
-
-                        <Content className='w-[100%] bg-white my-4 p-3 rounded-md shadow-sm'>
-                            <Row gutter={25} className='pb-2'>
-                                <Col span={12}>
+                            <hr className='text-brandGray1' />
+                            <div className='w-1/2 flex flex-col gap-7'>
+                                <div>
                                     <Typography className='input-label-color'>{t('labels:first_name')}</Typography>
-                                </Col>
-                                <Col>
-                                    <Typography className='input-label-color'>{t('labels:last_name')}</Typography>
-                                </Col>
-                            </Row>
-                            <Row gutter={25} className='pb-2'>
-                                <Col span={12}>
                                     <Input value={storeUsersData && storeUsersData.firstName} disabled />
-                                </Col>
-                                <Col span={12}>
+                                </div>
+                                <div>
+                                    <Typography className='input-label-color'>{t('labels:last_name')}</Typography>
                                     <Input value={storeUsersData && storeUsersData.lastName} disabled />
-                                </Col>
-                            </Row>
-                            <Row className='pb-2'>
-                                <Col>
+                                </div>
+                                <div>
                                     <Typography className='input-label-color'>{t('labels:email')}</Typography>
-                                </Col>
-                            </Row>
-                            <Row gutter={25}>
-                                <Col span={12}>
                                     <Input value={storeUsersData.email} disabled />
-                                </Col>
-                                <Col>
-                                    <Button onClick={showPasswordChangeModal} className='app-btn-secondary'>
-                                        {t('labels:change_password')}
-                                    </Button>
-                                </Col>
-                            </Row>
-                            <Typography className='input-label-color py-2'>{t('labels:profile_picture')}</Typography>
-                            <Avatar shape='square' size={64} icon={<UserOutlined />} />
-                        </Content>
-                    </Content>
+                                </div>
+                                <Button
+                                    onClick={showPasswordChangeModal}
+                                    className='app-btn-secondary max-w-min min-h-10 '>
+                                    <span className='mr-2'>
+                                        <svg
+                                            width='14'
+                                            height='14'
+                                            viewBox='0 0 14 14'
+                                            fill='none'
+                                            xmlns='http://www.w3.org/2000/svg'>
+                                            <g clip-path='url(#clip0_2047_16641)'>
+                                                <path
+                                                    d='M13.3882 2.84355C12.6882 2.0998 11.9445 1.35605 11.2007 0.63418C11.0476 0.481055 10.8726 0.393555 10.6757 0.393555C10.4789 0.393555 10.282 0.45918 10.1507 0.612305L1.90386 8.79356C1.77261 8.9248 1.68511 9.07793 1.61949 9.23106L0.416363 12.9061C0.350738 13.0811 0.394488 13.2561 0.481988 13.3873C0.591363 13.5186 0.744488 13.6061 0.941363 13.6061H1.02886L4.76949 12.3592C4.94449 12.2936 5.09761 12.2061 5.20699 12.0748L13.4101 3.89355C13.5414 3.7623 13.6289 3.56543 13.6289 3.36855C13.6289 3.17168 13.5414 2.99668 13.3882 2.84355ZM4.50699 11.3967C4.48511 11.4186 4.46324 11.4186 4.44136 11.4404L1.61949 12.3811L2.56011 9.55918C2.56011 9.5373 2.58199 9.51543 2.60386 9.49356L8.61949 3.4998L10.5226 5.40293L4.50699 11.3967ZM11.2007 4.70293L9.29761 2.7998L10.632 1.46543C11.2664 2.07793 11.9007 2.73418 12.5132 3.36855L11.2007 4.70293Z'
+                                                    fill='#023047'
+                                                />
+                                            </g>
+                                            <defs>
+                                                <clipPath id='clip0_2047_16641'>
+                                                    <rect width='14' height='14' fill='white' />
+                                                </clipPath>
+                                            </defs>
+                                        </svg>
+                                    </span>
+
+                                    {t('labels:change_password')}
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
                 )}
             </Content>
             {/* Change password modal */}
