@@ -25,7 +25,6 @@ import { useTranslation } from 'react-i18next'
 import './sidebarnew.css'
 import { useAuth } from 'react-oidc-context'
 import util from '../../util/common'
-import { Content } from 'antd/es/layout/layout'
 
 //! Destructure the components
 const { Sider, Content } = Layout
