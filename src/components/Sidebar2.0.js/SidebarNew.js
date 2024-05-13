@@ -25,6 +25,7 @@ import { useTranslation } from 'react-i18next'
 import './sidebarnew.css'
 import { useAuth } from 'react-oidc-context'
 import util from '../../util/common'
+import { Content } from 'antd/es/layout/layout'
 
 //! Destructure the components
 const { Sider, Content } = Layout
@@ -189,101 +190,110 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
 
     return (
         <Layout className=''>
-            <div className='' style={{ width: '252px' }}>
-                <Affix offsetTop={48}>
-                    <Sider
-                        trigger={null}
-                        collapsible
-                        collapsed={collapsed}
-                        onCollapse={(value) => setCollapsed(value)}
-                        width={252}
-                        onMouseEnter={() => {
-                            handleMouseEnter()
+            {/* <div className='' style={{ width: '252px' }}> */}
+            {/* <Affix offsetTop={48}> */}
+            <Sider
+                trigger={null}
+                collapsible
+                collapsed={collapsed}
+                onCollapse={(value) => setCollapsed(value)}
+                width={252}
+                onMouseEnter={() => {
+                    handleMouseEnter()
+                }}
+                onMouseLeave={() => {
+                    handleMouseLeave()
+                }}
+                className='!bg-[var(--mp-brand-color)]'
+                style={{
+                    overflow: isHovering ? 'auto' : 'hidden',
+                    height: '100vh',
+                    position: 'fixed',
+                    top: 48,
+                    left: `${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? null : 0}`,
+                    right: `${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 0 : null}`,
+                }}>
+                <Spin spinning={myData.length > 0 ? false : true} indicator={antIcon} tip=''>
+                    <Menu
+                        mode='inline'
+                        className='h-full !text-base !bg-[var(--mp-brand-color)]  !transition-all'
+                        selectedKeys={selectedItem}
+                        openKeys={openedItem}
+                        onOpenChange={(e) => {
+                            setOpenedItem(e)
                         }}
-                        onMouseLeave={() => {
-                            handleMouseLeave()
-                        }}
-                        className='!bg-[var(--mp-brand-color)]'
+                        theme={'dark'}
                         style={{
+                            height: 'calc(100vh - 145px)',
                             overflow: isHovering ? 'auto' : 'hidden',
-                            height: '100vh',
                         }}>
-                        <Spin spinning={myData.length > 0 ? false : true} indicator={antIcon} tip=''>
-                            <Menu
-                                mode='inline'
-                                className='h-full !text-base !bg-[var(--mp-brand-color)]'
-                                selectedKeys={selectedItem}
-                                openKeys={openedItem}
-                                onOpenChange={(e) => {
-                                    setOpenedItem(e)
-                                }}
-                                theme={'dark'}
-                                style={{
-                                    height: 'calc(100vh - 145px)',
-                                    overflow: isHovering ? 'auto' : 'hidden',
-                                }}>
-                                {myData.map((item) =>
-                                    item.show_in_menu && item.children ? (
-                                        <Menu.SubMenu
-                                            icon={item.icon}
-                                            key={item.key}
-                                            title={item.label}
-                                            style={{
-                                                opacity: item.childrenKeys.includes(selectedItem) ? 1 : 0.8,
-                                            }}>
-                                            {item.children.map((child) =>
-                                                child.show_in_menu ? (
-                                                    <Menu.Item
-                                                        icon={child.icon}
-                                                        key={child.key}
-                                                        // style={{ color: "black" }}
-                                                        onClick={() => {
-                                                            navigate(child.navigate_to)
-                                                            handlePageRefresh(child.navigate_to)
-                                                        }}
-                                                        style={{
-                                                            opacity: !item.childrenKeys.includes(selectedItem)
-                                                                ? 1
-                                                                : selectedItem === child.key
-                                                                  ? 1
-                                                                  : 0.8,
-                                                        }}>
-                                                        {selectedItem === child.key ? (
-                                                            <span className='font-semibold'>{child.label}</span>
-                                                        ) : (
-                                                            child.label
-                                                        )}
-                                                    </Menu.Item>
-                                                ) : null
-                                            )}
-                                        </Menu.SubMenu>
-                                    ) : item.show_in_menu ? (
-                                        <Menu.Item
-                                            icon={item.icon}
-                                            key={item.key}
-                                            disabled={!item.show_in_menu}
-                                            onClick={() => {
-                                                navigate(item.navigate_to)
-                                                handlePageRefresh(item.navigate_to)
-                                            }}
-                                            style={{
-                                                opacity: selectedItem === item.key ? 1 : 0.8,
-                                            }}>
-                                            {selectedItem === item.key ? (
-                                                <span className='font-semibold '>{item.label}</span>
-                                            ) : (
-                                                item.label
-                                            )}
-                                        </Menu.Item>
-                                    ) : null
-                                )}
-                            </Menu>
-                        </Spin>
-                    </Sider>
-                </Affix>
-            </div>
+                        {myData.map((item) =>
+                            item.show_in_menu && item.children ? (
+                                <Menu.SubMenu
+                                    icon={item.icon}
+                                    key={item.key}
+                                    title={item.label}
+                                    style={{
+                                        opacity: item.childrenKeys.includes(selectedItem) ? 1 : 0.8,
+                                    }}>
+                                    {item.children.map((child) =>
+                                        child.show_in_menu ? (
+                                            <Menu.Item
+                                                icon={child.icon}
+                                                key={child.key}
+                                                // style={{ color: "black" }}
+                                                onClick={() => {
+                                                    navigate(child.navigate_to)
+                                                    handlePageRefresh(child.navigate_to)
+                                                }}
+                                                style={{
+                                                    opacity: !item.childrenKeys.includes(selectedItem)
+                                                        ? 1
+                                                        : selectedItem === child.key
+                                                          ? 1
+                                                          : 0.8,
+                                                }}>
+                                                {selectedItem === child.key ? (
+                                                    <span className='font-semibold'>{child.label}</span>
+                                                ) : (
+                                                    child.label
+                                                )}
+                                            </Menu.Item>
+                                        ) : null
+                                    )}
+                                </Menu.SubMenu>
+                            ) : item.show_in_menu ? (
+                                <Menu.Item
+                                    icon={item.icon}
+                                    key={item.key}
+                                    disabled={!item.show_in_menu}
+                                    onClick={() => {
+                                        navigate(item.navigate_to)
+                                        handlePageRefresh(item.navigate_to)
+                                    }}
+                                    style={{
+                                        opacity: selectedItem === item.key ? 1 : 0.8,
+                                    }}>
+                                    {selectedItem === item.key ? (
+                                        <span className='font-semibold '>{item.label}</span>
+                                    ) : (
+                                        item.label
+                                    )}
+                                </Menu.Item>
+                            ) : null
+                        )}
+                    </Menu>
+                </Spin>
+            </Sider>
+            {/* </Affix> */}
+            {/* </div> */}
             <Content
-                className={`relative min-h-screen transition-all `}>
+                className={`relative min-h-screen transition-all ${
+                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                        ? `${collapsed ? 'mr-[80px]' : 'mr-[252px]'}`
+                        : `${collapsed ? 'ml-[80px]' : 'ml-[252px]'}`
+                }
+`}>
                 <Content className='!bg-[#F4F4F4] !mb-12'>
                     <Outlet />
                 </Content>
