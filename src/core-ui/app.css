@@ -207,6 +207,10 @@ a {
     color: black !important;
     text-decoration: none !important;
 }
+
+.ant-switch.ant-switch-checked{
+    background-color: var(--mp-primary-color) !important;
+}
 /* .ql-snow {
     border: 0px !important;
 }
