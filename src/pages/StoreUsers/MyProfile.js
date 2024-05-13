@@ -67,7 +67,7 @@ const MyProfile = () => {
                             className=' !h-full'
                         />
                     </div>
-                    <div className=' w-[80%]'>
+                    <div className=' w-full'>
                         {searchParams.get('tab') === USER_PROFILE_TABS_OPTIONS.PROFILE_INFORMATION && <UserProfile />}
                         {searchParams.get('tab') === USER_PROFILE_TABS_OPTIONS.POLICIES && (
                             <ListPolicies searchParams={searchParams} setSearchParams={setSearchParams} />
