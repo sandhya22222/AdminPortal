@@ -463,7 +463,7 @@ const Stores = () => {
                             </Link>
                         ) : (
                             <Button
-                                className={`app-btn-icon flex align-items-center justify-center ${
+                                className={` flex align-items-center justify-center ${
                                     record.status === 3 ? 'opacity-30' : ''
                                 }`}
                                 type='text'
@@ -478,14 +478,16 @@ const Stores = () => {
                                                 searchParams.get('limit') ? searchParams.get('limit') : pageLimit
                                             }&storeId=${record.storeId}`,
                                         }}
-                                        // className=" pl-[10px] font-semibold app-table-data-title"
-                                    >
-                                        <Tooltip
+                                        className=' !no-underline'>
+                                        {/* <Tooltip
                                             overlayStyle={{ zIndex: 1 }}
                                             title={t('labels:store_settings')}
                                             placement='bottom'>
-                                            <MdSettings className='text-[var(--mp-primary-border-color)] hover:text-[var(--mp-primary-border-color-h)] !text-xl' />
-                                        </Tooltip>
+                                            <MdSettings className='text-[var(--mp-primary-border-color)] hover:text-[var(--mp-primary-border-color-h)] !text-xl' /> */}
+                                        {/* </Tooltip> */}
+                                        <div className='text-[var(--mp-primary-border-color)] hover:text-[var(--mp-primary-border-color-h)] !text-base font-medium '>
+                                            {t('labels:edit')}
+                                        </div>
                                     </Link>
                                 }
                             </Button>
@@ -528,16 +530,6 @@ const Stores = () => {
         setSelectedTabTableContent(tempArray)
     }
 
-    //!this useEffect for tab(initial rendering)
-    useEffect(() => {
-        if (storeApiData && storeApiData.length > 0 && !isLoading) {
-            setIsLoading(false)
-            tableStoreData(storeApiData)
-        } else {
-            setSelectedTabTableContent([])
-        }
-    }, [storeApiData])
-
     const tablePropsThreshold1 = {
         table_header: StoreTableColumnThreshold1,
         table_content: [
@@ -549,6 +541,36 @@ const Stores = () => {
             },
         ],
         pagenationSettings: pagination,
+        search_settings: {
+            is_enabled: false,
+            search_title: 'Search by name',
+            search_data: ['name'],
+        },
+        filter_settings: {
+            is_enabled: false,
+            filter_title: "Filter's",
+            filter_data: [],
+        },
+        sorting_settings: {
+            is_enabled: false,
+            sorting_title: 'Sorting by',
+            sorting_data: [],
+        },
+    }
+
+    //!this useEffect for tab(initial rendering)
+    useEffect(() => {
+        if (storeApiData && storeApiData.length > 0 && !isLoading) {
+            setIsLoading(false)
+            tableStoreData(storeApiData)
+        } else {
+            setSelectedTabTableContent([])
+        }
+    }, [storeApiData])
+
+    const storeTableData = {
+        table_header: StoreTableColumn,
+        table_content: selectedTabTableContent,
         search_settings: {
             is_enabled: false,
             search_title: 'Search by name',
@@ -1225,7 +1247,7 @@ const Stores = () => {
                     </>
                 ) : null}
             </Drawer>
-            <Content className='!p-3'>
+            <Content className='!p-5'>
                 {isLoading ? (
                     <Content className='bg-white p-3 !rounded-md mt-[2.0rem]'>
                         <Skeleton
@@ -1240,24 +1262,30 @@ const Stores = () => {
                     </Content>
                 ) : (
                     <>
-                        <Content>
+                        <Content className='bg-white shadow-brandShadow !rounded-md'>
                             {parseInt(currentTab) === 1 ? (
-                                <Content className='bg-white '>
-                                    <Radio.Group
-                                        className='mt-3 mr-4 flex float-right mb-2'
-                                        optionType='button'
-                                        onChange={handleRadioChange}
-                                        value={value}>
-                                        <Radio value={0}>{t('labels:all')}</Radio>
-                                        <Radio value={1}>{t('labels:active')}</Radio>
-                                        <Radio value={2}>{t('labels:inactive')}</Radio>
-                                    </Radio.Group>
-                                    <Table
-                                        className='mt-2'
+                                <Content className=''>
+                                    <div className='flex'>
+                                        <div className='mx-4 pt-3 text-base font-semibold w-[75%]'>
+                                            {t('labels:my_stores')}
+                                        </div>
+                                        <Radio.Group
+                                            className='mt-3 mr-4 flex !float-right mb-2'
+                                            optionType='button'
+                                            onChange={handleRadioChange}
+                                            value={value}>
+                                            <Radio value={0}>{t('labels:all')}</Radio>
+                                            <Radio value={1}>{t('labels:active')}</Radio>
+                                            <Radio value={2}>{t('labels:inactive')}</Radio>
+                                        </Radio.Group>
+                                    </div>
+                                    {/* <Table
+                                        className='mt-2 bg-white p-3'
                                         columns={StoreTableColumn}
                                         dataSource={selectedTabTableContent}
                                         pagination={false}
-                                    />
+                                    /> */}
+                                    <DynamicTable tableComponentData={storeTableData} />
                                 </Content>
                             ) : parseInt(currentTab) === 2 ? (
                                 <>

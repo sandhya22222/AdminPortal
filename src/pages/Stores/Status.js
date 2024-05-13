@@ -165,7 +165,7 @@ function Status({
                     <Space direction='vertical'>
                         <Switch
                             loading={statusInprogress === 4 || statusInprogress === 5 ? true : false}
-                            className={switchStatus ? '!bg-green-500' : '!bg-gray-400'}
+                            // className={switchStatus ? '!bg-green-500' : '!bg-gray-400'}
                             checked={switchStatus}
                             onChange={onChange}
                             onClick={() => {
