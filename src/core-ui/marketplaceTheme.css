@@ -83,4 +83,9 @@
     --mp-bright-color-h: #ffffff;
     --mp-link-color: #1a5692;
     --mp-link-color-h: #1a5692;
+    
+    /* colors related to footer */
+    --mp-text-gray:rgba(0, 0, 0, 0.06);
+    --mp-text-gray1:#637381;
+    --mp-text-gray2:#8899A8;
 }
