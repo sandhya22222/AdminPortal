@@ -136,5 +136,6 @@
     "policy_confirmation_note": "This action will update the policy displayed in both the store footer and the login form.",
     "poicy_warning": "You can only publish up to “10 Policies”. Please delete some policies to create more and publish.",
     "policy_change_warning_info": "You are about to cancel change made to '{{version}}' by doing this you will lose the unsaved date.",
-    "policy_change_warning_message": "Are you sure you want to proceed?"
+    "policy_change_warning_message": "Are you sure you want to proceed?",
+    "profile_note":"All user info, set preferences which suites you & check policies set out."
 }

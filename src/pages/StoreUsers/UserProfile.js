@@ -13,6 +13,7 @@ import { IoMdCheckmarkCircleOutline } from 'react-icons/io'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import SkeletonComponent from '../../components/Skeleton/SkeletonComponent'
 import useGetStoreUserData from '../../hooks/useGetStoreUsersData'
+import "./UserProfile.css"
 
 const { Content } = Layout
 const { Text, Title } = Typography
@@ -287,28 +288,26 @@ const UserProfile = () => {
                                 </div>
                                 <Button
                                     onClick={showPasswordChangeModal}
-                                    className='app-btn-secondary max-w-min min-h-10 '>
-                                    <span className='mr-2'>
-                                        <svg
-                                            width='14'
-                                            height='14'
-                                            viewBox='0 0 14 14'
-                                            fill='none'
-                                            xmlns='http://www.w3.org/2000/svg'>
-                                            <g clip-path='url(#clip0_2047_16641)'>
-                                                <path
-                                                    d='M13.3882 2.84355C12.6882 2.0998 11.9445 1.35605 11.2007 0.63418C11.0476 0.481055 10.8726 0.393555 10.6757 0.393555C10.4789 0.393555 10.282 0.45918 10.1507 0.612305L1.90386 8.79356C1.77261 8.9248 1.68511 9.07793 1.61949 9.23106L0.416363 12.9061C0.350738 13.0811 0.394488 13.2561 0.481988 13.3873C0.591363 13.5186 0.744488 13.6061 0.941363 13.6061H1.02886L4.76949 12.3592C4.94449 12.2936 5.09761 12.2061 5.20699 12.0748L13.4101 3.89355C13.5414 3.7623 13.6289 3.56543 13.6289 3.36855C13.6289 3.17168 13.5414 2.99668 13.3882 2.84355ZM4.50699 11.3967C4.48511 11.4186 4.46324 11.4186 4.44136 11.4404L1.61949 12.3811L2.56011 9.55918C2.56011 9.5373 2.58199 9.51543 2.60386 9.49356L8.61949 3.4998L10.5226 5.40293L4.50699 11.3967ZM11.2007 4.70293L9.29761 2.7998L10.632 1.46543C11.2664 2.07793 11.9007 2.73418 12.5132 3.36855L11.2007 4.70293Z'
-                                                    fill='#023047'
-                                                />
-                                            </g>
-                                            <defs>
-                                                <clipPath id='clip0_2047_16641'>
-                                                    <rect width='14' height='14' fill='white' />
-                                                </clipPath>
-                                            </defs>
-                                        </svg>
-                                    </span>
-
+                                    className='app-btn-secondary changePasswordBtn flex items-center justify-center gap-1 max-w-min min-h-10'>
+                                    <svg
+                                        width='14'
+                                        height='14'
+                                        viewBox='0 0 14 14'
+                                        fill='none'
+                                        className='inline-block'
+                                        xmlns='http://www.w3.org/2000/svg'>
+                                        <g clip-path='url(#clip0_2047_16641)'>
+                                            <path
+                                                d='M13.3882 2.84355C12.6882 2.0998 11.9445 1.35605 11.2007 0.63418C11.0476 0.481055 10.8726 0.393555 10.6757 0.393555C10.4789 0.393555 10.282 0.45918 10.1507 0.612305L1.90386 8.79356C1.77261 8.9248 1.68511 9.07793 1.61949 9.23106L0.416363 12.9061C0.350738 13.0811 0.394488 13.2561 0.481988 13.3873C0.591363 13.5186 0.744488 13.6061 0.941363 13.6061H1.02886L4.76949 12.3592C4.94449 12.2936 5.09761 12.2061 5.20699 12.0748L13.4101 3.89355C13.5414 3.7623 13.6289 3.56543 13.6289 3.36855C13.6289 3.17168 13.5414 2.99668 13.3882 2.84355ZM4.50699 11.3967C4.48511 11.4186 4.46324 11.4186 4.44136 11.4404L1.61949 12.3811L2.56011 9.55918C2.56011 9.5373 2.58199 9.51543 2.60386 9.49356L8.61949 3.4998L10.5226 5.40293L4.50699 11.3967ZM11.2007 4.70293L9.29761 2.7998L10.632 1.46543C11.2664 2.07793 11.9007 2.73418 12.5132 3.36855L11.2007 4.70293Z'
+                                                fill='#023047'
+                                            />
+                                        </g>
+                                        <defs>
+                                            <clipPath id='clip0_2047_16641'>
+                                                <rect width='14' height='14' fill='white' />
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
                                     {t('labels:change_password')}
                                 </Button>
                             </div>
