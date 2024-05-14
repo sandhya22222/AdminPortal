@@ -180,11 +180,6 @@ a {
     color: var(--mp-brand-color) !important;
 }
 
-.portalNameTag {
-    background-color: var(--mp-brand-color-h) !important;
-    color: white !important;
-}
-
 :where(.css-dev-only-do-not-override-1ck3jst).ant-table-wrapper .ant-table-row-expand-icon {
     display: inline-flex;
     float: none;
