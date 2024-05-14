@@ -1,6 +1,6 @@
 import LoginBackground from '../assets/images/common/login_background.png'
 import Favicon from '../assets/images/logo/dm-favicon.png'
-import marketPlaceLogo from '../assets/images/logo/marketplace-logo.png'
+import marketPlaceLogo from '../assets/images/logo/marketplace-logo.svg'
 import Profit from '../assets/images/common/profit.png'
 import Positive from '../assets/images/common/positve.png'
 import Payment from '../assets/images/common/payment.png'
@@ -25,7 +25,7 @@ import BackendKeysDownloadIcon from '../assets/images/common/BackendKeysDownload
 import UserAccessControl from '../assets/images/common/UserAccessControl.svg'
 import StoreSettings from '../assets/images/sidebar/cog.svg'
 import PaymentSettingsIcon from '../assets/images/sidebar/settings.svg'
-import BackBurgerIcon from '../assets/images/sidebar/backBurger.svg'
+import BackIcon from '../assets/images/sidebar/backIcon.svg'
 import Collapse from '../assets/images/sidebar/collaps.svg'
 import saveStoreConfirmationImage from '../assets/images/common/StoreSaveConfirmationImage.svg'
 import storeActiveConfirmationImage from '../assets/images/common/StoreActiveDeactiveConfirmation.svg'
@@ -64,7 +64,7 @@ export {
     UserAccessControl,
     StoreSettings,
     PaymentSettingsIcon,
-    BackBurgerIcon,
+    BackIcon,
     Collapse,
     saveStoreConfirmationImage,
     storeActiveConfirmationImage,

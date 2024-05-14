@@ -7,21 +7,51 @@
     width: -moz-available;
 }
 
-.ant-image {
+/* .ant-image {
     position: relative !important;
     display: block !important;
     cursor: pointer !important;
 }
 
 .custom-select.ant-select {
-    border-color: transparent !important; /* Remove default border */
+    border-color: transparent !important; 
 }
 
 .custom-select.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input)
     .ant-select-selector {
-    border-color: transparent !important; /* Remove border on focus */
-}
+    border-color: transparent !important; 
+    }
 
 .custom-select.ant-select:not(.ant-select-disabled):hover .ant-select-selector {
-    border-color: transparent !important; /* Remove border on hover */
+    border-color: transparent !important; 
+} */
+.header {
+    background-color: var(--mp-header-bg-color) !important;
+}
+.header-select .ant-select-selector {
+    line-height: 22px;
+    padding: 5px 0px;
+    font-size: 14px;
+    border: none !important;
+    color: var(--mp-primary-text-color) !important;
+}
+.header-select.ant-select-single.ant-select-open .ant-select-selection-item {
+    color: var(--mp-primary-text-color) !important;
+}
+.header-select.ant-select .ant-select-arrow {
+    color: #8899a8 !important;
+}
+.headerSelectOption.ant-select-item-option-selected {
+    color: var(--mp-primary-color) !important;
+    background-color: #fafafa !important;
+}
+.portalNameTag {
+    padding: 0px !important;
+    border-radius: 2px !important;
+    border: none !important;
+    background-color: rgba(77, 156, 185) !important;
+    color: var(--mp-text-color);
+}
+.ant-dropdown {
+    overflow: visible !important;
 }

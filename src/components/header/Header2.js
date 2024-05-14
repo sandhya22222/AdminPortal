@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { Layout, Tooltip, Dropdown, Typography, Tag, Button, Select } from 'antd'
-import {DownOutlined, UserOutlined, LogoutOutlined } from '@ant-design/icons'
-import { useNavigate } from 'react-router-dom'
+import { Layout, Tooltip, Dropdown, Typography, Tag, Button, Select, Avatar } from 'antd'
+import { DownOutlined, UserOutlined, LogoutOutlined } from '@ant-design/icons'
+import { Link, useNavigate } from 'react-router-dom'
 import './header2.css'
 
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
@@ -14,13 +14,13 @@ import {
     fnDefaultLanguage,
 } from '../../services/redux/actions/ActionStoreLanguage'
 import { fnUserProfileInfo } from '../../services/redux/actions/ActionUserProfile'
-import { marketPlaceLogo, BackBurgerIcon, Collapse } from '../../constants/media'
+import { marketPlaceLogo, BackBurgerIcon, Collapse, BackIcon } from '../../constants/media'
 
 import util from '../../util/common'
 import { useAuth } from 'react-oidc-context'
 
 const { Header, Content } = Layout
-const {  Paragraph } = Typography
+const { Paragraph } = Typography
 const { Option } = Select
 
 const multilingualFunctionalityEnabled = process.env.REACT_APP_IS_MULTILINGUAL_ENABLED
@@ -37,6 +37,7 @@ const Header2 = ({ collapsed, setCollapsed }) => {
     const navigate = useNavigate()
 
     const [userName, setUserName] = useState()
+    const [userRole, setUserRole] = useState("")
 
     // const isUserLoggedIn = sessionStorage.getItem("ap_is_logged_in");
     const storeLanguages = useSelector((state) => state.reducerStoreLanguage.storeLanguage)
@@ -58,12 +59,12 @@ const Header2 = ({ collapsed, setCollapsed }) => {
 
     const userItems = [
         // Todo: Commenting for now, will implement once the details are ready
-        {
-            label: `${t('labels:profile')}`,
-            key: 'profile',
-            icon: <UserOutlined />,
-            // disabled: true,
-        },
+        // {
+        //     label: `${t('labels:profile')}`,
+        //     key: 'profile',
+        //     icon: <UserOutlined />,
+        //     // disabled: true,
+        // },
         {
             label: `${t('labels:logout')}`,
             key: 'logout',
@@ -146,6 +147,7 @@ const Header2 = ({ collapsed, setCollapsed }) => {
             .then(function (response) {
                 console.log('get from  store user server response-----> ', response.data)
                 setUserName(response.data.response_body.username)
+                setUserRole(response.data.response_body.groups[0]?.name)
                 const userName = response.data.response_body.username
                 dispatch(fnUserProfileInfo(userName))
             })
@@ -173,123 +175,122 @@ const Header2 = ({ collapsed, setCollapsed }) => {
 
     return (
         <Content>
-            <Header className='fixed z-20 top-0 p-0 !h-12 w-full bg-white drop-shadow-md'>
-                <Content className='px-3 !py-2 !h-12 flex !justify-between  items-center '>
+            <Header className='fixed z-20 top-0 p-0  !h-[72px] w-full header drop-shadow-md'>
+                <Content className='px-3 !py-2 !h-[72px] flex flex-row !justify-between items-center '>
                     {/* Left content which displays brand logo and other stuffs */}
-                    <div className=' mx-2'>
-                        <Button
-                            type='text'
-                            icon={
-                                collapsed ? (
-                                    <img src={Collapse} alt='Collapse' />
-                                ) : (
-                                    <img
-                                        className={`  ${
-                                            util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                                ? 'rotate-180'
-                                                : ''
-                                        }`}
-                                        src={BackBurgerIcon}
-                                        alt='BackButton'
-                                    />
-                                )
-                            }
-                            onClick={() => setCollapsed(!collapsed)}
-                            // className="!bg-[var(--mp-brand-color)] hover:bg-[var(--mp-brand-color)]"
-                            className='hover:none'
-                            style={{
-                                width: '100%',
-                                display: 'flex',
-                                padding: '8 16 8 16',
-                                marginTop: '4px',
-                                color: 'white',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                            }}
-                        />
-                    </div>
-                    <div className='!inline-block text-left self-center mx-2 '>
-                        <a href='/dashboard'>
-                            <img
-                                //width={180}
-                                alt='marketPlaceLogo'
-                                preview={false}
-                                src={marketPlaceLogo}
-                                className='!h-[32px]'
-                            />
-                        </a>
-                    </div>
-                    <div className=' mx-3 '>
-                        <Tag className='portalNameTag'>
-                            {t(`labels:${multilingualNameChanging(portalInfo && portalInfo.title)}`)}
-                        </Tag>
-                    </div>
-                    {/* Center content to display any item if required */}
-                    <Content className='!inline-block text-center self-center'></Content>
-                    {/* Right content to display user menus, login icon, language icon and other stuffs */}
-                    <Content className='flex flex-row justify-end items-center gap-2'>
-                        {/* Display user dropdown if user is logged in otherwise display login icon */}
-                        {auth.isAuthenticated && (
-                            <Dropdown
-                                menu={{
-                                    items: userItems,
-                                    onClick: handleMenuClick,
-                                }}
-                                placement='bottom'
-                                arrow
-                                trigger={['click']}
-                                className='cursor-pointer header-text-color'
-                                overlayStyle={{ position: 'fixed', zIndex: 20 }}>
-                                <Paragraph className='inline-block !mb-0 relative'>
-                                    <Text className='text-lg text-slate-600 pr-1'>
-                                        {userName && userName.length > 0
-                                            ? userName.slice(0, 1).toUpperCase() + userName.slice(1)
-                                            : userProfileInfo &&
-                                              userProfileInfo.length > 0 &&
-                                              userProfileInfo.slice(0, 1).toUpperCase() + userProfileInfo &&
-                                              userProfileInfo.length > 0 &&
-                                              userProfileInfo.slice(1)}
-                                    </Text>
-                                    <DownOutlined className='text-xs text-slate-600' />
-                                </Paragraph>
-                            </Dropdown>
-                        )}
-                        {/* Display language dropdown only if store has more than 1 language.  */}
-                        {multilingualFunctionalityEnabled === 'true' &&
-                        auth.isAuthenticated &&
-                        languageItems &&
-                        languageItems.length > 0 ? (                     
-                            <Select
-                                bordered={false}
-                                placeholder={t('placeholders:select_language')}
-                                defaultValue={storeSelectedLngCode ? storeSelectedLngCode : defaultLanguageCode}
-                                onChange={(value) => handleLanguageClick(value)}
+                    <div className='flex flex-row items-center'>
+                        <div
+                            className={`${
+                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'ml-4 mr-2' : 'ml-2 mr-4'
+                            } `}>
+                            <Button
+                                type='text'
+                                icon={
+                                    collapsed ? (
+                                        <img src={Collapse} alt='Collapse' />
+                                    ) : (
+                                        <img
+                                            className={`  ${
+                                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                    ? 'rotate-180'
+                                                    : ''
+                                            }`}
+                                            src={BackIcon}
+                                            alt='BackButton'
+                                        />
+                                    )
+                                }
+                                onClick={() => setCollapsed(!collapsed)}
+                                // className="!bg-[var(--mp-brand-color)] hover:bg-[var(--mp-brand-color)]"
+                                className='hover:none'
                                 style={{
-                                    minWidth: '100px',
-                                    maxWidth: '100px',
+                                    width: '100%',
+                                    display: 'flex',
+                                    padding: '8 16 8 16',
+                                    marginTop: '4px',
+                                    color: 'white',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
                                 }}
+                            />
+                        </div>
+                        <div className='flex items-center mx-2 '>
+                            <Link href='/dashboard'>
+                                <img
+                                    //width={180}
+                                    alt='marketPlaceLogo'
+                                    preview={false}
+                                    src={marketPlaceLogo}
+                                    className='!h-[32px]'
+                                />
+                            </Link>
+                        </div>
+                        <div className='mx-2 flex items-center'>
+                            <Tag className='portalNameTag'>
+                                <Text className='!px-2 text-[12px] font-medium leading-5'>
+                                    {portalInfo && portalInfo.title.toUpperCase()}
+                                </Text>
+                            </Tag>
+                        </div>
+                    </div>
+
+                    {/* Center content to display any item if required */}
+                    <Content className='flex flex-1'></Content>
+                    {/* Right content to display user menus, login icon, language icon and other stuffs */}
+                    <Content className='!flex  !justify-end !items-center px-2'>
+                        {/* Display user dropdown if user is logged in otherwise display login icon */}
+                        {auth.isAuthenticated ? (
+                            <div className='flex !self-end'>
+                                <Avatar className='bg-gray-400 mx-1' size={48} icon={<UserOutlined />} />
+                                <Text
+                                    className={`${
+                                        util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'ml-4' : 'mr-4'
+                                    } !flex flex-col`}>
+                                    <Text className='font-bold text-sm text-white leading-[22px] whitespace-nowrap'>
+                                        {userName ? userName : userProfileInfo}{' '}
+                                    </Text>
+                                    <Dropdown
+                                        menu={{
+                                            items: userItems,
+                                            onClick: handleMenuClick,
+                                        }}
+                                        placement='bottom'
+                                        trigger={['click']}
+                                        className='cursor-pointer'
+                                        overlayStyle={{ position: 'fixed',overflow:'visible', zIndex: 20, top: 64 }}>
+                                        <Text className='text-xs text-[#9BC8E3] !leading-[20px] font-normal whitespace-nowrap '>
+                                            {userRole ? userRole.replace(/-/g, ' ') : ''}{' '}
+                                            <DownOutlined className='text-xs' />
+                                        </Text>
+                                    </Dropdown>
+                                </Text>
+                            </div>
+                        ) : null}
+                        {/* Display language dropdown only if store has more than 1 language. */}
+
+                        {multilingualFunctionalityEnabled === 'true' && languageItems.length > 0 ? (
+                            <Select
+                                // options={languageItems}
+                                bordered={false}
+                                placeholder='Select Language'
+                                defaultValue={storeSelectedLngCode || defaultLanguageCode}
+                                disabled={languageItems.length === 1 ? true : false}
+                                onChange={(value) => handleLanguageClick(value)}
+                                className='header-select'
                                 dropdownStyle={{ position: 'fixed' }}
-                                disabled={languageItems && languageItems.length === 1 ? true : false}
-                                className='custom-select'>
-                                {languageItems &&
-                                    languageItems.length > 0 &&
-                                    languageItems.map((option) => (
-                                        <Option key={option.value} value={option.value}>
-                                            <Tooltip
-                                                title={option.label}
-                                                overlayStyle={{ position: 'fixed' }}
-                                                placement='left'>
-                                                <span
-                                                    style={{
-                                                        overflow: 'hidden',
-                                                        textOverflow: 'ellipsis',
-                                                        whiteSpace: 'nowrap',
-                                                    }}>
-                                                    {option.label}
-                                                </span>
-                                            </Tooltip>
-                                        </Option>
-                                    ))}
+                                key={storeSelectedLngCode}>
+                                {languageItems.map((option) => (
+                                    <Option key={option.value} value={option.value} className='headerSelectOption'>
+                                        <Tooltip
+                                            title={option.label}
+                                            overlayStyle={{ position: 'fixed' }}
+                                            placement='left'>
+                                            <span className='overflow-hidden whitespace-nowrap'>
+                                                {option.label.toUpperCase().substring(0, 3)}
+                                            </span>
+                                        </Tooltip>
+                                    </Option>
+                                ))}
                             </Select>
                         ) : (
                             <></>

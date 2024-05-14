@@ -372,7 +372,7 @@ const Newdashboard = () => {
                     }
                 />
             </Content>
-            <Content className='!p-3 !mt-[7.8rem]'>
+            <Content className='!p-3 !mt-[9rem]'>
                 {loading ? (
                     <Content className='mt-5 !bg-[var(--mp-bright-color)] !p-3 !rounded-md'>
                         <Content className='mt-2 flex justify-between'>
