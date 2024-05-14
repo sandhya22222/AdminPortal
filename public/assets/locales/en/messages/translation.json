@@ -125,7 +125,7 @@
     "contact_policy_info": "Unchecking the 'Display contact information' option leads to deletion of this policy.",
     "policies_description_Not_available": "Policies Description Not Available",
     "no_policies_available": "No Policies Available",
-    "policy_bonus_note": "Bonus: Add essential contact information for users who need help.  (This is mandatory for businesses in the EU!)",
+    "policy_bonus_note": "Add essential contact information for users who need help.  (This is mandatory for businesses in the EU!)",
     "policy_banner_image_note": "Craft policies and terms to display in your store's policy section.",
     "display_contact": "Display contact information",
     "add_version_note": "To create a new version, you can only increase the version number. Decreasing digits isn't allowed.",
@@ -136,5 +136,6 @@
     "policy_confirmation_note": "This action will update the policy displayed in both the store footer and the login form.",
     "poicy_warning": "You can only publish up to “10 Policies”. Please delete some policies to create more and publish.",
     "policy_change_warning_info": "You are about to cancel change made to '{{version}}' by doing this you will lose the unsaved date.",
-    "policy_change_warning_message": "Are you sure you want to proceed?"
+    "policy_change_warning_message": "Are you sure you want to proceed?",
+    "image_requirements": "Image Requirements"
 }

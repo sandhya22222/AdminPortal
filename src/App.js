@@ -32,6 +32,7 @@ import { useEffect } from 'react'
 import ListCurrency from './pages/storeCurrency/ListCurrency'
 import EditCurrency from './pages/storeCurrency/EditCurrency'
 import MyProfile from './pages/StoreUsers/MyProfile'
+import StoreSettingsLayout from './pages/StoreSetting/StoreSettingsLayout'
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL
 
 // const authFromEnv = process.env.REACT_APP_AUTH;
@@ -124,7 +125,7 @@ const App = () => {
                                 <Route path='language' element={<Language />} />
                                 <Route path='language/language-settings' element={<LanguageSettings />} />
                                 <Route path='store' element={<Store />} />
-                                <Route path='store/storesetting' element={<StoreSettings />} />
+                                <Route path='store/storesetting' element={<StoreSettingsLayout />} />
                                 <Route path='currency' element={<ListCurrency />} />
                                 <Route path='currency/edit-currency' element={<EditCurrency />} />
                                 <Route path='preview' element={<Preview />} />
