@@ -44,7 +44,7 @@ const MyProfile = () => {
         })
     }
     return (
-        <Content>
+        <>
             <HeaderForTitle
                 title={
                     <Content className=''>
@@ -53,9 +53,10 @@ const MyProfile = () => {
                         </Title>
                     </Content>
                 }
+                headerContent={<Content className=' !pt-8 text-brandGray1'>{t("messages:profile_note")}</Content>}
             />
-            <div className='!px-6 !pb-6 !pt-24 !mt-10'>
-                <div className=' w-full bg-white rounded shadow-sm  flex  justify-start'>
+            <div className='!px-6 !pb-6 !mt-6'>
+                <div className=' w-full bg-white rounded flex  justify-start shadow-brandShadow'>
                     <div className=' py-4 h-full top-[110px] sticky  '>
                         <Tabs
                             items={myProfileTabData}
@@ -75,7 +76,7 @@ const MyProfile = () => {
                     </div>
                 </div>
             </div>
-        </Content>
+        </>
     )
 }
 export default MyProfile
