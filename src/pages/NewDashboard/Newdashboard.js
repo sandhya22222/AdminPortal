@@ -450,7 +450,6 @@ const Newdashboard = () => {
                                     {t('labels:orders')}
                                 </Title>
                                 <Button onClick={() => navigate('/dashboard/store')} type='link'>
-                                    {/* {t("labels:more")} */}
                                 </Button>
                             </Content>
                             <Divider style={{ width: 'calc(100% + 48px)', marginLeft: '-24px' }} />
