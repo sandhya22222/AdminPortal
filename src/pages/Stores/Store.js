@@ -15,7 +15,7 @@ import {
     Tabs,
     Progress,
     InputNumber,
-    Table,
+    Alert,
     Badge,
 } from 'antd'
 import React, { useEffect, useState } from 'react'
@@ -1124,7 +1124,7 @@ const Stores = () => {
                 width={'40%'}>
                 {drawerAction && drawerAction === 'post' ? (
                     <>
-                        <Row>
+                        {/* <Row>
                             <Col span={1} className='flex items-start mt-[3px]'>
                                 <MdInfo className='!text-[var(--mp-brand-color-h)] text-[16px]' />
                             </Col>
@@ -1132,7 +1132,7 @@ const Stores = () => {
                                 <Text className=' mr-1 font-bold'> {t('labels:note')}: </Text>
                                 <Text>{t('messages:add_store_description')}</Text>
                             </Col>
-                        </Row>
+                        </Row> */}
                         <Spin tip={t('labels:please_wait')} size='large' spinning={isUpLoading}>
                             <label className='text-[13px] mb-2 ml-1 input-label-color' id='labStNam'>
                                 {t('labels:store_name')}
@@ -1168,10 +1168,21 @@ const Stores = () => {
                                     setName(trimmedUpdate)
                                 }}
                             />
-                            <Divider orientation='left' orientationMargin='0'>
+                            <div className='font-semibold my-2 text-base'>
                                 {t('labels:store_administrator_details')}
-                            </Divider>
-
+                            </div>
+                            <Alert
+                                icon={<MdInfo className='font-bold !text-center' />}
+                                message={
+                                    <div className=''>
+                                        <Text className=' mr-1 text-[#637381]'> {t('labels:note')}: </Text>
+                                        <Text className='text-[#637381]'>{t('messages:add_store_description')}</Text>
+                                    </div>
+                                }
+                                type='info'
+                                showIcon
+                                className='my-3'
+                            />
                             <label className='text-[13px] mb-2 ml-1 input-label-color' id='labStEmail'>
                                 {t('labels:email')}
                             </label>

@@ -6,6 +6,7 @@ import { CheckCircleFilled } from '@ant-design/icons'
 import HeaderForTitle from '../../components/header/HeaderForTitle'
 import { useTranslation } from 'react-i18next'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
+import util from '../../util/common'
 import StoreModal from '../../components/storeModal/StoreModal'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 const { Content } = Layout
@@ -162,13 +163,13 @@ const EditCurrency = () => {
 
     return (
         <Content>
-            <Content>
+            <Content className=''>
                 <HeaderForTitle
                     title={
-                        <Content className=''>
-                            <Title level={3} className='!font-normal '>
+                        <Content className='!mb-4'>
+                            <div className='!font-semibold text-2xl items-center mt-2'>
                                 {currencyDetails.currency_name}
-                            </Title>
+                            </div>
                         </Content>
                     }
                     titleContent={
@@ -193,10 +194,122 @@ const EditCurrency = () => {
                     showButtons={false}
                 />
             </Content>
-            <Content className='!p-3 !mt-[7.5rem] !min-h-screen '>
+            <Content className='!p-3 !mt-[8rem] !min-h-screen '>
                 <Spin tip='Please wait!' size='large' spinning={isLoading}>
-                    <Content className=' !bg-white !p-4'>
-                        <Col span={12} className='mb-4'>
+                    <Content className=' !bg-white !p-4 shadow-brandShadow rounded'>
+                        <div className='font-semibold  text-lg my-2 mx-3'>{t('labels:currency_details')}</div>
+                        <div className='w-[100%] !flex-col !gap-2 !justify-start mx-3'>
+                            <div
+                                className={`justify-items-start  !inline-block   ${
+                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                        ? 'text-left ml-2'
+                                        : 'text-right mr-2 '
+                                }`}>
+                                <p className='!text-gray-500 my-4 flex'>
+                                    {t('labels:currency_code')}{' '}
+                                    <span
+                                        className={
+                                            util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                ? 'mr-11'
+                                                : 'ml-11'
+                                        }>
+                                        :
+                                    </span>
+                                </p>
+                                <p className='!text-gray-500 my-4 flex'>
+                                    {t('labels:unit_conversation')}
+                                    <span
+                                        className={
+                                            util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                ? 'mr-6'
+                                                : 'ml-6'
+                                        }>
+                                        :
+                                    </span>
+                                </p>
+                                <p className='!text-gray-500 my-4 flex'>
+                                    {t('labels:unit_price_name')}
+                                    <span
+                                        className={
+                                            util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                ? 'mr-9'
+                                                : 'ml-9'
+                                        }>
+                                        :
+                                    </span>
+                                </p>
+                                <p className='!text-gray-500 my-4 flex'>
+                                    {t('labels:min_amount')}
+                                    <span
+                                        className={
+                                            util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                ? 'mr-[60px]'
+                                                : 'ml-[60px]'
+                                        }>
+                                        :
+                                    </span>
+                                </p>
+                                <p className='!text-gray-500 my-3 flex'>
+                                    {t('labels:currency_symbol')}
+                                    <span
+                                        className={
+                                            util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                ? 'mr-8'
+                                                : 'ml-8'
+                                        }>
+                                        :
+                                    </span>
+                                </p>
+                                <p className='!text-gray-500 my-4 flex'>
+                                    {t('labels:no_of_decimals')}
+                                    <span
+                                        className={
+                                            util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                ? 'mr-10'
+                                                : 'ml-10'
+                                        }>
+                                        :
+                                    </span>
+                                </p>
+                            </div>
+                            <div
+                                className={`${
+                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                        ? 'mr-8 w-[50%] !inline-block '
+                                        : 'ml-8 w-[50%] !inline-block '
+                                }`}>
+                                <p className='!font-semibold my-4'>
+                                    {currencyDetails?.iso_currency_code !== null
+                                        ? currencyDetails?.iso_currency_code
+                                        : `${t('labels:not_available')}`}
+                                </p>
+                                <p className='!font-semibold my-4'>
+                                    {currencyDetails?.unit_conversion !== null
+                                        ? currencyDetails?.unit_conversion
+                                        : `${t('labels:not_available')}`}
+                                </p>
+                                <p className='!font-semibold my-4'>
+                                    {currencyDetails?.unit_price_name !== null
+                                        ? currencyDetails?.unit_price_name
+                                        : `${t('labels:not_available')}`}
+                                </p>
+                                <p className='!font-semibold my-4'>
+                                    {currencyDetails?.minimum_amount !== null
+                                        ? currencyDetails?.minimum_amount
+                                        : `${t('labels:not_available')}`}
+                                </p>
+                                <p className='!font-semibold my-4'>
+                                    {currencyDetails?.symbol ? currencyDetails?.symbol : `${t('labels:not_available')}`}
+                                </p>
+                                <p className='!font-semibold my-4'>
+                                    {currencyDetails?.no_of_decimal
+                                        ? currencyDetails?.no_of_decimal
+                                        : `${t('labels:not_available')}`}
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* <Col span={12} className='mb-4'>
                             <label className='text-[14px] mb-2 ml-1 input-label-color'>
                                 {t('labels:currency_name')}
                             </label>
@@ -286,7 +399,7 @@ const EditCurrency = () => {
                                     }}
                                 />
                             </Col>
-                        </Row>
+                        </Row> */}
                         {/* <Row className="mb-3 gap-3">
               <Col>
                 <Button

@@ -36,7 +36,12 @@ function HeaderForTitle({
     }
     return (
         <Content className='shadow-sm'>
-            <Content className='fixed !h-auto top-[72px] z-10 bg-white flex justify-between headerWidth !px-5 pt-3 pb-1'>
+            <Content
+                className={`${
+                    headerContent === undefined
+                        ? 'shadow-sm fixed !h-auto top-[72px] z-10 bg-white flex justify-between headerWidth !px-5 pt-3 pb-1'
+                        : 'fixed !h-auto top-[72px] z-10 bg-white flex justify-between headerWidth !px-5 pt-3 pb-1'
+                }`}>
                 <Content className={`${showArrowIcon === true ? 'flex !items-center gap-2' : ''}`}>
                     {showArrowIcon === true ? (
                         selectedLanguageFromReduxState &&
