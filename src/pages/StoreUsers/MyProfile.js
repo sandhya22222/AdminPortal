@@ -53,7 +53,7 @@ const MyProfile = () => {
                         </Title>
                     </Content>
                 }
-                headerContent={<Content className=' !pt-8 text-brandGray1'>{t("messages:profile_note")}</Content>}
+                headerContent={<Content className=' !pt-14 text-brandGray1'>{t("messages:profile_note")}</Content>}
             />
             <div className='!px-6 !pb-6 !mt-6'>
                 <div className=' w-full bg-white rounded flex  justify-start shadow-brandShadow'>
