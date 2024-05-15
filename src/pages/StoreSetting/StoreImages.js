@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { Typography, Upload, Layout, Modal, Button, Tooltip, Image } from 'antd'
+import { Typography, Upload, Layout, Modal, Button, Tooltip, Image, Alert } from 'antd'
 import { PlusOutlined, UploadOutlined } from '@ant-design/icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { fnAbsoluteStoreImageInfo } from '../../services/redux/actions/ActionStoreImages'
 import { useTranslation } from 'react-i18next'
+import { MdInfo } from 'react-icons/md'
 import StoreModal from '../../components/storeModal/StoreModal'
 import { TiDelete } from 'react-icons/ti'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
@@ -21,15 +22,12 @@ const supportedFileExtensions = process.env.REACT_APP_IMAGES_EXTENSIONS
 const StoreImages = ({
     title,
     type,
-    isSingleUpload,
     storeId,
     imagesUpload,
     setImagesUpload,
+    isSingleUpload,
     getImageData,
-    validStoreLogo,
-    InfoCircleText,
     bannerAbsoluteImage,
-    setImageChangeValues,
     disabelMediaButton,
 }) => {
     const dispatch = useDispatch()
@@ -41,9 +39,7 @@ const StoreImages = ({
     const [previewImage, setPreviewImage] = useState('')
     const [previewTitle, setPreviewTitle] = useState('')
     const [imagePathShow, setImagePathShow] = useState()
-    const [copyImagePath, setCopyImagePath] = useState()
     const [allImageUrl, setAllImageUrl] = useState([])
-    const [reset, setReset] = useState(false)
     const [imageIndex, setImageIndex] = useState()
     const [imageElement, setImageElement] = useState()
     const [isImageDeleting, setIsImageDeleting] = useState(false)
@@ -63,7 +59,6 @@ const StoreImages = ({
     )
 
     const handleChange = (e) => {
-        setImageChangeValues(true)
         setFileList(e.fileList)
         if (type === 'store_logo') {
             if (e.fileList.length === 0) {
@@ -168,12 +163,13 @@ const StoreImages = ({
             }
         }
     }
-
+console.log('getImageData', getImageData)
     useEffect(() => {
         if (getImageData && getImageData !== undefined) {
             if (type === 'store_logo') {
                 let temp = getImageData && getImageData.store_logo_path
-                if (temp !== null && temp !== undefined) {
+                console.log('temp', temp)
+                if (temp !== '' && temp !== null && temp !== undefined) {
                     findAllWithoutPageStoreAbsoluteImagesApi(temp)
                 } else {
                     setImagePathShow()
@@ -257,6 +253,8 @@ const StoreImages = ({
         let url = baseURL + imagePath
         let temp = []
         temp.push(url)
+        console.log('temp', temp)
+        setAllImageUrl(temp)
         if (absoluteStoreImageInfo && absoluteStoreImageInfo.length > 0) {
             let imageData = [...absoluteStoreImageInfo]
             let imageType = { type: type, value: url }
@@ -266,10 +264,10 @@ const StoreImages = ({
             let imageType = { type: type, value: url }
             dispatch(fnAbsoluteStoreImageInfo(imageType))
         }
-        setAllImageUrl(temp)
         setImagePathShow(url)
-        setCopyImagePath(url)
     }
+
+    console.log('allImageUrl', allImageUrl)
 
     // closing the delete popup model
     const closeDeleteModal = () => {
@@ -308,7 +306,6 @@ const StoreImages = ({
                     }
                 } else {
                     setImagePathShow()
-                    setReset(true)
                 }
                 setIsDeleteImageModalOpen(false)
                 // disabling spinner
@@ -334,29 +331,17 @@ const StoreImages = ({
     return (
         <Content className=' mb-2'>
             <Content className='flex !mb-3 gap-1'>
-                <Title level={5} className=''>
-                    {title}
-                </Title>
-                <Content className=' items-end  '>
-                    <Tooltip
-                        title={InfoCircleText}
-                        overlayStyle={{ zIndex: 1, position: 'fixed' }}
-                        placement={
-                            util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'leftTop' : 'rightTop'
-                        }></Tooltip>
-                </Content>
+                <div className='font-normal  text-base mb-1 mt-2'>{title}</div>
             </Content>
             {imagePathShow === undefined ? (
                 <Content>
                     {isSingleUpload && isSingleUpload === true ? (
-                        <Content className='flex gap-4'>
+                        <Content className='flex gap-4 mb-2'>
                             <div>
                                 <Upload
-                                    className={`${
-                                        validStoreLogo
-                                            ? '!border-red-400 !border-2 focus:border-red-400 hover:border-red-400 !h-[105px] !w-[105px] rounded-lg'
-                                            : 'hover:border-[var(--mp-primary-border-color)] hover:text-[var(--mp-brand-color-h)]'
-                                    }`}
+                                    className={
+                                        'hover:border-[var(--mp-primary-border-color)] hover:text-[var(--mp-brand-color-h)]'
+                                    }
                                     listType='picture-card'
                                     fileList={fileList}
                                     name='file'
@@ -411,17 +396,27 @@ const StoreImages = ({
                                     {t('labels:click_to_upload')}
                                 </Button>
                             </Upload>
-                            <div className='mt-2 text-[#a8a8a8]'>
-                                <ul className='list-disc pl-[17px]'>
-                                    <li className='mb-0'>{t('messages:banner_logo_info')}</li>
-                                    <li className='mb-0'>{t('messages:banner_logo_resolution')}</li>
-                                    <li className='!mb-0 '>{t('messages:upload_image_content')}</li>
-                                    <li className='!mb-2'>
-                                        {t('messages:please_ensure_that_upload_only_eight_images', {
-                                            BannerImagesUploadLength,
-                                        })}
-                                    </li>
-                                </ul>
+                            <div className='mt-3'>
+                                <Alert
+                                    icon={<MdInfo className='font-bold !text-center' />}
+                                    message={t('messages:image_requirements')}
+                                    description={
+                                        <div>
+                                            <ul className='list-disc pl-[17px]'>
+                                                <li className='mb-0'>{t('messages:banner_logo_info')}</li>
+                                                <li className='mb-0'>{t('messages:banner_logo_resolution')}</li>
+                                                <li className='!mb-0 '>{t('messages:upload_image_content')}</li>
+                                                <li className='!mb-2'>
+                                                    {t('messages:please_ensure_that_upload_only_eight_images', {
+                                                        BannerImagesUploadLength,
+                                                    })}
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    }
+                                    type='info'
+                                    showIcon
+                                />
                             </div>
                         </>
                     )}
@@ -441,6 +436,7 @@ const StoreImages = ({
                         {allImageUrl &&
                             allImageUrl.length > 0 &&
                             allImageUrl.map((ele, index) => {
+                                console.log('ele', ele)
                                 return (
                                     <div
                                         className={
@@ -490,17 +486,27 @@ const StoreImages = ({
                                         {t('labels:click_to_upload')}
                                     </Button>
                                 </Upload>
-                                <div className='mt-2 text-[#a8a8a8]'>
-                                    <ul className='list-disc pl-[17px]'>
-                                        <li className='mb-0'>{t('messages:banner_logo_info')}</li>
-                                        <li className='mb-0'>{t('messages:banner_logo_resolution')}</li>
-                                        <li className='!mb-0 '>{t('messages:upload_image_content')}</li>
-                                        <li className='!mb-2'>
-                                            {t('messages:please_ensure_that_upload_only_eight_images', {
-                                                BannerImagesUploadLength,
-                                            })}
-                                        </li>
-                                    </ul>
+                                <div className='mt-2'>
+                                    <Alert
+                                        icon={<MdInfo className='font-bold !text-center' />}
+                                        message={t('messages:image_requirements')}
+                                        description={
+                                            <div>
+                                                <ul className='list-disc pl-[17px]'>
+                                                    <li className='mb-0'>{t('messages:banner_logo_info')}</li>
+                                                    <li className='mb-0'>{t('messages:banner_logo_resolution')}</li>
+                                                    <li className='!mb-0 '>{t('messages:upload_image_content')}</li>
+                                                    <li className='!mb-2'>
+                                                        {t('messages:please_ensure_that_upload_only_eight_images', {
+                                                            BannerImagesUploadLength,
+                                                        })}
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        }
+                                        type='info'
+                                        showIcon
+                                    />
                                 </div>
                                 <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
                                     <img

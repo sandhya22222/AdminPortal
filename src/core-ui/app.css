@@ -33,6 +33,10 @@
     background-color: var(--mp-input-field-outer-glow-color) !important;
 }
 
+.ant-select-item .ant-select-item-option .ant-select-item-option-active {
+    background-color: var(--mp-input-field-outer-glow-color) !important;
+}
+
 .ant-select-focused.ant-select:not(.ant-select-disabled):not(.ant-select-customize-input):not(
         .ant-pagination-size-changer
     )
@@ -217,6 +221,17 @@ a {
 .ant-switch.ant-switch-checked {
     background-color: var(--mp-primary-color) !important;
 }
+
+:where(.css-dev-only-do-not-override-1kuana8).ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover
+    .ant-checkbox-inner {
+    border-color: var(--mp-primary-color) !important;
+}
+
+.ant-checkbox-checked .ant-checkbox-inner {
+    background-color: var(--mp-primary-color) !important;
+    border-color: var(--mp-primary-color) !important;
+}
+
 /* .ql-snow {
     border: 0px !important;
 }
