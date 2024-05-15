@@ -270,8 +270,8 @@ const UserAccessControl = () => {
                 var pageLimit = searchParams.get('limit') ? searchParams.get('limit') : itemsPerPageFromEnv
 
                 // setIsLoading(true)
-                if (parseInt(presentTab) === 1) {
-                    findAllGroupLists(parseInt(pageNumber), parseInt(pageLimit))
+                if (parseInt(presentTab) === 0) {
+                    queryClient.invalidateQueries('userData')
                 } else if (parseInt(presentTab) === 2) {
                 } else {
                     findAllUsersLists(parseInt(pageNumber), parseInt(pageLimit))
@@ -336,7 +336,7 @@ const UserAccessControl = () => {
                 console.log('delete response of user', response)
                 // Invalidate the query to trigger a refetch
                 queryClient.invalidateQueries('userData')
-        
+
                 setDeleteModalLoading(false)
                 MarketplaceToaster.showToast(response)
                 // findAllUsersLists()
@@ -519,9 +519,9 @@ const UserAccessControl = () => {
                 {
                     <div>
                         {selectedUserData.status === true ? (
-                            <p>{t('messages:are_you_sure_you_want_disable_status')}?</p>
+                            <p>{t('messages:are_you_sure_you_want_disable_status')}</p>
                         ) : (
-                            <p>{t('messages:are_you_sure_you_want_enable_status')}?</p>
+                            <p>{t('messages:are_you_sure_you_want_enable_status')}</p>
                         )}
                     </div>
                 }
