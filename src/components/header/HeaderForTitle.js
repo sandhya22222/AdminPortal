@@ -36,7 +36,7 @@ function HeaderForTitle({
     }
     return (
         <Content className=''>
-            <Content className='fixed !h-auto top-[3.0rem] z-10 bg-white flex justify-between headerWidth !px-5 pt-3 pb-1'>
+            <Content className='fixed !h-auto top-[72px] z-10 bg-white flex justify-between headerWidth !px-5 pt-3 pb-1'>
                 <Content className={`${showArrowIcon === true ? 'flex !items-center gap-2' : ''}`}>
                     {showArrowIcon === true ? (
                         selectedLanguageFromReduxState &&

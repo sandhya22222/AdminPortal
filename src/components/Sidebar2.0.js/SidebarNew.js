@@ -204,7 +204,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                     overflow: isHovering ? 'auto' : 'hidden',
                     height: '100vh',
                     position: 'fixed',
-                    top: 48,
+                    top: 72,
                     left: `${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? null : 0}`,
                     right: `${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 0 : null}`,
                 }}>
