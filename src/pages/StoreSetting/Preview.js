@@ -14,7 +14,7 @@ const Preview = ({
     foreGroundColor,
     buttonPrimaryBackgroundColor,
     buttonSecondaryBackgroundColor,
-    buttonTeritaryBackgroundColor,
+    buttonTertiaryBackgroundColor,
     buttonPrimaryForegroundColor,
     buttonSecondaryForegroundColor,
     buttonTeritaryForegroundColor,
@@ -78,9 +78,9 @@ const Preview = ({
                     <Button
                         className={util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-8' : 'ml-8'}
                         style={{
-                            backgroundColor: buttonTeritaryBackgroundColor,
+                            backgroundColor: buttonTertiaryBackgroundColor,
                             color: buttonTeritaryForegroundColor,
-                            border: buttonTeritaryBackgroundColor,
+                            border: buttonTertiaryBackgroundColor,
                         }}>
                         {t('labels:button3')}
                     </Button>

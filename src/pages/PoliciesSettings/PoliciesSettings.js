@@ -1,4 +1,4 @@
-import { Alert, Button, Checkbox, Divider, Modal, Skeleton, Tag, Tooltip, Typography } from 'antd'
+import { Alert, Button, Checkbox, Divider, Modal, Skeleton, Tag, Tooltip, Typography, Layout } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { RiInformationFill, RiCloseCircleFill } from 'react-icons/ri'
@@ -14,6 +14,7 @@ import useGetUserConsent from './hooks/useGetUserConsent'
 import './policiesSettings.css'
 import { toast } from 'react-toastify'
 
+const { Content } = Layout
 const { Text, Title } = Typography
 const CONTACT_INFORMATION = 'Contact Information'
 
@@ -113,8 +114,8 @@ const PoliciesSettings = ({ storeName }) => {
     }
 
     return (
-        <section className=' bg-white rounded-lg m-3'>
-            <div className=' w-full !p-[22px]   bg-white !h-auto '>
+        <Content className=' bg-white rounded-lg border my-4'>
+            <div className=' w-full  bg-white !h-auto px-4'>
                 <div className='mb-4'>
                     {policyWarning && (
                         <Tag
@@ -133,16 +134,16 @@ const PoliciesSettings = ({ storeName }) => {
                     )}
                 </div>
                 <div className=' flex  w-full  justify-between '>
-                    <Title level={3} className='!font-bold m-0 '>
-                        {t('messages:policies')}
-                    </Title>
+                    <label className='text-lg mb-3 font-semibold'>{t('messages:policies')}</label>
                     <div className='flex !gap-2'>
                         <Button
+                            className='app-btn-secondary'
                             onClick={handlePolicyHistory}
                             disabled={userConsentStatus !== 'success' || userConsents?.userconsent_data?.length <= 0}>
                             {t('labels:policy_history')}
                         </Button>
                         <Button
+                            className='app-btn-secondary'
                             onClick={handelPreviewAndCustomise}
                             disabled={userConsentStatus !== 'success' || userConsents?.userconsent_data?.length <= 0}>
                             {t('labels:preview_and_customise')}
@@ -159,8 +160,9 @@ const PoliciesSettings = ({ storeName }) => {
                     <div>
                         <Text className='input-label-color'>{t('messages:help_info_policies')}</Text>
                     </div>
-                    <div className='mt-3'>
-                        <Text className='input-label-color'>{t('messages:policy_bonus_note')}</Text>
+                    <div className='mt-3 flex'>
+                        <Text className='input-label-color font-bold'>{t('labels:bonus')}:</Text>
+                        <Text className='input-label-color '> {t('messages:policy_bonus_note')}</Text>
                     </div>
                 </div>
             </div>
@@ -309,7 +311,7 @@ const PoliciesSettings = ({ storeName }) => {
                     <PolicyHistory></PolicyHistory>
                 </StoreModal>
             </div>
-        </section>
+        </Content>
     )
 }
 export default PoliciesSettings

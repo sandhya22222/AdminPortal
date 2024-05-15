@@ -270,8 +270,7 @@ const PolicyCard = ({
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap',
-                    }}
-                    >
+                    }}>
                     <Text
                         className=' !font-medium text-base !mb-0 '
                         ellipsis={{
@@ -309,13 +308,17 @@ const PolicyCard = ({
                         </Dropdown>
                     </div>
                     <div className='mx-2'>
-                        <Button icon={<PlusOutlined />} disabled={!(policyStatus === 2)} onClick={addVersionHandler}>
+                        <Button
+                            icon={<PlusOutlined />}
+                            disabled={!(policyStatus === 2)}
+                            onClick={addVersionHandler}
+                            className='app-btn-secondary'>
                             {t('labels:add_version')}
                         </Button>
                     </div>
                     <div className={policyType !== 'CONTACT_POLICY' ? 'mr-2' : ''}>
                         <Button
-                            className='flex items-center'
+                            className='flex items-center app-btn-secondary'
                             icon={<RiTranslate2 />}
                             disabled={
                                 !(

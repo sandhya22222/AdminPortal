@@ -254,9 +254,9 @@
     "reset_default": "Reset Theme to Default",
     "consent_explicit": "Make user consent explicit",
     "delete_policies": "Delete Policy?",
-    "profile_information":"Profile Information",
-    "policies":"Policies",
-    "show_more":"Show more",
+    "profile_information": "Profile Information",
+    "policies": "Policies",
+    "show_more": "Show more",
     "policy_history": "Policy History",
     "version_history": "Version History",
     "view_version_history": "View Version History",
@@ -277,5 +277,7 @@
     "orders_received":"Orders Received",
     "orders_inprogress":"Orders Inprogress",
     "orders_fulfilled":"Orders Fulfilled",
-    "orders_cancelled":"Orders Cancelled"
+    "orders_cancelled":"Orders Cancelled",
+    "bonus": "Bonus",
+    "themes":"Themes"
 }
