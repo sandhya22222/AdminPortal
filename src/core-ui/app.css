@@ -19,7 +19,7 @@
     color: var(--mp-brand-color) !important;
 }
 .ant-menu-dark.ant-menu-submenu > .ant-menu {
-    background-color: var(--mp-brand-color) !important;
+    color: var(--mp-brand-color) !important;
 }
 .ant-pagination .ant-pagination-item-active {
     border-color: var(--mp-brand-color) !important;
@@ -110,22 +110,33 @@
     color: var(--mp-brand-color-h) !important;
 }
 .ant-menu-item-selected {
-    background-color: var(--mp-sidebar-menu-selected) !important;
+    background-color: var(--mp-sidebar-menu-selected-background) !important;
+    color: var(--mp-sidebar-menu-selected) !important;
 }
 
 .ant-menu-item:not(.ant-menu-item-selected):active {
-    background-color: var(--mp-brand-color-h) !important;
+    background-color: var(--mp-sidebar-menu-selected-background) !important;
+    color: var(--mp-sidebar-menu-not-selected) !important;
 }
 .ant-menu-dark {
+    background: var(--mp-sidebar-menu-dark) !important;
     background-color: var(--mp-sidebar-menu-dark) !important;
+    color: var(--mp-sidebar-menu-not-selected) !important;
+}
+
+.ant-layout .ant-layout-sider {
+    background-color: var(--mp-sidebar-menu-dark) !important;
+    color: var(--mp-sidebar-menu-not-selected) !important;
 }
 
 .ant-layout-sider-children {
-    background-color: var(--mp-brand-color) !important;
+    /* background-color: var(--mp-brand-color) !important; */
+    color: var(--mp-sidebar-menu-not-selected) !important;
 }
 
 .ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item:not(.ant-menu-item-selected):hover {
-    background-color: var(--mp-sidebar-menu-hover) !important;
+    /* background-color: var(--mp-sidebar-menu-hover) !important; */
+    color: var(--mp-brand-color) !important;
 }
 
 .ant-menu {
@@ -203,7 +214,7 @@ a {
     text-decoration: none !important;
 }
 
-.ant-switch.ant-switch-checked{
+.ant-switch.ant-switch-checked {
     background-color: var(--mp-primary-color) !important;
 }
 /* .ql-snow {

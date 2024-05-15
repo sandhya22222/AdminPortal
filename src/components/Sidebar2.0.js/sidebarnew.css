@@ -1,17 +1,52 @@
-.ant-menu-item-selected {
-    background-color: var(--mp-brand-color-h) !important;
-}
-
-.ant-menu-item:not(.ant-menu-item-selected):active {
-    background-color: var(--mp-brand-color-h) !important;
-}
-
 .ant-menu-item-active {
-    background-color: var(--mp-brand-color-h) !important;
+    color: var(--mp-brand-color-h) !important;
 }
 
 .ant-menu-item .ant-menu-item-selected {
-    background-color: var(--mp-brand-color-h) !important;
+    color: var(--mp-brand-color-h) !important;
+}
+
+.ant-menu-item-selected {
+    background-color: var(--mp-sidebar-menu-selected-background) !important;
+    color: var(--mp-brand-color-h) !important;
+}
+
+.ant-menu-item:not(.ant-menu-item-selected):active {
+    background-color: var(--mp-sidebar-menu-selected-background) !important;
+    color: var(--mp-brand-color-h) !important;
+}
+.ant-menu-dark {
+    background: var(--mp-sidebar-menu-dark) !important;
+    background-color: var(--mp-sidebar-menu-dark) !important;
+    color: var(--mp-sidebar-menu-not-selected) !important;
+}
+.ant-layout .ant-layout-sider {
+    background: var(--mp-sidebar-menu-dark) !important;
+    background-color: var(--mp-sidebar-menu-dark) !important;
+    color: var(--mp-sidebar-menu-not-selected) !important;
+}
+.ant-menu-dark .ant-menu-submenu-selected > .ant-menu-submenu-title {
+    background: var(--mp-sidebar-menu-dark) !important;
+    background-color: var(--mp-sidebar-menu-dark) !important;
+    color: var(--mp-brand-color-h) !important;
+}
+.ant-layout-sider-children {
+    /* background-color: var(--mp-brand-color) !important; */
+    color: var(--mp-sidebar-menu-not-selected) !important;
+}
+.ant-menu-item .ant-menu-item-selected .ant-menu-title-content {
+    color: var(--mp-brand-color-h) !important;
+}
+.ant-menu-item .ant-menu-title-content {
+    color: var(--mp-sidebar-menu-not-selected) !important;
+}
+
+.ant-menu-title-content:hover {
+    color: var(--mp-brand-color-h) !important;
+}
+
+.ant-menu-submenu .ant-menu-submenu-inline .ant-menu-submenu-title .ant-menu-title-content {
+    color: var(--mp-sidebar-menu-not-selected) !important;
 }
 
 .ant-menu .ant-menu-item .ant-menu-item-icon {
