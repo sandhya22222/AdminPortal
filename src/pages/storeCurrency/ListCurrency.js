@@ -143,7 +143,7 @@ const ListCurrency = () => {
                     <Col className='whitespace-nowrap !text-center'>
                         <Tooltip title={t('labels:view_details')}>
                             <div
-                                className='app-btn-icon cursor-pointer'
+                                className='app-btn-icon cursor-pointer font-medium text-sm'
                                 onClick={() => {
                                     navigate(`/dashboard/currency/edit-currency?k=${record.id}`)
                                 }}>
@@ -190,16 +190,19 @@ const ListCurrency = () => {
     //!JSX for list currency page
     return (
         <Content>
-            <HeaderForTitle
-                title={
-                    <Content className=''>
-                        <Title level={3} className='!font-normal'>
-                            {t('labels:currency')}
-                        </Title>
-                    </Content>
-                }
-                titleContent={<Content className=' !flex items-center !justify-end gap-3'></Content>}
-            />
+            <div className='!shadow-lg'>
+                <HeaderForTitle
+                    className=''
+                    title={
+                        <Content className=''>
+                            <Title level={3} className='!font-normal'>
+                                {t('labels:currency')}
+                            </Title>
+                        </Content>
+                    }
+                    titleContent={<Content className=' !flex items-center !justify-end gap-3'></Content>}
+                />
+            </div>
             <Content className='p-3 mt-[7.0rem]'>
                 {isLoading ? (
                     <Content className=' bg-white text-center !p-2'>
@@ -210,7 +213,7 @@ const ListCurrency = () => {
                         <p>{`${t('messages:network_error')}`}</p>
                     </Content>
                 ) : (
-                    <>
+                    <Content className='bg-white p-3 shadow-brandShadow rounded-md'>
                         <Table dataSource={listCurrencyData?.data} columns={listCurrencyColumns} pagination={false} />
                         {listCurrencyData && listCurrencyData?.count >= pageLimit ? (
                             <Content className=' grid justify-items-end'>
@@ -224,7 +227,7 @@ const ListCurrency = () => {
                                 />
                             </Content>
                         ) : null}
-                    </>
+                    </Content>
                 )}
             </Content>
         </Content>

@@ -1,13 +1,13 @@
 :root {
-    --mp-brand-color: #FB8500;
+    --mp-brand-color: #fb8500;
 
-    --mp-brand-color-h: #FB8500;
+    --mp-brand-color-h: #fb8500;
     --mp-input-field-label-color: #8c8c8c;
     --mp-input-field-placeholder-color: #bfbfbf;
     --mp-input-field-value-color: #262626;
-    --mp-input-field-hover-color: #FB8500;
-    --mp-input-field-focused-color: #7d3192;
-    --mp-input-field-outer-glow-color: #fae9ff;
+    --mp-input-field-hover-color: #fb8500;
+    --mp-input-field-focused-color: #fb8500;
+    --mp-input-field-outer-glow-color: #fff7e6;
     --mp-mandatory-symbol-color: #ff4d4f;
 
     --mp-steps-process-background-color: #fae9ff;
@@ -16,15 +16,15 @@
     --mp-sidebar-menu-hover: #412865;
     --mp-sidebar-menu-selected: #7d3192;
 
-    --mp-primary-background-color: #FB8500;
+    --mp-primary-background-color: #fb8500;
     --mp-primary-background-color-d: #f5f5f5;
-    --mp-primary-background-color-h: #FB8500;
-    --mp-primary-border-color: #FB8500;
+    --mp-primary-background-color-h: #fb8500;
+    --mp-primary-border-color: #fb8500;
     --mp-primary-border-color-d: #d9d9d9;
-    --mp-primary-border-color-h: #FB8500;
-    --mp-primary-color: #FB8500;
+    --mp-primary-border-color-h: #fb8500;
+    --mp-primary-color: #fb8500;
     --mp-primary-color-d: #d9d9d9;
-    --mp-primary-color-h: #FB8500;
+    --mp-primary-color-h: #fb8500;
     --mp-primary-text-color: #ffffff;
     --mp-primary-text-color-d: #d9d9d9;
     --mp-primary-text-color-h: #ffffff;
@@ -34,13 +34,13 @@
     --mp-secondary-background-color-h: #ffffff;
     --mp-secondary-border-color: #d9d9d9;
     --mp-secondary-border-color-d: #d9d9d9;
-    --mp-secondary-border-color-h: #FB8500;
+    --mp-secondary-border-color-h: #fb8500;
     --mp-secondary-color: #f4f4f4;
     --mp-secondary-color-d: #f4f4f4;
     --mp-secondary-color-h: #f4f4f4;
     --mp-secondary-text-color: #000000;
     --mp-secondary-text-color-d: #d9d9d9;
-    --mp-secondary-text-color-h: #FB8500;
+    --mp-secondary-text-color-h: #fb8500;
 
     --mp-danger-primary-background-color: #ff4d4f;
     --mp-danger-primary-background-color-d: #f5f5f5;
@@ -83,9 +83,9 @@
     --mp-bright-color-h: #ffffff;
     --mp-link-color: #1a5692;
     --mp-link-color-h: #1a5692;
-    
+
     /* colors related to footer */
-    --mp-text-gray:rgba(0, 0, 0, 0.06);
-    --mp-text-gray1:#637381;
-    --mp-text-gray2:#8899A8;
+    --mp-text-gray: rgba(0, 0, 0, 0.06);
+    --mp-text-gray1: #637381;
+    --mp-text-gray2: #8899a8;
 }
