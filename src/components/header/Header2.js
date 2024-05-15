@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { Layout, Tooltip, Dropdown, Typography, Tag, Button, Select, Avatar } from 'antd'
+import { Layout, Tooltip, Dropdown, Typography, Tag, Button, Select, Avatar, Image } from 'antd'
 import { DownOutlined, UserOutlined, LogoutOutlined } from '@ant-design/icons'
 import { Link, useNavigate } from 'react-router-dom'
 import './header2.css'
@@ -37,7 +37,7 @@ const Header2 = ({ collapsed, setCollapsed }) => {
     const navigate = useNavigate()
 
     const [userName, setUserName] = useState()
-    const [userRole, setUserRole] = useState("")
+    const [userRole, setUserRole] = useState('')
 
     // const isUserLoggedIn = sessionStorage.getItem("ap_is_logged_in");
     const storeLanguages = useSelector((state) => state.reducerStoreLanguage.storeLanguage)
@@ -216,12 +216,13 @@ const Header2 = ({ collapsed, setCollapsed }) => {
                         </div>
                         <div className='flex items-center mx-2 '>
                             <Link href='/dashboard'>
-                                <img
+                                <Image
                                     //width={180}
                                     alt='marketPlaceLogo'
                                     preview={false}
                                     src={marketPlaceLogo}
-                                    className='!h-[32px]'
+                                    className='cursor-pointer'
+                                    height={32}
                                 />
                             </Link>
                         </div>

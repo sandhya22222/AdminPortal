@@ -7,11 +7,8 @@
     width: -moz-available;
 }
 
-/* .ant-image {
-    position: relative !important;
-    display: block !important;
-    cursor: pointer !important;
-}
+
+/*
 
 .custom-select.ant-select {
     border-color: transparent !important; 
@@ -25,6 +22,10 @@
 .custom-select.ant-select:not(.ant-select-disabled):hover .ant-select-selector {
     border-color: transparent !important; 
 } */
+.ant-image {
+    position: relative !important;
+    display: block !important;
+}
 .header {
     background-color: var(--mp-header-bg-color) !important;
 }
