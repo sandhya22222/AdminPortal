@@ -58,11 +58,9 @@ const CreateUsers = () => {
             .then(function (response) {
                 console.log('Groups get call response-->', response.data.response_body)
                 setGroupsServerData(response.data.response_body)
-
             })
             .catch(function (error) {
                 console.log('grouplist get error call response-->', error)
-
             })
     }
 
@@ -115,13 +113,9 @@ const CreateUsers = () => {
         const emailRegex = new RegExp(emailRegexPattern)
         const userNameRegex = /^[A-Za-z0-9_\- ]+$/
         let count = 3
-        if (
-            userName === '' ||
-            emailId === '' ||
-            selectRole === undefined
-        ) {
+        if (userName === '' || emailId === '' || selectRole === undefined) {
             count--
-            
+
             if (emailId === '') {
                 setInvalidEmailId(true)
             }
@@ -134,9 +128,7 @@ const CreateUsers = () => {
             MarketplaceToaster.showToast(
                 util.getToastObject(`${t('messages:please_enter_the_values_for_the_mandatory_fields')}`, 'error')
             )
-        }
-      
-        else if (userNameRegex.test(userName) === false) {
+        } else if (userNameRegex.test(userName) === false) {
             count--
             setInvalidUserName(true)
             MarketplaceToaster.showToast(util.getToastObject(`${t('messages:please_enter_valid_username')}`, 'error'))
@@ -165,7 +157,7 @@ const CreateUsers = () => {
         setIsLoading(true)
         let dataObject = {}
         dataObject['firstname'] = firstName
-     
+
         dataObject['lastname'] = lastName
         dataObject['email'] = emailId
 
@@ -205,7 +197,6 @@ const CreateUsers = () => {
     }
 
     const userFormValidationEdit = () => {
-
         const emailRegex = new RegExp(emailRegexPattern)
         let count = 1
         if (emailId === '') {
@@ -240,7 +231,6 @@ const CreateUsers = () => {
         setInvalidRole(false)
         setIsUserDetailsEditted(true)
     }
-    
 
     //useEffect to form the data for the role dropdown
     useEffect(() => {
@@ -325,7 +315,7 @@ const CreateUsers = () => {
                 isVisible={pageAction === 'edit' ? false : true}
                 showButtons={false}
             />
-            <Content className='!min-h-screen mt-[6.7rem] p-3'>
+            <Content className='!min-h-screen mt-[8.5rem] p-3'>
                 {isUserDetailFetching ? (
                     <Content className='bg-white'>
                         <Skeleton
@@ -337,9 +327,9 @@ const CreateUsers = () => {
                     </Content>
                 ) : (
                     <Spin tip={t('labels:please_wait')} size='large' spinning={isLoading}>
-                        <Content className='bg-white p-3'>
+                        <Content className='bg-white p-3 rounded-md shadow-brandShadow'>
                             <Row>
-                                <Col span={18} className=''>
+                                <Col span={10} className=''>
                                     <Content className='my-3'>
                                         <Typography className='input-label-color mb-2 flex gap-1'>
                                             {t('labels:user_name')}
@@ -375,52 +365,52 @@ const CreateUsers = () => {
                                             />
                                         </Content>
                                     </Content>
-                                    <Content className='flex my-3 gap-3'>
-                                        <Content className=''>
-                                            <Typography className='input-label-color mb-2 flex gap-1'>
-                                                {t('labels:first_name')}
-                                            </Typography>
-                                            <Content>
-                                                <Input
-                                                    autoComplete='off'
-                                                    value={firstName}
-                                                    onChange={(e) => {
-                                                        const { value } = e.target
-                                                        const regex = /^[a-zA-Z]*$/ // only allow letters
-                                                        if (regex.test(value)) {
-                                                            setFirstName(e.target.value)
-                                                            setIsUserDetailsEditted(true)
-                                                        }
-                                                    }}
-                                                    minLength={nameMinLength}
-                                                    maxLength={nameMaxLength}
-                                                    placeholder={t('placeholders:enter_first_name')}
-                                                />
-                                            </Content>
-                                        </Content>
-                                        <Content className=''>
-                                            <Typography className='input-label-color mb-2 flex gap-1'>
-                                                {t('labels:last_name')}
-                                            </Typography>
-                                            <Content>
-                                                <Input
-                                                    autoComplete='off'
-                                                    value={lastName}
-                                                    onChange={(e) => {
-                                                        const { value } = e.target
-                                                        const regex = /^[a-zA-Z]*$/ // only allow letters
-                                                        if (regex.test(value)) {
-                                                            setLastName(e.target.value)
-                                                            setIsUserDetailsEditted(true)
-                                                        }
-                                                    }}
-                                                    minLength={nameMinLength}
-                                                    maxLength={nameMaxLength}
-                                                    placeholder={t('placeholders:enter_last_name')}
-                                                />
-                                            </Content>
+                                    {/* <Content className='flex my-3 gap-3'> */}
+                                    <Content className='my-3'>
+                                        <Typography className='input-label-color mb-2 flex gap-1'>
+                                            {t('labels:first_name')}
+                                        </Typography>
+                                        <Content>
+                                            <Input
+                                                autoComplete='off'
+                                                value={firstName}
+                                                onChange={(e) => {
+                                                    const { value } = e.target
+                                                    const regex = /^[a-zA-Z]*$/ // only allow letters
+                                                    if (regex.test(value)) {
+                                                        setFirstName(e.target.value)
+                                                        setIsUserDetailsEditted(true)
+                                                    }
+                                                }}
+                                                minLength={nameMinLength}
+                                                maxLength={nameMaxLength}
+                                                placeholder={t('placeholders:enter_first_name')}
+                                            />
                                         </Content>
                                     </Content>
+                                    <Content className='my-3'>
+                                        <Typography className='input-label-color mb-2 flex gap-1'>
+                                            {t('labels:last_name')}
+                                        </Typography>
+                                        <Content>
+                                            <Input
+                                                autoComplete='off'
+                                                value={lastName}
+                                                onChange={(e) => {
+                                                    const { value } = e.target
+                                                    const regex = /^[a-zA-Z]*$/ // only allow letters
+                                                    if (regex.test(value)) {
+                                                        setLastName(e.target.value)
+                                                        setIsUserDetailsEditted(true)
+                                                    }
+                                                }}
+                                                minLength={nameMinLength}
+                                                maxLength={nameMaxLength}
+                                                placeholder={t('placeholders:enter_last_name')}
+                                            />
+                                        </Content>
+                                    </Content>
+                                    {/* </Content> */}
                                     <Content className='my-3'>
                                         <Typography className='input-label-color mb-2 flex gap-1'>
                                             {t('labels:email')}
@@ -449,9 +439,8 @@ const CreateUsers = () => {
                                             />
                                         </Content>
                                     </Content>
-                                 
+
                                     <Content className='flex my-3'>
-                                        
                                         <Content className=''>
                                             <Typography className='input-label-color mb-2 flex gap-1'>
                                                 {t('labels:role')}
@@ -461,10 +450,9 @@ const CreateUsers = () => {
                                                 <Select
                                                     disabled={pageAction === 'edit' ? userName == currentUser : false}
                                                     style={{
-                                                        width: 665,
+                                                        width: 430,
                                                     }}
                                                     allowClear
-                                                    
                                                     status={invalidRole ? 'error' : ''}
                                                     placeholder={t('labels:select_a_role')}
                                                     value={selectRole}
@@ -475,10 +463,7 @@ const CreateUsers = () => {
                                         </Content>
                                     </Content>
 
-                                    <Content className='my-2 flex gap-2'>
-                                        <Button className='app-btn-secondary' onClick={() => navigate(-1)}>
-                                            {t('labels:discard')}
-                                        </Button>
+                                    <Content className='!mb-3 pt-3 flex gap-2'>
                                         <Button
                                             onClick={pageAction != 'add' ? userFormValidationEdit : userFormValidation}
                                             className={`app-btn-primary 
@@ -501,6 +486,9 @@ const CreateUsers = () => {
                                                       : true
                                             }>
                                             {pageAction === 'edit' ? t('labels:update') : t('labels:save')}
+                                        </Button>
+                                        <Button className='app-btn-secondary' onClick={() => navigate(-1)}>
+                                            {t('labels:discard')}
                                         </Button>
                                     </Content>
                                 </Col>

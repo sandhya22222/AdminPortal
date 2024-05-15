@@ -195,15 +195,13 @@ const ListCurrency = () => {
                     className=''
                     title={
                         <Content className=''>
-                            <Title level={3} className='!font-normal'>
-                                {t('labels:currency')}
-                            </Title>
+                            <div className='!font-semibold text-2xl mb-4'>{t('labels:currency')}</div>
                         </Content>
                     }
                     titleContent={<Content className=' !flex items-center !justify-end gap-3'></Content>}
                 />
             </div>
-            <Content className='p-3 mt-[7.0rem]'>
+            <Content className='p-3 mt-[9.5rem]'>
                 {isLoading ? (
                     <Content className=' bg-white text-center !p-2'>
                         <SkeletonComponent />

@@ -1071,11 +1071,7 @@ const Stores = () => {
     return (
         <Content className=''>
             <HeaderForTitle
-                title={
-                    <Title level={3} className='!font-normal'>
-                        {t('labels:stores')}
-                    </Title>
-                }
+                title={<div className='!font-semibold text-2xl mb-4'>{t('labels:stores')}</div>}
                 titleContent={
                     parseInt(currentTab) === 1 ? (
                         hideAddStoreButton ? (
@@ -1089,7 +1085,7 @@ const Stores = () => {
                 }
                 headerContent={
                     !isLoading && (
-                        <Content className='!h-10 !mt-7'>
+                        <Content className='!h-10 !mt-16'>
                             <Tabs
                                 activeKey={currentTab}
                                 items={[
@@ -1260,7 +1256,7 @@ const Stores = () => {
             </Drawer>
             <Content className='!p-5'>
                 {isLoading ? (
-                    <Content className='bg-white p-3 !rounded-md mt-[2.0rem]'>
+                    <Content className='bg-white p-3 !rounded-md mt-[3.0rem]'>
                         <Skeleton
                             active
                             paragraph={{
@@ -1276,12 +1272,12 @@ const Stores = () => {
                         <Content className='bg-white shadow-brandShadow !rounded-md'>
                             {parseInt(currentTab) === 1 ? (
                                 <Content className=''>
-                                    <div className='flex'>
+                                    <div className='flex w-full'>
                                         <div className='mx-4 pt-3 text-base font-semibold w-[75%]'>
                                             {t('labels:my_stores')}
                                         </div>
                                         <Radio.Group
-                                            className='mt-3 mr-4 flex !float-right mb-2'
+                                            className={`mt-3  flex !float-right mb-2 ${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'ml-5' : ''}`}
                                             optionType='button'
                                             onChange={handleRadioChange}
                                             value={value}>

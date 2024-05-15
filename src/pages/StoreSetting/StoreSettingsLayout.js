@@ -303,7 +303,7 @@ const StoreSettingsLayout = () => {
             <HeaderForTitle
                 title={
                     <Content className='flex !w-[80vw]'>
-                        <Content className='!w-[80%] flex gap-2 mb-4'>
+                        <Content className='!w-[80%] flex gap-2 mb-3'>
                             <div className='!font-semibold  text-2xl mt-2 '>{storeName}</div>
                             <div className='mt-3'>
                                 <Tag color='success' className=''>
@@ -334,7 +334,7 @@ const StoreSettingsLayout = () => {
                 className='!min-h-20'
             />
 
-            <div className='!px-6 !pb-6  !mt-[10rem]'>
+            <div className='!px-6 !pb-6  !mt-[10.6rem]'>
                 <div className=' w-full bg-white rounded shadow-brandShadow flex  justify-start'>
                     <div className=' py-4 h-full '>
                         <Tabs

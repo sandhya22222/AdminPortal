@@ -191,30 +191,78 @@ const Currency = ({ storeUUId }) => {
                                             : 'text-right mr-2 '
                                     }`}>
                                     <p className='!text-gray-500 my-3 flex'>
-                                        {t('labels:currency_code')} <span className='ml-11'>:</span>
+                                        {t('labels:currency_code')}{' '}
+                                        <span
+                                            className={
+                                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                    ? 'mr-11'
+                                                    : 'ml-11'
+                                            }>
+                                            :
+                                        </span>
                                     </p>
                                     <p className='!text-gray-500 my-3 flex'>
                                         {t('labels:unit_conversation')}
-                                        <span className='ml-6'>:</span>
+                                        <span
+                                            className={
+                                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                    ? 'mr-6'
+                                                    : 'ml-6'
+                                            }>
+                                            :
+                                        </span>
                                     </p>
                                     <p className='!text-gray-500 my-3 flex'>
                                         {t('labels:unit_price_name')}
-                                        <span className='ml-9'>:</span>
+                                        <span
+                                            className={
+                                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                    ? 'mr-9'
+                                                    : 'ml-9'
+                                            }>
+                                            :
+                                        </span>
                                     </p>
                                     <p className='!text-gray-500 my-3 flex'>
                                         {t('labels:min_amount')}
-                                        <span className='ml-[60px]'>:</span>
+                                        <span
+                                            className={
+                                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                    ? 'mr-[60px]'
+                                                    : 'ml-[60px]'
+                                            }>
+                                            :
+                                        </span>
                                     </p>
                                     <p className='!text-gray-500 my-3 flex'>
                                         {t('labels:currency_symbol')}
-                                        <span className='ml-8'>:</span>
+                                        <span
+                                            className={
+                                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                    ? 'mr-8'
+                                                    : 'ml-8'
+                                            }>
+                                            :
+                                        </span>
                                     </p>
                                     <p className='!text-gray-500 my-3 flex'>
                                         {t('labels:no_of_decimals')}
-                                        <span className='ml-10'>:</span>
+                                        <span
+                                            className={
+                                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                    ? 'mr-10'
+                                                    : 'ml-10'
+                                            }>
+                                            :
+                                        </span>
                                     </p>
                                 </div>
-                                <div className='w-[50%] !inline-block ml-8'>
+                                <div
+                                    className={`${
+                                        util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                            ? 'mr-8 w-[50%] !inline-block '
+                                            : 'ml-8 w-[50%] !inline-block '
+                                    }`}>
                                     <p className='!font-semibold my-3'>
                                         {currencyData[0].iso_currency_code !== null
                                             ? currencyData[0].iso_currency_code
