@@ -22,7 +22,7 @@ const minPasswordLength = process.env.REACT_APP_PASSWORD_MIN_LENGTH
 
 const UserProfile = () => {
     const { t } = useTranslation()
-    usePageTitle(t('labels:my_profile'))
+    usePageTitle(t('labels:profile'))
     const [storeUsersData, setStoreUsersData] = useState()
     const [isLoading, setIsLoading] = useState(true)
     const [isNetworkError, setIsNetworkError] = useState(false)
