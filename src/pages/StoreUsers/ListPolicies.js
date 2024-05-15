@@ -7,12 +7,14 @@ import util from '../../util/common'
 import ReactQuill from 'react-quill'
 import './DisplayPolicy.css'
 import { getGenerateDateAndTime } from '../../util/util'
+import { usePageTitle } from '../../hooks/usePageTitle'
 const { Content } = Layout
 
 const ListPolicies = ({ searchParams, setSearchParams }) => {
+    const { t } = useTranslation()
+    usePageTitle(t('labels:policies'))
     const search = useLocation().search
     const subTabData = new URLSearchParams(search).get('subtab')
-    const { t } = useTranslation()
     const [policiesTab, setPoliciesTab] = useState([])
     const { data: storeAdminConsent, status: storeAdminStatus } = useGetStoreAdminConsent()
     const [policyLink, setPolicyLink] = useState('')
