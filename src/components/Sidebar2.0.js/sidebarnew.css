@@ -45,7 +45,7 @@
     color: var(--mp-brand-color-h) !important;
 }
 
-.ant-menu-submenu .ant-menu-submenu-inline .ant-menu-submenu-title .ant-menu-title-content {
+.ant-menu-submenu .ant-menu-submenu-inline .ant-menu-submenu-title {
     color: var(--mp-sidebar-menu-not-selected) !important;
 }
 

@@ -20,7 +20,10 @@ import NewFooter from './../footer/Footer'
 //! Import user defined CSS
 import { useAuth } from 'react-oidc-context'
 import util from '../../util/common'
-import './sidebarnew.css'
+import './SidebarNewUpdated.css'
+import { DashboardSVG } from './components/DashboardSVG'
+import { StoresSVG } from './components/StoresSVG'
+import { SettingsSVG } from './components/SettingsSVG'
 
 //! Destructure the components
 const { Sider, Content } = Layout
@@ -98,6 +101,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                     key: '1',
                     selectedIcon: <img src={DashboardSelected} alt='ViewDashboard' />,
                     notSelectedIcon: <img src={DashboardNotSelected} alt='ViewDashboard' />,
+                    icon: <DashboardSVG />,
                     label: ` ${t('labels:dashboard')}`,
                     navigate_to: '/dashboard',
                     show_in_menu: true,
@@ -106,6 +110,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                     key: '2',
                     selectedIcon: <img src={StoresSelected} alt='StoresSelected' />,
                     notSelectedIcon: <img src={StoresNotSelected} alt='StoresNotSelected' />,
+                    icon: <StoresSVG />,
                     label: ` ${t('labels:stores')}`,
                     navigate_to: '/dashboard/store?m_t=1',
                     show_in_menu: true,
@@ -114,6 +119,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                     key: '15',
                     selectedIcon: <img src={SettingsSelected} alt='storeSettings' />,
                     notSelectedIcon: <img src={SettingsNotSelected} alt='StoreSettings' />,
+                    icon: <SettingsSVG />,
                     label: `${t('labels:settings')}`,
                     navigate_to: '/dashboard/',
                     show_in_menu: true,
@@ -199,7 +205,6 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                 onMouseLeave={() => {
                     handleMouseLeave()
                 }}
-                className='!text-[var(--mp-sidebar-menu-not-selected)]'
                 style={{
                     overflow: isHovering ? 'auto' : 'hidden',
                     height: '100vh',
@@ -211,15 +216,15 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                 <Spin spinning={myData.length > 0 ? false : true} indicator={antIcon} tip=''>
                     <Menu
                         mode='inline'
-                        className='h-full !text-base !text-[var(--mp-sidebar-menu-not-selected)]  !transition-all'
+                        className='h-full !text-base !transition-all'
                         selectedKeys={selectedItem}
                         openKeys={openedItem}
                         onOpenChange={(e) => {
                             setOpenedItem(e)
                         }}
-                        theme={'dark'}
+                        theme={'light'}
                         style={{
-                            height: 'calc(100vh - 145px)',
+                            height: 'calc(100vh)',
                             overflow: isHovering ? 'auto' : 'hidden',
                         }}>
                         {myData.map((item) =>
@@ -232,9 +237,9 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                                               ? item.selectedIcon
                                               : item.notSelectedIcon
                                     }
+                                    // icon={item.icon}
                                     key={item.key}
                                     title={item.label}
-                                    className='text-[var(--mp-sidebar-menu-not-selected)]'
                                     style={{
                                         opacity: item.childrenKeys.includes(selectedItem) ? 1 : 0.8,
                                     }}>
@@ -248,7 +253,6 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                                                     navigate(child.navigate_to)
                                                     handlePageRefresh(child.navigate_to)
                                                 }}
-                                                className='text-[var(--mp-sidebar-menu-not-selected)]'
                                                 style={{
                                                     opacity: !item.childrenKeys.includes(selectedItem)
                                                         ? 1
@@ -274,13 +278,13 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                                               ? item.selectedIcon
                                               : item.notSelectedIcon
                                     }
+                                    // icon={item.icon}
                                     key={item.key}
                                     disabled={!item.show_in_menu}
                                     onClick={() => {
                                         navigate(item.navigate_to)
                                         handlePageRefresh(item.navigate_to)
                                     }}
-                                    className='text-[var(--mp-sidebar-menu-not-selected)]'
                                     style={{
                                         opacity: selectedItem === item.key ? 1 : 0.8,
                                     }}>

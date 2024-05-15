@@ -1,0 +1,66 @@
+.ant-menu-item {
+    color: var(--mp-sidebar-menu-not-selected) !important;
+}
+.ant-menu-item:hover {
+    color: var(--mp-sidebar-menu-selected) !important;
+    background-color: var(--mp-sidebar-menu-selected-background) !important;
+}
+.ant-menu-item:hover svg path {
+    fill: var(--mp-sidebar-menu-selected) !important;
+    transition: fill 0.3s ease-in-out;
+}
+.ant-menu-item-selected svg path {
+    fill: var(--mp-sidebar-menu-selected) !important;
+}
+
+.ant-menu-item-selected {
+    color: var(--mp-sidebar-menu-selected) !important;
+    background-color: var(--mp-sidebar-menu-selected-background) !important;
+}
+.ant-menu-light.ant-menu-inline .ant-menu-sub.ant-menu-inline {
+    background: var(--mp-sidebar-menu-dark) !important;
+}
+.ant-menu-light:not(.ant-menu-horizontal) .ant-menu-submenu-title:hover {
+    background: var(--mp-sidebar-menu-dark) !important;
+}
+.ant-menu-submenu-title {
+    background: var(--mp-sidebar-menu-dark) !important;
+}
+.ant-menu-submenu-title:hover {
+    background: var(--mp-sidebar-menu-dark) !important;
+}
+.ant-menu-submenu-title:hover svg path {
+    fill: var(--mp-sidebar-menu-selected) !important;
+}
+.ant-menu-submenu-title svg path {
+    fill: var(--mp-sidebar-menu-selected) !important;
+}
+.ant-menu-submenu-selected .ant-menu-submenu-title img {
+    background: var(--mp-sidebar-menu-dark) !important;
+}
+.ant-menu-submenu-title img:hover {
+    background: var(--mp-sidebar-menu-dark) !important;
+}
+.ant-menu-submenu {
+    color: var(--mp-sidebar-menu-not-selected) !important;
+}
+.ant-menu-submenu:hover {
+    color: var(--mp-sidebar-menu-selected) !important;
+}
+.ant-menu-submenu-selected {
+    color: var(--mp-sidebar-menu-selected) !important;
+    background-color: var(--mp-sidebar-menu-selected-background) !important;
+}
+.ant-menu-submenu-selected > div > .ant-menu-title-content {
+    color: var(--mp-sidebar-menu-selected) !important;
+    background-color: var(--mp-sidebar-menu-selected-background) !important;
+}
+.ant-menu-submenu-open .ant-menu-submenu-selected .ant-menu-item-selected .ant-menu-title-content {
+    color: var(--mp-sidebar-menu-selected) !important;
+    background-color: var(--mp-sidebar-menu-selected-background) !important;
+}
+
+.ant-menu-submenu-selected .ant-menu-submenu-arrow {
+    color: var(--mp-sidebar-menu-selected) !important;
+    /* background-color: var(--mp-sidebar-menu-selected-background) !important; */
+}
