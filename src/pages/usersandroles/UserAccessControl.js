@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Layout, Typography, Skeleton, Table, Button, Switch, Tooltip } from 'antd'
+import { Layout, Typography, Skeleton, Table, Button, Switch, Tooltip, Divider } from 'antd'
 import { DeleteOutlined } from '@ant-design/icons'
 // import { MdEdit } from "react-icons/md";
 import { useTranslation } from 'react-i18next'
@@ -14,7 +14,6 @@ import CreateGroup from './CreateGroup'
 import StoreModal from '../../components/storeModal/StoreModal'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import { usePageTitle } from '../../hooks/usePageTitle'
-import { MdEdit } from 'react-icons/md'
 
 const { Content } = Layout
 const { Title, Paragraph } = Typography
@@ -57,7 +56,7 @@ const UserAccessControl = () => {
         },
         {
             tabId: 1,
-            tabTitle: <p className='!mb-0 !mr-2'>{t('labels:roles')}</p>,
+            tabTitle: <p className='!mb-0 !mr-4'>{t('labels:roles')}</p>,
         },
     ]
 
@@ -127,7 +126,7 @@ const UserAccessControl = () => {
                                     ? true
                                     : false
                             }
-                            className={record.enabled == true ? '!bg-green-500' : '!bg-gray-400'}
+                            className={record.enabled === true ? '!bg-green-500' : '!bg-gray-400'}
                             checked={record.enabled}
                             onChange={() => openUserEnableDisableModal(record.enabled, record.username)}
                         />
@@ -158,32 +157,28 @@ const UserAccessControl = () => {
                 return (
                     <Content className='flex items-center'>
                         {currentUserDetailsAPIData?.preferred_username === record?.username &&
-                        currentUserDetailsAPIData?.email === record?.email ? null : (
-                            <Button className='app-btn-icon app-delete-icon' type='text'>
-                                <Tooltip
-                                    placement='bottom'
-                                    title={`${t('labels:delete_user')}`}
-                                    overlayStyle={{ zIndex: 1 }}>
-                                    <DeleteOutlined onClick={() => openUserDeleteModal(record.username)} />
-                                </Tooltip>
-                            </Button>
+                        currentUserDetailsAPIData?.email === record?.email ? (
+                            <div className='text-[#cbd5e1] !ml-[10px] whitespace-nowrap  cursor-not-allowed'>
+                                {t('labels:delete')}
+                            </div>
+                        ) : (
+                            <div
+                                className='text-[15px] text-[#FB8500] hover:text-[#FB8500] font-medium ml-2 cursor-pointer'
+                                onClick={() => openUserDeleteModal(record.username)}>
+                                {t('labels:delete')}
+                            </div>
                         )}
-                        <Tooltip
-                            title={t('labels:edit_user')}
-                            className='ml-1'
-                            placement='bottom'
-                            overlayStyle={{ zIndex: 1 }}>
-                            <Button
-                                type='text'
-                                className='app-btn-icon app-edit-icon'
-                                onClick={() => {
-                                    navigate(
-                                        `/dashboard/user-access-control/edit-user?id=${record.id}&uname=${currentUserDetailsAPIData?.preferred_username}`
-                                    )
-                                }}>
-                                <MdEdit />
-                            </Button>
-                        </Tooltip>
+                        <Divider type='vertical' className='h-6 !border-r-1 ' />
+
+                        <div
+                            className='text-[15px] text-[#FB8500] hover:text-[#FB8500] font-medium ml-2 cursor-pointer'
+                            onClick={() => {
+                                navigate(
+                                    `/dashboard/user-access-control/edit-user?id=${record.id}&uname=${currentUserDetailsAPIData?.preferred_username}`
+                                )
+                            }}>
+                            {t('labels:edit')}
+                        </div>
                     </Content>
                 )
             },
@@ -354,16 +349,24 @@ const UserAccessControl = () => {
         <Content>
             <HeaderForTitle
                 title={
-                    <Title level={3} className='!font-normal'>
-                        {t('labels:user_access_control')}
-                    </Title>
+                    <Content>
+                        <div className='!font-semibold text-xl mb-4'>{t('labels:user_access_control')}</div>
+                        <p className='!font-semibold !text-slate-400 !m-0'>{t('labels:user_access_control_note')}</p>
+                    </Content>
+                }
+                titleContent={
+                    <>
+                        {searchParams.get('tab') === '0' ? (
+                            <Button
+                                className='app-btn-primary !h-8 hover:!h-8'
+                                onClick={() => navigate('/dashboard/user-access-control/add-user?')}>
+                                {t('labels:add_user')}
+                            </Button>
+                        ) : null}
+                    </>
                 }
                 headerContent={
-                    <Content className='mt-[3rem]'>
-                        <Paragraph className='!font-semibold !text-slate-400 !m-0'>
-                            {t('labels:user_access_control_note')}
-                        </Paragraph>
-
+                    <Content className='mt-[5.5rem]'>
                         <Content className='!h-10 mt-3 flex'>
                             <Content className='!w-[80%]'>
                                 <DmTabAntDesign
@@ -383,16 +386,6 @@ const UserAccessControl = () => {
                                     tabBarPosition={'top'}
                                 />
                             </Content>
-
-                            <>
-                                {searchParams.get('tab') === '0' ? (
-                                    <Button
-                                        className='app-btn-primary !h-8 hover:!h-8'
-                                        onClick={() => navigate('/dashboard/user-access-control/add-user?')}>
-                                        {t('labels:add_user')}
-                                    </Button>
-                                ) : null}
-                            </>
                         </Content>
                     </Content>
                 }
@@ -412,7 +405,10 @@ const UserAccessControl = () => {
                         <p className='p-4 text-center'>{t('messages:network_error')}</p>
                     </Content>
                 ) : (
-                    <Content className=' bg-white'>
+                    <Content className=' bg-white rounded-md shadow-brandShadow p-3'>
+                        <div className='mx-1 mb-3 text-base font-semibold'>
+                            {parseInt(searchParams.get('tab')) === 0 ? `${t('labels:users')}` : `${t('labels:roles')}`}
+                        </div>
                         {parseInt(searchParams.get('tab')) === 1 ? (
                             <>
                                 <Table dataSource={groupServerData} columns={groupColumns} pagination={false} />

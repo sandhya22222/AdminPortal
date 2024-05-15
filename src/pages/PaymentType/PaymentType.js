@@ -21,9 +21,6 @@ const PaymentType = () => {
             dataIndex: 'name',
             key: 'name',
             width: '40%',
-            // render: (text, record) => {
-            //   return <>{record.name}</>;
-            // },
         },
     ]
 
@@ -48,55 +45,25 @@ const PaymentType = () => {
                     name: `${t('labels:stripe')}`,
                     is_payment_gateway: true,
                 },
+                {
+                    key: 23,
+                    name: `${t('labels:cash_free')}`,
+                    is_payment_gateway: true,
+                },
             ],
         },
     ]
-
-    // const tempArray = [];
-    // paymentTypesData[0] &&
-    //   paymentTypesData[0].data.map((element, index) => {
-    //     var tempId = element.id;
-    //     var paymentTypeName = element.payment_type;
-    //     tempArray.push({
-    //       key: index,
-    //       name: paymentTypeName,
-    //       id: tempId,
-    //     });
-    //   });
-
-    // const tablePropsData = {
-    //   table_header: paymentTypeColumns,
-    //   table_content: tempArray,
-    //   pagenationSettings: false,
-    //   search_settings: {
-    //     is_enabled: false,
-    //     search_title: "Search by name",
-    //     search_data: ["name"],
-    //   },
-    //   filter_settings: {
-    //     is_enabled: false,
-    //     filter_title: "Filter's",
-    //     filter_data: [],
-    //   },
-    //   sorting_settings: {
-    //     is_enabled: false,
-    //     sorting_title: "Sorting by",
-    //     sorting_data: [],
-    //   },
-    // };
 
     return (
         <Content className=''>
             <HeaderForTitle
                 title={
                     <Content>
-                        <Title level={3} className='!font-normal'>
-                            {t('labels:payment_type')}
-                        </Title>
+                        <div className='!font-semibold text-2xl mb-4'>{t('labels:payment_type')}</div>
                     </Content>
                 }
             />
-            <Content className='!p-3 !mt-[7.4rem] '>
+            <Content className='!p-3 !mt-[10.5rem] mx-3 bg-white  rounded-md shadow-brandShadow'>
                 <Table dataSource={data} columns={paymentTypeColumns} pagination={false} />
             </Content>
         </Content>

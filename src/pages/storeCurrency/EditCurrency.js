@@ -194,7 +194,7 @@ const EditCurrency = () => {
                     showButtons={false}
                 />
             </Content>
-            <Content className='!p-3 !mt-[8rem] !min-h-screen '>
+            <Content className='!p-3 !mt-[9.5rem] !min-h-screen '>
                 <Spin tip='Please wait!' size='large' spinning={isLoading}>
                     <Content className=' !bg-white !p-4 shadow-brandShadow rounded'>
                         <div className='font-semibold  text-lg my-2 mx-3'>{t('labels:currency_details')}</div>
@@ -205,7 +205,7 @@ const EditCurrency = () => {
                                         ? 'text-left ml-2'
                                         : 'text-right mr-2 '
                                 }`}>
-                                <p className='!text-gray-500 my-4 flex'>
+                                <p className='input-label-color my-4 flex font-normal text-sm'>
                                     {t('labels:currency_code')}{' '}
                                     <span
                                         className={
@@ -216,7 +216,7 @@ const EditCurrency = () => {
                                         :
                                     </span>
                                 </p>
-                                <p className='!text-gray-500 my-4 flex'>
+                                <p className='input-label-color my-4 flex'>
                                     {t('labels:unit_conversation')}
                                     <span
                                         className={
@@ -227,7 +227,7 @@ const EditCurrency = () => {
                                         :
                                     </span>
                                 </p>
-                                <p className='!text-gray-500 my-4 flex'>
+                                <p className='input-label-color my-4 flex'>
                                     {t('labels:unit_price_name')}
                                     <span
                                         className={
@@ -238,7 +238,7 @@ const EditCurrency = () => {
                                         :
                                     </span>
                                 </p>
-                                <p className='!text-gray-500 my-4 flex'>
+                                <p className='input-label-color my-4 flex'>
                                     {t('labels:min_amount')}
                                     <span
                                         className={
@@ -249,7 +249,7 @@ const EditCurrency = () => {
                                         :
                                     </span>
                                 </p>
-                                <p className='!text-gray-500 my-3 flex'>
+                                <p className='input-label-color my-3 flex'>
                                     {t('labels:currency_symbol')}
                                     <span
                                         className={
@@ -260,7 +260,7 @@ const EditCurrency = () => {
                                         :
                                     </span>
                                 </p>
-                                <p className='!text-gray-500 my-4 flex'>
+                                <p className='input-label-color my-4 flex'>
                                     {t('labels:no_of_decimals')}
                                     <span
                                         className={
