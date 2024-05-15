@@ -202,6 +202,14 @@ a {
     color: black !important;
     text-decoration: none !important;
 }
+.ant-anchor-wrapper:not(.ant-anchor-wrapper-horizontal) .ant-anchor .ant-anchor-ink {
+    width: 10px !important;
+    height: 10px !important;
+    border-radius: 50% !important;
+    background-color: #fff !important;
+    left: -4px !important;
+    border: 3px solid var(--mp-primary-color);
+}
 
 .ant-switch.ant-switch-checked{
     background-color: var(--mp-primary-color) !important;
