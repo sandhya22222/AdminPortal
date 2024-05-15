@@ -1,30 +1,26 @@
 //! Import libraries
 import { LoadingOutlined } from '@ant-design/icons'
-import { Affix, Layout, Menu, Spin } from 'antd'
+import { Layout, Menu, Spin } from 'antd'
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import {
-    PaymentTypeIcon,
-    ProfileIcon,
-    Store,
-    TranslateIcon,
-    ViewDashboard,
-    UserAccessControl,
-    StoreSettings,
-    PaymentSettingsIcon,
-    currencyIcon,
-    currencyInActiveIcon,
+    DashboardNotSelected,
+    DashboardSelected,
+    SettingsNotSelected,
+    SettingsSelected,
+    StoresNotSelected,
+    StoresSelected,
 } from '../../constants/media'
 import NewFooter from './../footer/Footer'
-import { useTranslation } from 'react-i18next'
 //! Import CSS libraries
 
 //! Import user defined functions
 
 //! Import user defined CSS
-import './sidebarnew.css'
 import { useAuth } from 'react-oidc-context'
 import util from '../../util/common'
+import './sidebarnew.css'
 
 //! Destructure the components
 const { Sider, Content } = Layout
@@ -100,24 +96,24 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
             setMyData([
                 {
                     key: '1',
-                    icon: <img src={ViewDashboard} alt='ViewDashboard' />,
-                    inactive_icon: <img src={ViewDashboard} alt='ViewDashboard' />,
+                    selectedIcon: <img src={DashboardSelected} alt='ViewDashboard' />,
+                    notSelectedIcon: <img src={DashboardNotSelected} alt='ViewDashboard' />,
                     label: ` ${t('labels:dashboard')}`,
                     navigate_to: '/dashboard',
                     show_in_menu: true,
                 },
                 {
                     key: '2',
-                    icon: <img src={Store} alt='Store' />,
-                    inactive_icon: <img src={Store} alt='Store' />,
+                    selectedIcon: <img src={StoresSelected} alt='StoresSelected' />,
+                    notSelectedIcon: <img src={StoresNotSelected} alt='StoresNotSelected' />,
                     label: ` ${t('labels:stores')}`,
                     navigate_to: '/dashboard/store?m_t=1',
                     show_in_menu: true,
                 },
                 {
                     key: '15',
-                    icon: <img src={StoreSettings} alt='storeSettings' />,
-                    inactive_icon: <img src={StoreSettings} alt='StoreSettings' />,
+                    selectedIcon: <img src={SettingsSelected} alt='storeSettings' />,
+                    notSelectedIcon: <img src={SettingsNotSelected} alt='StoreSettings' />,
                     label: `${t('labels:settings')}`,
                     navigate_to: '/dashboard/',
                     show_in_menu: true,
@@ -125,8 +121,8 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                     children: [
                         {
                             key: '3',
-                            icon: <img src={TranslateIcon} alt='TranslateIcon' />,
-                            inactive_icon: <img src={TranslateIcon} alt='TranslateIcon' />,
+                            // icon: <img src={TranslateIcon} alt='TranslateIcon' />,
+                            // inactive_icon: <img src={TranslateIcon} alt='TranslateIcon' />,
                             label: `${t('labels:language_settings')}`,
                             navigate_to: '/dashboard/language',
                             show_in_menu:
@@ -140,28 +136,28 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                         },
                         {
                             key: '13',
-                            icon: <img src={currencyIcon} alt='currencyIcon' />,
-                            inactive_icon: <img src={currencyInActiveIcon} alt='currencyInActiveIcon' />,
+                            // icon: <img src={currencyIcon} alt='currencyIcon' />,
+                            // inactive_icon: <img src={currencyInActiveIcon} alt='currencyInActiveIcon' />,
                             label: ` ${t('labels:currency')}`,
                             navigate_to: '/dashboard/currency',
                             show_in_menu: true,
                         },
                         {
                             key: '5',
-                            icon: <img src={PaymentSettingsIcon} alt='PaymentSettingsIcon' />,
-                            inactive_icon: <img src={PaymentTypeIcon} alt='PaymentTypeIcon' />,
+                            // icon: <img src={PaymentSettingsIcon} alt='PaymentSettingsIcon' />,
+                            // inactive_icon: <img src={PaymentTypeIcon} alt='PaymentTypeIcon' />,
                             label: ` ${t('labels:payment_settings')}`,
                             navigate_to: '/dashboard/paymenttype',
                             show_in_menu: true,
                         },
                         {
                             key: '12',
-                            icon: (
-                                <img src={UserAccessControl} alt='userAccessControl' width={'15px'} height={'15px'} />
-                            ),
-                            inactive_icon: (
-                                <img src={UserAccessControl} alt='userAccessControl' width={'15px'} height={'15px'} />
-                            ),
+                            // icon: (
+                            //     <img src={UserAccessControl} alt='userAccessControl' width={'15px'} height={'15px'} />
+                            // ),
+                            // inactive_icon: (
+                            //     <img src={UserAccessControl} alt='userAccessControl' width={'15px'} height={'15px'} />
+                            // ),
                             label: `${t('labels:user_access_control')}`,
                             navigate_to: `/dashboard/user-access-control/list-user-roles?tab=0&page=1&limit=${pageLimitFromENV}`,
                             show_in_menu:
@@ -175,8 +171,8 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                         },
                         {
                             key: '6',
-                            icon: <img src={ProfileIcon} alt='profileIcon' width={'15px'} height={'15px'} />,
-                            inactive_icon: <img src={ProfileIcon} alt='profileIcon' width={'15px'} height={'15px'} />,
+                            // icon: <img src={ProfileIcon} alt='profileIcon' width={'15px'} height={'15px'} />,
+                            // inactive_icon: <img src={ProfileIcon} alt='profileIcon' width={'15px'} height={'15px'} />,
                             label: ` ${t('labels:my_profile')}`,
                             navigate_to: '/dashboard/userprofile',
                             show_in_menu: true,
@@ -203,7 +199,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                 onMouseLeave={() => {
                     handleMouseLeave()
                 }}
-                className='!bg-[var(--mp-brand-color)]'
+                className='!text-[var(--mp-sidebar-menu-not-selected)]'
                 style={{
                     overflow: isHovering ? 'auto' : 'hidden',
                     height: '100vh',
@@ -215,7 +211,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                 <Spin spinning={myData.length > 0 ? false : true} indicator={antIcon} tip=''>
                     <Menu
                         mode='inline'
-                        className='h-full !text-base !bg-[var(--mp-brand-color)]  !transition-all'
+                        className='h-full !text-base !text-[var(--mp-sidebar-menu-not-selected)]  !transition-all'
                         selectedKeys={selectedItem}
                         openKeys={openedItem}
                         onOpenChange={(e) => {
@@ -229,22 +225,30 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                         {myData.map((item) =>
                             item.show_in_menu && item.children ? (
                                 <Menu.SubMenu
-                                    icon={item.icon}
+                                    icon={
+                                        item?.childrenKeys?.includes(selectedItem)
+                                            ? item.selectedIcon
+                                            : item?.key === selectedItem
+                                              ? item.selectedIcon
+                                              : item.notSelectedIcon
+                                    }
                                     key={item.key}
                                     title={item.label}
+                                    className='text-[var(--mp-sidebar-menu-not-selected)]'
                                     style={{
                                         opacity: item.childrenKeys.includes(selectedItem) ? 1 : 0.8,
                                     }}>
                                     {item.children.map((child) =>
                                         child.show_in_menu ? (
                                             <Menu.Item
-                                                icon={child.icon}
+                                                // icon={child.icon}
                                                 key={child.key}
                                                 // style={{ color: "black" }}
                                                 onClick={() => {
                                                     navigate(child.navigate_to)
                                                     handlePageRefresh(child.navigate_to)
                                                 }}
+                                                className='text-[var(--mp-sidebar-menu-not-selected)]'
                                                 style={{
                                                     opacity: !item.childrenKeys.includes(selectedItem)
                                                         ? 1
@@ -263,13 +267,20 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                                 </Menu.SubMenu>
                             ) : item.show_in_menu ? (
                                 <Menu.Item
-                                    icon={item.icon}
+                                    icon={
+                                        item?.childrenKeys?.includes(selectedItem)
+                                            ? item.selectedIcon
+                                            : item?.key === selectedItem
+                                              ? item.selectedIcon
+                                              : item.notSelectedIcon
+                                    }
                                     key={item.key}
                                     disabled={!item.show_in_menu}
                                     onClick={() => {
                                         navigate(item.navigate_to)
                                         handlePageRefresh(item.navigate_to)
                                     }}
+                                    className='text-[var(--mp-sidebar-menu-not-selected)]'
                                     style={{
                                         opacity: selectedItem === item.key ? 1 : 0.8,
                                     }}>

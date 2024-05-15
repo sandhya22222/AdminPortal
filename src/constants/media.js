@@ -5,8 +5,11 @@ import Profit from '../assets/images/common/profit.png'
 import Positive from '../assets/images/common/positve.png'
 import Payment from '../assets/images/common/payment.png'
 import Logout503 from '../assets/images/common/503.png'
-import ViewDashboard from '../assets/images/sidebar/view-dashboard.svg'
-import Store from '../assets/images/sidebar/store.svg'
+import DashboardSelected from '../assets/images/sidebar/DashboardSelected.svg'
+import DashboardNotSelected from '../assets/images/sidebar/DashboardNotSelected.svg'
+import StoresSelected from '../assets/images/sidebar/StoresSelected.svg'
+import StoresNotSelected from '../assets/images/sidebar/StoresNotSelected.svg'
+
 import TranslateIcon from '../assets/images/sidebar/translate-variant.svg'
 import PaymentTypeIcon from '../assets/images/sidebar/credit-card-settings-outline.png'
 import ProfileIcon from '../assets/images/sidebar/account.svg'
@@ -24,7 +27,9 @@ import FrontEndKeysDownloadIcon from '../assets/images/common/FrontEndKeysDownlo
 import BackendKeysDownloadIcon from '../assets/images/common/BackendKeysDownloadIcon.svg'
 import UserAccessControl from '../assets/images/common/UserAccessControl.svg'
 import StoreSettings from '../assets/images/sidebar/cog.svg'
-import PaymentSettingsIcon from '../assets/images/sidebar/settings.svg'
+// import PaymentSettingsIcon from '../assets/images/sidebar/settings.svg'
+import SettingsSelected from '../assets/images/sidebar/SettingsSelected.svg'
+import SettingsNotSelected from '../assets/images/sidebar/SettingsNotSelected.svg'
 import BackBurgerIcon from '../assets/images/sidebar/backBurger.svg'
 import Collapse from '../assets/images/sidebar/collaps.svg'
 import saveStoreConfirmationImage from '../assets/images/common/StoreSaveConfirmationImage.svg'
@@ -44,8 +49,12 @@ export {
     Payment,
     Logout503,
     marketPlaceLogo,
-    ViewDashboard,
-    Store,
+    DashboardSelected,
+    DashboardNotSelected,
+    StoresSelected,
+    StoresNotSelected,
+    SettingsSelected,
+    SettingsNotSelected,
     TranslateIcon,
     PaymentTypeIcon,
     ProfileIcon,
@@ -63,7 +72,6 @@ export {
     BackendKeysDownloadIcon,
     UserAccessControl,
     StoreSettings,
-    PaymentSettingsIcon,
     BackBurgerIcon,
     Collapse,
     saveStoreConfirmationImage,

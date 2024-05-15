@@ -12,9 +12,11 @@
 
     --mp-steps-process-background-color: #fae9ff;
 
-    --mp-sidebar-menu-dark: #4a2d73;
-    --mp-sidebar-menu-hover: #412865;
-    --mp-sidebar-menu-selected: #7d3192;
+    --mp-sidebar-menu-dark: #FFFFFF;
+    --mp-sidebar-menu-hover: #FFA229;
+    --mp-sidebar-menu-selected: #FFA229;
+    --mp-sidebar-menu-selected-background : #FAFAFA;
+    --mp-sidebar-menu-not-selected : #023047;
 
     --mp-primary-background-color: #FB8500;
     --mp-primary-background-color-d: #f5f5f5;
