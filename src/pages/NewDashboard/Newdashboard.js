@@ -276,12 +276,12 @@ const Newdashboard = () => {
                 <HeaderForTitle
                     title={
                         <Content className='flex z-20 mb-3  !justify-between'>
-                            <Content className='!w-[80%] mr-2 '>
-                                <Content className='flex'>
+                            <Content className='!w-[80%] mr-2 flex flex-col gap-1 '>
+                                <Content className='flex gap-1 '>
                                     <Title level={3} className='!text-[#8899A8] m-0 '>
-                                        {t('messages:hello') + ', '}
+                                        {t('messages:hello') + ','}
                                     </Title>
-                                    <Title level={3} className='!text-[#023047] m-0 '>
+                                    <Title level={3} className='!text-[#023047] !m-0  '>
                                         {username.slice(0, 1).toUpperCase() + username.slice(1)}
                                     </Title>
                                 </Content>
@@ -306,8 +306,8 @@ const Newdashboard = () => {
                                 <Content className='flex flex-col  items-baseline h-4 min-w-40 max-w-72 space-x-2 '>
                                     <div className='flex justify-between  items-end gap-1 '>
                                         {langDirection == 'ltr' ? (
-                                            <div className={'min-w-[2.4em]'}>
-                                                <Title style={{ color: '#4A2D73', margin: 0, padding: 0 }} level={2}>
+                                            <div className={'!max-w-[3.4em]'}>
+                                                <Title className='!text-[#023047] m-0 p-0' level={2}>
                                                     {activeStoreCount ? activeStoreCount : 0}{' '}
                                                 </Title>
                                             </div>
@@ -393,7 +393,7 @@ const Newdashboard = () => {
 
                         <Content
                             hidden={dm4sightEnabled === 'true' ? false : true}
-                            className='flex justify-between !mt-12'>
+                            className='flex justify-between !mt-14'>
                             <Content className='!w-[75%]  bg-[#ffff] p-[24px] mt-0 ml-2  shadow-sm rounded-md justify-center'>
                                 <Content className='flex items-center justify-between mb-1'>
                                     <Title level={4} className='!m-0  !text-[#023047] flex gap-2'>
@@ -449,8 +449,7 @@ const Newdashboard = () => {
                                     />
                                     {t('labels:orders')}
                                 </Title>
-                                <Button onClick={() => navigate('/dashboard/store')} type='link'>
-                                </Button>
+                                <Button onClick={() => navigate('/dashboard/store')} type='link'></Button>
                             </Content>
                             <Divider style={{ width: 'calc(100% + 48px)', marginLeft: '-24px' }} />
                             <Content>
