@@ -8,7 +8,12 @@
 .anticon-delete {
     color: var(--mp-danger-color) !important;
 }
-
+.app-primary-color {
+    color: var(--mp-primary-color) !important;
+}
+.app-primary-color:hover {
+    color: var(--mp-primary-color-h) !important;
+}
 .ant-input:hover {
     border-color: var(--mp-brand-color) !important;
 }
@@ -50,7 +55,7 @@
 }
 
 .ant-input-number:hover {
-    border-color: var(--mp-brand-color) !important;
+    border-color: var(--mp-brand-color);
 }
 
 .ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
@@ -140,7 +145,10 @@
 .ant-tree-select-dropdown .ant-select-tree .ant-select-tree-node-content-wrapper.ant-select-tree-node-selected {
     background-color: var(--mp-input-field-outer-glow-color) !important;
 }
-
+.ant-input-number .ant-input-number-handler:hover .ant-input-number-handler-down-inner,
+.ant-input-number .ant-input-number-handler:hover .ant-input-number-handler-up-inner {
+    color: var(--mp-primary-color) !important;
+}
 .anticon svg {
     /* vertical-align: baseline !important; */
     display: inline-block !important;
@@ -208,3 +216,12 @@ a {
     min-height: 150px !important;
     padding: 0px !important;
 } */
+
+:where(.css-dev-only-do-not-override-1kuana8).ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover
+    .ant-checkbox-inner {
+    border-color: var(--mp-input-field-hover-color) !important;
+}
+
+.ant-input-number-disabled .ant-input-number:hover {
+    border-color: transparent !important;
+}
