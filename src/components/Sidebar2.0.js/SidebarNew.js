@@ -177,7 +177,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                             key: '6',
                             icon: <img src={ProfileIcon} alt='profileIcon' width={'15px'} height={'15px'} />,
                             inactive_icon: <img src={ProfileIcon} alt='profileIcon' width={'15px'} height={'15px'} />,
-                            label: ` ${t('labels:my_profile')}`,
+                            label: ` ${t('labels:profile')}`,
                             navigate_to: '/dashboard/userprofile',
                             show_in_menu: true,
                         },
