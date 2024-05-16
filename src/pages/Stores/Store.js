@@ -1,4 +1,4 @@
-import { UserOutlined } from '@ant-design/icons'
+import { UserOutlined, InfoCircleOutlined } from '@ant-design/icons'
 import {
     Button,
     Col,
@@ -24,7 +24,6 @@ import { MdInfo, MdSettings } from 'react-icons/md'
 import { Link, useLocation, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { saveStoreConfirmationImage } from '../../constants/media'
-import { InfoCircleTwoTone } from '@ant-design/icons'
 //! Import user defined components
 import DmPagination from '../../components/DmPagination/DmPagination'
 import DynamicTable from '../../components/DynamicTable/DynamicTable'
@@ -201,7 +200,7 @@ const Stores = () => {
                 const [limitName, limitValue, keyName, tooltip] = text.split(',')
                 return (
                     <Content className='flex flex-col gap-2'>
-                        <div className='flex gap-2 items-center'>
+                        <div className='flex gap-2 items-center text-[#8899A8]'>
                             {limitName}
                             <Tooltip
                                 overlayStyle={{ zIndex: 1 }}
@@ -209,7 +208,7 @@ const Stores = () => {
                                 placement={
                                     util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'left' : 'right'
                                 }>
-                                <InfoCircleTwoTone twoToneColor={'#7d3192'} className='text-xs' />
+                                <InfoCircleOutlined />
                             </Tooltip>
                         </div>
 
@@ -285,7 +284,7 @@ const Stores = () => {
                                 </div>
                                 {total > 0 ? (
                                     <Progress
-                                        strokeColor={'#4A2D73'}
+                                        strokeColor={'#FA8C16'}
                                         className='w-24'
                                         size='small'
                                         percent={(count / total) * 100}
@@ -312,7 +311,7 @@ const Stores = () => {
                 const [limitName, limitValue, keyName, tooltip] = text.split(',')
                 return (
                     <Content className='flex flex-col gap-2'>
-                        <div className='flex gap-2 items-center'>
+                        <div className='flex gap-2 items-center text-[#8899A8]'>
                             {limitName}
                             <Tooltip
                                 overlayStyle={{ zIndex: 1 }}
@@ -320,7 +319,7 @@ const Stores = () => {
                                 placement={
                                     util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'left' : 'right'
                                 }>
-                                <InfoCircleTwoTone twoToneColor={'#7d3192'} className='text-xs' />
+                                <InfoCircleOutlined />
                             </Tooltip>
                         </div>
                         <Content>
@@ -1297,11 +1296,17 @@ const Stores = () => {
                             ) : parseInt(currentTab) === 2 ? (
                                 <>
                                     <Content>
-                                        <Title level={5}>{t('labels:account_restrictions')}</Title>
+                                        <Title className='!text-[#023047] pt-3 ml-6' level={4}>
+                                            {t('labels:account_restrictions')}
+                                        </Title>
+                                        <Divider className='w-full mt-2 mb-2' />
                                         <DynamicTable tableComponentData={tablePropsThreshold1} />
                                     </Content>
                                     <Content>
-                                        <Title level={5}>{t('labels:store_restrictions')}</Title>
+                                        <Title className='!text-[#023047]  pt-3 ml-6' level={4}>
+                                            {t('labels:store_restrictions')}
+                                        </Title>
+                                        <Divider className='w-full mt-2 mb-2' />
                                         <DynamicTable tableComponentData={tablePropsThreshold2} />
                                     </Content>
                                     {hideAddStoreButton ? (

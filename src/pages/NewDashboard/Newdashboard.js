@@ -278,7 +278,7 @@ const Newdashboard = () => {
                         <Content className='flex z-20 mb-3  !justify-between'>
                             <Content className='!w-[80%] mr-2 flex flex-col gap-1 '>
                                 <Content className='flex gap-1 '>
-                                    <Title level={3} className='!text-[#8899A8] m-0 '>
+                                    <Title level={3} className='!text-[#637381] m-0 '>
                                         {t('messages:hello') + ','}
                                     </Title>
                                     <Title level={3} className='!text-[#023047] !m-0  '>
@@ -286,7 +286,7 @@ const Newdashboard = () => {
                                     </Title>
                                 </Content>
 
-                                <Text className='!text-sm mb-2 text-zinc-400 '>
+                                <Text className='!text-sm mb-2 !text-[#637381] w-[47em] '>
                                     {t('messages:dashboard_welcome_message')}
                                 </Text>
                             </Content>
@@ -298,7 +298,7 @@ const Newdashboard = () => {
                                 }
                                 // "  !w-[30%] flex flex-col justify-center items-baseline"
                             >
-                                <Text className='!text-md mb-2 text-zinc-400 flex gap-1 items-center'>
+                                <Text className='!text-md mb-2 text-[#8899A8] flex gap-1 items-center'>
                                     <Content class='w-2 h-2 bg-lime-500 rounded-full float-left'></Content>{' '}
                                     {t('labels:active_stores')}
                                 </Text>
@@ -356,7 +356,7 @@ const Newdashboard = () => {
                                     util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'pr-10' : 'pl-4'
                                 }`}>
                                 <Content>
-                                    <Text className='!text-md mb-2 text-zinc-400 flex justify-left gap-1 items-center'>
+                                    <Text className='!text-md mb-2 text-[#8899A8] flex justify-left gap-1 items-center'>
                                         <Content class='w-2 h-2  bg-neutral-400 rounded-full'></Content>{' '}
                                         {t('labels:inactive_sores')}
                                     </Text>
