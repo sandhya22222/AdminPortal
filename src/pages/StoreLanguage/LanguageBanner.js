@@ -14,7 +14,16 @@ function LanguageBanner() {
             <Title level={3} className='!mt-1 !mb-[1.25rem]'>
                 {t('messages:connect_with_your_customers_in_their_preferred_language')}
             </Title>
-            <p className='w-[80%] text-center'>{t('messages:language_description')}</p>
+            <p className='w-[80%] text-center'>
+                {t('messages:language_description')}{' '}
+                <a
+                    href='https://docs.torryharrismarketplace.com/docs/2.8/Admin%20portal/Settings/Language%20Settings/'
+                    target='blank'
+                    className='!no-underline'>
+                    <span className='font-semibold'>{t('labels:know_more')}</span>
+                </a>{' '}
+            </p>
+
             <Button
                 className='app-btn-primary !my-[1.5rem] !flex !justify-items-center'
                 onClick={() => navigate('/dashboard/language/language-settings')}>
