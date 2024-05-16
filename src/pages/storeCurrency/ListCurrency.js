@@ -1,6 +1,6 @@
 //! Import libraries
 import React, { useState, useEffect } from 'react'
-import { Layout, Typography, Col, Tag, Tooltip, Image, Table } from 'antd'
+import { Layout, Typography, Col, Tag, Tooltip, Image, Table, Button } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 
@@ -100,7 +100,7 @@ const ListCurrency = () => {
             title: `${t('labels:unit_price_name')}`,
             dataIndex: 'unitPriceName',
             key: 'unitPriceName',
-            width: '16%',
+            width: '14%',
             render: (text, record) => {
                 return <>{record.unit_price_name}</>
             },
@@ -109,7 +109,7 @@ const ListCurrency = () => {
             title: `${t('labels:min_amount')}`,
             dataIndex: 'minAmount',
             key: 'minAmount',
-            width: '12%',
+            width: '10%',
             render: (text, record) => {
                 return <>{record.minimum_amount}</>
             },
@@ -118,7 +118,7 @@ const ListCurrency = () => {
             title: `${t('labels:symbol')}`,
             dataIndex: 'symbol',
             key: 'symbol',
-            width: '10%',
+            width: '9%',
             render: (text, record) => {
                 return <>{record.symbol}</>
             },
@@ -127,7 +127,7 @@ const ListCurrency = () => {
             title: `${t('labels:no_of_decimals')}`,
             dataIndex: 'noOfDecimals',
             key: 'noOfDecimals',
-            width: '14%',
+            width: '12%',
             render: (text, record) => {
                 return <>{record.no_of_decimal}</>
             },
@@ -136,21 +136,20 @@ const ListCurrency = () => {
             title: `${t('labels:action')}`,
             dataIndex: '',
             key: '',
-            width: '8%',
-            align: 'center',
+            width: '12%',
+            // align: 'center',
             render: (text, record) => {
                 return (
-                    <Col className='whitespace-nowrap !text-center'>
-                        <Tooltip title={t('labels:view_details')}>
-                            <div
-                                className='app-btn-icon cursor-pointer font-medium text-sm'
-                                onClick={() => {
-                                    navigate(`/dashboard/currency/edit-currency?k=${record.id}`)
-                                }}>
-                                {t('labels:view_details')}
-                            </div>
-                        </Tooltip>
-                    </Col>
+                    <Button
+                        type='text'
+                        className='app-btn-text'
+                        onClick={() => {
+                            navigate(`/dashboard/currency/edit-currency?k=${record.id}`)
+                        }}>
+                        <Text ellipsis className='app-primary-color'>
+                            {t('labels:view_details')}{' '}
+                        </Text>
+                    </Button>
                 )
             },
         },
