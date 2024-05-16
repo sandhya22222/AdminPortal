@@ -17,7 +17,7 @@ const PaymentType = () => {
 
     const paymentTypeColumns = [
         {
-            title: `${t('labels:payment_types')}`,
+            title: `${t('labels:payment_type')}`,
             dataIndex: 'name',
             key: 'name',
             width: '40%',
@@ -59,7 +59,7 @@ const PaymentType = () => {
             <HeaderForTitle
                 title={
                     <Content>
-                        <div className='!font-semibold text-2xl mb-4'>{t('labels:payment_type')}</div>
+                        <div className='!font-semibold text-2xl mb-4'>{t('labels:payment')}</div>
                     </Content>
                 }
             />

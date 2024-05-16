@@ -44,20 +44,15 @@ const ListCurrency = () => {
             render: (text, record) => {
                 return (
                     <Content className='inline-block'>
-                        <Tooltip
-                            title={record.currency_name}
-                            overlayStyle={{ zIndex: 1 }}
-                            placement={util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'left' : 'right'}>
-                            <Text
-                                className={`mx-1
-                   ${record.is_default === true ? '!max-w-[80px]' : '!max-w-[150px]'} `}
-                                ellipsis={true}>
-                                {record.currency_name}
-                            </Text>
-                        </Tooltip>
+                        <Text
+                            className={`mx-1
+                   ${record.is_default === true ? '!max-w-[95px]' : '!max-w-[150px]'} `}
+                            ellipsis={{ tooltip: record.currency_name }}>
+                            {record.currency_name}
+                        </Text>
                         {record.is_default === true ? (
                             <Tag
-                                icon={<Image preview={false} src={starIcon} className='mr-1 flex !items-center ' />}
+                                icon={<img src={starIcon} className='mr-1 flex !items-center ' alt='defaultIcon' />}
                                 className='inline-flex items-center gap-1'
                                 color='#FB8500'>
                                 {t('labels:default')}

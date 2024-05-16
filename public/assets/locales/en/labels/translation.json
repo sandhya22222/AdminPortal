@@ -281,5 +281,7 @@
     "bonus": "Bonus",
     "themes": "Themes",
     "cash_free": "Cashfree",
-    "languages_note":"Add multiple languages that will reflect all across your portals"
+    "languages_note":"Add multiple languages that will reflect all across your portals",
+    "know_more": "Know more",
+    "payment": "Payment"
 }
