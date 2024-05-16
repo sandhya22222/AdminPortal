@@ -14,6 +14,7 @@ import TranslateIcon from '../assets/images/sidebar/translate-variant.svg'
 import PaymentTypeIcon from '../assets/images/sidebar/credit-card-settings-outline.png'
 import ProfileIcon from '../assets/images/sidebar/account.svg'
 import EditIcon from '../assets/images/common/editIcon.svg'
+import EditIconNew from '../assets/images/common/EditIconNew.svg'
 import plusIcon from '../assets/images/common/Vector.svg'
 import tableDropDownArrow from '../assets/images/common/MUI-table-arrow-down.svg'
 import DownloadIcon from '../assets/images/common/DownloadIcon.svg'
@@ -59,6 +60,7 @@ export {
     PaymentTypeIcon,
     ProfileIcon,
     EditIcon,
+    EditIconNew,
     plusIcon,
     tableDropDownArrow,
     DownloadIcon,

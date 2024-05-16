@@ -13,6 +13,7 @@ export default function DmPagination({
     defaultPageSize,
     showTotal,
     presentPage,
+    showQuickJumper
 }) {
     const { t } = useTranslation()
     const handlePageChange = (page, pageSize) => {
@@ -47,6 +48,7 @@ export default function DmPagination({
                     next_page: t('labels:next_page'),
                     items_per_page: t('labels:page'),
                 }}
+                showQuickJumper={showQuickJumper}
             />
         </Content>
     )
