@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import MarketplaceServices from '../../../services/axios/MarketplaceServices'
-const BASE_URL = process.env.REACT_APP_GET_USER_CONSENT
+const BASE_URL = process.env.REACT_APP_GET_USER_CONSENT_NEW
 
 const useGetStoreUserConsent = ({ storeName }) => {
     const getStoreUserConsent = async () => {
