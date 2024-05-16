@@ -175,8 +175,8 @@ const Header2 = ({ collapsed, setCollapsed }) => {
 
     return (
         <Content>
-            <Header className='fixed z-20 top-0 p-0  !h-[72px] w-full header drop-shadow-md'>
-                <Content className='px-3 !py-2 !h-[72px] flex flex-row !justify-between items-center '>
+            <Header className='fixed z-20 top-0 p-0  !h-[72px] w-full header'>
+                <Content className='px-3 border-b-[1px] !h-[72px] flex flex-row !justify-between items-center '>
                     {/* Left content which displays brand logo and other stuffs */}
                     <div className='flex flex-row items-center'>
                         <div
@@ -202,16 +202,7 @@ const Header2 = ({ collapsed, setCollapsed }) => {
                                 }
                                 onClick={() => setCollapsed(!collapsed)}
                                 // className="!bg-[var(--mp-brand-color)] hover:bg-[var(--mp-brand-color)]"
-                                className='hover:none'
-                                style={{
-                                    width: '100%',
-                                    display: 'flex',
-                                    padding: '8 16 8 16',
-                                    marginTop: '4px',
-                                    color: 'white',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                }}
+                                // className='hover:none'
                             />
                         </div>
                         <div className='flex items-center mx-2 '>
@@ -222,13 +213,13 @@ const Header2 = ({ collapsed, setCollapsed }) => {
                                     preview={false}
                                     src={marketPlaceLogo}
                                     className='cursor-pointer'
-                                    height={32}
+                                    height={40}
                                 />
                             </Link>
                         </div>
                         <div className='mx-2 flex items-center'>
                             <Tag className='portalNameTag'>
-                                <Text className='!px-2 text-[12px] font-medium leading-5'>
+                                <Text className='!px-2 text-[12px] text-white font-medium leading-5'>
                                     {portalInfo && portalInfo.title.toUpperCase()}
                                 </Text>
                             </Tag>
@@ -241,13 +232,13 @@ const Header2 = ({ collapsed, setCollapsed }) => {
                     <Content className='!flex  !justify-end !items-center px-2'>
                         {/* Display user dropdown if user is logged in otherwise display login icon */}
                         {auth.isAuthenticated ? (
-                            <div className='flex !self-end'>
+                            <div className={`flex !self-end ${
+                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'ml-[5px]' : 'mr-[5px]'
+                            }`}>
                                 <Avatar className='bg-gray-400 mx-1' size={48} icon={<UserOutlined />} />
                                 <Text
-                                    className={`${
-                                        util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'ml-4' : 'mr-4'
-                                    } !flex flex-col`}>
-                                    <Text className='font-bold text-sm text-white leading-[22px] whitespace-nowrap'>
+                                    className={`!flex flex-col`}>
+                                    <Text className='font-normal text-sm text-[#637381] leading-[22px] whitespace-nowrap'>
                                         {userName ? userName : userProfileInfo}{' '}
                                     </Text>
                                     <Dropdown
@@ -259,7 +250,7 @@ const Header2 = ({ collapsed, setCollapsed }) => {
                                         trigger={['click']}
                                         className='cursor-pointer'
                                         overlayStyle={{ position: 'fixed',overflow:'visible', zIndex: 20, top: 64 }}>
-                                        <Text className='text-xs text-[#9BC8E3] !leading-[20px] font-normal whitespace-nowrap '>
+                                        <Text className='text-xs text-[#8899A8] !leading-[20px] font-normal whitespace-nowrap '>
                                             {userRole ? userRole.replace(/-/g, ' ') : ''}{' '}
                                             <DownOutlined className='text-xs' />
                                         </Text>
