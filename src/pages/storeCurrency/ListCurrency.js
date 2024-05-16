@@ -109,7 +109,7 @@ const ListCurrency = () => {
             title: `${t('labels:min_amount')}`,
             dataIndex: 'minAmount',
             key: 'minAmount',
-            width: '12%',
+            width: '10%',
             render: (text, record) => {
                 return <>{record.minimum_amount}</>
             },
@@ -127,7 +127,7 @@ const ListCurrency = () => {
             title: `${t('labels:no_of_decimals')}`,
             dataIndex: 'noOfDecimals',
             key: 'noOfDecimals',
-            width: '14%',
+            width: '12%',
             render: (text, record) => {
                 return <>{record.no_of_decimal}</>
             },
