@@ -5,6 +5,7 @@ import { DeleteOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import HeaderForTitle from '../../components/header/HeaderForTitle'
 import DmTabAntDesign from '../../components/DmTabAntDesign/DmTabAntDesign'
@@ -28,6 +29,8 @@ const currentUserDetailsAPI = process.env.REACT_APP_USER_PROFILE_API
 const UserAccessControl = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const queryClient = useQueryClient()
+
     const [searchParams, setSearchParams] = useSearchParams()
     // const [isLoading, setIsLoading] = useState(false)
     // const [isNetworkError, setIsNetworkError] = useState(false)
@@ -246,26 +249,6 @@ const UserAccessControl = () => {
             })
     }
 
-    //Delete call of user frm server
-    const removeUser = () => {
-        setDeleteModalLoading(true)
-        MarketplaceServices.remove(userAPI, {
-            'user-name': userName,
-        })
-            .then(function (response) {
-                console.log('delete response of user', response)
-                setDeleteModalLoading(false)
-                MarketplaceToaster.showToast(response)
-                findAllUsersLists()
-                setShowDeleteUserModal(false)
-            })
-            .catch(function (error) {
-                console.log('delete error response of user', error)
-                MarketplaceToaster.showToast(error.response)
-                setDeleteModalLoading(false)
-            })
-    }
-
     //Enable ad disable user from server
     const enableDisableUserFromServer = () => {
         setDeleteModalLoading(true)
@@ -287,8 +270,8 @@ const UserAccessControl = () => {
                 var pageLimit = searchParams.get('limit') ? searchParams.get('limit') : itemsPerPageFromEnv
 
                 // setIsLoading(true)
-                if (parseInt(presentTab) === 1) {
-                    findAllGroupLists(parseInt(pageNumber), parseInt(pageLimit))
+                if (parseInt(presentTab) === 0) {
+                    queryClient.invalidateQueries('userData')
                 } else if (parseInt(presentTab) === 2) {
                 } else {
                     findAllUsersLists(parseInt(pageNumber), parseInt(pageLimit))
@@ -328,7 +311,7 @@ const UserAccessControl = () => {
     const findAllUsersLists = async (page, limit) => {
         // Fetcher function
         const res = await MarketplaceServices.findByPage(usersAllAPI, null, page, limit, false)
-        return res?.data?.response_body
+        return res?.data?.response_body?.users
     }
 
     //! Using the useQuery hook to fetch the group list server Data
@@ -343,6 +326,30 @@ const UserAccessControl = () => {
         retry: false,
     })
 
+    //Delete call of user frm server
+    const removeUser = () => {
+        setDeleteModalLoading(true)
+        MarketplaceServices.remove(userAPI, {
+            'user-name': userName,
+        })
+            .then(function (response) {
+                console.log('delete response of user', response)
+                // Invalidate the query to trigger a refetch
+                queryClient.invalidateQueries('userData')
+
+                setDeleteModalLoading(false)
+                MarketplaceToaster.showToast(response)
+                // findAllUsersLists()
+                setShowDeleteUserModal(false)
+            })
+            .catch(function (error) {
+                console.log('delete error response of user', error)
+                MarketplaceToaster.showToast(error.response)
+                setDeleteModalLoading(false)
+            })
+    }
+
+    console.log('usersServerData', usersServerData)
     return (
         <Content>
             <HeaderForTitle
@@ -438,8 +445,8 @@ const UserAccessControl = () => {
                             </>
                         ) : parseInt(searchParams.get('tab')) === 2 ? null : (
                             <>
-                                <Table dataSource={usersServerData?.users} columns={usersColumns} pagination={false} />
-                                {usersServerData?.count > itemsPerPageFromEnv ? (
+                                <Table dataSource={usersServerData} columns={usersColumns} pagination={false} />
+                                {usersServerData?.length > itemsPerPageFromEnv ? (
                                     <Content className='!grid !justify-items-end'>
                                         <DmPagination
                                             currentPage={
@@ -452,7 +459,7 @@ const UserAccessControl = () => {
                                                     ? parseInt(searchParams.get('page'))
                                                     : 1
                                             }
-                                            totalItemsCount={usersServerData?.count}
+                                            totalItemsCount={usersServerData?.length}
                                             defaultPageSize={itemsPerPageFromEnv}
                                             pageSize={
                                                 parseInt(searchParams.get('limit'))
@@ -512,9 +519,9 @@ const UserAccessControl = () => {
                 {
                     <div>
                         {selectedUserData.status === true ? (
-                            <p>{t('messages:are_you_sure_you_want_disable_status')}?</p>
+                            <p>{t('messages:are_you_sure_you_want_disable_status')}</p>
                         ) : (
-                            <p>{t('messages:are_you_sure_you_want_enable_status')}?</p>
+                            <p>{t('messages:are_you_sure_you_want_enable_status')}</p>
                         )}
                     </div>
                 }

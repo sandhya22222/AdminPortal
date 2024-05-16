@@ -22,7 +22,7 @@ const minPasswordLength = process.env.REACT_APP_PASSWORD_MIN_LENGTH
 
 const UserProfile = () => {
     const { t } = useTranslation()
-    usePageTitle(t('labels:my_profile'))
+    usePageTitle(t('labels:profile'))
     const [storeUsersData, setStoreUsersData] = useState()
     const [isLoading, setIsLoading] = useState(true)
     const [isNetworkError, setIsNetworkError] = useState(false)
@@ -418,7 +418,7 @@ const UserProfile = () => {
                             <Col span={12} className=' border-l-2 border-gray-300'>
                                 <Content>
                                     <Title level={5}>{t('labels:your_password_must_contain')}</Title>
-                                    <p>
+                                    <p className='!mb-0 pb-2'>
                                         <IoMdCheckmarkCircleOutline
                                             style={{
                                                 color: `${password && password.length >= 12 ? 'green' : 'initial'}`,
@@ -427,7 +427,7 @@ const UserProfile = () => {
                                         />{' '}
                                         {t('messages:at_least_12_characters')}
                                     </p>
-                                    <p>
+                                    <p className='!mb-0 pb-2'>
                                         <IoMdCheckmarkCircleOutline
                                             style={{
                                                 color: `${password && /[A-Z]/.test(password) ? 'green' : 'initial'}`,
@@ -436,7 +436,7 @@ const UserProfile = () => {
                                         />{' '}
                                         {t('messages:one_or_more_upper_case_letter')}
                                     </p>
-                                    <p>
+                                    <p className='!mb-0 pb-2'>
                                         <IoMdCheckmarkCircleOutline
                                             style={{
                                                 color: `${
@@ -449,7 +449,7 @@ const UserProfile = () => {
                                         />{' '}
                                         {t('messages:one_or_more_special_character_or_symbols')}
                                     </p>
-                                    <p>
+                                    <p className='!mb-0 pb-2'>
                                         <IoMdCheckmarkCircleOutline
                                             style={{
                                                 color: `${password && /[a-z]/.test(password) ? 'green' : 'initial'}`,
@@ -458,7 +458,7 @@ const UserProfile = () => {
                                         />{' '}
                                         {t('messages:one_or_more_lower_case_letters')}
                                     </p>
-                                    <p>
+                                    <p className='!mb-0 pb-2'>
                                         <IoMdCheckmarkCircleOutline
                                             style={{
                                                 color: `${password && /[\d]/.test(password) ? 'green' : 'initial'}`,
