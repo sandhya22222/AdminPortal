@@ -277,11 +277,11 @@ const Newdashboard = () => {
                     title={
                         <Content className='flex z-20 mb-3  !justify-between'>
                             <Content className='!w-[80%] mr-2 flex flex-col gap-1 '>
-                                <Content className='flex'>
+                                <Content className='flex gap-1 '>
                                     <Title level={3} className='!text-[#8899A8] m-0 '>
-                                        {t('messages:hello') + ', '}
+                                        {t('messages:hello') + ','}
                                     </Title>
-                                    <Title level={3} className='!text-[#023047] m-0 '>
+                                    <Title level={3} className='!text-[#023047] !m-0  '>
                                         {username.slice(0, 1).toUpperCase() + username.slice(1)}
                                     </Title>
                                 </Content>
