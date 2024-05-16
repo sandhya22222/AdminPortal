@@ -12,10 +12,10 @@
 
     --mp-steps-process-background-color: #fae9ff;
 
-    --mp-sidebar-menu-dark: #FFFFFF;
-    --mp-sidebar-menu-selected: #FFA229;
-    --mp-sidebar-menu-selected-background : #FAFAFA;
-    --mp-sidebar-menu-not-selected : #023047;
+    --mp-sidebar-menu-dark: #ffffff;
+    --mp-sidebar-menu-selected: #ffa229;
+    --mp-sidebar-menu-selected-background: #fafafa;
+    --mp-sidebar-menu-not-selected: #023047;
 
     --mp-primary-background-color: #fb8500;
     --mp-primary-background-color-d: #f5f5f5;
@@ -86,10 +86,10 @@
     --mp-link-color-h: #1a5692;
 
     /* colors related to footer */
-    --mp-text-gray:rgba(0, 0, 0, 0.06);
-    --mp-text-gray1:#637381;
-    --mp-text-gray2:#8899A8;
+    --mp-text-gray: rgba(0, 0, 0, 0.06);
+    --mp-text-gray1: #637381;
+    --mp-text-gray2: #8899a8;
 
     /*header color*/
-    --mp-header-bg-color:#ffffff;
+    --mp-header-bg-color: #ffffff;
 }

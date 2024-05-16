@@ -236,9 +236,14 @@ a {
     padding: 0px !important;
 } */
 
+.customClass:hover svg path{
+    fill: var(--mp-brand-color) !important;
+    transition: fill 0.3 ease-in-out;
+}
+
 :where(.css-dev-only-do-not-override-1kuana8).ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover
-    .ant-checkbox-inner {
-    border-color: var(--mp-input-field-hover-color) !important;
+.ant-checkbox-inner {
+border-color: var(--mp-input-field-hover-color) !important;
 }
 
 .ant-input-number-disabled .ant-input-number:hover {

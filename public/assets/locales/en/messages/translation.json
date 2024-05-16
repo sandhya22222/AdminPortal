@@ -49,7 +49,7 @@
     "drag_info": "We only accept single file uploads, and the file format must be in .csv for successful submission.",
     "upload_success": "Successfully uploaded!",
     "upload_success_message": "Congratulations! Your file has been successfully uploaded. Please visit your portals now to witness the changes take effect.",
-    "choose_download_format": "Choose your preferred download format",
+    "choose_download_format": "Choose your preferred format",
     "connect_with_your_customers_in_their_preferred_language": "Connect with your customers in their preferred language",
     "unable_to_download_this_format": "Unable to download this format",
     "download_successful": "Download successful",
@@ -137,6 +137,6 @@
     "poicy_warning": "You can only publish up to “10 Policies”. Please delete some policies to create more and publish.",
     "policy_change_warning_info": "You are about to cancel change made to '{{version}}' by doing this you will lose the unsaved date.",
     "policy_change_warning_message": "Are you sure you want to proceed?",
-    "profile_note":"Access your user information and review policies in your comprehensive profile settings.",
+    "profile_note": "Access your user information and review policies in your comprehensive profile settings.",
     "image_requirements": "Image Requirements"
 }

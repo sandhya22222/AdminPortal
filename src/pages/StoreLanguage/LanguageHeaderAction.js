@@ -3,7 +3,7 @@ import { Button, Checkbox, Layout, Space, Switch, Typography } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import StoreModal from '../../components/storeModal/StoreModal'
-import { crossIcon } from '../../constants/media'
+import { deleteIcon } from '../../constants/media'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import { useTranslation } from 'react-i18next'
@@ -218,7 +218,11 @@ function LanguageHeaderAction({ languageId, languageCode, languageStatus, langua
             {/* This content is related to language status */}
             <Content className=''>
                 <Space direction='horizontal'>
-                    <Typography className='pr-2 input-label-color'> {t('labels:status_label')} </Typography>
+                    <Typography className='pr-1 input-label-color font-semibold text-base'>
+                        {' '}
+                        {t('labels:status_label')}{' '}
+                    </Typography>
+                    <div className='input-label-color'>{t('labels:inactive')}</div>
                     <Switch
                         className={switchStatus === true ? '!bg-green-500' : '!bg-gray-400'}
                         checked={switchStatus}
@@ -227,9 +231,10 @@ function LanguageHeaderAction({ languageId, languageCode, languageStatus, langua
                             openModal(switchStatus)
                         }}
                         disabled={isMakeAsDefault}
-                        checkedChildren={t('labels:active')}
-                        unCheckedChildren={t('labels:inactive')}
+                        // checkedChildren={t('labels:active')}
+                        // unCheckedChildren={t('labels:inactive')}
                     />
+                    <div className='input-label-color'>{t('labels:active')}</div>
                 </Space>
             </Content>
             {/* This content is related to language checkbox default language */}
@@ -242,7 +247,7 @@ function LanguageHeaderAction({ languageId, languageCode, languageStatus, langua
                             openLanguageDefaultWaringModal(e.target.checked)
                         }}
                         disabled={switchStatus && !isMakeAsDefault ? false : true}></Checkbox>
-                    <Typography> {t('labels:default_language_label')}</Typography>
+                    <Typography className='input-label-color'> {t('labels:default_language_label')}</Typography>
                 </Space>
             </Content>
             {/* This content is related to language remove */}
@@ -253,7 +258,7 @@ function LanguageHeaderAction({ languageId, languageCode, languageStatus, langua
                         onClick={() => {
                             openDeleteModal(languageId)
                         }}>
-                        <img src={crossIcon} alt='plusIconWithAddLanguage' className='' />
+                        <img src={deleteIcon} alt='plusIconWithAddLanguage' className='' />
                         <div className=''>{t('labels:remove_language_label')}</div>
                     </Button>
                 ) : null}
