@@ -165,7 +165,10 @@
 .ant-tree-select-dropdown .ant-select-tree .ant-select-tree-node-content-wrapper.ant-select-tree-node-selected {
     background-color: var(--mp-input-field-outer-glow-color) !important;
 }
-
+.ant-input-number .ant-input-number-handler:hover .ant-input-number-handler-down-inner,
+.ant-input-number .ant-input-number-handler:hover .ant-input-number-handler-up-inner {
+    color: var(--mp-primary-color) !important;
+}
 .anticon svg {
     /* vertical-align: baseline !important; */
     display: inline-block !important;

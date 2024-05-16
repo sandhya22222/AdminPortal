@@ -1,6 +1,6 @@
 //! Import libraries
 import React, { useState, useEffect } from 'react'
-import { Layout, Typography, Col, Tag, Tooltip, Image, Table } from 'antd'
+import { Layout, Typography, Col, Tag, Tooltip, Image, Table, Button } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 
@@ -109,7 +109,7 @@ const ListCurrency = () => {
             title: `${t('labels:min_amount')}`,
             dataIndex: 'minAmount',
             key: 'minAmount',
-            width: '12%',
+            width: '10%',
             render: (text, record) => {
                 return <>{record.minimum_amount}</>
             },
@@ -127,7 +127,7 @@ const ListCurrency = () => {
             title: `${t('labels:no_of_decimals')}`,
             dataIndex: 'noOfDecimals',
             key: 'noOfDecimals',
-            width: '14%',
+            width: '12%',
             render: (text, record) => {
                 return <>{record.no_of_decimal}</>
             },
@@ -136,21 +136,20 @@ const ListCurrency = () => {
             title: `${t('labels:action')}`,
             dataIndex: '',
             key: '',
-            width: '8%',
+            width: '12%',
             align: 'center',
             render: (text, record) => {
                 return (
-                    <Col className='whitespace-nowrap !text-center'>
-                        <Tooltip title={t('labels:view_details')}>
-                            <div
-                                className='app-btn-icon cursor-pointer'
-                                onClick={() => {
-                                    navigate(`/dashboard/currency/edit-currency?k=${record.id}`)
-                                }}>
-                                {t('labels:view_details')}
-                            </div>
-                        </Tooltip>
-                    </Col>
+                    <div className='whitespace-nowrap items-center justify-center'>
+                        <Button
+                            type='text'
+                            className='app-btn-text'
+                            onClick={() => {
+                                navigate(`/dashboard/currency/edit-currency?k=${record.id}`)
+                            }}>
+                                    <Tooltip title={t('labels:view_details').length>20?t('labels:view_details'):undefined}>{t('labels:view_details')}</Tooltip>
+                        </Button>
+                    </div>
                 )
             },
         },
