@@ -33,14 +33,15 @@
     line-height: 22px;
     padding: 5px 0px;
     font-size: 14px;
+    font-weight: 500;
     border: none !important;
-    color: var(--mp-primary-text-color) !important;
+    color: #023047 !important;
 }
 .header-select.ant-select-single.ant-select-open .ant-select-selection-item {
-    color: var(--mp-primary-text-color) !important;
+    color: #023047 !important;
 }
 .header-select.ant-select .ant-select-arrow {
-    color: #8899a8 !important;
+    color: #023047 !important;
 }
 .headerSelectOption.ant-select-item-option-selected {
     color: var(--mp-primary-color) !important;
@@ -50,8 +51,7 @@
     padding: 0px !important;
     border-radius: 2px !important;
     border: none !important;
-    background-color: rgba(77, 156, 185) !important;
-    color: var(--mp-text-color);
+    background-color: #c41d7f !important;
 }
 .ant-dropdown {
     overflow: visible !important;
