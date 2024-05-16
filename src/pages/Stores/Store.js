@@ -1070,7 +1070,7 @@ const Stores = () => {
     return (
         <Content className=''>
             <HeaderForTitle
-                title={<div className='!font-semibold text-2xl mb-4'>{t('labels:stores')}</div>}
+                title={<div className='!font-semibold text-2xl mb-4 !text-regal-blue'>{t('labels:stores')}</div>}
                 titleContent={
                     parseInt(currentTab) === 1 ? (
                         hideAddStoreButton ? (
@@ -1255,7 +1255,7 @@ const Stores = () => {
             </Drawer>
             <Content className='!p-5'>
                 {isLoading ? (
-                    <Content className='bg-white p-3 !rounded-md mt-[3.0rem]'>
+                    <Content className='bg-white p-3 !rounded-md mt-[3.5rem]'>
                         <Skeleton
                             active
                             paragraph={{
@@ -1272,7 +1272,7 @@ const Stores = () => {
                             {parseInt(currentTab) === 1 ? (
                                 <Content className=''>
                                     <div className='flex w-full'>
-                                        <div className='mx-4 pt-3 text-base font-semibold w-[75%]'>
+                                        <div className='mx-3 pt-3 text-base font-semibold w-[75%] text-regal-blue'>
                                             {t('labels:my_stores')}
                                         </div>
                                         <Radio.Group

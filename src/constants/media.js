@@ -41,6 +41,7 @@ import ConsentPreview from '../assets/images/common/consentPreview.png'
 import PolicyBanner from '../assets/images/common/policyBanner.svg'
 import CopyTextImage from '../assets/images/common/copyText.svg'
 import CheckGreen from '../assets/images/common/checkgreen.svg'
+import deleteIcon from '../assets/images/common/deleteIcon.svg'
 export {
     LoginBackground,
     Favicon,
@@ -84,4 +85,5 @@ export {
     PolicyBanner,
     CopyTextImage,
     CheckGreen,
+    deleteIcon,
 }

@@ -1,4 +1,4 @@
-import { Button, Col, Input, Layout, Radio, Row, Typography, Spin } from 'antd'
+import { Button, Col, Input, Layout, Radio, Row, Divider, Spin, Segmented } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -239,12 +239,17 @@ const LanguageForm = ({
     }, [languageCode, languageName])
 
     return (
-        <Content>
+        <Content className='border w-[750px] rounded-md'>
+            <div className='p-3 !m-0 font-semibold text-lg !text-regal-blue'>{t('labels:language_details')}</div>
+            <Divider className='!my-0' />
             <Spin tip={t('labels:please_wait')} size='large' spinning={isLoading}>
-                <Row className='gap-3'>
-                    <Col span={8} className=' mb-3'>
+                {/* <Row className='gap-3'> */}
+                <Content className=''>
+                    <Col span={16} className=' m-3'>
                         <Content className=''>
-                            <label className='text-[13px] mb-2 ml-1 input-label-color'>{t('labels:language')}</label>
+                            <label className='font-normal text-sm mb-2 ml-1 input-label-color'>
+                                {t('labels:language')}
+                            </label>
                             <span className='mandatory-symbol-color text-sm !text-center ml-1'>*</span>
                             <Input
                                 placeholder={t('placeholders:enter_language_name')}
@@ -275,9 +280,9 @@ const LanguageForm = ({
                             />
                         </Content>
                     </Col>
-                    <Col span={3} className=' mb-3'>
+                    <Col span={16} className=' mb-3 mx-3'>
                         <Content className=''>
-                            <label className='text-[13px] mb-2 ml-1 input-label-color'>
+                            <label className='font-normal text-sm mb-2 ml-1 input-label-color'>
                                 {t('labels:language_code')}
                             </label>
                             <span className='mandatory-symbol-color text-sm text-center ml-1'>*</span>
@@ -311,35 +316,44 @@ const LanguageForm = ({
                             />
                         </Content>
                     </Col>
-                    <Col className=' mb-3'>
+                    <Col className=' mb-3 mx-3'>
                         <Content className=''>
-                            <label className='text-[13px] !mb-2 input-label-color'>
+                            <label className='font-normal text-sm block !mb-2 input-label-color'>
                                 {t('labels:script_direction')}
                             </label>
-                            <Radio.Group
-                                optionType='button'
-                                style={{ display: 'flex' }}
+
+                            <Segmented
+                                options={[
+                                    {
+                                        value: 'LTR',
+                                        label: t('labels:left_to_right'),
+                                    },
+                                    {
+                                        value: 'RTL',
+                                        label: t('labels:right_to_left'),
+                                    },
+                                ]}
                                 value={scriptDirection}
-                                disabled={parseInt(languageStatus) === 1 ? true : false}
-                                onChange={(e) => {
-                                    handleScriptDirectionChange(e.target.value)
-                                    if (e.target.value !== defaultScriptDirection) {
+                                onChange={(value) => {
+                                    handleScriptDirectionChange(value)
+                                    if (value !== defaultScriptDirection) {
                                         setOnChangeValues(true)
                                     }
-                                }}>
-                                <Radio.Button value='LTR'>{t('labels:left_to_right')}</Radio.Button>
-                                <Radio.Button value='RTL'>{t('labels:right_to_left')}</Radio.Button>
-                            </Radio.Group>
+                                }}
+                                disabled={parseInt(languageStatus) === 1 ? true : false}
+                                // style={{ width: '300px' }}
+                            />
                         </Content>
                     </Col>
-                </Row>
+                </Content>
+                {/* </Row> */}
 
                 {(txtLanguageCode === '' && txtLanguage === '') ||
                 onChangeValues === false ||
                 (txtLanguage === defaultTxtLanguage &&
                     txtLanguageCode === defaultTxtLanguageCode &&
                     scriptDirection === defaultScriptDirection) ? null : (
-                    <Row className='gap-2'>
+                    <Row className='gap-2 mx-3 mb-3'>
                         <Col>
                             <Button
                                 className={'app-btn-primary !mt-5'}

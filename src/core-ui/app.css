@@ -208,3 +208,8 @@ a {
     min-height: 150px !important;
     padding: 0px !important;
 } */
+
+.customClass:hover svg path{
+    fill: var(--mp-brand-color) !important;
+    transition: fill 0.3 ease-in-out;
+}

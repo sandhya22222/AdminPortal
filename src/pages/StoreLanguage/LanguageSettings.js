@@ -50,7 +50,7 @@ function LanguageSettings() {
                             title={languageName}
                             overlayStyle={{ zIndex: 11, position: 'fixed' }}
                             placement='bottom'>
-                            <Title level={3} className='!font-normal max-w-[300px]' ellipsis={true}>
+                            <Title level={3} className='!font-normal max-w-[300px] mb-3 mt-2' ellipsis={true}>
                                 {languageName && languageName !== undefined && languageName !== null
                                     ? languageName
                                     : `${t('labels:add_language')}`}
@@ -78,14 +78,14 @@ function LanguageSettings() {
                     showButtons={false}
                 />
             </Content>
-            <Content className='p-3 mt-[7rem] !min-h-screen'>
-                <Content className='!bg-white'>
-                    <Title level={4} className='p-3 !m-0'>
+            <Content className='p-4 mt-[9rem] !min-h-screen'>
+                <Content className='!bg-white shadow-brandShadow  rounded-md'>
+                    {/* <Title level={4} className='p-3 !m-0'>
                         {t('labels:language_details')}
                     </Title>
-                    <Divider className='!m-0' />
+                    <Divider className='!m-0' /> */}
                     <Content className='p-3'>
-                        <Content className='my-2'>
+                        <Content className='my-2 mb-4 '>
                             {/**
                              * This particular container is to display the required language related fields
                              * From this component we are passing @languageCode as props.
@@ -104,7 +104,7 @@ function LanguageSettings() {
                             />
                             <Content></Content>
                         </Content>
-                        <Divider />
+                        {/* <Divider /> */}
                         {/**
                          * This particular container is to display the file upload for the language
                          * From this component we are passing @languageCode as props.

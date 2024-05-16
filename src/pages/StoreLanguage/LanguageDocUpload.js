@@ -1,20 +1,14 @@
 import { CheckCircleFilled, UploadOutlined } from '@ant-design/icons'
-import { Button, Card, Layout, Spin, Typography, Upload } from 'antd'
+import { Button, Card, Divider, Layout, Spin, Typography, Upload } from 'antd'
 import React, { useState } from 'react'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import { CloseOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import StoreModal from '../../components/storeModal/StoreModal'
-import {
-    DownloadIcon,
-    codeJsonIcon,
-    tableIcon,
-    FrontEndKeysDownloadIcon,
-    BackendKeysDownloadIcon,
-    DownloadIconDisable,
-} from '../../constants/media'
+import { DownloadIcon, codeJsonIcon, tableIcon, DownloadIconDisable } from '../../constants/media'
 import util from '../../util/common'
 import MarketplaceToaster from '../../util/marketplaceToaster'
+import { DownloadIconSVG } from './DownloadIconSVG'
 
 const storeLanguageKeysUploadAPI = process.env.REACT_APP_UPLOAD_LANGUAGE_TRANSLATION_CSV
 const LanguageDownloadApiCsv = process.env.REACT_APP_DOWNLOAD_LANGUAGE_TRANSLATION_CSV
@@ -219,30 +213,28 @@ function LanguageDocUpload({ langCode }) {
     }
 
     return (
-        <Content>
-            <Title level={4} className=' !m-0'>
-                {t('labels:support_document')}
-            </Title>
-            <p className='mt-2 w-[80%]'>{t('messages:document_description')}</p>
+        <Content className='!w-[750px]'>
             <Content className='!flex gap-4'>
-                <>
-                    <img src={FrontEndKeysDownloadIcon} alt='FrontEndKeysDownloadIcon' className='w-[8%] h-[8%] mt-2' />
-                </>
-                <Content className=''>
-                    <Content className='flex justify-between'>
-                        <Content>
-                            <Text className='text-base font-bold'>{t('labels:frontend_keys')}:</Text>
+                <Content className='border rounded-md '>
+                    <Spin spinning={isSpinning} tip='Please wait'>
+                        <Content className='flex p-3 justify-between'>
+                            <Content>
+                                <Text className='text-base font-semibold !text-regal-blue'>
+                                    {t('labels:frontend_keys')}
+                                </Text>
+                            </Content>
+                            <Button
+                                className='app-btn-secondary flex gap-2 !items-center mb-1 customClass text-regal-blue font-medium text-sm'
+                                onClick={() => findAllSupportDocumentTemplateDownload(1, null)}>
+                                <DownloadIconSVG />
+
+                                {t('labels:get_frontend_support_template')}
+                            </Button>
                         </Content>
-                        <Button
-                            className='app-btn-secondary flex gap-2 !items-center mb-1'
-                            onClick={() => findAllSupportDocumentTemplateDownload(1, null)}>
-                            <img src={DownloadIconDisable} alt='DownloadIconDisable' className=' !w-2' />
-                            {t('labels:get_frontend_support_template')}
-                        </Button>
-                    </Content>
-                    <p>{t('messages:frontend_document')}</p>
-                    <Content className=''>
-                        <Spin spinning={isSpinning} tip='Please wait'>
+
+                        <Divider className='my-0 ' />
+                        <p className='!p-4 !pb-0 input-label-color'>{t('messages:frontend_document')}</p>
+                        <Content className='flex p-3 gap-4'>
                             <Upload
                                 beforeUpload={() => {
                                     return false
@@ -257,45 +249,46 @@ function LanguageDocUpload({ langCode }) {
                                 className='app-btn-secondary'
                                 openFileDialogOnClick={langCode !== undefined && langCode !== null ? true : false}>
                                 <Button
-                                    className={'app-btn-secondary flex items-center'}
+                                    className={'app-btn-secondary font-medium text-sm flex items-center'}
                                     icon={<UploadOutlined />}
                                     disabled={langCode !== undefined && langCode !== null ? false : true}>
                                     {t('labels:click_to_upload')}
                                 </Button>
                             </Upload>
-                        </Spin>
-                        <Button
-                            type='text'
-                            className={`mt-2 app-btn-text flex items-center cursor-pointer gap-1 ${
-                                langCode !== undefined && langCode !== null ? '' : '!opacity-25'
-                            }`}
-                            onClick={() => setChooseDownloadModalVisible(true)}
-                            disabled={langCode !== undefined && langCode !== null ? false : true}>
-                            <img src={DownloadIcon} alt='download icon' className='!text-xs !w-[10px] !items-center' />
-                            {t('messages:download_current_document')}
-                        </Button>
-                    </Content>
+                            <Button
+                                type='text'
+                                className={` app-btn-text flex items-center cursor-pointer gap-1 ${
+                                    langCode !== undefined && langCode !== null ? '' : '!opacity-25'
+                                }`}
+                                onClick={() => setChooseDownloadModalVisible(true)}
+                                disabled={langCode !== undefined && langCode !== null ? false : true}>
+                                <img src={DownloadIcon} alt='download icon' className='!text-xs  !items-center' />
+                                {t('messages:download_current_document')}
+                            </Button>
+                        </Content>
+                    </Spin>
                 </Content>
             </Content>
             <Content className=' mt-4 !flex gap-4'>
-                <>
-                    <img src={BackendKeysDownloadIcon} alt='BackendKeysDownloadIcon' className='w-[8%] h-[8%] mt-2' />
-                </>
-                <Content className=''>
-                    <Content className='flex justify-between '>
-                        <Content>
-                            <Text className='text-base font-bold'>{t('labels:backend_keys')}:</Text>
+                <Content className='border rounded-md'>
+                    <Spin spinning={isSpinningForBEUpload} tip='Please wait'>
+                        <Content className='flex justify-between p-3'>
+                            <Content>
+                                <Text className='text-base font-semibold !text-regal-blue'>
+                                    {t('labels:backend_keys')}
+                                </Text>
+                            </Content>
+                            <Button
+                                className='app-btn-secondary font-medium text-sm flex gap-2 !items-center !mb-1 customClass text-regal-blue'
+                                onClick={() => downloadBEKeysFile(1, null)}>
+                                <DownloadIconSVG />
+                                {t('labels:get_backend_support_template')}
+                            </Button>
                         </Content>
-                        <Button
-                            className='app-btn-secondary flex gap-2 !items-center !mb-1'
-                            onClick={() => downloadBEKeysFile(1, null)}>
-                            <img src={DownloadIconDisable} alt='DownloadIconDisable' className=' !w-2' />
-                            {t('labels:get_backend_support_template')}
-                        </Button>
-                    </Content>
-                    <p>{t('messages:backend_document')}</p>
-                    <Content className=''>
-                        <Spin spinning={isSpinningForBEUpload} tip='Please wait'>
+                        <Divider className='my-0 ' />
+
+                        <p className='!p-4 !pb-0 input-label-color'>{t('messages:backend_document')}</p>
+                        <Content className='flex p-3 gap-4'>
                             <Upload
                                 beforeUpload={() => {
                                     return false
@@ -310,28 +303,24 @@ function LanguageDocUpload({ langCode }) {
                                 onChange={(e) => handleChangeForBackendKeysUpload(e.file)}
                                 className='app-btn-secondary'>
                                 <Button
-                                    className={'app-btn-secondary flex items-center'}
+                                    className={'app-btn-secondary font-medium text-sm flex items-center'}
                                     icon={<UploadOutlined />}
                                     disabled={langCode !== undefined && langCode !== null ? false : true}>
                                     {t('labels:click_to_upload')}
                                 </Button>
                             </Upload>
-                        </Spin>
-                        <Button
-                            type='text'
-                            className={`mt-2 app-btn-text cursor-pointer gap-1 ${
-                                langCode !== undefined && langCode !== null ? '' : '!opacity-25'
-                            }`}
-                            onClick={() => downloadBEKeysFile(2, langCode)}
-                            disabled={langCode !== undefined && langCode !== null ? false : true}>
-                            <img
-                                src={DownloadIcon}
-                                alt='download icon'
-                                className='!text-xs !w-[10px] flex items-center'
-                            />
-                            {t('messages:download_current_document')}
-                        </Button>
-                    </Content>
+                            <Button
+                                type='text'
+                                className={` app-btn-text cursor-pointer gap-1 ${
+                                    langCode !== undefined && langCode !== null ? '' : '!opacity-25'
+                                }`}
+                                onClick={() => downloadBEKeysFile(2, langCode)}
+                                disabled={langCode !== undefined && langCode !== null ? false : true}>
+                                <img src={DownloadIcon} alt='download icon' className='!text-xs  flex items-center' />
+                                {t('messages:download_current_document')}
+                            </Button>
+                        </Content>
+                    </Spin>
                 </Content>
             </Content>
             <StoreModal
@@ -365,7 +354,7 @@ function LanguageDocUpload({ langCode }) {
                                 setShowSuccessModal(false)
                                 handleFileChange(e.file)
                             }}>
-                            <Button className={'flex items-center'} icon={<UploadOutlined />}>
+                            <Button className={'flex items-center app-btn-secondary'} icon={<UploadOutlined />}>
                                 {t('labels:upload_again')}
                             </Button>
                         </Upload>
@@ -403,7 +392,7 @@ function LanguageDocUpload({ langCode }) {
                                 setIsBEKeysUploadModalOpen(false)
                                 handleChangeForBackendKeysUpload(e.file)
                             }}>
-                            <Button className={'flex items-center'} icon={<UploadOutlined />}>
+                            <Button className={'flex items-center app-btn-secondary'} icon={<UploadOutlined />}>
                                 {t('labels:upload_again')}
                             </Button>
                         </Upload>
@@ -420,25 +409,25 @@ function LanguageDocUpload({ langCode }) {
                 isSpin={false}>
                 <Spin spinning={isSpinning} tip='Please wait'>
                     <Content className='flex justify-between items-center'>
-                        <Title level={4}>{t('messages:download_current_document')}</Title>
+                        {/* <Title level={4}>{t('messages:download_current_document')}</Title> */}
+                        <div className='font-semibold text-lg'>{t('messages:choose_download_format')}</div>
                         <CloseOutlined
                             role={'button'}
                             className='mb-[5px]'
                             onClick={() => setChooseDownloadModalVisible(false)}></CloseOutlined>
                     </Content>
                     <Content className='my-2'>
-                        <Typography>{t('messages:choose_download_format')}</Typography>
-                        <Content className='mt-3 flex'>
-                            <Card onClick={() => downloadZIP()} className='w-[147px] mr-2 cursor-pointer'>
-                                <Content className='flex flex-col items-center'>
-                                    <img src={codeJsonIcon} alt='json icon' />
-                                    <p>{t('labels:json_format')}</p>
-                                </Content>
-                            </Card>
+                        <Content className='mt-3 flex gap-3'>
                             <Card onClick={() => downloadCSV()} className='w-[147px] cursor-pointer'>
                                 <Content className='flex flex-col items-center'>
-                                    <img alt='table icon' src={tableIcon} />
+                                    <img alt='table icon mb-2' src={tableIcon} />
                                     <p>{t('labels:csv_format')}</p>
+                                </Content>
+                            </Card>
+                            <Card onClick={() => downloadZIP()} className='w-[147px]  cursor-pointer'>
+                                <Content className='flex flex-col items-center'>
+                                    <img src={codeJsonIcon} alt='json icon mb-2' />
+                                    <p>{t('labels:json_format')}</p>
                                 </Content>
                             </Card>
                         </Content>
