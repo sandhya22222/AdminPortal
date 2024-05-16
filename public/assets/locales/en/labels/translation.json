@@ -253,5 +253,7 @@
     "lead_in_line": "Lead In Line",
     "reset_default": "Reset Theme to Default",
     "consent_explicit": "Make user consent explicit",
-    "delete_policies": "Delete Policy?"
+    "delete_policies": "Delete Policy?",
+    "know_more": "Know more",
+    "payment": "Payment"
 }
