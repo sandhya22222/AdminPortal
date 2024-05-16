@@ -16,7 +16,7 @@ import MarketplaceToaster from '../../util/marketplaceToaster'
 import { usePageTitle } from '../../hooks/usePageTitle'
 
 const { Content } = Layout
-const { Title, Paragraph } = Typography
+const { Text } = Typography
 
 const itemsPerPageFromEnv = process.env.REACT_APP_ITEM_PER_PAGE
 const groupsAPI = process.env.REACT_APP_GROUPS_API
@@ -350,21 +350,22 @@ const UserAccessControl = () => {
             <HeaderForTitle
                 title={
                     <Content>
-                        <div className='!font-semibold text-xl mb-4'>{t('labels:user_access_control')}</div>
-                        <p className='!font-semibold !text-slate-400 !m-0'>{t('labels:user_access_control_note')}</p>
+                        <div className='flex flex-row justify-between items-center h-[42px]'>
+                            <Text level={3} className='!font-semibold text-regal-blue text-2xl'>
+                                {t('labels:user_access_control')}
+                            </Text>
+                            {searchParams.get('tab') === '0' ? (
+                                <Button
+                                    className='app-btn-primary !h-8 hover:!h-8'
+                                    onClick={() => navigate('/dashboard/user-access-control/add-user?')}>
+                                    {t('labels:add_user')}
+                                </Button>
+                            ) : null}
+                        </div>
+                        <p className='!font-semibold !text-slate-400 mt-2'>{t('labels:user_access_control_note')}</p>
                     </Content>
                 }
-                titleContent={
-                    <>
-                        {searchParams.get('tab') === '0' ? (
-                            <Button
-                                className='app-btn-primary !h-8 hover:!h-8'
-                                onClick={() => navigate('/dashboard/user-access-control/add-user?')}>
-                                {t('labels:add_user')}
-                            </Button>
-                        ) : null}
-                    </>
-                }
+                titleContent={<></>}
                 headerContent={
                     <Content className='mt-[5.5rem]'>
                         <Content className='!h-10 mt-3 flex'>

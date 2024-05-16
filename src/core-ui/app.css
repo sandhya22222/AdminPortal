@@ -73,7 +73,26 @@
 .ant-pagination-options-size-changer .ant-select-dropdown {
     z-index: unset !important;
 }
+.ant-pagination .ant-pagination-item a {
+    color: #023047 !important;
+}
+.ant-pagination .ant-pagination-item-active a {
+    color: var(--mp-brand-color) !important;
+}
+.ant-pagination-item {
+    border: 1px solid var(--mp-primary-color-d) !important;
+}
 
+.ant-pagination-prev,
+.ant-pagination-next {
+    border: 1px solid var(--mp-primary-color-d) !important;
+}
+.ant-pagination .ant-pagination-options-quick-jumper{
+    color: #023047;
+}
+.ant-pagination .ant-pagination-options-quick-jumper input:hover{
+    border-color: #023047;
+}
 .input-label-color {
     color: var(--mp-input-field-label-color) !important;
 }

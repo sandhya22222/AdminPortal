@@ -280,5 +280,6 @@
     "orders_cancelled": "Orders Cancelled",
     "bonus": "Bonus",
     "themes": "Themes",
-    "cash_free": "Cashfree"
+    "cash_free": "Cashfree",
+    "languages_note":"Add multiple languages that will reflect all across your portals"
 }

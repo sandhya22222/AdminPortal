@@ -9,7 +9,7 @@ import DmPagination from '../../components/DmPagination/DmPagination'
 import SkeletonComponent from '../../components/Skeleton/SkeletonComponent'
 import HeaderForTitle from '../../components/header/HeaderForTitle'
 import util from '../../util/common'
-import { DownloadIcon, EditIcon, plusIcon, starIcon } from '../../constants/media'
+import { DownloadIcon, EditIconNew, plusIcon, starIcon } from '../../constants/media'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
 
@@ -43,7 +43,7 @@ const Language = () => {
 
     const columns = [
         {
-            title: `${t('labels:language')}`,
+            title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:language')}</Text>,
             dataIndex: 'language',
             key: 'language',
             width: '20%',
@@ -54,16 +54,16 @@ const Language = () => {
                         <Tooltip
                             title={record.language}
                             overlayStyle={{ zIndex: 1 }}
-                            placement={util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'left' : 'right'}>
+                            placement={'bottom'}>
                             <Text
-                                className={`mx-1 ${record.is_default ? '!max-w-[80px]' : '!max-w-[150px]'} `}
+                                className={`text-brandGray1 mx-1 ${record.is_default ? '!max-w-[50px]' : '!max-w-[150px]'} `}
                                 ellipsis={true}>
                                 {record.language}
                             </Text>
                         </Tooltip>
                         {record.is_default ? (
-                            <Tag icon={<StarIcon />} className='inline-flex items-center gap-1' color='#FB8500'>
-                                {t('labels:default')}
+                            <Tag className='inline-flex items-center gap-1 rounded-2xl' color='#FB8500'>
+                                {t('labels:default_language')}
                             </Tag>
                         ) : (
                             ''
@@ -73,7 +73,7 @@ const Language = () => {
             },
         },
         {
-            title: `${t('labels:code')}`,
+            title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:code')}</Text>,
             dataIndex: 'language_code',
             key: 'language_code',
             width: '12%',
@@ -81,7 +81,7 @@ const Language = () => {
                 return (
                     <>
                         <Tooltip title={record.language_code}>
-                            <Text className='max-w-xs' ellipsis={{ tooltip: record.language_code }}>
+                            <Text className='max-w-xs text-brandGray1' ellipsis={{ tooltip: record.language_code }}>
                                 {record.language_code}
                             </Text>
                         </Tooltip>
@@ -90,7 +90,11 @@ const Language = () => {
             },
         },
         {
-            title: `${t('labels:script_direction')}`,
+            title: (
+                <Text className='text-regal-blue text-sm font-medium leading-[22px]'>
+                    {t('labels:script_direction')}
+                </Text>
+            ),
             dataIndex: 'writing_script_direction',
             key: 'writing_script_direction',
             ellipsis: true,
@@ -101,25 +105,31 @@ const Language = () => {
                         {record.writing_script_direction === 'LTR' ? (
                             <Tag color='success'>{t('labels:left_to_right')}</Tag>
                         ) : (
-                            <Tag color='warning'>{t('labels:right_to_left')}</Tag>
+                            <Tag color='blue'>{t('labels:right_to_left')}</Tag>
                         )}
                     </>
                 )
             },
         },
         {
-            title: `${t('labels:status')}`,
+            title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:status')}</Text>,
             dataIndex: 'status',
             key: 'status',
             width: '12%',
             render: (text, record) => {
                 return (
                     <>
-                        <Text>
+                        <Text className=''>
                             {String(record.status) === '2' ? (
-                                <Badge status='default' text={t('labels:inactive')} />
+                                <Badge
+                                    status='default'
+                                    text={<Text className='!text-brandGray1'>{t('labels:inactive')}</Text>}
+                                />
                             ) : (
-                                <Badge status='success' text={t('labels:active')} />
+                                <Badge
+                                    status='success'
+                                    text={<Text className='!text-brandGray1'>{t('labels:active')}</Text>}
+                                />
                             )}
                         </Text>
                     </>
@@ -127,10 +137,14 @@ const Language = () => {
             },
         },
         {
-            title: `${t('labels:support_document')}`,
+            title: (
+                <Text className='text-regal-blue text-sm font-medium leading-[22px]'>
+                    {t('labels:support_document')}
+                </Text>
+            ),
             dataIndex: 'lang_support_docs',
             key: 'lang_support_docs',
-            width: '28%',
+            width: '25%',
             render: (text, record) => {
                 return (
                     <Button
@@ -140,20 +154,20 @@ const Language = () => {
                             findAllSupportDocumentTemplateDownload(2, record.language_code)
                         }}>
                         <Image src={DownloadIcon} className='!text-xs !w-[10px]  !items-center' preview={false} />
-                        {t('labels:download_document')}
+                        <Text className='text-brandPrimaryColor text-sm font-medium leading-[22px]'>{t('labels:download_document')}</Text>
                     </Button>
                 )
             },
         },
         {
-            title: `${t('labels:action')}`,
+            title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:action')}</Text>,
             dataIndex: '',
             key: '',
-            width: '8%',
+            width: '11%',
             align: 'center',
             render: (text, record) => {
                 return (
-                    <Col className='whitespace-nowrap !text-center'>
+                    <div className='!flex !justify-center'>
                         <Tooltip title={t('labels:edit_language')}>
                             <Button
                                 type='text'
@@ -167,16 +181,10 @@ const Language = () => {
                                         }`
                                     )
                                 }}>
-                                <Content className=' flex justify-center align-items-center'>
-                                    <img
-                                        src={EditIcon}
-                                        alt='Edit Icon'
-                                        className=' !w-[12px] !text-center !text-sm cursor-pointer'
-                                    />
-                                </Content>
+                                <img src={EditIconNew} className='!min-w-[14px] !aspect-square' alt='editIcon' />
                             </Button>
                         </Tooltip>
-                    </Col>
+                    </div>
                 )
             },
         },
@@ -235,23 +243,23 @@ const Language = () => {
             <HeaderForTitle
                 title={
                     <Content className=''>
-                        <Title level={3} className='!font-normal'>
-                            {t('labels:languages')}
-                        </Title>
+                        <div className='flex flex-row justify-between items-center h-[42px]'>
+                            <Text level={3} className='!font-semibold text-regal-blue text-2xl'>
+                                {t('labels:languages')}
+                            </Text>
+                            <Button
+                                className='app-btn-primary flex align-items-center'
+                                onClick={() => navigate('/dashboard/language/language-settings')}>
+                                <img src={plusIcon} alt='plusIconWithAddLanguage' className=' !w-3 mr-2 items-center' />
+                                <div className='mr-[10px]'>{t('labels:add_language')}</div>
+                            </Button>
+                        </div>
+                        <p className='!font-semibold !text-slate-400 !mt-2 !mb-6'>{t('labels:languages_note')}</p>
                     </Content>
                 }
-                titleContent={
-                    <Content className=' !flex items-center !justify-end gap-3'>
-                        <Button
-                            className='app-btn-primary flex align-items-center'
-                            onClick={() => navigate('/dashboard/language/language-settings')}>
-                            <img src={plusIcon} alt='plusIconWithAddLanguage' className=' !w-3 mr-2 items-center' />
-                            <div className='mr-[10px]'>{t('labels:add_language')}</div>
-                        </Button>
-                    </Content>
-                }
+                titleContent={<Content className=' !flex !justify-end'></Content>}
             />
-            <Content className='!p-3 mt-[7.0rem]'>
+            <Content className='!p-3 mt-[195px]'>
                 {isLoading ? (
                     <Content className=' bg-white p-3 '>
                         <SkeletonComponent />
@@ -262,7 +270,7 @@ const Language = () => {
                     </Content>
                 ) : (
                     <>
-                        <Content className='bg-white p-2'>
+                        <Content className='bg-white p-3 shadow-brandShadow rounded-md'>
                             <Table dataSource={languageData?.data} columns={columns} pagination={false} />
                             {languageData?.count >= pageLimit ? (
                                 <Content className=' grid justify-items-end'>
@@ -274,9 +282,10 @@ const Language = () => {
                                         handlePageNumberChange={handlePageNumberChange}
                                         showSizeChanger={true}
                                         showTotal={true}
+                                        showQuickJumper={true}
                                     />
                                 </Content>
-                            ) : null}
+                             ) : null} 
                         </Content>
                         {languageData &&
                         languageData?.data.length === 1 &&
