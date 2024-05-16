@@ -17,7 +17,7 @@ const PaymentType = () => {
 
     const paymentTypeColumns = [
         {
-            title: `${t('labels:payment_types')}`,
+            title: `${t('labels:payment_type')}`,
             dataIndex: 'name',
             key: 'name',
             width: '40%',
@@ -91,7 +91,7 @@ const PaymentType = () => {
                 title={
                     <Content>
                         <Title level={3} className='!font-normal'>
-                            {t('labels:payment_type')}
+                            {t('labels:payment')}
                         </Title>
                     </Content>
                 }
