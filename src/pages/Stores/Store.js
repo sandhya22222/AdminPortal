@@ -445,22 +445,24 @@ const Stores = () => {
             width: '12%',
             render: (text, record) => {
                 return (
-                    <Content className='whitespace-nowrap flex align-middle'>
+                    <Content className='whitespace-nowrap flex align-middle justify-center'>
                         {hideAddStoreButton ? (
-                            <Link
-                                to={{
-                                    pathname: 'storesetting',
-                                    search: `?id=${record.id}&page=${
-                                        searchParams.get('page') ? searchParams.get('page') : 1
-                                    }&limit=${
-                                        searchParams.get('limit') ? searchParams.get('limit') : pageLimit
-                                    }&storeId=${record.storeId}`,
-                                }}
-                                style={{ textDecoration: 'none' }}
-                                // className=" pl-[10px] font-semibold app-table-data-title"
-                            >
-                                <Tooltip title={t('labels:view_details')}>{t('labels:view_details')}</Tooltip>
-                            </Link>
+                            <Button type='text' className='app-btn-text'>
+                                <Link
+                                    to={{
+                                        pathname: 'storesetting',
+                                        search: `?id=${record.id}&page=${
+                                            searchParams.get('page') ? searchParams.get('page') : 1
+                                        }&limit=${
+                                            searchParams.get('limit') ? searchParams.get('limit') : pageLimit
+                                        }&storeId=${record.storeId}`,
+                                    }}
+                                    style={{ textDecoration: 'none' }}
+                                    // className=" pl-[10px] font-semibold app-table-data-title"
+                                >
+                                    <Tooltip title={t('labels:view_details').length>20?t('labels:view_details'):undefined}>{t('labels:view_details')}</Tooltip>
+                                </Link>
+                            </Button>
                         ) : (
                             <Button
                                 className={`app-btn-icon flex align-items-center justify-center ${
@@ -1277,6 +1279,7 @@ const Stores = () => {
                                                 {t('labels:save')}
                                             </Button>
                                             <Button
+                                                className='app-btn-secondary'
                                                 onClick={() => {
                                                     setCurrentTab(1)
                                                     sessionStorage.setItem('currentStoretab', 1)
