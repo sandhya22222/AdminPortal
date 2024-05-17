@@ -214,11 +214,11 @@ function LanguageHeaderAction({ languageId, languageCode, languageStatus, langua
     }
 
     return (
-        <Content className='!flex gap-3 items-center'>
+        <Content className='!flex items-center'>
             {/* This content is related to language status */}
             <Content className=''>
                 <Space direction='horizontal'>
-                    <Typography className='pr-1 input-label-color font-semibold text-base'>
+                    <Typography className='pr- input-label-color font-semibold text-base'>
                         {' '}
                         {t('labels:status_label')}{' '}
                     </Typography>

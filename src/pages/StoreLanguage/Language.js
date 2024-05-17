@@ -51,10 +51,7 @@ const Language = () => {
             render: (text, record) => {
                 return (
                     <Content className='inline-block'>
-                        <Tooltip
-                            title={record.language}
-                            overlayStyle={{ zIndex: 1 }}
-                            placement={'bottom'}>
+                        <Tooltip title={record.language} overlayStyle={{ zIndex: 1 }} placement={'bottom'}>
                             <Text
                                 className={`text-brandGray1 mx-1 ${record.is_default ? '!max-w-[50px]' : '!max-w-[150px]'} `}
                                 ellipsis={true}>
@@ -153,8 +150,10 @@ const Language = () => {
                         onClick={() => {
                             findAllSupportDocumentTemplateDownload(2, record.language_code)
                         }}>
-                        <Image src={DownloadIcon} className='!text-xs !w-[10px]  !items-center' preview={false} />
-                        <Text className='text-brandPrimaryColor text-sm font-medium leading-[22px]'>{t('labels:download_document')}</Text>
+                        <Image src={DownloadIcon} className='!text-xs  !items-center' preview={false} />
+                        <Text className='text-brandPrimaryColor text-sm font-medium leading-[22px]'>
+                            {t('labels:download_document')}
+                        </Text>
                     </Button>
                 )
             },
@@ -285,7 +284,7 @@ const Language = () => {
                                         showQuickJumper={true}
                                     />
                                 </Content>
-                             ) : null} 
+                            ) : null}
                         </Content>
                         {languageData &&
                         languageData?.data.length === 1 &&

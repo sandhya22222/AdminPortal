@@ -405,7 +405,9 @@ const Theme = ({ id, getImageData }) => {
                         <Content className=''>
                             <Row className='!mb-4'>
                                 <Content className='flex justify-between w-full'>
-                                    <label className='text-lg  font-semibold'>{t('labels:themes')}</label>
+                                    <label className='text-lg  font-semibold text-regal-blue'>
+                                        {t('labels:themes')}
+                                    </label>
                                     <div className='flex gap-3'>
                                         <Button
                                             className='app-btn-secondary !text-end'

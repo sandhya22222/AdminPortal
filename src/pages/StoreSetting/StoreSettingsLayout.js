@@ -303,7 +303,7 @@ const StoreSettingsLayout = () => {
             <HeaderForTitle
                 title={
                     <Content className='flex !w-[80vw]'>
-                        <Content className='!w-[80%] flex gap-2 mb-3'>
+                        <Content className='!w-[75%] flex gap-2 mb-3'>
                             <div className='!font-semibold  text-2xl mt-2 '>{storeName}</div>
                             <div className='mt-3'>
                                 <Tag color='success' className=''>
@@ -355,7 +355,9 @@ const StoreSettingsLayout = () => {
                                 ) : (
                                     <Spin tip='Please wait!' size='large' spinning={isUpLoading}>
                                         <Content className='bg-white p-3 !rounded-md border my-4'>
-                                            <label className='text-lg mb-3 font-semibold'>{t('labels:media')}</label>
+                                            <label className='text-lg mb-3 font-semibold text-regal-blue'>
+                                                {t('labels:media')}
+                                            </label>
                                             <Row class='flex space-x-4'>
                                                 <Col>
                                                     <StoreImages

@@ -375,7 +375,7 @@ const Stores = () => {
                         <Row>
                             <Tooltip title={record.name} placement='bottom'>
                                 <Text
-                                    className='max-w-xs'
+                                    className='max-w-xs text-brandGray1'
                                     ellipsis={{ tooltip: record.name }}
                                     disabled={record.status === 3 ? true : false}>
                                     {record.name}
@@ -431,7 +431,7 @@ const Stores = () => {
             width: '30%',
             render: (text, record) => {
                 return (
-                    <Text disabled={record.status === 3 ? true : false}>
+                    <Text disabled={record.status === 3 ? true : false} className='text-brandGray1'>
                         {new Date(record.created_on).toLocaleString()}
                     </Text>
                 )
@@ -459,7 +459,12 @@ const Stores = () => {
                                     style={{ textDecoration: 'none' }}
                                     // className=" pl-[10px] font-semibold app-table-data-title"
                                 >
-                                    <Tooltip title={t('labels:view_details').length>20?t('labels:view_details'):undefined}>{t('labels:view_details')}</Tooltip>
+                                    <Tooltip
+                                        title={
+                                            t('labels:view_details').length > 20 ? t('labels:view_details') : undefined
+                                        }>
+                                        {t('labels:view_details')}
+                                    </Tooltip>
                                 </Link>
                             </Button>
                         ) : (

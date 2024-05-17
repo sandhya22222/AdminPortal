@@ -6,6 +6,7 @@ import HeaderForTitle from '../../components/header/HeaderForTitle'
 import LanguageDocUpload from './LanguageDocUpload'
 import LanguageForm from './LanguageForm'
 import LanguageHeaderAction from './LanguageHeaderAction'
+import util from '../../util/common'
 function LanguageSettings() {
     const navigate = useNavigate()
     const { t } = useTranslation()
@@ -46,16 +47,39 @@ function LanguageSettings() {
                         //  * If @languageName is there, which means it is a edit page so it will display the languageName for the edit page.
                         //  * If @languageName is undefined or null means it is a add page.So it will show "Add a language"
                         //  */}
-                        <Tooltip
-                            title={languageName}
-                            overlayStyle={{ zIndex: 11, position: 'fixed' }}
-                            placement='bottom'>
-                            <Title level={3} className='!font-normal max-w-[300px] mb-3 mt-2' ellipsis={true}>
-                                {languageName && languageName !== undefined && languageName !== null
-                                    ? languageName
-                                    : `${t('labels:add_language')}`}
-                            </Title>
-                        </Tooltip>
+                        <Content className='!w-[100%] flex'>
+                            <div
+                                className={
+                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                        ? '!w-[27%]'
+                                        : '!w-[35%]'
+                                }>
+                                <Tooltip
+                                    title={languageName}
+                                    overlayStyle={{ zIndex: 11, position: 'fixed' }}
+                                    placement='bottom'>
+                                    <Title level={3} className='!font-normal max-w-[300px] mb-3 mt-2' ellipsis={true}>
+                                        {languageName && languageName !== undefined && languageName !== null
+                                            ? languageName
+                                            : `${t('labels:add_language')}`}
+                                    </Title>
+                                </Tooltip>
+                            </div>
+                            <div
+                                className={
+                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                        ? '!w-[73%] mt-[7px]'
+                                        : '!w-[65%] mt-[7px]'
+                                }>
+                                {languageId && languageCode && languageStatus !== null ? (
+                                    <LanguageHeaderAction
+                                        languageId={languageId}
+                                        languageCode={languageCode}
+                                        languageStatus={languageStatus}
+                                        languageDefault={languageDefault}></LanguageHeaderAction>
+                                ) : null}
+                            </div>
+                        </Content>
                         // {/**
                         //  * Here below we can render the right side part of the header which renders the status and to delete the language
                         //  * @languageId -> It is the ID of the language.
@@ -64,15 +88,15 @@ function LanguageSettings() {
                         //  */}
                         //  </Content>
                     }
-                    titleContent={
-                        languageId && languageCode && languageStatus !== null ? (
-                            <LanguageHeaderAction
-                                languageId={languageId}
-                                languageCode={languageCode}
-                                languageStatus={languageStatus}
-                                languageDefault={languageDefault}></LanguageHeaderAction>
-                        ) : null
-                    }
+                    // titleContent={
+                    // languageId && languageCode && languageStatus !== null ? (
+                    //     <LanguageHeaderAction
+                    //         languageId={languageId}
+                    //         languageCode={languageCode}
+                    //         languageStatus={languageStatus}
+                    //         languageDefault={languageDefault}></LanguageHeaderAction>
+                    // ) : null
+                    // }
                     backNavigationPath={`/dashboard/language`}
                     showArrowIcon={true}
                     showButtons={false}
