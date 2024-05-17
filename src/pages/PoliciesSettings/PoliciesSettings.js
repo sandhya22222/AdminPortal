@@ -116,7 +116,7 @@ const PoliciesSettings = ({ storeName }) => {
                         {t('labels:preview_and_customise')}
                     </Button>
                     <Button
-                        className='app-btn-primary '
+                        className='app-btn-primary'
                         onClick={handelAddNewPolicy}
                         disabled={userConsentStatus !== 'success'}>
                         {t('labels:add_new_policy')}
