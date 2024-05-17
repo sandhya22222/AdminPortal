@@ -17,7 +17,7 @@ const PaymentType = () => {
 
     const paymentTypeColumns = [
         {
-            title: `${t('labels:payment_type')}`,
+            title: <div className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:payment_type')}</div>,
             dataIndex: 'name',
             key: 'name',
             width: '40%',
@@ -27,12 +27,12 @@ const PaymentType = () => {
     const data = [
         {
             key: 1,
-            name: `${t('labels:cash_on_delivery')}`,
+            name: <div className='text-brandGray1'>{t('labels:cash_on_delivery')}</div>,
             is_payment_gateway: false,
         },
         {
             key: 2,
-            name: `${t('labels:online_payment')}`,
+            name: <div className='text-brandGray1'>{t('labels:online_payment')}</div>,
             is_payment_gateway: true,
             children: [
                 // {
@@ -42,12 +42,12 @@ const PaymentType = () => {
                 // },
                 {
                     key: 22,
-                    name: `${t('labels:stripe')}`,
+                    name: <div className='text-brandGray1'>{t('labels:stripe')}</div>,
                     is_payment_gateway: true,
                 },
                 {
                     key: 23,
-                    name: `${t('labels:cash_free')}`,
+                    name: <div className='text-brandGray1'>{t('labels:cash_free')}</div>,
                     is_payment_gateway: true,
                 },
             ],
@@ -59,7 +59,7 @@ const PaymentType = () => {
             <HeaderForTitle
                 title={
                     <Content>
-                        <div className='!font-semibold text-2xl mb-4'>{t('labels:payment')}</div>
+                        <div className='!font-semibold text-2xl mb-4 text-regal-blue'>{t('labels:payment')}</div>
                     </Content>
                 }
             />

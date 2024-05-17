@@ -92,27 +92,27 @@ const UserAccessControl = () => {
     //!user table columns
     const usersColumns = [
         {
-            title: <Content>{t('labels:username')}</Content>,
+            title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:username')}</Text>,
             dataIndex: 'userName',
             key: 'userName',
             ellipsis: true,
             width: '17%',
             render: (text, record) => {
-                return <Content>{record.username}</Content>
+                return <Content className='text-brandGray1'>{record.username}</Content>
             },
         },
 
         {
-            title: <Content>{t('labels:email')}</Content>,
+            title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:email')}</Text>,
             dataIndex: 'emailId',
             key: 'emailId',
             width: '35%',
             render: (text, record) => {
-                return <Content>{record.email}</Content>
+                return <Content className='text-brandGray1'>{record.email}</Content>
             },
         },
         {
-            title: <Content>{t('labels:status')}</Content>,
+            title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:status')}</Text>,
             dataIndex: 'status',
             key: 'status',
             width: '10%',
@@ -135,21 +135,21 @@ const UserAccessControl = () => {
             },
         },
         {
-            title: <Content>{t('labels:role')}</Content>,
+            title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:role')}</Text>,
             dataIndex: 'role',
             key: 'role',
             width: '15%',
             ellipsis: true,
             render: (text, record) => {
                 return (
-                    <Content>
+                    <Content className='text-brandGray1'>
                         {record.groups[0]?.name ? String(record.groups[0]?.name).replaceAll('-', ' ') : 'NA'}
                     </Content>
                 )
             },
         },
         {
-            title: `${t('labels:action')}`,
+            title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:action')}</Text>,
             dataIndex: '',
             key: '',
             width: '15%',
@@ -163,7 +163,7 @@ const UserAccessControl = () => {
                             </div>
                         ) : (
                             <div
-                                className='text-[15px] text-[#FB8500] hover:text-[#FB8500] font-medium ml-2 cursor-pointer'
+                                className='text-[15px] text-dangerColor hover:text-dangerColor font-medium ml-2 cursor-pointer'
                                 onClick={() => openUserDeleteModal(record.username)}>
                                 {t('labels:delete')}
                             </div>
@@ -197,13 +197,13 @@ const UserAccessControl = () => {
     //! group table column
     const groupColumns = [
         {
-            title: <Content>{t('labels:role_name')}</Content>,
+            title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:role_name')}</Text>,
             dataIndex: 'name',
             key: 'name',
             ellipsis: true,
 
             render: (text, record) => {
-                return <Content>{String(record.name).replaceAll('-', ' ')}</Content>
+                return <Content className='text-brandGray1'>{String(record.name).replaceAll('-', ' ')}</Content>
             },
         },
     ]
@@ -407,7 +407,7 @@ const UserAccessControl = () => {
                     </Content>
                 ) : (
                     <Content className=' bg-white rounded-md shadow-brandShadow p-3'>
-                        <div className='mx-1 mb-3 text-base font-semibold'>
+                        <div className='mx-1 mb-3 text-base font-semibold text-regal-blue'>
                             {parseInt(searchParams.get('tab')) === 0 ? `${t('labels:users')}` : `${t('labels:roles')}`}
                         </div>
                         {parseInt(searchParams.get('tab')) === 1 ? (

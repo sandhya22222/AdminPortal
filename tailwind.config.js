@@ -13,6 +13,7 @@ module.exports = {
                 brandGray: 'var(--mp-text-gray)',
                 brandPrimaryColor: 'var(--mp-brand-color)',
                 'regal-orange': '#FFA229',
+                dangerColor : '#FF4D4F'
             },
         },
     },

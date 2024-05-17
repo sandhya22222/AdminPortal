@@ -159,7 +159,7 @@ const Currency = ({ storeUUId }) => {
             ) : (
                 <Spin tip='Please wait!' size='large' spinning={isCurrencyLoading}>
                     <Content className='bg-white  p-3 rounded-lg border my-4'>
-                        <label className='text-lg  font-semibold mb-4'>{t('labels:currency')}</label>
+                        <label className='text-lg  font-semibold mb-4 text-regal-blue'>{t('labels:currency')}</label>
                         <Content>
                             <Col span={8}>
                                 <label className='text-[14px] mb-2 ml-1 input-label-color'>

@@ -36,7 +36,9 @@ const ListCurrency = () => {
     //! columns for currency
     const listCurrencyColumns = [
         {
-            title: `${t('labels:currency_name')}`,
+            title: (
+                <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:currency_name')}</Text>
+            ),
             dataIndex: 'currencyName',
             key: 'currencyName',
             width: '20%',
@@ -45,7 +47,7 @@ const ListCurrency = () => {
                 return (
                     <Content className='inline-block'>
                         <Text
-                            className={`mx-1
+                            className={`mx-1 text-brandGray1
                    ${record.is_default === true ? '!max-w-[95px]' : '!max-w-[150px]'} `}
                             ellipsis={{ tooltip: record.currency_name }}>
                             {record.currency_name}
@@ -65,7 +67,7 @@ const ListCurrency = () => {
             },
         },
         {
-            title: `${t('labels:code')}`,
+            title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:code')}</Text>,
             dataIndex: 'currency_code',
             key: 'currency_code',
             width: '8%',
@@ -73,7 +75,7 @@ const ListCurrency = () => {
                 return (
                     <>
                         <Tooltip title={record.iso_currency_code}>
-                            <Text className='max-w-xs' ellipsis={{ tooltip: record.iso_currency_code }}>
+                            <Text className='max-w-xs text-brandGray1' ellipsis={{ tooltip: record.iso_currency_code }}>
                                 {record.iso_currency_code}
                             </Text>
                         </Tooltip>
@@ -82,53 +84,61 @@ const ListCurrency = () => {
             },
         },
         {
-            title: `${t('labels:conversation')}`,
+            title: (
+                <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:conversation')}</Text>
+            ),
             dataIndex: 'conversation',
             key: 'conversation',
             ellipsis: true,
             width: '12%',
             render: (text, record) => {
-                return <>{record.unit_conversion}</>
+                return <Text className='text-brandGray1'>{record.unit_conversion}</Text>
             },
         },
         {
-            title: `${t('labels:unit_price_name')}`,
+            title: (
+                <Text className='text-regal-blue text-sm font-medium leading-[22px]'>
+                    {t('labels:unit_price_name')}
+                </Text>
+            ),
             dataIndex: 'unitPriceName',
             key: 'unitPriceName',
             width: '14%',
             render: (text, record) => {
-                return <>{record.unit_price_name}</>
+                return <Text className='text-brandGray1'>{record.unit_price_name}</Text>
             },
         },
         {
-            title: `${t('labels:min_amount')}`,
+            title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:min_amount')}</Text>,
             dataIndex: 'minAmount',
             key: 'minAmount',
             width: '10%',
             render: (text, record) => {
-                return <>{record.minimum_amount}</>
+                return <Text className='text-brandGray1'>{record.minimum_amount}</Text>
             },
         },
         {
-            title: `${t('labels:symbol')}`,
+            title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:symbol')}</Text>,
             dataIndex: 'symbol',
             key: 'symbol',
             width: '9%',
             render: (text, record) => {
-                return <>{record.symbol}</>
+                return <Text className='text-brandGray1'>{record.symbol}</Text>
             },
         },
         {
-            title: `${t('labels:no_of_decimals')}`,
+            title: (
+                <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:no_of_decimals')}</Text>
+            ),
             dataIndex: 'noOfDecimals',
             key: 'noOfDecimals',
             width: '12%',
             render: (text, record) => {
-                return <>{record.no_of_decimal}</>
+                return <Text className='text-brandGray1'>{record.no_of_decimal}</Text>
             },
         },
         {
-            title: `${t('labels:action')}`,
+            title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:action')}</Text>,
             dataIndex: '',
             key: '',
             width: '12%',
@@ -189,7 +199,7 @@ const ListCurrency = () => {
                     className=''
                     title={
                         <Content className=''>
-                            <div className='!font-semibold text-2xl mb-4'>{t('labels:currency')}</div>
+                            <div className='!font-semibold text-2xl mb-4 text-regal-blue'>{t('labels:currency')}</div>
                         </Content>
                     }
                     titleContent={<Content className=' !flex items-center !justify-end gap-3'></Content>}

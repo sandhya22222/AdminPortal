@@ -91,7 +91,7 @@
     color: #023047;
 }
 .ant-pagination .ant-pagination-options-quick-jumper input:hover{
-    border-color: #023047;
+    border-color: var(--mp-brand-color);
 }
 .input-label-color {
     color: var(--mp-input-field-label-color) !important;
