@@ -163,7 +163,7 @@ const UserAccessControl = () => {
                             </div>
                         ) : (
                             <div
-                                className='text-[15px] text-[#FB8500] hover:text-[#FB8500] font-medium ml-2 cursor-pointer'
+                                className='text-[15px] text-dangerColor hover:text-dangerColor font-medium ml-2 cursor-pointer'
                                 onClick={() => openUserDeleteModal(record.username)}>
                                 {t('labels:delete')}
                             </div>
