@@ -90,7 +90,7 @@ const ListCurrency = () => {
             dataIndex: 'conversation',
             key: 'conversation',
             ellipsis: true,
-            width: '12%',
+            width: '13%',
             render: (text, record) => {
                 return <Text className='text-brandGray1'>{record.unit_conversion}</Text>
             },
