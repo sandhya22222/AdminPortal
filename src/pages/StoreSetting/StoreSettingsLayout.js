@@ -13,6 +13,7 @@ import StoreRestrictions from './StoreRestrictions'
 import Currency from './Currency'
 import PoliciesSettings from '../PoliciesSettings/PoliciesSettings'
 import Theme from './Theme'
+import StoreOverview from './StoreOverview'
 const { Content } = Layout
 const { Text } = Typography
 
@@ -28,6 +29,7 @@ const StoreSettingsLayout = () => {
     const id = new URLSearchParams(search).get('id')
     const storeIdFromUrl = new URLSearchParams(search).get('storeId')
     const mainTab = new URLSearchParams(search).get('tab')
+    const realmName = new URLSearchParams(search).get('rmn')
     const [searchParams, setSearchParams] = useSearchParams()
     const [changeSwitchStatus, setChangeSwitchStatus] = useState()
     const [storeData, setStoreData] = useState()
@@ -46,6 +48,7 @@ const StoreSettingsLayout = () => {
     const permissionValue = util.getPermissionData() || []
 
     const STORE_SETTINGS_TABS_OPTIONS = {
+        OVERVIEW: 'overview',
         MEDIA: 'media',
         STORE_RESTRICTIONS: 'store_restrictions',
         CURRENCY: 'currency',
@@ -55,29 +58,42 @@ const StoreSettingsLayout = () => {
 
     const storeSettingsTabData = [
         {
+            key: STORE_SETTINGS_TABS_OPTIONS.OVERVIEW,
+            label: `${t('labels:overview')}`,
+            value: 0,
+        },
+        {
             key: STORE_SETTINGS_TABS_OPTIONS.MEDIA,
             label: `${t('labels:media')}`,
-            value: 0,
+            value: 1,
         },
         {
             key: STORE_SETTINGS_TABS_OPTIONS.STORE_RESTRICTIONS,
             label: `${t('labels:store_restrictions')}`,
-            value: 1,
+            value: 2,
         },
         {
             key: STORE_SETTINGS_TABS_OPTIONS.CURRENCY,
             label: `${t('labels:currency')}`,
-            value: 2,
+            value: 3,
         },
         {
             key: STORE_SETTINGS_TABS_OPTIONS.THEME,
             label: `${t('labels:themes')}`,
-            value: 3,
+            value: 4,
         },
         {
             key: STORE_SETTINGS_TABS_OPTIONS.POLICIES,
             label: `${t('labels:policies')}`,
-            value: 4,
+            value: 5,
+        },
+    ]
+
+    const hideStoreSettingsTabData = [
+        {
+            key: STORE_SETTINGS_TABS_OPTIONS.STORE_RESTRICTIONS,
+            label: `${t('labels:store_restrictions')}`,
+            value: 0,
         },
     ]
     //! get call of store API
@@ -248,6 +264,7 @@ const StoreSettingsLayout = () => {
             page: searchParams.get('page') ? searchParams.get('page') : 1,
             limit: searchParams.get('limit') ? searchParams.get('limit') : pageLimit,
             storeId: storeIdFromUrl,
+            rmn: realmName,
             tab: tabKey,
         })
     }
@@ -293,10 +310,26 @@ const StoreSettingsLayout = () => {
                 page: searchParams.get('page') ? searchParams.get('page') : 1,
                 limit: searchParams.get('limit') ? searchParams.get('limit') : pageLimit,
                 storeId: storeIdFromUrl,
-                tab: STORE_SETTINGS_TABS_OPTIONS.MEDIA,
+                rmn: realmName,
+                tab: STORE_SETTINGS_TABS_OPTIONS.OVERVIEW,
             })
         }
     }, [searchParams, setSearchParams])
+
+    useEffect(() => {
+        if (!searchParams.get('tab')) {
+            if (permissionValue?.includes('UI-product-admin')) {
+                setSearchParams({
+                    id: id,
+                    page: searchParams.get('page') ? searchParams.get('page') : 1,
+                    limit: searchParams.get('limit') ? searchParams.get('limit') : pageLimit,
+                    storeId: storeIdFromUrl,
+                    rmn: realmName,
+                    tab: STORE_SETTINGS_TABS_OPTIONS.STORE_RESTRICTIONS,
+                })
+            }
+        }
+    }, [searchParams, setSearchParams, hideActionButton, permissionValue])
 
     return (
         <Content>
@@ -337,17 +370,32 @@ const StoreSettingsLayout = () => {
             <div className='!px-6 !pb-6  !mt-[10.6rem]'>
                 <div className=' w-full bg-white rounded shadow-brandShadow flex  justify-start'>
                     <div className=' py-4 h-full '>
-                        <Tabs
-                            items={storeSettingsTabData}
-                            tabPosition={'left'}
-                            defaultActiveKey={STORE_SETTINGS_TABS_OPTIONS.MEDIA}
-                            activeKey={searchParams.get('tab') || STORE_SETTINGS_TABS_OPTIONS.MEDIA}
-                            onTabClick={handelMyProfileTabChange}
-                            type='line'
-                            className=' !h-full '
-                        />
+                        {hideActionButton ? (
+                            <Tabs
+                                items={hideStoreSettingsTabData}
+                                tabPosition={'left'}
+                                defaultActiveKey={STORE_SETTINGS_TABS_OPTIONS.STORE_RESTRICTIONS}
+                                activeKey={searchParams.get('tab') || STORE_SETTINGS_TABS_OPTIONS.STORE_RESTRICTIONS}
+                                onTabClick={handelMyProfileTabChange}
+                                type='line'
+                                className=' !h-full '
+                            />
+                        ) : (
+                            <Tabs
+                                items={storeSettingsTabData}
+                                tabPosition={'left'}
+                                defaultActiveKey={STORE_SETTINGS_TABS_OPTIONS.OVERVIEW}
+                                activeKey={searchParams.get('tab') || STORE_SETTINGS_TABS_OPTIONS.OVERVIEW}
+                                onTabClick={handelMyProfileTabChange}
+                                type='line'
+                                className=' !h-full '
+                            />
+                        )}
                     </div>
                     <div className='w-[80%]'>
+                        {searchParams.get('tab') === STORE_SETTINGS_TABS_OPTIONS.OVERVIEW && (
+                            <>{hideActionButton ? '' : <StoreOverview realmName={realmName} />}</>
+                        )}
                         {searchParams.get('tab') === STORE_SETTINGS_TABS_OPTIONS.MEDIA && (
                             <>
                                 {disableMediaButton ? (

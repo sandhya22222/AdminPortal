@@ -482,7 +482,7 @@ const Stores = () => {
                                                 searchParams.get('page') ? searchParams.get('page') : 1
                                             }&limit=${
                                                 searchParams.get('limit') ? searchParams.get('limit') : pageLimit
-                                            }&storeId=${record.storeId}`,
+                                            }&storeId=${record.storeId}&rmn=${record.realmName}`,
                                         }}
                                         className=' !no-underline'>
                                         {/* <Tooltip
@@ -518,11 +518,13 @@ const Stores = () => {
         filteredData &&
             filteredData.length > 0 &&
             filteredData.map((element, index) => {
+                console.log('element', element)
                 var storeActualId = element.id
                 var storeId = element.store_uuid
                 var storeName = element.name
                 var createdOn = element.created_on
                 var storeStatus = element.status
+                var realmName = element.realmname
                 tempArray &&
                     tempArray.push({
                         key: index,
@@ -531,6 +533,7 @@ const Stores = () => {
                         created_on: createdOn,
                         status: storeStatus,
                         storeId: storeActualId,
+                        realmName: realmName,
                     })
             })
         setSelectedTabTableContent(tempArray)
@@ -1362,6 +1365,7 @@ const Stores = () => {
                                         handlePageNumberChange={handlePageNumberChange}
                                         showSizeChanger={true}
                                         showTotal={true}
+                                        showQuickJumper={true}
                                     />
                                 ) : null}
                             </Content>

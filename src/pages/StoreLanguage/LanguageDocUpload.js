@@ -233,7 +233,7 @@ function LanguageDocUpload({ langCode }) {
                         </Content>
 
                         <Divider className='my-0 ' />
-                        <p className='!p-4 !pb-0 input-label-color'>{t('messages:frontend_document')}</p>
+                        <p className='!p-4 !pb-0 text-brandGray2'>{t('messages:frontend_document')}</p>
                         <Content className='flex p-3 gap-4'>
                             <Upload
                                 beforeUpload={() => {
@@ -287,7 +287,7 @@ function LanguageDocUpload({ langCode }) {
                         </Content>
                         <Divider className='my-0 ' />
 
-                        <p className='!p-4 !pb-0 input-label-color'>{t('messages:backend_document')}</p>
+                        <p className='!p-4 !pb-0 text-brandGray2'>{t('messages:backend_document')}</p>
                         <Content className='flex p-3 gap-4'>
                             <Upload
                                 beforeUpload={() => {
