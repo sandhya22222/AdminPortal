@@ -116,10 +116,10 @@ const PoliciesSettings = ({ storeName }) => {
                         {t('labels:preview_and_customise')}
                     </Button>
                     <Button
-                        className='app-btn-primary '
+                        className='app-btn-primary'
                         onClick={handelAddNewPolicy}
                         disabled={userConsentStatus !== 'success'}>
-                        {t('labels:add_new_policy')}
+                        <p className='max-h-min !mb-0'>{t('labels:add_new_policy')}</p>
                     </Button>
                 </div>
             </div>
