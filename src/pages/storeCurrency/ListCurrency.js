@@ -82,11 +82,11 @@ const ListCurrency = () => {
             },
         },
         {
-            title: `${t('labels:conversation')}`,
+            title: `${t('labels:unit_conversation')}`,
             dataIndex: 'conversation',
             key: 'conversation',
             ellipsis: true,
-            width: '12%',
+            width: '13%',
             render: (text, record) => {
                 return <>{record.unit_conversion}</>
             },
