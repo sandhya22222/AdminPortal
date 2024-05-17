@@ -14,7 +14,7 @@
     border-color: var(--mp-primary-border-color) !important;
     border-radius: 6px !important;
     color: var(--primary-button-text-color) !important;
-    height: unset !important;
+    height: min-content !important;
 }
 .app-btn-primary:hover {
     background-color: var(--mp-primary-color-h) !important;
@@ -30,7 +30,7 @@
     border-color: var(--mp-primary-border-color-d);
     border-radius: 6px !important;
     color: var(--mp-primary-text-color-d) !important;
-    height: unset !important;
+    height: min-content !important;
 }
 
 .app-btn-secondary {
