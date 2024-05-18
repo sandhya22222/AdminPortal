@@ -273,5 +273,7 @@
     "delete_policy": "Delete Policy",
     "proceed": "Proceed",
     "know_more": "Know more",
-    "payment": "Payment"
+    "payment": "Payment",
+    "enter_policy_title":  "Enter policy title here",
+    "enter_policy_description": "Enter policy text here"
 }

@@ -10,6 +10,7 @@ import useUpdateVersionDisplayname from '../hooks/useUpdateVersionDisplayname'
 import useGetStoreLanguage from '../hooks/useGetStoreLanguage'
 import { useSelector } from 'react-redux'
 
+const CONSENT_NAME_LENGTH = 100
 const Link = Quill.import('formats/link')
 Link.sanitize = function (url) {
     const trimmedURL = url?.trim()
@@ -410,9 +411,15 @@ function TranslatePolicy({
                                         </label>
                                         <div className=' flex items-center gap-x-5 max-w-[40%] w-full pb-3'>
                                             <Input
-                                                placeholder={'Enter policy title here'}
+                                                placeholder={t('labels:enter_policy_title')}
                                                 onChange={(e) => consentNameHandler(e.target?.value)}
                                                 value={selectedConsentDisplayNameData?.consentTitleDisplayName}
+                                                maxLength={CONSENT_NAME_LENGTH}
+                                                onBlur={(e) => {
+                                                    if (e.target?.value) {
+                                                        consentNameHandler(e.target.value.trim().replace(/\s+/g, ' '))
+                                                    }
+                                                }}
                                             />
                                         </div>
                                         <label className='text-[14px] mb-3 input-label-color'>
@@ -428,7 +435,7 @@ function TranslatePolicy({
                                                 onChange={consentDescriptionHandler}
                                                 modules={modules}
                                                 formats={formats}
-                                                placeholder={'Enter policy text here'}
+                                                placeholder={t('labels:enter_policy_description')}
                                                 bounds={`[data-text-editor=versiontranslate]`}
                                             />
                                         </div>

@@ -48,6 +48,7 @@ function VersionHistory({ userConsentId, refetchUserConsent, setVersionHistory }
                     versionData.push({
                         id: data.id,
                         version: data.version_number,
+                        created_on: data.created_on,
                     })
                 })
             setVersionTabData(versionData)
@@ -85,7 +86,7 @@ function VersionHistory({ userConsentId, refetchUserConsent, setVersionHistory }
                                                 }}>
                                                 {data?.version === 1 ? 'V1.0' : 'V' + data?.version}
                                             </div>
-                                            <div>{getDate(userConsentVersionDetails?.created_on)}</div>
+                                            <div>{getDate(data?.created_on)}</div>
                                         </div>
                                     }></Tabs.TabPane>
                             ))}
@@ -93,7 +94,9 @@ function VersionHistory({ userConsentId, refetchUserConsent, setVersionHistory }
                     </div>
                     <div>
                         <div className='flex items-center justify-between pb-3'>
-                            <Typography.Title level={5}>{userConsentVersionDetails?.consent_display_name}</Typography.Title>
+                            <Typography.Title level={5}>
+                                {userConsentVersionDetails?.consent_display_name}
+                            </Typography.Title>
                         </div>
                         <div>
                             <div className='!w-[700px] rounded border-[1px]'>
