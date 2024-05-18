@@ -121,7 +121,7 @@ const CreateUsers = () => {
             selectRole === undefined
         ) {
             count--
-            
+
             if (emailId === '') {
                 setInvalidEmailId(true)
             }
@@ -165,7 +165,7 @@ const CreateUsers = () => {
         setIsLoading(true)
         let dataObject = {}
         dataObject['firstname'] = firstName
-     
+
         dataObject['lastname'] = lastName
         dataObject['email'] = emailId
 
@@ -240,7 +240,7 @@ const CreateUsers = () => {
         setInvalidRole(false)
         setIsUserDetailsEditted(true)
     }
-    
+
 
     //useEffect to form the data for the role dropdown
     useEffect(() => {
@@ -436,9 +436,20 @@ const CreateUsers = () => {
                                                 }`}
                                                 value={emailId}
                                                 onChange={(e) => {
-                                                    setEmailId(e.target.value.toLowerCase())
-                                                    setInvalidEmailId(false)
-                                                    setIsUserDetailsEditted(true)
+                                                    if (
+                                                        validator.matches(
+                                                            e.target.value.trim(),
+                                                            /^[a-zA-Z0-9\s!@#$%^&*()_+\-=\[\]{};'`~:"\\|,.<>\/?]+$/
+                                                        )
+                                                    ) {
+                                                        setEmailId(e.target.value.toLowerCase())
+                                                        setInvalidEmailId(false)
+                                                        setIsUserDetailsEditted(true)
+                                                    } else if (e.target.value === '') {
+                                                        setEmailId(e.target.value.toLowerCase())
+                                                        setInvalidEmailId(false)
+                                                        setIsUserDetailsEditted(true)
+                                                    }
                                                 }}
                                                 onBlur={(e) => {
                                                     setEmailId(e.target.value.trim().replace(/\s+/g, ' '))
@@ -449,7 +460,7 @@ const CreateUsers = () => {
                                             />
                                         </Content>
                                     </Content>
-                                 
+
                                     <Content className='flex my-3'>
                                         
                                         <Content className=''>
