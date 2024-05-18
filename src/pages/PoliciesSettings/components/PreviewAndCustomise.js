@@ -85,6 +85,11 @@ const PreviewAndCustomise = ({ closeModal, refetchUserConsent, storeName, storeI
                 await UpdateConsentLead(
                     { body },
                     {
+                        onSuccess: (response) => {
+                            toast(response?.response_message, {
+                                type: 'success',
+                            })
+                        },
                         onError: (err) => {
                             MarketplaceToaster.showToast(err?.response)
                             // toast(err?.response?.data?.message || t('messages:error_updating_Leadin_line'), {
@@ -109,6 +114,11 @@ const PreviewAndCustomise = ({ closeModal, refetchUserConsent, storeName, storeI
                 await updateConsentsOrder(
                     { body },
                     {
+                        onSuccess: (response) => {
+                            toast(response?.response_message, {
+                                type: 'success',
+                            })
+                        },
                         onError: (err) => {
                             MarketplaceToaster.showToast(err?.response)
                             // toast(err?.response?.data?.message || t('messages:error_updating_consent_order'), {

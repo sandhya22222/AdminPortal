@@ -129,7 +129,7 @@ const PolicyCard = ({
         setTranslatePolicy(true)
     }
     const handelConsentNameChange = (name) => {
-        if (name?.length > CONSENT_NAME_LENGTH) return
+        // if (name?.length > CONSENT_NAME_LENGTH) return
         setConsentName(name)
     }
     const handelCancelPolicyName = () => {
@@ -270,8 +270,7 @@ const PolicyCard = ({
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap',
-                    }}
-                    >
+                    }}>
                     <Text
                         className=' !font-medium text-base !mb-0 '
                         ellipsis={{
@@ -288,7 +287,7 @@ const PolicyCard = ({
                 <div className='flex justify-end'>
                     <div className='flex items-center'>
                         <Dropdown
-                            className='w-[96px]'
+                            className='w-[96px] cursor-pointer'
                             disabled={!(policyStatus === 2)}
                             menu={{
                                 items: [
@@ -303,7 +302,10 @@ const PolicyCard = ({
                             placement='bottomRight'
                             arrow>
                             <Space>
-                                {consentDetails?.version_name || 'Version 1.0'}
+                                {'Version ' +
+                                    (consentDetails?.version_number === 1
+                                        ? '1.0'
+                                        : consentDetails?.version_number || '1.0') || 'Version 1.0'}
                                 <DownOutlined className={!(policyStatus === 2) ? '!text-[#857e7e40]' : ''} />
                             </Space>
                         </Dropdown>
@@ -353,6 +355,12 @@ const PolicyCard = ({
                                 placeholder={t('labels:untitled_policy')}
                                 autoFocus={policyStatus === 2}
                                 onChange={(e) => handelConsentNameChange(e.target?.value)}
+                                maxLength={CONSENT_NAME_LENGTH}
+                                onBlur={(e) => {
+                                    if (e.target?.value) {
+                                        handelConsentNameChange(e.target.value.trim().replace(/\s+/g, ' '))
+                                    }
+                                }}
                                 value={policyStatus === 2 ? consentDisplayName : consentName}
                             />
                         </div>
@@ -370,6 +378,7 @@ const PolicyCard = ({
                         onChange={(policyStatus === 1 || isNewPolicy) && handelDescriptionChange}
                         modules={modules}
                         formats={formats}
+                        placeholder={t('labels:enter_policy_description')}
                         bounds={`[data-text-editor=policyCard]`}
                     />
                 </div>
@@ -485,7 +494,7 @@ const PolicyCard = ({
                 cancelButtonText={t('labels:cancel')}
                 okCallback={() => handelPublishConsent()}
                 destroyOnClose={true}>
-                <div className='pt-4'>
+                <div className='pt-[6px]'>
                     <p>{t('messages:policy_confirmation_message')}</p>
                     <p>{t('messages:policy_confirmation_note')}</p>
                 </div>
