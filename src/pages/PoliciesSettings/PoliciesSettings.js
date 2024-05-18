@@ -46,14 +46,14 @@ const PoliciesSettings = ({ storeName }) => {
         setIsPolicyHistory(true)
     }
     const handelAddNewPolicy = () => {
-        if (userConsents?.count < 10) {
+        // if (userConsents?.count < 10) {
             setAddNewPolicy(true)
             setTimeout(() => {
                 newPolicyRef.current.scrollIntoView(false)
             }, [100])
-        } else {
-            setPolicyWarning(true)
-        }
+        // } else {
+            // setPolicyWarning(true)
+        // }
     }
     const onContactInfoChange = (e) => {
         if (contactInformation?.length > 0) {
