@@ -190,7 +190,7 @@ const Currency = ({ storeUUId }) => {
                                             ? 'text-left ml-2'
                                             : 'text-right mr-2 '
                                     }`}>
-                                    <p className='!text-gray-500 my-3 flex'>
+                                    <p className='!text-brandGray1 my-3 flex'>
                                         {t('labels:currency_code')}{' '}
                                         <span
                                             className={
@@ -201,7 +201,7 @@ const Currency = ({ storeUUId }) => {
                                             :
                                         </span>
                                     </p>
-                                    <p className='!text-gray-500 my-3 flex'>
+                                    <p className='!text-brandGray1 my-3 flex'>
                                         {t('labels:unit_conversation')}
                                         <span
                                             className={
@@ -212,7 +212,7 @@ const Currency = ({ storeUUId }) => {
                                             :
                                         </span>
                                     </p>
-                                    <p className='!text-gray-500 my-3 flex'>
+                                    <p className='!text-brandGray1  my-3 flex'>
                                         {t('labels:unit_price_name')}
                                         <span
                                             className={
@@ -223,7 +223,7 @@ const Currency = ({ storeUUId }) => {
                                             :
                                         </span>
                                     </p>
-                                    <p className='!text-gray-500 my-3 flex'>
+                                    <p className='text-brandGray1  my-3 flex'>
                                         {t('labels:min_amount')}
                                         <span
                                             className={
@@ -234,7 +234,7 @@ const Currency = ({ storeUUId }) => {
                                             :
                                         </span>
                                     </p>
-                                    <p className='!text-gray-500 my-3 flex'>
+                                    <p className='text-brandGray1  my-3 flex'>
                                         {t('labels:currency_symbol')}
                                         <span
                                             className={
@@ -245,7 +245,7 @@ const Currency = ({ storeUUId }) => {
                                             :
                                         </span>
                                     </p>
-                                    <p className='!text-gray-500 my-3 flex'>
+                                    <p className='text-brandGray1  my-3 flex'>
                                         {t('labels:no_of_decimals')}
                                         <span
                                             className={

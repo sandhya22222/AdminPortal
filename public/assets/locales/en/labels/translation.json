@@ -281,7 +281,11 @@
     "bonus": "Bonus",
     "themes": "Themes",
     "cash_free": "Cashfree",
-    "languages_note":"Add multiple languages that will reflect all across your portals",
+    "languages_note": "Add multiple languages that will reflect all across your portals",
     "know_more": "Know more",
-    "payment": "Payment"
+    "payment": "Payment",
+    "overview": "Overview",
+    "store_front_url":"Store Front URL",
+    "store_management_portal_url":"Store Management Portal URL",
+    "primary_user":"Primary User"
 }

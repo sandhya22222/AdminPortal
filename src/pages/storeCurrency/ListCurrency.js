@@ -226,6 +226,7 @@ const ListCurrency = () => {
                                     handlePageNumberChange={handleCurrencyPageNumberChange}
                                     showSizeChanger={true}
                                     showTotal={true}
+                                    showQuickJumper={true}
                                 />
                             </Content>
                         ) : null}

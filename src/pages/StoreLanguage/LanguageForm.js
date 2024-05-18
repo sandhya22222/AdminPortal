@@ -247,7 +247,7 @@ const LanguageForm = ({
                 <Content className=''>
                     <Col span={16} className=' m-3'>
                         <Content className=''>
-                            <label className='font-normal text-sm mb-2 ml-1 input-label-color'>
+                            <label className='font-normal text-sm mb-2 ml-1 text-brandGray2'>
                                 {t('labels:language')}
                             </label>
                             <span className='mandatory-symbol-color text-sm !text-center ml-1'>*</span>
@@ -282,7 +282,7 @@ const LanguageForm = ({
                     </Col>
                     <Col span={16} className=' mb-3 mx-3'>
                         <Content className=''>
-                            <label className='font-normal text-sm mb-2 ml-1 input-label-color'>
+                            <label className='font-normal text-sm mb-2 ml-1 text-brandGray2'>
                                 {t('labels:language_code')}
                             </label>
                             <span className='mandatory-symbol-color text-sm text-center ml-1'>*</span>
@@ -318,7 +318,7 @@ const LanguageForm = ({
                     </Col>
                     <Col className=' mb-3 mx-3'>
                         <Content className=''>
-                            <label className='font-normal text-sm block !mb-2 input-label-color'>
+                            <label className='font-normal text-sm block !mb-2 text-brandGray2'>
                                 {t('labels:script_direction')}
                             </label>
 
