@@ -55,7 +55,11 @@
     --mp-danger-primary-text-color: #ffffff;
     --mp-danger-primary-text-color-d: #d9d9d9;
     --mp-danger-primary-text-color-h: #ffffff;
-
+    --mp-delete-primary-text-color: #ff4d4f;
+    --mp-delete-primary-text-color-d: #d9d9d9;
+    --mp-delete-primary-text-color-h: #ff7875;
+    --mp-delete-primary-border-color-h: #ff4d4f;
+    
     --mp-danger-secondary-background-color: #ffffff;
     --mp-danger-secondary-background-color-d: #d9d9d9;
     --mp-danger-secondary-background-color-h: #ffffff;
