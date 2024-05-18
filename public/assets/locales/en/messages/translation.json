@@ -138,5 +138,13 @@
     "policy_change_warning_info": "You are about to cancel change made to '{{version}}' by doing this you will lose the unsaved date.",
     "policy_change_warning_message": "Are you sure you want to proceed?",
     "profile_note": "Access your user information and review policies in your comprehensive profile settings.",
-    "image_requirements": "Image Requirements"
+    "image_requirements": "Image Requirements",
+    "make_primary_account": "Make Another Account Primary First",
+    "primary_content": "You can't disable the primary account. To disable this one, choose another account and make it primary. Then you can come back and disable this account.",
+    "primary_content_info": "To switch primary account, click on another account and send it as primary instead.",
+    "primary_content_information": "Making user the primary will remove primary access from the current user.This means the current primary user will have standard access.",
+    "standard_user_info": "As a standard user, you cannot modify the primary account",
+    "non_primary_info": "This can be only edited by primary users",
+    "warning_heading": "Heads Up : Switching Primary Users",
+    "primary_status_modal_confirmation": "the primary user will remove primary access from the current user.This means the current primary user will have standard access."
 }

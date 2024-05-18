@@ -289,5 +289,7 @@
     "store_management_portal_url":"Store Management Portal URL",
     "primary_user":"Primary User",
     "enter_policy_title":  "Enter policy title here",
-    "enter_policy_description": "Enter policy text here"
+    "enter_policy_description": "Enter policy text here",
+    "making":"Making",
+    "primary_account":"Primary Account"
 }

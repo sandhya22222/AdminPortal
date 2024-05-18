@@ -1,5 +1,19 @@
 import React, { useState, useEffect } from 'react'
-import { Layout, Typography, Button, Input, Row, Col, Spin, Tooltip, Select, Switch, Skeleton } from 'antd'
+import {
+    Layout,
+    Typography,
+    Button,
+    Input,
+    Row,
+    Col,
+    Spin,
+    Tooltip,
+    Select,
+    Switch,
+    Skeleton,
+    Image,
+    Popover,
+} from 'antd'
 
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -8,7 +22,8 @@ import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import util from '../../util/common'
 import validator from 'validator'
-
+import { InfoIcon } from '../../constants/media'
+import StoreModal from '../../components/storeModal/StoreModal'
 //! Import CSS libraries
 
 const userAPI = process.env.REACT_APP_USERS_API
@@ -21,14 +36,19 @@ const nameMaxLength = process.env.REACT_APP_NAME_MAX_LENGTH
 const emailMaxLength = process.env.REACT_APP_EMAIL_MAX_LENGTH
 const usersAllAPI = process.env.REACT_APP_USERS_ALL_API
 const emailRegexPattern = process.env.REACT_APP_REGEX_PATTERN_EMAIL
+const updateUserPreferenceAPI = process.env.REACT_APP_UPDATE_OWNER_PREFERENCE
+const updateUserStatusAPI = process.env.REACT_APP_USER_STATUS_API
+const useInfoAPI = process.env.REACT_APP_USER_PROFILE_API
 
-const { Title } = Typography
 const { Content } = Layout
 
 const CreateUsers = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const { pathname } = useLocation()
+    const search = useLocation().search
+    const id = new URLSearchParams(search).get('id')
+    const defaultStatus = new URLSearchParams(search).get('default')
     const [isLoading, setIsLoading] = useState(false)
     const [pageAction, setPageAction] = useState()
     const [selectRole, setSelectRole] = useState()
@@ -50,7 +70,15 @@ const CreateUsers = () => {
     const [currentRole, setCurrentRole] = useState('')
     const [currentEmailId, setCurrentEmailId] = useState('')
     const [currentUser, setCurrentUser] = useState('')
-
+    const [isDefault, setIsDefault] = useState('')
+    const [showUserEnableDisableModal, setShowUserEnableDisableModal] = useState(false)
+    const [showDeleteUserModal, setShowDeleteUserModal] = useState(false)
+    const [deleteModalLoading, setDeleteModalLoading] = useState(false)
+    const [changeSwitchStatus, setChangeSwitchStatus] = useState()
+    const [userInfoName, setUserInfoName] = useState('')
+    const [primaryStatusModalOpen, setPrimaryStatusModalOpen] = useState(false)
+    const [userPrimaryStatus, setUserPrimaryStatus] = useState()
+    const [primaryStatusUpdateLoading, setPrimaryStatusUpdateLoading] = useState(false)
     //Get call of groups
     const findAllGroupLists = () => {
         MarketplaceServices.findAll(groupsAPI, { is_marketplace_role: true }, true)
@@ -61,6 +89,17 @@ const CreateUsers = () => {
             })
             .catch(function (error) {
                 console.log('grouplist get error call response-->', error)
+            })
+    }
+
+    const getCurrentUserDetails = () => {
+        MarketplaceServices.findAll(useInfoAPI, null, false)
+            .then((res) => {
+                console.log('get access token res', res?.data?.response_body)
+                setUserInfoName(res?.data?.response_body?.preferred_username)
+            })
+            .catch((err) => {
+                console.log('get access token err', err)
             })
     }
 
@@ -248,6 +287,10 @@ const CreateUsers = () => {
         setRoleSelectData(roleDropdownArray)
     }, [groupsServerData])
 
+    useEffect(() => {
+        getCurrentUserDetails()
+    }, [])
+
     //Get call of users
     const findAllUsersLists = (userId) => {
         setIsUserDetailFetching(true)
@@ -274,6 +317,7 @@ const CreateUsers = () => {
                         setCurrentRole(selectedUserDetails[0].groups[0].name)
                         setCurrentEmailId(selectedUserDetails[0].email)
                         setUserStatus(selectedUserDetails[0].enabled)
+                        setUserPrimaryStatus(selectedUserDetails[0]?.attributes?.is_default_owner[0])
                     }
                 }
             })
@@ -283,30 +327,247 @@ const CreateUsers = () => {
             })
     }
 
+    //Get call of users
+    const findUsersLists = (userInfoName) => {
+        MarketplaceServices.findAll(usersAllAPI, { username: userInfoName }, false)
+            .then(function (response) {
+                console.log('usersList get success call responses', response)
+                if (response?.data?.response_body?.users[0]?.attributes) {
+                    let userInfo = response?.data?.response_body?.users[0]?.attributes?.is_default_owner[0]
+                    console.log('userInfo', userInfo)
+                    setIsDefault(userInfo)
+                }
+            })
+            .catch(function (error) {
+                console.log('usersList get error call response-->', error)
+            })
+    }
+
+    //User enable modal open function
+    const openUserEnableDisableModal = (checked) => {
+        setShowUserEnableDisableModal(true)
+        setChangeSwitchStatus(checked)
+    }
+
+    // primary user Modal function
+    const openPrimaryUserModal = (checked) => {
+        setPrimaryStatusModalOpen(true)
+    }
+    //Enable ad disable user from server
+    const enableDisableUserFromServer = () => {
+        setDeleteModalLoading(true)
+        MarketplaceServices.update(
+            updateUserStatusAPI,
+            {
+                status: changeSwitchStatus === false ? false : true,
+            },
+            { user_name: userName }
+        )
+            .then(function (response) {
+                console.log('update server response of user enable', response)
+                setUserStatus(changeSwitchStatus)
+                MarketplaceToaster.showToast(response)
+                setDeleteModalLoading(false)
+                setShowUserEnableDisableModal(false)
+            })
+            .catch((error) => {
+                console.log('update server response of user enable')
+                MarketplaceToaster.showToast(error.response)
+                setDeleteModalLoading(false)
+            })
+    }
+
+    //Enable ad disable user from server
+    const updatePrimaryUser = () => {
+        setPrimaryStatusUpdateLoading(true)
+        MarketplaceServices.update(updateUserPreferenceAPI, {
+            user_id: id,
+        })
+            .then(function (response) {
+                console.log('update server response of primary enable', response)
+                setUserPrimaryStatus('True')
+                MarketplaceToaster.showToast(response)
+                setPrimaryStatusUpdateLoading(false)
+                setPrimaryStatusModalOpen(false)
+                setSearchParams({
+                    id: searchParams.get('id'),
+                    Loginuname: searchParams.get('Loginuname'),
+                    default: 'True',
+                })
+            })
+            .catch((error) => {
+                console.log('update server response of primary enable', error)
+                MarketplaceToaster.showToast(error.response)
+                setPrimaryStatusUpdateLoading(false)
+            })
+    }
+
+    //Delete call of user frm server
+    const removeUser = () => {
+        setDeleteModalLoading(true)
+        MarketplaceServices.remove(userAPI, {
+            'user-name': userName,
+        })
+            .then(function (response) {
+                console.log('delete response of user', response)
+                setDeleteModalLoading(false)
+                MarketplaceToaster.showToast(response)
+                // findAllUsersLists()
+                navigate(-1)
+                setShowDeleteUserModal(false)
+            })
+            .catch(function (error) {
+                console.log('delete error response of user', error)
+                MarketplaceToaster.showToast(error.response)
+                setDeleteModalLoading(false)
+            })
+    }
+
+    //User Delete modal open function
+    const openUserDeleteModal = () => {
+        setShowDeleteUserModal(true)
+        setUserName(userName)
+    }
+
     //UseEffect to set page action edit or save
     useEffect(() => {
         var pathnameString = pathname.substring(pathname.lastIndexOf('/') + 1, pathname.length).split('-')
         setPageAction(pathnameString[0])
         if (pathnameString[0] !== 'add') {
             findAllUsersLists(searchParams.get('id'))
-            setCurrentUser(searchParams.get('uname'))
+            setCurrentUser(searchParams.get('Loginuname'))
         }
         findAllGroupLists()
         window.scrollTo(0, 0)
     }, [])
+
+    useEffect(() => {
+        findUsersLists(userInfoName)
+    }, [userInfoName])
 
     return (
         <Content className=''>
             <HeaderForTitle
                 title={
                     <Tooltip
-                        title={pageAction !== 'add' ? t('labels:edit_user') : t('labels:add_user')}
+                        title={pageAction !== 'add' ? userName : t('labels:add_user')}
                         zIndex={11}
                         placement='bottom'>
-                        <Title level={3} className='!font-normal max-w-[800px]' ellipsis>
-                            {pageAction === 'add' ? `${t('labels:add_user')} ` : `${t('labels:edit_user')} `}
-                        </Title>
+                        <div className='!font-normal max-w-[800px]' ellipsis>
+                            {pageAction === 'add' ? (
+                                `${t('labels:add_user')} `
+                            ) : (
+                                <Content className='flex gap-2 '>
+                                    <div className='font-semibold text-2xl mb-2'>{userName}</div>
+                                    {defaultStatus === 'True' ? (
+                                        <span className='bg-black text-white border px-1 !mb-3 mt-[6px]  '>
+                                            {t('labels:primary_account')}
+                                        </span>
+                                    ) : (
+                                        ''
+                                    )}
+                                </Content>
+                            )}
+                        </div>
                     </Tooltip>
+                }
+                titleContent={
+                    <Content>
+                        {pageAction !== 'add' ? (
+                            <Content className='flex gap-3'>
+                                <Content className='gap-1 flex mt-1'>
+                                    <label className='text-brandGray2 font-normal '>{t('labels:status')}</label>
+                                    <Tooltip
+                                        placement='bottomRight'
+                                        title={
+                                            <>
+                                                {userName === currentUser ? (
+                                                    <div>{t('messages:standard_user_info')}</div>
+                                                ) : (
+                                                    <>
+                                                        <div className='font-semibold text-sm'>
+                                                            {t('messages:make_primary_account')}
+                                                        </div>
+                                                        <div>{t('messages:primary_content')}</div>
+                                                    </>
+                                                )}
+                                                {isDefault === 'False' ? (
+                                                    <div>{t('messages:non_primary_info')}</div>
+                                                ) : (
+                                                    ''
+                                                )}
+                                            </>
+                                        }
+                                        className=' '>
+                                        <Image
+                                            src={InfoIcon}
+                                            alt='InfoIcon'
+                                            className='!w-[14px] !text-center mt-[6px] !mb-0 cursor-pointer'
+                                            preview={false}
+                                        />{' '}
+                                    </Tooltip>
+                                    :
+                                    <Switch
+                                        disabled={
+                                            currentUser === userName ||
+                                            // isDefault === 'False' ||
+                                            defaultStatus === 'True'
+                                                ? true
+                                                : false
+                                        }
+                                        checked={userStatus}
+                                        onChange={openUserEnableDisableModal}
+                                    />
+                                </Content>
+                                <Content className='gap-1 flex mt-1'>
+                                    <label className='text-brandGray2 font-normal '>{t('labels:primary_user')}</label>
+                                    <Tooltip
+                                        placement='bottomRight'
+                                        title={
+                                            <>
+                                                {defaultStatus === 'True' ? (
+                                                    <div>{t('messages:primary_content_info')}</div>
+                                                ) : (
+                                                    <div>{t('messages:primary_content_information')}</div>
+                                                )}
+                                            </>
+                                        }
+                                        className=' '>
+                                        <Image
+                                            src={InfoIcon}
+                                            alt='InfoIcon'
+                                            className='!w-[14px] !text-center mt-[6px]'
+                                            preview={false}
+                                        />{' '}
+                                    </Tooltip>
+                                    :
+                                    <Switch
+                                        disabled={
+                                            currentUser === userName ||
+                                            isDefault === 'False' ||
+                                            defaultStatus === 'True'
+                                                ? true
+                                                : false
+                                        }
+                                        checked={userPrimaryStatus === 'True' ? true : false}
+                                        onChange={openPrimaryUserModal}
+                                    />
+                                </Content>
+                                <Button
+                                    className='app-btn-delete mb-2'
+                                    disabled={
+                                        currentUser === userName ||
+                                        //  isDefault === 'False'||
+                                        defaultStatus === 'True'
+                                            ? true
+                                            : false
+                                    }
+                                    onClick={() => openUserDeleteModal()}>
+                                    {t('labels:delete_user')}
+                                </Button>
+                            </Content>
+                        ) : null}
+                    </Content>
                 }
                 type={'categories'}
                 action={pageAction === 'add' ? 'add' : 'edit'}
@@ -450,7 +711,7 @@ const CreateUsers = () => {
                                                 <Select
                                                     disabled={pageAction === 'edit' ? userName == currentUser : false}
                                                     style={{
-                                                        width: 430,
+                                                        width: 390,
                                                     }}
                                                     allowClear
                                                     status={invalidRole ? 'error' : ''}
@@ -497,6 +758,51 @@ const CreateUsers = () => {
                     </Spin>
                 )}
             </Content>
+            <StoreModal
+                isVisible={showDeleteUserModal}
+                okButtonText={`${t('labels:yes')}`}
+                cancelButtonText={`${t('labels:cancel')}`}
+                title={t('labels:warning')}
+                okCallback={() => removeUser()}
+                cancelCallback={() => setShowDeleteUserModal(false)}
+                isSpin={deleteModalLoading}>
+                {<div> {t('messages:are_you_sure_you_want_delete_the_user')}?</div>}
+            </StoreModal>
+            <StoreModal
+                isVisible={showUserEnableDisableModal}
+                okButtonText={`${t('labels:yes')}`}
+                cancelButtonText={`${t('labels:cancel')}`}
+                title={t('labels:warning')}
+                okCallback={() => enableDisableUserFromServer()}
+                cancelCallback={() => setShowUserEnableDisableModal(false)}
+                isSpin={deleteModalLoading}>
+                {
+                    <div>
+                        {userStatus === true ? (
+                            <p>{t('messages:are_you_sure_you_want_disable_status')}</p>
+                        ) : (
+                            <p>{t('messages:are_you_sure_you_want_enable_status')}</p>
+                        )}
+                    </div>
+                }
+            </StoreModal>
+            <StoreModal
+                isVisible={primaryStatusModalOpen}
+                okButtonText={`${t('labels:yes')}`}
+                cancelButtonText={`${t('labels:no')}`}
+                title={<div className=''>{t('messages:warning_heading')}</div>}
+                okCallback={() => updatePrimaryUser()}
+                cancelCallback={() => setPrimaryStatusModalOpen(false)}
+                isSpin={primaryStatusUpdateLoading}>
+                {
+                    <div>
+                            <p>
+                                {t('labels:making')} {userName} {t('messages:primary_status_modal_confirmation')}
+                            </p>
+                            <p>{t('messages:policy_change_warning_message')}</p>
+                    </div>
+                }
+            </StoreModal>
         </Content>
     )
 }
