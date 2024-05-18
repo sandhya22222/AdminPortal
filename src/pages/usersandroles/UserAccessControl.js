@@ -106,7 +106,7 @@ const UserAccessControl = () => {
             title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:email')}</Text>,
             dataIndex: 'emailId',
             key: 'emailId',
-            width: '35%',
+            width: '25%',
             render: (text, record) => {
                 return <Content className='text-brandGray1'>{record.email}</Content>
             },
@@ -126,7 +126,7 @@ const UserAccessControl = () => {
                                     ? true
                                     : false
                             }
-                            className={record.enabled === true ? '!bg-green-500' : '!bg-gray-400'}
+                            // className={record.enabled === true ? '!bg-green-500' : '!bg-gray-400'}
                             checked={record.enabled}
                             onChange={() => openUserEnableDisableModal(record.enabled, record.username)}
                         />
@@ -138,12 +138,21 @@ const UserAccessControl = () => {
             title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:role')}</Text>,
             dataIndex: 'role',
             key: 'role',
-            width: '15%',
+            width: '25%',
             ellipsis: true,
             render: (text, record) => {
                 return (
-                    <Content className='text-brandGray1'>
-                        {record.groups[0]?.name ? String(record.groups[0]?.name).replaceAll('-', ' ') : 'NA'}
+                    <Content className='flex gap-2'>
+                        <div className='text-brandGray1'>
+                            {record.groups[0]?.name ? String(record.groups[0]?.name).replaceAll('-', ' ') : 'NA'}
+                        </div>
+                        <div className=''>
+                            {record.attributes?.is_default_owner[0] === 'True' ? (
+                                <div className='bg-black text-white border px-1'>{t('labels:primary_account')}</div>
+                            ) : (
+                                ''
+                            )}
+                        </div>
                     </Content>
                 )
             },
@@ -174,7 +183,7 @@ const UserAccessControl = () => {
                             className='text-[15px] text-[#FB8500] hover:text-[#FB8500] font-medium ml-2 cursor-pointer'
                             onClick={() => {
                                 navigate(
-                                    `/dashboard/user-access-control/edit-user?id=${record.id}&uname=${currentUserDetailsAPIData?.preferred_username}`
+                                    `/dashboard/user-access-control/edit-user?id=${record.id}&Loginuname=${currentUserDetailsAPIData?.preferred_username}&default=${record.attributes?.is_default_owner[0]}`
                                 )
                             }}>
                             {t('labels:edit')}
@@ -365,7 +374,6 @@ const UserAccessControl = () => {
                         <p className='!font-semibold !text-slate-400 mt-2'>{t('labels:user_access_control_note')}</p>
                     </Content>
                 }
-                titleContent={<></>}
                 headerContent={
                     <Content className='mt-[5.5rem]'>
                         <Content className='!h-10 mt-3 flex'>
@@ -436,6 +444,7 @@ const UserAccessControl = () => {
                                             handlePageNumberChange={handlePageNumberChange}
                                             showSizeChanger={true}
                                             showTotal={true}
+                                            showQuickJumper={true}
                                         />
                                     </Content>
                                 ) : null}
@@ -466,6 +475,7 @@ const UserAccessControl = () => {
                                             handlePageNumberChange={handlePageNumberChange}
                                             showSizeChanger={true}
                                             showTotal={true}
+                                            showQuickJumper={true}
                                         />
                                     </Content>
                                 ) : null}

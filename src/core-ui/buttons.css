@@ -185,6 +185,22 @@
     color: var(--mp-danger-primary-text-color-h) !important;
     height: unset !important;
 }
+
+.app-btn-delete {
+    border: 1px solid var(--mp-danger-primary-border-color) !important;
+    border-color: var(--mp-danger-primary-border-color) !important;
+    border-radius: 6px !important;
+    color: var(--mp-delete-primary-text-color) !important;
+    height: unset !important;
+}
+.app-btn-delete:hover {
+    border: 1px solid var(--mp-delete-primary-border-color-h) !important;
+    border-color: var(--mp-delete-primary-border-color-h) !important;
+    border-radius: 6px !important;
+    color: var(--mp-delete-primary-text-color-h) !important;
+    height: unset !important;
+}
+
 .app-btn-danger:disabled {
     background-color: var(--mp-danger-primary-background-color-d) !important;
     border: 1px solid var(--mp-danger-primary-border-color-d) !important;
