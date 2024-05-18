@@ -20,12 +20,11 @@ function AddVersion({
     const { t } = useTranslation()
     const [versionNumberChanged, setVersionNumberChanged] = useState(false)
     const { mutate: createNewVersion, status: createNewVersionStatus } = useCreateVersion()
-
+    let numbers = String(versionNumber).split('.')
     useEffect(() => {
         if (versionNumber) {
-            let numbers = String(versionNumber).split('.')
             setInputValueFirst(numbers[0])
-            setInputValueSecond(numbers[1] || '0')
+            setInputValueSecond(numbers[1] ? String(Number(numbers[1]) + 1) : '0')
         }
     }, [versionNumber])
 
@@ -42,10 +41,14 @@ function AddVersion({
     }, [inputValuefirst, inputValueSecond])
 
     const inputHandlerfirst = (value) => {
-        setInputValueFirst(value)
+        if (value >= String(Number(numbers[1]) + 1)) {
+            setInputValueFirst(value)
+        }
     }
     const inputHandlerSecond = (value) => {
-        setInputValueSecond(value)
+        // if (value >= String(Number(numbers[1]) + 1)) {
+            setInputValueSecond(value)
+        // }
     }
 
     const handelSaveVersion = () => {
@@ -93,7 +96,7 @@ function AddVersion({
                 <InputNumber
                     style={{ width: '60px' }}
                     value={inputValueSecond}
-                    min={String(versionNumber).split('.')[1] || '0'}
+                    min={String(Number(numbers[1]) + 1) || '0'}
                     onChange={inputHandlerSecond}
                 />
             </div>
