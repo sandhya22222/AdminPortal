@@ -121,8 +121,9 @@ const UserAccessControl = () => {
                     <Content>
                         <Switch
                             disabled={
-                                currentUserDetailsAPIData?.preferred_username === record?.username &&
-                                currentUserDetailsAPIData?.email === record?.email
+                                (currentUserDetailsAPIData?.preferred_username === record?.username &&
+                                    currentUserDetailsAPIData?.email === record?.email) ||
+                                record.attributes?.is_default_owner[0] === 'True'
                                     ? true
                                     : false
                             }
@@ -165,7 +166,8 @@ const UserAccessControl = () => {
             render: (text, record) => {
                 return (
                     <Content className='flex items-center'>
-                        {currentUserDetailsAPIData?.preferred_username === record?.username &&
+                        {currentUserDetailsAPIData?.preferred_username === record?.username ||
+                        record.attributes?.is_default_owner[0] === 'True' ||
                         currentUserDetailsAPIData?.email === record?.email ? (
                             <div className='text-[#cbd5e1] !ml-[10px] whitespace-nowrap  cursor-not-allowed'>
                                 {t('labels:delete')}
