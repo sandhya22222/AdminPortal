@@ -687,9 +687,20 @@ const CreateUsers = () => {
                                                 }`}
                                                 value={emailId}
                                                 onChange={(e) => {
-                                                    setEmailId(e.target.value.toLowerCase())
-                                                    setInvalidEmailId(false)
-                                                    setIsUserDetailsEditted(true)
+                                                    if (
+                                                        validator.matches(
+                                                            e.target.value.trim(),
+                                                            /^[a-zA-Z0-9\s!@#$%^&*()_+\-=\[\]{};'`~:"\\|,.<>\/?]+$/
+                                                        )
+                                                    ) {
+                                                        setEmailId(e.target.value.toLowerCase())
+                                                        setInvalidEmailId(false)
+                                                        setIsUserDetailsEditted(true)
+                                                    } else if (e.target.value === '') {
+                                                        setEmailId(e.target.value.toLowerCase())
+                                                        setInvalidEmailId(false)
+                                                        setIsUserDetailsEditted(true)
+                                                    }
                                                 }}
                                                 onBlur={(e) => {
                                                     setEmailId(e.target.value.trim().replace(/\s+/g, ' '))
