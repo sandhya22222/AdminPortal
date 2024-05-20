@@ -1209,7 +1209,7 @@ const Stores = () => {
                                         setStoreEmail(e.target.value)
                                     } else {
                                         setOnChangeValues(true)
-                                        setStoreEmail(e.target.value)
+                                        setStoreEmail(e.target.value.trim())
                                     }
                                 }}
                                 onBlur={() => {
@@ -1238,7 +1238,7 @@ const Stores = () => {
                                     const regex = /^[A-Za-z0-9_\- ]+$/
                                     if (e.target.value !== '' && validator.matches(e.target.value, regex)) {
                                         setInValidUserName(false)
-                                        setStoreUserName(String(e.target.value).toLowerCase())
+                                        setStoreUserName(String(e.target.value).toLowerCase().trim())
                                         setOnChangeValues(true)
                                     } else if (e.target.value === '') {
                                         setStoreUserName(e.target.value)
