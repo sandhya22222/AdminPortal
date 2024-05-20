@@ -13,7 +13,7 @@ const NewFooter = () => {
             <div className=' flex items-center justify-center'>
                 <Paragraph className='text-[#000000] text-xs ml-[52px] !mt-3  '>
                     {t('labels:copyright')} - {t('labels:torry_harris_integration_solutions')} -{' '}
-                    {t('labels:torry_harris_marketplace')} - {t('labels:admin_portal')} {t('labels:version')}{' '}
+                    {t('labels:torry_harris_marketplace')}{" - "}{t('labels:admin_portal')}{" - "}{t('labels:version')}{' '}
                     {portalInfo.version} | {t('labels:credits')}
                 </Paragraph>
             </div>
