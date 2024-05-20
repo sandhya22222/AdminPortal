@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import useCreateVersion from '../hooks/useCreateVersion'
 import MarketplaceToaster from '../../../util/marketplaceToaster'
+const MAX_LIMIT_FOR_THE_VERSION = '999.9'
 
 function AddVersion({
     versionNumber,
@@ -24,7 +25,11 @@ function AddVersion({
     useEffect(() => {
         if (versionNumber) {
             setInputValueFirst(numbers[0])
-            setInputValueSecond(numbers[1] ? String(Number(numbers[1]) + 1) : '0')
+            if (numbers[1] == '9') {
+                setInputValueSecond(MAX_LIMIT_FOR_THE_VERSION.split('.')[1])
+            } else {
+                setInputValueSecond(numbers[1] ? String(Number(numbers[1]) + 1) : '0')
+            }
         }
     }, [versionNumber])
 
@@ -41,14 +46,10 @@ function AddVersion({
     }, [inputValuefirst, inputValueSecond])
 
     const inputHandlerfirst = (value) => {
-        if (value >= String(Number(numbers[1]) + 1)) {
-            setInputValueFirst(value)
-        }
+        setInputValueFirst(value)
     }
     const inputHandlerSecond = (value) => {
-        // if (value >= String(Number(numbers[1]) + 1)) {
-            setInputValueSecond(value)
-        // }
+        setInputValueSecond(value)
     }
 
     const handelSaveVersion = () => {
@@ -69,9 +70,6 @@ function AddVersion({
                 onSuccess: (response) => {
                     MarketplaceToaster.showToast(response)
                     refetchUserConsent()
-                    // toast(t('version added successfully'), {
-                    //     type: 'success',
-                    // })
                     setAddVersion(false)
                     if (setVersionHistory) setVersionHistory(false)
                 },
@@ -92,12 +90,18 @@ function AddVersion({
                     value={inputValuefirst}
                     onChange={inputHandlerfirst}
                     min={String(versionNumber).split('.')[0]}
+                    max={MAX_LIMIT_FOR_THE_VERSION.split('.')[0]}
                 />
                 <InputNumber
                     style={{ width: '60px' }}
                     value={inputValueSecond}
-                    min={String(Number(numbers[1]) + 1) || '0'}
+                    min={
+                        inputValueSecond == 9
+                            ? MAX_LIMIT_FOR_THE_VERSION.split('.')[1]
+                            : String(Number(numbers[1]) + 1) || '0'
+                    }
                     onChange={inputHandlerSecond}
+                    max={MAX_LIMIT_FOR_THE_VERSION.split('.')[1]}
                 />
             </div>
             <div className='flex justify-end'>

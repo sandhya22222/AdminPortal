@@ -287,7 +287,7 @@ const PolicyCard = ({
                 <div className='flex justify-end'>
                     <div className='flex items-center'>
                         <Dropdown
-                            className='w-[96px] cursor-pointer'
+                            className='w-[105px] cursor-pointer'
                             disabled={!(policyStatus === 2)}
                             menu={{
                                 items: [
@@ -348,7 +348,10 @@ const PolicyCard = ({
             <div>
                 {policyType !== 'CONTACT_POLICY' && (
                     <>
-                        <label className='text-[13px] mb-3 input-label-color'>{t('labels:policy_title')}</label>
+                        <label className='text-[13px] mb-3 flex  input-label-color'>
+                            {t('labels:policy_title')}
+                            <p className={`mandatory-symbol-color text-sm mx-1 mt-[2px] font-medium`}>*</p>
+                        </label>
                         <div className=' flex items-center gap-x-5 max-w-[40%] w-full pb-3'>
                             <Input
                                 disabled={policyStatus === 2}
@@ -366,7 +369,10 @@ const PolicyCard = ({
                         </div>
                     </>
                 )}
-                <label className='text-[13px] mb-3 input-label-color'>{t('labels:policy_description')}</label>
+                <label className='text-[13px] flex  mb-3 input-label-color'>
+                    {t('labels:policy_description')}
+                    <p className={`mandatory-symbol-color text-sm mx-1 mt-[2px] font-medium`}>*</p>
+                </label>
                 <div
                     className=' rounded border-[1px] drop-shadow-sm shadow-[#D9D9D9] border-[#D9D9D9] overflow-hidden bg-white   w-full'
                     data-text-editor={'policyCard'}>
@@ -447,7 +453,7 @@ const PolicyCard = ({
                 }
                 isSpin={false}
                 cancelCallback={() => setVersionHistory(false)}
-                width={900}
+                width={940}
                 destroyOnClose={true}>
                 <VersionHistory
                     userConsentId={consent?.id}
