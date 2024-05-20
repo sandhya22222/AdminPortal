@@ -58,7 +58,7 @@ const NewFooter = () => {
             </>
             <Paragraph className='text-brandGray2 text-xs !mb-0'>
                 {t('labels:copyright')} - {t('labels:torry_harris_integration_solutions')} -{' '}
-                {t('labels:torry_harris_marketplace')} - {t('labels:admin_portal')} {t('labels:version')}{' '}
+                {t('labels:torry_harris_marketplace')}{" - "}{t('labels:admin_portal')}{" - "}{t('labels:version')}{' '}
                 {portalInfo.version} | {t('labels:credits')}
             </Paragraph>
         </div>
