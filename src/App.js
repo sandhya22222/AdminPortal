@@ -33,6 +33,7 @@ import ListCurrency from './pages/storeCurrency/ListCurrency'
 import EditCurrency from './pages/storeCurrency/EditCurrency'
 import MyProfile from './pages/StoreUsers/MyProfile'
 import StoreSettingsLayout from './pages/StoreSetting/StoreSettingsLayout'
+import PlatformAdmin from './pages/adminPlatform/PlatformAdmin'
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL
 
 // const authFromEnv = process.env.REACT_APP_AUTH;
@@ -133,6 +134,7 @@ const App = () => {
                                 <Route path='paymenttype' element={<PaymentType />} />
                                 <Route path='adminsettings' element={<StoreLimitComponent />} />
                                 <Route path='userprofile' element={<MyProfile />} />
+                                <Route path='platformadmin' element={<PlatformAdmin />} />
 
                                 <Route path='user-access-control'>
                                     <Route path='list-user-roles' element={<UserAccessControl />} />

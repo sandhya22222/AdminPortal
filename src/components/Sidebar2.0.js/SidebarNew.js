@@ -67,6 +67,9 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
     }
     useEffect(() => {
         switch (pathname.split('/')[2]) {
+            case 'platformadmin':
+                setSelectedItem('7')
+                break
             case 'userprofile':
                 setSelectedItem('6')
                 break
@@ -123,7 +126,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                     label: `${t('labels:settings')}`,
                     navigate_to: '/dashboard/',
                     show_in_menu: true,
-                    childrenKeys: ['3', '13', '5', '6', '12'],
+                    childrenKeys: ['3', '13', '5', '6', '7', '12'],
                     children: [
                         {
                             key: '3',
@@ -174,6 +177,19 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                                     permissionValue.includes('UI-user-access-control'))
                                     ? true
                                     : false,
+                        },
+                        {
+                            key: '7',
+                            label: ` ${t('labels:platform_admin')}`,
+                            navigate_to: '/dashboard/platformadmin',
+                            show_in_menu:
+                                !auth.isAuthenticated ||
+                                (auth.isAuthenticated &&
+                                    permissionValue &&
+                                    permissionValue.length > 0 &&
+                                    permissionValue.includes('UI-user-access-control'))
+                                    ? false
+                                    : true,
                         },
                         {
                             key: '6',
