@@ -70,7 +70,7 @@ function VersionHistory({ userConsentId, refetchUserConsent, setVersionHistory }
                             activeKey={activeKey}
                             onChange={handleTabChange}
                             tabPosition={'left'}
-                            className='!mb-0'>
+                            className='!mb-0 policy-tab'>
                             {versionTabData?.map((data) => (
                                 <Tabs.TabPane
                                     key={data?.id}
@@ -99,7 +99,7 @@ function VersionHistory({ userConsentId, refetchUserConsent, setVersionHistory }
                             </Typography.Title>
                         </div>
                         <div>
-                            <div className='!w-[700px] rounded border-[1px]'>
+                            <div className='!w-[690px] rounded border-[1px]'>
                                 <ReactQuill
                                     value={userConsentVersionDetails?.consent_display_description}
                                     modules={{ toolbar: false }}

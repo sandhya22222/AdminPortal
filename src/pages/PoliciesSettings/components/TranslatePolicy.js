@@ -406,8 +406,11 @@ function TranslatePolicy({
                                                 </span>
                                             </div>
                                         </div>
-                                        <label className='text-[14px] mb-3 input-label-color'>
+                                        <label className='text-[14px] flex mb-3 input-label-color'>
                                             {t('labels:policy_title')}
+                                            <p className={`mandatory-symbol-color text-sm mx-1 mt-[4px] font-medium`}>
+                                                *
+                                            </p>
                                         </label>
                                         <div className=' flex items-center gap-x-5 max-w-[40%] w-full pb-3'>
                                             <Input
@@ -422,15 +425,18 @@ function TranslatePolicy({
                                                 }}
                                             />
                                         </div>
-                                        <label className='text-[14px] mb-3 input-label-color'>
+                                        <label className='text-[14px] mb-3 flex input-label-color'>
                                             {t('labels:policy_description')}
+                                            <p className={`mandatory-symbol-color text-sm mx-1 mt-[4px] font-medium`}>
+                                                *
+                                            </p>
                                         </label>
                                         <div
-                                            className=' rounded border-[1px] drop-shadow-sm shadow-[#D9D9D9] border-[#D9D9D9] overflow-hidden bg-white w-[600px]'
+                                            className=' rounded border-[1px] drop-shadow-sm shadow-[#D9D9D9] border-[#D9D9D9]  bg-white w-[600px] !max-h-[300px] !h-[270px] !overflow-y-auto overflow-x-hidden'
                                             data-text-editor={'versiontranslate'}>
                                             <ReactQuill
                                                 theme='snow'
-                                                style={{ width: '100%', height: '270px' }}
+                                                style={{ width: '100%' }}
                                                 value={selectedConsentDisplayNameData?.consentDescriptionDisplayName}
                                                 onChange={consentDescriptionHandler}
                                                 modules={modules}

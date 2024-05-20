@@ -944,9 +944,11 @@ const StoreSettings = () => {
                 break
             case 'AMS-000028-19':
                 break
+            case 'AMS-000028-20':
             case 'AMS-000028-21':
                 setInvalidMaxProductLimit(true)
                 break
+            case 'AMS-000028-22':
             case 'AMS-000028-23':
                 setInvalidMaxTemplateLimit(true)
                 break
