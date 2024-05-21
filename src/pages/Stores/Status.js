@@ -65,7 +65,7 @@ function Status({
         })
             .then((response) => {
                 console.log('response.config.params.store_id', response.config.params.store_id)
-                setSwitchStatus(changeSwitchStatus)
+                setSwitchStatus(false)
                 closeModal()
                 setIsLoading(false)
                 if (
@@ -132,7 +132,7 @@ function Status({
         setIsModalOpen(true)
     }
 
-    console.log('storeCheckStatus', storeCheckStatus)
+    console.log('switchStatus', switchStatus)
     return (
         <div>
             <StoreModal
