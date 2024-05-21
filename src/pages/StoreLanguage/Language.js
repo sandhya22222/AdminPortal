@@ -1,5 +1,5 @@
 //! Import libraries
-import { Badge, Button, Col, Image, Layout, Tag, Tooltip, Typography, Table } from 'antd'
+import { Badge, Button, Col, Image, Layout, Tag, Tooltip, Typography, Table, Dropdown, Space } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -12,6 +12,7 @@ import util from '../../util/common'
 import { DownloadIcon, EditIconNew, plusIcon, starIcon } from '../../constants/media'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
+import { DownOutlined } from '@ant-design/icons'
 
 import LanguageBanner from './LanguageBanner'
 const { Title, Text } = Typography
@@ -20,6 +21,7 @@ const { Content } = Layout
 const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API
 const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE)
 const LanguageDownloadAPI = process.env.REACT_APP_DOWNLOAD_LANGUAGE_TRANSLATION_CSV
+const downloadBackendKeysAPI = process.env.REACT_APP_DOWNLOAD_ADMIN_BACKEND_MESSAGE_DETAILS
 
 const Language = () => {
     const { t } = useTranslation()
@@ -188,6 +190,16 @@ const Language = () => {
             },
         },
     ]
+    const items = [
+        {
+            key: 1,
+            label: `${t('labels:get_frontend_support_template')}`,
+        },
+        {
+            key: 2,
+            label: `${t('labels:get_backend_support_template')}`,
+        },
+    ]
 
     const findByPageLanguageData = async (page, limit) => {
         // Fetcher function
@@ -233,6 +245,27 @@ const Language = () => {
         })
     }
 
+    const downloadBEKeysFile = () => {
+        MarketplaceServices.findMedia(downloadBackendKeysAPI, {
+            'is-format': 1,
+        })
+            .then(function (response) {
+                console.log('Server Response from DocumentTemplateDownload Function: ', response.data)
+                const fileURL = window.URL.createObjectURL(response.data)
+                let alink = document.createElement('a')
+                alink.href = fileURL
+                alink.download = 'message_format.csv'
+                alink.click()
+            })
+            .catch((error) => {
+                console.log('Server error from DocumentTemplateDownload Function ', error.response)
+            })
+    }
+
+    const handleOnclickForDownloadDocument = (e) => {
+        parseInt(e.key) === 1 ? findAllSupportDocumentTemplateDownload(1, null) : downloadBEKeysFile()
+    }
+
     useEffect(() => {
         window.scrollTo(0, 0)
     }, [])
@@ -246,12 +279,33 @@ const Language = () => {
                             <Text level={3} className='!font-semibold text-regal-blue text-2xl'>
                                 {t('labels:languages')}
                             </Text>
-                            <Button
-                                className='app-btn-primary flex align-items-center'
-                                onClick={() => navigate('/dashboard/language/language-settings')}>
-                                <img src={plusIcon} alt='plusIconWithAddLanguage' className=' !w-3 mr-2 items-center' />
-                                <div className='mr-[10px]'>{t('labels:add_language')}</div>
-                            </Button>
+                            <Content className='!flex gap-2 items-center !justify-end'>
+                                <Dropdown
+                                    className='app-btn-link'
+                                    placement='bottomRight'
+                                    arrow
+                                    menu={{
+                                        items,
+                                        onClick: handleOnclickForDownloadDocument,
+                                    }}>
+                                    <a onClick={(e) => e.preventDefault()}>
+                                        <Space>
+                                            {t('labels:download_support_document_template')}
+                                            <DownOutlined className='!ml-[4px]' />
+                                        </Space>
+                                    </a>
+                                </Dropdown>
+                                <Button
+                                    className='app-btn-primary flex align-items-center'
+                                    onClick={() => navigate('/dashboard/language/language-settings')}>
+                                    <img
+                                        src={plusIcon}
+                                        alt='plusIconWithAddLanguage'
+                                        className=' !w-3 mr-2 items-center'
+                                    />
+                                    <div className='mr-[10px]'>{t('labels:add_language')}</div>
+                                </Button>
+                            </Content>
                         </div>
                         <p className='!font-semibold !text-slate-400 !mt-2 !mb-6'>{t('labels:languages_note')}</p>
                     </Content>
