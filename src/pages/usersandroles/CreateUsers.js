@@ -455,7 +455,7 @@ const CreateUsers = () => {
                         placement='bottom'>
                         <div className='!font-normal max-w-[800px]' ellipsis>
                             {pageAction === 'add' ? (
-                                `${t('labels:add_user')} `
+                                <label className='font-semibold text-2xl mb-2'>{t('labels:add_user')}</label>
                             ) : (
                                 <Content className='flex gap-2 '>
                                     <div className='font-semibold text-2xl mb-2'>{userName}</div>
@@ -807,10 +807,10 @@ const CreateUsers = () => {
                 isSpin={primaryStatusUpdateLoading}>
                 {
                     <div>
-                            <p>
-                                {t('labels:making')} {userName} {t('messages:primary_status_modal_confirmation')}
-                            </p>
-                            <p>{t('messages:policy_change_warning_message')}</p>
+                        <p>
+                            {t('labels:making')} {userName} {t('messages:primary_status_modal_confirmation')}
+                        </p>
+                        <p>{t('messages:policy_change_warning_message')}</p>
                     </div>
                 }
             </StoreModal>
