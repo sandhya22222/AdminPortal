@@ -236,7 +236,7 @@ const Language = () => {
                 title={
                     <Content className=''>
                         <Title level={3} className='!font-normal'>
-                            {t('labels:languages')}
+                            {t('labels:language_settings')}
                         </Title>
                     </Content>
                 }
