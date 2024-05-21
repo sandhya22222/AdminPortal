@@ -793,12 +793,14 @@ const Stores = () => {
                         setStatusInprogressData([])
                     }
                     if (response.data.response_body.data[0].status === 1) {
-                        MarketplaceToaster.showToast(
-                            util.getToastObject(
-                                `${t('messages:your_store_has_been_successfully_activated')}`,
-                                'success'
+                        if (previousStatus === 4) {
+                            MarketplaceToaster.showToast(
+                                util.getToastObject(
+                                    `${t('messages:your_store_has_been_successfully_activated')}`,
+                                    'success'
+                                )
                             )
-                        )
+                        }
                     } else if (response.data.response_body.data[0].status === 2) {
                         if (previousStatus === 5) {
                             MarketplaceToaster.showToast(
