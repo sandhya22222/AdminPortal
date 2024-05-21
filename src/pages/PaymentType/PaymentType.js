@@ -59,7 +59,7 @@ const PaymentType = () => {
             <HeaderForTitle
                 title={
                     <Content>
-                        <div className='!font-semibold text-2xl mb-4 text-regal-blue'>{t('labels:payment')}</div>
+                        <div className='!font-semibold text-2xl mb-4 text-regal-blue'>{t('labels:payment_settings')}</div>
                     </Content>
                 }
             />
