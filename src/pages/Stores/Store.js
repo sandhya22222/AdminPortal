@@ -1322,8 +1322,8 @@ const Stores = () => {
                                         <DynamicTable tableComponentData={tablePropsThreshold2} />
                                     </Content>
                                     {hideAddStoreButton ? (
-                                        <Content className='flex gap-2'>
-                                            <Button
+                                        <Content className='flex gap-2 !ml-6 !pb-6'>
+                                        <Button
                                                 className={'app-btn-primary'}
                                                 onClick={() => validationForSaveStoreLimit()}>
                                                 {t('labels:save')}

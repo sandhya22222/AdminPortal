@@ -222,14 +222,14 @@ const CreateUsers = () => {
                         setInvalidEmailId(true)
                         setInvalidUserName(true)
                         console.log('working fineeeee')
-                    } else if (error.response?.data?.response_code === 'UMS-000002-16') {
+                    } else if (error.response?.data?.response_code === 'UMS-000002-18') {
                         // userName
                         setInvalidUserName(true)
-                        setInvalidEmailId(false)
-                    } else if (error.response?.data?.response_code === 'UMS-000002-17') {
+                        // setInvalidEmailId(false)
+                    } else if (error.response?.data?.response_code === 'UMS-000002-19') {
                         // email
                         setInvalidEmailId(true)
-                        setInvalidUserName(false)
+                        // setInvalidUserName(false)
                     }
                 }
             })
