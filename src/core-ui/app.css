@@ -217,8 +217,7 @@ a {
     background-color: var(--mp-primary-color) !important;
 }
 
-:where(.css-dev-only-do-not-override-1kuana8).ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover
-    .ant-checkbox-inner {
+.ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover .ant-checkbox-inner {
     border-color: var(--mp-primary-color) !important;
 }
 

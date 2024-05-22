@@ -435,6 +435,7 @@ const PolicyCard = ({
                     </Tooltip>
                     {(policyStatus !== 1 || isConsentNameChanged || descriptionModified) && (
                         <Button
+                            className='app-btn-secondary'
                             onClick={policyStatus === 1 ? handlePolicyChangeWarningModal : handelCancelDescription}
                             disabled={
                                 createNewUserConsentStatus === 'pending' ||

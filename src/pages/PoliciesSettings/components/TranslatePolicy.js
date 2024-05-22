@@ -447,7 +447,7 @@ function TranslatePolicy({
                                         </div>
                                     </div>
                                 </div>
-                                <div className='flex justify-end'>
+                                <div className='flex justify-end app-btn-secondary'>
                                     <Button
                                         onClick={() => {
                                             setTranslatePolicy(false)
