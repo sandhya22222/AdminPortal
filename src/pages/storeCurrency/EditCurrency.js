@@ -217,7 +217,7 @@ const EditCurrency = () => {
                                     </span>
                                 </p>
                                 <p className='input-label-color my-4 flex'>
-                                    {t('labels:unit_conversation')}
+                                    {t('labels:conversation')}
                                     <span
                                         className={
                                             util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
