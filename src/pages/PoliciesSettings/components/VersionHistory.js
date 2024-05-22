@@ -7,7 +7,7 @@ import StoreModal from '../../../components/storeModal/StoreModal'
 import useGetUserConsentVersionDetails from '../hooks/useGetUserConsentVersionDetails'
 import AddVersion from './AddVersion'
 import '../policiesSettings.css'
-
+const { Text } = Typography
 function VersionHistory({ userConsentId, refetchUserConsent, setVersionHistory }) {
     const { t } = useTranslation()
     const {
@@ -83,10 +83,13 @@ function VersionHistory({ userConsentId, refetchUserConsent, setVersionHistory }
                                                     overflow: 'hidden',
                                                     textOverflow: 'ellipsis',
                                                     whiteSpace: 'nowrap',
+                                                    fontWeight: 600,
                                                 }}>
                                                 {data?.version === 1 ? 'V1.0' : 'V' + data?.version}
                                             </div>
-                                            <div>{getDate(data?.created_on)}</div>
+                                            <Text className='text-md text-[#000000] text-opacity-40'>
+                                                {getDate(data?.created_on)}
+                                            </Text>
                                         </div>
                                     }></Tabs.TabPane>
                             ))}

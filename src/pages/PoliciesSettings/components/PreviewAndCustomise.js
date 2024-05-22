@@ -1,13 +1,14 @@
 import { useTranslation } from 'react-i18next'
 
-import { ConsentPreview } from '../../../constants/media'
-import { Typography, Input, Button, Spin, Switch, Checkbox } from 'antd'
+import { Button, Checkbox, Input, Spin, Switch, Typography } from 'antd'
 import { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
+import { ConsentPreview } from '../../../constants/media'
+import MarketplaceToaster from '../../../util/marketplaceToaster'
+
 import useUpdateConsentLead from '../hooks/useUpdateConsentLead'
 import useUpdateConsentsOrder from '../hooks/useUpdateConsentsOrder'
-import { toast } from 'react-toastify'
-import useGetStoreUserConsent from '../hooks/useGetStoreUserConsent'
-import MarketplaceToaster from '../../../util/marketplaceToaster'
+import useGetPreviewContentData from '../hooks/useGETPreviewContentData'
 
 const { Text, Paragraph } = Typography
 const { TextArea } = Input
@@ -19,7 +20,7 @@ const PreviewAndCustomise = ({ closeModal, refetchUserConsent, storeName, storeI
         data: userConsents,
         status: userConsentsStatus,
         refetch: refetchUserConsents,
-    } = useGetStoreUserConsent({
+    } = useGetPreviewContentData({
         storeName,
     })
     const [leadInLine, setLeadInLine] = useState('')
@@ -49,7 +50,11 @@ const PreviewAndCustomise = ({ closeModal, refetchUserConsent, storeName, storeI
             })
             tempReorderList.sort((a, b) => a.ordering - b.ordering)
             if (tempReorderList?.length > 0) setReorderList(tempReorderList)
-        }
+        }else{
+            setLeadInLine('')
+            setExplicit(false)
+            setReorderList([])
+    }
     }, [userConsents, userConsentsStatus])
 
     const handleListDragStart = (e, index) => {
@@ -173,7 +178,7 @@ const PreviewAndCustomise = ({ closeModal, refetchUserConsent, storeName, storeI
                                                         <Text
                                                             ellipsis={{
                                                                 tooltip: {
-                                                                    title: list.name,
+                                                                    title: list?.name,
                                                                     mouseLeaveDelay: 0,
                                                                     mouseEnterDelay: 0.5,
                                                                 },
@@ -253,7 +258,7 @@ const PreviewAndCustomise = ({ closeModal, refetchUserConsent, storeName, storeI
                                         reorderList?.map((list, index) => {
                                             return (
                                                 <div
-                                                    key={list.key}
+                                                    key={list?.key}
                                                     className=' flex !py-5 items-center gap-x-4 px-4 border-b  cursor-move'
                                                     onDragStart={(e) => {
                                                         handleListDragStart(e, index)
@@ -285,7 +290,7 @@ const PreviewAndCustomise = ({ closeModal, refetchUserConsent, storeName, storeI
                                                             className=' !text-sm text-black !text-opacity-80 !mb-0'
                                                             ellipsis={{
                                                                 tooltip: {
-                                                                    title: list.name,
+                                                                    title: list?.name,
                                                                     mouseLeaveDelay: 0,
                                                                     placement: 'right',
                                                                     autoAdjustOverflow: false,
@@ -293,7 +298,7 @@ const PreviewAndCustomise = ({ closeModal, refetchUserConsent, storeName, storeI
                                                                     mouseEnterDelay: 0.5,
                                                                 },
                                                             }}>
-                                                            {list.name}
+                                                            {list?.name}
                                                         </Text>
                                                     </div>
                                                 </div>
