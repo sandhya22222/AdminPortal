@@ -1,9 +1,8 @@
 import { Button, InputNumber, Typography } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { toast } from 'react-toastify'
-import useCreateVersion from '../hooks/useCreateVersion'
 import MarketplaceToaster from '../../../util/marketplaceToaster'
+import useCreateVersion from '../hooks/useCreateVersion'
 const MAX_LIMIT_FOR_THE_VERSION = '999.9'
 
 function AddVersion({
@@ -41,23 +40,32 @@ function AddVersion({
         }
     }, [versionNumber])
 
-    useEffect(() => {
-        if (
-            inputValuefirst &&
-            inputValueSecond &&
-            (String(versionNumber) === '1' ? '1.0' : String(versionNumber)) !== inputValuefirst + '.' + inputValueSecond
-        ) {
-            setVersionNumberChanged(true)
-        } else {
-            setVersionNumberChanged(false)
-        }
-    }, [inputValuefirst, inputValueSecond])
+    // useEffect(() => {
+    //     if (
+    //         inputValuefirst &&
+    //         inputValueSecond &&
+    //         (String(versionNumber) === '1' ? '1.0' : String(versionNumber)) !== inputValuefirst + '.' + inputValueSecond
+    //     ) {
+    //         setVersionNumberChanged(true)
+    //     } else {
+    //         setVersionNumberChanged(false)
+    //     }
+    // }, [inputValuefirst, inputValueSecond])
 
     const inputHandlerfirst = (value) => {
-        setInputValueFirst(value)
+        if (value === null) {
+            setInputValueFirst(null)
+        } else if (value <= 999) {
+            setInputValueFirst(value)
+        }
     }
+
     const inputHandlerSecond = (value) => {
-        setInputValueSecond(value)
+        if (value === null) {
+            setInputValueSecond(null)
+        } else if (value <= 9) {
+            setInputValueSecond(value)
+        }
     }
 
     const handelSaveVersion = () => {
@@ -66,9 +74,7 @@ function AddVersion({
             user_consent: Number(consentId),
         }
 
-        if (versionNumberChanged) {
-            body.version_number = parseFloat(inputValuefirst + '.' + inputValueSecond)
-        }
+        body.version_number = parseFloat(inputValuefirst + '.' + inputValueSecond)
 
         if (versionfrom) body.version_from = versionId
 
@@ -88,6 +94,7 @@ function AddVersion({
         )
     }
 
+
     return (
         <div>
             <p className='input-label-color'>{t('messages:add_version_note')}</p>
@@ -97,32 +104,44 @@ function AddVersion({
                     style={{ width: '60px', margin: '0 8px 0 14px' }}
                     value={inputValuefirst}
                     onChange={inputHandlerfirst}
-                    min={String(versionNumber).split('.')[0]}
+                    min={'1'}
                     max={MAX_LIMIT_FOR_THE_VERSION.split('.')[0]}
+                    onKeyDown={(e) => {
+                        const {
+                            key,
+                            target: { value },
+                        } = e
+                        const newValue = parseInt(value + key, 10)
+                        if (newValue > MAX_LIMIT_FOR_THE_VERSION.split('.')[0] && !isNaN(newValue)) {
+                            e.preventDefault()
+                        }
+                    }}
                 />
                 <InputNumber
                     style={{ width: '60px' }}
                     value={inputValueSecond}
-                    min={
-                        inputValueSecond == 9
-                            ? MAX_LIMIT_FOR_THE_VERSION.split('.')[1]
-                            : numbers[1] == 9 && numbers[0] !== '999'
-                              ? '0'
-                              : numbers[1] && numbers[0] !== '999'
-                                ? String(Number(numbers[1]) + 1)
-                                : numbers[0] === '999'
-                                  ? '9'
-                                  : '1'
-                    }
+                    min={'0'}
                     onChange={inputHandlerSecond}
                     max={MAX_LIMIT_FOR_THE_VERSION.split('.')[1]}
+                    onKeyDown={(e) => {
+                        const {
+                            key,
+                            target: { value },
+                        } = e
+                        const newValue = parseInt(value + key, 10)
+                        if (
+                            (newValue > MAX_LIMIT_FOR_THE_VERSION.split('.')[1] || isNaN(newValue)) &&
+                            !isNaN(parseInt(key, 10))
+                        ) {
+                            e.preventDefault()
+                        }
+                    }}
                 />
             </div>
             <div className='flex justify-end'>
                 <Button
                     className='app-btn-primary'
                     onClick={handelSaveVersion}
-                    disabled={!versionNumberChanged}
                     loading={createNewVersionStatus === 'pending'}>
                     {t('labels:add_version')}
                 </Button>
