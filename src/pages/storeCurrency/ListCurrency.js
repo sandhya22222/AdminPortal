@@ -37,18 +37,18 @@ const ListCurrency = () => {
     const listCurrencyColumns = [
         {
             title: (
-                <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:currency_name')}</Text>
+                <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:title')}</Text>
             ),
             dataIndex: 'currencyName',
             key: 'currencyName',
-            width: '20%',
+            width: '28%',
             ellipsis: true,
             render: (text, record) => {
                 return (
                     <Content className='inline-block'>
                         <Text
                             className={`mx-1 text-brandGray1
-                   ${record.is_default === true ? '!max-w-[95px]' : '!max-w-[150px]'} `}
+                   ${record.is_default === true ? '!max-w-[68px]' : '!max-w-[150px]'} `}
                             ellipsis={{ tooltip: record.currency_name }}>
                             {record.currency_name}
                         </Text>
@@ -57,7 +57,7 @@ const ListCurrency = () => {
                                 icon={<img src={starIcon} className='mr-1 flex !items-center ' alt='defaultIcon' />}
                                 className='inline-flex items-center gap-1'
                                 color='#FB8500'>
-                                {t('labels:default')}
+                                {t('labels:default_currency')}
                             </Tag>
                         ) : (
                             ''
@@ -90,7 +90,7 @@ const ListCurrency = () => {
             dataIndex: 'conversation',
             key: 'conversation',
             ellipsis: true,
-            width: '13%',
+            width: '14%',
             render: (text, record) => {
                 return <Text className='text-brandGray1'>{record.unit_conversion}</Text>
             },
@@ -103,7 +103,7 @@ const ListCurrency = () => {
             ),
             dataIndex: 'unitPriceName',
             key: 'unitPriceName',
-            width: '14%',
+            width: '10%',
             render: (text, record) => {
                 return <Text className='text-brandGray1'>{record.unit_price_name}</Text>
             },
@@ -121,7 +121,7 @@ const ListCurrency = () => {
             title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:symbol')}</Text>,
             dataIndex: 'symbol',
             key: 'symbol',
-            width: '9%',
+            width: '8%',
             render: (text, record) => {
                 return <Text className='text-brandGray1'>{record.symbol}</Text>
             },
@@ -132,7 +132,7 @@ const ListCurrency = () => {
             ),
             dataIndex: 'noOfDecimals',
             key: 'noOfDecimals',
-            width: '12%',
+            width: '10%',
             render: (text, record) => {
                 return <Text className='text-brandGray1'>{record.no_of_decimal}</Text>
             },
@@ -141,7 +141,7 @@ const ListCurrency = () => {
             title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:action')}</Text>,
             dataIndex: '',
             key: '',
-            width: '12%',
+            width: '13%',
             // align: 'center',
             render: (text, record) => {
                 return (
@@ -151,7 +151,7 @@ const ListCurrency = () => {
                         onClick={() => {
                             navigate(`/dashboard/currency/edit-currency?k=${record.id}`)
                         }}>
-                        <Text ellipsis className='app-primary-color'>
+                        <Text ellipsis className='app-primary-color !mr-2'>
                             {t('labels:view_details')}{' '}
                         </Text>
                     </Button>

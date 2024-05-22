@@ -17,7 +17,7 @@ const PaymentType = () => {
 
     const paymentTypeColumns = [
         {
-            title: <div className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:payment_type')}</div>,
+            title: <div className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:payment_types')}</div>,
             dataIndex: 'name',
             key: 'name',
             width: '40%',
@@ -59,7 +59,7 @@ const PaymentType = () => {
             <HeaderForTitle
                 title={
                     <Content>
-                        <div className='!font-semibold text-2xl mb-4 text-regal-blue'>{t('labels:payment_settings')}</div>
+                        <div className='!font-semibold text-2xl mb-4 text-regal-blue'>{t('labels:payment_setting')}</div>
                     </Content>
                 }
             />

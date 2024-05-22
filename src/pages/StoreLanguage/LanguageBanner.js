@@ -16,12 +16,12 @@ function LanguageBanner() {
             </Title>
             <p className='w-[80%] text-center'>
                 {t('messages:language_description')}{' '}
-                <a
+                {/* <a
                     href='https://docs.torryharrismarketplace.com/docs/2.8/Admin%20portal/Settings/Language%20Settings/'
                     target='blank'
                     className='!no-underline'>
                     <span className='font-semibold'>{t('labels:know_more')}</span>
-                </a>{' '}
+                </a>{' '} */}
             </p>
 
             <Button
