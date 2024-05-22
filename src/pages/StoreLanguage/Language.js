@@ -154,7 +154,7 @@ const Language = () => {
             render: (text, record) => {
                 return (
                     <Col className='whitespace-nowrap !text-center'>
-                        <Tooltip title={t('labels:edit_language')}>
+                        <Tooltip title={`${t('labels:edit')} ${record.language}`}>
                             <Button
                                 type='text'
                                 className='app-btn-icon'

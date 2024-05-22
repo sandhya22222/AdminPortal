@@ -1940,7 +1940,7 @@ const StoreSettings = () => {
                                         </StoreModal>
                                     </Row>
                                     <Divider className='!my-4' />
-                                    <Row className='mt-2'>
+                                    {/* <Row className='mt-2'>
                                         <Col span={8} className='mr-2 '>
                                             <label className='text-[13px] mb-2 ml-1 select-none input-label-color'>
                                                 {t('labels:background_color')}
@@ -2107,7 +2107,7 @@ const StoreSettings = () => {
                                                 </p>
                                             ) : null}
                                         </Col>
-                                    </Row>
+                                    </Row> */}
                                     <Row className='mt-4'>
                                         <Col span={8} className='mr-2 '>
                                             <label className='text-[13px] mb-2 ml-1 select-none input-label-color'>
@@ -2623,7 +2623,7 @@ const StoreSettings = () => {
                                         </Col>
                                     </Row>
                                 </Content>
-                                <Content>
+                                {/* <Content>
                                     <label className='text-[20px] mb-2 mt-4 font-bold select-none'>
                                         {t('labels:store_header_setting')}
                                     </label>
@@ -2792,7 +2792,7 @@ const StoreSettings = () => {
                                             ) : null}
                                         </Col>
                                     </Row>
-                                </Content>
+                                </Content> */}
                                 <Content>
                                     <label className='text-[20px] mb-2 mt-4 font-bold select-none'>
                                         {t('labels:store_footer_setting')}
