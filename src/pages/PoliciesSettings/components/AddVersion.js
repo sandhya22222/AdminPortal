@@ -23,12 +23,20 @@ function AddVersion({
     const { mutate: createNewVersion, status: createNewVersionStatus } = useCreateVersion()
     let numbers = String(versionNumber).split('.')
     useEffect(() => {
+        let copyofFirstField = numbers[1]
         if (versionNumber) {
-            setInputValueFirst(numbers[0])
-            if (numbers[1] == '9') {
+            if (numbers[1] == '9' && numbers[0] !== '999') {
+                copyofFirstField = String(Number(copyofFirstField + 1))
+                setInputValueFirst(String(Number(numbers[0]) + 1))
+            } else {
+                setInputValueFirst(numbers[0])
+            }
+            if (numbers[1] == '9' && numbers[0] !== '999' && copyofFirstField !== numbers[1]) {
+                setInputValueSecond('0')
+            } else if (numbers[1] == '9') {
                 setInputValueSecond(MAX_LIMIT_FOR_THE_VERSION.split('.')[1])
             } else {
-                setInputValueSecond(numbers[1] ? String(Number(numbers[1]) + 1) : '0')
+                setInputValueSecond(numbers[1] ? String(Number(numbers[1]) + 1) : '1')
             }
         }
     }, [versionNumber])
@@ -98,7 +106,13 @@ function AddVersion({
                     min={
                         inputValueSecond == 9
                             ? MAX_LIMIT_FOR_THE_VERSION.split('.')[1]
-                            : String(Number(numbers[1]) + 1) || '0'
+                            : numbers[1] == 9 && numbers[0] !== '999'
+                              ? '0'
+                              : numbers[1] && numbers[0] !== '999'
+                                ? String(Number(numbers[1]) + 1)
+                                : numbers[0] === '999'
+                                  ? '9'
+                                  : '1'
                     }
                     onChange={inputHandlerSecond}
                     max={MAX_LIMIT_FOR_THE_VERSION.split('.')[1]}
