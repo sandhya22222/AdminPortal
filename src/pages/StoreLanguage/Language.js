@@ -169,7 +169,7 @@ const Language = () => {
             render: (text, record) => {
                 return (
                     <div className='!flex !justify-center'>
-                        <Tooltip title={t('labels:edit_language')}>
+                        <Tooltip title={`${t('labels:edit')} ${record.language}`}>
                             <Button
                                 type='text'
                                 className='app-btn-icon'
