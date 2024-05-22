@@ -657,7 +657,7 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                 console.log('Server Response from store limit API: ', response.data.response_body)
                 if (response && response.data.response_body && response.data.response_body.data.length > 0) {
                     let selectedStoreDataLimit = response.data.response_body.data.filter(
-                        (element) => element.store === storeIdFromUrl
+                        (element) => element.store == storeIdFromUrl
                     )
                     if (selectedStoreDataLimit.length > 0) {
                         let selectedDataLimit = selectedStoreDataLimit[0]
