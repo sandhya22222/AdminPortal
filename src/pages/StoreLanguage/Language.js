@@ -48,7 +48,7 @@ const Language = () => {
             title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:language')}</Text>,
             dataIndex: 'language',
             key: 'language',
-            width: '20%',
+            width: '21%',
             ellipsis: true,
             render: (text, record) => {
                 return (
@@ -75,7 +75,7 @@ const Language = () => {
             title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:code')}</Text>,
             dataIndex: 'language_code',
             key: 'language_code',
-            width: '12%',
+            width: '11%',
             render: (text, record) => {
                 return (
                     <>
@@ -114,7 +114,7 @@ const Language = () => {
             title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:status')}</Text>,
             dataIndex: 'status',
             key: 'status',
-            width: '12%',
+            width: '11%',
             render: (text, record) => {
                 return (
                     <>
@@ -164,7 +164,7 @@ const Language = () => {
             title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:action')}</Text>,
             dataIndex: '',
             key: '',
-            width: '11%',
+            width: '10%',
             align: 'center',
             render: (text, record) => {
                 return (
