@@ -266,13 +266,14 @@ const PoliciesSettings = ({ storeName }) => {
                     onCancel={() => setDeletePolicy(null)}
                     footer={[
                         <Button
+                            className='app-btn-secondary'
                             onClick={() => setDeletePolicy(null)}
                             disabled={deleteStoreUserConsentStatus === 'pending'}>
                             {t('labels:cancel')}
                         </Button>,
                         <Button
                             danger
-                            className=' app-btn-danger'
+                            className=' app-btn-primary'
                             onClick={() => deletePolicyById(deletePolicy)}
                             loading={deleteStoreUserConsentStatus === 'pending'}>
                             {t('labels:yes')}
