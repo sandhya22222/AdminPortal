@@ -1,5 +1,5 @@
 import { CheckCircleOutlined, DownOutlined } from '@ant-design/icons'
-import { Button, Dropdown, Input, Progress, Skeleton, Space, Tag, Typography } from 'antd'
+import { Alert, Button, Dropdown, Input, Progress, Skeleton, Space, Tag, Typography } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import ReactQuill, { Quill } from 'react-quill'
@@ -324,18 +324,26 @@ function TranslatePolicy({
     return (
         <div>
             {translateSuccessMessage && (
-                <Tag
-                    className='mb-2 w-full py-[7px] px-[9px] flex justify-between'
-                    color='success'
+                <Alert
+                    message={translateSuccessMessage}
+                    type='success'
+                    showIcon
+                    className='my-3 w-full !rounded-none'
                     closable
-                    onClose={() => setTranslateSuccessMessage('')}>
-                    <div className='flex items-center'>
-                        <div className='pr-2'>
-                            <CheckCircleOutlined className='text-[#52c41a] text-base' />
-                        </div>
-                        <span className='text-black'>{translateSuccessMessage}</span>
-                    </div>
-                </Tag>
+                    onClose={() => setTranslateSuccessMessage('')}
+                />
+                // <Tag
+                //     className='mb-2 w-full py-[7px] px-[9px] flex justify-between'
+                //     color='success'
+                //     closable
+                //     onClose={() => setTranslateSuccessMessage('')}>
+                //     <div className='flex items-center'>
+                //         <div className='pr-2'>
+                //             <CheckCircleOutlined className='text-[#52c41a] text-base' />
+                //         </div>
+                //         <span className='text-black'>{translateSuccessMessage}</span>
+                //     </div>
+                // </Tag>
             )}
             <div className='mt-3'>
                 {userConsentVersionDisplaynameDataStatus === 'pending' ||
@@ -447,14 +455,14 @@ function TranslatePolicy({
                                         </div>
                                     </div>
                                 </div>
-                                <div className='flex justify-end app-btn-secondary'>
+                                <div className='flex justify-end mt-2'>
                                     <Button
                                         onClick={() => {
                                             setTranslatePolicy(false)
                                             refetchUserConsent()
                                         }}
                                         disabled={''}
-                                        className='mx-2'>
+                                        className='mx-2 app-btn-secondary'>
                                         {t('labels:cancel')}
                                     </Button>
                                     <Button

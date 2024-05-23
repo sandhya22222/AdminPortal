@@ -301,13 +301,13 @@ const PolicyCard = ({
                             }}
                             placement='bottomRight'
                             arrow>
-                            <Space>
+                            <Text>
                                 {'Version ' +
                                     (consentDetails?.version_number === 1
                                         ? '1.0'
                                         : consentDetails?.version_number || '1.0') || 'Version 1.0'}
-                                <DownOutlined className={!(policyStatus === 2) ? '!text-[#857e7e40]' : ''} />
-                            </Space>
+                                <DownOutlined className={!(policyStatus === 2) ? '!text-[#857e7e40] mx-1' : 'mx-1'} />
+                            </Text>
                         </Dropdown>
                     </div>
                     <div className='mx-2'>
