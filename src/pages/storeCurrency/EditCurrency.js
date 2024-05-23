@@ -223,19 +223,19 @@ const EditCurrency = () => {
                                 <p className='!font-semibold my-4  '>
                                     <span>:</span>
                                 </p>
-                                <p className='!font-semibold my-4'>
+                                <p className='!font-semibold my-4 !text-brandGray1'>
                                     <span>:</span>
                                 </p>
-                                <p className='!font-semibold my-4'>
+                                <p className='!font-semibold my-4 !text-brandGray1'>
                                     <span>:</span>
                                 </p>
-                                <p className='!font-semibold my-4'>
+                                <p className='!font-semibold my-4 !text-brandGray1'>
                                     <span>:</span>
                                 </p>
-                                <p className='!font-semibold my-4'>
+                                <p className='!font-semibold my-4 !text-brandGray1'>
                                     <span>:</span>
                                 </p>
-                                <p className='!font-semibold my-4'>
+                                <p className='!font-semibold my-4 !text-brandGray1'>
                                     <span>:</span>
                                 </p>
                             </Col>
