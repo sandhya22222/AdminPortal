@@ -197,9 +197,9 @@ const EditCurrency = () => {
             <Content className='!p-3 !mt-[9.5rem] !min-h-screen '>
                 <Spin tip='Please wait!' size='large' spinning={isLoading}>
                     <Content className=' !bg-white !p-4 shadow-brandShadow rounded'>
-                        <div className='font-semibold  text-lg my-2 mx-3'>{t('labels:currency_details')}</div>
-                        <div className='w-[100%] !flex-col !gap-2 !justify-start mx-3'>
-                            <div
+                        <div className='font-semibold  text-lg my-2 '>{t('labels:currency_details')}</div>
+                        <Row className='w-[100%]'>
+                            <Col
                                 className={`justify-items-start  !inline-block   ${
                                     util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
                                         ? 'text-left ml-2'
@@ -207,76 +207,43 @@ const EditCurrency = () => {
                                 }`}>
                                 <p className='input-label-color my-4 flex font-normal text-sm'>
                                     {t('labels:currency_code')}{' '}
-                                    <span
-                                        className={
-                                            util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                                ? 'mr-11'
-                                                : 'ml-11'
-                                        }>
-                                        :
-                                    </span>
                                 </p>
-                                <p className='input-label-color my-4 flex'>
-                                    {t('labels:conversation')}
-                                    <span
-                                        className={
-                                            util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                                ? 'mr-6'
-                                                : 'ml-6'
-                                        }>
-                                        :
-                                    </span>
-                                </p>
-                                <p className='input-label-color my-4 flex'>
-                                    {t('labels:unit_price_name')}
-                                    <span
-                                        className={
-                                            util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                                ? 'mr-9'
-                                                : 'ml-9'
-                                        }>
-                                        :
-                                    </span>
-                                </p>
-                                <p className='input-label-color my-4 flex'>
-                                    {t('labels:min_amount')}
-                                    <span
-                                        className={
-                                            util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                                ? 'mr-[60px]'
-                                                : 'ml-[60px]'
-                                        }>
-                                        :
-                                    </span>
-                                </p>
-                                <p className='input-label-color my-3 flex'>
-                                    {t('labels:currency_symbol')}
-                                    <span
-                                        className={
-                                            util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                                ? 'mr-8'
-                                                : 'ml-8'
-                                        }>
-                                        :
-                                    </span>
-                                </p>
-                                <p className='input-label-color my-4 flex'>
-                                    {t('labels:no_of_decimals')}
-                                    <span
-                                        className={
-                                            util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                                ? 'mr-10'
-                                                : 'ml-10'
-                                        }>
-                                        :
-                                    </span>
-                                </p>
-                            </div>
-                            <div
+                                <p className='input-label-color my-4 flex'>{t('labels:conversation')}</p>
+                                <p className='input-label-color my-4 flex'>{t('labels:unit_price_name')}</p>
+                                <p className='input-label-color my-4 flex'>{t('labels:min_amount')}</p>
+                                <p className='input-label-color my-3 flex'>{t('labels:currency_symbol')}</p>
+                                <p className='input-label-color my-4 flex'>{t('labels:no_of_decimals')}</p>
+                            </Col>
+                            <Col
                                 className={`${
                                     util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                        ? 'mr-8 w-[50%] !inline-block '
-                                        : 'ml-8 w-[50%] !inline-block '
+                                        ? 'mr-6 w-[4%] !inline-block '
+                                        : 'ml-6 w-[4%] !inline-block '
+                                }`}>
+                                <p className='!font-semibold my-4  '>
+                                    <span>:</span>
+                                </p>
+                                <p className='!font-semibold my-4'>
+                                    <span>:</span>
+                                </p>
+                                <p className='!font-semibold my-4'>
+                                    <span>:</span>
+                                </p>
+                                <p className='!font-semibold my-4'>
+                                    <span>:</span>
+                                </p>
+                                <p className='!font-semibold my-4'>
+                                    <span>:</span>
+                                </p>
+                                <p className='!font-semibold my-4'>
+                                    <span>:</span>
+                                </p>
+                            </Col>
+                            <Col
+                                className={`${
+                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                        ? ' w-[50%] !inline-block '
+                                        : ' w-[50%] !inline-block '
                                 }`}>
                                 <p className='!font-semibold my-4'>
                                     {currencyDetails?.iso_currency_code !== null
@@ -306,8 +273,8 @@ const EditCurrency = () => {
                                         ? currencyDetails?.no_of_decimal
                                         : `${t('labels:not_available')}`}
                                 </p>
-                            </div>
-                        </div>
+                            </Col>
+                        </Row>
 
                         {/* <Col span={12} className='mb-4'>
                             <label className='text-[14px] mb-2 ml-1 input-label-color'>

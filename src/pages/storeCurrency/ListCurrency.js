@@ -36,9 +36,7 @@ const ListCurrency = () => {
     //! columns for currency
     const listCurrencyColumns = [
         {
-            title: (
-                <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:title')}</Text>
-            ),
+            title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:title')}</Text>,
             dataIndex: 'currencyName',
             key: 'currencyName',
             width: '28%',
@@ -54,8 +52,8 @@ const ListCurrency = () => {
                         </Text>
                         {record.is_default === true ? (
                             <Tag
-                                icon={<img src={starIcon} className='mr-1 flex !items-center ' alt='defaultIcon' />}
-                                className='inline-flex items-center gap-1'
+                                // icon={<img src={starIcon} className='mr-1 flex !items-center ' alt='defaultIcon' />}
+                                className='inline-flex items-center gap-1 rounded-xl'
                                 color='#FB8500'>
                                 {t('labels:default_currency')}
                             </Tag>
@@ -90,7 +88,7 @@ const ListCurrency = () => {
             dataIndex: 'conversation',
             key: 'conversation',
             ellipsis: true,
-            width: '14%',
+            width: '13%',
             render: (text, record) => {
                 return <Text className='text-brandGray1'>{record.unit_conversion}</Text>
             },
@@ -121,7 +119,7 @@ const ListCurrency = () => {
             title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:symbol')}</Text>,
             dataIndex: 'symbol',
             key: 'symbol',
-            width: '8%',
+            width: '10%',
             render: (text, record) => {
                 return <Text className='text-brandGray1'>{record.symbol}</Text>
             },
@@ -141,7 +139,7 @@ const ListCurrency = () => {
             title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:action')}</Text>,
             dataIndex: '',
             key: '',
-            width: '13%',
+            width: '12%',
             // align: 'center',
             render: (text, record) => {
                 return (

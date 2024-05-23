@@ -183,85 +183,50 @@ const Currency = ({ storeUUId }) => {
                             {t('labels:currency_details')}
                         </Title>
                         {currencyData && currencyData.length > 0 ? (
-                            <div className='w-[100%] !flex-col !gap-2 !justify-start'>
-                                <div
-                                    className={`justify-items-start  !inline-block   ${
+                            <Row className='w-[80%]'>
+                                <Col
+                                    className={`w-[20%] justify-items-start  !inline-block   ${
                                         util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
                                             ? 'text-left ml-2'
                                             : 'text-right mr-2 '
                                     }`}>
-                                    <p className='!text-brandGray1 my-3 flex'>
-                                        {t('labels:currency_code')}{' '}
-                                        <span
-                                            className={
-                                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                                    ? 'mr-11'
-                                                    : 'ml-11'
-                                            }>
-                                            :
-                                        </span>
-                                    </p>
-                                    <p className='!text-brandGray1 my-3 flex'>
-                                        {t('labels:unit_conversation')}
-                                        <span
-                                            className={
-                                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                                    ? 'mr-6'
-                                                    : 'ml-6'
-                                            }>
-                                            :
-                                        </span>
-                                    </p>
-                                    <p className='!text-brandGray1  my-3 flex'>
-                                        {t('labels:unit_price_name')}
-                                        <span
-                                            className={
-                                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                                    ? 'mr-9'
-                                                    : 'ml-9'
-                                            }>
-                                            :
-                                        </span>
-                                    </p>
-                                    <p className='text-brandGray1  my-3 flex'>
-                                        {t('labels:min_amount')}
-                                        <span
-                                            className={
-                                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                                    ? 'mr-[60px]'
-                                                    : 'ml-[60px]'
-                                            }>
-                                            :
-                                        </span>
-                                    </p>
-                                    <p className='text-brandGray1  my-3 flex'>
-                                        {t('labels:currency_symbol')}
-                                        <span
-                                            className={
-                                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                                    ? 'mr-8'
-                                                    : 'ml-8'
-                                            }>
-                                            :
-                                        </span>
-                                    </p>
-                                    <p className='text-brandGray1  my-3 flex'>
-                                        {t('labels:no_of_decimals')}
-                                        <span
-                                            className={
-                                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                                    ? 'mr-10'
-                                                    : 'ml-10'
-                                            }>
-                                            :
-                                        </span>
-                                    </p>
-                                </div>
-                                <div
+                                    <p className='!text-brandGray1 my-3 flex'>{t('labels:currency_code')} </p>
+                                    <p className='!text-brandGray1 my-3 flex'>{t('labels:conversation')}</p>
+                                    <p className='!text-brandGray1  my-3 flex'>{t('labels:unit_price_name')}</p>
+                                    <p className='text-brandGray1  my-3 flex'>{t('labels:min_amount')}</p>
+                                    <p className='text-brandGray1  my-3 flex'>{t('labels:currency_symbol')}</p>
+                                    <p className='text-brandGray1  my-3 flex'>{t('labels:no_of_decimals')}</p>
+                                </Col>
+                                <Col
                                     className={`${
                                         util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                            ? 'mr-8 w-[50%] !inline-block '
-                                            : 'ml-8 w-[50%] !inline-block '
+                                            ? 'mr-6 w-[4%] !inline-block '
+                                            : 'ml-6 w-[4%] !inline-block '
+                                    }`}>
+                                    <p className='!font-semibold my-3'>
+                                        <span>:</span>
+                                    </p>
+                                    <p className='!font-semibold my-3'>
+                                        <span>:</span>
+                                    </p>
+                                    <p className='!font-semibold my-3'>
+                                        <span>:</span>
+                                    </p>
+                                    <p className='!font-semibold my-3'>
+                                        <span>:</span>
+                                    </p>
+                                    <p className='!font-semibold my-3'>
+                                        <span>:</span>
+                                    </p>
+                                    <p className='!font-semibold my-3'>
+                                        <span>:</span>
+                                    </p>
+                                </Col>
+                                <Col
+                                    className={`bg ${
+                                        util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                            ? 'w-[15%] !inline-block '
+                                            : 'w-[15%] !inline-block '
                                     }`}>
                                     <p className='!font-semibold my-3'>
                                         {currencyData[0].iso_currency_code !== null
@@ -293,8 +258,8 @@ const Currency = ({ storeUUId }) => {
                                             ? currencyData[0].no_of_decimal
                                             : `${t('labels:not_available')}`}
                                     </p>
-                                </div>
-                            </div>
+                                </Col>
+                            </Row>
                         ) : null}
                         <div>
                             <Row className='gap-2 !mt-2'>
