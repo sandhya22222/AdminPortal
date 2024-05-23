@@ -114,9 +114,11 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                 break
             case 'AMS-000028-19':
                 break
+            case 'AMS-000028-20':
             case 'AMS-000028-21':
                 setInvalidMaxProductLimit(true)
                 break
+            case 'AMS-000028-22':
             case 'AMS-000028-23':
                 setInvalidMaxTemplateLimit(true)
                 break
@@ -866,7 +868,9 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                 <Spin tip='Please wait!' size='large' spinning={isStoreDataLimitSaving}>
                     <Content className='bg-white !rounded-md border my-4'>
                         <Content className='p-3'>
-                            <label className='text-lg mb-2 font-semibold text-regal-blue'>{t('labels:thershold_limit')}</label>
+                            <label className='text-lg mb-2 font-semibold text-regal-blue'>
+                                {t('labels:thershold_limit')}
+                            </label>
                         </Content>
                         {storeLimitValues && analysisCount ? (
                             <DynamicTable tableComponentData={tablePropsThreshold} />

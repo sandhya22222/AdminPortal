@@ -50,11 +50,11 @@ const PreviewAndCustomise = ({ closeModal, refetchUserConsent, storeName, storeI
             })
             tempReorderList.sort((a, b) => a.ordering - b.ordering)
             if (tempReorderList?.length > 0) setReorderList(tempReorderList)
-        }else{
+        } else {
             setLeadInLine('')
             setExplicit(false)
             setReorderList([])
-    }
+        }
     }, [userConsents, userConsentsStatus])
 
     const handleListDragStart = (e, index) => {
@@ -66,7 +66,7 @@ const PreviewAndCustomise = ({ closeModal, refetchUserConsent, storeName, storeI
     }
 
     const handleListDrop = (e, comp) => {
-        console.log('draggedItem', draggedItem, comp?.key)
+        console.log('draggedItem', draggedItem, comp?.key, reorderList?.slice())
         const updatedFormItems = reorderList?.slice()
         if (draggedItem !== -1 && draggedOverItem !== -1) {
             // Swap positions
@@ -261,14 +261,20 @@ const PreviewAndCustomise = ({ closeModal, refetchUserConsent, storeName, storeI
                                                     key={list?.key}
                                                     className=' flex !py-5 items-center gap-x-4 px-4 border-b  cursor-move'
                                                     onDragStart={(e) => {
-                                                        handleListDragStart(e, index)
+                                                        if (reorderList?.length > 1) {
+                                                            handleListDragStart(e, index)
+                                                        }
                                                     }}
                                                     onDragEnter={(e) => {
-                                                        handelListDragEnter(e, index)
+                                                        if (reorderList?.length > 1) {
+                                                            handelListDragEnter(e, index)
+                                                        }
                                                     }}
                                                     onDragEnd={(e) => {
-                                                        e.stopPropagation()
-                                                        handleListDrop(e, index)
+                                                        if (reorderList?.length > 1) {
+                                                            e.stopPropagation()
+                                                            handleListDrop(e, index)
+                                                        }
                                                     }}
                                                     draggable>
                                                     <div className=' shrink-0'>
