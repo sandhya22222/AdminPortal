@@ -160,8 +160,9 @@ const PoliciesSettings = ({ storeName }) => {
                     <div>
                         <Text className='input-label-color'>{t('messages:help_info_policies')}</Text>
                     </div>
-                    <div className='mt-3 flex'>
-                        <Text className='input-label-color font-bold'>{t('labels:bonus')}:</Text>
+                    <div className='mt-3'>
+                        <Text className='input-label-color font-bold'>{t('labels:bonus')}</Text>
+                        <span>{": "}</span>
                         <Text className='input-label-color '> {t('messages:policy_bonus_note')}</Text>
                     </div>
                 </div>

@@ -32,7 +32,7 @@ const NewFooter = () => {
                                                                 mouseEnterDelay: 0.5,
                                                             },
                                                         }}
-                                                        className='!text-xs !text-brandGray1'>
+                                                        className='!text-xs !text-brandGray1 hover:!text-brandGray1'>
                                                         {data?.version_details?.consent_name ||
                                                             data?.version_details?.consent_display_name}
                                                     </AntLink>
@@ -48,7 +48,7 @@ const NewFooter = () => {
                         })}
                         {userConsentData && userConsentData.length > 4 ? (
                             <Link
-                                className=' !text-brandGray1 no-underline'
+                                className=' !text-brandGray1 hover:!text-brandGray1 no-underline'
                                 to={`/dashboard/userprofile?tab=policies&subtab=${userConsentData && userConsentData[0].id}`}>
                                 {t('labels:show_more')}
                             </Link>
