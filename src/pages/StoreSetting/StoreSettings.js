@@ -2793,7 +2793,7 @@ const StoreSettings = () => {
                                         </Col>
                                     </Row>
                                 </Content> */}
-                                <Content>
+                                {/* <Content>
                                     <label className='text-[20px] mb-2 mt-4 font-bold select-none'>
                                         {t('labels:store_footer_setting')}
                                     </label>
@@ -2963,7 +2963,7 @@ const StoreSettings = () => {
                                             ) : null}
                                         </Col>
                                     </Row>
-                                </Content>
+                                </Content> */}
                                 <Content className='mt-4'>
                                     {hideActionButton ? (
                                         ''
