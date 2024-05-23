@@ -214,22 +214,22 @@ const Currency = ({ storeUUId }) => {
                                             ? 'mr-6 w-[4%] !inline-block '
                                             : 'ml-6 w-[4%] !inline-block '
                                     }`}>
-                                    <p className='!font-semibold my-3'>
+                                    <p className='!font-semibold my-3 !text-brandGray1'>
                                         <span>:</span>
                                     </p>
-                                    <p className='!font-semibold my-3'>
+                                    <p className='!font-semibold my-3 !text-brandGray1'>
                                         <span>:</span>
                                     </p>
-                                    <p className='!font-semibold my-3'>
+                                    <p className='!font-semibold my-3 !text-brandGray1'>
                                         <span>:</span>
                                     </p>
-                                    <p className='!font-semibold my-3'>
+                                    <p className='!font-semibold my-3 !text-brandGray1'>
                                         <span>:</span>
                                     </p>
-                                    <p className='!font-semibold my-3'>
+                                    <p className='!font-semibold my-3 !text-brandGray1'>
                                         <span>:</span>
                                     </p>
-                                    <p className='!font-semibold my-3'>
+                                    <p className='!font-semibold my-3 !text-brandGray1'>
                                         <span>:</span>
                                     </p>
                                 </Col>
