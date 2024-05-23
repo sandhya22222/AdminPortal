@@ -277,7 +277,7 @@ const Language = () => {
                     <Content className=''>
                         <div className='flex flex-row justify-between items-center h-[42px]'>
                             <Text level={3} className='!font-semibold text-regal-blue text-2xl'>
-                                {t('labels:languages')}
+                                {t('labels:language_settings')}
                             </Text>
                             <Content className='!flex gap-2 items-center !justify-end'>
                                 <Dropdown

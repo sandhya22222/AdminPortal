@@ -21,6 +21,8 @@ const Currency = ({ storeUUId }) => {
     const [filteredCurrencyData, setFilteredCurrencyData] = useState([])
     const [currencyData, setCurrencyData] = useState([])
     const [currencySymbol, setCurrencySymbol] = useState('')
+    const [currencyIsoCode, setCurrencyIsoCode] = useState('')
+    const [isVendorsOnBoarded, setIsVendorsOnBoarded] = useState()
 
     //!get call of list currency
     const findByPageCurrencyData = () => {
@@ -46,7 +48,10 @@ const Currency = ({ storeUUId }) => {
             .then(function (response) {
                 console.log('Get response of Store setting--->', response.data.response_body.store_settings_data[0])
                 setIsLoading(false)
+                setIsVendorsOnBoarded(response?.data?.response_body?.store_settings_data[0]?.is_vendor_created)
+
                 setCurrencySymbol(response?.data?.response_body?.store_settings_data[0]?.store_currency[0]?.symbol)
+                setCurrencyIsoCode(response?.data?.response_body?.store_settings_data[0]?.store_currency[0]?.iso_code)
             })
             .catch((error) => {
                 setIsLoading(false)
@@ -88,6 +93,7 @@ const Currency = ({ storeUUId }) => {
             .then((response) => {
                 setIsCurrencyLoading(false)
                 setCurrencyOnChange(false)
+                setCurrencyIsoCode(response?.data?.response_body?.iso_code)
 
                 console.log(
                     'success response  for Store Settings Restore Factory ',
@@ -105,7 +111,11 @@ const Currency = ({ storeUUId }) => {
 
     const handleCurrencyChange = (value) => {
         findAllWithoutCurrencyDataByChange(value)
-        setCurrencyOnChange(true)
+        if (value !== currencyIsoCode) {
+            setCurrencyOnChange(true)
+        } else {
+            setCurrencyOnChange(false)
+        }
     }
 
     const currencyDataProcessor = (currencyProcessorData) => {
@@ -167,6 +177,7 @@ const Currency = ({ storeUUId }) => {
                                 </label>
                                 <Select
                                     showSearch={false}
+                                    disabled={isVendorsOnBoarded ? true : false}
                                     className='w-100'
                                     dropdownStyle={{ zIndex: 1 }}
                                     placeholder={t('messages:please_choose_a_store_currency')}
@@ -297,26 +308,28 @@ const Currency = ({ storeUUId }) => {
                             </div>
                         ) : null}
                         <div>
-                            <Row className='gap-2 !mt-2'>
-                                <Col>
-                                    <Button
-                                        className='app-btn-primary '
-                                        onClick={() => updateStoreCurrencyApi()}
-                                        disabled={!currencyOnChange}>
-                                        {t('labels:save')}
-                                    </Button>
-                                </Col>
-                                <Col className=''>
-                                    <Button
-                                        className=' app-btn-secondary'
-                                        disabled={!currencyOnChange}
-                                        onClick={() => {
-                                            navigate('/dashboard/store?m_t=1')
-                                        }}>
-                                        {t('labels:discard')}
-                                    </Button>
-                                </Col>
-                            </Row>
+                            {isVendorsOnBoarded === true ? null : (
+                                <Row className='gap-2 !mt-2'>
+                                    <Col>
+                                        <Button
+                                            className='app-btn-primary '
+                                            onClick={() => updateStoreCurrencyApi()}
+                                            disabled={!currencyOnChange}>
+                                            {t('labels:save')}
+                                        </Button>
+                                    </Col>
+                                    <Col className=''>
+                                        <Button
+                                            className=' app-btn-secondary'
+                                            disabled={!currencyOnChange}
+                                            onClick={() => {
+                                                navigate('/dashboard/store?m_t=1')
+                                            }}>
+                                            {t('labels:discard')}
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            )}
                         </div>
                     </Content>
                 </Spin>
