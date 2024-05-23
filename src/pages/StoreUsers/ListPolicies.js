@@ -1,4 +1,4 @@
-import { Empty, Layout, Skeleton, Anchor, Row, Col } from 'antd'
+import { Layout, Skeleton, Anchor, Row, Col } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import useGetStoreAdminConsent from '../../hooks/useGetStoreAdminConsent'
@@ -8,6 +8,7 @@ import ReactQuill from 'react-quill'
 import './DisplayPolicy.css'
 import { getGenerateDateAndTime } from '../../util/util'
 import { usePageTitle } from '../../hooks/usePageTitle'
+import { EmptySVG } from '../../constants/media'
 const { Content } = Layout
 
 const ListPolicies = ({ searchParams, setSearchParams }) => {
@@ -146,8 +147,10 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
                         </Row>
                     )}
                     {policiesTab?.length === 0 && (
-                        <div className='  flex justify-center mb-3'>
-                            <Empty description={t('messages:no_policies_available')} />
+                        <div className='  flex flex-col items-center justify-center gap-4 mb-3'>
+                            <img src={EmptySVG} alt='no_policies_available' />
+                            {t('messages:no_policies_available')}
+                            {/* <Empty description={t('messages:no_policies_available')} /> */}
                         </div>
                     )}
                 </>
