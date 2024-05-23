@@ -49,10 +49,10 @@ const Language = () => {
             dataIndex: 'language',
             key: 'language',
             width: '21%',
-            ellipsis: true,
+            // ellipsis: true,
             render: (text, record) => {
                 return (
-                    <Content className='inline-block'>
+                    <Content className='flex flex-row'>
                         <Tooltip title={record.language} overlayStyle={{ zIndex: 1 }} placement={'bottom'}>
                             <Text
                                 className={`text-brandGray1 mx-1 ${record.is_default ? '!max-w-[50px]' : '!max-w-[150px]'} `}

@@ -448,7 +448,7 @@ const Theme = ({ id, getImageData }) => {
                             <Divider className='!my-4 input-label-color' orientation='left'>
                                 {t('labels:page_theme')}
                             </Divider>
-                            <Row className='mt-2'>
+                            {/* <Row className='mt-2'>
                                 <Col span={8} className='mr-2 '>
                                     <label className='text-[13px] mb-2 ml-1 select-none input-label-color'>
                                         {t('labels:background_color')}
@@ -615,7 +615,7 @@ const Theme = ({ id, getImageData }) => {
                                         </p>
                                     ) : null}
                                 </Col>
-                            </Row>
+                            </Row> */}
                             <Row className='mt-4'>
                                 <Col span={8} className='mr-2 '>
                                     <label className='text-[13px] mb-2 ml-1 select-none input-label-color'>
@@ -1119,7 +1119,7 @@ const Theme = ({ id, getImageData }) => {
                                 </Col>
                             </Row>
                         </Content>
-                        <Content>
+                        {/* <Content>
                             <Divider className='!my-6 input-label-color' orientation='left'>
                                 {t('labels:store_header_setting')}
                             </Divider>
@@ -1288,8 +1288,8 @@ const Theme = ({ id, getImageData }) => {
                                     ) : null}
                                 </Col>
                             </Row>
-                        </Content>
-                        <Content>
+                        </Content> */}
+                        {/* <Content>
                             <Divider className='!my-6 input-label-color' orientation='left'>
                                 {t('labels:store_footer_setting')}
                             </Divider>
@@ -1459,7 +1459,7 @@ const Theme = ({ id, getImageData }) => {
                                     ) : null}
                                 </Col>
                             </Row>
-                        </Content>
+                        </Content> */}
                         <Content className='mt-4'>
                             <Row className='gap-2'>
                                 <Col>
