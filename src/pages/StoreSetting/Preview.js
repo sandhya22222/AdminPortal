@@ -14,7 +14,6 @@ const Preview = ({
     foreGroundColor,
     buttonPrimaryBackgroundColor,
     buttonSecondaryBackgroundColor,
-    buttonTertiaryBackgroundColor,
     buttonPrimaryForegroundColor,
     buttonSecondaryForegroundColor,
     buttonTeritaryForegroundColor,
@@ -76,11 +75,12 @@ const Preview = ({
                         {t('labels:button2')}
                     </Button>
                     <Button
+                        type='link'
                         className={util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-8' : 'ml-8'}
                         style={{
-                            backgroundColor: buttonTertiaryBackgroundColor,
+                            // backgroundColor: buttonTertiaryBackgroundColor,
                             color: buttonTeritaryForegroundColor,
-                            border: buttonTertiaryBackgroundColor,
+                            // border: buttonTertiaryBackgroundColor,
                         }}>
                         {t('labels:button3')}
                     </Button>
