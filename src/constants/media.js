@@ -44,6 +44,7 @@ import CopyTextImage from '../assets/images/common/copyText.svg'
 import CheckGreen from '../assets/images/common/checkgreen.svg'
 import deleteIcon from '../assets/images/common/deleteIcon.svg'
 import InfoIcon from '../assets/images/common/infoIcon.svg'
+import EmptySVG from '../assets/images/common/Empty.svg'
 export {
     LoginBackground,
     Favicon,
@@ -90,4 +91,5 @@ export {
     CheckGreen,
     deleteIcon,
     InfoIcon,
+    EmptySVG
 }
