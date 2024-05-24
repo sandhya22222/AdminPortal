@@ -24,7 +24,7 @@ const Theme = ({ id, getImageData }) => {
     const [btnPrimaryBgColor, setBtnPrimaryBgColor] = useState('#000000')
     const [buttonSecondaryBackgroundColor, setButtonSecondaryBackgroundColor] = useState('#000000')
     const [btnSecondaryBgColor, setBtnSecondaryBgColor] = useState('#000000')
-    const [buttonTertiaryBackgroundColor, setButtonTertiaryBackgroundColor] = useState('#000000')
+    // const [buttonTertiaryBackgroundColor, setButtonTertiaryBackgroundColor] = useState('#000000')
     const [btnTeritaryBgColor, setbtnTeritaryBgColor] = useState('#000000')
     const [buttonPrimaryForegroundColor, setButtonPrimaryForegroundColor] = useState('#000000')
     const [btnPrimaryFgColor, setBtnPrimaryFgColor] = useState('#000000')
@@ -58,7 +58,7 @@ const Theme = ({ id, getImageData }) => {
         pageTextColorValidation: false,
         primaryBgValidation: false,
         secondaryBgValidation: false,
-        tertiaryBgValidation: false,
+        // tertiaryBgValidation: false,
         primaryTextValidation: false,
         secondaryTextValidation: false,
         tertiaryTextValidation: false,
@@ -126,12 +126,12 @@ const Theme = ({ id, getImageData }) => {
                 setBtnSecondaryFgColor(
                     response.data.response_body.store_settings_data[0].store_page_settings[0].btn_secondary_fg_color
                 )
-                setButtonTertiaryBackgroundColor(
-                    response.data.response_body.store_settings_data[0].store_page_settings[0].btn_tertiary_bg_color
-                )
-                setbtnTeritaryBgColor(
-                    response.data.response_body.store_settings_data[0].store_page_settings[0].btn_tertiary_bg_color
-                )
+                // setButtonTertiaryBackgroundColor(
+                //     response.data.response_body.store_settings_data[0].store_page_settings[0].btn_tertiary_bg_color
+                // )
+                // setbtnTeritaryBgColor(
+                //     response.data.response_body.store_settings_data[0].store_page_settings[0].btn_tertiary_bg_color
+                // )
                 setButtonTeritaryForegroundColor(
                     response.data.response_body.store_settings_data[0].store_page_settings[0].btn_tertiary_fg_color
                 )
@@ -162,7 +162,7 @@ const Theme = ({ id, getImageData }) => {
                     setPageBackgroundColor('#EBEBEB')
                     setButtonPrimaryBackgroundColor('#000000')
                     setButtonSecondaryBackgroundColor('#000000')
-                    setButtonTertiaryBackgroundColor('#000000')
+                    // setButtonTertiaryBackgroundColor('#000000')
                     setButtonPrimaryForegroundColor('#000000')
                     setButtonSecondaryForegroundColor('#000000')
                     setButtonTeritaryForegroundColor('#000000')
@@ -218,10 +218,10 @@ const Theme = ({ id, getImageData }) => {
                     response.data.response_body.store_page_settings[0].btn_secondary_fg_color
                 )
                 setBtnSecondaryFgColor(response.data.response_body.store_page_settings[0].btn_secondary_fg_color)
-                setButtonTertiaryBackgroundColor(
-                    response.data.response_body.store_page_settings[0].btn_tertiary_bg_color
-                )
-                setbtnTeritaryBgColor(response.data.response_body.store_page_settings[0].btn_tertiary_bg_color)
+                // setButtonTertiaryBackgroundColor(
+                //     response.data.response_body.store_page_settings[0].btn_tertiary_bg_color
+                // )
+                // setbtnTeritaryBgColor(response.data.response_body.store_page_settings[0].btn_tertiary_bg_color)
                 setButtonTeritaryForegroundColor(
                     response.data.response_body.store_page_settings[0].btn_tertiary_fg_color
                 )
@@ -251,7 +251,6 @@ const Theme = ({ id, getImageData }) => {
                     fg_color: foreGroundColor,
                     btn_primary_bg_color: buttonPrimaryBackgroundColor,
                     btn_secondary_bg_color: buttonSecondaryBackgroundColor,
-                    btn_tertiary_bg_color: buttonTertiaryBackgroundColor,
                     btn_primary_fg_color: buttonPrimaryForegroundColor,
                     btn_secondary_fg_color: buttonSecondaryForegroundColor,
                     btn_tertiary_fg_color: buttonTeritaryForegroundColor,
@@ -299,10 +298,10 @@ const Theme = ({ id, getImageData }) => {
                     response.data.response_body.store_page_settings[0].btn_secondary_fg_color
                 )
                 setBtnSecondaryFgColor(response.data.response_body.store_page_settings[0].btn_secondary_fg_color)
-                setButtonTertiaryBackgroundColor(
-                    response.data.response_body.store_page_settings[0].btn_tertiary_bg_color
-                )
-                setbtnTeritaryBgColor(response.data.response_body.store_page_settings[0].btn_tertiary_bg_color)
+                // setButtonTertiaryBackgroundColor(
+                //     response.data.response_body.store_page_settings[0].btn_tertiary_bg_color
+                // )
+                // setbtnTeritaryBgColor(response.data.response_body.store_page_settings[0].btn_tertiary_bg_color)
                 setButtonTeritaryForegroundColor(
                     response.data.response_body.store_page_settings[0].btn_tertiary_fg_color
                 )
@@ -337,8 +336,6 @@ const Theme = ({ id, getImageData }) => {
                 (copyImageOfStoreSettingsPageTheme && copyImageOfStoreSettingsPageTheme.btn_secondary_bg_color) &&
             (imageOfStoreSettingsPageTheme && imageOfStoreSettingsPageTheme.btn_secondary_fg_color) ===
                 (copyImageOfStoreSettingsPageTheme && copyImageOfStoreSettingsPageTheme.btn_secondary_fg_color) &&
-            (imageOfStoreSettingsPageTheme && imageOfStoreSettingsPageTheme.btn_tertiary_bg_color) ===
-                (copyImageOfStoreSettingsPageTheme && copyImageOfStoreSettingsPageTheme.btn_tertiary_bg_color) &&
             (imageOfStoreSettingsPageTheme && imageOfStoreSettingsPageTheme.btn_tertiary_fg_color) ===
                 (copyImageOfStoreSettingsPageTheme && copyImageOfStoreSettingsPageTheme.btn_tertiary_fg_color) &&
             (imageOfStoreSettingsPageTheme && imageOfStoreSettingsPageTheme.fg_color) ===
@@ -359,7 +356,6 @@ const Theme = ({ id, getImageData }) => {
             colorCodeValidation.pageTextColorValidation === true ||
             colorCodeValidation.primaryBgValidation === true ||
             colorCodeValidation.secondaryBgValidation === true ||
-            colorCodeValidation.tertiaryBgValidation === true ||
             colorCodeValidation.primaryTextValidation === true ||
             colorCodeValidation.secondaryTextValidation === true ||
             colorCodeValidation.tertiaryTextValidation === true ||
@@ -437,7 +433,6 @@ const Theme = ({ id, getImageData }) => {
                                         foreGroundColor={foreGroundColor}
                                         buttonPrimaryBackgroundColor={buttonPrimaryBackgroundColor}
                                         buttonSecondaryBackgroundColor={buttonSecondaryBackgroundColor}
-                                        buttonTertiaryBackgroundColor={buttonTertiaryBackgroundColor}
                                         buttonPrimaryForegroundColor={buttonPrimaryForegroundColor}
                                         buttonSecondaryForegroundColor={buttonSecondaryForegroundColor}
                                         buttonTeritaryForegroundColor={buttonTeritaryForegroundColor}
@@ -785,6 +780,89 @@ const Theme = ({ id, getImageData }) => {
                                 </Col>
                                 <Col span={7} className='ml-2'>
                                     <label className='text-[13px] mb-2 ml-1 select-none input-label-color'>
+                                        {t('labels:tertiary_button_text_color')}
+                                    </label>
+                                    <Content className='flex gap-2'>
+                                        <Input
+                                            type='color'
+                                            className='w-9 p-0'
+                                            value={buttonTeritaryForegroundColor}
+                                            onChange={(e) => {
+                                                const patternName = /^#([A-Fa-f0-9]{6})$/
+                                                if (patternName.test(e.target.value) === false) {
+                                                    let temp = { ...colorCodeValidation }
+                                                    temp['tertiaryTextValidation'] = true
+                                                    setColorCodeValidation(temp)
+                                                    setButtonTeritaryForegroundColor(e.target.value)
+                                                    setOnChangeValues(true)
+                                                } else {
+                                                    let temp = { ...colorCodeValidation }
+                                                    temp['tertiaryTextValidation'] = false
+                                                    setColorCodeValidation(temp)
+                                                    setButtonTeritaryForegroundColor(e.target.value)
+                                                    setOnChangeValues(true)
+                                                }
+                                                let temp = { ...copyImageOfStoreSettingsPageTheme }
+                                                temp['btn_tertiary_fg_color'] = e.target.value
+                                                setCopyImageOfStoreSettingsPageTheme(temp)
+                                            }}
+                                        />
+                                        <Space.Compact className=''>
+                                            <Input
+                                                value={buttonTeritaryForegroundColor}
+                                                maxLength={7}
+                                                className='w-[150px]'
+                                                onChange={(e) => {
+                                                    const inputValue = e.target.value
+                                                    // Allow only numeric input
+                                                    const numericValue = inputValue
+                                                        .replace(/[^a-f0-9#]/gi, '')
+                                                        .substring(0, 7)
+                                                    setButtonTeritaryForegroundColor(numericValue)
+                                                    const patternName = /^#([A-Fa-f0-9]{6})$/
+                                                    if (patternName.test(numericValue) === false) {
+                                                        let temp = { ...colorCodeValidation }
+                                                        temp['tertiaryTextValidation'] = true
+                                                        setColorCodeValidation(temp)
+                                                        setButtonTeritaryForegroundColor(numericValue)
+                                                        setOnChangeValues(true)
+                                                    } else {
+                                                        let temp = { ...colorCodeValidation }
+                                                        temp['tertiaryTextValidation'] = false
+                                                        setColorCodeValidation(temp)
+                                                        setButtonTeritaryForegroundColor(numericValue)
+                                                        setOnChangeValues(true)
+                                                    }
+                                                    let temp = {
+                                                        ...copyImageOfStoreSettingsPageTheme,
+                                                    }
+                                                    temp['btn_tertiary_fg_color'] = numericValue
+                                                    setCopyImageOfStoreSettingsPageTheme(temp)
+                                                }}
+                                                addonAfter={
+                                                    <Tooltip title={t('messages:reset_to_the_original_value')}>
+                                                        <UndoOutlined
+                                                            onClick={() => {
+                                                                setButtonTeritaryForegroundColor(btnTertiaryFgColor)
+                                                                let temp = { ...colorCodeValidation }
+                                                                temp['tertiaryTextValidation'] = false
+                                                                setColorCodeValidation(temp)
+                                                            }}
+                                                        />
+                                                    </Tooltip>
+                                                }
+                                            />
+                                        </Space.Compact>
+                                    </Content>
+                                    {colorCodeValidation.tertiaryTextValidation === true ? (
+                                        <p className='text-red-600 text-sm'>
+                                            {t('messages:please_enter_valid_hexadecimal_code')} <br />
+                                            {t('messages:ex_ffffff_for_white_000000_for_black')}
+                                        </p>
+                                    ) : null}
+                                </Col>
+                                {/* <Col span={7} className='ml-2'>
+                                    <label className='text-[13px] mb-2 ml-1 select-none input-label-color'>
                                         {t('labels:tertiary_button_background_color')}
                                     </label>
                                     <Content className='flex gap-2'>
@@ -865,7 +943,7 @@ const Theme = ({ id, getImageData }) => {
                                             {t('messages:ex_ffffff_for_white_000000_for_black')}
                                         </p>
                                     ) : null}
-                                </Col>
+                                </Col> */}
                             </Row>
                             <Row className='mt-4'>
                                 <Col span={8} className='mr-2 '>
@@ -1028,89 +1106,6 @@ const Theme = ({ id, getImageData }) => {
                                         </Space.Compact>
                                     </Content>
                                     {colorCodeValidation.secondaryTextValidation === true ? (
-                                        <p className='text-red-600 text-sm'>
-                                            {t('messages:please_enter_valid_hexadecimal_code')} <br />
-                                            {t('messages:ex_ffffff_for_white_000000_for_black')}
-                                        </p>
-                                    ) : null}
-                                </Col>
-                                <Col span={7} className='ml-2'>
-                                    <label className='text-[13px] mb-2 ml-1 select-none input-label-color'>
-                                        {t('labels:tertiary_button_text_color')}
-                                    </label>
-                                    <Content className='flex gap-2'>
-                                        <Input
-                                            type='color'
-                                            className='w-9 p-0'
-                                            value={buttonTeritaryForegroundColor}
-                                            onChange={(e) => {
-                                                const patternName = /^#([A-Fa-f0-9]{6})$/
-                                                if (patternName.test(e.target.value) === false) {
-                                                    let temp = { ...colorCodeValidation }
-                                                    temp['tertiaryTextValidation'] = true
-                                                    setColorCodeValidation(temp)
-                                                    setButtonTeritaryForegroundColor(e.target.value)
-                                                    setOnChangeValues(true)
-                                                } else {
-                                                    let temp = { ...colorCodeValidation }
-                                                    temp['tertiaryTextValidation'] = false
-                                                    setColorCodeValidation(temp)
-                                                    setButtonTeritaryForegroundColor(e.target.value)
-                                                    setOnChangeValues(true)
-                                                }
-                                                let temp = { ...copyImageOfStoreSettingsPageTheme }
-                                                temp['btn_tertiary_fg_color'] = e.target.value
-                                                setCopyImageOfStoreSettingsPageTheme(temp)
-                                            }}
-                                        />
-                                        <Space.Compact className=''>
-                                            <Input
-                                                value={buttonTeritaryForegroundColor}
-                                                maxLength={7}
-                                                className='w-[150px]'
-                                                onChange={(e) => {
-                                                    const inputValue = e.target.value
-                                                    // Allow only numeric input
-                                                    const numericValue = inputValue
-                                                        .replace(/[^a-f0-9#]/gi, '')
-                                                        .substring(0, 7)
-                                                    setButtonTeritaryForegroundColor(numericValue)
-                                                    const patternName = /^#([A-Fa-f0-9]{6})$/
-                                                    if (patternName.test(numericValue) === false) {
-                                                        let temp = { ...colorCodeValidation }
-                                                        temp['tertiaryTextValidation'] = true
-                                                        setColorCodeValidation(temp)
-                                                        setButtonTeritaryForegroundColor(numericValue)
-                                                        setOnChangeValues(true)
-                                                    } else {
-                                                        let temp = { ...colorCodeValidation }
-                                                        temp['tertiaryTextValidation'] = false
-                                                        setColorCodeValidation(temp)
-                                                        setButtonTeritaryForegroundColor(numericValue)
-                                                        setOnChangeValues(true)
-                                                    }
-                                                    let temp = {
-                                                        ...copyImageOfStoreSettingsPageTheme,
-                                                    }
-                                                    temp['btn_tertiary_fg_color'] = numericValue
-                                                    setCopyImageOfStoreSettingsPageTheme(temp)
-                                                }}
-                                                addonAfter={
-                                                    <Tooltip title={t('messages:reset_to_the_original_value')}>
-                                                        <UndoOutlined
-                                                            onClick={() => {
-                                                                setButtonTeritaryForegroundColor(btnTertiaryFgColor)
-                                                                let temp = { ...colorCodeValidation }
-                                                                temp['tertiaryTextValidation'] = false
-                                                                setColorCodeValidation(temp)
-                                                            }}
-                                                        />
-                                                    </Tooltip>
-                                                }
-                                            />
-                                        </Space.Compact>
-                                    </Content>
-                                    {colorCodeValidation.tertiaryTextValidation === true ? (
                                         <p className='text-red-600 text-sm'>
                                             {t('messages:please_enter_valid_hexadecimal_code')} <br />
                                             {t('messages:ex_ffffff_for_white_000000_for_black')}
