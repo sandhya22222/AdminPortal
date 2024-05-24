@@ -263,7 +263,7 @@ const Stores = () => {
                 const [count, total, keyName] = text.split(',')
                 return (
                     <Content>
-                        {count !== 'undefined' && total !== 'undefined' ? (
+                        {count === 'undefined' || total === 'undefined' ? null : count !== 'undefined' && total ? (
                             <Content className='flex flex-col'>
                                 <div
                                     className={
