@@ -64,3 +64,24 @@
     color: var(--mp-sidebar-menu-selected) !important;
     /* background-color: var(--mp-sidebar-menu-selected-background) !important; */
 }
+
+.ant-menu-light.ant-menu-submenu-popup > .ant-menu {
+    background-color: var(--mp-sidebar-submenu-popup-background-color) !important;
+}
+.ant-menu-item > .ant-menu-item-only-child {
+    color: var(--mp-sidebar-submenu-popup-text-color) !important;
+}
+
+.ant-menu-submenu-popup .ant-menu-vertical .ant-menu-item {
+    color: var(--mp-sidebar-submenu-popup-text-color) !important;
+}
+
+.ant-menu-light > .ant-menu .ant-menu-item-selected {
+    color: var(--mp-sidebar-menu-selected) !important;
+    background-color: var(--mp-sidebar-menu-selected-background) !important;
+}
+
+.ant-menu-light > .ant-menu:not(.ant-menu-horizontal) .ant-menu-item:not(.ant-menu-item-selected):hover {
+    color: var(--mp-sidebar-menu-selected) !important;
+    background-color: var(--mp-sidebar-menu-selected-background) !important;
+}

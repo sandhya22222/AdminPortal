@@ -16,6 +16,8 @@
     --mp-sidebar-menu-selected: #ffa229;
     --mp-sidebar-menu-selected-background: #fafafa;
     --mp-sidebar-menu-not-selected: #023047;
+    --mp-sidebar-submenu-popup-background-color: #000000;
+    --mp-sidebar-submenu-popup-text-color: #ffffff;
 
     --mp-primary-background-color: #fb8500;
     --mp-primary-background-color-d: #f5f5f5;
@@ -59,7 +61,7 @@
     --mp-delete-primary-text-color-d: #d9d9d9;
     --mp-delete-primary-text-color-h: #ff7875;
     --mp-delete-primary-border-color-h: #ff4d4f;
-    
+
     --mp-danger-secondary-background-color: #ffffff;
     --mp-danger-secondary-background-color-d: #d9d9d9;
     --mp-danger-secondary-background-color-h: #ffffff;
