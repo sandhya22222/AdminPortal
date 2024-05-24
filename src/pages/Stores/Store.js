@@ -97,7 +97,7 @@ const Stores = () => {
     const [storeId, setStoreId] = useState()
     const [statusInprogressData, setStatusInprogressData] = useState([])
     const [value, setValue] = useState(tab ? tab : 0)
-    const [previousStatus, setPreviousStatus] = useState(null)
+    const [previousStatus, setPreviousStatus] = useState([])
     const [errorField, setErrorField] = useState('')
     const auth = useAuth()
     const permissionValue = util.getPermissionData() || []
@@ -420,6 +420,7 @@ const Stores = () => {
                         setStatusInprogressData={setStatusInprogressData}
                         statusInprogressData={statusInprogressData}
                         setPreviousStatus={setPreviousStatus}
+                        previousStatus={previousStatus}
                     />
                 )
             },
@@ -518,7 +519,6 @@ const Stores = () => {
         filteredData &&
             filteredData.length > 0 &&
             filteredData.map((element, index) => {
-                console.log('element', element)
                 var storeActualId = element.id
                 var storeId = element.store_uuid
                 var storeName = element.name
@@ -771,9 +771,11 @@ const Stores = () => {
                     'Server Response from findByPageStoreApi Function for store uuid: ',
                     response.data.response_body
                 )
+
                 setSaveStoreModalOpen(false)
+
                 let temp = [...storeApiData]
-                let index = temp.findIndex((ele) => ele.id == id)
+                let index = temp.findIndex((ele) => ele.id === id)
                 temp[index]['status'] = response.data.response_body.data[0].status
                 setStoreApiData(temp)
 
@@ -786,14 +788,15 @@ const Stores = () => {
                     response.data.response_body.data[0].status === 1
                 ) {
                     let duplicateData = [...statusInprogressData]
-                    let temp = duplicateData.filter((ele) => ele.id != id)
+                    let temp = duplicateData.filter((ele) => ele.id !== id)
                     if (temp && temp.length > 0) {
                         setStatusInprogressData(temp)
                     } else {
                         setStatusInprogressData([])
                     }
+                    const filteredStatusData = previousStatus.filter((ele) => ele.store_id === statusUUid)
                     if (response.data.response_body.data[0].status === 1) {
-                        if (previousStatus === 4) {
+                        if (filteredStatusData.filter((ele) => ele.status === 4)) {
                             MarketplaceToaster.showToast(
                                 util.getToastObject(
                                     `${t('messages:your_store_has_been_successfully_activated')}`,
@@ -802,7 +805,7 @@ const Stores = () => {
                             )
                         }
                     } else if (response.data.response_body.data[0].status === 2) {
-                        if (previousStatus === 5) {
+                        if (filteredStatusData.filter((ele) => ele.status === 5)) {
                             MarketplaceToaster.showToast(
                                 util.getToastObject(
                                     `${t('messages:your_store_has_been_successfully_deactivated')}`,
@@ -1323,7 +1326,7 @@ const Stores = () => {
                                     </Content>
                                     {hideAddStoreButton ? (
                                         <Content className='flex gap-2 !ml-6 !pb-6'>
-                                        <Button
+                                            <Button
                                                 className={'app-btn-primary'}
                                                 onClick={() => validationForSaveStoreLimit()}>
                                                 {t('labels:save')}

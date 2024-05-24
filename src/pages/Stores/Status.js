@@ -25,6 +25,7 @@ function Status({
     statusInprogressData,
     setPreviousStatus,
     setDuplicateStoreStatus,
+    previousStatus,
 }) {
     const { t } = useTranslation()
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -33,6 +34,7 @@ function Status({
     const [isLoading, setIsLoading] = useState(false)
     const [activeConfirmationModalOpen, setActiveConfirmationModalOpen] = useState(false)
     const [storeCheckStatus, setStoreCheckStatus] = useState()
+
     // closing the delete popup model
     const closeModal = () => {
         setIsModalOpen(false)
@@ -64,7 +66,7 @@ function Status({
             store_id: storeId,
         })
             .then((response) => {
-                console.log('response.config.params.store_id', response.config.params.store_id)
+                console.log('response from store status update API', response.data.response_body)
                 setSwitchStatus(false)
                 closeModal()
                 setIsLoading(false)
@@ -79,6 +81,7 @@ function Status({
                 let temp = [...storeApiData]
                 let index = temp.findIndex((ele) => ele.id === response.data.response_body.id)
                 temp[index]['status'] = response.data.response_body.status
+
                 setStoreApiData(temp)
                 if (statusInprogressData !== undefined && statusInprogressData !== null) {
                     let statusData = [...statusInprogressData]
@@ -87,7 +90,13 @@ function Status({
                 }
 
                 if (setPreviousStatus !== undefined && setPreviousStatus !== null) {
-                    setPreviousStatus(response.data.response_body.status)
+                    let previousData = [...previousStatus]
+                    let temp = {
+                        store_id: storeId,
+                        status: response.data.response_body.status,
+                    }
+                    previousData.push(temp)
+                    setPreviousStatus(previousData)
                 }
                 if (setDuplicateStoreStatus !== undefined && setDuplicateStoreStatus !== null) {
                     setDuplicateStoreStatus(response.data.response_body.status)
@@ -184,7 +193,11 @@ function Status({
                             className='mt-5 mb-3'
                             // style={{ "text-align": "-webkit-center" }}
                         >
-                            <img src={storeActiveConfirmationImage} alt='storeActiveConfirmationImage' className='ml-[270px]' />
+                            <img
+                                src={storeActiveConfirmationImage}
+                                alt='storeActiveConfirmationImage'
+                                className='ml-[270px]'
+                            />
                         </div>
                         <div className='mb-3'>
                             <p className='!mb-0'>{t('messages:patience_is_a_virtue')}</p>
@@ -203,7 +216,11 @@ function Status({
                     <Content className='!text-center'>
                         <Text className=' font-semibold text-[15px]'>{t('labels:deactivating_store')}</Text>
                         <div className='mt-5 mb-3'>
-                            <img src={storeActiveConfirmationImage} alt='storeActiveConfirmationImage' className='ml-[270px]' />
+                            <img
+                                src={storeActiveConfirmationImage}
+                                alt='storeActiveConfirmationImage'
+                                className='ml-[270px]'
+                            />
                         </div>
                         <div className='mb-3'>
                             <p className='!mb-0'>{t('messages:patience_is_a_virtue')}</p>

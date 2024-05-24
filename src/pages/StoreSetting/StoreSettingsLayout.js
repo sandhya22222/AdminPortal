@@ -35,7 +35,7 @@ const StoreSettingsLayout = () => {
     const [storeData, setStoreData] = useState()
     const [storeName, setStoreName] = useState()
     const [duplicateStoreStatus, setDuplicateStoreStatus] = useState()
-    const [previousStatus, setPreviousStatus] = useState(null)
+    const [previousStatus, setPreviousStatus] = useState([])
     const [disableStatus, setDisableStatus] = useState(false)
     const [disableMediaButton, setDisableMediaButton] = useState(false)
     const [imagesUpload, setImagesUpload] = useState([])
@@ -131,12 +131,19 @@ const StoreSettingsLayout = () => {
                     response.data.response_body
                 )
                 setDuplicateStoreStatus(response.data.response_body.data[0].status)
+                const filteredStatusData = previousStatus.filter((ele) => ele.store_id === statusUUid)
+
                 if (response.data.response_body.data[0].status === 1) {
-                    MarketplaceToaster.showToast(
-                        util.getToastObject(`${t('messages:your_store_has_been_successfully_activated')}`, 'success')
-                    )
+                    if (filteredStatusData.filter((ele) => ele.status === 4)) {
+                        MarketplaceToaster.showToast(
+                            util.getToastObject(
+                                `${t('messages:your_store_has_been_successfully_activated')}`,
+                                'success'
+                            )
+                        )
+                    }
                 } else if (response.data.response_body.data[0].status === 2) {
-                    if (previousStatus === 5) {
+                    if (filteredStatusData.filter((ele) => ele.status === 5)) {
                         MarketplaceToaster.showToast(
                             util.getToastObject(
                                 `${t('messages:your_store_has_been_successfully_deactivated')}`,
@@ -357,6 +364,7 @@ const StoreSettingsLayout = () => {
                                 statusInprogress={duplicateStoreStatus}
                                 setDuplicateStoreStatus={setDuplicateStoreStatus}
                                 setPreviousStatus={setPreviousStatus}
+                                previousStatus={previousStatus}
                             />
                         </Content>
                     </Content>
