@@ -795,23 +795,30 @@ const Stores = () => {
                         setStatusInprogressData([])
                     }
                     const filteredStatusData = previousStatus.filter((ele) => ele.store_id === statusUUid)
+                    console.log('filteredStatusData', filteredStatusData)
                     if (response.data.response_body.data[0].status === 1) {
-                        if (filteredStatusData.filter((ele) => ele.status === 4)) {
+                        // if(previousStatus.filter((ele) => ele.store_id === statusUUid))
+                        if (filteredStatusData?.[0]?.status === 4) {
                             MarketplaceToaster.showToast(
                                 util.getToastObject(
                                     `${t('messages:your_store_has_been_successfully_activated')}`,
                                     'success'
                                 )
                             )
+                            let filterStatus=previousStatus.filter((ele) => ele.store_id !== statusUUid)
+                            setPreviousStatus(filterStatus)
+
                         }
                     } else if (response.data.response_body.data[0].status === 2) {
-                        if (filteredStatusData.filter((ele) => ele.status === 5)) {
+                        if (filteredStatusData?.[0]?.status === 5) {
                             MarketplaceToaster.showToast(
                                 util.getToastObject(
                                     `${t('messages:your_store_has_been_successfully_deactivated')}`,
                                     'success'
                                 )
                             )
+                            let filterStatus=previousStatus.filter((ele) => ele.store_id !== statusUUid)
+                            setPreviousStatus(filterStatus)
                         } else {
                             MarketplaceToaster.showToast(
                                 util.getToastObject(
