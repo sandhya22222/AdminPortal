@@ -98,7 +98,7 @@ const Stores = () => {
     const [storeStatusLoading, setStoreStatusLoading] = useState(false)
     const [storeId, setStoreId] = useState()
     const [statusInprogressData, setStatusInprogressData] = useState([])
-    const [value, setValue] = useState(tab ? tab : 0)
+    const [value, setValue] = useState(0)
     const [previousStatus, setPreviousStatus] = useState([])
     const [errorField, setErrorField] = useState('')
     const auth = useAuth()
@@ -797,6 +797,14 @@ const Stores = () => {
                             )
                             let filterStatus = previousStatus.filter((ele) => ele.store_id !== statusUUid)
                             setPreviousStatus(filterStatus)
+                            if (tab == 1 || tab == 2) {
+                                let filterDataBasedOnStatus = storeApiData.filter((ele) => ele.id != id)
+                                if (filterDataBasedOnStatus && filterDataBasedOnStatus.length > 0) {
+                                    setStoreApiData(filterDataBasedOnStatus)
+                                } else {
+                                    setStoreApiData([])
+                                }
+                            }
                         }
                     } else if (response.data.response_body.data[0].status === 2) {
                         if (filteredStatusData?.[0]?.status === 5) {
@@ -808,6 +816,14 @@ const Stores = () => {
                             )
                             let filterStatus = previousStatus.filter((ele) => ele.store_id !== statusUUid)
                             setPreviousStatus(filterStatus)
+                            if (tab == 1 || tab == 2) {
+                                let filterDataBasedOnStatus = storeApiData.filter((ele) => ele.id != id)
+                                if (filterDataBasedOnStatus && filterDataBasedOnStatus.length > 0) {
+                                    setStoreApiData(filterDataBasedOnStatus)
+                                } else {
+                                    setStoreApiData([])
+                                }
+                            }
                         } else {
                             MarketplaceToaster.showToast(
                                 util.getToastObject(
@@ -1030,6 +1046,13 @@ const Stores = () => {
             setCurrentTab(1)
         } else {
             setCurrentTab(mainTab)
+        }
+        if(searchParams.get('tab')==null||searchParams.get('tab')==undefined){
+            setValue(0)
+
+        }
+        else{
+            setValue(parseInt(searchParams.get('tab')))
         }
         window.scrollTo(0, 0)
     }, [searchParams])
