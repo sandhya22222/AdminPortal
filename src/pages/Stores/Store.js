@@ -797,6 +797,14 @@ const Stores = () => {
                             )
                             let filterStatus = previousStatus.filter((ele) => ele.store_id !== statusUUid)
                             setPreviousStatus(filterStatus)
+                            if (tab == 1 || tab == 2) {
+                                let filterDataBasedOnStatus = storeApiData.filter((ele) => ele.id != id)
+                                if (filterDataBasedOnStatus && filterDataBasedOnStatus.length > 0) {
+                                    setStoreApiData(filterDataBasedOnStatus)
+                                } else {
+                                    setStoreApiData([])
+                                }
+                            }
                         }
                     } else if (response.data.response_body.data[0].status === 2) {
                         if (filteredStatusData?.[0]?.status === 5) {
@@ -808,6 +816,14 @@ const Stores = () => {
                             )
                             let filterStatus = previousStatus.filter((ele) => ele.store_id !== statusUUid)
                             setPreviousStatus(filterStatus)
+                            if (tab == 1 || tab == 2) {
+                                let filterDataBasedOnStatus = storeApiData.filter((ele) => ele.id != id)
+                                if (filterDataBasedOnStatus && filterDataBasedOnStatus.length > 0) {
+                                    setStoreApiData(filterDataBasedOnStatus)
+                                } else {
+                                    setStoreApiData([])
+                                }
+                            }
                         } else {
                             MarketplaceToaster.showToast(
                                 util.getToastObject(
