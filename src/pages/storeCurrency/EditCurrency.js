@@ -431,9 +431,9 @@ const EditCurrency = () => {
             </StoreModal>
             <StoreModal
                 isVisible={warningCurrencyDefaultModal}
-                okButtonText={t('labels:yes')}
+                okButtonText={t('labels:proceed')}
                 cancelButtonText={t('labels:cancel')}
-                title={t('labels:warning')}
+                title={t('labels:default_currency')}
                 okCallback={() => makeAsDefaultCurrency()}
                 cancelCallback={() => {
                     closeCurrencyDefaultWaringModal()

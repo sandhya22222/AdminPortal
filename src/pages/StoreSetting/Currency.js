@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { Layout, Spin, Col, Select, Divider, Typography, Row, Button, Skeleton } from 'antd'
+import { Layout, Spin, Col, Select, Divider, Typography, Row, Button, Skeleton, Alert } from 'antd'
 import util from '../../util/common'
 import { useTranslation } from 'react-i18next'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import { useNavigate } from 'react-router-dom'
+import { MdInfo } from 'react-icons/md'
+
 const { Content } = Layout
-const { Title } = Typography
+const { Title, Text } = Typography
 
 const storeCurrencyAPI = process.env.REACT_APP_STORE_CURRENCY_API
 const currencyAPI = process.env.REACT_APP_CHANGE_CURRENCY_API
@@ -168,6 +170,34 @@ const Currency = ({ storeUUId }) => {
                 </Content>
             ) : (
                 <Spin tip='Please wait!' size='large' spinning={isCurrencyLoading}>
+                    {isVendorsOnBoarded && (
+                        <Alert
+                            message={
+                                <div className=''>
+                                    <Content className='flex space-x-2 '>
+                                        <MdInfo className='font-bold' color='#1677ff' size={25} />
+                                        <Text className='font-medium'> {t('labels:currency_info')}</Text>
+                                    </Content>
+                                    <Content className='px-3 mt-1'>
+                                        <ul style={{ listStyleType: 'disc' }}>
+                                            <li>
+                                                <Content>
+                                                    <Text className=''>{t('messages:currency_info_note_one')}</Text>
+                                                </Content>
+                                            </li>
+                                            <li>
+                                                <Content>
+                                                    <Text className=''>{t('messages:currency_info_note_two')}</Text>
+                                                </Content>
+                                            </li>
+                                        </ul>
+                                    </Content>
+                                </div>
+                            }
+                            type='info'
+                            className='my-3'
+                        />
+                    )}
                     <Content className='bg-white  p-3 rounded-lg border my-4'>
                         <label className='text-lg  font-semibold mb-4 text-regal-blue'>{t('labels:currency')}</label>
                         <Content>
