@@ -146,7 +146,7 @@
     "standard_user_info": "As a standard user, you cannot modify the primary account",
     "non_primary_info": "This can be only edited by primary users",
     "warning_heading": "Heads Up : Switching Primary User",
-    "primary_status_modal_confirmation": " as the primary user will remove primary access from the current user.This means the current primary user will have standard access.",
+    "primary_status_modal_confirmation": " as the primary user will remove primary access from the current user. This means the current primary user will have standard access.",
     "currency_info_note_one":"Once the store is activated, the currency cannot be changed.",
     "currency_info_note_two":"Currency settings can only be adjusted during the store creation process"
 }
