@@ -17,6 +17,7 @@ import {
     InputNumber,
     Alert,
     Badge,
+    Empty,
 } from 'antd'
 import React, { useEffect, useState } from 'react'
 import validator from 'validator'
@@ -805,9 +806,8 @@ const Stores = () => {
                                     'success'
                                 )
                             )
-                            let filterStatus=previousStatus.filter((ele) => ele.store_id !== statusUUid)
+                            let filterStatus = previousStatus.filter((ele) => ele.store_id !== statusUUid)
                             setPreviousStatus(filterStatus)
-
                         }
                     } else if (response.data.response_body.data[0].status === 2) {
                         if (filteredStatusData?.[0]?.status === 5) {
@@ -817,7 +817,7 @@ const Stores = () => {
                                     'success'
                                 )
                             )
-                            let filterStatus=previousStatus.filter((ele) => ele.store_id !== statusUUid)
+                            let filterStatus = previousStatus.filter((ele) => ele.store_id !== statusUUid)
                             setPreviousStatus(filterStatus)
                         } else {
                             MarketplaceToaster.showToast(
@@ -1313,7 +1313,13 @@ const Stores = () => {
                                         dataSource={selectedTabTableContent}
                                         pagination={false}
                                     /> */}
-                                    <DynamicTable tableComponentData={storeTableData} />
+                                    {selectedTabTableContent?.length > 0 ? (
+                                        <DynamicTable tableComponentData={storeTableData} />
+                                    ) : (
+                                        <Content className='pb-4'>
+                                            <Empty description={t('messages:no_data_available')} />
+                                        </Content>
+                                    )}
                                 </Content>
                             ) : parseInt(currentTab) === 2 ? (
                                 <>
