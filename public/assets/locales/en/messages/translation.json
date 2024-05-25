@@ -137,7 +137,7 @@
     "poicy_warning": "You can only publish up to “10 Policies”. Please delete some policies to create more and publish.",
     "policy_change_warning_info": "You are about to cancel change made to '{{version}}' by doing this you will lose the unsaved date.",
     "policy_change_warning_message": "Are you sure you want to proceed?",
-    "profile_note": "Access your user information and review policies in your comprehensive profile settings.",
+    "profile_note": "Access and update your user information, customize your preferences, and review policies in your comprehensive profile settings.",
     "image_requirements": "Image Requirements",
     "make_primary_account": "Make Another Account Primary First",
     "primary_content": "You can't disable the primary account. To disable this one, choose another account and make it primary. Then you can come back and disable this account.",
