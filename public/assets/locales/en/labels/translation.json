@@ -297,5 +297,6 @@
     "no": "No",
     "default_currency": "Default Currency",
     "title": "Title",
-    "payment_setting":"Payment Setting"
+    "payment_setting":"Payment Setting",
+    "currency_info":"Currency Information"
 }

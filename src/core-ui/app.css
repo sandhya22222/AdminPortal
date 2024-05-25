@@ -231,7 +231,7 @@ a {
     border-color: white !important;
 }
 
-.ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover .ant-checkbox-inner{
+.ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover .ant-checkbox-inner {
     border-color: var(--mp-input-field-hover-color) !important;
 }
 
@@ -249,7 +249,10 @@ a {
     transition: fill 0.3 ease-in-out;
 }
 
-
 .ant-input-number-disabled .ant-input-number:hover {
     border-color: transparent !important;
+}
+
+.ant-select-dropdown .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
+    background-color: var(--select-option-color-h) !important;
 }

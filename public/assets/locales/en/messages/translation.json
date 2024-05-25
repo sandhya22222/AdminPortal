@@ -97,7 +97,7 @@
     "activation_unsuccessful": "Activation of your store was unsuccessful.",
     "username_must_contain_minimum_characters": "Please enter the valid username. Username must be of minimum 3 characters",
     "session_expired": "Session expired",
-    "default_currency_warning_msg": "Are you sure want to mark the currency as default ?",
+    "default_currency_warning_msg": "You are about to set this currency as the default, and it will be reflected across the entire portal. Are you sure you want to proceed?",
     "please_choose_a_store_currency": "Please choose a store currency",
     "enter_currency_name": "Enter currency name",
     "enter_currency_code": "Enter currency code",
@@ -137,7 +137,7 @@
     "poicy_warning": "You can only publish up to “10 Policies”. Please delete some policies to create more and publish.",
     "policy_change_warning_info": "You are about to cancel change made to '{{version}}' by doing this you will lose the unsaved date.",
     "policy_change_warning_message": "Are you sure you want to proceed?",
-    "profile_note": "Access your user information and review policies in your comprehensive profile settings.",
+    "profile_note": "Access and update your user information, customize your preferences, and review policies in your comprehensive profile settings.",
     "image_requirements": "Image Requirements",
     "make_primary_account": "Make Another Account Primary First",
     "primary_content": "You can't disable the primary account. To disable this one, choose another account and make it primary. Then you can come back and disable this account.",
@@ -146,5 +146,7 @@
     "standard_user_info": "As a standard user, you cannot modify the primary account",
     "non_primary_info": "This can be only edited by primary users",
     "warning_heading": "Heads Up : Switching Primary User",
-    "primary_status_modal_confirmation": " as the primary user will remove primary access from the current user.This means the current primary user will have standard access."
+    "primary_status_modal_confirmation": " as the primary user will remove primary access from the current user.This means the current primary user will have standard access.",
+    "currency_info_note_one":"Once the store is activated, the currency cannot be changed.",
+    "currency_info_note_two":"Currency settings can only be adjusted during the store creation process"
 }
