@@ -98,7 +98,7 @@ const Stores = () => {
     const [storeStatusLoading, setStoreStatusLoading] = useState(false)
     const [storeId, setStoreId] = useState()
     const [statusInprogressData, setStatusInprogressData] = useState([])
-    const [value, setValue] = useState(tab ? tab : 0)
+    const [value, setValue] = useState(0)
     const [previousStatus, setPreviousStatus] = useState([])
     const [errorField, setErrorField] = useState('')
     const auth = useAuth()
@@ -1046,6 +1046,13 @@ const Stores = () => {
             setCurrentTab(1)
         } else {
             setCurrentTab(mainTab)
+        }
+        if(searchParams.get('tab')==null||searchParams.get('tab')==undefined){
+            setValue(0)
+
+        }
+        else{
+            setValue(parseInt(searchParams.get('tab')))
         }
         window.scrollTo(0, 0)
     }, [searchParams])
