@@ -70,10 +70,10 @@
     "left_to_right": "Left To Right",
     "right_to_left": "Right To Left",
     "status_label": "Status:",
-    "default_language_label": "Make This as Default Language",
-    "remove_language_label": "Remove Language",
-    "json_format": ".json Download",
-    "csv_format": ".csv Download",
+    "default_language_label": "Make this the Default Language",
+    "remove_language_label": "Delete Language",
+    "json_format": ".json format",
+    "csv_format": ".csv format",
     "upload_again": "Upload Again",
     "payment_type": "Payment Type",
     "profile": "Profile",
@@ -199,7 +199,7 @@
     "language_limit_tooltip": "Maximum languages can be activated at a time",
     "product_template_limit_tooltip": "Maximum allowed templates can be active",
     "store_limit_tooltip": "Number of allowed active stores",
-    "delete_user": "Delete user",
+    "delete_user": "Delete User",
     "razor_pay": "Razorpay",
     "stripe": "Stripe",
     "account_restrictions": "Account Restrictions",
@@ -297,6 +297,7 @@
     "no": "No",
     "default_currency": "Default Currency",
     "title": "Title",
-    "payment_setting":"Payment Setting",
-    "currency_info":"Currency Information"
+    "payment_setting": "Payment Setting",
+    "currency_info": "Currency Information",
+    "delete_language": "Delete Language"
 }

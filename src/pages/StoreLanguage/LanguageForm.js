@@ -316,7 +316,7 @@ const LanguageForm = ({
                             />
                         </Content>
                     </Col>
-                    <Col className=' mb-3 mx-3'>
+                    <Col className=' mb-3 mx-3' span={10}>
                         <Content className=''>
                             <label className='font-normal text-sm block !mb-2 text-brandGray2'>
                                 {t('labels:script_direction')}
@@ -333,6 +333,7 @@ const LanguageForm = ({
                                         label: t('labels:right_to_left'),
                                     },
                                 ]}
+                                block ={true}
                                 value={scriptDirection}
                                 onChange={(value) => {
                                     handleScriptDirectionChange(value)

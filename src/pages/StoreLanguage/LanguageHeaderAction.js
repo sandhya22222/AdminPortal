@@ -266,16 +266,16 @@ function LanguageHeaderAction({ languageId, languageCode, languageStatus, langua
 
             <StoreModal
                 isVisible={isDeleteLanguageModalOpen}
-                okButtonText={t('labels:yes')}
+                okButtonText={t('labels:delete')}
                 cancelButtonText={t('labels:cancel')}
-                title={t('labels:warning')}
+                title={t('labels:delete_language')}
                 okCallback={() => removeLanguage()}
                 cancelCallback={() => closeDeleteModal()}
                 isSpin={islanguageDeleting}
                 hideCloseButton={false}>
                 {
                     <div>
-                        <p>{t('messages:remove_language_confirmation')}</p>
+                        {/* <p>{t('messages:remove_language_confirmation')}</p> */}
                         <p>{t('messages:remove_language_confirmation_message')}</p>
                     </div>
                 }
@@ -309,7 +309,7 @@ function LanguageHeaderAction({ languageId, languageCode, languageStatus, langua
             </StoreModal>
             <StoreModal
                 isVisible={isModalOpen}
-                okButtonText={t('labels:yes')}
+                okButtonText={t('labels:proceed')}
                 title={
                     changeSwitchStatus
                         ? t('messages:language_activation_confirmation')
@@ -323,7 +323,6 @@ function LanguageHeaderAction({ languageId, languageCode, languageStatus, langua
                 {changeSwitchStatus ? (
                     <div>
                         <p className='!m-0 !p-0'>{t('messages:language_activation_confirmation_message')}</p>
-                        <p className='!m-0 !p-0'>{t('messages:are_you_sure_you_like_to_proceed')}</p>
                     </div>
                 ) : (
                     <div>
@@ -333,9 +332,9 @@ function LanguageHeaderAction({ languageId, languageCode, languageStatus, langua
             </StoreModal>
             <StoreModal
                 isVisible={warningLanguageDefaultModal}
-                okButtonText={t('labels:yes')}
+                okButtonText={t('labels:proceed')}
                 cancelButtonText={t('labels:cancel')}
-                title={t('labels:warning')}
+                title={t('labels:default_language')}
                 okCallback={() => makeAsDefaultLanguage()}
                 cancelCallback={() => {
                     closeLanguageDefaultWaringModal()
