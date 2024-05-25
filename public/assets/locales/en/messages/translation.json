@@ -16,7 +16,7 @@
     "something_went_wrong": "Something went wrong, please try again later",
     "confirm_store_deletion": "Confirm Store Deletion",
     "store_deletion_confirmation_message": "Are you sure you want to delete the store? This action cannot be undone.",
-    "add_store_description": "Please enter the store name and administrator details. These details will be used when signing into the store portal.",
+    "add_store_description": "Please provide the store name and administrator details. These will be used for signing into the store portal.",
     "edit_store_description": " Store administrator's details cannot be edited. You are permitted to only rename your store",
     "no_data_available": "No data available",
     "no_changes_were_detected": "No changes were detected",

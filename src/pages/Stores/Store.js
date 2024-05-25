@@ -805,9 +805,8 @@ const Stores = () => {
                                     'success'
                                 )
                             )
-                            let filterStatus=previousStatus.filter((ele) => ele.store_id !== statusUUid)
+                            let filterStatus = previousStatus.filter((ele) => ele.store_id !== statusUUid)
                             setPreviousStatus(filterStatus)
-
                         }
                     } else if (response.data.response_body.data[0].status === 2) {
                         if (filteredStatusData?.[0]?.status === 5) {
@@ -817,7 +816,7 @@ const Stores = () => {
                                     'success'
                                 )
                             )
-                            let filterStatus=previousStatus.filter((ele) => ele.store_id !== statusUUid)
+                            let filterStatus = previousStatus.filter((ele) => ele.store_id !== statusUUid)
                             setPreviousStatus(filterStatus)
                         } else {
                             MarketplaceToaster.showToast(
@@ -1192,7 +1191,7 @@ const Stores = () => {
                                 icon={<MdInfo className='font-bold !text-center' />}
                                 message={
                                     <div className=''>
-                                        <Text className=' mr-1 text-[#637381]'> {t('labels:note')}: </Text>
+                                        <Text className=' mr-1 text-[#637381]'> {t('labels:note')}:</Text>
                                         <Text className='text-[#637381]'>{t('messages:add_store_description')}</Text>
                                     </div>
                                 }
@@ -1263,14 +1262,24 @@ const Stores = () => {
                                     setStoreUserName(trimmedUpdate)
                                 }}
                             />
-                            <Button
-                                className={onChangeValues ? 'app-btn-primary' : '!opacity-75'}
-                                disabled={!onChangeValues}
-                                onClick={() => {
-                                    validateStorePostField()
-                                }}>
-                                {t('labels:save')}
-                            </Button>
+                            <Content className='flex space-x-3 !justify-end'>
+                                <Button
+                                    className={onChangeValues ? 'app-btn-secondary' : '!opacity-75'}
+                                    disabled={!onChangeValues}
+                                    onClick={() => {
+                                        onClose()
+                                    }}>
+                                    {t('labels:cancel')}
+                                </Button>
+                                <Button
+                                    className={onChangeValues ? 'app-btn-primary' : '!opacity-75'}
+                                    disabled={!onChangeValues}
+                                    onClick={() => {
+                                        validateStorePostField()
+                                    }}>
+                                    {t('labels:save')}
+                                </Button>
+                            </Content>
                         </Spin>
                     </>
                 ) : null}
