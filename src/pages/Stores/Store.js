@@ -1,4 +1,5 @@
-import { UserOutlined, InfoCircleOutlined } from '@ant-design/icons'
+import { UserOutlined, InfoCircleOutlined, PlusOutlined } from '@ant-design/icons'
+
 import {
     Button,
     Col,
@@ -17,6 +18,7 @@ import {
     InputNumber,
     Alert,
     Badge,
+    Empty,
 } from 'antd'
 import React, { useEffect, useState } from 'react'
 import validator from 'validator'
@@ -445,61 +447,49 @@ const Stores = () => {
             width: '12%',
             render: (text, record) => {
                 return (
-                    <Content className='whitespace-nowrap flex align-middle justify-center'>
+                    <>
                         {hideAddStoreButton ? (
-                            <Button type='text' className='app-btn-text'>
-                                <Link
-                                    to={{
-                                        pathname: 'storesetting',
-                                        search: `?id=${record.id}&page=${
-                                            searchParams.get('page') ? searchParams.get('page') : 1
-                                        }&limit=${
-                                            searchParams.get('limit') ? searchParams.get('limit') : pageLimit
-                                        }&storeId=${record.storeId}`,
-                                    }}
-                                    style={{ textDecoration: 'none' }}
-                                    // className=" pl-[10px] font-semibold app-table-data-title"
-                                >
-                                    <Tooltip
-                                        title={
-                                            t('labels:view_details').length > 20 ? t('labels:view_details') : undefined
-                                        }>
-                                        {t('labels:view_details')}
-                                    </Tooltip>
-                                </Link>
-                            </Button>
+                            <Link
+                                to={{
+                                    pathname: 'storesetting',
+                                    search: `?id=${record.id}&page=${
+                                        searchParams.get('page') ? searchParams.get('page') : 1
+                                    }&limit=${
+                                        searchParams.get('limit') ? searchParams.get('limit') : pageLimit
+                                    }&storeId=${record.storeId}`,
+                                }}
+                                style={{ textDecoration: 'none' }}
+                                // className=" pl-[10px] font-semibold app-table-data-title"
+                            >
+                                <Tooltip
+                                    title={t('labels:view_details').length > 20 ? t('labels:view_details') : undefined}>
+                                    {t('labels:view_details')}
+                                </Tooltip>
+                            </Link>
                         ) : (
-                            <Button
-                                className={` flex align-items-center justify-center ${
-                                    record.status === 3 ? 'opacity-30' : ''
-                                }`}
-                                type='text'
-                                disabled={record.status === 3 ? true : false}>
-                                {
-                                    <Link
-                                        to={{
-                                            pathname: 'storesetting',
-                                            search: `?id=${record.id}&page=${
-                                                searchParams.get('page') ? searchParams.get('page') : 1
-                                            }&limit=${
-                                                searchParams.get('limit') ? searchParams.get('limit') : pageLimit
-                                            }&storeId=${record.storeId}&rmn=${record.realmName}`,
-                                        }}
-                                        className=' !no-underline'>
-                                        {/* <Tooltip
+                            <Link
+                                to={{
+                                    pathname: 'storesetting',
+                                    search: `?id=${record.id}&page=${
+                                        searchParams.get('page') ? searchParams.get('page') : 1
+                                    }&limit=${
+                                        searchParams.get('limit') ? searchParams.get('limit') : pageLimit
+                                    }&storeId=${record.storeId}&rmn=${record.realmName}`,
+                                }}
+                                className=' !no-underline'>
+                                {/* <Tooltip
                                             overlayStyle={{ zIndex: 1 }}
                                             title={t('labels:store_settings')}
                                             placement='bottom'>
                                             <MdSettings className='text-[var(--mp-primary-border-color)] hover:text-[var(--mp-primary-border-color-h)] !text-xl' /> */}
-                                        {/* </Tooltip> */}
-                                        <div className='text-[var(--mp-primary-border-color)] hover:text-[var(--mp-primary-border-color-h)] !text-base font-medium '>
-                                            {t('labels:edit')}
-                                        </div>
-                                    </Link>
-                                }
-                            </Button>
+                                {/* </Tooltip> */}
+                                <div
+                                    className={`!text-sm font-normal ${record.status == 3 ? '!cursor-not-allowed !text-zinc-400 opacity-30' : 'text-[var(--mp-primary-border-color)] hover:text-[var(--mp-primary-border-color-h)]'}`}>
+                                    {t('labels:edit')}
+                                </div>
+                            </Link>
                         )}
-                    </Content>
+                    </>
                 )
             },
         },
@@ -973,7 +963,7 @@ const Stores = () => {
                 MarketplaceToaster.showToast(error.response)
                 if (Number(error.response.data.status_code) === 409) {
                     setInValidName(true)
-                    setName('')
+                    // setName('')
                     setOnChangeValues(false)
                 }
                 console.log('Error response from the store post call', error.response)
@@ -1097,7 +1087,10 @@ const Stores = () => {
                         hideAddStoreButton ? (
                             ''
                         ) : (
-                            <Button className='app-btn-primary !h-8 !hover:h-[32px]' onClick={showAddDrawer}>
+                            <Button
+                                className='app-btn-primary mt-2 !h-[32px] flex items-center'
+                                onClick={showAddDrawer}>
+                                <PlusOutlined />
                                 {t('labels:add_store')}
                             </Button>
                         )
@@ -1322,7 +1315,13 @@ const Stores = () => {
                                         dataSource={selectedTabTableContent}
                                         pagination={false}
                                     /> */}
-                                    <DynamicTable tableComponentData={storeTableData} />
+                                    {selectedTabTableContent?.length > 0 ? (
+                                        <DynamicTable tableComponentData={storeTableData} />
+                                    ) : (
+                                        <Content className='pb-4'>
+                                            <Empty description={t('messages:no_data_available')} />
+                                        </Content>
+                                    )}
                                 </Content>
                             ) : parseInt(currentTab) === 2 ? (
                                 <>
