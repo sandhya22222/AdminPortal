@@ -974,7 +974,7 @@ const Stores = () => {
                 MarketplaceToaster.showToast(error.response)
                 if (Number(error.response.data.status_code) === 409) {
                     setInValidName(true)
-                    setName('')
+                    // setName('')
                     setOnChangeValues(false)
                 }
                 console.log('Error response from the store post call', error.response)
