@@ -141,6 +141,7 @@ const StoreSettingsLayout = () => {
                                 'success'
                             )
                         )
+                        setChangeSwitchStatus(1)
                     }
                 } else if (response.data.response_body.data[0].status === 2) {
                     if (filteredStatusData.filter((ele) => ele.status === 5)) {
@@ -150,6 +151,7 @@ const StoreSettingsLayout = () => {
                                 'success'
                             )
                         )
+                        setChangeSwitchStatus(2)
                     }
                 }
             })
@@ -337,6 +339,8 @@ const StoreSettingsLayout = () => {
             }
         }
     }, [searchParams, setSearchParams, hideActionButton, permissionValue])
+
+    console.log("changeSwitchStatus----->",changeSwitchStatus);
 
     return (
         <Content>
