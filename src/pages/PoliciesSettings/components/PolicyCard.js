@@ -249,7 +249,7 @@ const PolicyCard = ({
 
     const getDate = (date) => {
         try {
-            const formattedDate = moment(date).format('D MMM YYYY h:mm:ss')
+            const formattedDate = moment(date).format('D MMM YYYY, h:mm:ss')
             return formattedDate
         } catch (error) {
             return ''
@@ -393,18 +393,18 @@ const PolicyCard = ({
                     />
                 </div>
             </div>
-            <div className=' mt-2 flex items-center text-[#000000] text-opacity-50'>
+            <div className=' mt-2 flex items-center '>
                 <Tooltip
                     overlayStyle={{ position: 'fixed', maxWidth: '2000px' }}
                     placement='right'
                     title={<span className='whitespace-nowrap'>{t('messages:last_update_info')}</span>}>
-                    <RiInformationFill className=' text-base mr-1 cursor-pointer' />
+                    <RiInformationFill className=' text-base mr-1 cursor-pointer text-[#000000] text-opacity-50' />
                 </Tooltip>
-                {t('labels:last_updated')} :{' '}
+                <span className='text-[#000000] text-opacity-50'>{t('labels:last_updated')}</span>
                 {!(policyStatus === 2) ? (
-                    <>{t('messages:not_updated_yet')}</>
+                    <>{' : ' + t('messages:not_updated_yet')}</>
                 ) : (
-                    <span className='font-semibold'>{getDate(consent?.updated_on) || ''}</span>
+                    <span className='font-semibold'>{' : ' + getDate(consent?.updated_on) || ''}</span>
                 )}
             </div>
             {policyStatus !== 2 ? (
@@ -512,21 +512,16 @@ const PolicyCard = ({
             </StoreModal>
             <StoreModal
                 isVisible={policyChangeWarning}
-                title={
-                    <div className='flex items-center'>
-                        <RiInformationLine className='text-2xl mr-2' />
-                        {t('labels:confirm')}
-                    </div>
-                }
+                title={t('labels:confirm')}
                 isSpin={false}
                 cancelCallback={() => setPolicyChangeWarning(false)}
                 okCallback={() => handelCancelDescription()}
-                width={400}
+                width={380}
                 okButtonText={t('labels:proceed')}
                 cancelButtonText={t('labels:cancel')}
                 destroyOnClose={true}
                 hideCloseButton={false}>
-                <div className='pl-[30px]'>
+                <div className='input-label-color'>
                     <p>
                         {t('messages:policy_change_warning_info', {
                             version,

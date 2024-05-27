@@ -94,7 +94,6 @@ function AddVersion({
         )
     }
 
-
     return (
         <div>
             <p className='input-label-color'>{t('messages:add_version_note')}</p>
@@ -139,6 +138,14 @@ function AddVersion({
                 />
             </div>
             <div className='flex justify-end'>
+                {/* <Button
+                    onClick={() => {
+                        setAddVersion(false)
+                    }}
+                    disabled={''}
+                    className='mx-2 app-btn-secondary'>
+                    {t('labels:cancel')}
+                </Button> */}
                 <Button
                     className='app-btn-primary'
                     onClick={handelSaveVersion}

@@ -1,14 +1,14 @@
-import { CheckCircleOutlined, DownOutlined } from '@ant-design/icons'
-import { Alert, Button, Dropdown, Input, Progress, Skeleton, Space, Tag, Typography } from 'antd'
+import { DownOutlined } from '@ant-design/icons'
+import { Alert, Button, Dropdown, Input, Progress, Skeleton, Space, Typography } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import ReactQuill, { Quill } from 'react-quill'
+import { useSelector } from 'react-redux'
 import MarketplaceToaster from '../../../util/marketplaceToaster'
 import useCreateVersionDisplayname from '../hooks/useCreateVersionDisplayname'
+import useGetStoreLanguage from '../hooks/useGetStoreLanguage'
 import useGetUserConsentVersionDisplayName from '../hooks/useGetUserConsentVersionDisplayName'
 import useUpdateVersionDisplayname from '../hooks/useUpdateVersionDisplayname'
-import useGetStoreLanguage from '../hooks/useGetStoreLanguage'
-import { useSelector } from 'react-redux'
 
 const CONSENT_NAME_LENGTH = 100
 const Link = Quill.import('formats/link')
@@ -394,7 +394,7 @@ function TranslatePolicy({
                                             <div className='w-[60%] '>
                                                 <Progress
                                                     style={{ width: '50%', marginRight: '8px' }}
-                                                    strokeColor={'#4A2D73'}
+                                                    strokeColor={'#FA8C16'}
                                                     size='small'
                                                     percent={
                                                         (consentDisplayNameData?.filter(
@@ -414,11 +414,12 @@ function TranslatePolicy({
                                                 </span>
                                             </div>
                                         </div>
-                                        <label className='text-[14px] flex mb-3 input-label-color'>
+                                        <label className='text-[14px] pb-2 input-label-color'>
                                             {t('labels:policy_title')}
-                                            <p className={`mandatory-symbol-color text-sm mx-1 mt-[4px] font-medium`}>
+                                            <span
+                                                className={`mandatory-symbol-color text-sm mx-1 mt-[8px] font-medium`}>
                                                 *
-                                            </p>
+                                            </span>
                                         </label>
                                         <div className=' flex items-center gap-x-5 max-w-[40%] w-full pb-3'>
                                             <Input
@@ -433,11 +434,12 @@ function TranslatePolicy({
                                                 }}
                                             />
                                         </div>
-                                        <label className='text-[14px] mb-3 flex input-label-color'>
+                                        <label className='text-[14px] pb-2 input-label-color'>
                                             {t('labels:policy_description')}
-                                            <p className={`mandatory-symbol-color text-sm mx-1 mt-[4px] font-medium`}>
+                                            <span
+                                                className={`mandatory-symbol-color text-sm mx-1 mt-[8px] font-medium`}>
                                                 *
-                                            </p>
+                                            </span>
                                         </label>
                                         <div
                                             className=' rounded border-[1px] drop-shadow-sm shadow-[#D9D9D9] border-[#D9D9D9]  bg-white w-[600px] !max-h-[300px] !h-[270px] !overflow-y-auto overflow-x-hidden'
