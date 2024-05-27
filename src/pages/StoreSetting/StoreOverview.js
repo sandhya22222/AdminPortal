@@ -30,7 +30,7 @@ const StoreOverview = ({ realmName }) => {
             })
     }
 
-    console.log('userAllAPIData', userAllAPIData)
+    console.log('userAllAPIData', userAllAPIData, realmName)
     useEffect(() => {
         findAllUserAllAPI()
     }, [])
@@ -54,7 +54,7 @@ const StoreOverview = ({ realmName }) => {
                         <Col span={8} className='mb-3'>
                             <label className='text-brandGray2 font-normal text-sm mb-2'>{t('labels:store_name')}</label>
                             <span className='mandatory-symbol-color text-sm text-center ml-1'>*</span>
-                            <Input value={userAllAPIData[0]?.firstName} disabled={true} className={``} />
+                            <Input value={realmName} disabled={true} className={``} />
                         </Col>
                         <div className='w-[100%] !flex-col !gap-2 !justify-start'>
                             <div
@@ -129,7 +129,9 @@ const StoreOverview = ({ realmName }) => {
                             <Input value={userAllAPIData[0]?.email} disabled={true} className={``} />
                         </Col>
                         <Col span={12} className='mb-3'>
-                            <label className='text-brandGray2 font-normal text-sm mb-2'>{t('labels:store_user_name')}</label>
+                            <label className='text-brandGray2 font-normal text-sm mb-2'>
+                                {t('labels:store_user_name')}
+                            </label>
                             <span className='mandatory-symbol-color text-sm text-center ml-1'>*</span>
                             <Input value={userAllAPIData[0]?.username} disabled={true} className={``} />
                         </Col>
