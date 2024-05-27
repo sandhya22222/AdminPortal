@@ -275,17 +275,17 @@ const Header2 = ({ collapsed, setCollapsed }) => {
                                 key={storeSelectedLngCode}>
                                 {languageItems.map((option) => (
                                     <>
-                                        {console.log('objoptionectTest', option)}
+                                        {' '}
                                         <Option key={option.value} value={option.value} className='headerSelectOption'>
-                                            <Tooltip
+                                            {/* <Tooltip
                                                 title={option.label}
                                                 overlayStyle={{ position: 'fixed' }}
-                                                placement='left'>
-                                                <span className='overflow-hidden whitespace-nowrap'>
-                                                    {/* {option.label.toUpperCase().substring(0, 3)} */}
-                                                    {option.value}
-                                                </span>
-                                            </Tooltip>
+                                                placement='left'> */}
+                                            <span className='overflow-hidden whitespace-nowrap'>
+                                                {/* {option.label.toUpperCase().substring(0, 3)} */}
+                                                {option.value}
+                                            </span>
+                                            {/* </Tooltip> */}
                                         </Option>
                                     </>
                                 ))}
