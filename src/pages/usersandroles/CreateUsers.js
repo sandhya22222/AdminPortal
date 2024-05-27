@@ -527,7 +527,7 @@ const CreateUsers = () => {
                                                 ) : defaultStatus === 'True' && isDefault === 'True' ? (
                                                     <div>{t('messages:primary_content_info')}</div>
                                                 ) : isDefault === 'True' && defaultStatus === 'False' && !userStatus ? (
-                                                    <div>{t('messages:deActive_status_primary_message')}</div>
+                                                    <div>{t('messages:deactive_status_primary_message')}</div>
                                                 ) : isDefault === 'True' && defaultStatus === 'False' ? (
                                                     <div>{t('messages:primary_content_information')}</div>
                                                 ) : null}

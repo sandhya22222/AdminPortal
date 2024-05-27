@@ -149,5 +149,5 @@
     "primary_status_modal_confirmation": " as the primary user will remove primary access from the current user. This means the current primary user will have standard access.",
     "currency_info_note_one": "Once the store is activated, the currency cannot be changed.",
     "currency_info_note_two": "Currency settings can only be adjusted during the store creation process",
-    "deActive_status_primary_message": "Only active users are eligible to become primary users. The existing primary user has the authority to make this designation."
+    "deactive_status_primary_message": "Only active users are eligible to become primary users. The existing primary user has the authority to make this designation."
 }
