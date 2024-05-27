@@ -477,35 +477,32 @@ const CreateUsers = () => {
                             <Content className='flex gap-3'>
                                 <Content className='gap-1 flex mt-1'>
                                     <label className='text-brandGray2 font-normal '>{t('labels:status')}</label>
-                                    <Tooltip
-                                        placement='bottomRight'
-                                        title={
-                                            <>
-                                                {userName === currentUser ? (
-                                                    <div>{t('messages:standard_user_info')}</div>
-                                                ) : (
-                                                    <>
-                                                        <div className='font-semibold text-sm'>
-                                                            {t('messages:make_primary_account')}
-                                                        </div>
-                                                        <div>{t('messages:primary_content')}</div>
-                                                    </>
-                                                )}
-                                                {isDefault === 'False' ? (
-                                                    <div>{t('messages:non_primary_info')}</div>
-                                                ) : (
-                                                    ''
-                                                )}
-                                            </>
-                                        }
-                                        className=' '>
-                                        <Image
-                                            src={InfoIcon}
-                                            alt='InfoIcon'
-                                            className='!w-[14px] !text-center mt-[6px] !mb-0 cursor-pointer'
-                                            preview={false}
-                                        />{' '}
-                                    </Tooltip>
+                                    {defaultStatus === 'True' ? (
+                                        <Tooltip
+                                            placement='bottomRight'
+                                            title={
+                                                <>
+                                                    {isDefault === 'False' ? (
+                                                        <div>{t('messages:standard_user_info')}</div>
+                                                    ) : defaultStatus === 'True' && isDefault === 'True' ? (
+                                                        <>
+                                                            <div className='font-semibold text-sm'>
+                                                                {t('messages:make_primary_account')}
+                                                            </div>
+                                                            <div>{t('messages:primary_content')}</div>
+                                                        </>
+                                                    ) : null}
+                                                </>
+                                            }
+                                            className=' '>
+                                            <Image
+                                                src={InfoIcon}
+                                                alt='InfoIcon'
+                                                className='!w-[14px] !text-center mt-[6px] !mb-0 cursor-pointer'
+                                                preview={false}
+                                            />{' '}
+                                        </Tooltip>
+                                    ) : null}
                                     :
                                     <Switch
                                         disabled={
@@ -525,18 +522,22 @@ const CreateUsers = () => {
                                         placement='bottomRight'
                                         title={
                                             <>
-                                                {defaultStatus === 'True' ? (
+                                                {isDefault === 'False' ? (
+                                                    <div>{t('messages:non_primary_info')}</div>
+                                                ) : defaultStatus === 'True' && isDefault === 'True' ? (
                                                     <div>{t('messages:primary_content_info')}</div>
-                                                ) : (
+                                                ) : isDefault === 'True' && defaultStatus === 'False' && !userStatus ? (
+                                                    <div>{t('messages:deactive_status_primary_message')}</div>
+                                                ) : isDefault === 'True' && defaultStatus === 'False' ? (
                                                     <div>{t('messages:primary_content_information')}</div>
-                                                )}
+                                                ) : null}
                                             </>
                                         }
                                         className=' '>
                                         <Image
                                             src={InfoIcon}
                                             alt='InfoIcon'
-                                            className='!w-[14px] !text-center mt-[6px]'
+                                            className='!w-[14px] !text-center mt-[6px] cursor-pointer'
                                             preview={false}
                                         />{' '}
                                     </Tooltip>
