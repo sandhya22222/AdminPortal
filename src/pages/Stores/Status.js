@@ -146,7 +146,7 @@ function Status({
         <div>
             <StoreModal
                 isVisible={isModalOpen}
-                okButtonText={t('labels:yes')}
+                okButtonText={t('labels:proceed')}
                 title={
                     changeSwitchStatus
                         ? `${t('messages:store_activation_confirmation')}`
