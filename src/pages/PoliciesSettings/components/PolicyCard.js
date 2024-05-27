@@ -302,10 +302,10 @@ const PolicyCard = ({
                             placement='bottomRight'
                             arrow>
                             <Text>
-                                {'Version ' +
+                                {t('labels:version') +
                                     (consentDetails?.version_number === 1
                                         ? '1.0'
-                                        : consentDetails?.version_number || '1.0') || 'Version 1.0'}
+                                        : consentDetails?.version_number || '1.0') || t('labels:version') + '1.0'}
                                 <DownOutlined className={!(policyStatus === 2) ? '!text-[#857e7e40] mx-1' : 'mx-1'} />
                             </Text>
                         </Dropdown>

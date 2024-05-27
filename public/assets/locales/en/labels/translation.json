@@ -299,5 +299,6 @@
     "title": "Title",
     "payment_setting": "Payment Setting",
     "currency_info": "Currency Information",
-    "delete_language": "Delete Language"
+    "delete_language": "Delete Language",
+    "contact_information": "Contact Information"
 }
