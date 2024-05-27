@@ -156,15 +156,6 @@ const Newdashboard = () => {
         {
             title: (
                 <Title className='!text-[#023047]' level={5}>
-                    {t('labels:number_of') + ' ' + t('labels:orders')}
-                </Title>
-            ),
-            dataIndex: 'orders',
-            key: 'orders',
-        },
-        {
-            title: (
-                <Title className='!text-[#023047]' level={5}>
                     {t('labels:number_of') + ' ' + t('labels:product_templates')}
                 </Title>
             ),
@@ -189,6 +180,15 @@ const Newdashboard = () => {
             dataIndex: 'vendors',
             key: 'vendors',
         },
+        {
+            title: (
+                <Title className='!text-[#023047]' level={5}>
+                    {t('labels:number_of') + ' ' + t('labels:orders')}
+                </Title>
+            ),
+            dataIndex: 'orders',
+            key: 'orders',
+        },
     ]
 
     const ordersColumns = [
@@ -204,7 +204,7 @@ const Newdashboard = () => {
         {
             title: (
                 <Title className='!text-[#023047]' level={5}>
-                    {t('labels:orders_received')}
+                    {t('labels:number_of') + ' ' + t('labels:orders_received')}
                 </Title>
             ),
             dataIndex: 'orders_received',
@@ -214,8 +214,7 @@ const Newdashboard = () => {
         {
             title: (
                 <Title className='!text-[#023047]' level={5}>
-                    {' '}
-                    {t('labels:orders_inprogress')}
+                    {t('labels:number_of') + ' ' + t('labels:orders_inprogress')}
                 </Title>
             ),
             dataIndex: 'in_progress',
@@ -224,7 +223,7 @@ const Newdashboard = () => {
         {
             title: (
                 <Title className='!text-[#023047]' level={5}>
-                    {t('labels:orders_fulfilled')}
+                    {t('labels:number_of') + ' ' + t('labels:orders_fulfilled')}
                 </Title>
             ),
             dataIndex: 'orders_fulfilled',
@@ -234,7 +233,7 @@ const Newdashboard = () => {
         {
             title: (
                 <Title level={5} className='!text-[#023047]'>
-                    {t('labels:orders_cancelled')}
+                    {t('labels:number_of') + ' ' + t('labels:orders_cancelled')}
                 </Title>
             ),
             dataIndex: 'orders_cancelled',
@@ -244,7 +243,7 @@ const Newdashboard = () => {
         {
             title: (
                 <Title className='!text-[#023047]' level={5}>
-                    {t('labels:orders')}
+                    {t('labels:total') + ' ' + t('labels:number_of') + ' ' + t('labels:orders')}
                 </Title>
             ),
             dataIndex: 'orders',
@@ -264,8 +263,8 @@ const Newdashboard = () => {
         },
         {
             title: (
-                <Title className='!text-[#023047]' level={5}>
-                    {t('labels:orders')}
+                <Title className='!text-[#023047]  ' level={5}>
+                    {t('labels:number_of') + ' ' + t('labels:orders')}
                 </Title>
             ),
             dataIndex: 'orders',
@@ -403,7 +402,7 @@ const Newdashboard = () => {
                         <Content
                             hidden={dm4sightEnabled === 'true' ? false : true}
                             className='flex justify-between !mt-14'>
-                            <Content className='!w-[75%]  bg-[#ffff] p-[24px] mt-0 ml-2  shadow-sm rounded-md justify-center'>
+                            <Content className='!w-[70%]  bg-[#ffff] p-[24px] mt-0 ml-2  shadow-sm rounded-md justify-center'>
                                 <Content className='flex items-center justify-between mb-1'>
                                     <Title level={4} className='!m-0  !text-[#023047] flex gap-2'>
                                         <img
@@ -428,7 +427,7 @@ const Newdashboard = () => {
                                     />
                                 </Content>
                             </Content>
-                            <Content className='!w-[25%] mt-0 ml-5 mr-2  bg-[#ffff] p-4  shadow-sm rounded-md justify-center'>
+                            <Content className='!w-[30%] mt-0 ml-5 mr-2  bg-[#ffff] p-4  shadow-sm rounded-md justify-center'>
                                 <Content className='flex items-center justify-between mb-1'>
                                     <Title level={4} className='!m-0  !text-[#023047] flex gap-2 '>
                                         <img
