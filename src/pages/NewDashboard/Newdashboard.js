@@ -38,6 +38,9 @@ const dm4sightGetAnalysisDetailAPI = process.env.REACT_APP_4SIGHT_GETANALYSISDET
 
 const storePlatformLimitApi = process.env.REACT_APP_STORE_PLATFORM_LIMIT_API
 const userProfileApi = process.env.REACT_APP_USER_PROFILE_API
+// const storeImagesAPI = process.env.REACT_APP_STORE_IMAGES_API
+// const baseURL = process.env.REACT_APP_BASE_URL
+// const storeAPI = process.env.REACT_APP_STORE_API
 
 // const auth = getAuth.toLowerCase() === "true";
 
@@ -298,15 +301,15 @@ const Newdashboard = () => {
                                 }
                                 // "  !w-[30%] flex flex-col justify-center items-baseline"
                             >
-                                <Text className='!text-md mb-2 text-[#8899A8] flex gap-1 items-center'>
+                                <Text className='text-[#637381] text-base  !font-bold flex justify-left gap-1 items-center'>
                                     <Badge
                                         status='success'
                                         text={<Text className='!text-brandGray1'>{t('labels:active_stores')}</Text>}
                                     />
                                 </Text>
 
-                                <Content className='flex flex-col  items-baseline h-4 min-w-40 max-w-72 space-x-2 '>
-                                    <div className='flex justify-between  items-end gap-1 '>
+                                <Content className='flex flex-col items-baseline h-4 min-w-40 max-w-72 space-x-2 '>
+                                    <div className='flex justify-between items-baseline  gap-1 '>
                                         {langDirection == 'ltr' ? (
                                             <div className={'!max-w-[3.4em]'}>
                                                 <Title className='!text-[#023047] m-0 p-0 whitespace-nowrap' level={2}>
@@ -319,10 +322,10 @@ const Newdashboard = () => {
                                                 level={5}
                                                 className={
                                                     storeLimitValues?.store_limit.toString().length >= 5
-                                                        ? `text-zinc-400 !font-semibold   ${
+                                                        ? `!text-md  text-[#8899A8]    ${
                                                               langDirection == 'rtl' ? 'w-[185px]' : 'w-60'
                                                           }`
-                                                        : 'text-zinc-400 !font-semibold '
+                                                        : '!text-md  text-[#8899A8] '
                                                 }>
                                                 {' '}
                                                 {t('labels:of')}{' '}
@@ -358,7 +361,7 @@ const Newdashboard = () => {
                                     util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'pr-10' : 'pl-4'
                                 }`}>
                                 <Content>
-                                    <Text className='!text-md mb-2 text-[#8899A8] flex justify-left gap-1 '>
+                                    <Text className='text-[#637381] text-base  !font-bold flex justify-left gap-1 items-center'>
                                         <Badge
                                             status='default'
                                             text={
