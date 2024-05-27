@@ -52,13 +52,13 @@ function LanguageSettings() {
                                 className={
                                     util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
                                         ? '!w-[27%]'
-                                        : '!w-[35%]'
+                                        : '!w-[30%]'
                                 }>
                                 <Tooltip
                                     title={languageName}
                                     overlayStyle={{ zIndex: 11, position: 'fixed' }}
                                     placement='bottom'>
-                                    <Title level={3} className='!font-normal max-w-[300px] mb-3 mt-2' ellipsis={true}>
+                                    <Title level={3} className='!font-normal max-w-[250px] mb-3 mt-2' ellipsis={true}>
                                         {languageName && languageName !== undefined && languageName !== null
                                             ? languageName
                                             : `${t('labels:add_language')}`}
@@ -69,7 +69,7 @@ function LanguageSettings() {
                                 className={
                                     util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
                                         ? '!w-[73%] mt-[7px]'
-                                        : '!w-[65%] mt-[7px]'
+                                        : '!w-[70%] mt-[7px]'
                                 }>
                                 {languageId && languageCode && languageStatus !== null ? (
                                     <LanguageHeaderAction

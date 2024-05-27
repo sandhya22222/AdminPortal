@@ -1,5 +1,5 @@
 //! Import libraries & components
-import { Button, Divider, Layout, Progress, Skeleton, Table, Typography } from 'antd'
+import { Badge, Button, Divider, Layout, Progress, Skeleton, Table, Typography } from 'antd'
 import React, { useEffect, useState } from 'react'
 
 import axios from 'axios'
@@ -299,15 +299,17 @@ const Newdashboard = () => {
                                 // "  !w-[30%] flex flex-col justify-center items-baseline"
                             >
                                 <Text className='!text-md mb-2 text-[#8899A8] flex gap-1 items-center'>
-                                    <Content class='w-2 h-2 bg-lime-500 rounded-full float-left'></Content>{' '}
-                                    {t('labels:active_stores')}
+                                    <Badge
+                                        status='success'
+                                        text={<Text className='!text-brandGray1'>{t('labels:active_stores')}</Text>}
+                                    />
                                 </Text>
 
                                 <Content className='flex flex-col  items-baseline h-4 min-w-40 max-w-72 space-x-2 '>
                                     <div className='flex justify-between  items-end gap-1 '>
                                         {langDirection == 'ltr' ? (
                                             <div className={'!max-w-[3.4em]'}>
-                                                <Title className='!text-[#023047] m-0 p-0' level={2}>
+                                                <Title className='!text-[#023047] m-0 p-0 whitespace-nowrap' level={2}>
                                                     {activeStoreCount ? activeStoreCount : 0}{' '}
                                                 </Title>
                                             </div>
@@ -356,9 +358,13 @@ const Newdashboard = () => {
                                     util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'pr-10' : 'pl-4'
                                 }`}>
                                 <Content>
-                                    <Text className='!text-md mb-2 text-[#8899A8] flex justify-left gap-1 items-center'>
-                                        <Content class='w-2 h-2  bg-neutral-400 rounded-full'></Content>{' '}
-                                        {t('labels:inactive_sores')}
+                                    <Text className='!text-md mb-2 text-[#8899A8] flex justify-left gap-1 '>
+                                        <Badge
+                                            status='default'
+                                            text={
+                                                <Text className='!text-brandGray1'>{t('labels:inactive_sores')}</Text>
+                                            }
+                                        />
                                     </Text>
                                     <Content className='flex items-baseline'>
                                         <Title class='text-zinc-400' level={2}>

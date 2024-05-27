@@ -140,17 +140,27 @@ const ListCurrency = () => {
             dataIndex: '',
             key: '',
             width: '12%',
+            ellipsis: true,
             // align: 'center',
             render: (text, record) => {
                 return (
                     <Button
                         type='text'
-                        className='app-btn-text'
+                        className='app-btn-text !mr-1'
                         onClick={() => {
                             navigate(`/dashboard/currency/edit-currency?k=${record.id}`)
                         }}>
-                        <Text ellipsis className='app-primary-color !mr-2'>
-                            {t('labels:view_details')}{' '}
+                        <Text
+                            ellipsis={{
+                                tooltip: {
+                                    title: t('labels:view_details'),
+                                    mouseLeaveDelay: 0,
+                                    mouseEnterDelay: 0.5,
+                                    placement: 'bottom',
+                                },
+                            }}
+                            className='app-primary-color w-[80px]'>
+                            {t('labels:view_details')}
                         </Text>
                     </Button>
                 )

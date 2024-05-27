@@ -235,7 +235,7 @@ const PoliciesSettings = ({ storeName }) => {
                                     policyType='CONTACT_POLICY'
                                     refetchUserConsent={refetchUserConsent}
                                     consent={contactInformation?.[0] || null}
-                                    policyName={CONTACT_INFORMATION}
+                                    policyName={t('labels:contact_information')}
                                     isNewPolicy={contactInformation?.length === 0}
                                     key={contactInformation?.[0]?.id || 'addContactInfo'}
                                     storeId={storeId}

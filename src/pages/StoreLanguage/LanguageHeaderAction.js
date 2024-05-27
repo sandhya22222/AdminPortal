@@ -218,8 +218,7 @@ function LanguageHeaderAction({ languageId, languageCode, languageStatus, langua
             {/* This content is related to language status */}
             <Content className=''>
                 <Space direction='horizontal'>
-                    <Typography className='pr- input-label-color font-semibold text-base'>
-                        {' '}
+                    <Typography className=' input-label-color font-semibold text-base whitespace-nowrap'>
                         {t('labels:status_label')}{' '}
                     </Typography>
                     <div className='input-label-color'>{t('labels:inactive')}</div>
