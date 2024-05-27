@@ -232,12 +232,14 @@ const Header2 = ({ collapsed, setCollapsed }) => {
                     <Content className='!flex  !justify-end !items-center px-2'>
                         {/* Display user dropdown if user is logged in otherwise display login icon */}
                         {auth.isAuthenticated ? (
-                            <div className={`flex !self-end ${
-                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'ml-[5px]' : 'mr-[5px]'
-                            }`}>
+                            <div
+                                className={`flex !self-end ${
+                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                        ? 'ml-[5px]'
+                                        : 'mr-[5px]'
+                                }`}>
                                 <Avatar className='bg-gray-400 mx-1' size={48} icon={<UserOutlined />} />
-                                <Text
-                                    className={`!flex flex-col`}>
+                                <Text className={`!flex flex-col`}>
                                     <Text className='font-normal text-sm text-[#637381] leading-[22px] whitespace-nowrap'>
                                         {userName ? userName : userProfileInfo}{' '}
                                     </Text>
@@ -249,7 +251,7 @@ const Header2 = ({ collapsed, setCollapsed }) => {
                                         placement='bottom'
                                         trigger={['click']}
                                         className='cursor-pointer'
-                                        overlayStyle={{ position: 'fixed',overflow:'visible', zIndex: 20, top: 64 }}>
+                                        overlayStyle={{ position: 'fixed', overflow: 'visible', zIndex: 20, top: 64 }}>
                                         <Text className='text-xs text-[#8899A8] !leading-[20px] font-normal whitespace-nowrap '>
                                             {userRole ? userRole.replace(/-/g, ' ') : ''}{' '}
                                             <DownOutlined className='text-xs' />
@@ -272,16 +274,20 @@ const Header2 = ({ collapsed, setCollapsed }) => {
                                 dropdownStyle={{ position: 'fixed' }}
                                 key={storeSelectedLngCode}>
                                 {languageItems.map((option) => (
-                                    <Option key={option.value} value={option.value} className='headerSelectOption'>
-                                        <Tooltip
-                                            title={option.label}
-                                            overlayStyle={{ position: 'fixed' }}
-                                            placement='left'>
-                                            <span className='overflow-hidden whitespace-nowrap'>
-                                                {option.label.toUpperCase().substring(0, 3)}
-                                            </span>
-                                        </Tooltip>
-                                    </Option>
+                                    <>
+                                        {console.log('objoptionectTest', option)}
+                                        <Option key={option.value} value={option.value} className='headerSelectOption'>
+                                            <Tooltip
+                                                title={option.label}
+                                                overlayStyle={{ position: 'fixed' }}
+                                                placement='left'>
+                                                <span className='overflow-hidden whitespace-nowrap'>
+                                                    {/* {option.label.toUpperCase().substring(0, 3)} */}
+                                                    {option.value}
+                                                </span>
+                                            </Tooltip>
+                                        </Option>
+                                    </>
                                 ))}
                             </Select>
                         ) : (
