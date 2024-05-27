@@ -444,7 +444,7 @@ const CreateUsers = () => {
     useEffect(() => {
         findUsersLists(userInfoName)
     }, [userInfoName])
-
+    console.log('userStatus', userStatus)
     return (
         <Content className=''>
             <HeaderForTitle
@@ -545,7 +545,8 @@ const CreateUsers = () => {
                                         disabled={
                                             currentUser === userName ||
                                             isDefault === 'False' ||
-                                            defaultStatus === 'True'
+                                            defaultStatus === 'True' ||
+                                            userStatus === false
                                                 ? true
                                                 : false
                                         }

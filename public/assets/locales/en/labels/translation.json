@@ -181,7 +181,7 @@
     "max_vendor_user_limit": "Maximum Vendor Users Limit",
     "max_allowed": "Max Allowed",
     "draft": "Draft",
-    "limit_set_by_admin_name": "Limits Set By Product Owner",
+    "limit_set_by_admin_name": "Limits set By Product Owner",
     "override_limit_name": "Override Limits",
     "stats_name": "Stats",
     "active_vendors": "Active Vendors",
@@ -299,5 +299,6 @@
     "title": "Title",
     "payment_setting": "Payment Setting",
     "currency_info": "Currency Information",
-    "delete_language": "Delete Language"
+    "delete_language": "Delete Language",
+    "store_user_name":"Username"
 }

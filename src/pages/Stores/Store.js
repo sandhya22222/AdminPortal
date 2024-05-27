@@ -797,8 +797,8 @@ const Stores = () => {
                             )
                             let filterStatus = previousStatus.filter((ele) => ele.store_id !== statusUUid)
                             setPreviousStatus(filterStatus)
-                            if (tab == 1 || tab == 2) {
-                                let filterDataBasedOnStatus = storeApiData.filter((ele) => ele.id != id)
+                            if (parseInt(tab) === 1 || parseInt(tab) === 2) {
+                                let filterDataBasedOnStatus = storeApiData.filter((ele) => ele.id !== id)
                                 if (filterDataBasedOnStatus && filterDataBasedOnStatus.length > 0) {
                                     setStoreApiData(filterDataBasedOnStatus)
                                 } else {
@@ -816,15 +816,15 @@ const Stores = () => {
                             )
                             let filterStatus = previousStatus.filter((ele) => ele.store_id !== statusUUid)
                             setPreviousStatus(filterStatus)
-                            if (tab == 1 || tab == 2) {
-                                let filterDataBasedOnStatus = storeApiData.filter((ele) => ele.id != id)
+                            if (parseInt(tab) === 1 || parseInt(tab) === 2) {
+                                let filterDataBasedOnStatus = storeApiData.filter((ele) => ele.id !== id)
                                 if (filterDataBasedOnStatus && filterDataBasedOnStatus.length > 0) {
                                     setStoreApiData(filterDataBasedOnStatus)
                                 } else {
                                     setStoreApiData([])
                                 }
                             }
-                        } else {
+                        } else if (filteredStatusData?.length === 0) {
                             MarketplaceToaster.showToast(
                                 util.getToastObject(
                                     `${t('messages:your_store_has_been_successfully_created')}`,
@@ -1047,11 +1047,9 @@ const Stores = () => {
         } else {
             setCurrentTab(mainTab)
         }
-        if(searchParams.get('tab')==null||searchParams.get('tab')==undefined){
+        if (searchParams.get('tab') == null || searchParams.get('tab') == undefined) {
             setValue(0)
-
-        }
-        else{
+        } else {
             setValue(parseInt(searchParams.get('tab')))
         }
         window.scrollTo(0, 0)

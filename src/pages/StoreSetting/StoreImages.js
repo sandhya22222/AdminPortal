@@ -331,7 +331,7 @@ console.log('getImageData', getImageData)
     return (
         <Content className=' mb-2'>
             <Content className='flex !mb-3 gap-1'>
-                <div className='font-normal  text-base mb-1 mt-2'>{title}</div>
+                <div className='font-medium  text-base mb-1 mt-2'>{title}</div>
             </Content>
             {imagePathShow === undefined ? (
                 <Content>
@@ -436,7 +436,6 @@ console.log('getImageData', getImageData)
                         {allImageUrl &&
                             allImageUrl.length > 0 &&
                             allImageUrl.map((ele, index) => {
-                                console.log('ele', ele)
                                 return (
                                     <div
                                         className={
