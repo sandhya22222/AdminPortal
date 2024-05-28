@@ -814,7 +814,7 @@ const CreateUsers = () => {
                 isSpin={primaryStatusUpdateLoading}>
                 {
                     <div>
-                        <p>
+                        <p className='!mb-2'>
                             {t('labels:making')} {userName} {t('messages:primary_status_modal_confirmation')}
                         </p>
                         <p>{t('messages:policy_change_warning_message')}</p>
