@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Layout } from 'antd'
+import { Button, Layout, Divider } from 'antd'
 import { marketPlaceLogo } from '../../constants/media'
 import { useSelector } from 'react-redux'
 import util from '../../util/common'
@@ -23,40 +23,35 @@ const Preview = ({
     const absoluteStoreImageInfo = useSelector((state) => state.reducerAbsoluteStoreImageInfo.absoluteStoreImageInfo)
     return (
         <Content>
-            <Content>
-                <Header className='header !p-0'>
-                    <Content
-                        className='!h-16 flex'
-                        style={{
-                            backgroundColor: headerBackgroundColor,
-                        }}
-                        mode='horizontal'>
-                        <div className='flex justify-start !w-[39%] p-2'>
-                            {getImageData && getImageData.length > 0 ? (
-                                absoluteStoreImageInfo && absoluteStoreImageInfo.type === 'store_logo' ? (
-                                    <img
-                                        className=''
-                                        src={absoluteStoreImageInfo && absoluteStoreImageInfo.value}
-                                        alt='absoluteStoreImageInfo && absoluteStoreImageInfo.value'
-                                    />
-                                ) : (
-                                    <img className=' ' src={marketPlaceLogo} alt='marketPlaceLogo' />
-                                )
-                            ) : (
-                                <img className='' src={marketPlaceLogo} alt='marketPlaceLogo' />
-                            )}
-                        </div>
-                        <div className='!flex !justify-center text-lg !mt-4' style={{ color: headerForegroundColor }}>
-                            {t('labels:header_content_of_the_page')}
-                        </div>
-                    </Content>
-                </Header>
+            <Divider style={{ margin: '8px 0' }} />
+            <Content className='flex !mb-2 bg-[var(--mp-theme-preview-header-background-color)]'>
+                <div className='flex justify-start !py-2 !w-[48%]'>
+                    {getImageData && getImageData.length > 0 ? (
+                        absoluteStoreImageInfo && absoluteStoreImageInfo.type === 'store_logo' ? (
+                            <img
+                                className=''
+                                src={absoluteStoreImageInfo && absoluteStoreImageInfo.value}
+                                alt='absoluteStoreImageInfo && absoluteStoreImageInfo.value'
+                                height={60} width={100}
+                            />
+                        ) : (
+                            <img className=' ' src={marketPlaceLogo} alt='marketPlaceLogo' height={60} width={100} />
+                        )
+                    ) : (
+                        <img className='' src={marketPlaceLogo} alt='marketPlaceLogo' height={60} width={100} />
+                    )}
+                </div>
+                <div className='!w-[62%]  !mt-4 !text-[#6d7b88]'>
+                    {t('labels:header_content_of_the_page')}
+                </div>
             </Content>
-            <Content className={`min-h-[300px] text-center `} style={{ backgroundColor: pageBackgroundColor }}>
+            <Divider style={{ margin: '8px 0' }} />
+            <Content
+                className={`min-h-[320px] text-center bg-[var(--mp-theme-preview-page-content-background-color)] `}>
+                <p className={`text-bold !text-[#6d7b88] !mt-8 !mr-6`}>
+                    {t('labels:main_content_of_the_page')}
+                </p>
                 <Content className='text-center p-24 '>
-                    <p className={`text-center text-lg text-bold `} style={{ color: foreGroundColor }}>
-                        {t('labels:main_content_of_the_page')}
-                    </p>
                     <Button
                         style={{
                             backgroundColor: buttonPrimaryBackgroundColor,
@@ -87,11 +82,11 @@ const Preview = ({
                 </Content>
             </Content>
             <Content
-                className={`!h-24 flex items-center justify-center`}
-                style={{ backgroundColor: footerBackgroundColor }}>
-                <p style={{ color: footerForegroundColor }} className='text-lg'>
-                    {t('labels:footer_content_of_the_page')}
-                </p>
+                className={`!h-24  flex items-center justify-center bg-[var(--mp-theme-preview-footer-background-color)]`}>
+                <Content className='w-[40%]'></Content>
+                <Content className='!w-[50%]'>
+                    <p className=''>{t('labels:footer_content_of_the_page')}</p>
+                </Content>
             </Content>
         </Content>
     )
