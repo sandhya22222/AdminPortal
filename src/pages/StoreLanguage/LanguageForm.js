@@ -44,7 +44,7 @@ const LanguageForm = ({
     const handleServerCall = () => {
         const postBody = {}
         postBody['language'] = txtLanguage.trim()
-        postBody['language_code'] = txtLanguageCode.trim()
+        postBody['language_code'] = txtLanguageCode.trim()?.toLowerCase()
         postBody['writing_script_direction'] = scriptDirection
         setIsLoading(true)
         languageCode === undefined || languageCode === null
@@ -333,7 +333,7 @@ const LanguageForm = ({
                                         label: t('labels:right_to_left'),
                                     },
                                 ]}
-                                block ={true}
+                                block={true}
                                 value={scriptDirection}
                                 onChange={(value) => {
                                     handleScriptDirectionChange(value)
