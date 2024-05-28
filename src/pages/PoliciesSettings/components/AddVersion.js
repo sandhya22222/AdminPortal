@@ -138,14 +138,14 @@ function AddVersion({
                 />
             </div>
             <div className='flex justify-end'>
-                {/* <Button
+                <Button
                     onClick={() => {
                         setAddVersion(false)
                     }}
                     disabled={''}
                     className='mx-2 app-btn-secondary'>
                     {t('labels:cancel')}
-                </Button> */}
+                </Button>
                 <Button
                     className='app-btn-primary'
                     onClick={handelSaveVersion}
