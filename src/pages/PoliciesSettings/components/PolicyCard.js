@@ -515,12 +515,8 @@ const PolicyCard = ({
                 title={t('labels:confirm')}
                 isSpin={false}
                 cancelCallback={() => setPolicyChangeWarning(false)}
-                okCallback={() => handelCancelDescription()}
                 width={380}
-                okButtonText={t('labels:proceed')}
-                cancelButtonText={t('labels:cancel')}
-                destroyOnClose={true}
-                hideCloseButton={false}>
+                destroyOnClose={true}>
                 <div className='input-label-color'>
                     <p>
                         {t('messages:policy_change_warning_info', {
@@ -529,6 +525,11 @@ const PolicyCard = ({
                         <br />
                         {t('messages:policy_change_warning_message')}
                     </p>
+                </div>
+                <div className='flex justify-end'>
+                    <Button className='app-btn-primary' onClick={() => handelCancelDescription()}>
+                        {t('labels:proceed')}
+                    </Button>
                 </div>
             </StoreModal>
         </div>
