@@ -95,12 +95,12 @@
     "get_frontend_support_template": "Download Frontend Support Template",
     "get_backend_support_template": "Download Backend Support Template",
     "admin": "Admin",
-    "header_content_of_the_page": "Header content of the page",
-    "main_content_of_the_page": "Main content of the page",
+    "header_content_of_the_page": "Header Content",
+    "main_content_of_the_page": "Page Content",
     "button1": "Button1",
     "button2": "Button2",
     "button3": "Button3",
-    "footer_content_of_the_page": "Footer content of the page",
+    "footer_content_of_the_page": "Footer Content",
     "previous_month": "Previous Month",
     "ranking": "Ranking",
     "products": "Products",
@@ -300,6 +300,6 @@
     "payment_setting": "Payment Setting",
     "currency_info": "Currency Information",
     "delete_language": "Delete Language",
-    "store_user_name":"Username",
+    "store_user_name": "Username",
     "contact_information": "Contact Information"
 }

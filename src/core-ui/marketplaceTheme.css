@@ -100,4 +100,10 @@
 
     /*header color*/
     --mp-header-bg-color: #ffffff;
+
+    /* themes preview  */
+    --mp-theme-preview-footer-background-color: #f5f5f5;
+    --mp-theme-preview-header-background-color: #ffffff;
+    --mp-theme-preview-page-content-background-color: #ffffff;
+    
 }
