@@ -283,7 +283,7 @@ const Header2 = ({ collapsed, setCollapsed }) => {
                                                 placement='left'> */}
                                             <span className='overflow-hidden whitespace-nowrap'>
                                                 {/* {option.label.toUpperCase().substring(0, 3)} */}
-                                                {option.value}
+                                                {option.value?.toUpperCase()}
                                             </span>
                                             {/* </Tooltip> */}
                                         </Option>
