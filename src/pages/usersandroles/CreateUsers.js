@@ -577,6 +577,7 @@ const CreateUsers = () => {
                 saveFunction={userFormValidation}
                 isVisible={pageAction === 'edit' ? false : true}
                 showButtons={false}
+                backNavigationPath={'/dashboard/user-access-control/list-user-roles'}
             />
             <Content className='!min-h-screen mt-[8.5rem] p-3'>
                 {isUserDetailFetching ? (
@@ -722,7 +723,11 @@ const CreateUsers = () => {
                                             </Typography>
                                             <Content>
                                                 <Select
-                                                    disabled={pageAction === 'edit' ? userName == currentUser : false}
+                                                    disabled={
+                                                        pageAction === 'edit'
+                                                            ? userName === currentUser || defaultStatus === 'True'
+                                                            : false
+                                                    }
                                                     style={{
                                                         width: 390,
                                                     }}
