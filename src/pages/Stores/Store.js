@@ -467,27 +467,28 @@ const Stores = () => {
                                 </Tooltip>
                             </Link>
                         ) : (
-                            <Link
-                                to={{
-                                    pathname: 'storesetting',
-                                    search: `?id=${record.id}&page=${
-                                        searchParams.get('page') ? searchParams.get('page') : 1
-                                    }&limit=${
-                                        searchParams.get('limit') ? searchParams.get('limit') : pageLimit
-                                    }&storeId=${record.storeId}&rmn=${record.realmName}`,
-                                }}
-                                className=' !no-underline'>
-                                {/* <Tooltip
+                            <Button type='text' className='app-btn-text'>
+                                <Link
+                                    to={{
+                                        pathname: 'storesetting',
+                                        search: `?id=${record.id}&page=${
+                                            searchParams.get('page') ? searchParams.get('page') : 1
+                                        }&limit=${
+                                            searchParams.get('limit') ? searchParams.get('limit') : pageLimit
+                                        }&storeId=${record.storeId}&rmn=${record.realmName}`,
+                                    }}
+                                    className=' !no-underline'>
+                                    {/* <Tooltip
                                             overlayStyle={{ zIndex: 1 }}
                                             title={t('labels:store_settings')}
                                             placement='bottom'>
                                             <MdSettings className='text-[var(--mp-primary-border-color)] hover:text-[var(--mp-primary-border-color-h)] !text-xl' /> */}
-                                {/* </Tooltip> */}
-                                <div
-                                    className={`!text-sm font-normal ${record.status == 3 ? '!cursor-not-allowed !text-zinc-400 opacity-30' : 'text-[var(--mp-primary-border-color)] hover:text-[var(--mp-primary-border-color-h)]'}`}>
-                                    {t('labels:edit')}
-                                </div>
-                            </Link>
+                                    {/* </Tooltip> */}
+                                    <Text className='text-brandPrimaryColor text-sm font-medium leading-[22px]'>
+                                        {t('labels:edit')}
+                                    </Text>
+                                </Link>
+                            </Button>
                         )}
                     </>
                 )
