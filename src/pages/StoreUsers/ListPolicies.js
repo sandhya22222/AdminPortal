@@ -1,4 +1,4 @@
-import { Layout, Skeleton, Anchor, Row, Col } from 'antd'
+import { Layout, Skeleton, Anchor, Row, Col, Divider } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import useGetStoreAdminConsent from '../../hooks/useGetStoreAdminConsent'
@@ -82,7 +82,7 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
         }
     }, [subTabData, storeAdminConsent])
     return (
-        <Content className=' w-full h-full '>
+        <Content className=' w-full h-full p-4 '>
             {storeAdminStatus === 'pending' && (
                 <Skeleton
                     active
@@ -92,13 +92,14 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
                     className='p-3 w-full'></Skeleton>
             )}
             {storeAdminStatus === 'success' && (
-                <>
+                <Content className='border rounded'>
                     <div
                         className={`${
                             util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-4' : ''
-                        } !text-xl !font-medium !mt-4 mb-4  `}>
+                        } !text-xl !font-medium  p-3`}>
                         {t('labels:policies')}
                     </div>
+                    <Divider className='!my-0' />
                     {policiesTab?.length > 0 && (
                         <Row className=''>
                             <Col className='' span={19}>
@@ -147,13 +148,13 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
                         </Row>
                     )}
                     {policiesTab?.length === 0 && (
-                        <div className='  flex flex-col items-center justify-center gap-4 mb-3'>
-                            <img src={EmptySVG} alt='no_policies_available' />
+                        <div className='  flex flex-col items-center justify-center gap-4 my-6'>
+                            <img src={EmptySVG} alt='no_policies_available mb-2' />
                             {t('messages:no_policies_available')}
                             {/* <Empty description={t('messages:no_policies_available')} /> */}
                         </div>
                     )}
-                </>
+                </Content>
             )}
             {storeAdminStatus === 'error' && (
                 <p className=' !text-black !text-opacity-80 pt-5 text-center'>{t('messages:network_error')}</p>
