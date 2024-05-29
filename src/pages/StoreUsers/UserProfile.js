@@ -13,7 +13,7 @@ import { IoMdCheckmarkCircleOutline } from 'react-icons/io'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import SkeletonComponent from '../../components/Skeleton/SkeletonComponent'
 import useGetStoreUserData from '../../hooks/useGetStoreUsersData'
-import "./UserProfile.css"
+import './UserProfile.css'
 
 const { Content } = Layout
 const { Text, Title } = Typography
@@ -229,7 +229,7 @@ const UserProfile = () => {
     }, [])
 
     return (
-        <Content>
+        <Content className='my-4 mx-3'>
             <Content>
                 {userDataStatus === 'pending' ? (
                     <Content className=' bg-white p-3 !mx-4 '>
@@ -240,7 +240,7 @@ const UserProfile = () => {
                         <p>{t('messages:network_error')}</p>
                     </Content>
                 ) : (
-                    <div className=' my-3 mr-3 border-1 border-solid border-brandGray rounded-lg'>
+                    <div className=' border-1 border-solid border-brandGray rounded-lg'>
                         <div className='  border-b border-solid border-brandGray'>
                             <Title className='!mb-4 !mt-6 !mx-3 !font-semibold !text-lg'>
                                 {t('labels:profile_information')}
