@@ -57,7 +57,7 @@ const MyProfile = () => {
             />
             <div className='!px-6 !pb-6 !mt-6'>
                 <div className=' w-full bg-white rounded flex  justify-start shadow-brandShadow'>
-                    <div className=' py-4 h-full top-[110px] sticky  '>
+                    <div className='py-4 h-full top-[110px] sticky !w-[17%] '>
                         <Tabs
                             items={myProfileTabData}
                             tabPosition={'left'}
@@ -68,7 +68,7 @@ const MyProfile = () => {
                             className=' !h-full'
                         />
                     </div>
-                    <div className=' w-full'>
+                    <div className=' w-full '>
                         {searchParams.get('tab') === USER_PROFILE_TABS_OPTIONS.PROFILE_INFORMATION && <UserProfile />}
                         {searchParams.get('tab') === USER_PROFILE_TABS_OPTIONS.POLICIES && (
                             <ListPolicies searchParams={searchParams} setSearchParams={setSearchParams} />
