@@ -687,26 +687,26 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
     //! Post call for the store data limit api
     const saveStoreDataLimit = () => {
         const postBody = {
-            vendor_limit: storeDataLimitValues.vendor_limit === '' ? 0 : storeDataLimitValues.vendor_limit,
-            customer_limit: storeDataLimitValues.customer_limit === '' ? 0 : storeDataLimitValues.customer_limit,
-            product_limit: storeDataLimitValues.product_limit === '' ? 0 : storeDataLimitValues.product_limit,
+            vendor_limit: storeDataLimitValues.vendor_limit == null ? 0 : storeDataLimitValues.vendor_limit,
+            customer_limit: storeDataLimitValues.customer_limit == null ? 0 : storeDataLimitValues.customer_limit,
+            product_limit: storeDataLimitValues.product_limit == null ? 0 : storeDataLimitValues.product_limit,
             order_limit_per_day:
-                storeDataLimitValues.order_limit_per_day === '' ? 0 : storeDataLimitValues.order_limit_per_day,
-            langauge_limit: storeDataLimitValues.langauge_limit === '' ? 0 : storeDataLimitValues.langauge_limit,
+                storeDataLimitValues.order_limit_per_day == null ? 0 : storeDataLimitValues.order_limit_per_day,
+            langauge_limit: storeDataLimitValues.langauge_limit == null ? 0 : storeDataLimitValues.langauge_limit,
             product_template_limit:
-                storeDataLimitValues.product_template_limit === '' ? 0 : storeDataLimitValues.product_template_limit,
+                storeDataLimitValues.product_template_limit == null ? 0 : storeDataLimitValues.product_template_limit,
             store_users_limit:
-                storeDataLimitValues.store_users_limit === '' ? 0 : storeDataLimitValues.store_users_limit,
+                storeDataLimitValues.store_users_limit == null ? 0 : storeDataLimitValues.store_users_limit,
             vendor_users_limit:
-                storeDataLimitValues.vendor_users_limit === '' ? 0 : storeDataLimitValues.vendor_users_limit,
+                storeDataLimitValues.vendor_users_limit == null ? 0 : storeDataLimitValues.vendor_users_limit,
             max_products_per_vendor:
-                storeDataLimitValues.max_products_per_vendor === '' ? 0 : storeDataLimitValues.max_products_per_vendor,
+                storeDataLimitValues.max_products_per_vendor == null ? 0 : storeDataLimitValues.max_products_per_vendor,
             max_templates_per_vendor:
-                storeDataLimitValues.max_templates_per_vendor === ''
+                storeDataLimitValues.max_templates_per_vendor == null
                     ? 0
                     : storeDataLimitValues.max_templates_per_vendor,
             default_store_commission:
-                storeDataLimitValues.default_store_commission === ''
+                storeDataLimitValues.default_store_commission == null
                     ? 0
                     : parseFloat(storeDataLimitValues.default_store_commission),
             store: storeIdFromUrl,
@@ -745,40 +745,40 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
         const maxLimit = maxDataLimit
         let count = 10
         let copyofStoreDataLimitValue = { ...storeDataLimitValues }
-        if (copyofStoreDataLimitValue.vendor_limit !== '' && copyofStoreDataLimitValue.vendor_limit > maxLimit) {
+        if (copyofStoreDataLimitValue.vendor_limit != null && copyofStoreDataLimitValue.vendor_limit > maxLimit) {
             count--
             setInvalidVendorLimit(true)
             MarketplaceToaster.showToast(util.getToastObject(`${t('messages:vendor_limit_error_message')}`, 'error'))
         } else if (
-            copyofStoreDataLimitValue.customer_limit !== '' &&
+            copyofStoreDataLimitValue.customer_limit != null &&
             parseInt(copyofStoreDataLimitValue.customer_limit) > maxLimit
         ) {
             count--
             setInvalidCustomerLimit(true)
             MarketplaceToaster.showToast(util.getToastObject(`${t('messages:customer_limit_error_message')}`, 'error'))
         } else if (
-            copyofStoreDataLimitValue.product_limit !== '' &&
+            copyofStoreDataLimitValue.product_limit != null &&
             parseInt(copyofStoreDataLimitValue.product_limit) > maxLimit
         ) {
             count--
             setInvalidProductLimit(true)
             MarketplaceToaster.showToast(util.getToastObject(`${t('messages:product_limit_error_message')}`, 'error'))
         } else if (
-            copyofStoreDataLimitValue.order_limit_per_day !== '' &&
+            copyofStoreDataLimitValue.order_limit_per_day != null &&
             parseInt(copyofStoreDataLimitValue.order_limit_per_day) > maxLimit
         ) {
             count--
             setInvalidOrderLimit(true)
             MarketplaceToaster.showToast(util.getToastObject(`${t('messages:order_limit_error_message')}`, 'error'))
         } else if (
-            copyofStoreDataLimitValue.langauge_limit !== '' &&
+            copyofStoreDataLimitValue.langauge_limit != null &&
             parseInt(copyofStoreDataLimitValue.langauge_limit) > maxLimit
         ) {
             count--
             setInvalidLanguageLimit(true)
             MarketplaceToaster.showToast(util.getToastObject(`${t('messages:language_limit_error_message')}`, 'error'))
         } else if (
-            copyofStoreDataLimitValue.product_template_limit !== '' &&
+            copyofStoreDataLimitValue.product_template_limit != null &&
             parseInt(copyofStoreDataLimitValue.product_template_limit) > maxLimit
         ) {
             count--
@@ -787,7 +787,7 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                 util.getToastObject(`${t('messages:product_template_limit_error_message')}`, 'error')
             )
         } else if (
-            copyofStoreDataLimitValue.store_users_limit !== '' &&
+            copyofStoreDataLimitValue.store_users_limit != null &&
             parseInt(copyofStoreDataLimitValue.store_users_limit) > maxLimit
         ) {
             count--
@@ -796,7 +796,7 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                 util.getToastObject(`${t('messages:store_user_limit_error_message')}`, 'error')
             )
         } else if (
-            copyofStoreDataLimitValue.vendor_users_limit !== '' &&
+            copyofStoreDataLimitValue.vendor_users_limit != null &&
             parseInt(copyofStoreDataLimitValue.vendor_users_limit) > maxLimit
         ) {
             count--
@@ -805,7 +805,7 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                 util.getToastObject(`${t('messages:vendor_user_limit_error_message')}`, 'error')
             )
         } else if (
-            copyofStoreDataLimitValue.max_products_per_vendor !== '' &&
+            copyofStoreDataLimitValue.max_products_per_vendor != null &&
             parseInt(copyofStoreDataLimitValue.max_products_per_vendor) > maxLimit
         ) {
             count--
@@ -814,7 +814,7 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                 util.getToastObject(`${t('messages:max_product_limit_error_message')}`, 'error')
             )
         } else if (
-            copyofStoreDataLimitValue.max_templates_per_vendor !== '' &&
+            copyofStoreDataLimitValue.max_templates_per_vendor != null &&
             parseInt(copyofStoreDataLimitValue.max_templates_per_vendor) > maxLimit
         ) {
             count--

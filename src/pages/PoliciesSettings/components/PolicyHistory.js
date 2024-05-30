@@ -80,7 +80,7 @@ function PolicyHistory() {
 
     const handleMenuClick = (e) => {
         console.log('click', e.key)
-        let selectedVersionDetails = selectedPolicyData.versionDetails?.filter(
+        let selectedVersionDetails = selectedPolicyData?.versionDetails?.filter(
             (data) => data.version_number == e.key
         )[0]
         setDropDownLabel(e.key == 1 ? 'V1.0' : 'V' + e.key)
@@ -108,8 +108,7 @@ function PolicyHistory() {
                                                     overflow: 'hidden',
                                                     textOverflow: 'ellipsis',
                                                     whiteSpace: 'nowrap',
-                                                }}
-                                                >
+                                                }}>
                                                 <Text
                                                     ellipsis={{
                                                         tooltip: {

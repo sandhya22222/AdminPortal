@@ -273,18 +273,16 @@ const CreateUsers = () => {
 
     //useEffect to form the data for the role dropdown
     useEffect(() => {
-        var roleObject = {}
-        var roleDropdownArray = []
-        groupsServerData &&
-            groupsServerData.length > 0 &&
-            groupsServerData.map((element) => {
-                roleObject = {}
-                roleObject.label = String(element.name).replaceAll('-', ' ')
-                roleObject.value = element.name
-                roleDropdownArray.push(roleObject)
+        if (groupsServerData && groupsServerData.length > 0) {
+            const roleDropdownArray = groupsServerData.map((element) => {
+                return {
+                    label: String(element.name).replaceAll('-', ' '),
+                    value: element.name,
+                }
             })
-        console.log('roleDropDownArray', roleDropdownArray)
-        setRoleSelectData(roleDropdownArray)
+            console.log('roleDropDownArray', roleDropdownArray)
+            setRoleSelectData(roleDropdownArray)
+        }
     }, [groupsServerData])
 
     useEffect(() => {
@@ -426,7 +424,7 @@ const CreateUsers = () => {
     //User Delete modal open function
     const openUserDeleteModal = () => {
         setShowDeleteUserModal(true)
-        setUserName(userName)
+        // setUserName(userName)
     }
 
     //UseEffect to set page action edit or save

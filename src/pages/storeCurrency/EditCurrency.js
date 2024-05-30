@@ -239,12 +239,7 @@ const EditCurrency = () => {
                                     <span>:</span>
                                 </p>
                             </Col>
-                            <Col
-                                className={`${
-                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                        ? ' w-[50%] !inline-block '
-                                        : ' w-[50%] !inline-block '
-                                }`}>
+                            <Col className='w-[50%] !inline-block'>
                                 <p className='!font-semibold my-4'>
                                     {currencyDetails?.iso_currency_code !== null
                                         ? currencyDetails?.iso_currency_code
