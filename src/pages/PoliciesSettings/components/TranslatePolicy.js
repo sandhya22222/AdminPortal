@@ -182,9 +182,9 @@ function TranslatePolicy({
                     store: Number(storeId),
                     version: userConsentVersionId,
                     language_code: selectedLanguage.key,
-                    display_name: selectedConsentDisplayNameData.consentTitleDisplayName,
+                    display_name: selectedConsentDisplayNameData?.consentTitleDisplayName,
                     version_display_name: 'Version_displayname',
-                    display_description: selectedConsentDisplayNameData.consentDescriptionDisplayName,
+                    display_description: selectedConsentDisplayNameData?.consentDescriptionDisplayName,
                 },
             ],
         }
@@ -192,11 +192,11 @@ function TranslatePolicy({
         const putbody = {
             userconsentversions_displayname: [
                 {
-                    id: selectedConsentDisplayNameData.translatedVersionId,
+                    id: selectedConsentDisplayNameData?.translatedVersionId,
                     language_code: selectedLanguage.key,
-                    display_name: selectedConsentDisplayNameData.consentTitleDisplayName,
+                    display_name: selectedConsentDisplayNameData?.consentTitleDisplayName,
                     version_display_name: 'Version_displayname',
-                    display_description: selectedConsentDisplayNameData.consentDescriptionDisplayName,
+                    display_description: selectedConsentDisplayNameData?.consentDescriptionDisplayName,
                 },
             ],
         }

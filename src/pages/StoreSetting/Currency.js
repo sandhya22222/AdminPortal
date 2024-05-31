@@ -149,7 +149,7 @@ const Currency = ({ storeUUId }) => {
             filteredCurrencyData &&
             filteredCurrencyData.length > 0 &&
             filteredCurrencyData.filter((ele) => ele.symbol === currencySymbol)
-        if (currencyDisplayData !== false && currencyDisplayData && currencyDisplayData.length > 0) {
+        if (currencyDisplayData && currencyDisplayData.length > 0) {
             setCurrencyData(currencyDisplayData)
         }
     }, [filteredCurrencyData, currencySymbol])
@@ -263,12 +263,7 @@ const Currency = ({ storeUUId }) => {
                                         <span>:</span>
                                     </p>
                                 </Col>
-                                <Col
-                                    className={`bg ${
-                                        util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                            ? 'w-[15%] !inline-block '
-                                            : 'w-[15%] !inline-block '
-                                    }`}>
+                                <Col className='bg w-[15%] !inline-block'>
                                     <p className='!font-semibold my-3'>
                                         {currencyData[0].iso_currency_code !== null
                                             ? currencyData[0].iso_currency_code

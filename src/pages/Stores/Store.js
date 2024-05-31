@@ -1021,7 +1021,7 @@ const Stores = () => {
             duplicateStoreLimitValues?.order_limit_per_day === storeLimitValues?.order_limit_per_day &&
             duplicateStoreLimitValues?.product_limit === storeLimitValues?.product_limit &&
             duplicateStoreLimitValues?.product_template_limit === storeLimitValues?.product_template_limit &&
-            duplicateStoreLimitValues?.store_limit === storeLimitValues.store_limit &&
+            duplicateStoreLimitValues?.store_limit === storeLimitValues?.store_limit &&
             duplicateStoreLimitValues?.store_users_limit === storeLimitValues?.store_users_limit &&
             duplicateStoreLimitValues?.vendor_limit === storeLimitValues?.vendor_limit &&
             duplicateStoreLimitValues?.vendor_users_limit === storeLimitValues?.vendor_users_limit &&

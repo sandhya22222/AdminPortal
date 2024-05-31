@@ -28,7 +28,7 @@ function LanguageHeaderAction({ languageId, languageCode, languageStatus, langua
     const [showSuccessModal, setShowSuccessModal] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [switchStatus, setSwitchStatus] = useState(parseInt(languageStatus) === 2 ? false : true)
-    const [changeSwitchStatus, setChangeSwitchStatus] = useState('')
+    const [changeSwitchStatus, setChangeSwitchStatus] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [isMakeAsDefault, setIsMakeAsDefault] = useState(String(languageDefault) === '1' ? true : false)
     const [defaultChecked, setDefaultChecked] = useState(false)
@@ -65,7 +65,7 @@ function LanguageHeaderAction({ languageId, languageCode, languageStatus, langua
 
     const updateLanguageStatus = async () => {
         const reqBody = {
-            status: changeSwitchStatus === true ? 1 : 2,
+            status: changeSwitchStatus ? 1 : 2,
         }
         setIsLoading(true)
         MarketplaceServices.update(languageEditStatusAPI, reqBody, {
@@ -120,7 +120,7 @@ function LanguageHeaderAction({ languageId, languageCode, languageStatus, langua
                     k: searchParams.get('k'),
                     n: searchParams.get('n'),
                     c: searchParams.get('c'),
-                    s: changeSwitchStatus === true ? 1 : 2,
+                    s: changeSwitchStatus ? 1 : 2,
                     d: searchParams.get('d'),
                 })
             })
