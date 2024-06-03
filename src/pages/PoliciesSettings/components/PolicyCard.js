@@ -404,7 +404,7 @@ const PolicyCard = ({
                 {!(policyStatus === 2) ? (
                     <>{' : ' + t('messages:not_updated_yet')}</>
                 ) : (
-                    <span className='font-semibold'>{' : ' + getDate(consent?.updated_on) || ''}</span>
+                    <span className='font-semibold'>{' : ' + getDate(consent?.version_details[0]?.updated_on) || ''}</span>
                 )}
             </div>
             {policyStatus !== 2 ? (
