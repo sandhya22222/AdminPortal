@@ -764,7 +764,9 @@ const CreateUsers = () => {
                                             }>
                                             {pageAction === 'edit' ? t('labels:update') : t('labels:save')}
                                         </Button>
-                                        <Button className='app-btn-secondary' onClick={() => navigate(-1)}>
+                                        <Button
+                                            className='app-btn-secondary'
+                                            onClick={() => navigate('dashboard/user-access-control/list-user-roles')}>
                                             {t('labels:discard')}
                                         </Button>
                                     </Content>
