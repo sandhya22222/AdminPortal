@@ -636,6 +636,11 @@ const CreateUsers = () => {
                                             <Input
                                                 autoComplete='off'
                                                 value={firstName}
+                                                disabled={
+                                                    pageAction !== 'add'
+                                                        ? userName === currentUser || defaultStatus === 'True'
+                                                        : false
+                                                }
                                                 onChange={(e) => {
                                                     const { value } = e.target
                                                     const regex = /^[a-zA-Z]*$/ // only allow letters
@@ -658,6 +663,11 @@ const CreateUsers = () => {
                                             <Input
                                                 autoComplete='off'
                                                 value={lastName}
+                                                disabled={
+                                                    pageAction !== 'add'
+                                                        ? userName === currentUser || defaultStatus === 'True'
+                                                        : false
+                                                }
                                                 onChange={(e) => {
                                                     const { value } = e.target
                                                     const regex = /^[a-zA-Z]*$/ // only allow letters
@@ -706,6 +716,11 @@ const CreateUsers = () => {
                                                 onBlur={(e) => {
                                                     setEmailId(e.target.value.trim().replace(/\s+/g, ' '))
                                                 }}
+                                                disabled={
+                                                    pageAction !== 'add'
+                                                        ? userName === currentUser || defaultStatus === 'True'
+                                                        : false
+                                                }
                                                 autocomplete='off'
                                                 maxLength={emailMaxLength}
                                                 placeholder={t('placeholders:enter_email')}
@@ -766,7 +781,7 @@ const CreateUsers = () => {
                                         </Button>
                                         <Button
                                             className='app-btn-secondary'
-                                            onClick={() => navigate('dashboard/user-access-control/list-user-roles')}>
+                                            onClick={() => navigate('/dashboard/user-access-control/list-user-roles')}>
                                             {t('labels:discard')}
                                         </Button>
                                     </Content>
