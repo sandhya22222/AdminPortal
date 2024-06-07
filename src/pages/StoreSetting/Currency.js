@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import { useNavigate } from 'react-router-dom'
+import StoreModal from '../../components/storeModal/StoreModal'
 import { MdInfo } from 'react-icons/md'
 
 const { Content } = Layout
@@ -25,6 +26,7 @@ const Currency = ({ storeUUId }) => {
     const [currencySymbol, setCurrencySymbol] = useState('')
     const [currencyIsoCode, setCurrencyIsoCode] = useState('')
     const [isVendorsOnBoarded, setIsVendorsOnBoarded] = useState()
+    const [isModalOpen, setIsModalOpen] = useState(false)
 
     //!get call of list currency
     const findByPageCurrencyData = () => {
@@ -95,6 +97,7 @@ const Currency = ({ storeUUId }) => {
             .then((response) => {
                 setIsCurrencyLoading(false)
                 setCurrencyOnChange(false)
+                setIsModalOpen(false)
                 setCurrencyIsoCode(response?.data?.response_body?.iso_code)
 
                 console.log(
@@ -105,6 +108,8 @@ const Currency = ({ storeUUId }) => {
                 MarketplaceToaster.showToast(response)
             })
             .catch((error) => {
+                setIsModalOpen(false)
+
                 setIsCurrencyLoading(false)
                 MarketplaceToaster.showToast(error.response)
                 console.log('ERROR response  for Store Settings Restore Factory ', storeCurrencyAPI, error)
@@ -154,6 +159,10 @@ const Currency = ({ storeUUId }) => {
         }
     }, [filteredCurrencyData, currencySymbol])
 
+    const closeModal = () => {
+        setIsModalOpen(false)
+    }
+
     useEffect(() => {
         findByPageCurrencyData()
         findAllWithoutPageStoreSettingApi()
@@ -161,7 +170,7 @@ const Currency = ({ storeUUId }) => {
     return (
         <Content>
             {isLoading ? (
-                <Content className='bg-white p-3 !rounded-md mt-[2.0rem]'>
+                <Content className='bg-white p-3 !rounded-md mt-[2.0rem] shadow-brandShadow'>
                     <Skeleton
                         active
                         paragraph={{
@@ -169,7 +178,7 @@ const Currency = ({ storeUUId }) => {
                         }}></Skeleton>
                 </Content>
             ) : (
-                <Spin tip='Please wait!' size='large' spinning={isCurrencyLoading}>
+                <>
                     {isVendorsOnBoarded && (
                         <Alert
                             message={
@@ -229,7 +238,7 @@ const Currency = ({ storeUUId }) => {
                                     className={`w-[20%] justify-items-start  !inline-block   ${
                                         util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
                                             ? 'text-left ml-2'
-                                            : 'text-right mr-2 '
+                                            : 'text-right mr-2'
                                     }`}>
                                     <p className='!text-brandGray1 my-3 flex'>{t('labels:currency_code')} </p>
                                     <p className='!text-brandGray1 my-3 flex'>{t('labels:conversation')}</p>
@@ -303,7 +312,7 @@ const Currency = ({ storeUUId }) => {
                                     <Col>
                                         <Button
                                             className='app-btn-primary '
-                                            onClick={() => updateStoreCurrencyApi()}
+                                            onClick={() => setIsModalOpen(true)}
                                             disabled={!currencyOnChange}>
                                             {t('labels:save')}
                                         </Button>
@@ -322,8 +331,26 @@ const Currency = ({ storeUUId }) => {
                             )}
                         </div>
                     </Content>
-                </Spin>
+                </>
             )}
+            <StoreModal
+                isVisible={isModalOpen}
+                okButtonText={t('labels:yes')}
+                title={
+                    <Text className='text-regal-blue font-bold text-[18px] leading-[26px]'>
+                        {t('labels:change_currency_details')}
+                    </Text>
+                }
+                cancelButtonText={t('labels:cancel')}
+                okCallback={() => updateStoreCurrencyApi()}
+                cancelCallback={() => closeModal()}
+                isSpin={isCurrencyLoading}
+                hideCloseButton={false}>
+                <div className='text-brandGray1'>
+                    <p className='mb-0'>{t('messages:currency_warning_message')}</p>
+                    <p>{t('messages:currency_message')}</p>
+                </div>
+            </StoreModal>
         </Content>
     )
 }

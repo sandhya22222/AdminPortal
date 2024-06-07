@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Layout, Spin, Row, Col, Divider, Button, Space, Input, Tooltip, Skeleton } from 'antd'
+import { Layout, Spin, Row, Col, Divider, Button, Space, Input, Tooltip, Skeleton, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
 import StoreModal from '../../components/storeModal/StoreModal'
 import MarketplaceToaster from '../../util/marketplaceToaster'
@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom'
 import util from '../../util/common'
 import Preview from './Preview'
 const { Content } = Layout
-
+const { Text } = Typography
 const storeSettingAPI = process.env.REACT_APP_STORE_FRONT_SETTINGS_API
 const storeSettingsRestoreFactorAPI = process.env.REACT_APP_STORE_FRONT_SETTINGS_RESTORE_FACTOR_API
 
@@ -1603,7 +1603,11 @@ const Theme = ({ id, getImageData }) => {
                             isVisible={resetModalOpen}
                             okButtonText={t('labels:yes')}
                             cancelButtonText={t('labels:cancel')}
-                            title={t('labels:reset_default')}
+                            title={
+                                <Text className='text-regal-blue font-bold text-[18px] leading-[26px]'>
+                                    {t('labels:reset_default')}
+                                </Text>
+                            }
                             okCallback={() => updateStoreSettingsRestoreApi()}
                             cancelCallback={() => {
                                 closeResetWaringModal()
@@ -1611,7 +1615,7 @@ const Theme = ({ id, getImageData }) => {
                             isSpin={resetLoader}
                             hideCloseButton={false}>
                             {
-                                <div>
+                                <div className='!text-brandGray1'>
                                     <p className='!mb-0'>{t('messages:restore_settings_warning_msg')}</p>
                                     <p>{t('messages:restore_settings_modal_msg')}</p>
                                 </div>
