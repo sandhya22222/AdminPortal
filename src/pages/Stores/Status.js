@@ -148,9 +148,15 @@ function Status({
                 isVisible={isModalOpen}
                 okButtonText={t('labels:proceed')}
                 title={
-                    changeSwitchStatus
-                        ? `${t('messages:store_activation_confirmation')}`
-                        : `${t('messages:store_deactivation_confirmation')}`
+                    changeSwitchStatus ? (
+                        <Text className='text-regal-blue font-bold text-[18px] leading-[26px]'>
+                            {t('messages:store_activation_confirmation')}
+                        </Text>
+                    ) : (
+                        <Text className='text-regal-blue font-bold text-[18px] leading-[26px]'>
+                            {t('messages:store_deactivation_confirmation')}
+                        </Text>
+                    )
                 }
                 cancelButtonText={t('labels:cancel')}
                 okCallback={() => updateStoreStatus()}
@@ -158,12 +164,12 @@ function Status({
                 isSpin={isLoading}
                 hideCloseButton={false}>
                 {changeSwitchStatus ? (
-                    <div>
+                    <div className='text-brandGray1'>
                         <p className='!mb-0'>{t('messages:store_active_confirmation_message')}</p>
                         <p className='!m-0 !p-0'>{t('messages:are_you_sure_you_like_to_proceed')}</p>
                     </div>
                 ) : (
-                    <div>
+                    <div className='text-brandGray1'>
                         <p>{t('messages:store_deactivation_confirmation_message')}</p>
                     </div>
                 )}
@@ -188,7 +194,9 @@ function Status({
             <StoreModal isVisible={activeConfirmationModalOpen} isSpin={false} hideCloseButton={false} width={800}>
                 {storeCheckStatus === 4 ? (
                     <Content className='text-center'>
-                        <Text className=' font-semibold text-[15px]'>{t('labels:activating_store')}</Text>
+                        <Text className=' text-lg leading-[26px] font-bold text-regal-blue]'>
+                            {t('labels:activating_store')}
+                        </Text>
                         <div
                             className='mt-5 mb-3'
                             // style={{ "text-align": "-webkit-center" }}
@@ -199,7 +207,7 @@ function Status({
                                 className='ml-[270px]'
                             />
                         </div>
-                        <div className='mb-3'>
+                        <div className='mb-3 text-brandGray1'>
                             <p className='!mb-0'>{t('messages:patience_is_a_virtue')}</p>
                             <p className='!mb-0'>{t('messages:activation_message')}</p>
                         </div>
@@ -214,7 +222,9 @@ function Status({
                 ) : null}
                 {storeCheckStatus === 5 ? (
                     <Content className='!text-center'>
-                        <Text className=' font-semibold text-[15px]'>{t('labels:deactivating_store')}</Text>
+                        <Text className=' text-lg leading-[26px] font-bold text-regal-blue'>
+                            {t('labels:deactivating_store')}
+                        </Text>
                         <div className='mt-5 mb-3'>
                             <img
                                 src={storeActiveConfirmationImage}
@@ -222,7 +232,7 @@ function Status({
                                 className='ml-[270px]'
                             />
                         </div>
-                        <div className='mb-3'>
+                        <div className='mb-3 text-brandGray1'>
                             <p className='!mb-0'>{t('messages:patience_is_a_virtue')}</p>
                             <p className='!mb-0'>{t('messages:deactivation_message')}</p>
                         </div>

@@ -163,7 +163,7 @@ const StoreImages = ({
             }
         }
     }
-console.log('getImageData', getImageData)
+    console.log('getImageData', getImageData)
     useEffect(() => {
         if (getImageData && getImageData !== undefined) {
             if (type === 'store_logo') {
@@ -331,7 +331,7 @@ console.log('getImageData', getImageData)
     return (
         <Content className=' mb-2'>
             <Content className='flex !mb-3 gap-1'>
-                <div className='font-medium  text-base mb-1 mt-2'>{title}</div>
+                <div className='font-semibold  text-base mb-1 mt-2 text-brandGray1'>{title}</div>
             </Content>
             {imagePathShow === undefined ? (
                 <Content>
