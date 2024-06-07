@@ -102,8 +102,6 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
             setMyData([
                 {
                     key: '1',
-                    selectedIcon: <img src={DashboardSelected} alt='ViewDashboard' />,
-                    notSelectedIcon: <img src={DashboardNotSelected} alt='ViewDashboard' />,
                     icon: <DashboardSVG />,
                     label: ` ${t('labels:dashboard')}`,
                     navigate_to: '/dashboard',
@@ -111,8 +109,6 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                 },
                 {
                     key: '2',
-                    selectedIcon: <img src={StoresSelected} alt='StoresSelected' />,
-                    notSelectedIcon: <img src={StoresNotSelected} alt='StoresNotSelected' />,
                     icon: <StoresSVG />,
                     label: ` ${t('labels:stores')}`,
                     navigate_to: '/dashboard/store?m_t=1',
@@ -120,8 +116,6 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                 },
                 {
                     key: '15',
-                    selectedIcon: <img src={SettingsSelected} alt='storeSettings' />,
-                    notSelectedIcon: <img src={SettingsNotSelected} alt='StoreSettings' />,
                     icon: <SettingsSVG />,
                     label: `${t('labels:settings')}`,
                     navigate_to: '/dashboard/',
@@ -246,13 +240,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                         {myData.map((item) =>
                             item.show_in_menu && item.children ? (
                                 <Menu.SubMenu
-                                    icon={
-                                        item?.childrenKeys?.includes(selectedItem)
-                                            ? item.selectedIcon
-                                            : item?.key === selectedItem
-                                              ? item.selectedIcon
-                                              : item.notSelectedIcon
-                                    }
+                                    icon={item?.icon}
                                     // icon={item.icon}
                                     key={item.key}
                                     title={item.label}
@@ -287,13 +275,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                                 </Menu.SubMenu>
                             ) : item.show_in_menu ? (
                                 <Menu.Item
-                                    icon={
-                                        item?.childrenKeys?.includes(selectedItem)
-                                            ? item.selectedIcon
-                                            : item?.key === selectedItem
-                                              ? item.selectedIcon
-                                              : item.notSelectedIcon
-                                    }
+                                    icon={item?.icon}
                                     // icon={item.icon}
                                     key={item.key}
                                     disabled={!item.show_in_menu}

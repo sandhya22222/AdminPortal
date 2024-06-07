@@ -28,19 +28,17 @@
 }
 .ant-menu-submenu-title:hover {
     background: var(--mp-sidebar-menu-dark) !important;
+    color:var(--mp-sidebar-menu-selected);
 }
 .ant-menu-submenu-title:hover svg path {
     fill: var(--mp-sidebar-menu-selected) !important;
 }
-.ant-menu-submenu-title svg path {
+/* .ant-menu-submenu-title svg path {
     fill: var(--mp-sidebar-menu-selected) !important;
-}
-.ant-menu-submenu-selected .ant-menu-submenu-title img {
+} */
+/* .ant-menu-submenu-selected .ant-menu-submenu-title img {
     background: var(--mp-sidebar-menu-dark) !important;
-}
-.ant-menu-submenu-title img:hover {
-    background: var(--mp-sidebar-menu-dark) !important;
-}
+} */
 .ant-menu-submenu {
     color: var(--mp-sidebar-menu-not-selected) !important;
 }
@@ -53,7 +51,10 @@
 }
 .ant-menu-submenu-selected > div > .ant-menu-title-content {
     color: var(--mp-sidebar-menu-selected) !important;
-    background-color: var(--mp-sidebar-menu-selected-background) !important;
+}
+.ant-menu-submenu-selected > div {
+    background-color: transparent !important;
+    background: transparent !important;
 }
 .ant-menu-submenu-open .ant-menu-submenu-selected .ant-menu-item-selected .ant-menu-title-content {
     color: var(--mp-sidebar-menu-selected) !important;
@@ -66,7 +67,16 @@
 }
 
 .ant-menu-light.ant-menu-submenu-popup > .ant-menu {
-    background-color: var(--mp-sidebar-submenu-popup-background-color) !important;
+    background-color: white !important;
+}
+.ant-menu-light.ant-menu-submenu-popup > .ant-menu >.ant-menu-item >.ant-menu-title-content{
+    color:var(--mp-sidebar-menu-not-selected);
+}
+.ant-menu-light.ant-menu-submenu-popup > .ant-menu >.ant-menu-item >.ant-menu-title-content:hover{
+    color:var(--mp-sidebar-menu-selected);
+}
+.ant-menu-light.ant-menu-submenu-popup > .ant-menu >.ant-menu-item-selected >.ant-menu-title-content{
+    color:var(--mp-sidebar-menu-selected);
 }
 .ant-menu-item > .ant-menu-item-only-child {
     color: var(--mp-sidebar-submenu-popup-text-color) !important;
@@ -84,4 +94,30 @@
 .ant-menu-light > .ant-menu:not(.ant-menu-horizontal) .ant-menu-item:not(.ant-menu-item-selected):hover {
     color: var(--mp-sidebar-menu-selected) !important;
     background-color: var(--mp-sidebar-menu-selected-background) !important;
+}
+.ant-menu-vertical > .ant-menu-item:not(.ant-menu-item-only-child) > .ant-menu-title-content {
+    display: none;
+}
+.ant-menu-vertical > .ant-menu-submenu > .ant-menu-submenu-title > .ant-menu-title-content {
+    display: none;
+}
+
+.ant-menu-submenu-popup>.ant-menu-vertical>.ant-menu-item{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.ant-menu-submenu-selected>.ant-menu-submenu-title svg path{
+    fill :var(--mp-sidebar-menu-selected);
+}
+
+.ant-menu-item,
+.ant-menu-submenu-title {
+    display: flex;
+    gap: 8px;
+}
+
+.ant-menu-submenu > .ant-menu-vertical {
+    background: white !important;
 }
