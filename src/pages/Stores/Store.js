@@ -1126,11 +1126,11 @@ const Stores = () => {
                                 items={[
                                     {
                                         key: '1',
-                                        label: `${t('labels:my_stores')}`,
+                                        label: <span className=''>{t('labels:my_stores')}</span>,
                                     },
                                     {
                                         key: '2',
-                                        label: <span className='!mr-3'>{t('labels:threshold_configuration')}</span>,
+                                        label: <span className='!mr-3 '>{t('labels:threshold_configuration')}</span>,
                                     },
                                 ]}
                                 onChange={(key) => {
@@ -1301,7 +1301,7 @@ const Stores = () => {
             </Drawer>
             <Content className='!p-5'>
                 {isLoading ? (
-                    <Content className='bg-white p-3 !rounded-md mt-[3.5rem]'>
+                    <Content className='bg-white p-3 !rounded-md mt-[3.5rem] shadow-brandShadow '>
                         <Skeleton
                             active
                             paragraph={{
@@ -1418,7 +1418,9 @@ const Stores = () => {
             <StoreModal isVisible={saveStoreModalOpen} isSpin={false} hideCloseButton={false} width={800}>
                 {
                     <Content className='!text-center'>
-                        <Text className=' font-semibold text-[15px]'>{t('labels:building_store')}</Text>
+                        <Text className=' text-lg leading-[26px] font-bold text-regal-blue'>
+                            {t('labels:building_store')}
+                        </Text>
                         <div className='mt-5 mb-3'>
                             <img
                                 src={saveStoreConfirmationImage}
@@ -1426,8 +1428,8 @@ const Stores = () => {
                                 className='ml-[220px]'
                             />
                         </div>
-                        <div className='!font-medium'>
-                            <p className='!mb-0 '>{t('messages:hang_tight_as_we_conjure_up_store')}</p>
+                        <div className='!text-brandGray1'>
+                            <p className='!mb-0  '>{t('messages:hang_tight_as_we_conjure_up_store')}</p>
                             <p className='!mb-0'>{t('messages:swing_by_in_a_bit_to_witness_the_magic_unfolding')}</p>
                             <p>{t('messages:thanks_for_your_patience')}</p>
                         </div>

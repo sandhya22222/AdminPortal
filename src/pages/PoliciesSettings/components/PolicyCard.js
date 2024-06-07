@@ -404,46 +404,54 @@ const PolicyCard = ({
                 {!(policyStatus === 2) ? (
                     <>{' : ' + t('messages:not_updated_yet')}</>
                 ) : (
-                    <span className='font-semibold'>{' : ' + getDate(consent?.version_details[0]?.updated_on) || ''}</span>
+                    <span className='font-semibold'>
+                        {' : ' + getDate(consent?.version_details[0]?.updated_on) || ''}
+                    </span>
                 )}
             </div>
             {policyStatus !== 2 ? (
-                <div className=' space-x-2 mt-6'>
-                    <Tooltip
-                        overlayStyle={{ position: 'fixed', maxWidth: '2000px' }}
-                        placement='right'
-                        title={
-                            !descriptionText?.trim() && consentName?.trim() ? (
-                                <span className='whitespace-nowrap'>{t('messages:please_add_description')}</span>
-                            ) : (
-                                ''
-                            )
-                        }>
-                        <Button
-                            className='app-btn-primary '
-                            disabled={!(consentName?.trim() && descriptionText?.trim())}
-                            onClick={
-                                policyStatus === 1 && !isConsentNameChanged && !descriptionModified
-                                    ? handlePublishModelConfirmation
-                                    : handelSaveConsent
-                            }
-                            loading={createNewUserConsentStatus === 'pending' || UpdateUserConsentStatus === 'pending'}>
-                            {policyStatus === 1 && !isConsentNameChanged && !descriptionModified
-                                ? t('labels:publish')
-                                : t('labels:save')}
-                        </Button>
-                    </Tooltip>
-                    {(policyStatus !== 1 || isConsentNameChanged || descriptionModified) && (
-                        <Button
-                            className='app-btn-secondary'
-                            onClick={policyStatus === 1 ? handlePolicyChangeWarningModal : handelCancelDescription}
-                            disabled={
-                                createNewUserConsentStatus === 'pending' ||
-                                UpdateUserConsentStatus === 'pending' ||
-                                !(consentName?.trim() && descriptionText?.trim())
+                <div className='gap-2 mt-6 flex'>
+                    <div>
+                        <Tooltip
+                            overlayStyle={{ position: 'fixed', maxWidth: '2000px' }}
+                            placement='right'
+                            title={
+                                !descriptionText?.trim() && consentName?.trim() ? (
+                                    <span className='whitespace-nowrap'>{t('messages:please_add_description')}</span>
+                                ) : (
+                                    ''
+                                )
                             }>
-                            {t('labels:cancel')}
-                        </Button>
+                            <Button
+                                className='app-btn-primary '
+                                disabled={!(consentName?.trim() && descriptionText?.trim())}
+                                onClick={
+                                    policyStatus === 1 && !isConsentNameChanged && !descriptionModified
+                                        ? handlePublishModelConfirmation
+                                        : handelSaveConsent
+                                }
+                                loading={
+                                    createNewUserConsentStatus === 'pending' || UpdateUserConsentStatus === 'pending'
+                                }>
+                                {policyStatus === 1 && !isConsentNameChanged && !descriptionModified
+                                    ? t('labels:publish')
+                                    : t('labels:save')}
+                            </Button>
+                        </Tooltip>
+                    </div>
+                    {(policyStatus !== 1 || isConsentNameChanged || descriptionModified) && (
+                        <div>
+                            <Button
+                                className='app-btn-secondary'
+                                onClick={policyStatus === 1 ? handlePolicyChangeWarningModal : handelCancelDescription}
+                                disabled={
+                                    createNewUserConsentStatus === 'pending' ||
+                                    UpdateUserConsentStatus === 'pending' ||
+                                    !(consentName?.trim() && descriptionText?.trim())
+                                }>
+                                {t('labels:cancel')}
+                            </Button>
+                        </div>
                     )}
                 </div>
             ) : null}
