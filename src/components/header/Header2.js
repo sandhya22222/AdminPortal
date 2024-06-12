@@ -240,7 +240,7 @@ const Header2 = ({ collapsed, setCollapsed }) => {
                                 }`}>
                                 <Avatar className='bg-gray-400 mx-1' size={48} icon={<UserOutlined />} />
                                 <Text className={`!flex flex-col`}>
-                                    <Text className='font-normal text-sm text-[#637381] leading-[22px] whitespace-nowrap'>
+                                    <Text className='font-normal text-sm text-[#637381] leading-[22px] whitespace-nowrap *:'>
                                         {userName ? userName : userProfileInfo}{' '}
                                     </Text>
                                     <Dropdown
@@ -252,9 +252,9 @@ const Header2 = ({ collapsed, setCollapsed }) => {
                                         trigger={['click']}
                                         className='cursor-pointer'
                                         overlayStyle={{ position: 'fixed', overflow: 'visible', zIndex: 20, top: 64 }}>
-                                        <Text className='text-xs text-[#8899A8] !leading-[20px] font-normal whitespace-nowrap '>
+                                        <Text className='text-xs text-[#8899A8] !leading-[20px] font-normal whitespace-nowrap flex flex-row items-center'>
                                             {userRole ? userRole.replace(/-/g, ' ') : ''}{' '}
-                                            <DownOutlined className='text-xs' />
+                                            <DownOutlined className='text-xs mx-1' />
                                         </Text>
                                     </Dropdown>
                                 </Text>
