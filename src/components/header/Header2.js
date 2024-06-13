@@ -270,8 +270,8 @@ const Header2 = ({ collapsed, setCollapsed }) => {
                                 defaultValue={storeSelectedLngCode || defaultLanguageCode}
                                 disabled={languageItems.length === 1 ? true : false}
                                 onChange={(value) => handleLanguageClick(value)}
-                                className='header-select'
-                                dropdownStyle={{ position: 'fixed' }}
+                                className='header-select !max-w-[90px]'
+                                dropdownStyle={{ position: 'fixed', width: '90' }}
                                 key={storeSelectedLngCode}>
                                 {languageItems.map((option) => (
                                     <>
