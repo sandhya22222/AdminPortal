@@ -54,7 +54,6 @@
 }
 .ant-menu-submenu-selected > div {
     background-color: transparent !important;
-    background: transparent !important;
 }
 .ant-menu-submenu-open .ant-menu-submenu-selected .ant-menu-item-selected .ant-menu-title-content {
     color: var(--mp-sidebar-menu-selected) !important;
