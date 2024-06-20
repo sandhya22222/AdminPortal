@@ -1,1 +1,25 @@
-{"enter_store_name": "Enter your store name", "enter_username": "Enter your username", "enter_password": "Enter your current password", "enter_first_name": "Enter first name", "enter_last_name": "Enter last name", "enter_email": "Enter your email address", "enter_language_name": "Enter language name", "enter_language_code": "Enter code", "enter_language_regex": "Enter language regex", "enter_native_name": "Enter native name", "enter_currency_symbol": "E.g. ₹, $, £", "enter_iso_code": "E.g. INR, USD ,GBP", "enter_fractional_unit": "E.g. paisa, cent", "enter_number_to_basic": "E.g. 100", "enter_code": "Enter Code", "user_name_placeholder": "Enter user name", "role_name_placeholder": "Enter role name", "role_description_placeholder": "Enter role description", "enter_your_new_password": "Enter your new password", "enter_your_confirm_password": "Enter your confirm password", "select_language": "Select language"}
+{
+    "enter_store_name": "Enter your store name",
+    "enter_username": "Enter your username",
+    "enter_password": "Enter your current password",
+    "enter_first_name": "Enter first name",
+    "enter_last_name": "Enter last name",
+    "enter_email": "Enter your email address",
+    "enter_language_name": "Enter language name",
+    "enter_language_code": "Enter code",
+    "enter_language_regex": "Enter language regex",
+    "enter_native_name": "Enter native name",
+    "enter_currency_symbol": "E.g. ₹, $, £",
+    "enter_iso_code": "E.g. INR, USD ,GBP",
+    "enter_fractional_unit": "E.g. paisa, cent",
+    "enter_number_to_basic": "E.g. 100",
+    "enter_code": "Enter Code",
+    "user_name_placeholder": "Enter user name",
+    "role_name_placeholder": "Enter role name",
+    "role_description_placeholder": "Enter role description",
+    "enter_your_new_password": "Enter your new password",
+    "enter_your_confirm_password": "Enter your confirm password",
+    "select_language": "Select language",
+    "please_enter_search_text_here": "Please enter search text here",
+    "not_able_to_find_searched_details": "No Data Found"
+}

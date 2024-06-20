@@ -256,3 +256,16 @@ a {
 .ant-select-dropdown .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
     background-color: var(--select-option-color-h) !important;
 }
+
+
+/*!Search bar related styles*/
+.ant-input-group-addon .ant-btn {
+    background: none !important;
+    border-color: var(--mp-primary-border-color-d) !important;
+    color: var(--mp-secondary-text-color) !important;
+}
+.ant-input-group-addon .ant-btn:hover {
+    background: none !important;
+    border-color: var(--mp-primary-border-color-h) !important;
+    color: var(--mp-brand-color) !important;
+}
