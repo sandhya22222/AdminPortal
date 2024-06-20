@@ -1378,32 +1378,36 @@ const Stores = () => {
                                     {t('messages:store_network_error')}
                                 </Content>
                             )}
+                            {parseInt(m_tab_id) === 1 ? (
+                                <Content className=' grid justify-items-end mx-3 h-fit'>
+                                    {countForStore && countForStore >= pageLimit ? (
+                                        <DmPagination
+                                            currentPage={
+                                                parseInt(searchParams.get('page'))
+                                                    ? parseInt(searchParams.get('page'))
+                                                    : 1
+                                            }
+                                            presentPage={
+                                                parseInt(searchParams.get('page'))
+                                                    ? parseInt(searchParams.get('page'))
+                                                    : 1
+                                            }
+                                            totalItemsCount={countForStore}
+                                            defaultPageSize={pageLimit}
+                                            pageSize={
+                                                parseInt(searchParams.get('limit'))
+                                                    ? parseInt(searchParams.get('limit'))
+                                                    : pageLimit
+                                            }
+                                            handlePageNumberChange={handlePageNumberChange}
+                                            showSizeChanger={true}
+                                            showTotal={true}
+                                            showQuickJumper={true}
+                                        />
+                                    ) : null}
+                                </Content>
+                            ) : null}
                         </Content>
-                        {parseInt(m_tab_id) === 1 ? (
-                            <Content className=' grid justify-items-end'>
-                                {countForStore && countForStore >= pageLimit ? (
-                                    <DmPagination
-                                        currentPage={
-                                            parseInt(searchParams.get('page')) ? parseInt(searchParams.get('page')) : 1
-                                        }
-                                        presentPage={
-                                            parseInt(searchParams.get('page')) ? parseInt(searchParams.get('page')) : 1
-                                        }
-                                        totalItemsCount={countForStore}
-                                        defaultPageSize={pageLimit}
-                                        pageSize={
-                                            parseInt(searchParams.get('limit'))
-                                                ? parseInt(searchParams.get('limit'))
-                                                : pageLimit
-                                        }
-                                        handlePageNumberChange={handlePageNumberChange}
-                                        showSizeChanger={true}
-                                        showTotal={true}
-                                        showQuickJumper={true}
-                                    />
-                                ) : null}
-                            </Content>
-                        ) : null}
                     </>
                 )}
             </Content>
