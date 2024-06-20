@@ -1,5 +1,4 @@
-import { UserOutlined, InfoCircleOutlined, PlusOutlined } from '@ant-design/icons'
-
+import { UserOutlined, InfoCircleOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons'
 import {
     Button,
     Col,
@@ -43,6 +42,7 @@ import { validatePositiveNumber } from '../../util/validation'
 
 const { Content } = Layout
 const { Title, Text } = Typography
+const { Search } = Input
 //! Get all required details from .env file
 const storeAPI = process.env.REACT_APP_STORE_API
 const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE)
@@ -59,6 +59,7 @@ const dm4sightBaseURL = process.env.REACT_APP_4SIGHT_BASE_URL
 const currentUserDetailsAPI = process.env.REACT_APP_USER_PROFILE_API
 const maxDataLimit = process.env.REACT_APP_MAX_DATA_LIMIT
 const emailRegexPattern = process.env.REACT_APP_REGEX_PATTERN_EMAIL
+const searchMaxLength = process.env.REACT_APP_SEARCH_MAX_LENGTH
 
 const Stores = () => {
     const { t } = useTranslation()
@@ -101,6 +102,8 @@ const Stores = () => {
     const [value, setValue] = useState(0)
     const [previousStatus, setPreviousStatus] = useState([])
     const [errorField, setErrorField] = useState('')
+    const [searchValue, setSearchValue] = useState('')
+    const [isSearchTriggered, setIsSearchTriggered] = useState(false)
     const auth = useAuth()
     const permissionValue = util.getPermissionData() || []
     let keyCLoak = sessionStorage.getItem('keycloakData')
@@ -147,12 +150,6 @@ const Stores = () => {
     useEffect(() => {
         setErrorField('')
     }, [currentTab])
-
-    useEffect(() => {
-        if (window.sessionStorage.getItem('currentStoretab') == 1) {
-            setCurrentTab(1)
-        }
-    }, [window.sessionStorage.getItem('currentStoretab')])
 
     useEffect(() => {
         getCurrentUserDetails()
@@ -672,17 +669,15 @@ const Stores = () => {
     }
 
     //!get call for stores
-    const findByPageStoreApi = (pageNumber, pageLimit, storeStatus) => {
+    const findByPageStoreApi = (pageNumber, pageLimit, storeStatus, searchKey) => {
         setIsLoading(true)
-        MarketplaceServices.findByPage(
-            storeAPI,
-            {
-                status: storeStatus ? storeStatus : null,
-            },
-            pageNumber,
-            pageLimit,
-            false
-        )
+        let params = {}
+        params['status'] = storeStatus ? storeStatus : null
+        if (searchKey) {
+            params['search'] = String(searchKey)
+            setIsSearchTriggered(true)
+        }
+        MarketplaceServices.findByPage(storeAPI, params, pageNumber, pageLimit, false)
             .then(function (response) {
                 setActiveCount({
                     totalStores:
@@ -1099,6 +1094,38 @@ const Stores = () => {
                 MarketplaceToaster.showToast(error.response)
             })
     }
+    const handleSearchChange = (searchKey) => {
+        setSearchValue(searchKey)
+        if (searchKey?.trim()) {
+            findByPageStoreApi(
+                searchParams.get('page') ? parseInt(searchParams.get('page')) : 1,
+                searchParams.get('limit') ? parseInt(searchParams.get('limit')) : pageLimit,
+                parseInt(searchParams.get('tab')) && parseInt(searchParams.get('tab')) <= 2
+                    ? parseInt(searchParams.get('tab'))
+                    : '',
+                searchKey?.trimStart()
+            )
+        } else {
+            if (isSearchTriggered) {
+                findByPageStoreApi()
+                setIsSearchTriggered(false)
+            }
+        }
+    }
+    const handleInputChange = (event) => {
+        const trimmed = String(event.target.value.trimStart())
+        const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
+        setSearchValue(trimmedUpdate)
+        if (event.target.value == '') {
+            if (isSearchTriggered) {
+                findByPageStoreApi()
+                setIsSearchTriggered(false)
+            }
+        }
+    }
+    const customButton = (
+        <Button type='primary' disabled={searchValue?.trim() === '' ? true : false} icon={<SearchOutlined />} />
+    )
 
     return (
         <Content className=''>
@@ -1119,30 +1146,28 @@ const Stores = () => {
                     ) : null
                 }
                 headerContent={
-                    !isLoading && (
-                        <Content className='!h-10 !mt-16'>
-                            <Tabs
-                                activeKey={currentTab}
-                                items={[
-                                    {
-                                        key: '1',
-                                        label: <span className=''>{t('labels:my_stores')}</span>,
-                                    },
-                                    {
-                                        key: '2',
-                                        label: <span className='!mr-3 '>{t('labels:threshold_configuration')}</span>,
-                                    },
-                                ]}
-                                onChange={(key) => {
-                                    setCurrentTab(key)
-                                    setSearchParams({
-                                        m_t: key,
-                                    })
-                                    sessionStorage.setItem('currentStoretab', key)
-                                }}
-                            />
-                        </Content>
-                    )
+                    <Content className='!h-10 !mt-16'>
+                        <Tabs
+                            activeKey={currentTab}
+                            defaultActiveKey='1'
+                            items={[
+                                {
+                                    key: '1',
+                                    label: <span className=''>{t('labels:my_stores')}</span>,
+                                },
+                                {
+                                    key: '2',
+                                    label: <span className='!mr-3 '>{t('labels:threshold_configuration')}</span>,
+                                },
+                            ]}
+                            onChange={(key) => {
+                                setCurrentTab(key)
+                                setSearchParams({
+                                    m_t: key,
+                                })
+                            }}
+                        />
+                    </Content>
                 }
             />
             <Drawer
@@ -1299,122 +1324,150 @@ const Stores = () => {
                     </>
                 ) : null}
             </Drawer>
-            <Content className='!p-5'>
-                {isLoading ? (
-                    <Content className='bg-white p-3 !rounded-md mt-[3.5rem] shadow-brandShadow '>
+            <div className='!p-5'>
+                <Content className=' bg-white shadow-brandShadow !rounded-md'>
+                    {parseInt(currentTab) === 1 ? (
+                        <div className='flex w-full justify-between items-center py-3 px-3'>
+                            <div className='text-base font-semibold text-regal-blue'>{t('labels:my_stores')}</div>
+                            <div className='flex items-center justify-end gap-2 flex-row flex-grow'>
+                                <Radio.Group
+                                    className={`min-w-min`}
+                                    optionType='button'
+                                    onChange={handleRadioChange}
+                                    value={value}>
+                                    <Radio value={0}>{t('labels:all')}</Radio>
+                                    <Radio value={1}>{t('labels:active')}</Radio>
+                                    <Radio value={2}>{t('labels:inactive')}</Radio>
+                                </Radio.Group>
+                                <Search
+                                    placeholder={t('placeholders:please_enter_search_text_here')}
+                                    onSearch={handleSearchChange}
+                                    onChange={handleInputChange}
+                                    value={searchValue}
+                                    suffix={null}
+                                    maxLength={searchMaxLength}
+                                    enterButton={customButton}
+                                    allowClear
+                                    className='w-[250px]'
+                                />
+                            </div>
+                        </div>
+                    ) : null}
+                    {isLoading ? (
                         <Skeleton
+                            className='px-3 w-full'
                             active
                             paragraph={{
                                 rows: 6,
                             }}></Skeleton>
-                    </Content>
-                ) : isNetworkError ? (
-                    <Content className='!mt-[1.7rem] !text-center bg-white p-3 !rounded-md'>
-                        {t('messages:store_network_error')}
-                    </Content>
-                ) : (
-                    <>
-                        <Content className='bg-white shadow-brandShadow !rounded-md'>
-                            {parseInt(currentTab) === 1 ? (
-                                <Content className=''>
-                                    <div className='flex w-full'>
-                                        <div className='mx-3 pt-3 text-base font-semibold w-[75%] text-regal-blue'>
-                                            {t('labels:my_stores')}
-                                        </div>
-                                        <Radio.Group
-                                            className={`mt-3  flex !float-right mb-2 ${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'ml-5' : ''}`}
-                                            optionType='button'
-                                            onChange={handleRadioChange}
-                                            value={value}>
-                                            <Radio value={0}>{t('labels:all')}</Radio>
-                                            <Radio value={1}>{t('labels:active')}</Radio>
-                                            <Radio value={2}>{t('labels:inactive')}</Radio>
-                                        </Radio.Group>
-                                    </div>
-                                    {/* <Table
+                    ) : isNetworkError ? (
+                        <Content className='!mt-[1.7rem] !text-center bg-white p-3 !rounded-md'>
+                            {t('messages:store_network_error')}
+                        </Content>
+                    ) : (
+                        <>
+                            <Content className=''>
+                                {parseInt(currentTab) === 1 ? (
+                                    <Content className=''>
+                                        {/* <Table
                                         className='mt-2 bg-white p-3'
                                         columns={StoreTableColumn}
                                         dataSource={selectedTabTableContent}
                                         pagination={false}
                                     /> */}
-                                    {selectedTabTableContent?.length > 0 ? (
-                                        <DynamicTable tableComponentData={storeTableData} />
-                                    ) : (
-                                        <Content className='pb-4'>
-                                            <Empty description={t('messages:no_data_available')} />
-                                        </Content>
-                                    )}
-                                </Content>
-                            ) : parseInt(currentTab) === 2 ? (
-                                <>
-                                    <Content>
-                                        <Title className='!text-[#023047] pt-3 ml-6' level={4}>
-                                            {t('labels:account_restrictions')}
-                                        </Title>
-                                        <Divider className='w-full mt-2 mb-2' />
-                                        <DynamicTable tableComponentData={tablePropsThreshold1} />
+                                        {selectedTabTableContent?.length === 0 &&
+                                        isSearchTriggered &&
+                                        searchValue?.length > 0 ? (
+                                            <Content className='text-center font-semibold ml-2 mt-3 bg-white p-3'>
+                                                <Text>{t('placeholders:not_able_to_find_searched_details')}</Text>
+                                            </Content>
+                                        ) : (
+                                            <>
+                                                {selectedTabTableContent?.length > 0 ? (
+                                                    <DynamicTable tableComponentData={storeTableData} />
+                                                ) : (
+                                                    <Content className='pb-4'>
+                                                        <Empty description={t('messages:no_data_available')} />
+                                                    </Content>
+                                                )}
+                                            </>
+                                        )}
                                     </Content>
-                                    <Content>
-                                        <Title className='!text-[#023047]  pt-3 ml-6' level={4}>
-                                            {t('labels:store_restrictions')}
-                                        </Title>
-                                        <Divider className='w-full mt-2 mb-2' />
-                                        <DynamicTable tableComponentData={tablePropsThreshold2} />
-                                    </Content>
-                                    {hideAddStoreButton ? (
-                                        <Content className='flex gap-2 !ml-6 !pb-6'>
-                                            <Button
-                                                className={'app-btn-primary'}
-                                                onClick={() => validationForSaveStoreLimit()}>
-                                                {t('labels:save')}
-                                            </Button>
-                                            <Button
-                                                className='app-btn-secondary'
-                                                onClick={() => {
-                                                    setCurrentTab(1)
-                                                    sessionStorage.setItem('currentStoretab', 1)
-                                                }}>
-                                                {t('labels:discard')}
-                                            </Button>
+                                ) : parseInt(currentTab) === 2 ? (
+                                    <>
+                                        <Content>
+                                            <Title className='!text-[#023047] pt-3 ml-6' level={4}>
+                                                {t('labels:account_restrictions')}
+                                            </Title>
+                                            <Divider className='w-full mt-2 mb-2' />
+                                            <DynamicTable tableComponentData={tablePropsThreshold1} />
                                         </Content>
-                                    ) : (
-                                        ''
-                                    )}
-                                </>
-                            ) : (
-                                <Content className='!mt-[1.7rem] !text-center bg-white p-3 !rounded-md'>
-                                    {t('messages:store_network_error')}
-                                </Content>
-                            )}
-                        </Content>
-                        {parseInt(m_tab_id) === 1 ? (
-                            <Content className=' grid justify-items-end'>
-                                {countForStore && countForStore >= pageLimit ? (
-                                    <DmPagination
-                                        currentPage={
-                                            parseInt(searchParams.get('page')) ? parseInt(searchParams.get('page')) : 1
-                                        }
-                                        presentPage={
-                                            parseInt(searchParams.get('page')) ? parseInt(searchParams.get('page')) : 1
-                                        }
-                                        totalItemsCount={countForStore}
-                                        defaultPageSize={pageLimit}
-                                        pageSize={
-                                            parseInt(searchParams.get('limit'))
-                                                ? parseInt(searchParams.get('limit'))
-                                                : pageLimit
-                                        }
-                                        handlePageNumberChange={handlePageNumberChange}
-                                        showSizeChanger={true}
-                                        showTotal={true}
-                                        showQuickJumper={true}
-                                    />
+                                        <Content>
+                                            <Title className='!text-[#023047]  pt-3 ml-6' level={4}>
+                                                {t('labels:store_restrictions')}
+                                            </Title>
+                                            <Divider className='w-full mt-2 mb-2' />
+                                            <DynamicTable tableComponentData={tablePropsThreshold2} />
+                                        </Content>
+                                        {hideAddStoreButton ? (
+                                            <Content className='flex gap-2 !ml-6 !pb-6'>
+                                                <Button
+                                                    className={'app-btn-primary'}
+                                                    onClick={() => validationForSaveStoreLimit()}>
+                                                    {t('labels:save')}
+                                                </Button>
+                                                <Button
+                                                    className='app-btn-secondary'
+                                                    onClick={() => {
+                                                        setCurrentTab(1)
+                                                        sessionStorage.setItem('currentStoretab', 1)
+                                                    }}>
+                                                    {t('labels:discard')}
+                                                </Button>
+                                            </Content>
+                                        ) : (
+                                            ''
+                                        )}
+                                    </>
+                                ) : (
+                                    <Content className='!mt-[1.7rem] !text-center bg-white p-3 !rounded-md'>
+                                        {t('messages:store_network_error')}
+                                    </Content>
+                                )}
+                                {parseInt(m_tab_id) === 1 ? (
+                                    <Content className=' grid justify-items-end mx-3 h-fit'>
+                                        {countForStore && countForStore >= pageLimit ? (
+                                            <DmPagination
+                                                currentPage={
+                                                    parseInt(searchParams.get('page'))
+                                                        ? parseInt(searchParams.get('page'))
+                                                        : 1
+                                                }
+                                                presentPage={
+                                                    parseInt(searchParams.get('page'))
+                                                        ? parseInt(searchParams.get('page'))
+                                                        : 1
+                                                }
+                                                totalItemsCount={countForStore}
+                                                defaultPageSize={pageLimit}
+                                                pageSize={
+                                                    parseInt(searchParams.get('limit'))
+                                                        ? parseInt(searchParams.get('limit'))
+                                                        : pageLimit
+                                                }
+                                                handlePageNumberChange={handlePageNumberChange}
+                                                showSizeChanger={true}
+                                                showTotal={true}
+                                                showQuickJumper={true}
+                                            />
+                                        ) : null}
+                                    </Content>
                                 ) : null}
                             </Content>
-                        ) : null}
-                    </>
-                )}
-            </Content>
+                        </>
+                    )}
+                </Content>
+            </div>
             <StoreModal isVisible={saveStoreModalOpen} isSpin={false} hideCloseButton={false} width={800}>
                 {
                     <Content className='!text-center'>
