@@ -149,12 +149,6 @@ const Stores = () => {
     }, [currentTab])
 
     useEffect(() => {
-        if (window.sessionStorage.getItem('currentStoretab') == 1) {
-            setCurrentTab(1)
-        }
-    }, [window.sessionStorage.getItem('currentStoretab')])
-
-    useEffect(() => {
         getCurrentUserDetails()
     }, [])
 
@@ -1119,30 +1113,28 @@ const Stores = () => {
                     ) : null
                 }
                 headerContent={
-                    !isLoading && (
-                        <Content className='!h-10 !mt-16'>
-                            <Tabs
-                                activeKey={currentTab}
-                                items={[
-                                    {
-                                        key: '1',
-                                        label: <span className=''>{t('labels:my_stores')}</span>,
-                                    },
-                                    {
-                                        key: '2',
-                                        label: <span className='!mr-3 '>{t('labels:threshold_configuration')}</span>,
-                                    },
-                                ]}
-                                onChange={(key) => {
-                                    setCurrentTab(key)
-                                    setSearchParams({
-                                        m_t: key,
-                                    })
-                                    sessionStorage.setItem('currentStoretab', key)
-                                }}
-                            />
-                        </Content>
-                    )
+                    <Content className='!h-10 !mt-16'>
+                        <Tabs
+                            activeKey={currentTab}
+                            defaultActiveKey='1'
+                            items={[
+                                {
+                                    key: '1',
+                                    label: <span className=''>{t('labels:my_stores')}</span>,
+                                },
+                                {
+                                    key: '2',
+                                    label: <span className='!mr-3 '>{t('labels:threshold_configuration')}</span>,
+                                },
+                            ]}
+                            onChange={(key) => {
+                                setCurrentTab(key)
+                                setSearchParams({
+                                    m_t: key,
+                                })
+                            }}
+                        />
+                    </Content>
                 }
             />
             <Drawer
