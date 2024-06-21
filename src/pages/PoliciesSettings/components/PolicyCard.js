@@ -390,6 +390,7 @@ const PolicyCard = ({
                         modules={modules}
                         formats={formats}
                         placeholder={t('labels:enter_policy_description')}
+                        bounds={`[data-text-editor=policyCard]`}
                     />
                 </div>
             </div>
