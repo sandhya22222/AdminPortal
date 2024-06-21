@@ -140,7 +140,7 @@ const PolicyCard = ({
     }
 
     const handelDescriptionChange = (content, delta, source, editor) => {
-        if (source === 'user') {
+        if ((policyStatus === 1 || isNewPolicy) && source === 'user') {
             setDescription(content)
             setDescriptionText(editor.getText(content)?.trim())
             if (!descriptionModified) setDescriptionModified(true)
@@ -380,16 +380,16 @@ const PolicyCard = ({
                 <div
                     className=' rounded border-[1px] drop-shadow-sm shadow-[#D9D9D9] border-[#D9D9D9] overflow-hidden bg-white   w-full'
                     data-text-editor={'policyCard'}>
+                    {console.log('see', consentDiscriptionDisplayName)}
                     <ReactQuill
                         theme='snow'
                         value={policyStatus === 2 ? consentDiscriptionDisplayName : description}
                         className={policyStatus === 2 ? 'opacity-40 bg-[#00000014]' : ''}
                         readOnly={policyStatus === 2}
-                        onChange={(policyStatus === 1 || isNewPolicy) && handelDescriptionChange}
+                        onChange={handelDescriptionChange}
                         modules={modules}
                         formats={formats}
                         placeholder={t('labels:enter_policy_description')}
-                        bounds={`[data-text-editor=policyCard]`}
                     />
                 </div>
             </div>
