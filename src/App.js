@@ -92,7 +92,7 @@ const App = () => {
     }
 
     if (auth.error) {
-        return auth.signoutRedirect()
+        return void auth.signoutRedirect()
     }
 
     return (
@@ -142,11 +142,12 @@ const App = () => {
                             </>
                         </Route>
                     ) : (
-                        <>{auth.signinRedirect()}</>
+                        <>{void auth.signinRedirect()}</>
                     )}
                 </Routes>
             </Container>
         </Router>
+        //     {/* <Footer /> */}
     )
 }
 

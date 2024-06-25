@@ -28,7 +28,6 @@ import FrontEndKeysDownloadIcon from '../assets/images/common/FrontEndKeysDownlo
 import BackendKeysDownloadIcon from '../assets/images/common/BackendKeysDownloadIcon.svg'
 import UserAccessControl from '../assets/images/common/UserAccessControl.svg'
 import StoreSettings from '../assets/images/sidebar/cog.svg'
-// import PaymentSettingsIcon from '../assets/images/sidebar/settings.svg'
 import SettingsSelected from '../assets/images/sidebar/SettingsSelected.svg'
 import SettingsNotSelected from '../assets/images/sidebar/SettingsNotSelected.svg'
 import BackIcon from '../assets/images/sidebar/backIcon.svg'
@@ -77,7 +76,6 @@ export {
     BackendKeysDownloadIcon,
     UserAccessControl,
     StoreSettings,
-    // PaymentSettingsIcon,
     BackIcon,
     Collapse,
     saveStoreConfirmationImage,

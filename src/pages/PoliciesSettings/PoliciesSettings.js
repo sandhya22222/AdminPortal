@@ -2,7 +2,7 @@ import { Alert, Button, Checkbox, Divider, Modal, Skeleton, Tag, Tooltip, Typogr
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { RiInformationFill, RiCloseCircleFill } from 'react-icons/ri'
-import { useSearchParams } from 'react-router-dom'
+import { useLocation} from 'react-router-dom'
 import StoreModal from '../../components/storeModal/StoreModal'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import PolicyCard from './components/PolicyCard'
@@ -15,14 +15,14 @@ import './policiesSettings.css'
 import { toast } from 'react-toastify'
 
 const { Content } = Layout
-const { Text, Title } = Typography
+const { Text } = Typography
 const CONTACT_INFORMATION = 'Contact Information'
 
 const PoliciesSettings = ({ storeName }) => {
     const { t } = useTranslation()
-    const [searchParams, setSearchParams] = useSearchParams()
-    const storeUUID = searchParams.get('id')
-    const storeId = searchParams.get('storeId')
+    const search = useLocation().search
+    const storeUUID = new URLSearchParams(search).get('id')
+    const storeId = new URLSearchParams(search).get('storeId')
     const newPolicyRef = useRef(null)
     const [contactInformation, setContactInformation] = useState([])
     const [policiesWithoutContactInformation, setPoliciesWithoutContactInformation] = useState([])
@@ -34,7 +34,6 @@ const PoliciesSettings = ({ storeName }) => {
     const {
         data: userConsents,
         status: userConsentStatus,
-        error: userConsentError,
         refetch: refetchUserConsent,
         isFetched: isUserConsentFetched,
     } = useGetUserConsent({
