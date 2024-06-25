@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Dropdown, DropdownToggle, DropdownMenu } from 'reactstrap'
-import { Button, Skeleton } from 'antd'
-import { Layout, Table, Row, Col, Input, Space, Checkbox, Select, Typography } from 'antd'
+import { Button, Skeleton, Layout, Table, Row, Col, Input, Space, Checkbox, Select, Typography } from 'antd'
 import { sortObjectArrayByKey, deepCopy } from '../../util/util'
 import { AiFillFilter } from 'react-icons/ai'
 const { Content } = Layout
@@ -63,7 +62,6 @@ const DynamicTable = ({ tableComponentData }) => {
     //tableComponentData is the props getting from other component
     //copyOfDataSource is taking the copy of props.i.e tableComponentData for this here we are making the deep copy these props conatins the nested array of objects;
     let copyofDataSource = deepCopy(tableComponentData)
-    const [copyOfDataSource, setCopyOfDataSource] = useState()
     // dataSource is the state variable which stores the copyOfDataSource
     const [dataSource, setDataSource] = useState(copyofDataSource)
     // storing the data for table
@@ -74,19 +72,14 @@ const DynamicTable = ({ tableComponentData }) => {
     const [selectedSortingType, setSelectedSortingType] = useState()
     // opening and closing of dropdown
     const [openFilteringDropDown, setOpenFilteringDropDown] = useState(false)
-    //selecting the rows of the table
-    const [alreadySelectedRows, setAlreadySelectedRows] = useState()
-    //text we are typing in searchbox we are storing here
-    const [searchBoxTitle, setSearchBoxTitle] = useState('')
     //when ever user click on any check box that values should saved on this state variable
     const [checkBoxData, setCheckBoxData] = useState([])
     const [updateingDataFromServer, setUpdateingDataFromServer] = useState(0)
     // onloading we are sorting the data based on sorting props where user will define on what bases which we have to sort
-    //!TODO Check this componet properly
+  
     useEffect(() => {
         let copyOfDataSource = deepCopy(tableComponentData)
         setDataSource(copyOfDataSource)
-        setCopyOfDataSource(copyOfDataSource)
         let copyData = [...dataSource.table_content]
         if (
             tableComponentData.sorting_settings.sorting_data &&
@@ -140,7 +133,7 @@ const DynamicTable = ({ tableComponentData }) => {
                 // in result we are stored the data based on text which user enters in the serach box
                 let searchResult = []
                 // for loop will goes until serachdata length and we will store data in serach Result
-                for (var i = 0; i < dataSource.search_settings.search_data.length; i++) {
+                for (let i = 0; i < dataSource.search_settings.search_data.length; i++) {
                     const searchKey = dataSource.search_settings.search_data[i]
                     const results = dataSource.table_content.filter((user) => {
                         return user[searchKey].toLowerCase().startsWith(searchValue.toLowerCase())
@@ -158,7 +151,6 @@ const DynamicTable = ({ tableComponentData }) => {
                 // If the text field is empty, show all users
             }
         }
-        setSearchBoxTitle(searchValue)
     }
     const handleSorting = (sortkey, data, sorttype) => {
         const sortedData = sortObjectArrayByKey(sortkey, 'string', data, sorttype)

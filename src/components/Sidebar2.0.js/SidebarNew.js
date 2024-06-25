@@ -4,14 +4,6 @@ import { Layout, Menu, Spin } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import {
-    DashboardNotSelected,
-    DashboardSelected,
-    SettingsNotSelected,
-    SettingsSelected,
-    StoresNotSelected,
-    StoresSelected,
-} from '../../constants/media'
 import NewFooter from './../footer/Footer'
 //! Import CSS libraries
 
@@ -52,7 +44,6 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
 
     const handlePageRefresh = (navigationPath) => {
         if (pathname !== navigationPath) {
-            // navigate(0);
         }
     }
 
@@ -131,8 +122,6 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                             show_in_menu:
                                 !auth.isAuthenticated ||
                                 (auth.isAuthenticated &&
-                                    permissionValue &&
-                                    permissionValue.length > 0 &&
                                     permissionValue.includes('UI-product-admin'))
                                     ? false
                                     : true,
@@ -166,8 +155,6 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                             show_in_menu:
                                 !auth.isAuthenticated ||
                                 (auth.isAuthenticated &&
-                                    permissionValue &&
-                                    permissionValue.length > 0 &&
                                     permissionValue.includes('UI-user-access-control'))
                                     ? true
                                     : false,
@@ -179,8 +166,6 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                             show_in_menu:
                                 !auth.isAuthenticated ||
                                 (auth.isAuthenticated &&
-                                    permissionValue &&
-                                    permissionValue.length > 0 &&
                                     permissionValue.includes('UI-user-access-control'))
                                     ? false
                                     : true,
