@@ -9,7 +9,7 @@ const { Content } = Layout
 function LogOut() {
     const auth = useAuth()
     useEffect(() => {
-         auth.signoutSilent()
+        void auth.signoutSilent()
     }, [auth])
     return (
         <Content className='grid justify-items-center align-items-center my-28 bg-white'>
