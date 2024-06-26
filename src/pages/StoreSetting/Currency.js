@@ -228,10 +228,12 @@ const Currency = ({ storeUUId }) => {
                                 />
                             </Col>
                         </Content>
-                        <Divider className='!my-4' />
-                        <Title level={4} className='font-normal mb-2'>
+                        <Divider
+                            orientation='left'
+                            className='!text-brandGray2 font-semibold text-[16px] leading-[24px]'>
+                            {' '}
                             {t('labels:currency_details')}
-                        </Title>
+                        </Divider>
                         {currencyData && currencyData.length > 0 ? (
                             <Row className='w-[80%]'>
                                 <Col
