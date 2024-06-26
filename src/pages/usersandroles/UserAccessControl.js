@@ -373,7 +373,7 @@ const UserAccessControl = () => {
                                 </Button>
                             ) : null}
                         </div>
-                        <p className='!font-semibold !text-slate-400 mt-2'>{t('labels:user_access_control_note')}</p>
+                        <p className='!font-normal !text-brandGray1 mt-2'>{t('labels:user_access_control_note')}</p>
                     </Content>
                 }
                 headerContent={
