@@ -188,10 +188,6 @@ a {
     vertical-align: sub;
 }
 
-.ant-anchor-wrapper:not(.ant-anchor-wrapper-horizontal) .ant-anchor .ant-anchor-ink {
-    background-color: var(--mp-primary-color) !important;
-}
-
 :where(.css-dev-only-do-not-override-1kuana8).ant-anchor-wrapper
     .ant-anchor
     .ant-anchor-link-active
@@ -217,10 +213,6 @@ a {
     background-color: var(--mp-primary-color) !important;
 }
 
-.ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover .ant-checkbox-inner {
-    border-color: var(--mp-primary-color) !important;
-}
-
 .ant-checkbox-checked .ant-checkbox-inner {
     background-color: var(--mp-primary-color) !important;
     border-color: var(--mp-primary-color) !important;
@@ -234,15 +226,6 @@ a {
 .ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover .ant-checkbox-inner {
     border-color: var(--mp-input-field-hover-color) !important;
 }
-
-/* .ql-snow {
-    border: 0px !important;
-}
-
-.ql-editor {
-    min-height: 150px !important;
-    padding: 0px !important;
-} */
 
 .customClass:hover svg path {
     fill: var(--mp-brand-color) !important;

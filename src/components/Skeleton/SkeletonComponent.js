@@ -3,7 +3,7 @@ import { Layout, Skeleton, Space } from 'antd'
 
 const { Content } = Layout
 
-var layouts = [
+const layouts = [
     {
         layout: 'layout1',
         attribute: (

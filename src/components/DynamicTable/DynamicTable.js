@@ -162,7 +162,7 @@ const DynamicTable = ({ tableComponentData }) => {
         if (checkBoxData && checkBoxData.length > 0) {
             let allCheckBoxTypes = []
             // first loop goes until checkBox Datalength
-            for (var i = 0; i < checkBoxData.length; i++) {
+            for (let i = 0; i < checkBoxData.length; i++) {
                 // type contains checkbox type ,,i.e type =producttypr or categoryid
                 const type = checkBoxData[i].type
                 // we are collecting all types and storing it in allcheckboxtypes array
@@ -173,20 +173,20 @@ const DynamicTable = ({ tableComponentData }) => {
             if (uniqueCheckBoxTypes.length > 0) {
                 let finalFilterData = []
                 // in this loop we are uniqueCheckBoxTypeslength
-                for (var i = 0; i < uniqueCheckBoxTypes.length; i++) {
+                for (let i = 0; i < uniqueCheckBoxTypes.length; i++) {
                     let filteredData = finalFilterData
                     if (filteredData.length === 0) {
                         // we are setting tabledata to filteredData during initial rendering and if filtereddata.length ===0
                         filteredData = [...table_content]
                     }
-                    var type = uniqueCheckBoxTypes[i]
+                    let type = uniqueCheckBoxTypes[i]
                     // we are getting the data which equals to type we are getting in firstloop and we are storing to typedaata
                     const typeData = checkBoxData.filter((element) => element.type === type)
                     let localFilteredData = []
                     // in this loop we are until typedatalength
-                    for (var j = 0; j < typeData.length; j++) {
+                    for (let j = 0; j < typeData.length; j++) {
                         // we are storing the id of that selected check box type
-                        var value = typeData[j].id
+                        let value = typeData[j].id
                         // we are filtering the data based on that id
                         const filterResult = filteredData.filter((element) => element[type] === value)
                         // storing the filterresult to localFiltereddata

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { Layout, Tooltip, Dropdown, Typography, Tag, Button, Select, Avatar, Image } from 'antd'
+import { Layout, Dropdown, Typography, Tag, Button, Select, Avatar, Image } from 'antd'
 import { DownOutlined, UserOutlined, LogoutOutlined } from '@ant-design/icons'
 import { Link, useNavigate } from 'react-router-dom'
 import './header2.css'
@@ -14,13 +14,12 @@ import {
     fnDefaultLanguage,
 } from '../../services/redux/actions/ActionStoreLanguage'
 import { fnUserProfileInfo } from '../../services/redux/actions/ActionUserProfile'
-import { marketPlaceLogo, BackBurgerIcon, Collapse, BackIcon } from '../../constants/media'
+import { marketPlaceLogo, Collapse, BackIcon } from '../../constants/media'
 
 import util from '../../util/common'
 import { useAuth } from 'react-oidc-context'
 
 const { Header, Content } = Layout
-const { Paragraph } = Typography
 const { Option } = Select
 
 const multilingualFunctionalityEnabled = process.env.REACT_APP_IS_MULTILINGUAL_ENABLED
@@ -28,7 +27,6 @@ const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API
 const storeUsersAPI = process.env.REACT_APP_USERS_API
 const portalInfo = JSON.parse(process.env.REACT_APP_PORTAL_INFO)
 
-console.log('portalInfoTest', portalInfo)
 const Header2 = ({ collapsed, setCollapsed }) => {
     const { t } = useTranslation()
     const dispatch = useDispatch()
@@ -39,7 +37,6 @@ const Header2 = ({ collapsed, setCollapsed }) => {
     const [userName, setUserName] = useState()
     const [userRole, setUserRole] = useState('')
 
-    // const isUserLoggedIn = sessionStorage.getItem("ap_is_logged_in");
     const storeLanguages = useSelector((state) => state.reducerStoreLanguage.storeLanguage)
     const selectedLanguage = useSelector((state) => state.reducerSelectedLanguage.selectedLanguage)
 
@@ -58,13 +55,6 @@ const Header2 = ({ collapsed, setCollapsed }) => {
     }
 
     const userItems = [
-        // Todo: Commenting for now, will implement once the details are ready
-        // {
-        //     label: `${t('labels:profile')}`,
-        //     key: 'profile',
-        //     icon: <UserOutlined />,
-        //     // disabled: true,
-        // },
         {
             label: `${t('labels:logout')}`,
             key: 'logout',
@@ -135,7 +125,6 @@ const Header2 = ({ collapsed, setCollapsed }) => {
 
                 dispatch(fnStoreLanguage(storeLanguages))
                 dispatch(fnDefaultLanguage(defaultLanguage))
-                // dispatch(fnSelectedLanguage(defaultLanguage));
             })
             .catch((error) => {
                 console.log('error-->', error.response)
@@ -165,13 +154,6 @@ const Header2 = ({ collapsed, setCollapsed }) => {
         setDefaultLanguageCode(util.getUserSelectedLngCode())
     }, [selectedLanguage])
 
-    const multilingualNameChanging = (value) => {
-        let multilingualKey = value.toLowerCase()
-        multilingualKey = multilingualKey.replace(/ /g, '_')
-        console.log('multilingualKey------>', multilingualKey)
-
-        return multilingualKey
-    }
 
     return (
         <Content>
@@ -201,14 +183,11 @@ const Header2 = ({ collapsed, setCollapsed }) => {
                                     )
                                 }
                                 onClick={() => setCollapsed(!collapsed)}
-                                // className="!bg-[var(--mp-brand-color)] hover:bg-[var(--mp-brand-color)]"
-                                // className='hover:none'
                             />
                         </div>
                         <div className='flex items-center mx-2 '>
                             <Link href='/dashboard'>
                                 <Image
-                                    //width={180}
                                     alt='marketPlaceLogo'
                                     preview={false}
                                     src={marketPlaceLogo}
@@ -264,7 +243,6 @@ const Header2 = ({ collapsed, setCollapsed }) => {
 
                         {multilingualFunctionalityEnabled === 'true' && languageItems.length > 0 ? (
                             <Select
-                                // options={languageItems}
                                 bordered={false}
                                 placeholder='Select Language'
                                 defaultValue={storeSelectedLngCode || defaultLanguageCode}
@@ -277,15 +255,9 @@ const Header2 = ({ collapsed, setCollapsed }) => {
                                     <>
                                         {' '}
                                         <Option key={option.value} value={option.value} className='headerSelectOption'>
-                                            {/* <Tooltip
-                                                title={option.label}
-                                                overlayStyle={{ position: 'fixed' }}
-                                                placement='left'> */}
                                             <span className='overflow-hidden whitespace-nowrap'>
-                                                {/* {option.label.toUpperCase().substring(0, 3)} */}
                                                 {option.value?.toUpperCase()}
                                             </span>
-                                            {/* </Tooltip> */}
                                         </Option>
                                     </>
                                 ))}
