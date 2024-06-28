@@ -242,7 +242,7 @@ const UserProfile = () => {
                 ) : (
                     <div className=' border-1 border-solid border-brandGray rounded-lg'>
                         <div className='  border-b border-solid border-brandGray'>
-                            <Title className='!mb-4 !mt-6 !mx-3 !font-semibold !text-lg'>
+                            <Title className='!mb-4 !mt-6 !mx-3 !font-semibold !text-lg !text-regal-blue'>
                                 {t('labels:profile_information')}
                             </Title>
                         </div>
@@ -250,7 +250,7 @@ const UserProfile = () => {
                             <div className='my-6 flex gap-4 items-center'>
                                 <Avatar shape='square' size={100} icon={<UserOutlined />} />
                                 <div className='gap-2 flex flex-col '>
-                                    <div className=' font-semibold text-base'>
+                                    <div className=' font-semibold text-base !text-regal-blue'>
                                         {storeUsersData && storeUsersData.username && storeUsersData.username.length > 0
                                             ? storeUsersData.username.slice(0, 1).toUpperCase() +
                                               storeUsersData.username.slice(1)

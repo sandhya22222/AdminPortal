@@ -372,8 +372,7 @@ const StoreImages = ({
                         <>
                             <Upload
                                 maxCount={BannerImagesUploadLength}
-                                className='w-90'
-                                listType='picture'
+                                listType='picture-card'
                                 multiple={true}
                                 beforeUpload={() => {
                                     return false
@@ -389,12 +388,7 @@ const StoreImages = ({
                                 }}
                                 openFileDialogOnClick={bannerImagesLength < BannerImagesUploadLength ? true : false}
                                 disabled={disabelMediaButton}>
-                                <Button
-                                    disabled={bannerImagesLength < BannerImagesUploadLength ? false : true}
-                                    className='font-semibold app-btn-secondary flex justify-center items-center'>
-                                    <UploadOutlined className='' />
-                                    {t('labels:click_to_upload')}
-                                </Button>
+                                {bannerImagesLength < BannerImagesUploadLength ? uploadButton : null}
                             </Upload>
                             <div className='mt-3'>
                                 <Alert
@@ -432,7 +426,7 @@ const StoreImages = ({
                 </Content>
             ) : (
                 <>
-                    <Content className=' flex !space-x-8'>
+                    <Content className=' flex !space-x-4 !w-full'>
                         {allImageUrl &&
                             allImageUrl.length > 0 &&
                             allImageUrl.map((ele, index) => {
@@ -443,7 +437,7 @@ const StoreImages = ({
                                                 ? '!relative !ml-6'
                                                 : '!relative '
                                         }>
-                                        <Image src={ele} className='!w-24 !h-26 ' />
+                                        <Image src={ele} className='!w-[140px] !h-[70px]  ' />
                                         <TiDelete
                                             className='!absolute !cursor-pointer !right-[-5px] !z-5  !top-[-10px] !text-2xl !text-red-600 !shadow-lg  hover:translate-'
                                             onClick={() => {
@@ -455,36 +449,32 @@ const StoreImages = ({
                                     </div>
                                 )
                             })}
+                        {type === 'banner_images' && (
+                            <Upload
+                                maxCount={BannerImagesUploadLength}
+                                multiple={true}
+                                listType='picture-card'
+                                onPreview={handlePreview}
+                                beforeUpload={() => {
+                                    return false
+                                }}
+                                afterUpload={() => {
+                                    return false
+                                }}
+                                fileList={fileList}
+                                accept={supportedFileExtensions}
+                                onChange={(e) => {
+                                    handleChange(e)
+                                }}
+                                openFileDialogOnClick={bannerImagesLength < BannerImagesUploadLength ? true : false}
+                                disabled={disabelMediaButton}>
+                                {bannerImagesLength < BannerImagesUploadLength ? uploadButton : null}
+                            </Upload>
+                        )}
                     </Content>
                     <Content className='!mt-4'>
                         {type === 'banner_images' ? (
                             <>
-                                <Upload
-                                    maxCount={BannerImagesUploadLength}
-                                    multiple={true}
-                                    className='!w-90'
-                                    listType='picture'
-                                    onPreview={handlePreview}
-                                    beforeUpload={() => {
-                                        return false
-                                    }}
-                                    afterUpload={() => {
-                                        return false
-                                    }}
-                                    fileList={fileList}
-                                    accept={supportedFileExtensions}
-                                    onChange={(e) => {
-                                        handleChange(e)
-                                    }}
-                                    openFileDialogOnClick={bannerImagesLength < BannerImagesUploadLength ? true : false}
-                                    disabled={disabelMediaButton}>
-                                    <Button
-                                        disabled={bannerImagesLength < BannerImagesUploadLength ? false : true}
-                                        className='font-semibold app-btn-secondary flex justify-center items-center'>
-                                        <UploadOutlined className='' />
-                                        {t('labels:click_to_upload')}
-                                    </Button>
-                                </Upload>
                                 <div className='mt-2'>
                                     <Alert
                                         icon={<MdInfo className='font-bold !text-center' />}
