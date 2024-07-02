@@ -142,11 +142,19 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                             validatePositiveNumber(e, /[0-9]/)
                         }}
                         className={'w-28'}
-                        max={maxDataLimit}
+                        max={9999999999}
                         maxLength={10}
                         onChange={(value) => {
                             let copyofStoreDataLimitValue = { ...storeDataLimitValues }
                             copyofStoreDataLimitValue.vendor_limit = value
+                            setStoreDataLimitValues(copyofStoreDataLimitValue)
+                            setIsStoreDataLimitChanged(true)
+                            setInvalidVendorLimit(false)
+                        }}
+                        onBlur={(e) => {
+                            let copyofStoreDataLimitValue = { ...storeDataLimitValues }
+                            copyofStoreDataLimitValue.vendor_limit =
+                                parseInt(e.target.value) > parseInt(maxDataLimit) ? maxDataLimit : e.target.value
                             setStoreDataLimitValues(copyofStoreDataLimitValue)
                             setIsStoreDataLimitChanged(true)
                             setInvalidVendorLimit(false)
@@ -168,11 +176,20 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                             validatePositiveNumber(e, /[0-9]/)
                         }}
                         className={'w-28'}
-                        max={maxDataLimit}
+                        max={9999999999}
                         maxLength={10}
                         onChange={(value) => {
                             let copyofStoreDataLimitValue = { ...storeDataLimitValues }
                             copyofStoreDataLimitValue.customer_limit = value
+                            setStoreDataLimitValues(copyofStoreDataLimitValue)
+                            setIsStoreDataLimitChanged(true)
+                            setInvalidCustomerLimit(false)
+                        }}
+                        onBlur={(e) => {
+                            let copyofStoreDataLimitValue = { ...storeDataLimitValues }
+                            copyofStoreDataLimitValue.customer_limit =
+                                parseInt(e.target.value) > parseInt(maxDataLimit) ? maxDataLimit : e.target.value
+
                             setStoreDataLimitValues(copyofStoreDataLimitValue)
                             setIsStoreDataLimitChanged(true)
                             setInvalidCustomerLimit(false)
@@ -193,11 +210,20 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                             validatePositiveNumber(e, /[0-9]/)
                         }}
                         className={'w-28'}
-                        max={maxDataLimit}
+                        max={9999999999}
                         maxLength={10}
                         onChange={(value) => {
                             let copyofStoreDataLimitValue = { ...storeDataLimitValues }
                             copyofStoreDataLimitValue.product_limit = value
+                            setStoreDataLimitValues(copyofStoreDataLimitValue)
+                            setIsStoreDataLimitChanged(true)
+                            setInvalidProductLimit(false)
+                        }}
+                        onBlur={(e) => {
+                            let copyofStoreDataLimitValue = { ...storeDataLimitValues }
+                            copyofStoreDataLimitValue.product_limit =
+                                parseInt(e.target.value) > parseInt(maxDataLimit) ? maxDataLimit : e.target.value
+
                             setStoreDataLimitValues(copyofStoreDataLimitValue)
                             setIsStoreDataLimitChanged(true)
                             setInvalidProductLimit(false)
@@ -220,11 +246,20 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                             validatePositiveNumber(e, /[0-9]/)
                         }}
                         className={'w-28'}
-                        max={maxDataLimit}
+                        max={9999999999}
                         maxLength={10}
                         onChange={(value) => {
                             let copyofStoreDataLimitValue = { ...storeDataLimitValues }
                             copyofStoreDataLimitValue.order_limit_per_day = value
+                            setStoreDataLimitValues(copyofStoreDataLimitValue)
+                            setIsStoreDataLimitChanged(true)
+                            setInvalidOrderLimit(false)
+                        }}
+                        onBlur={(e) => {
+                            let copyofStoreDataLimitValue = { ...storeDataLimitValues }
+                            copyofStoreDataLimitValue.order_limit_per_day =
+                                parseInt(e.target.value) > parseInt(maxDataLimit) ? maxDataLimit : e.target.value
+
                             setStoreDataLimitValues(copyofStoreDataLimitValue)
                             setIsStoreDataLimitChanged(true)
                             setInvalidOrderLimit(false)
@@ -245,11 +280,20 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                             validatePositiveNumber(e, /[0-9]/)
                         }}
                         className={'w-28'}
-                        max={maxDataLimit}
+                        max={9999999999}
                         maxLength={10}
                         onChange={(value) => {
                             let copyofStoreDataLimitValue = { ...storeDataLimitValues }
                             copyofStoreDataLimitValue.langauge_limit = value
+                            setStoreDataLimitValues(copyofStoreDataLimitValue)
+                            setIsStoreDataLimitChanged(true)
+                            setInvalidLanguageLimit(false)
+                        }}
+                        onBlur={(e) => {
+                            let copyofStoreDataLimitValue = { ...storeDataLimitValues }
+                            copyofStoreDataLimitValue.langauge_limit =
+                                parseInt(e.target.value) > parseInt(maxDataLimit) ? maxDataLimit : e.target.value
+
                             setStoreDataLimitValues(copyofStoreDataLimitValue)
                             setIsStoreDataLimitChanged(true)
                             setInvalidLanguageLimit(false)
@@ -274,11 +318,20 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                             validatePositiveNumber(e, /[0-9]/)
                         }}
                         className={'w-28'}
-                        max={maxDataLimit}
+                        max={9999999999}
                         maxLength={10}
                         onChange={(value) => {
                             let copyofStoreDataLimitValue = { ...storeDataLimitValues }
                             copyofStoreDataLimitValue.product_template_limit = value
+                            setStoreDataLimitValues(copyofStoreDataLimitValue)
+                            setIsStoreDataLimitChanged(true)
+                            setInvalidProductTemplateLimit(false)
+                        }}
+                        onBlur={(e) => {
+                            let copyofStoreDataLimitValue = { ...storeDataLimitValues }
+                            copyofStoreDataLimitValue.product_template_limit =
+                                parseInt(e.target.value) > parseInt(maxDataLimit) ? maxDataLimit : e.target.value
+
                             setStoreDataLimitValues(copyofStoreDataLimitValue)
                             setIsStoreDataLimitChanged(true)
                             setInvalidProductTemplateLimit(false)
@@ -299,11 +352,20 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                             validatePositiveNumber(e, /[0-9]/)
                         }}
                         className={'w-28'}
-                        max={maxDataLimit}
+                        max={9999999999}
                         maxLength={10}
                         onChange={(value) => {
                             let copyofStoreDataLimitValue = { ...storeDataLimitValues }
                             copyofStoreDataLimitValue.store_users_limit = value
+                            setStoreDataLimitValues(copyofStoreDataLimitValue)
+                            setIsStoreDataLimitChanged(true)
+                            setInvalidStoreUserLimit(false)
+                        }}
+                        onBlur={(e) => {
+                            let copyofStoreDataLimitValue = { ...storeDataLimitValues }
+                            copyofStoreDataLimitValue.store_users_limit =
+                                parseInt(e.target.value) > parseInt(maxDataLimit) ? maxDataLimit : e.target.value
+
                             setStoreDataLimitValues(copyofStoreDataLimitValue)
                             setIsStoreDataLimitChanged(true)
                             setInvalidStoreUserLimit(false)
@@ -326,11 +388,20 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                             validatePositiveNumber(e, /[0-9]/)
                         }}
                         className={'w-28'}
-                        max={maxDataLimit}
+                        max={9999999999}
                         maxLength={10}
                         onChange={(value) => {
                             let copyofStoreDataLimitValue = { ...storeDataLimitValues }
                             copyofStoreDataLimitValue.vendor_users_limit = value
+                            setStoreDataLimitValues(copyofStoreDataLimitValue)
+                            setIsStoreDataLimitChanged(true)
+                            setInvalidVendorUserLimit(false)
+                        }}
+                        onBlur={(e) => {
+                            let copyofStoreDataLimitValue = { ...storeDataLimitValues }
+                            copyofStoreDataLimitValue.vendor_users_limit =
+                                parseInt(e.target.value) > parseInt(maxDataLimit) ? maxDataLimit : e.target.value
+
                             setStoreDataLimitValues(copyofStoreDataLimitValue)
                             setIsStoreDataLimitChanged(true)
                             setInvalidVendorUserLimit(false)
@@ -355,11 +426,20 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                             validatePositiveNumber(e, /[0-9]/)
                         }}
                         className={'w-28'}
-                        max={maxDataLimit}
+                        max={9999999999}
                         maxLength={10}
                         onChange={(value) => {
                             let copyofStoreDataLimitValue = { ...storeDataLimitValues }
                             copyofStoreDataLimitValue.max_products_per_vendor = value
+                            setStoreDataLimitValues(copyofStoreDataLimitValue)
+                            setIsStoreDataLimitChanged(true)
+                            setInvalidMaxProductLimit(false)
+                        }}
+                        onBlur={(e) => {
+                            let copyofStoreDataLimitValue = { ...storeDataLimitValues }
+                            copyofStoreDataLimitValue.max_products_per_vendor =
+                                parseInt(e.target.value) > parseInt(maxDataLimit) ? maxDataLimit : e.target.value
+
                             setStoreDataLimitValues(copyofStoreDataLimitValue)
                             setIsStoreDataLimitChanged(true)
                             setInvalidMaxProductLimit(false)
@@ -384,12 +464,19 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                             validatePositiveNumber(e, /[0-9]/)
                         }}
                         className={'w-28'}
-                        max={maxDataLimit}
+                        max={9999999999}
                         maxLength={10}
                         onChange={(value) => {
-                            setIsStoreDataLimitChanged(true)
                             let copyofStoreDataLimitValue = { ...storeDataLimitValues }
                             copyofStoreDataLimitValue.max_templates_per_vendor = value
+                            setStoreDataLimitValues(copyofStoreDataLimitValue)
+                            setIsStoreDataLimitChanged(true)
+                            setInvalidMaxTemplateLimit(false)
+                        }}
+                        onBlur={(e) => {
+                            let copyofStoreDataLimitValue = { ...storeDataLimitValues }
+                            copyofStoreDataLimitValue.max_templates_per_vendor =
+                                parseInt(e.target.value) > parseInt(maxDataLimit) ? maxDataLimit : e.target.value
                             setStoreDataLimitValues(copyofStoreDataLimitValue)
                             setIsStoreDataLimitChanged(true)
                             setInvalidMaxTemplateLimit(false)
@@ -687,24 +774,33 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
     //! Post call for the store data limit api
     const saveStoreDataLimit = () => {
         const postBody = {
-            vendor_limit: storeDataLimitValues.vendor_limit == null ? 0 : storeDataLimitValues.vendor_limit,
-            customer_limit: storeDataLimitValues.customer_limit == null ? 0 : storeDataLimitValues.customer_limit,
-            product_limit: storeDataLimitValues.product_limit == null ? 0 : storeDataLimitValues.product_limit,
+            vendor_limit: storeDataLimitValues.vendor_limit == null ? 0 : parseInt(storeDataLimitValues.vendor_limit),
+            customer_limit:
+                storeDataLimitValues.customer_limit == null ? 0 : parseInt(storeDataLimitValues.customer_limit),
+            product_limit:
+                storeDataLimitValues.product_limit == null ? 0 : parseInt(storeDataLimitValues.product_limit),
             order_limit_per_day:
-                storeDataLimitValues.order_limit_per_day == null ? 0 : storeDataLimitValues.order_limit_per_day,
-            langauge_limit: storeDataLimitValues.langauge_limit == null ? 0 : storeDataLimitValues.langauge_limit,
+                storeDataLimitValues.order_limit_per_day == null
+                    ? 0
+                    : parseInt(storeDataLimitValues.order_limit_per_day),
+            langauge_limit:
+                storeDataLimitValues.langauge_limit == null ? 0 : parseInt(storeDataLimitValues.langauge_limit),
             product_template_limit:
-                storeDataLimitValues.product_template_limit == null ? 0 : storeDataLimitValues.product_template_limit,
+                storeDataLimitValues.product_template_limit == null
+                    ? 0
+                    : parseInt(storeDataLimitValues.product_template_limit),
             store_users_limit:
-                storeDataLimitValues.store_users_limit == null ? 0 : storeDataLimitValues.store_users_limit,
+                storeDataLimitValues.store_users_limit == null ? 0 : parseInt(storeDataLimitValues.store_users_limit),
             vendor_users_limit:
-                storeDataLimitValues.vendor_users_limit == null ? 0 : storeDataLimitValues.vendor_users_limit,
+                storeDataLimitValues.vendor_users_limit == null ? 0 : parseInt(storeDataLimitValues.vendor_users_limit),
             max_products_per_vendor:
-                storeDataLimitValues.max_products_per_vendor == null ? 0 : storeDataLimitValues.max_products_per_vendor,
+                storeDataLimitValues.max_products_per_vendor == null
+                    ? 0
+                    : parseInt(storeDataLimitValues.max_products_per_vendor),
             max_templates_per_vendor:
                 storeDataLimitValues.max_templates_per_vendor == null
                     ? 0
-                    : storeDataLimitValues.max_templates_per_vendor,
+                    : parseInt(storeDataLimitValues.max_templates_per_vendor),
             default_store_commission:
                 storeDataLimitValues.default_store_commission == null
                     ? 0
