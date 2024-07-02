@@ -295,7 +295,7 @@ const Newdashboard = () => {
                                 <Text className='text-[#637381] text-base  !font-bold flex justify-left gap-1 items-center'>
                                     <Badge
                                         status='success'
-                                        text={<Text className='!text-brandGray1'>{t('labels:active_stores')}</Text>}
+                                        text={<Text className='!text-brandGray2'>{t('labels:active_stores')}</Text>}
                                     />
                                 </Text>
 
@@ -326,7 +326,7 @@ const Newdashboard = () => {
                                         ) : null}
                                         {langDirection == 'rtl' ? (
                                             <div className=''>
-                                                <Title style={{ color: '#4A2D73' }} level={2}>
+                                                <Title style={{ color: '#023047' }} className='leading-[30px] text-[24px]'>
                                                     {activeStoreCount ? activeStoreCount : 0}{' '}
                                                 </Title>
                                             </div>
@@ -356,12 +356,12 @@ const Newdashboard = () => {
                                         <Badge
                                             status='default'
                                             text={
-                                                <Text className='!text-brandGray1'>{t('labels:inactive_sores')}</Text>
+                                                <Text className='!text-brandGray2'>{t('labels:inactive_sores')}</Text>
                                             }
                                         />
                                     </Text>
                                     <Content className='flex items-baseline'>
-                                        <Title class='text-zinc-400' level={2}>
+                                        <Title class='text-brandGray1 leading-[30px] text-[24px]'>
                                             {' '}
                                             {inActiveStoreCount ? inActiveStoreCount : 0}{' '}
                                         </Title>

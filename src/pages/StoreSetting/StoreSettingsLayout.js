@@ -356,7 +356,7 @@ const StoreSettingsLayout = () => {
                             </div>
                         </Content>
                         <Content className=' flex !gap-2 !mt-3'>
-                            <Text>{t('labels:status')} : </Text>
+                            <Text className='text-brandGray2'>{t('labels:status')} : </Text>
 
                             <Status
                                 storeId={id}

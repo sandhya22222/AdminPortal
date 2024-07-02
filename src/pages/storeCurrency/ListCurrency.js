@@ -146,7 +146,7 @@ const ListCurrency = () => {
                 return (
                     <Button
                         type='text'
-                        className='app-btn-text !mr-1'
+                        className='app-btn-text !mr-1 font-medium'
                         onClick={() => {
                             navigate(`/dashboard/currency/edit-currency?k=${record.id}`)
                         }}>

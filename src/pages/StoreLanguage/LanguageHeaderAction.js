@@ -214,7 +214,7 @@ function LanguageHeaderAction({ languageId, languageCode, languageStatus, langua
     }
 
     return (
-        <Content className='!flex items-center'>
+        <Content className='!flex items-center gap-3'>
             {/* This content is related to language status */}
             <Content className=''>
                 <Space direction='horizontal'>
@@ -267,13 +267,17 @@ function LanguageHeaderAction({ languageId, languageCode, languageStatus, langua
                 isVisible={isDeleteLanguageModalOpen}
                 okButtonText={t('labels:delete')}
                 cancelButtonText={t('labels:cancel')}
-                title={t('labels:delete_language')}
+                title={
+                    <div className='text-regal-blue font-bold text-[18px] leading-[26px]'>
+                        {t('labels:delete_language')}
+                    </div>
+                }
                 okCallback={() => removeLanguage()}
                 cancelCallback={() => closeDeleteModal()}
                 isSpin={islanguageDeleting}
                 hideCloseButton={false}>
                 {
-                    <div>
+                    <div className='text-brandGray1'>
                         {/* <p>{t('messages:remove_language_confirmation')}</p> */}
                         <p>{t('messages:remove_language_confirmation_message')}</p>
                     </div>
@@ -310,9 +314,15 @@ function LanguageHeaderAction({ languageId, languageCode, languageStatus, langua
                 isVisible={isModalOpen}
                 okButtonText={t('labels:proceed')}
                 title={
-                    changeSwitchStatus
-                        ? t('messages:language_activation_confirmation')
-                        : t('messages:language_deactivation_confirmation')
+                    changeSwitchStatus ? (
+                        <div className='text-regal-blue font-bold text-[18px] leading-[26px]'>
+                            {t('messages:language_activation_confirmation')}
+                        </div>
+                    ) : (
+                        <div className='text-regal-blue font-bold text-[18px] leading-[26px]'>
+                            {t('messages:language_deactivation_confirmation')}
+                        </div>
+                    )
                 }
                 cancelButtonText={t('labels:cancel')}
                 okCallback={() => updateLanguageStatus()}
@@ -320,11 +330,11 @@ function LanguageHeaderAction({ languageId, languageCode, languageStatus, langua
                 isSpin={isLoading}
                 hideCloseButton={false}>
                 {changeSwitchStatus ? (
-                    <div>
+                    <div className='text-brandGray1'>
                         <p className='!m-0 !p-0'>{t('messages:language_activation_confirmation_message')}</p>
                     </div>
                 ) : (
-                    <div>
+                    <div className='text-brandGray1'>
                         <p>{t('messages:language_deactivation_confirmation_message')}</p>
                     </div>
                 )}

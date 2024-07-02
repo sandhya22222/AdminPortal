@@ -470,7 +470,11 @@ const PolicyCard = ({
             </StoreModal>
             <StoreModal
                 isVisible={addVersion}
-                title={t('labels:add_version')}
+                title={
+                    <div className='text-regal-blue font-bold text-[18px] leading-[26px]'>
+                        {t('labels:add_version')}
+                    </div>
+                }
                 isSpin={false}
                 cancelCallback={() => setAddVersion(false)}
                 width={400}
@@ -484,7 +488,9 @@ const PolicyCard = ({
             </StoreModal>
             <StoreModal
                 isVisible={translatePolicy}
-                title={t('labels:translate')}
+                title={
+                    <div className='text-regal-blue font-bold text-[18px] leading-[26px]'>{t('labels:translate')}</div>
+                }
                 isSpin={false}
                 cancelCallback={() => setTranslatePolicy(false)}
                 width={1088}
@@ -500,7 +506,11 @@ const PolicyCard = ({
             </StoreModal>
             <StoreModal
                 isVisible={policyConfirmation}
-                title={t('labels:publish_policy_confirmation')}
+                title={
+                    <div className='text-regal-blue font-bold text-[18px] leading-[26px]'>
+                        {t('labels:publish_policy_confirmation')}
+                    </div>
+                }
                 isSpin={publishUserConsentStatus === 'pending'}
                 cancelCallback={() => setPolicyConfirmation(false)}
                 width={500}
@@ -508,19 +518,21 @@ const PolicyCard = ({
                 cancelButtonText={t('labels:cancel')}
                 okCallback={() => handelPublishConsent()}
                 destroyOnClose={true}>
-                <div className='pt-[6px]'>
-                    <p>{t('messages:policy_confirmation_message')}</p>
+                <div className='pt-[6px] text-brandGray1'>
+                    <p className='!mb-0'>{t('messages:policy_confirmation_message')}</p>
                     <p>{t('messages:policy_confirmation_note')}</p>
                 </div>
             </StoreModal>
             <StoreModal
                 isVisible={policyChangeWarning}
-                title={t('labels:confirm')}
+                title={
+                    <div className='text-regal-blue font-bold text-[18px] leading-[26px]'>{t('labels:confirm')}</div>
+                }
                 isSpin={false}
                 cancelCallback={() => setPolicyChangeWarning(false)}
                 width={380}
                 destroyOnClose={true}>
-                <div className='input-label-color'>
+                <div className='text-brandGray1'>
                     <p>
                         {t('messages:policy_change_warning_info', {
                             version,

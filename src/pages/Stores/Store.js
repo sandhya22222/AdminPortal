@@ -17,6 +17,7 @@ import {
     Alert,
     Badge,
     Empty,
+    Table,
 } from 'antd'
 import React, { useEffect, useState } from 'react'
 import validator from 'validator'
@@ -1171,7 +1172,13 @@ const Stores = () => {
             />
             <Drawer
                 title={
-                    drawerAction && drawerAction === 'post' ? `${t('labels:add_store')}` : `${t('labels:edit_store')}`
+                    drawerAction && drawerAction === 'post' ? (
+                        <div className='text-regal-blue leading-[26px] text-[18px] font-bold'>
+                            {t('labels:add_store')}
+                        </div>
+                    ) : (
+                        `${t('labels:edit_store')}`
+                    )
                 }
                 placement={util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'left' : 'right'}
                 onClose={onClose}
@@ -1189,7 +1196,9 @@ const Stores = () => {
                             </Col>
                         </Row> */}
                         <Spin tip={t('labels:please_wait')} size='large' spinning={isUpLoading}>
-                            <label className='text-[13px] mb-2 ml-1 input-label-color' id='labStNam'>
+                            <label
+                                className='text-[14px] leading-[22px] font-normal text-brandGray2 mb-2 ml-1 '
+                                id='labStNam'>
                                 {t('labels:store_name')}
                             </label>
                             <span className='mandatory-symbol-color text-sm ml-1'>*</span>
@@ -1223,22 +1232,24 @@ const Stores = () => {
                                     setName(trimmedUpdate)
                                 }}
                             />
-                            <div className='font-semibold my-2 text-base'>
+                            <div className='font-semibold my-2 text-[18px] leading-[26px] text-regal-blue'>
                                 {t('labels:store_administrator_details')}
                             </div>
                             <Alert
                                 icon={<MdInfo className='font-bold !text-center' />}
                                 message={
                                     <div className=''>
-                                        <Text className=' mr-1 text-[#637381]'> {t('labels:note')}:</Text>
-                                        <Text className='text-[#637381]'>{t('messages:add_store_description')}</Text>
+                                        <Text className=' mr-1 text-brandGray1'> {t('labels:note')}:</Text>
+                                        <Text className='text-brandGray1'>{t('messages:add_store_description')}</Text>
                                     </div>
                                 }
                                 type='info'
                                 showIcon
                                 className='my-3'
                             />
-                            <label className='text-[13px] mb-2 ml-1 input-label-color' id='labStEmail'>
+                            <label
+                                className='mb-2 ml-1 text-[14px] leading-[22px] font-normal text-brandGray2'
+                                id='labStEmail'>
                                 {t('labels:email')}
                             </label>
                             <span className='mandatory-symbol-color text-sm ml-1'>*</span>
@@ -1269,7 +1280,9 @@ const Stores = () => {
                                 }}
                             />
 
-                            <label className='text-[13px] mb-2 ml-1 input-label-color' id='labStUseName'>
+                            <label
+                                className=' mb-2 ml-1 text-[14px] leading-[22px] font-normal text-brandGray2'
+                                id='labStUseName'>
                                 {t('labels:username')}
                             </label>
                             <span className='mandatory-symbol-color text-sm ml-1'>*</span>
@@ -1395,14 +1408,14 @@ const Stores = () => {
                                 ) : parseInt(currentTab) === 2 ? (
                                     <>
                                         <Content>
-                                            <Title className='!text-[#023047] pt-3 ml-6' level={4}>
+                                            <Title className='!text-regal-blue pt-3 ml-6' level={4}>
                                                 {t('labels:account_restrictions')}
                                             </Title>
                                             <Divider className='w-full mt-2 mb-2' />
                                             <DynamicTable tableComponentData={tablePropsThreshold1} />
                                         </Content>
                                         <Content>
-                                            <Title className='!text-[#023047]  pt-3 ml-6' level={4}>
+                                            <Title className='!text-regal-blue  pt-3 ml-6' level={4}>
                                                 {t('labels:store_restrictions')}
                                             </Title>
                                             <Divider className='w-full mt-2 mb-2' />
