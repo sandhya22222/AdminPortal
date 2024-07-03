@@ -1,4 +1,4 @@
-import { Divider, Layout, Typography, Tooltip } from 'antd'
+import { Layout, Typography, Tooltip } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useSearchParams } from 'react-router-dom'
@@ -41,12 +41,11 @@ function LanguageSettings() {
             <Content className='!z-20'>
                 <HeaderForTitle
                     title={
-                        // {/* <Content> */}
-                        // {/**
-                        //  * Below is the part responsible for displaying the title of the page in a header.
-                        //  * If @languageName is there, which means it is a edit page so it will display the languageName for the edit page.
-                        //  * If @languageName is undefined or null means it is a add page.So it will show "Add a language"
-                        //  */}
+                        /**
+                         * Below is the part responsible for displaying the title of the page in a header.
+                         * If @languageName is there, which means it is a edit page so it will display the languageName for the edit page.
+                         * If @languageName is undefined or null means it is a add page.So it will show "Add a language"
+                         **/
                         <Content className='!w-[100%] flex'>
                             <div
                                 className={
@@ -66,13 +65,12 @@ function LanguageSettings() {
                                 </Tooltip>
                             </div>
                         </Content>
-                        // {/**
-                        //  * Here below we can render the right side part of the header which renders the status and to delete the language
-                        //  * @languageId -> It is the ID of the language.
-                        //  * @languageCode -> It is the language code.
-                        //  * @languageStatus -> It is the status of the language.
-                        //  */}
-                        //  </Content>
+                        /**
+                         * Here below we can render the right side part of the header which renders the status and to delete the language
+                         * @languageId -> It is the ID of the language.
+                         * @languageCode -> It is the language code.
+                         * @languageStatus -> It is the status of the language.
+                         */
                     }
                     titleContent={
                         languageId && languageCode && languageStatus !== null ? (
@@ -90,10 +88,6 @@ function LanguageSettings() {
             </Content>
             <Content className='p-4 mt-[9rem] !min-h-screen'>
                 <Content className='!bg-white shadow-brandShadow  rounded-md'>
-                    {/* <Title level={4} className='p-3 !m-0'>
-                        {t('labels:language_details')}
-                    </Title>
-                    <Divider className='!m-0' /> */}
                     <Content className='p-3'>
                         <Content className='my-2 mb-4 '>
                             {/**
@@ -114,7 +108,6 @@ function LanguageSettings() {
                             />
                             <Content></Content>
                         </Content>
-                        {/* <Divider /> */}
                         {/**
                          * This particular container is to display the file upload for the language
                          * From this component we are passing @languageCode as props.

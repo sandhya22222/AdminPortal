@@ -3,7 +3,7 @@ import { Dropdown, Skeleton, Space, Tabs, Typography } from 'antd'
 import moment from 'moment/moment'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSearchParams } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import useGetPolicyHistory from '../hooks/useGetPolicyHistory'
 import ReactQuill from 'react-quill'
 
@@ -11,8 +11,8 @@ const { Text } = Typography
 
 function PolicyHistory() {
     const { t } = useTranslation()
-    const [searchParams, setSearchParams] = useSearchParams()
-    const storeUUID = searchParams.get('id')
+    const search = useLocation().search
+    const storeUUID = new URLSearchParams(search).get('tab')
 
     const { policiesWithoutContactInformation, versionDetails } = useGetPolicyHistory({
         storeId: storeUUID,
