@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Layout, Spin, Col, Select, Divider, Typography, Row, Button, Skeleton, Alert } from 'antd'
+import { Layout, Col, Select, Divider, Typography, Row, Button, Skeleton, Alert } from 'antd'
 import util from '../../util/common'
 import { useTranslation } from 'react-i18next'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
@@ -9,7 +9,7 @@ import StoreModal from '../../components/storeModal/StoreModal'
 import { MdInfo } from 'react-icons/md'
 
 const { Content } = Layout
-const { Title, Text } = Typography
+const {  Text } = Typography
 
 const storeCurrencyAPI = process.env.REACT_APP_STORE_CURRENCY_API
 const currencyAPI = process.env.REACT_APP_CHANGE_CURRENCY_API
@@ -128,7 +128,7 @@ const Currency = ({ storeUUId }) => {
     const currencyDataProcessor = (currencyProcessorData) => {
         let localCurrencyData = []
         if (currencyProcessorData && currencyProcessorData.length > 0) {
-            for (var i = 0; i < currencyProcessorData.length; i++) {
+            for (let i = 0; i < currencyProcessorData.length; i++) {
                 const temp = {}
                 temp['label'] = currencyProcessorData[i].currency_name
                 temp['value'] = currencyProcessorData[i].iso_currency_code

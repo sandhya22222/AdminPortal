@@ -1,5 +1,5 @@
 //! Import libraries
-import { Badge, Button, Col, Image, Layout, Tag, Tooltip, Typography, Table, Dropdown, Space } from 'antd'
+import { Badge, Button, Image, Layout, Tag, Tooltip, Typography, Table, Dropdown, Space } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -8,14 +8,13 @@ import { useQuery } from '@tanstack/react-query'
 import DmPagination from '../../components/DmPagination/DmPagination'
 import SkeletonComponent from '../../components/Skeleton/SkeletonComponent'
 import HeaderForTitle from '../../components/header/HeaderForTitle'
-import util from '../../util/common'
 import { DownloadIcon, EditIconNew, plusIcon, starIcon } from '../../constants/media'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import { DownOutlined } from '@ant-design/icons'
 
 import LanguageBanner from './LanguageBanner'
-const { Title, Text } = Typography
+const {  Text } = Typography
 const { Content } = Layout
 
 const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API
@@ -35,21 +34,12 @@ const Language = () => {
         pageSize: pageLimit,
     })
 
-    const StarIcon = () => {
-        return (
-            <>
-                <Image src={starIcon} className='mr-1 flex !items-center' preview={false} />
-            </>
-        )
-    }
-
     const columns = [
         {
             title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:language')}</Text>,
             dataIndex: 'language',
             key: 'language',
             width: '21%',
-            // ellipsis: true,
             render: (text, record) => {
                 return (
                     <Content className='flex flex-row'>
