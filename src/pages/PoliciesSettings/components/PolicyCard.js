@@ -282,7 +282,7 @@ const PolicyCard = ({
                     <div className='flex items-center'>
                         <Dropdown
                             className='w-[105px] cursor-pointer'
-                            disabled={(policyStatus !== 2)}
+                            disabled={policyStatus !== 2}
                             menu={{
                                 items: [
                                     {
@@ -300,14 +300,14 @@ const PolicyCard = ({
                                     (consentDetails?.version_number === 1
                                         ? '1.0'
                                         : consentDetails?.version_number || '1.0') || t('labels:version') + '1.0'}
-                                <DownOutlined className={!(policyStatus === 2) ? '!text-[#857e7e40] mx-1' : 'mx-1'} />
+                                <DownOutlined className={policyStatus !== 2 ? '!text-[#857e7e40] mx-1' : 'mx-1'} />
                             </Text>
                         </Dropdown>
                     </div>
                     <div className='mx-2'>
                         <Button
                             icon={<PlusOutlined />}
-                            disabled={!(policyStatus === 2)}
+                            disabled={policyStatus !== 2}
                             onClick={addVersionHandler}
                             className='app-btn-secondary'>
                             {t('labels:add_version')}
@@ -396,7 +396,7 @@ const PolicyCard = ({
                     <RiInformationFill className=' text-base mr-1 cursor-pointer text-[#000000] text-opacity-50' />
                 </Tooltip>
                 <span className='text-[#000000] text-opacity-50'>{t('labels:last_updated')}</span>
-                {!(policyStatus === 2) ? (
+                {policyStatus !== 2 ? (
                     <>{' : ' + t('messages:not_updated_yet')}</>
                 ) : (
                     <span className='font-semibold'>
