@@ -191,7 +191,6 @@ const DynamicTable = ({ tableComponentData }) => {
                         const filterResult = filteredData.filter((element) => element[type] === value)
                         // storing the filterresult to localFiltereddata
                         localFilteredData = localFilteredData.concat(filterResult)
-                        // console.log("localfiltereddata--------------", localFilteredData);
                     }
                     finalFilterData = localFilteredData
                 }
@@ -238,7 +237,6 @@ const DynamicTable = ({ tableComponentData }) => {
         if (sortType !== 'default') {
             setTableData(handleSorting(sortKey, copyData, sortType))
         } else {
-            //handleFilter(dataSource.table_content);
             setUpdateingDataFromServer(updateingDataFromServer + 1)
         }
     }

@@ -196,16 +196,13 @@ a {
     vertical-align: sub;
 }
 
-:where(.css-dev-only-do-not-override-1kuana8).ant-anchor-wrapper
-    .ant-anchor
-    .ant-anchor-link-active
-    > .ant-anchor-link-title {
+.ant-anchor-wrapper .ant-anchor .ant-anchor-link-active > .ant-anchor-link-title {
     color: var(--mp-primary-color) !important;
     text-decoration: none !important;
 }
 
 .ant-anchor-link-title {
-    color: black !important;
+    color: var(--mp-text-gray1) !important;
     text-decoration: none !important;
 }
 .ant-anchor-wrapper:not(.ant-anchor-wrapper-horizontal) .ant-anchor .ant-anchor-ink {
@@ -258,8 +255,4 @@ a {
     background: none !important;
     border-color: var(--mp-primary-border-color-h) !important;
     color: var(--mp-brand-color) !important;
-}
-
-.ant-anchor-link-title {
-    color: var(--mp-text-gray1) !important;
 }

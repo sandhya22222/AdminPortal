@@ -115,8 +115,6 @@ const Header2 = ({ collapsed, setCollapsed }) => {
                         document.body.style.direction =
                             defaultLanguageSelectedLanguage &&
                             defaultLanguageSelectedLanguage.writing_script_direction?.toLowerCase()
-
-                        // setDependencyForPageRefreshForInvalidSelectedLanguage(true);
                         setTimeout(function () {
                             navigate(0)
                         }, 2000)

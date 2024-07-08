@@ -42,11 +42,6 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
 
     const [myData, setMyData] = useState([])
 
-    const handlePageRefresh = (navigationPath) => {
-        if (pathname !== navigationPath) {
-        }
-    }
-
     // Function to handle mouse enter event on the sidebar
     const handleMouseEnter = () => {
         setIsHovering(true)
@@ -121,8 +116,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                             navigate_to: '/dashboard/language',
                             show_in_menu:
                                 !auth.isAuthenticated ||
-                                (auth.isAuthenticated &&
-                                    permissionValue.includes('UI-product-admin'))
+                                (auth.isAuthenticated && permissionValue.includes('UI-product-admin'))
                                     ? false
                                     : true,
                         },
@@ -154,8 +148,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                             navigate_to: `/dashboard/user-access-control/list-user-roles?tab=0&page=1&limit=${pageLimitFromENV}`,
                             show_in_menu:
                                 !auth.isAuthenticated ||
-                                (auth.isAuthenticated &&
-                                    permissionValue.includes('UI-user-access-control'))
+                                (auth.isAuthenticated && permissionValue.includes('UI-user-access-control'))
                                     ? true
                                     : false,
                         },
@@ -165,8 +158,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                             navigate_to: '/dashboard/platformadmin',
                             show_in_menu:
                                 !auth.isAuthenticated ||
-                                (auth.isAuthenticated &&
-                                    permissionValue.includes('UI-user-access-control'))
+                                (auth.isAuthenticated && permissionValue.includes('UI-user-access-control'))
                                     ? false
                                     : true,
                         },
@@ -240,7 +232,6 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                                                 // style={{ color: "black" }}
                                                 onClick={() => {
                                                     navigate(child.navigate_to)
-                                                    handlePageRefresh(child.navigate_to)
                                                 }}
                                                 style={{
                                                     opacity: !item.childrenKeys.includes(selectedItem)
@@ -266,7 +257,6 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                                     disabled={!item.show_in_menu}
                                     onClick={() => {
                                         navigate(item.navigate_to)
-                                        handlePageRefresh(item.navigate_to)
                                     }}
                                     style={{
                                         opacity: selectedItem === item.key ? 1 : 0.8,
