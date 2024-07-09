@@ -465,7 +465,7 @@ const Stores = () => {
                                 </Tooltip>
                             </Link>
                         ) : (
-                            <Button type='text' className='app-btn-text'>
+                            <Button type='text' className='app-btn-text' disabled={record.status === 3 ? true : false}>
                                 <Link
                                     to={{
                                         pathname: 'storesetting',
@@ -482,7 +482,9 @@ const Stores = () => {
                                             placement='bottom'>
                                             <MdSettings className='text-[var(--mp-primary-border-color)] hover:text-[var(--mp-primary-border-color-h)] !text-xl' /> */}
                                     {/* </Tooltip> */}
-                                    <Text className='text-brandPrimaryColor text-sm font-medium leading-[22px]'>
+                                    <Text
+                                        className='text-brandPrimaryColor text-sm font-medium leading-[22px]'
+                                        disabled={record.status === 3 ? true : false}>
                                         {t('labels:edit')}
                                     </Text>
                                 </Link>
