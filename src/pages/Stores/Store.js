@@ -188,7 +188,7 @@ const Stores = () => {
                 ? true
                 : false
         )
-    }, [auth,permissionValue])
+    }, [auth, permissionValue])
 
     const StoreTableColumnThreshold1 = [
         {
@@ -710,17 +710,11 @@ const Stores = () => {
                     if (error && error.response === undefined) {
                         setSearchParams({
                             m_t: parseInt(searchParams.get('m_t')),
-                            tab: parseInt(searchParams.get('tab')),
-                            page: 1,
-                            limit: parseInt(searchParams.get('limit')),
                         })
                     }
                     if (error.response.data.message === 'That page contains no results') {
                         setSearchParams({
                             m_t: parseInt(searchParams.get('m_t')),
-                            tab: parseInt(searchParams.get('tab')),
-                            page: 1,
-                            limit: parseInt(searchParams.get('limit')),
                         })
                     }
                 }
