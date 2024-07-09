@@ -188,7 +188,7 @@ const Stores = () => {
                 ? true
                 : false
         )
-    }, [auth])
+    }, [auth,permissionValue])
 
     const StoreTableColumnThreshold1 = [
         {
