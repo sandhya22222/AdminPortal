@@ -440,7 +440,7 @@ const StoreImages = ({
                                                 ? '!relative !ml-6'
                                                 : '!relative '
                                         }>
-                                        <Image src={ele} className='!w-[130px] !h-[102px] ' />
+                                        <Image src={ele} className='!w-[140px] !h-[102px] ' />
                                         <TiDelete
                                             className='!absolute !cursor-pointer !right-[-5px] !z-5  !top-[-10px] !text-2xl !text-red-600 !shadow-lg  hover:translate-'
                                             onClick={() => {
