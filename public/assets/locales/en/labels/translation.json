@@ -303,5 +303,8 @@
     "delete_language": "Delete Language",
     "store_user_name": "Username",
     "contact_information": "Contact Information",
-    "change_currency_details": "Change Currency Details"
+    "change_currency_details": "Change Currency Details",
+    "primary_button": "Primary Button",
+    "secondary_button": "Secondary Button",
+    "tertiary_button": "Tertiary Button"
 }

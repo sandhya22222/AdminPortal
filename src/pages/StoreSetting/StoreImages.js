@@ -374,6 +374,9 @@ const StoreImages = ({
                                 maxCount={BannerImagesUploadLength}
                                 listType='picture-card'
                                 multiple={true}
+                                className={
+                                    'hover:border-[var(--mp-primary-border-color)] hover:text-[var(--mp-brand-color-h)]'
+                                }
                                 beforeUpload={() => {
                                     return false
                                 }}
@@ -437,7 +440,7 @@ const StoreImages = ({
                                                 ? '!relative !ml-6'
                                                 : '!relative '
                                         }>
-                                        <Image src={ele} className='!w-[140px] !h-[70px]  ' />
+                                        <Image src={ele} className='!w-[140px] !h-[102px] ' />
                                         <TiDelete
                                             className='!absolute !cursor-pointer !right-[-5px] !z-5  !top-[-10px] !text-2xl !text-red-600 !shadow-lg  hover:translate-'
                                             onClick={() => {
@@ -453,6 +456,9 @@ const StoreImages = ({
                             <Upload
                                 maxCount={BannerImagesUploadLength}
                                 multiple={true}
+                                className={
+                                    'hover:border-[var(--mp-primary-border-color)] hover:text-[var(--mp-brand-color-h)]'
+                                }
                                 listType='picture-card'
                                 onPreview={handlePreview}
                                 beforeUpload={() => {
@@ -515,13 +521,15 @@ const StoreImages = ({
                 isVisible={isDeleteImageModalOpen}
                 okButtonText={t('labels:yes')}
                 cancelButtonText={t('labels:cancel')}
-                title={t('labels:warning')}
+                title={
+                    <div className='text-regal-blue font-bold text-[18px] leading-[26px]'>{t('labels:warning')}</div>
+                }
                 okCallback={() => removeMedia()}
                 cancelCallback={() => closeDeleteModal()}
                 isSpin={isImageDeleting}
                 hideCloseButton={false}>
                 {
-                    <div>
+                    <div className='text-brandGray1'>
                         <p className='!mb-0'>{t('messages:confirm_image_deletion')}</p>
                         <p>{t('messages:delete_confirmation_message')}</p>
                     </div>
