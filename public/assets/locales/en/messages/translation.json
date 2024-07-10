@@ -153,5 +153,5 @@
     "currency_warning_message": "Are you sure you want to change the currency?",
     "currency_message": "Once it's done, you can't change it again.",
     "language_document_data":"Please upload a language support document utf-8 CSV format containing translated values, and we will use it to update the respective portals with the new language content.",
-    "footer_content":"Copyright © 2024 Torry Harris Digital Products, LLC"
+    "footer_content":""
 }
