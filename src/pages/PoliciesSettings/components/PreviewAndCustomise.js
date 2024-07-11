@@ -167,7 +167,7 @@ const PreviewAndCustomise = ({ closeModal, refetchUserConsent, storeName, storeI
                             </Paragraph>
                             <div className=' relative w-[600px] h-[507px] '>
                                 <img src={ConsentPreview} alt='ConsentPreview' />
-                                <div className=' absolute  flex w-full items-start gap-x-2 bg-white !pl-[70px] top-[238px] !text-[13px] max-h-[114px] overflow-y-auto drop-shadow-md py-3'>
+                                <div className=' absolute  flex w-full items-start gap-x-2 bg-[#F5F5F5] !pl-[70px] top-[238px] !text-[13px] max-h-[114px] overflow-y-auto drop-shadow-md py-3'>
                                     {explicit ? <Checkbox /> : null}
                                     <div className={` ${explicit ? 'w-[90%]' : ' w-full'} `}>
                                         <span className=' mr-1 input-label-color'>{leadInLine?.trim()}</span>
@@ -194,7 +194,7 @@ const PreviewAndCustomise = ({ closeModal, refetchUserConsent, storeName, storeI
                                             })}
                                     </div>
                                 </div>
-                                <div className=' absolute bottom-0 w-full bg-[#FFFFFF] py-2  px-2'>
+                                <div className=' absolute bottom-0 w-full bg-[#F5F5F5] py-2  px-2'>
                                     <div className=' !text-xs flex items-center pb-2 gap-y-2 gap-x-8 max-h-[48px] overflow-y-auto flex-wrap justify-center'>
                                         {reorderList?.length > 0 &&
                                             reorderList?.map((list, index) => {
@@ -315,14 +315,17 @@ const PreviewAndCustomise = ({ closeModal, refetchUserConsent, storeName, storeI
                         </div>
                     </div>
                     <div className=' flex justify-end'>
+                        <Button className='app-btn-secondary mx-2' onClick={() => closeModal()}>
+                            {t('labels:cancel')}
+                        </Button>
                         <Button
-                            className='app-btn-primary  uppercase'
+                            className='app-btn-primary'
                             loading={updateConsentsOrderStatus === 'pending' || UpdateConsentLeadStatus === 'pending'}
                             onClick={handelSave}
                             disabled={!leadInLine?.trim()}>
                             {updateConsentsOrderStatus === 'pending' || UpdateConsentLeadStatus === 'pending'
                                 ? ''
-                                : t('common:ok')}
+                                : t('labels:publish')}
                         </Button>
                     </div>
                 </>
