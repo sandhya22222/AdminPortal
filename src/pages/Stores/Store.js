@@ -1,7 +1,6 @@
 import { UserOutlined, InfoCircleOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons'
 import {
     Button,
-    Col,
     Divider,
     Drawer,
     Input,
@@ -18,11 +17,10 @@ import {
     Alert,
     Badge,
     Empty,
-    Table,
 } from 'antd'
 import React, { useEffect, useState } from 'react'
 import validator from 'validator'
-import { MdInfo, MdSettings } from 'react-icons/md'
+import { MdInfo } from 'react-icons/md'
 import { Link, useLocation, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { saveStoreConfirmationImage } from '../../constants/media'

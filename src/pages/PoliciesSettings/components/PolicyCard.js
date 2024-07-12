@@ -1,9 +1,9 @@
 import { DownOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons'
-import { Button, Divider, Dropdown, Input, Space, Tooltip, Typography } from 'antd'
+import { Button, Divider, Dropdown, Input, Tooltip, Typography } from 'antd'
 import moment from 'moment/moment'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { RiDeleteBin6Fill, RiInformationFill, RiInformationLine, RiTranslate2 } from 'react-icons/ri'
+import { RiDeleteBin6Fill, RiInformationFill, RiTranslate2 } from 'react-icons/ri'
 import ReactQuill, { Quill } from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { toast } from 'react-toastify'
@@ -16,7 +16,6 @@ import AddVersion from './AddVersion'
 import TranslatePolicy from './TranslatePolicy'
 import VersionHistory from './VersionHistory'
 const { Text } = Typography
-const { Paragraph } = Typography
 const Link = Quill.import('formats/link')
 Link.sanitize = function (url) {
     const trimmedURL = url?.trim()
@@ -62,10 +61,6 @@ const formats = [
     'list',
     'align',
     'direction',
-    // 'code-block',
-    // 'formula',
-    // 'image'
-    // 'video',
     'script',
 ]
 const CONSENT_NAME_LENGTH = 100
@@ -129,7 +124,6 @@ const PolicyCard = ({
         setTranslatePolicy(true)
     }
     const handelConsentNameChange = (name) => {
-        // if (name?.length > CONSENT_NAME_LENGTH) return
         setConsentName(name)
     }
     const handelCancelPolicyName = () => {
@@ -288,7 +282,7 @@ const PolicyCard = ({
                     <div className='flex items-center'>
                         <Dropdown
                             className='w-[105px] cursor-pointer'
-                            disabled={!(policyStatus === 2)}
+                            disabled={policyStatus !== 2}
                             menu={{
                                 items: [
                                     {
@@ -306,14 +300,14 @@ const PolicyCard = ({
                                     (consentDetails?.version_number === 1
                                         ? '1.0'
                                         : consentDetails?.version_number || '1.0') || t('labels:version') + '1.0'}
-                                <DownOutlined className={!(policyStatus === 2) ? '!text-[#857e7e40] mx-1' : 'mx-1'} />
+                                <DownOutlined className={policyStatus !== 2 ? '!text-[#857e7e40] mx-1' : 'mx-1'} />
                             </Text>
                         </Dropdown>
                     </div>
                     <div className='mx-2'>
                         <Button
                             icon={<PlusOutlined />}
-                            disabled={!(policyStatus === 2)}
+                            disabled={policyStatus !== 2}
                             onClick={addVersionHandler}
                             className='app-btn-secondary'>
                             {t('labels:add_version')}
@@ -402,7 +396,7 @@ const PolicyCard = ({
                     <RiInformationFill className=' text-base mr-1 cursor-pointer text-[#000000] text-opacity-50' />
                 </Tooltip>
                 <span className='text-[#000000] text-opacity-50'>{t('labels:last_updated')}</span>
-                {!(policyStatus === 2) ? (
+                {policyStatus !== 2 ? (
                     <>{' : ' + t('messages:not_updated_yet')}</>
                 ) : (
                     <span className='font-semibold'>

@@ -136,10 +136,10 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                         value={storeDataLimitValues.vendor_limit > 0 ? storeDataLimitValues.vendor_limit : ''}
                         disabled={hideActionButton}
                         onKeyPress={(e) => {
-                            validatePositiveNumber(e, /[0-9]/)
+                            validatePositiveNumber(e, /\d/)
                         }}
                         onPaste={(e) => {
-                            validatePositiveNumber(e, /[0-9]/)
+                            validatePositiveNumber(e, /\d/)
                         }}
                         className={'w-28'}
                         max={9999999999}
@@ -170,10 +170,10 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                         value={storeDataLimitValues.customer_limit > 0 ? storeDataLimitValues.customer_limit : ''}
                         status={invalidCustomerLimit ? 'error' : ''}
                         onKeyPress={(e) => {
-                            validatePositiveNumber(e, /[0-9]/)
+                            validatePositiveNumber(e, /\d/)
                         }}
                         onPaste={(e) => {
-                            validatePositiveNumber(e, /[0-9]/)
+                            validatePositiveNumber(e, /\d/)
                         }}
                         className={'w-28'}
                         max={9999999999}
@@ -204,10 +204,10 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                         value={storeDataLimitValues.product_limit > 0 ? storeDataLimitValues.product_limit : ''}
                         status={invalidProductLimit ? 'error' : ''}
                         onKeyPress={(e) => {
-                            validatePositiveNumber(e, /[0-9]/)
+                            validatePositiveNumber(e, /\d/)
                         }}
                         onPaste={(e) => {
-                            validatePositiveNumber(e, /[0-9]/)
+                            validatePositiveNumber(e, /\d/)
                         }}
                         className={'w-28'}
                         max={9999999999}
@@ -240,10 +240,10 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                         }
                         status={invalidOrderLimit ? 'error' : ''}
                         onKeyPress={(e) => {
-                            validatePositiveNumber(e, /[0-9]/)
+                            validatePositiveNumber(e, /\d/)
                         }}
                         onPaste={(e) => {
-                            validatePositiveNumber(e, /[0-9]/)
+                            validatePositiveNumber(e, /\d/)
                         }}
                         className={'w-28'}
                         max={9999999999}
@@ -274,10 +274,10 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                         value={storeDataLimitValues.langauge_limit > 0 ? storeDataLimitValues.langauge_limit : ''}
                         status={invalidLanguageLimit ? 'error' : ''}
                         onKeyPress={(e) => {
-                            validatePositiveNumber(e, /[0-9]/)
+                            validatePositiveNumber(e, /\d/)
                         }}
                         onPaste={(e) => {
-                            validatePositiveNumber(e, /[0-9]/)
+                            validatePositiveNumber(e, /\d/)
                         }}
                         className={'w-28'}
                         max={9999999999}
@@ -312,10 +312,10 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                         }
                         status={invalidProductTemplateLimit ? 'error' : ''}
                         onKeyPress={(e) => {
-                            validatePositiveNumber(e, /[0-9]/)
+                            validatePositiveNumber(e, /\d/)
                         }}
                         onPaste={(e) => {
-                            validatePositiveNumber(e, /[0-9]/)
+                            validatePositiveNumber(e, /\d/)
                         }}
                         className={'w-28'}
                         max={9999999999}
@@ -346,10 +346,10 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                         value={storeDataLimitValues.store_users_limit > 0 ? storeDataLimitValues.store_users_limit : ''}
                         status={invalidStoreUserLimit ? 'error' : ''}
                         onKeyPress={(e) => {
-                            validatePositiveNumber(e, /[0-9]/)
+                            validatePositiveNumber(e, /\d/)
                         }}
                         onPaste={(e) => {
-                            validatePositiveNumber(e, /[0-9]/)
+                            validatePositiveNumber(e, /\d/)
                         }}
                         className={'w-28'}
                         max={9999999999}
@@ -382,10 +382,10 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                         }
                         status={invalidVendorUserLimit ? 'error' : ''}
                         onKeyPress={(e) => {
-                            validatePositiveNumber(e, /[0-9]/)
+                            validatePositiveNumber(e, /\d/)
                         }}
                         onPaste={(e) => {
-                            validatePositiveNumber(e, /[0-9]/)
+                            validatePositiveNumber(e, /\d/)
                         }}
                         className={'w-28'}
                         max={9999999999}
@@ -420,10 +420,10 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                         }
                         status={invalidMaxProductLimit ? 'error' : ''}
                         onKeyPress={(e) => {
-                            validatePositiveNumber(e, /[0-9]/)
+                            validatePositiveNumber(e, /\d/)
                         }}
                         onPaste={(e) => {
-                            validatePositiveNumber(e, /[0-9]/)
+                            validatePositiveNumber(e, /\d/)
                         }}
                         className={'w-28'}
                         max={9999999999}
@@ -458,10 +458,10 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                         }
                         status={invalidMaxTemplateLimit ? 'error' : ''}
                         onKeyPress={(e) => {
-                            validatePositiveNumber(e, /[0-9]/)
+                            validatePositiveNumber(e, /\d/)
                         }}
                         onPaste={(e) => {
-                            validatePositiveNumber(e, /[0-9]/)
+                            validatePositiveNumber(e, /\d/)
                         }}
                         className={'w-28'}
                         max={9999999999}
@@ -500,10 +500,10 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                         // formatter={(value) => (value ? `${value}%` : '')}
                         // parser={(value) => (value ? value.replace('%', '') : '')}
                         onKeyPress={(e) => {
-                            validatePositiveNumber(e, /[0-9]/)
+                            validatePositiveNumber(e, /\d/)
                         }}
                         onPaste={(e) => {
-                            validatePositiveNumber(e, /[0-9]/)
+                            validatePositiveNumber(e, /\d/)
                         }}
                         className={'w-28'}
                         onChange={(value) => {

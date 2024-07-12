@@ -6,8 +6,6 @@ import axios from 'axios'
 
 import { useNavigate } from 'react-router-dom'
 
-// import { useQuery } from "@tanstack/react-query";
-
 //! Import CSS libraries
 
 //! Import user defined services
@@ -38,11 +36,6 @@ const dm4sightGetAnalysisDetailAPI = process.env.REACT_APP_4SIGHT_GETANALYSISDET
 
 const storePlatformLimitApi = process.env.REACT_APP_STORE_PLATFORM_LIMIT_API
 const userProfileApi = process.env.REACT_APP_USER_PROFILE_API
-// const storeImagesAPI = process.env.REACT_APP_STORE_IMAGES_API
-// const baseURL = process.env.REACT_APP_BASE_URL
-// const storeAPI = process.env.REACT_APP_STORE_API
-
-// const auth = getAuth.toLowerCase() === "true";
 
 //! Destructure the components
 const { Title, Text } = Typography
@@ -63,7 +56,6 @@ const Newdashboard = () => {
     const [storeLimitValues, setStoreLimitValues] = useState([])
     const [username, setUsername] = useState('')
     const [langDirection, setLangDirection] = useState('ltr')
-    const [storeOveriewError, setStoreOveriewError] = useState(false)
     const [dashboardDataNetWorkError, setDashboardDataNetWorkError] = useState(false)
     let keyCLoak = sessionStorage.getItem('keycloakData')
     keyCLoak = JSON.parse(keyCLoak)
@@ -71,7 +63,7 @@ const Newdashboard = () => {
 
     const dm4sightHeaders = {
         headers: {
-            token: auth.user && auth.user?.access_token,
+            token: auth?.user?.access_token,
             realmname: realmName,
             dmClientId: dm4sightClientID,
             client: 'admin',
@@ -115,11 +107,11 @@ const Newdashboard = () => {
 
                 setTableData(transformedData)
                 setLoading(false)
-                setStoreOveriewError(false)
+                setDashboardDataNetWorkError(false)
             })
             .catch((err) => {
-                setStoreOveriewError(true)
                 setLoading(false)
+                setDashboardDataNetWorkError(true)
             })
     }
 
@@ -412,10 +404,7 @@ const Newdashboard = () => {
                                         />
 
                                         {t('labels:statistics')}
-                                    </Title>
-                                    <Button onClick={() => navigate('/dashboard/store')} type='link'>
-                                        {/* {t("labels:more")} */}
-                                    </Button>
+                                    </Title>                                   
                                 </Content>
                                 <Divider style={{ width: 'calc(100% + 48px)', marginLeft: '-24px' }} />
                                 <Content>
@@ -437,9 +426,6 @@ const Newdashboard = () => {
                                         />
                                         {t('labels:performance')}
                                     </Title>
-                                    <Button onClick={() => navigate('/dashboard/store')} type='link'>
-                                        {/* {t("labels:more")} */}
-                                    </Button>
                                 </Content>
                                 <Divider style={{ width: 'calc(100% + 48px)', marginLeft: '-24px' }} />
                                 <Content>

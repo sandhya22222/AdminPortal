@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { Typography, Upload, Layout, Modal, Button, Tooltip, Image, Alert } from 'antd'
-import { PlusOutlined, UploadOutlined } from '@ant-design/icons'
+import { Typography, Upload, Layout, Modal, Image, Alert } from 'antd'
+import { PlusOutlined } from '@ant-design/icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { fnAbsoluteStoreImageInfo } from '../../services/redux/actions/ActionStoreImages'
 import { useTranslation } from 'react-i18next'
@@ -11,7 +11,6 @@ import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import './StoreImages.css'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import util from '../../util/common'
-const { Title } = Typography
 const { Content } = Layout
 
 const storeDeleteImagesAPI = process.env.REACT_APP_STORE_DELETE_IMAGES_API
@@ -175,8 +174,6 @@ const StoreImages = ({
                     setImagePathShow()
                 }
             }
-            if (type === 'banner_images') {
-            }
             if (type === 'customer_logo') {
                 let temp = getImageData && getImageData.customer_logo_path
                 if (temp !== null) {
@@ -220,7 +217,7 @@ const StoreImages = ({
     useEffect(() => {
         if (bannerAbsoluteImage && bannerAbsoluteImage.length > 0) {
             let temp = []
-            for (var i = 0; i < bannerAbsoluteImage.length; i++) {
+            for (let i = 0; i < bannerAbsoluteImage.length; i++) {
                 if (type === 'banner_images') {
                     temp.push(baseURL + bannerAbsoluteImage[i].image_fullpath)
                 }

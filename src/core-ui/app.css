@@ -196,20 +196,13 @@ a {
     vertical-align: sub;
 }
 
-.ant-anchor-wrapper:not(.ant-anchor-wrapper-horizontal) .ant-anchor .ant-anchor-ink {
-    background-color: var(--mp-primary-color) !important;
-}
-
-:where(.css-dev-only-do-not-override-1kuana8).ant-anchor-wrapper
-    .ant-anchor
-    .ant-anchor-link-active
-    > .ant-anchor-link-title {
+.ant-anchor-wrapper .ant-anchor .ant-anchor-link-active > .ant-anchor-link-title {
     color: var(--mp-primary-color) !important;
     text-decoration: none !important;
 }
 
 .ant-anchor-link-title {
-    color: black !important;
+    color: var(--mp-text-gray1) !important;
     text-decoration: none !important;
 }
 .ant-anchor-wrapper:not(.ant-anchor-wrapper-horizontal) .ant-anchor .ant-anchor-ink {
@@ -225,10 +218,6 @@ a {
     background-color: var(--mp-primary-color) !important;
 }
 
-.ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover .ant-checkbox-inner {
-    border-color: var(--mp-primary-color) !important;
-}
-
 .ant-checkbox-checked .ant-checkbox-inner {
     background-color: var(--mp-primary-color) !important;
     border-color: var(--mp-primary-color) !important;
@@ -242,15 +231,6 @@ a {
 .ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover .ant-checkbox-inner {
     border-color: var(--mp-input-field-hover-color) !important;
 }
-
-/* .ql-snow {
-    border: 0px !important;
-}
-
-.ql-editor {
-    min-height: 150px !important;
-    padding: 0px !important;
-} */
 
 .customClass:hover svg path {
     fill: var(--mp-brand-color) !important;
@@ -275,8 +255,4 @@ a {
     background: none !important;
     border-color: var(--mp-primary-border-color-h) !important;
     color: var(--mp-brand-color) !important;
-}
-
-.ant-anchor-link-title {
-    color: var(--mp-text-gray1) !important;
 }
