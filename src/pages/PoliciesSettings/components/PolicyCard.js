@@ -1,9 +1,9 @@
 import { DownOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons'
-import { Button, Divider, Dropdown, Input, Space, Tooltip, Typography } from 'antd'
+import { Button, Divider, Dropdown, Input, Tooltip, Typography } from 'antd'
 import moment from 'moment/moment'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { RiDeleteBin6Fill, RiInformationFill, RiInformationLine, RiTranslate2 } from 'react-icons/ri'
+import { RiDeleteBin6Fill, RiInformationFill, RiTranslate2 } from 'react-icons/ri'
 import ReactQuill, { Quill } from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { toast } from 'react-toastify'
@@ -16,7 +16,6 @@ import AddVersion from './AddVersion'
 import TranslatePolicy from './TranslatePolicy'
 import VersionHistory from './VersionHistory'
 const { Text } = Typography
-const { Paragraph } = Typography
 const Link = Quill.import('formats/link')
 Link.sanitize = function (url) {
     const trimmedURL = url?.trim()
@@ -157,9 +156,6 @@ const PolicyCard = ({
                 onSuccess: (response) => {
                     refetchUserConsent()
                     MarketplaceToaster.showToast(response)
-                    // toast(t('Policy updated successfully'), {
-                    //     type: 'success',
-                    // })
                     setPolicyConfirmation(false)
                     setTimeout(() => {
                         setDescriptionModified(false)
@@ -167,9 +163,6 @@ const PolicyCard = ({
                 },
                 onError: (err) => {
                     MarketplaceToaster.showToast(err.response)
-                    // toast(err?.response?.data?.response_message || t('messages:error_saving_policy'), {
-                    //     type: 'error',
-                    // })
                 },
             }
         )
@@ -192,18 +185,12 @@ const PolicyCard = ({
                     onSuccess: (response) => {
                         refetchUserConsent()
                         MarketplaceToaster.showToast(response)
-                        // toast(t('messages:policy_saved_successfully'), {
-                        //     type: 'success',
-                        // })
                         setTimeout(() => {
                             setAddNewPolicy(false)
                         }, [100])
                     },
                     onError: (err) => {
                         MarketplaceToaster.showToast(err?.response)
-                        // toast(err?.response?.data?.response_message || t('messages:error_saving_policy'), {
-                        //     type: 'error',
-                        // })
                     },
                 }
             )
@@ -223,9 +210,6 @@ const PolicyCard = ({
                     },
                     onError: (err) => {
                         MarketplaceToaster.showToast(err?.response)
-                        // toast(err?.response?.data?.response_message || t('messages:error_saving_policy'), {
-                        //     type: 'error',
-                        // })
                     },
                 }
             )
@@ -284,10 +268,10 @@ const PolicyCard = ({
                         {consentName?.substring(0, 50) || t('labels:untitled_policy')}
                     </Text>
                 </div>
-                <div className='flex justify-end'>
-                    <div className='flex items-center'>
+                <div className='flex justify-end '>
+                    <div className='flex items-center  !pl-3'>
                         <Dropdown
-                            className='w-[105px] cursor-pointer'
+                            className='w-[87px] cursor-pointer'
                             disabled={!(policyStatus === 2)}
                             menu={{
                                 items: [
@@ -310,7 +294,7 @@ const PolicyCard = ({
                             </Text>
                         </Dropdown>
                     </div>
-                    <div className='mx-2'>
+                    <div className='!mx-2'>
                         <Button
                             icon={<PlusOutlined />}
                             disabled={!(policyStatus === 2)}
