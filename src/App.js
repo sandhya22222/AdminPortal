@@ -147,7 +147,6 @@ const App = () => {
                 </Routes>
             </Container>
         </Router>
-        //     {/* <Footer /> */}
     )
 }
 
