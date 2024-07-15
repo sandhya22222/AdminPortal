@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Typography, Upload, Layout, Modal, Image, Alert } from 'antd'
+import {  Upload, Layout, Modal, Image, Alert } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { fnAbsoluteStoreImageInfo } from '../../services/redux/actions/ActionStoreImages'
@@ -74,7 +74,7 @@ const StoreImages = ({
                 parseInt(allImageUrl && allImageUrl.length) + parseInt(e && e.fileList && e.fileList.length)
             )
             selectedImageArrayOfObject.push(e.file)
-            var sampleBannerImagesLength =
+            let sampleBannerImagesLength =
                 parseInt(allImageUrl && allImageUrl.length) + parseInt(e && e.fileList && e.fileList.length)
 
             if (e.fileList.length === 0) {
