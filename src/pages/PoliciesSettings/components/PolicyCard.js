@@ -151,9 +151,6 @@ const PolicyCard = ({
                 onSuccess: (response) => {
                     refetchUserConsent()
                     MarketplaceToaster.showToast(response)
-                    // toast(t('Policy updated successfully'), {
-                    //     type: 'success',
-                    // })
                     setPolicyConfirmation(false)
                     setTimeout(() => {
                         setDescriptionModified(false)
@@ -161,9 +158,6 @@ const PolicyCard = ({
                 },
                 onError: (err) => {
                     MarketplaceToaster.showToast(err.response)
-                    // toast(err?.response?.data?.response_message || t('messages:error_saving_policy'), {
-                    //     type: 'error',
-                    // })
                 },
             }
         )
@@ -186,18 +180,12 @@ const PolicyCard = ({
                     onSuccess: (response) => {
                         refetchUserConsent()
                         MarketplaceToaster.showToast(response)
-                        // toast(t('messages:policy_saved_successfully'), {
-                        //     type: 'success',
-                        // })
                         setTimeout(() => {
                             setAddNewPolicy(false)
                         }, [100])
                     },
                     onError: (err) => {
                         MarketplaceToaster.showToast(err?.response)
-                        // toast(err?.response?.data?.response_message || t('messages:error_saving_policy'), {
-                        //     type: 'error',
-                        // })
                     },
                 }
             )
@@ -217,9 +205,6 @@ const PolicyCard = ({
                     },
                     onError: (err) => {
                         MarketplaceToaster.showToast(err?.response)
-                        // toast(err?.response?.data?.response_message || t('messages:error_saving_policy'), {
-                        //     type: 'error',
-                        // })
                     },
                 }
             )
@@ -278,10 +263,10 @@ const PolicyCard = ({
                         {consentName?.substring(0, 50) || t('labels:untitled_policy')}
                     </Text>
                 </div>
-                <div className='flex justify-end'>
-                    <div className='flex items-center'>
+                <div className='flex justify-end '>
+                    <div className='flex items-center  !pl-3'>
                         <Dropdown
-                            className='w-[105px] cursor-pointer'
+                            className='w-[87px] cursor-pointer'
                             disabled={policyStatus !== 2}
                             menu={{
                                 items: [
@@ -304,7 +289,7 @@ const PolicyCard = ({
                             </Text>
                         </Dropdown>
                     </div>
-                    <div className='mx-2'>
+                    <div className='!mx-2'>
                         <Button
                             icon={<PlusOutlined />}
                             disabled={policyStatus !== 2}
