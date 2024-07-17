@@ -145,7 +145,6 @@ const PolicyCard = ({
             if (!descriptionModified) setDescriptionModified(true)
         }
     }
-
     const handelPublishConsent = () => {
         const body = {
             status: 2,
@@ -364,10 +363,9 @@ const PolicyCard = ({
                 <div
                     className=' rounded border-[1px] drop-shadow-sm shadow-[#D9D9D9] border-[#D9D9D9] overflow-hidden bg-white   w-full'
                     data-text-editor={'policyCard'}>
-                    {console.log('see', consentDiscriptionDisplayName)}
                     <ReactQuill
                         theme='snow'
-                        value={policyStatus === 2 ? consentDiscriptionDisplayName : description}
+                        value={description}
                         className={policyStatus === 2 ? 'opacity-40 bg-[#00000014]' : ''}
                         readOnly={policyStatus === 2}
                         onChange={handelDescriptionChange}
@@ -492,7 +490,8 @@ const PolicyCard = ({
                     storeId={storeId}
                     setTranslatePolicy={setTranslatePolicy}
                     storeUUID={storeUUID}
-                    refetchUserConsent={refetchUserConsent}></TranslatePolicy>
+                    refetchUserConsent={refetchUserConsent}
+                    policyStatus={policyStatus}></TranslatePolicy>
             </StoreModal>
             <StoreModal
                 isVisible={policyConfirmation}
