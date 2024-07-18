@@ -280,3 +280,11 @@ a {
 .ant-anchor-link-title {
     color: var(--mp-text-gray1) !important;
 }
+
+.ant-upload:hover {
+    border-color: var(--mp-primary-color) !important ;
+}
+
+.ant-upload-wrapper.ant-upload-picture-card-wrapper {
+    width: fit-content !important;
+}
