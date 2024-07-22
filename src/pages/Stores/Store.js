@@ -17,13 +17,15 @@ import {
     Alert,
     Badge,
     Empty,
+    Segmented,
+    Tag,
 } from 'antd'
 import React, { useEffect, useState } from 'react'
 import validator from 'validator'
 import { MdInfo } from 'react-icons/md'
 import { Link, useLocation, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { saveStoreConfirmationImage } from '../../constants/media'
+import { saveStoreConfirmationImage, InfoSymbol } from '../../constants/media'
 //! Import user defined components
 import DmPagination from '../../components/DmPagination/DmPagination'
 import DynamicTable from '../../components/DynamicTable/DynamicTable'
@@ -103,6 +105,11 @@ const Stores = () => {
     const [errorField, setErrorField] = useState('')
     const [searchValue, setSearchValue] = useState('')
     const [isSearchTriggered, setIsSearchTriggered] = useState(false)
+    const [storeType, setStoreType] = useState('partner')
+    const [isDistributor, setIsDistributor] = useState(false)
+    const [isOpenModalForMakingDistributor, setIsOpenModalForMakingDistributor] = useState(false)
+
+
     const auth = useAuth()
     const permissionValue = util.getPermissionData() || []
     let keyCLoak = sessionStorage.getItem('keycloakData')
@@ -380,6 +387,13 @@ const Stores = () => {
                                 </Text>
                             </Tooltip>
                         </Row>
+                        <Row>
+                            {record.isDistributor ? (
+                                <Tag color='blue'> {t('labels:distributer')}</Tag>
+                            ) : (
+                                <Tag color='cyan'>{t('labels:partner')}</Tag>
+                            )}
+                        </Row>
                         {record.status === 3 ? (
                             <Spin spinning={storeStatusLoading}>
                                 {console.log('storeId === record.storeId', storeId, record.storeId)}
@@ -514,6 +528,7 @@ const Stores = () => {
                 var createdOn = element.created_on
                 var storeStatus = element.status
                 var realmName = element.realmname
+                var isDistributor = element.distributor_store
                 tempArray &&
                     tempArray.push({
                         key: index,
@@ -523,6 +538,7 @@ const Stores = () => {
                         status: storeStatus,
                         storeId: storeActualId,
                         realmName: realmName,
+                        isDistributor: isDistributor,
                     })
             })
         setSelectedTabTableContent(tempArray)
@@ -661,6 +677,7 @@ const Stores = () => {
         setName('')
         setStoreEmail('')
         setStoreUserName('')
+        setStoreType('partner')
         setOnChangeValues(false)
     }
 
@@ -699,6 +716,7 @@ const Stores = () => {
                 console.log('Server Response from findByPageStoreApi Function: ', response.data.response_body)
                 setStoreApiData(response.data.response_body.data)
                 setCountForStore(response.data.response_body.count)
+                setIsDistributor(response.data.response_body.distributor_store)
             })
             .catch((error) => {
                 setIsLoading(false)
@@ -948,6 +966,7 @@ const Stores = () => {
             name: name.trim(),
             username: storeUserName.trim(),
             email: storeEmail.trim(),
+            distributor_store: storeType === 'partner' ? false : true,
         }
         setIsUpLoading(true)
         MarketplaceServices.save(storeAPI, postBody)
@@ -1118,6 +1137,11 @@ const Stores = () => {
             }
         }
     }
+
+    const handleStoreTypeChange = (val) => {
+        setStoreType(val)
+    }
+
     const customButton = (
         <Button type='primary' disabled={searchValue?.trim() === '' ? true : false} icon={<SearchOutlined />} />
     )
@@ -1227,7 +1251,48 @@ const Stores = () => {
                                     setName(trimmedUpdate)
                                 }}
                             />
-                            <div className='font-semibold my-2 text-[18px] leading-[26px] text-regal-blue'>
+                            {/* testt13 */}
+                            <div className='flex'>
+                                <label
+                                    className='text-[14px] leading-[22px] font-normal text-brandGray2 mb-2 ml-1 '
+                                    id='labStNam'>
+                                    {t('labels:store_type')}
+                                </label>
+                                <span className='mandatory-symbol-color text-sm ml-1'>*</span>
+                                <span className='mt-1 ml-1'>
+                                    <Tooltip
+                                        // overlayStyle={{
+                                        //     zIndex: viewType === 'page' ? 1 : '',
+                                        // }}
+                                        autoAdjustOverflow={true}
+                                        title={<p> {t('messages:store_type_info_partner')}</p>}>
+                                        <img src={InfoSymbol} alt='InfoSymbol' />
+                                    </Tooltip>
+                                </span>
+                            </div>
+                            <Segmented
+                                options={[
+                                    {
+                                        value: 'partner',
+                                        label: t('labels:partner'),
+                                    },
+                                    {
+                                        value: 'distributer',
+                                        label: t('labels:distributer'),
+                                    },
+                                ]}
+                                block={true}
+                                className='w-[50%]'
+                                value={storeType}
+                                onChange={(value) => {
+                                    handleStoreTypeChange(value)
+                                    // if (value !== defaultScriptDirection) {
+                                    //     setOnChangeValues(true)
+                                    // }
+                                }}
+                                disabled={isDistributor}
+                            />
+                            <div className='font-bold  my-2 text-[16px] leading-[24px] text-regal-blue'>
                                 {t('labels:store_administrator_details')}
                             </div>
                             <Alert
