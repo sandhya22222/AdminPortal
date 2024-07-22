@@ -256,3 +256,15 @@ a {
     border-color: var(--mp-primary-border-color-h) !important;
     color: var(--mp-brand-color) !important;
 }
+
+.ant-anchor-link-title {
+    color: var(--mp-text-gray1) !important;
+}
+
+.ant-upload:hover {
+    border-color: var(--mp-primary-color) !important ;
+}
+
+.ant-upload-wrapper.ant-upload-picture-card-wrapper {
+    width: fit-content !important;
+}

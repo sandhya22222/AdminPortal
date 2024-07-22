@@ -519,7 +519,7 @@ const StoreImages = ({
                 okButtonText={t('labels:yes')}
                 cancelButtonText={t('labels:cancel')}
                 title={
-                    <div className='text-regal-blue font-bold text-[18px] leading-[26px]'>{t('labels:warning')}</div>
+                    <div className='text-regal-blue font-bold text-[18px] leading-[26px]'>{t('labels:delete_image')}</div>
                 }
                 okCallback={() => removeMedia()}
                 cancelCallback={() => closeDeleteModal()}
@@ -527,7 +527,6 @@ const StoreImages = ({
                 hideCloseButton={false}>
                 {
                     <div className='text-brandGray1'>
-                        <p className='!mb-0'>{t('messages:confirm_image_deletion')}</p>
                         <p>{t('messages:delete_confirmation_message')}</p>
                     </div>
                 }
