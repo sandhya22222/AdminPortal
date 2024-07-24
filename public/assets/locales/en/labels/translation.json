@@ -307,5 +307,8 @@
     "primary_button": "Primary Button",
     "secondary_button": "Secondary Button",
     "tertiary_button": "Tertiary Button",
-    "delete_image": "Delete Image"
+    "delete_image": "Delete Image",
+    "store_type": "Store Type",
+    "partner":"Partner",
+    "distributer":"Distributer"
 }
