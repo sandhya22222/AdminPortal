@@ -1,4 +1,4 @@
-import { UserOutlined, InfoCircleOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons'
+import { UserOutlined, InfoCircleOutlined, PlusOutlined, SearchOutlined, StarFilled } from '@ant-design/icons'
 import {
     Button,
     Divider,
@@ -6,6 +6,7 @@ import {
     Input,
     Layout,
     Row,
+    Col,
     Skeleton,
     Spin,
     Tooltip,
@@ -25,7 +26,7 @@ import validator from 'validator'
 import { MdInfo } from 'react-icons/md'
 import { Link, useLocation, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { saveStoreConfirmationImage, InfoSymbol } from '../../constants/media'
+import { saveStoreConfirmationImage, InfoSymbol, ExclamationCircle, storeDefaultImage } from '../../constants/media'
 //! Import user defined components
 import DmPagination from '../../components/DmPagination/DmPagination'
 import DynamicTable from '../../components/DynamicTable/DynamicTable'
@@ -108,7 +109,6 @@ const Stores = () => {
     const [storeType, setStoreType] = useState('partner')
     const [isDistributor, setIsDistributor] = useState(false)
     const [isOpenModalForMakingDistributor, setIsOpenModalForMakingDistributor] = useState(false)
-
 
     const auth = useAuth()
     const permissionValue = util.getPermissionData() || []
@@ -369,7 +369,7 @@ const Stores = () => {
     //! table columns
     const StoreTableColumn = [
         {
-            title: `${t('labels:name')}`,
+            title: `${t('labels:store_name')}`,
             dataIndex: 'name',
             key: 'name',
             width: '30%',
@@ -377,35 +377,54 @@ const Stores = () => {
             render: (text, record) => {
                 return (
                     <>
-                        <Row>
-                            <Tooltip title={record.name} placement='bottom'>
-                                <Text
-                                    className='max-w-xs text-brandGray1'
-                                    ellipsis={{ tooltip: record.name }}
-                                    disabled={record.status === 3 ? true : false}>
-                                    {record.name}
-                                </Text>
-                            </Tooltip>
-                        </Row>
-                        <Row>
-                            {record.isDistributor ? (
-                                <Tag color='blue'> {t('labels:distributer')}</Tag>
-                            ) : (
-                                <Tag color='cyan'>{t('labels:partner')}</Tag>
-                            )}
-                        </Row>
-                        {record.status === 3 ? (
-                            <Spin spinning={storeStatusLoading}>
-                                {console.log('storeId === record.storeId', storeId, record.storeId)}
-                                <div
-                                    className='flex space-x-2'
-                                    // onLoad={handleStoreDataStore(record.id, record.storeId)}
-                                >
-                                    <Badge status='processing' />
-                                    <Text>{t('labels:processing')}</Text>
-                                </div>
-                            </Spin>
-                        ) : null}
+                        <div className='flex'>
+                            <div className=''>
+                                <img src={storeDefaultImage} className='aspect-square mt-1' />
+                            </div>
+                            <div className=''>
+                                <Row>
+                                    <Tooltip title={record.name} placement='bottom'>
+                                        <Text
+                                            className='max-w-xs text-brandGray1 mb-1'
+                                            ellipsis={{ tooltip: record.name }}
+                                            disabled={record.status === 3 ? true : false}>
+                                            {record.name}
+                                        </Text>
+                                    </Tooltip>
+                                </Row>
+                                <Row>
+                                    {record.isDistributor ? (
+                                        <Tag color='blue'>
+                                            <StarFilled /> {t('labels:distributor')}
+                                        </Tag>
+                                    ) : (
+                                        <Tag color='cyan'>{t('labels:partner')}</Tag>
+                                    )}{' '}
+                                    {!isDistributor && (
+                                        <Tooltip title={t('messages:store_type_info')}>
+                                            <img
+                                                src={ExclamationCircle}
+                                                alt='ExclamationCircleIcon'
+                                                width={15}
+                                                height={15}
+                                            />
+                                        </Tooltip>
+                                    )}
+                                </Row>
+                                {record.status === 3 ? (
+                                    <Spin spinning={storeStatusLoading}>
+                                        {console.log('storeId === record.storeId', storeId, record.storeId)}
+                                        <div
+                                            className='flex space-x-1'
+                                            // onLoad={handleStoreDataStore(record.id, record.storeId)}
+                                        >
+                                            <Badge status='processing' />
+                                            <Text>{t('labels:processing')}</Text>
+                                        </div>
+                                    </Spin>
+                                ) : null}
+                            </div>
+                        </div>
                     </>
                 )
             },
@@ -485,20 +504,25 @@ const Stores = () => {
                                             searchParams.get('page') ? searchParams.get('page') : 1
                                         }&limit=${
                                             searchParams.get('limit') ? searchParams.get('limit') : pageLimit
-                                        }&storeId=${record.storeId}&rmn=${record.realmName}`,
+                                        }&storeId=${record.storeId}&rmn=${record.realmName}&storeType=${record.isDistributor ? 'Distributor' : 'partner'}&isDistributor=${isDistributor}`,
                                     }}
                                     className=' !no-underline'>
-                                    {/* <Tooltip
-                                            overlayStyle={{ zIndex: 1 }}
-                                            title={t('labels:store_settings')}
-                                            placement='bottom'>
-                                            <MdSettings className='text-[var(--mp-primary-border-color)] hover:text-[var(--mp-primary-border-color-h)] !text-xl' /> */}
-                                    {/* </Tooltip> */}
-                                    <Text
-                                        className='text-brandPrimaryColor text-sm font-medium leading-[22px]'
+                                    <Button
+                                        type='text'
+                                        className='app-btn-icon'
                                         disabled={record.status === 3 ? true : false}>
-                                        {t('labels:edit')}
-                                    </Text>
+                                        <svg
+                                            width='14'
+                                            height='14'
+                                            viewBox='0 0 14 14'
+                                            fill='none'
+                                            xmlns='http://www.w3.org/2000/svg'>
+                                            <path
+                                                d='M3.02644 10.75C3.05769 10.75 3.08894 10.7469 3.12019 10.7422L5.74832 10.2813C5.77957 10.275 5.80925 10.261 5.83113 10.2375L12.4546 3.61411C12.4691 3.59965 12.4805 3.58248 12.4884 3.56358C12.4962 3.54468 12.5003 3.52442 12.5003 3.50395C12.5003 3.48349 12.4962 3.46323 12.4884 3.44432C12.4805 3.42542 12.4691 3.40825 12.4546 3.3938L9.85769 0.795358C9.828 0.765671 9.78894 0.750046 9.74675 0.750046C9.70457 0.750046 9.6655 0.765671 9.63582 0.795358L3.01238 7.4188C2.98894 7.44223 2.97488 7.47036 2.96863 7.50161L2.50769 10.1297C2.49249 10.2134 2.49792 10.2996 2.52351 10.3807C2.54911 10.4619 2.59409 10.5355 2.65457 10.5954C2.75769 10.6954 2.88738 10.75 3.02644 10.75ZM4.07957 8.02505L9.74675 2.35942L10.8921 3.50473L5.22488 9.17036L3.83582 9.41567L4.07957 8.02505ZM12.7499 12.0625H1.24988C0.973315 12.0625 0.749878 12.286 0.749878 12.5625V13.125C0.749878 13.1938 0.806128 13.25 0.874878 13.25H13.1249C13.1936 13.25 13.2499 13.1938 13.2499 13.125V12.5625C13.2499 12.286 13.0264 12.0625 12.7499 12.0625Z'
+                                                fill='#023047'
+                                            />
+                                        </svg>
+                                    </Button>
                                 </Link>
                             </Button>
                         )}
@@ -1139,7 +1163,18 @@ const Stores = () => {
     }
 
     const handleStoreTypeChange = (val) => {
-        setStoreType(val)
+        if (storeType === 'partner') {
+            setIsOpenModalForMakingDistributor(true)
+        } else {
+            setStoreType(val)
+        }
+    }
+    const handleStoreTypeChangeConfirmation = () => {
+        setStoreType('distributor')
+        setIsOpenModalForMakingDistributor(false)
+    }
+    const onCloseStoreTypeChangeModal = () => {
+        setIsOpenModalForMakingDistributor(false)
     }
 
     const customButton = (
@@ -1189,213 +1224,6 @@ const Stores = () => {
                     </Content>
                 }
             />
-            <Drawer
-                title={
-                    drawerAction && drawerAction === 'post' ? (
-                        <div className='text-regal-blue leading-[26px] text-[18px] font-bold'>
-                            {t('labels:add_store')}
-                        </div>
-                    ) : (
-                        `${t('labels:edit_store')}`
-                    )
-                }
-                placement={util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'left' : 'right'}
-                onClose={onClose}
-                open={open}
-                width={'40%'}>
-                {drawerAction && drawerAction === 'post' ? (
-                    <>
-                        {/* <Row>
-                            <Col span={1} className='flex items-start mt-[3px]'>
-                                <MdInfo className='!text-[var(--mp-brand-color-h)] text-[16px]' />
-                            </Col>
-                            <Col span={23} className='align-center mb-3'>
-                                <Text className=' mr-1 font-bold'> {t('labels:note')}: </Text>
-                                <Text>{t('messages:add_store_description')}</Text>
-                            </Col>
-                        </Row> */}
-                        <Spin tip={t('labels:please_wait')} size='large' spinning={isUpLoading}>
-                            <label
-                                className='text-[14px] leading-[22px] font-normal text-brandGray2 mb-2 ml-1 '
-                                id='labStNam'>
-                                {t('labels:store_name')}
-                            </label>
-                            <span className='mandatory-symbol-color text-sm ml-1'>*</span>
-                            <Input
-                                placeholder={t('placeholders:enter_store_name')}
-                                value={name}
-                                minLength={storeNameMinLength}
-                                maxLength={storeNameMaxLength}
-                                className={`${
-                                    inValidName
-                                        ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-[0.5rem]'
-                                        : 'mb-[0.5rem]'
-                                }`}
-                                onChange={(e) => {
-                                    const alphaWithoutSpaces = /^[a-zA-Z0-9]+$/
-                                    if (
-                                        e.target.value !== '' &&
-                                        validator.matches(e.target.value, alphaWithoutSpaces)
-                                    ) {
-                                        setName(e.target.value)
-                                        setOnChangeValues(true)
-                                    } else if (e.target.value === '') {
-                                        setName(e.target.value)
-                                        setOnChangeValues(false)
-                                    }
-                                    setInValidName(false)
-                                }}
-                                onBlur={() => {
-                                    const trimmed = name.trim()
-                                    const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
-                                    setName(trimmedUpdate)
-                                }}
-                            />
-                            {/* testt13 */}
-                            <div className='flex'>
-                                <label
-                                    className='text-[14px] leading-[22px] font-normal text-brandGray2 mb-2 ml-1 '
-                                    id='labStNam'>
-                                    {t('labels:store_type')}
-                                </label>
-                                <span className='mandatory-symbol-color text-sm ml-1'>*</span>
-                                <span className='mt-1 ml-1'>
-                                    <Tooltip
-                                        // overlayStyle={{
-                                        //     zIndex: viewType === 'page' ? 1 : '',
-                                        // }}
-                                        autoAdjustOverflow={true}
-                                        title={<p> {t('messages:store_type_info_partner')}</p>}>
-                                        <img src={InfoSymbol} alt='InfoSymbol' />
-                                    </Tooltip>
-                                </span>
-                            </div>
-                            <Segmented
-                                options={[
-                                    {
-                                        value: 'partner',
-                                        label: t('labels:partner'),
-                                    },
-                                    {
-                                        value: 'distributer',
-                                        label: t('labels:distributer'),
-                                    },
-                                ]}
-                                block={true}
-                                className='w-[50%]'
-                                value={storeType}
-                                onChange={(value) => {
-                                    handleStoreTypeChange(value)
-                                    // if (value !== defaultScriptDirection) {
-                                    //     setOnChangeValues(true)
-                                    // }
-                                }}
-                                disabled={isDistributor}
-                            />
-                            <div className='font-bold  my-2 text-[16px] leading-[24px] text-regal-blue'>
-                                {t('labels:store_administrator_details')}
-                            </div>
-                            <Alert
-                                icon={<MdInfo className='font-bold !text-center' />}
-                                message={
-                                    <div className=''>
-                                        <Text className=' mr-1 text-brandGray1'> {t('labels:note')}:</Text>
-                                        <Text className='text-brandGray1'>{t('messages:add_store_description')}</Text>
-                                    </div>
-                                }
-                                type='info'
-                                showIcon
-                                className='my-3'
-                            />
-                            <label
-                                className='mb-2 ml-1 text-[14px] leading-[22px] font-normal text-brandGray2'
-                                id='labStEmail'>
-                                {t('labels:email')}
-                            </label>
-                            <span className='mandatory-symbol-color text-sm ml-1'>*</span>
-                            <Input
-                                placeholder={t('placeholders:enter_email')}
-                                value={storeEmail}
-                                minLength={emailMinLength}
-                                maxLength={emailMaxLength}
-                                className={`${
-                                    inValidEmail
-                                        ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-6'
-                                        : 'mb-6'
-                                }`}
-                                onChange={(e) => {
-                                    setInValidEmail(false)
-                                    if (e.target.value === '') {
-                                        setOnChangeValues(false)
-                                        setStoreEmail(e.target.value)
-                                    } else {
-                                        setOnChangeValues(true)
-                                        setStoreEmail(e.target.value.trim())
-                                    }
-                                }}
-                                onBlur={() => {
-                                    const trimmed = storeEmail.trim()
-                                    const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
-                                    setStoreEmail(trimmedUpdate)
-                                }}
-                            />
-
-                            <label
-                                className=' mb-2 ml-1 text-[14px] leading-[22px] font-normal text-brandGray2'
-                                id='labStUseName'>
-                                {t('labels:username')}
-                            </label>
-                            <span className='mandatory-symbol-color text-sm ml-1'>*</span>
-                            <Input
-                                placeholder={t('placeholders:enter_username')}
-                                value={storeUserName}
-                                minLength={userNameMinLength}
-                                maxLength={userNameMaxLength}
-                                className={`${
-                                    inValidUserName
-                                        ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-10'
-                                        : 'mb-10'
-                                }`}
-                                prefix={<UserOutlined className='site-form-item-icon' />}
-                                onChange={(e) => {
-                                    const regex = /^[A-Za-z0-9_\- ]+$/
-                                    if (e.target.value !== '' && validator.matches(e.target.value, regex)) {
-                                        setInValidUserName(false)
-                                        setStoreUserName(String(e.target.value).toLowerCase().trim())
-                                        setOnChangeValues(true)
-                                    } else if (e.target.value === '') {
-                                        setStoreUserName(e.target.value)
-                                        setOnChangeValues(false)
-                                    }
-                                }}
-                                onBlur={() => {
-                                    const trimmed = storeUserName.trim()
-                                    const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
-                                    setStoreUserName(trimmedUpdate)
-                                }}
-                            />
-                            <Content className='flex space-x-3 !justify-end'>
-                                <Button
-                                    className={onChangeValues ? 'app-btn-secondary' : '!opacity-75'}
-                                    disabled={!onChangeValues}
-                                    onClick={() => {
-                                        onClose()
-                                    }}>
-                                    {t('labels:cancel')}
-                                </Button>
-                                <Button
-                                    className={onChangeValues ? 'app-btn-primary' : '!opacity-75'}
-                                    disabled={!onChangeValues}
-                                    onClick={() => {
-                                        validateStorePostField()
-                                    }}>
-                                    {t('labels:save')}
-                                </Button>
-                            </Content>
-                        </Spin>
-                    </>
-                ) : null}
-            </Drawer>
             <div className='!p-5'>
                 <Content className=''>
                     {isLoading ? (
@@ -1581,6 +1409,237 @@ const Stores = () => {
                         <p>{t('messages:store_deletion_confirmation_message')}</p>
                     </div>
                 }
+            </StoreModal>
+            <StoreModal
+                title={t('labels:add_store')}
+                isVisible={open}
+                okButtonText={null}
+                cancelButtonText={null}
+                okCallback={() => validateStorePostField()}
+                hideCloseButton={true}
+                cancelCallback={() => onClose()}
+                isSpin={false}
+                width={800}
+                isScroll={false}>
+                <Content>
+                    {drawerAction && drawerAction === 'post' ? (
+                        <>
+                            <Spin tip={t('labels:please_wait')} size='large' spinning={isUpLoading}>
+                                <div>
+                                    <label
+                                        className='text-[14px] leading-[22px] font-normal text-brandGray2 mb-2 ml-1 '
+                                        id='labStNam'>
+                                        {t('labels:store_name')}
+                                    </label>
+                                    <span className='mandatory-symbol-color text-sm ml-1'>*</span>
+                                </div>
+                                <Input
+                                    placeholder={t('placeholders:enter_store_name')}
+                                    value={name}
+                                    minLength={storeNameMinLength}
+                                    maxLength={storeNameMaxLength}
+                                    className={`!w-[50%] ${
+                                        inValidName
+                                            ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-[0.5rem]'
+                                            : 'mb-[0.5rem]'
+                                    }`}
+                                    onChange={(e) => {
+                                        const alphaWithoutSpaces = /^[a-zA-Z0-9]+$/
+                                        if (
+                                            e.target.value !== '' &&
+                                            validator.matches(e.target.value, alphaWithoutSpaces)
+                                        ) {
+                                            setName(e.target.value)
+                                            setOnChangeValues(true)
+                                        } else if (e.target.value === '') {
+                                            setName(e.target.value)
+                                            setOnChangeValues(false)
+                                        }
+                                        setInValidName(false)
+                                    }}
+                                    onBlur={() => {
+                                        const trimmed = name.trim()
+                                        const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
+                                        setName(trimmedUpdate)
+                                    }}
+                                />
+
+                                <div className='flex !mt-3'>
+                                    <label
+                                        className='text-[14px] leading-[22px] font-normal text-brandGray2 mb-2 ml-1 '
+                                        id='labStNam'>
+                                        {t('labels:store_type')}
+                                    </label>
+                                    <span className='mandatory-symbol-color text-sm ml-1'>*</span>
+                                    <span className='mt-1 ml-1'>
+                                        <Tooltip
+                                            autoAdjustOverflow={true}
+                                            title={
+                                                <>
+                                                    <ul
+                                                        style={{
+                                                            listStyleType: 'disc',
+                                                            marginLeft: 0,
+                                                            paddingLeft: '20px',
+                                                        }}>
+                                                        <li>{t('messages:store_type_info_partner')}</li>
+                                                        <li>{t('messages:store_type_info_distributor')}</li>
+                                                    </ul>
+                                                </>
+                                            }>
+                                            <img src={InfoSymbol} alt='InfoSymbol' />
+                                        </Tooltip>
+                                    </span>
+                                </div>
+                                <Segmented
+                                    options={[
+                                        {
+                                            value: 'partner',
+                                            label: t('labels:partner'),
+                                        },
+                                        {
+                                            value: 'distributor',
+                                            label: t('labels:Distributor'),
+                                        },
+                                    ]}
+                                    block={true}
+                                    className='w-[35%]'
+                                    value={storeType}
+                                    onChange={(value) => {
+                                        handleStoreTypeChange(value)
+                                    }}
+                                    disabled={isDistributor}
+                                />
+                                <div className='font-bold  mt-4 text-[16px] leading-[24px] text-regal-blue'>
+                                    {t('labels:store_administrator_details')}
+                                </div>
+                                <Alert
+                                    icon={<MdInfo className='font-bold !text-center' />}
+                                    message={
+                                        <div className=''>
+                                            <Text className=' mr-1 text-brandGray1'> {t('labels:note')}:</Text>
+                                            <Text className='text-brandGray1'>
+                                                {t('messages:add_store_description')}{' '}
+                                                <span className='font-bold'>{t('labels:store_management_portal')}</span>
+                                            </Text>
+                                        </div>
+                                    }
+                                    type='info'
+                                    showIcon
+                                    className='my-3 !w-[89%]'
+                                />
+                                <div>
+                                    <label
+                                        className='mb-2 ml-1 text-[14px] leading-[22px] font-normal text-brandGray2'
+                                        id='labStEmail'>
+                                        {t('labels:email')}
+                                    </label>
+                                    <span className='mandatory-symbol-color text-sm ml-1'>*</span>
+                                </div>
+                                <Input
+                                    placeholder={t('placeholders:enter_email')}
+                                    value={storeEmail}
+                                    minLength={emailMinLength}
+                                    maxLength={emailMaxLength}
+                                    className={`!w-[50%] ${
+                                        inValidEmail
+                                            ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-6'
+                                            : 'mb-6'
+                                    }`}
+                                    onChange={(e) => {
+                                        setInValidEmail(false)
+                                        if (e.target.value === '') {
+                                            setOnChangeValues(false)
+                                            setStoreEmail(e.target.value)
+                                        } else {
+                                            setOnChangeValues(true)
+                                            setStoreEmail(e.target.value.trim())
+                                        }
+                                    }}
+                                    onBlur={() => {
+                                        const trimmed = storeEmail.trim()
+                                        const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
+                                        setStoreEmail(trimmedUpdate)
+                                    }}
+                                />
+                                <div>
+                                    <label
+                                        className=' mb-2 ml-1 text-[14px] leading-[22px] font-normal text-brandGray2'
+                                        id='labStUseName'>
+                                        {t('labels:username')}
+                                    </label>
+                                    <span className='mandatory-symbol-color text-sm ml-1'>*</span>
+                                </div>
+                                <Input
+                                    placeholder={t('placeholders:enter_username')}
+                                    value={storeUserName}
+                                    minLength={userNameMinLength}
+                                    maxLength={userNameMaxLength}
+                                    className={`!w-[50%] ${
+                                        inValidUserName
+                                            ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-10'
+                                            : 'mb-10'
+                                    }`}
+                                    prefix={<UserOutlined className='site-form-item-icon' />}
+                                    onChange={(e) => {
+                                        const regex = /^[A-Za-z0-9_\- ]+$/
+                                        if (e.target.value !== '' && validator.matches(e.target.value, regex)) {
+                                            setInValidUserName(false)
+                                            setStoreUserName(String(e.target.value).toLowerCase().trim())
+                                            setOnChangeValues(true)
+                                        } else if (e.target.value === '') {
+                                            setStoreUserName(e.target.value)
+                                            setOnChangeValues(false)
+                                        }
+                                    }}
+                                    onBlur={() => {
+                                        const trimmed = storeUserName.trim()
+                                        const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
+                                        setStoreUserName(trimmedUpdate)
+                                    }}
+                                />
+                                <Content className='flex space-x-3 !justify-end'>
+                                    <Button
+                                        className={onChangeValues ? 'app-btn-secondary' : '!opacity-75'}
+                                        disabled={!onChangeValues}
+                                        onClick={() => {
+                                            onClose()
+                                        }}>
+                                        {t('labels:cancel')}
+                                    </Button>
+                                    <Button
+                                        className={onChangeValues ? 'app-btn-primary' : '!opacity-75'}
+                                        disabled={!onChangeValues}
+                                        onClick={() => {
+                                            validateStorePostField()
+                                        }}>
+                                        {t('labels:save')}
+                                    </Button>
+                                </Content>
+                            </Spin>
+                        </>
+                    ) : null}
+                </Content>
+            </StoreModal>
+            <StoreModal
+                title={
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <img src={ExclamationCircle} alt='ExclamationCircleIcon' />
+                        {t('labels:set_as_distributor_store')}
+                    </div>
+                }
+                isVisible={isOpenModalForMakingDistributor}
+                okButtonText={t('labels:set_as_distributor')}
+                cancelButtonText={t('labels:cancel')}
+                okCallback={() => handleStoreTypeChangeConfirmation()}
+                hideCloseButton={true}
+                cancelCallback={() => onCloseStoreTypeChangeModal()}
+                isSpin={false}
+                width={600}
+                isScroll={false}>
+                <div className='!px-7'>
+                    <p>{t('messages:set_as_distributor_store_desc')}</p>
+                </div>
             </StoreModal>
         </Content>
     )

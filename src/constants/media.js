@@ -45,6 +45,8 @@ import deleteIcon from '../assets/images/common/deleteIcon.svg'
 import InfoIcon from '../assets/images/common/infoIcon.svg'
 import EmptySVG from '../assets/images/common/Empty.svg'
 import InfoSymbol from '../assets/images/common/InfoSymbol.svg'
+import ExclamationCircle from '../assets/images/common/ExclamationCircle.svg'
+import storeDefaultImage from '../assets/images/common/storeDefaultImage.svg'
 
 
 export {
@@ -93,5 +95,7 @@ export {
     deleteIcon,
     InfoIcon,
     EmptySVG,
-    InfoSymbol
+    InfoSymbol,
+    ExclamationCircle,
+    storeDefaultImage,
 }
