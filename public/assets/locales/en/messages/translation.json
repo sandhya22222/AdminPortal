@@ -16,7 +16,7 @@
     "something_went_wrong": "We're currently addressing a technical issue. Please reload the page or check back shortly. Thank you for your patience.",
     "confirm_store_deletion": "Confirm store deletion",
     "store_deletion_confirmation_message": "Are you sure you want to delete the store? This action cannot be undone",
-    "add_store_description": "Please provide the store name and administrator details. These will be used for signing into the store portal.",
+    "add_store_description": "The administrator details you create will be used to sign in to the",
     "edit_store_description": "Store administrator details are uneditable. You can only rename your store.",
     "no_data_available": "No data available",
     "no_changes_were_detected": "No changes were detected",
@@ -154,5 +154,10 @@
     "currency_message": "Once it's done, you can't change it again.",
     "language_document_data": "Please upload a language support document utf-8 CSV format containing translated values, and we will use it to update the respective portals with the new language content.",
     "footer_content": "",
-    "language_code_helper_text": "Only lower case letters are allowed"
+    "language_code_helper_text": "Only lower case letters are allowed",
+    "store_type_info_partner":"A partner store is a subset of distributor store.",
+    "store_type_info_distributor":"A distributor store can supervise partner store’s performance and also has the ability to display its products in any of them if it chooses.",
+    "set_as_distributor_store_desc":"Are you sure you want to set this store as a distributor? This action cannot be undone. Once set, the distributor will have the ability to manage partner stores and display their products in them.",
+    "store_type_info":"Your account does not yet have a Distributor store."
+
 }
