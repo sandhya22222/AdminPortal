@@ -1,0 +1,17 @@
+{
+    "enter_store_name": "உங்கள் கடையின் பெயரை உள்ளிடவும்",
+    "enter_username": "உங்கள் பயனர்பெயரை உள்ளிடவும்",
+    "enter_password": "உங்கள் கடவுச்சொல்லை உள்ளிடவும்",
+    "enter_first_name": "உங்கள் முதல் பெயரை உள்ளிடவும்",
+    "enter_last_name": "உங்கள் கடைசி பெயரை உள்ளிடவும்",
+    "enter_email": "மின்னஞ்சலை பதிவுசெய்",
+    "enter_language_name": "மொழி பெயரை உள்ளிடவும்",
+    "enter_language_code": "குறியீட்டை உள்ளிடவும்",
+    "enter_language_regex": "மொழி regex ஐ உள்ளிடவும்",
+    "enter_native_name": "சொந்த பெயரை உள்ளிடவும்",
+    "enter_currency_symbol": "எ.கா. ₹, $, £",
+    "enter_iso_code": "எ.கா. INR, USD ,GBP",
+    "enter_fractional_unit": "எ.கா. paisa, cent",
+    "enter_number_to_basic": "எ.கா. 100",
+    "enter_code": "குறியீட்டை உள்ளிடவும்"
+}

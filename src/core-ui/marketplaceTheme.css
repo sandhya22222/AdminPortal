@@ -1,0 +1,109 @@
+:root {
+    --mp-brand-color: #fb8500;
+
+    --mp-brand-color-h: #fb8500;
+    --mp-input-field-label-color: #8c8c8c;
+    --mp-input-field-placeholder-color: #bfbfbf;
+    --mp-input-field-value-color: #262626;
+    --mp-input-field-hover-color: #fb8500;
+    --mp-input-field-focused-color: #fb8500;
+    --mp-input-field-outer-glow-color: #fff7e6;
+    --mp-mandatory-symbol-color: #ff4d4f;
+
+    --mp-steps-process-background-color: #fae9ff;
+
+    --mp-sidebar-menu-dark: #ffffff;
+    --mp-sidebar-menu-selected: #ffa229;
+    --mp-sidebar-menu-selected-background: #fafafa;
+    --mp-sidebar-menu-not-selected: #023047;
+    --mp-sidebar-submenu-popup-background-color: #000000;
+    --mp-sidebar-submenu-popup-text-color: #ffffff;
+
+    --mp-primary-background-color: #fb8500;
+    --mp-primary-background-color-d: #f5f5f5;
+    --mp-primary-background-color-h: #fb8500;
+    --mp-primary-border-color: #fb8500;
+    --mp-primary-border-color-d: #d9d9d9;
+    --mp-primary-border-color-h: #fb8500;
+    --mp-primary-color: #fb8500;
+    --mp-primary-color-d: #d9d9d9;
+    --mp-primary-color-h: #fb8500;
+    --mp-primary-text-color: #ffffff;
+    --mp-primary-text-color-d: #d9d9d9;
+    --mp-primary-text-color-h: #ffffff;
+
+    --mp-secondary-background-color: #ffffff;
+    --mp-secondary-background-color-d: #f5f5f5;
+    --mp-secondary-background-color-h: #ffffff;
+    --mp-secondary-border-color: #d9d9d9;
+    --mp-secondary-border-color-d: #d9d9d9;
+    --mp-secondary-border-color-h: #fb8500;
+    --mp-secondary-color: #f4f4f4;
+    --mp-secondary-color-d: #f4f4f4;
+    --mp-secondary-color-h: #f4f4f4;
+    --mp-secondary-text-color: #000000;
+    --mp-secondary-text-color-d: #d9d9d9;
+    --mp-secondary-text-color-h: #fb8500;
+
+    --mp-danger-primary-background-color: #ff4d4f;
+    --mp-danger-primary-background-color-d: #f5f5f5;
+    --mp-danger-primary-background-color-h: #ff7875;
+    --mp-danger-primary-border-color: #ff4d4f;
+    --mp-danger-primary-border-color-d: #d9d9d9;
+    --mp-danger-primary-border-color-h: #ff4d4f;
+    --mp-danger-primary-color: #ff4d4f;
+    --mp-danger-primary-color-d: #d9d9d9;
+    --mp-danger-primary-color-h: #ff7875;
+    --mp-danger-primary-text-color: #ffffff;
+    --mp-danger-primary-text-color-d: #d9d9d9;
+    --mp-danger-primary-text-color-h: #ffffff;
+    --mp-delete-primary-text-color: #ff4d4f;
+    --mp-delete-primary-text-color-d: #d9d9d9;
+    --mp-delete-primary-text-color-h: #ff7875;
+    --mp-delete-primary-border-color-h: #ff4d4f;
+
+    --mp-danger-secondary-background-color: #ffffff;
+    --mp-danger-secondary-background-color-d: #d9d9d9;
+    --mp-danger-secondary-background-color-h: #ffffff;
+    --mp-danger-secondary-border-color: #ff4d4f;
+    --mp-danger-secondary-border-color-d: #d9d9d9;
+    --mp-danger-secondary-border-color-h: #ff7875;
+    --mp-danger-secondary-color: #ff4d4f;
+    --mp-danger-secondary-color-d: #d9d9d9;
+    --mp-danger-secondary-color-h: #ff7875;
+    --mp-danger-secondary-text-color: #ff4d4f;
+    --mp-danger-secondary-text-color-d: #d9d9d9;
+    --mp-danger-secondary-text-color-h: #ff7875;
+
+    --mp-danger-color: #ff4d4f;
+    --mp-success-color: #0246bb;
+    --mp-success-color-h: #0246bb;
+    --mp-warning-color: #0246bb;
+    --mp-warning-color-h: #0246bb;
+    --mp-info-color: #0246bb;
+    --mp-info-color-h: #0246bb;
+    --mp-light-color: #f3e8ff;
+    --mp-light-color-h: #f3e8ff;
+    --mp-dark-color: #0246bb;
+    --mp-dark-color-h: #0246bb;
+    --mp-bright-color: #ffffff;
+    --mp-bright-color-h: #ffffff;
+    --mp-link-color: #1a5692;
+    --mp-link-color-h: #1a5692;
+
+    --select-option-color-h: #fff7e6;
+
+    /* colors related to footer */
+    --mp-text-gray: rgba(0, 0, 0, 0.06);
+    --mp-text-gray1: #637381;
+    --mp-text-gray2: #8899a8;
+
+    /*header color*/
+    --mp-header-bg-color: #ffffff;
+
+    /* themes preview  */
+    --mp-theme-preview-footer-background-color: #f5f5f5;
+    --mp-theme-preview-header-background-color: #ffffff;
+    --mp-theme-preview-page-content-background-color: #ffffff;
+    
+}
