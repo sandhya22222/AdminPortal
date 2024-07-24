@@ -6,7 +6,6 @@ import {
     Input,
     Layout,
     Row,
-    Col,
     Skeleton,
     Spin,
     Tooltip,
@@ -780,8 +779,6 @@ const Stores = () => {
 
     //! another get call for stores for particular store_uuid
     const findAllStoreData = (statusUUid, id) => {
-        console.log('statusUUid', statusUUid, id)
-
         MarketplaceServices.findAll(
             storeAPI,
             {
