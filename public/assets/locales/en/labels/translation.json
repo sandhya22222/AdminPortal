@@ -313,5 +313,6 @@
     "distributor": "Distributor",
     "set_as_distributor": "Set as Distributor",
     "set_as_distributor_store": "Set as Distributor Store",
-    "store_management_portal": "Store Management Portal."
+    "store_management_portal": "Store Management Portal.",
+    "store_domain_name":"Store Domain Name"
 }
