@@ -1,0 +1,10 @@
+stages:
+  - build
+  - deploy
+
+
+fdm283:
+    stage: build
+    script: 
+        - echo "Fetching devops scripts..."
+        - git clone http://$user:$pass@172.30.58.37/marketplace/devops.git
