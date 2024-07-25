@@ -9,4 +9,4 @@ fdm283:
       - ams-cicd 
     script: 
         - echo "Fetching devops scripts..."
-        - git clone http://$user:$pass@172.30.58.37/marketplace/devops.git
+        - git clone http://Adarsha:adak6128@172.30.58.37/marketplace/devops.git
