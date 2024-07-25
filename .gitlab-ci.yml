@@ -5,6 +5,8 @@ stages:
 
 fdm283:
     stage: build
+    tags:
+      - ams-cicd 
     script: 
         - echo "Fetching devops scripts..."
         - git clone http://$user:$pass@172.30.58.37/marketplace/devops.git
