@@ -22,7 +22,7 @@ fdm283_deploy:
         - cd devops
         - git checkout fdm283
         - cd Dev-Upgrades
-        - echo "PEM key path: $PEM_KEY_PATH"
+        -  echo "Using PEM key path from variable: $PEM_KEY_PATH"
         # - chmod 600 *.pem
         # - ansible-playbook replaceip.yml 
         # - ansible-playbook -i devhosts1 --extra-vars "@portals.yml" AP/upgradeap.yml
