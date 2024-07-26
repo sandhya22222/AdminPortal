@@ -11,6 +11,7 @@ const { Content } = Layout
 const usersAllAPI = process.env.REACT_APP_USERS_ALL_API
 
 const updateStoreDistributorAPI = process.env.REACT_APP_UPDATE_STORE_DISTRIBUTOR
+const domainName = process.env.REACT_APP_DOMAIN_NAME
 
 const StoreOverview = ({ realmName }) => {
     const { t } = useTranslation()
@@ -105,7 +106,10 @@ const StoreOverview = ({ realmName }) => {
                                     {t('labels:store_domain_name')}
                                 </label>
                                 <span className='mandatory-symbol-color text-sm text-center ml-1'>*</span>
-                                <Input value={realmName} disabled={true} className={``} />
+                                <div className='flex'>
+                                    <Input value={realmName} disabled={true} className={``} />
+                                    <span className='mx-3 mt-1 text-brandGray2'>{domainName}</span>
+                                </div>
                             </Col>
                             <div className='flex'>
                                 <label
