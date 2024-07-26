@@ -13,7 +13,7 @@ fdm283_build:
         - cd devops
         - ansible-playbook -i inventory create_build.yml
 
-fdm283_deploy:
+fdm284e_deploy:
     stage: deploy
     tags:
       - ams-cicd
