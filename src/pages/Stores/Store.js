@@ -67,6 +67,7 @@ const currentUserDetailsAPI = process.env.REACT_APP_USER_PROFILE_API
 const maxDataLimit = process.env.REACT_APP_MAX_DATA_LIMIT
 const emailRegexPattern = process.env.REACT_APP_REGEX_PATTERN_EMAIL
 const searchMaxLength = process.env.REACT_APP_SEARCH_MAX_LENGTH
+const domainName = process.env.REACT_APP_DOMAIN_NAME
 
 const Stores = () => {
     const { t } = useTranslation()
@@ -391,14 +392,12 @@ const Stores = () => {
                             </div>
                             <div className=''>
                                 <Row>
-                                    <Tooltip title={record.name} placement='bottom'>
-                                        <Text
-                                            className='max-w-xs text-brandGray1 mb-1'
-                                            ellipsis={{ tooltip: record.name }}
-                                            disabled={record.status === 3 ? true : false}>
-                                            {record.name}
-                                        </Text>
-                                    </Tooltip>
+                                    <Text
+                                        className='text-brandGray1 mb-1 !max-w-[150px]'
+                                        ellipsis={{ tooltip: record.name }}
+                                        disabled={record.status === 3 ? true : false}>
+                                        {record.name}
+                                    </Text>
                                 </Row>
                                 <Row>
                                     {record.isDistributor ? (
@@ -986,7 +985,6 @@ const Stores = () => {
     //     }
     // }
 
-    // testt13
     const validateStorePostField = () => {
         const emailRegex = new RegExp(emailRegexPattern)
         let count = 3
@@ -1480,37 +1478,39 @@ const Stores = () => {
                                     </label>
                                     <span className='mandatory-symbol-color text-sm ml-1'>*</span>
                                 </div>
-                                {/* testt13 */}
-                                <Input
-                                    placeholder={t('placeholders:enter_store_name')}
-                                    value={name}
-                                    minLength={storeNameMinLength}
-                                    maxLength={storeNameMaxLength}
-                                    className={`!w-[50%] ${
-                                        inValidName
-                                            ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400 '
-                                            : ''
-                                    }`}
-                                    onChange={(e) => {
-                                        const alphaWithoutSpaces = /^[a-zA-Z0-9]+$/
-                                        if (
-                                            e.target.value !== '' &&
-                                            validator.matches(e.target.value, alphaWithoutSpaces)
-                                        ) {
-                                            setName(e.target.value)
-                                            setOnChangeValues(true)
-                                        } else if (e.target.value === '') {
-                                            setName(e.target.value)
-                                            setOnChangeValues(false)
-                                        }
-                                        setInValidName(false)
-                                    }}
-                                    onBlur={() => {
-                                        const trimmed = name.trim()
-                                        const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
-                                        setName(trimmedUpdate)
-                                    }}
-                                />
+                                <div className='flex'>
+                                    <Input
+                                        placeholder={t('placeholders:enter_store_name')}
+                                        value={name}
+                                        minLength={storeNameMinLength}
+                                        maxLength={storeNameMaxLength}
+                                        className={`!w-[50%] ${
+                                            inValidName
+                                                ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400 '
+                                                : ''
+                                        }`}
+                                        onChange={(e) => {
+                                            const alphaWithoutSpaces = /^[a-zA-Z0-9]+$/
+                                            if (
+                                                e.target.value !== '' &&
+                                                validator.matches(e.target.value, alphaWithoutSpaces)
+                                            ) {
+                                                setName(e.target.value)
+                                                setOnChangeValues(true)
+                                            } else if (e.target.value === '') {
+                                                setName(e.target.value)
+                                                setOnChangeValues(false)
+                                            }
+                                            setInValidName(false)
+                                        }}
+                                        onBlur={() => {
+                                            const trimmed = name.trim()
+                                            const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
+                                            setName(trimmedUpdate)
+                                        }}
+                                    />
+                                    <span className='mx-3 mt-1 text-brandGray2'>{domainName}</span>
+                                </div>
                                 {inValidName && name === '' && (
                                     <div className='text-red-600 flex gap-1 mt-1'>
                                         <img src={warningInfoIcon} /> {t('messages:empty_store_name_message')}
