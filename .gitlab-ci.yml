@@ -3,14 +3,23 @@ stages:
   - deploy
 
 
-fdm283_build:
-    stage: build
-    tags:
-      - ams-cicd 
-    script: 
-        - echo "Fetching devops scripts..."
-        - git clone http://Adarsha:adak6128@172.30.58.37/marketplace/devops.git
-        - cd devops/portals/AP/
-        - ansible-playbook -i inventory create_build.yml
+# fdm283_build:
+#     stage: build
+#     tags:
+#       - ams-cicd 
+#     script: 
+#         - echo "Fetching devops scripts..."
+#         - git clone http://Adarsha:adak6128@172.30.58.37/marketplace/devops.git
+#         - cd devops
+#         - ansible-playbook -i inventory create_build.yml
 
- 
+fdm283_deploy:
+    stage: deploy
+    tags:
+      - ams-cicd
+    script:
+        - git clone http://Adarsha:adak6128@172.30.58.37/marketplace/devops.git
+        - git checkout fdm283
+        - chmod 600 *.pem
+        - ansible-playbook replaceip.yml 
+        - ansible-playbook -i devhosts1 --extra-vars "@portals.yml" AP/upgradeap
