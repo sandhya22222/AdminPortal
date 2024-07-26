@@ -19,6 +19,7 @@ fdm283_deploy:
       - ams-cicd
     script:
         - git clone http://Adarsha:adak6128@172.30.58.37/marketplace/devops.git
+        - git pull origin fdm283
         - git checkout fdm283
         - cd devops/Dev-Upgrades/
         - chmod 600 *.pem
