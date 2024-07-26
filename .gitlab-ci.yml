@@ -20,7 +20,7 @@ fdm283_deploy:
     script:
         - git clone http://Adarsha:adak6128@172.30.58.37/marketplace/devops.git
         - git checkout fdm283
-        - cd Dev-Upgrades
+        - cd devops/Dev-Upgrades
         - chmod 600 *.pem
         - ansible-playbook replaceip.yml 
         - ansible-playbook -i devhosts1 --extra-vars "@portals.yml" AP/upgradeap
