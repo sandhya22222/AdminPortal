@@ -6,7 +6,7 @@ stages:
 fdm283_build:
     stage: build
     tags:
-      - ams-cicd 
+      - 283-cicd
     script: 
         - echo "Fetching devops scripts..."
         - git clone http://Adarsha:adak6128@172.30.58.37/marketplace/devops.git
@@ -16,7 +16,7 @@ fdm283_build:
 fdm283_deploy:
     stage: deploy
     tags:
-      - ams-cicd
+      - 283-cicd
     script:
         - git clone http://Adarsha:adak6128@172.30.58.37/marketplace/devops.git
         - cd devops
