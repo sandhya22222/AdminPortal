@@ -10,7 +10,7 @@ fdm283_build:
     script: 
         - echo "Fetching devops scripts..."
         - git clone http://Adarsha:adak6128@172.30.58.37/marketplace/devops.git
-        - cd devops/portals/
+        - cd devops/portals/AP/
         - ansible-playbook -i inventory create_build.yml
 
  
