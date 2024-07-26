@@ -268,3 +268,7 @@ a {
 .ant-upload-wrapper.ant-upload-picture-card-wrapper {
     width: fit-content !important;
 }
+
+.custom-segmented .ant-segmented-item-label {
+    font-weight: bold;
+}

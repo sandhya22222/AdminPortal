@@ -362,7 +362,7 @@ const StoreSettingsLayout = () => {
                                 <div className='!font-semibold  text-2xl'>
                                     {storeName}{' '}
                                     <div className='!mb-3'>
-                                        {storeType === 'Distributor' ? (
+                                        {storeType === 'distributor' ? (
                                             <Tag color='blue'>
                                                 {' '}
                                                 <StarFilled /> {t('labels:distributor')}

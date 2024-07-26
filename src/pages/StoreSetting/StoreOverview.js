@@ -61,7 +61,7 @@ const StoreOverview = ({ realmName }) => {
             .then((response) => {
                 setIsStoreTypeLoading(false)
                 MarketplaceToaster.showToast(response)
-                setStoreType('Distributor')
+                setStoreType('distributor')
                 updateQueryParam('isDistributor', true)
             })
             .catch((error) => {
@@ -102,7 +102,7 @@ const StoreOverview = ({ realmName }) => {
                         <Content>
                             <Col span={8} className='mb-3'>
                                 <label className='text-brandGray2 font-normal text-sm mb-2'>
-                                    {t('labels:store_name')}
+                                    {t('labels:store_domain_name')}
                                 </label>
                                 <span className='mandatory-symbol-color text-sm text-center ml-1'>*</span>
                                 <Input value={realmName} disabled={true} className={``} />
@@ -122,12 +122,12 @@ const StoreOverview = ({ realmName }) => {
                                         label: t('labels:partner'),
                                     },
                                     {
-                                        value: 'Distributor',
-                                        label: t('labels:Distributor'),
+                                        value: 'distributor',
+                                        label: t('labels:distributor'),
                                     },
                                 ]}
                                 block={true}
-                                className='w-[30%]'
+                                className='w-[30%] custom-segmented'
                                 value={storeType}
                                 onChange={(value) => {
                                     handleStoreTypeChange(value)
