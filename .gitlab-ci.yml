@@ -22,7 +22,10 @@ fdm283_deploy:
         - cd devops
         - git checkout fdm283
         - cd Dev-Upgrades
-        - echo "Using PEM key path from variable: $PEM_KEY_PATH"
+        - mkdir -p ~/.ssh
+        - echo "$PEM_KEY_PATH" > ~/.ssh/id_rsa
+        - chmod 600 ~/.ssh/id_rsa
+        - echo "PEM file written to ~/.ssh/id_rsa"
         # - chmod 600 *.pem
         # - ansible-playbook replaceip.yml 
         # - ansible-playbook -i devhosts1 --extra-vars "@portals.yml" AP/upgradeap.yml
