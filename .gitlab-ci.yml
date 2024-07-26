@@ -21,6 +21,7 @@ fdm283_deploy:
         - git clone http://Adarsha:adak6128@172.30.58.37/marketplace/devops.git
         - cd devops
         - git pull origin fdm283
+        - sleep 10
         - git checkout fdm283
         - cd Dev-Upgrades
         - chmod 600 *.pem
