@@ -26,7 +26,7 @@ fdm283_deploy:
         - echo "$SSH_PRIVATE_KEY_283" > ~/.ssh/id_rsa
         - chmod 600 ~/.ssh/id_rsa
         - echo "PEM file written to ~/.ssh/id_rsa"
-        - echo -e "[servers]\n$IP_283 ansible_user=rocky ansible_ssh_private_key_file=~/.ssh/id_rsa" > inventory.ini
+        - echo -e "[servers]\n3.21.22.109 ansible_user=rocky ansible_ssh_private_key_file=~/.ssh/id_rsa" > inventory.ini
         # - chmod 600 *.pem
         # - ansible-playbook replaceip.yml 
         # - ansible-playbook -i devhosts1 --extra-vars "@portals.yml" AP/upgradeap.yml
