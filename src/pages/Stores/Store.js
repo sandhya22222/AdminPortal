@@ -152,6 +152,7 @@ const Stores = () => {
     }
 
     const handleRadioChange = (e) => {
+        setSearchValue('')
         setValue(e.target.value)
         setSearchParams({
             m_t: m_tab_id,
