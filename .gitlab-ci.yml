@@ -23,12 +23,16 @@ fdm283_deploy:
         - git checkout fdm283
         - cd Dev-Upgrades
         - mkdir -p ~/.ssh
-        - echo "$PEM_KEY_PATH" > ~/.ssh/id_rsa
-        - chmod 600 ~/.ssh/id_rsa
-        - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )'
-        - eval $(ssh-agent -s)
+        # - echo "$PEM_KEY_PATH" > ~/.ssh/id_rsa
+        # - chmod 600 ~/.ssh/id_rsa
+        # - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )'
+        # - eval $(ssh-agent -s)
+        # - ssh-add $PEM_KEY_PATH
+        - chmod 600 $PEM_KEY_PATH
+        - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )' 
+        - eval `ssh-agent -s`
         - ssh-add $PEM_KEY_PATH
-        - echo -e "[servers]\n$IP_283server ansible_user=rocky ansible_ssh_private_key_file=~/.ssh/id_rsa" > inventory.ini
+        - echo -e "[servers]\n$IP_283server ansible_user=rocky ansible_ssh_private_key_file=$PEM_KEY_PATH" > inventory.ini
         - ansible-playbook -i inventory AP/upgradeap.yml
         # - chmod 600 *.pem
         # - ansible-playbook replaceip.yml 
