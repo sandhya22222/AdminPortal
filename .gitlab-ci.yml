@@ -18,7 +18,7 @@ fdm283_deploy:
     tags:
       - 283-cicd
     script:
-        - git clone http://$username:$adak6128@172.30.58.37/marketplace/devops.git
+        - git clone http://$username:$password@172.30.58.37/marketplace/devops.git
         - cd devops
         - git checkout fdm283
         - cd Dev-Upgrades
