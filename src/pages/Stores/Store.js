@@ -1351,11 +1351,40 @@ const Stores = () => {
                         <>
                             <Content className=''>
                                 {parseInt(currentTab) === 1 ? (
-                                    <Content className=''>
+                                    <Content className='bg-white p-3 shadow-brandShadow rounded-md '>
+                                        <div className='flex w-full justify-between items-center py-3 px-3'>
+                                            <div className='text-base font-semibold text-regal-blue'>
+                                                {t('labels:my_stores')}
+                                            </div>
+                                            <div className='flex items-center justify-end gap-2 flex-row flex-grow'>
+                                                <Radio.Group
+                                                    className={`min-w-min`}
+                                                    optionType='button'
+                                                    onChange={handleRadioChange}
+                                                    value={value}>
+                                                    <Radio value={0}>{t('labels:all')}</Radio>
+                                                    <Radio value={1}>{t('labels:active')}</Radio>
+                                                    <Radio value={2}>{t('labels:inactive')}</Radio>
+                                                </Radio.Group>
+                                                <Search
+                                                    placeholder={t(
+                                                        'placeholders:please_enter_search_text_here'
+                                                    )}
+                                                    onSearch={handleSearchChange}
+                                                    onChange={handleInputChange}
+                                                    value={searchValue}
+                                                    suffix={null}
+                                                    maxLength={searchMaxLength}
+                                                    enterButton={customButton}
+                                                    allowClear
+                                                    className='w-[250px]'
+                                                />
+                                            </div>
+                                        </div>
                                         {selectedTabTableContent?.length === 0 &&
                                         isSearchTriggered &&
                                         searchValue?.length > 0 ? (
-                                            <Content className='text-center font-semibold ml-2 mt-3 bg-white p-3'>
+                                            <Content className='text-center font-semibold ml-2 mt-3 '>
                                                 <Text>{t('placeholders:not_able_to_find_searched_details')}</Text>
                                             </Content>
                                         ) : (
