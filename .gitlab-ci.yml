@@ -24,7 +24,6 @@ fdm283_deploy:
         - cd Dev-Upgrades
         - cp -r portals.yml ../
         - git checkout main
-        - pwd
         - chmod 600 $SSH_PRIVATE_KEY
         - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )' 
         - eval `ssh-agent -s`
