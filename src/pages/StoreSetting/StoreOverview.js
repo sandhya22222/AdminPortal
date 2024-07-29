@@ -20,7 +20,6 @@ const StoreOverview = ({ realmName }) => {
     const storeUuid = new URLSearchParams(search).get('id')
     const storeTypeFromURL = new URLSearchParams(search).get('storeType')
     const isDistributor = new URLSearchParams(search).get('isDistributor')
-    // const isDistributor = false
 
     const [searchParams, setSearchParams] = useSearchParams()
     const [userAllAPIData, setUserAllAPIData] = useState([])
@@ -136,7 +135,7 @@ const StoreOverview = ({ realmName }) => {
                                 onChange={(value) => {
                                     handleStoreTypeChange(value)
                                 }}
-                                disabled={isDistributor}
+                                disabled={isDistributor === "true"}
                             />
                             <div className='w-[100%] !flex-col !gap-2 !justify-start'>
                                 <div
@@ -218,7 +217,7 @@ const StoreOverview = ({ realmName }) => {
                                 <Input value={userAllAPIData[0]?.username} disabled={true} className={``} />
                             </Col>
                         </Content>
-                        {!isDistributor && (
+                        { isDistributor === "false" && (
                             <div className='flex space-x-3 !justify-start !pt-3'>
                                 <Button
                                     className={'app-btn-primary'}
