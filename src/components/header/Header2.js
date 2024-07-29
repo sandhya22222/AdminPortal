@@ -184,7 +184,7 @@ const Header2 = ({ collapsed, setCollapsed }) => {
                             />
                         </div>
                         <div className='flex items-center mx-2 '>
-                            <Link href='/dashboard'>
+                            <Link to='/dashboard'>
                                 <Image
                                     alt='marketPlaceLogo'
                                     preview={false}
