@@ -11,7 +11,7 @@ fdm283_build:
         - echo "Fetching devops scripts..."
         - git clone http://$username:$password@172.30.58.37/marketplace/devops.git
         - cd devops
-        - ansible-playbook -i inventory create_build.yml
+        - ansible-playbook -i inventory portls/AP/create_build.yml
 
 fdm283_deploy:
     stage: deploy
