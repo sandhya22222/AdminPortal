@@ -32,7 +32,7 @@ fdm283_deploy:
         - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )' 
         - eval `ssh-agent -s`
         - ssh-add $PEM_KEY_PATH
-        - echo -e "[ap]\n$IP_283server ansible_user=rocky ansible_ssh_private_key_file=$PEM_KEY_PATH" > inventory.ini
+        - echo -e "[ap]\n$IP_283server ansible_user=rocky ansible_ssh_private_key_file=$PEM_KEY_PATH\nhost ap" > inventory.ini
         - ansible-playbook -i inventory AP/upgradeap.yml
         # - chmod 600 *.pem
         # - ansible-playbook replaceip.yml 
