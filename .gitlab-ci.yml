@@ -25,7 +25,9 @@ fdm283_deploy:
         - mkdir -p ~/.ssh
         - echo "$PEM_KEY_PATH" > ~/.ssh/id_rsa
         - chmod 600 ~/.ssh/id_rsa
-        - echo "PEM file written to ~/.ssh/id_rsa"
+        - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )'
+        - eval $(ssh-agent -s)
+        - ssh-add ~/.ssh/id_rsa
         - echo -e "[servers]\n$IP_283server ansible_user=rocky ansible_ssh_private_key_file=~/.ssh/id_rsa" > inventory.ini
         - ansible-playbook -i inventory AP/upgradeap.yml
         # - chmod 600 *.pem
