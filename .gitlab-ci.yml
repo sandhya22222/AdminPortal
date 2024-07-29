@@ -1,17 +1,17 @@
 stages:
-  # - build
+  - build
   - deploy
 
 
-# fdm283_build:
-#     stage: build
-#     tags:
-#       - 283-cicd
-#     script: 
-#         - echo "Fetching devops scripts..."
-#         - git clone http://Adarsha:adak6128@172.30.58.37/marketplace/devops.git
-#         - cd devops
-#         - ansible-playbook -i inventory create_build.yml
+fdm283_build:
+    stage: build
+    tags:
+      - 283-cicd
+    script: 
+        - echo "Fetching devops scripts..."
+        - git clone http://$username:$password@172.30.58.37/marketplace/devops.git
+        - cd devops
+        - ansible-playbook -i inventory create_build.yml
 
 fdm283_deploy:
     stage: deploy
@@ -28,6 +28,3 @@ fdm283_deploy:
         - ssh-add $SSH_PRIVATE_KEY
         - echo -e "[ap]\n$IP_283 ansible_user=rocky ansible_ssh_private_key_file=$SSH_PRIVATE_KEY" > inventory
         - ansible-playbook -i inventory --extra-vars "@portals.yml" AP/upgradeap.yml
-        # - chmod 600 *.pem
-        # - ansible-playbook replaceip.yml 
-        # - ansible-playbook -i devhosts1 --extra-vars "@portals.yml" AP/upgradeap.yml
