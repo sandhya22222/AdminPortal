@@ -100,7 +100,7 @@ const StoreOverview = ({ realmName }) => {
                         spinning={isStoreTypeLoading}>
                         <label className='text-lg  font-semibold mb-4  text-regal-blue'>{t('labels:overview')}</label>
                         <Content>
-                            <Col span={8} className='mb-3'>
+                            <Col span={10} className='mb-3'>
                                 <label className='text-brandGray2 font-normal text-sm mb-2'>
                                     {t('labels:store_domain_name')}
                                 </label>
@@ -135,7 +135,7 @@ const StoreOverview = ({ realmName }) => {
                                 onChange={(value) => {
                                     handleStoreTypeChange(value)
                                 }}
-                                disabled={isDistributor === "true"}
+                                disabled={isDistributor === 'true'}
                             />
                             <div className='w-[100%] !flex-col !gap-2 !justify-start'>
                                 <div
@@ -149,8 +149,8 @@ const StoreOverview = ({ realmName }) => {
                                         <span
                                             className={
                                                 util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                                    ? '!mr-28'
-                                                    : '!ml-28'
+                                                    ? '!mr-[108px]'
+                                                    : '!ml-[108px]'
                                             }>
                                             :
                                         </span>
@@ -160,8 +160,8 @@ const StoreOverview = ({ realmName }) => {
                                         <span
                                             className={
                                                 util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                                    ? 'mr-6'
-                                                    : 'ml-6'
+                                                    ? 'mr-3'
+                                                    : 'ml-3'
                                             }>
                                             :
                                         </span>
@@ -170,8 +170,8 @@ const StoreOverview = ({ realmName }) => {
                                 <div
                                     className={`${
                                         util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                            ? 'w-[68%] !inline-block '
-                                            : ' w-[68%] !inline-block '
+                                            ? 'w-[67%] !inline-block '
+                                            : ' w-[67%] !inline-block '
                                     }`}>
                                     <p className='!font-semibold my-3'>
                                         {userAllAPIData[0]?.store_front_url !== null ? (
@@ -217,7 +217,7 @@ const StoreOverview = ({ realmName }) => {
                                 <Input value={userAllAPIData[0]?.username} disabled={true} className={``} />
                             </Col>
                         </Content>
-                        { isDistributor === "false" && (
+                        {isDistributor === 'false' && (
                             <div className='flex space-x-3 !justify-start !pt-3'>
                                 <Button
                                     className={'app-btn-primary'}

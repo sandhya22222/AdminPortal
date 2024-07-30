@@ -382,9 +382,8 @@ const StoreSettingsLayout = () => {
                                 </div>
                             </div>
                         </Content>
-                        <Content className=' flex !gap-2 !mt-3'>
+                        <div className=' !w-[180px] flex  !gap-2 !mt-3 !mx-2'>
                             <Text className='text-brandGray2'>{t('labels:status')} : </Text>
-
                             <Status
                                 storeId={id}
                                 storeStatus={changeSwitchStatus === 1 ? true : false}
@@ -397,7 +396,7 @@ const StoreSettingsLayout = () => {
                                 setPreviousStatus={setPreviousStatus}
                                 previousStatus={previousStatus}
                             />
-                        </Content>
+                        </div>
                     </Content>
                 }
                 backNavigationPath={`/dashboard/store?m_t=1`}

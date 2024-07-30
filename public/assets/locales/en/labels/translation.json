@@ -280,7 +280,7 @@
     "bonus": "Bonus",
     "themes": "Themes",
     "overview": "Overview",
-    "store_front_url": "Store Front URL",
+    "store_front_url": "Storefront URL",
     "store_management_portal_url": "Store Management Portal URL",
     "primary_user": "Primary User",
     "making": "Making",
@@ -314,5 +314,5 @@
     "set_as_distributor": "Set as Distributor",
     "set_as_distributor_store": "Set as Distributor Store",
     "store_management_portal": "Store Management Portal.",
-    "store_domain_name":"Store Domain Name"
+    "store_domain_name": "Store Domain Name"
 }
