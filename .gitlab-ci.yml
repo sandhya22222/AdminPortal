@@ -8,6 +8,7 @@ fdm283_build:
     tags:
       - 283-cicd
     script: 
+        - pwd
         - echo "Fetching devops scripts..."
         - git clone http://$username:$password@172.30.58.37/marketplace/devops.git
         - cd devops
