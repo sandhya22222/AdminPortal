@@ -8,11 +8,11 @@ fdm283_build:
     tags:
       - 283-cicd
     script: 
-        - pwd
+        - echo "Running Ansible playbook with branch name: $CI_COMMIT_BRANCH"
         - echo "Fetching devops scripts..."
         - git clone http://$username:$password@172.30.58.37/marketplace/devops.git
         - cd devops
-        - ansible-playbook -i inventory portals/AP/create_build.yml
+        - ansible-playbook -i inventory portals/AP/create_build.yml --extra-vars "branchname=$CI_COMMIT_BRANCH"
     only:
         - fdm283
 fdm283_deploy:
