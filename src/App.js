@@ -41,6 +41,7 @@ const App = () => {
     const auth = useAuth()
     const [permissionData, setPermissionData] = useState([])
     const [collapsed, setCollapsed] = useState(false)
+    const [isLanguageSelected, setIsLanguageSelected] = useState(false)
 
     useFavicon()
 
@@ -80,7 +81,7 @@ const App = () => {
             return <></>
     }
 
-    if (auth.isLoading) {
+    if (auth.isLoading || isLanguageSelected) {
         util.removePermission()
         return (
             <Layout className='h-[100vh]'>
@@ -101,7 +102,7 @@ const App = () => {
                 rtl={util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? true : false}
                 position={util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'top-left' : 'top-right'}
             />
-            <Header2 collapsed={collapsed} setCollapsed={setCollapsed} />
+            <Header2 collapsed={collapsed} setCollapsed={setCollapsed} setIsLanguageSelected={setIsLanguageSelected}/>
             <Container fluid className='p-0 bg-[#F4F4F4] text-[#393939]'>
                 <Routes>
                     <Route path='/' element={<Home />} />

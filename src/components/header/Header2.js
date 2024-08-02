@@ -27,7 +27,7 @@ const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API
 const storeUsersAPI = process.env.REACT_APP_USERS_API
 const portalInfo = JSON.parse(process.env.REACT_APP_PORTAL_INFO)
 
-const Header2 = ({ collapsed, setCollapsed }) => {
+const Header2 = ({ collapsed, setCollapsed,setIsLanguageSelected }) => {
     const { t } = useTranslation()
     const dispatch = useDispatch()
     const { Text } = Typography
@@ -78,7 +78,8 @@ const Header2 = ({ collapsed, setCollapsed }) => {
         setStoreSelectedLngCode(value)
         dispatch(fnSelectedLanguage(storeLanguages.find((item) => item.language_code === value)))
         document.body.style.direction = util.getSelectedLanguageDirection()?.toLowerCase()
-        navigate(0)
+        setIsLanguageSelected(true)
+        setTimeout(()=>{navigate(0)},500)
     }
 
     const findAllLanguages = () => {
