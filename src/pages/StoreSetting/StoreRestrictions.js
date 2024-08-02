@@ -841,7 +841,10 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
         const maxLimit = maxDataLimit
         let count = 10
         let copyofStoreDataLimitValue = { ...storeDataLimitValues }
-        if (copyofStoreDataLimitValue.vendor_limit != null && copyofStoreDataLimitValue.vendor_limit > maxLimit) {
+        if (
+            copyofStoreDataLimitValue.vendor_limit != null &&
+            parseInt(copyofStoreDataLimitValue.vendor_limit) > maxLimit
+        ) {
             count--
             setInvalidVendorLimit(true)
             MarketplaceToaster.showToast(util.getToastObject(`${t('messages:vendor_limit_error_message')}`, 'error'))
