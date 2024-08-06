@@ -307,7 +307,7 @@ const Newdashboard = () => {
                                     />
                                 </Text>
 
-                                <Content className='flex flex-col items-baseline h-4 min-w-40 max-w-72 space-x-2 '>
+                                <Content className='flex flex-col items-baseline min-h-4 min-w-40 max-w-72 space-x-2 '>
                                     <div className='flex justify-between items-baseline  gap-1 '>
                                         {langDirection == 'ltr' ? (
                                             <div className={'!max-w-[3.4em]'}>
@@ -334,7 +334,9 @@ const Newdashboard = () => {
                                         ) : null}
                                         {langDirection == 'rtl' ? (
                                             <div className=''>
-                                                <Title style={{ color: '#023047' }} className='leading-[30px] text-[24px]'>
+                                                <Title
+                                                    style={{ color: '#023047' }}
+                                                    className='leading-[30px] text-[24px]'>
                                                     {activeStoreCount ? activeStoreCount : 0}{' '}
                                                 </Title>
                                             </div>
