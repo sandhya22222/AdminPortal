@@ -1284,9 +1284,9 @@ const Stores = () => {
                                                     <Radio value={2}>{t('labels:inactive')}</Radio>
                                                 </Radio.Group>
                                                 <Search
-                                                                    placeholder={t(
-                                                                        'placeholders:please_enter_search_text_here'
-                                                                    )}
+                                                    placeholder={t(
+                                                        'placeholders:please_enter_search_text_here'
+                                                    )}
                                                     onSearch={handleSearchChange}
                                                     onChange={handleInputChange}
                                                     value={searchValue}
