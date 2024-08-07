@@ -24,10 +24,10 @@ deploy:
         - cd devops
         - git checkout fdm283
         - cd Dev-Upgrades
-        - chmod 600 $SSH_PRIVATE_KEY
+        - chmod 600 $SSH_PRIVATE_KEY_FDM283
         - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )'
         - eval `ssh-agent -s`
-        - ssh-add $SSH_PRIVATE_KEY
+        - ssh-add $SSH_PRIVATE_KEY_FDM283
         - echo -e "[ap]\n$IP_FDM283 ansible_user=rocky ansible_ssh_private_key_file=$SSH_PRIVATE_KEY_FDM283" > inventory
         - ansible-playbook -i inventory --extra-vars "@portals.yml" AP/upgradeap.yml
     only:
