@@ -717,6 +717,7 @@ const Stores = () => {
 
     //!get call for stores
     const findByPageStoreApi = (pageNumber, pageLimit, storeStatus, searchKey) => {
+        console.log('pageNumber--->',pageNumber,'storeStatus--->',storeStatus)
         setIsLoading(true)
         let params = {}
         params['status'] = storeStatus ? storeStatus : null
@@ -1172,7 +1173,9 @@ const Stores = () => {
             )
         } else {
             if (isSearchTriggered) {
-                findByPageStoreApi()
+                findByPageStoreApi(undefined,undefined,parseInt(searchParams.get('tab')) && parseInt(searchParams.get('tab')) <= 2
+                ? parseInt(searchParams.get('tab'))
+                : '',undefined)
                 setIsSearchTriggered(false)
             }
         }
@@ -1183,7 +1186,9 @@ const Stores = () => {
         setSearchValue(trimmedUpdate)
         if (event.target.value == '') {
             if (isSearchTriggered) {
-                findByPageStoreApi()
+                findByPageStoreApi(undefined,undefined,parseInt(searchParams.get('tab')) && parseInt(searchParams.get('tab')) <= 2
+                ? parseInt(searchParams.get('tab'))
+                : '',undefined)
                 setIsSearchTriggered(false)
             }
         }
