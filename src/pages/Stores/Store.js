@@ -460,6 +460,7 @@ const Stores = () => {
                         statusInprogressData={statusInprogressData}
                         setPreviousStatus={setPreviousStatus}
                         previousStatus={previousStatus}
+                        isDistributor={record.isDistributor}
                     />
                 )
             },
@@ -514,7 +515,7 @@ const Stores = () => {
                                             searchParams.get('page') ? searchParams.get('page') : 1
                                         }&limit=${
                                             searchParams.get('limit') ? searchParams.get('limit') : pageLimit
-                                        }&storeId=${record.storeId}&rmn=${record.realmName}&storeType=${record.isDistributor ? 'distributor' : 'partner'}&isDistributor=${isDistributor}`
+                                        }&storeId=${record.storeId}&rmn=${record.realmName}&storeType=${record.isDistributor ? 'distributor' : 'partner'}&isDistributor=${record.isDistributor}`
                                     )
                                 }}>
                                 <svg

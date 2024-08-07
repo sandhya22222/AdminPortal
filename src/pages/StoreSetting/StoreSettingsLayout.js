@@ -347,7 +347,7 @@ const StoreSettingsLayout = () => {
         }
     }, [searchParams, hideActionButton, permissionValue])
 
-    console.log('changeSwitchStatus----->', changeSwitchStatus)
+   console.log('isDistributor---->', typeof isDistributor)
 
     return (
         <Content>
@@ -395,6 +395,7 @@ const StoreSettingsLayout = () => {
                                 setDuplicateStoreStatus={setDuplicateStoreStatus}
                                 setPreviousStatus={setPreviousStatus}
                                 previousStatus={previousStatus}
+                                isDistributor={JSON.parse(isDistributor)}
                             />
                         </div>
                     </Content>
