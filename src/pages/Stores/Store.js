@@ -1041,9 +1041,8 @@ const Stores = () => {
                 MarketplaceToaster.showToast(error.response)
                 if (Number(error.response.data.status_code) === 409) {
                     setInValidName(true)
-                    // setName('')
-                    setOnChangeValues(false)
                 }
+
                 console.log('Error response from the store post call', error.response)
             })
     }
@@ -1285,9 +1284,7 @@ const Stores = () => {
                                                     <Radio value={2}>{t('labels:inactive')}</Radio>
                                                 </Radio.Group>
                                                 <Search
-                                                    placeholder={t(
-                                                        'placeholders:please_enter_search_text_here'
-                                                    )}
+                                                    placeholder={t('placeholders:please_enter_search_text_here')}
                                                     onSearch={handleSearchChange}
                                                     onChange={handleInputChange}
                                                     value={searchValue}
