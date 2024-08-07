@@ -28,7 +28,7 @@ deploy:
         - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )'
         - eval `ssh-agent -s`
         - ssh-add $SSH_PRIVATE_KEY
-        - echo -e "[ap]\n$IP_283 ansible_user=rocky ansible_ssh_private_key_file=$SSH_PRIVATE_KEY" > inventory
+        - echo -e "[ap]\n$IP_FDM283 ansible_user=rocky ansible_ssh_private_key_file=$SSH_PRIVATE_KEY_FDM283" > inventory
         - ansible-playbook -i inventory --extra-vars "@portals.yml" AP/upgradeap.yml
     only:
         - version2.8.5
