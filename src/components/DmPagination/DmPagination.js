@@ -19,6 +19,15 @@ export default function DmPagination({
     const handlePageChange = (page, pageSize) => {
         handlePageNumberChange(page, pageSize)
     }
+
+    // Customize the Keys for Pagination
+    const paginationLocaleValues = {
+        items_per_page: t('labels:page'),
+        prev_page: t('labels:prev_page'),
+        next_page: t('labels:next_page'),
+        jump_to: t('labels:go_to'),
+        page: t('labels:page_capital'),
+    }
     const selectedLanguageFromReduxState = useSelector((state) => state.reducerSelectedLanguage.selectedLanguage)
     useEffect(() => {
         if (String(selectedLanguageFromReduxState?.writing_script_direction).toUpperCase() === 'RTL') {
@@ -42,12 +51,7 @@ export default function DmPagination({
                         ? (total, range) => `${range[0]}-${range[1]} ${t('labels:of')} ${total} ${t('labels:items')}`
                         : false
                 }
-                locale={{
-                    //? Here we can customize the Keys for Pagination
-                    prev_page: t('labels:prev_page'),
-                    next_page: t('labels:next_page'),
-                    items_per_page: t('labels:page'),
-                }}
+                locale={paginationLocaleValues}
                 showQuickJumper={showQuickJumper}
             />
         </Content>

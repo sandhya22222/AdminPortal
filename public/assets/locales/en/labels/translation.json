@@ -307,5 +307,7 @@
     "primary_button": "Primary Button",
     "secondary_button": "Secondary Button",
     "tertiary_button": "Tertiary Button",
-    "delete_image": "Delete Image"
+    "delete_image": "Delete Image",
+    "go_to": "Go to",
+    "page_capital": "Page"
 }
