@@ -32,6 +32,7 @@ deploy:
         - ansible-playbook -i inventory --extra-vars "@portals.yml" AP/upgradeap.yml
     only:
         - version2.8.5
+    needs: [build]    
 
 notify_build_success:
   stage: notify
