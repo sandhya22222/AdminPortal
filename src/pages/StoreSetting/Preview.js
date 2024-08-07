@@ -32,8 +32,7 @@ const Preview = ({
                                 className=''
                                 src={absoluteStoreImageInfo && absoluteStoreImageInfo.value}
                                 alt='absoluteStoreImageInfo && absoluteStoreImageInfo.value'
-                                height={60}
-                                width={100}
+                                height={60} width={100}
                             />
                         ) : (
                             <img className=' ' src={marketPlaceLogo} alt='marketPlaceLogo' height={60} width={100} />
@@ -42,12 +41,16 @@ const Preview = ({
                         <img className='' src={marketPlaceLogo} alt='marketPlaceLogo' height={60} width={100} />
                     )}
                 </div>
-                <div className='!w-[62%]  !mt-4 !text-[#6d7b88]'>{t('labels:header_content_of_the_page')}</div>
+                <div className='!w-[62%]  !mt-4 !text-[#6d7b88]'>
+                    {t('labels:header_content_of_the_page')}
+                </div>
             </Content>
             <Divider style={{ margin: '8px 0' }} />
             <Content
                 className={`min-h-[320px] text-center bg-[var(--mp-theme-preview-page-content-background-color)] `}>
-                <p className={`text-bold !text-[#6d7b88] !mt-8 !mr-6`}>{t('labels:main_content_of_the_page')}</p>
+                <p className={`text-bold !text-[#6d7b88] !mt-8 !mr-6`}>
+                    {t('labels:main_content_of_the_page')}
+                </p>
                 <Content className='text-center p-24 '>
                     <Button
                         style={{
@@ -55,7 +58,7 @@ const Preview = ({
                             color: buttonPrimaryForegroundColor,
                             border: buttonPrimaryBackgroundColor,
                         }}>
-                        {t('labels:primary_button')}
+                        {t('labels:button1')}
                     </Button>
                     <Button
                         className={util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-8' : 'ml-8'}
@@ -64,7 +67,7 @@ const Preview = ({
                             color: buttonSecondaryForegroundColor,
                             border: buttonSecondaryBackgroundColor,
                         }}>
-                        {t('labels:secondary_button')}
+                        {t('labels:button2')}
                     </Button>
                     <Button
                         type='link'
@@ -74,7 +77,7 @@ const Preview = ({
                             color: buttonTeritaryForegroundColor,
                             // border: buttonTertiaryBackgroundColor,
                         }}>
-                        {t('labels:tertiary_button')}
+                        {t('labels:button3')}
                     </Button>
                 </Content>
             </Content>

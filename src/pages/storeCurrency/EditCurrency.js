@@ -428,11 +428,7 @@ const EditCurrency = () => {
                 isVisible={warningCurrencyDefaultModal}
                 okButtonText={t('labels:proceed')}
                 cancelButtonText={t('labels:cancel')}
-                title={
-                    <div className='text-regal-blue font-bold text-[18px] leading-[26px]'>
-                        {t('labels:default_currency')}
-                    </div>
-                }
+                title={t('labels:default_currency')}
                 okCallback={() => makeAsDefaultCurrency()}
                 cancelCallback={() => {
                     closeCurrencyDefaultWaringModal()
@@ -441,7 +437,7 @@ const EditCurrency = () => {
                 isSpin={defaultLoader}
                 hideCloseButton={false}>
                 {
-                    <div className='text-brandGray1'>
+                    <div>
                         <p>{t('messages:default_currency_warning_msg')}</p>
                     </div>
                 }

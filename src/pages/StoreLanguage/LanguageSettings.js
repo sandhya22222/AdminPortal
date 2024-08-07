@@ -65,6 +65,20 @@ function LanguageSettings() {
                                     </Title>
                                 </Tooltip>
                             </div>
+                            <div
+                                className={
+                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                        ? '!w-[73%] mt-[7px]'
+                                        : '!w-[70%] mt-[7px]'
+                                }>
+                                {languageId && languageCode && languageStatus !== null ? (
+                                    <LanguageHeaderAction
+                                        languageId={languageId}
+                                        languageCode={languageCode}
+                                        languageStatus={languageStatus}
+                                        languageDefault={languageDefault}></LanguageHeaderAction>
+                                ) : null}
+                            </div>
                         </Content>
                         // {/**
                         //  * Here below we can render the right side part of the header which renders the status and to delete the language
@@ -74,15 +88,15 @@ function LanguageSettings() {
                         //  */}
                         //  </Content>
                     }
-                    titleContent={
-                        languageId && languageCode && languageStatus !== null ? (
-                            <LanguageHeaderAction
-                                languageId={languageId}
-                                languageCode={languageCode}
-                                languageStatus={languageStatus}
-                                languageDefault={languageDefault}></LanguageHeaderAction>
-                        ) : null
-                    }
+                    // titleContent={
+                    // languageId && languageCode && languageStatus !== null ? (
+                    //     <LanguageHeaderAction
+                    //         languageId={languageId}
+                    //         languageCode={languageCode}
+                    //         languageStatus={languageStatus}
+                    //         languageDefault={languageDefault}></LanguageHeaderAction>
+                    // ) : null
+                    // }
                     backNavigationPath={`/dashboard/language`}
                     showArrowIcon={true}
                     showButtons={false}

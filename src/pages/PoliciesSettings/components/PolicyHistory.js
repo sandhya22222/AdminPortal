@@ -76,8 +76,6 @@ function PolicyHistory() {
         setSelectedPolicyData(selectedPolicyTab)
         setPolicyDescription(selectedPolicyTab.versionDetails[0]?.consent_display_description)
         setPolicyUpdatedOn(selectedPolicyTab.versionDetails[0]?.updated_on)
-        let processedData = processPolicyHistoryData()
-        setDropDownLabel(processedData[0]?.versionDataForDropdown[0]?.label)
     }
 
     const handleMenuClick = (e) => {

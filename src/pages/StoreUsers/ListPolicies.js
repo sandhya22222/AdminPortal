@@ -82,7 +82,7 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
         }
     }, [subTabData, storeAdminConsent])
     return (
-        <Content className=' w-full h-full !p-4 '>
+        <Content className=' w-full h-full p-4 '>
             {storeAdminStatus === 'pending' && (
                 <Skeleton
                     active
@@ -96,12 +96,12 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
                     <div
                         className={`${
                             util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-4' : ''
-                        } !text-xl !font-medium  p-3 text-regal-blue`}>
+                        } !text-xl !font-medium  p-3`}>
                         {t('labels:policies')}
                     </div>
                     <Divider className='!my-0' />
                     {policiesTab?.length > 0 && (
-                        <Row className='p-3'>
+                        <Row className=''>
                             <Col className='' span={19}>
                                 <div className=' '>
                                     {storeAdminConsent && storeAdminConsent.length > 0
@@ -109,10 +109,10 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
                                               console.log('data', data)
                                               return (
                                                   <Content id={String(data && data?.id)} className={''}>
-                                                      <div className={` !text-lg !font-semibold mb-3 text-brandGray1`}>
+                                                      <div className={` !text-lg !font-semibold mb-3 `}>
                                                           {data?.version_details?.consent_display_name}:
                                                       </div>
-                                                      <div className={` !text-sm !font-semibold mb-2 text-brandGray1`}>
+                                                      <div className={` !text-sm !font-semibold mb-2`}>
                                                           {t('labels:last_updated')}:{' '}
                                                           {getGenerateDateAndTime(data?.updated_on, 'D MMMM YYYY')}
                                                       </div>
@@ -120,7 +120,7 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
                                                           value={data?.version_details?.consent_display_description}
                                                           modules={{ toolbar: false }}
                                                           readOnly
-                                                          className='mb-3 mr-2 text-base editor quill !text-brandGray2'
+                                                          className='mb-3 mr-2 text-base editor quill'
                                                       />
                                                   </Content>
                                               )

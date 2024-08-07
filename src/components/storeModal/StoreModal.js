@@ -28,7 +28,7 @@ const StoreModal = ({
 
     return (
         <Modal
-            title={<div className='text-regal-blue font-bold text-[18px] leading-[26px]'>{title}</div>}
+            title={title}
             open={isVisible}
             onOk={handleOk}
             closable={hideCloseButton}
@@ -41,26 +41,24 @@ const StoreModal = ({
                 okButtonText == null
                     ? null
                     : [
-                          cancelButtonText == null ? null : (
-                              <Button
-                                  className={` app-btn-secondary ${
-                                      isCancelButtonDisabled ? ' !opacity-50 !cursor-not-allowed' : ' '
-                                  }`}
-                                  key='back'
-                                  onClick={handleCancel}
-                                  disabled={isCancelButtonDisabled ? isCancelButtonDisabled : false}>
-                                  {cancelButtonText}
-                              </Button>
-                          ),
-                          okButtonText == null ? null : (
-                              <Button
-                                  className={` app-btn-primary ${isOkButtonDisabled ? ' !opacity-50 !cursor-not-allowed' : ' '}`}
-                                  disabled={isOkButtonDisabled ? isOkButtonDisabled : false}
-                                  key='submit'
-                                  onClick={handleOk}>
-                                  {okButtonText}
-                              </Button>
-                          ),
+                          <Button
+                              className={` app-btn-secondary ${
+                                  isCancelButtonDisabled ? ' !opacity-50 !cursor-not-allowed' : ' '
+                              }`}
+                              disabled={isCancelButtonDisabled}
+                              key='back'
+                              onClick={handleCancel}>
+                              {cancelButtonText}
+                          </Button>,
+                          <Button
+                              className={`app-btn-primary ${
+                                  isOkButtonDisabled ? ' !opacity-50 !cursor-not-allowed' : ' '
+                              }`}
+                              disabled={isOkButtonDisabled ? isOkButtonDisabled : false}
+                              key='submit'
+                              onClick={handleOk}>
+                              {okButtonText}
+                          </Button>,
                       ]
             }
             destroyOnClose={destroyOnClose}>

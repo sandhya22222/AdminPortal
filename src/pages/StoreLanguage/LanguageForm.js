@@ -37,7 +37,6 @@ const LanguageForm = ({
     const [isEditLanguageCodeFieldEmpty, setIsEditLanguageCodeFieldEmpty] = useState(false)
     const [onChangeValues, setOnChangeValues] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
-    const [isHelperTextVisible, setIsHelperTextVisible] = useState(false)
 
     const { t } = useTranslation()
     const { Content } = Layout
@@ -293,17 +292,13 @@ const LanguageForm = ({
                                 minLength={languageCodeMinLength}
                                 maxLength={languageCodeMaxLength}
                                 disabled={parseInt(languageStatus) === 1 ? true : false}
-                                onInput={(e) => {
-                                    const lowerCaseLettersRegex = /^[a-z]+$/
-                                    setIsHelperTextVisible(!lowerCaseLettersRegex.test(e.nativeEvent.data))
-                                }}
                                 className={`${
                                     isEditLanguageCodeFieldEmpty
                                         ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400'
                                         : ''
                                 }`}
                                 onChange={(e) => {
-                                    const languageCodeRegex = /^[a-z\-]+$/
+                                    const languageCodeRegex = /^[a-zA-Z\-]+$/
                                     if (e.target.value !== '' && validator.matches(e.target.value, languageCodeRegex)) {
                                         setTxtLanguageCode(e.target.value)
                                         setOnChangeValues(true)
@@ -319,12 +314,9 @@ const LanguageForm = ({
                                     setTxtLanguageCode(trimmedUpdate)
                                 }}
                             />
-                            {isHelperTextVisible ? (
-                                <div className='text-red-500'>{t('messages:language_code_helper_text')}</div>
-                            ) : null}
                         </Content>
                     </Col>
-                    <Col className=' mb-3 mx-3' span={16}>
+                    <Col className=' mb-3 mx-3' span={10}>
                         <Content className=''>
                             <label className='font-normal text-sm block !mb-2 text-brandGray2'>
                                 {t('labels:script_direction')}

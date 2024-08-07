@@ -18,7 +18,6 @@ import {
     Alert,
     Badge,
     Empty,
-    Table,
 } from 'antd'
 import React, { useEffect, useState } from 'react'
 import validator from 'validator'
@@ -188,7 +187,7 @@ const Stores = () => {
                 ? true
                 : false
         )
-    }, [auth, permissionValue])
+    }, [auth])
 
     const StoreTableColumnThreshold1 = [
         {
@@ -465,7 +464,7 @@ const Stores = () => {
                                 </Tooltip>
                             </Link>
                         ) : (
-                            <Button type='text' className='app-btn-text' disabled={record.status === 3 ? true : false}>
+                            <Button type='text' className='app-btn-text'>
                                 <Link
                                     to={{
                                         pathname: 'storesetting',
@@ -482,9 +481,7 @@ const Stores = () => {
                                             placement='bottom'>
                                             <MdSettings className='text-[var(--mp-primary-border-color)] hover:text-[var(--mp-primary-border-color-h)] !text-xl' /> */}
                                     {/* </Tooltip> */}
-                                    <Text
-                                        className='text-brandPrimaryColor text-sm font-medium leading-[22px]'
-                                        disabled={record.status === 3 ? true : false}>
+                                    <Text className='text-brandPrimaryColor text-sm font-medium leading-[22px]'>
                                         {t('labels:edit')}
                                     </Text>
                                 </Link>
@@ -712,11 +709,17 @@ const Stores = () => {
                     if (error && error.response === undefined) {
                         setSearchParams({
                             m_t: parseInt(searchParams.get('m_t')),
+                            tab: parseInt(searchParams.get('tab')),
+                            page: 1,
+                            limit: parseInt(searchParams.get('limit')),
                         })
                     }
                     if (error.response.data.message === 'That page contains no results') {
                         setSearchParams({
                             m_t: parseInt(searchParams.get('m_t')),
+                            tab: parseInt(searchParams.get('tab')),
+                            page: 1,
+                            limit: parseInt(searchParams.get('limit')),
                         })
                     }
                 }
@@ -1169,13 +1172,7 @@ const Stores = () => {
             />
             <Drawer
                 title={
-                    drawerAction && drawerAction === 'post' ? (
-                        <div className='text-regal-blue leading-[26px] text-[18px] font-bold'>
-                            {t('labels:add_store')}
-                        </div>
-                    ) : (
-                        `${t('labels:edit_store')}`
-                    )
+                    drawerAction && drawerAction === 'post' ? `${t('labels:add_store')}` : `${t('labels:edit_store')}`
                 }
                 placement={util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'left' : 'right'}
                 onClose={onClose}
@@ -1193,9 +1190,7 @@ const Stores = () => {
                             </Col>
                         </Row> */}
                         <Spin tip={t('labels:please_wait')} size='large' spinning={isUpLoading}>
-                            <label
-                                className='text-[14px] leading-[22px] font-normal text-brandGray2 mb-2 ml-1 '
-                                id='labStNam'>
+                            <label className='text-[13px] mb-2 ml-1 input-label-color' id='labStNam'>
                                 {t('labels:store_name')}
                             </label>
                             <span className='mandatory-symbol-color text-sm ml-1'>*</span>
@@ -1229,24 +1224,22 @@ const Stores = () => {
                                     setName(trimmedUpdate)
                                 }}
                             />
-                            <div className='font-semibold my-2 text-[18px] leading-[26px] text-regal-blue'>
+                            <div className='font-semibold my-2 text-base'>
                                 {t('labels:store_administrator_details')}
                             </div>
                             <Alert
                                 icon={<MdInfo className='font-bold !text-center' />}
                                 message={
                                     <div className=''>
-                                        <Text className=' mr-1 text-brandGray1'> {t('labels:note')}:</Text>
-                                        <Text className='text-brandGray1'>{t('messages:add_store_description')}</Text>
+                                        <Text className=' mr-1 text-[#637381]'> {t('labels:note')}:</Text>
+                                        <Text className='text-[#637381]'>{t('messages:add_store_description')}</Text>
                                     </div>
                                 }
                                 type='info'
                                 showIcon
                                 className='my-3'
                             />
-                            <label
-                                className='mb-2 ml-1 text-[14px] leading-[22px] font-normal text-brandGray2'
-                                id='labStEmail'>
+                            <label className='text-[13px] mb-2 ml-1 input-label-color' id='labStEmail'>
                                 {t('labels:email')}
                             </label>
                             <span className='mandatory-symbol-color text-sm ml-1'>*</span>
@@ -1277,9 +1270,7 @@ const Stores = () => {
                                 }}
                             />
 
-                            <label
-                                className=' mb-2 ml-1 text-[14px] leading-[22px] font-normal text-brandGray2'
-                                id='labStUseName'>
+                            <label className='text-[13px] mb-2 ml-1 input-label-color' id='labStUseName'>
                                 {t('labels:username')}
                             </label>
                             <span className='mandatory-symbol-color text-sm ml-1'>*</span>
@@ -1334,7 +1325,34 @@ const Stores = () => {
                 ) : null}
             </Drawer>
             <div className='!p-5'>
-                <Content className=''>
+                <Content className=' bg-white shadow-brandShadow !rounded-md'>
+                    {parseInt(currentTab) === 1 ? (
+                        <div className='flex w-full justify-between items-center py-3 px-3'>
+                            <div className='text-base font-semibold text-regal-blue'>{t('labels:my_stores')}</div>
+                            <div className='flex items-center justify-end gap-2 flex-row flex-grow'>
+                                <Radio.Group
+                                    className={`min-w-min`}
+                                    optionType='button'
+                                    onChange={handleRadioChange}
+                                    value={value}>
+                                    <Radio value={0}>{t('labels:all')}</Radio>
+                                    <Radio value={1}>{t('labels:active')}</Radio>
+                                    <Radio value={2}>{t('labels:inactive')}</Radio>
+                                </Radio.Group>
+                                <Search
+                                    placeholder={t('placeholders:please_enter_search_text_here')}
+                                    onSearch={handleSearchChange}
+                                    onChange={handleInputChange}
+                                    value={searchValue}
+                                    suffix={null}
+                                    maxLength={searchMaxLength}
+                                    enterButton={customButton}
+                                    allowClear
+                                    className='w-[250px]'
+                                />
+                            </div>
+                        </div>
+                    ) : null}
                     {isLoading ? (
                         <Skeleton
                             className='px-3 w-full'
@@ -1351,6 +1369,12 @@ const Stores = () => {
                             <Content className=''>
                                 {parseInt(currentTab) === 1 ? (
                                     <Content className=''>
+                                        {/* <Table
+                                        className='mt-2 bg-white p-3'
+                                        columns={StoreTableColumn}
+                                        dataSource={selectedTabTableContent}
+                                        pagination={false}
+                                    /> */}
                                         {selectedTabTableContent?.length === 0 &&
                                         isSearchTriggered &&
                                         searchValue?.length > 0 ? (
@@ -1360,67 +1384,7 @@ const Stores = () => {
                                         ) : (
                                             <>
                                                 {selectedTabTableContent?.length > 0 ? (
-                                                    <Content className='shadow-brandShadow rounded-md bg-white'>
-                                                        <div className='flex w-full justify-between items-center py-3 px-3'>
-                                                            <div className='text-base font-semibold text-regal-blue'>
-                                                                {t('labels:my_stores')}
-                                                            </div>
-                                                            <div className='flex items-center justify-end gap-2 flex-row flex-grow'>
-                                                                <Radio.Group
-                                                                    className={`min-w-min`}
-                                                                    optionType='button'
-                                                                    onChange={handleRadioChange}
-                                                                    value={value}>
-                                                                    <Radio value={0}>{t('labels:all')}</Radio>
-                                                                    <Radio value={1}>{t('labels:active')}</Radio>
-                                                                    <Radio value={2}>{t('labels:inactive')}</Radio>
-                                                                </Radio.Group>
-                                                                <Search
-                                                                    placeholder={t(
-                                                                        'placeholders:please_enter_search_text_here'
-                                                                    )}
-                                                                    onSearch={handleSearchChange}
-                                                                    onChange={handleInputChange}
-                                                                    value={searchValue}
-                                                                    suffix={null}
-                                                                    maxLength={searchMaxLength}
-                                                                    enterButton={customButton}
-                                                                    allowClear
-                                                                    className='w-[250px]'
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                        <DynamicTable tableComponentData={storeTableData} />
-                                                        {parseInt(m_tab_id) === 1 ? (
-                                                            <Content className=' grid justify-items-end mx-3 h-fit'>
-                                                                {countForStore && countForStore >= pageLimit ? (
-                                                                    <DmPagination
-                                                                        currentPage={
-                                                                            parseInt(searchParams.get('page'))
-                                                                                ? parseInt(searchParams.get('page'))
-                                                                                : 1
-                                                                        }
-                                                                        presentPage={
-                                                                            parseInt(searchParams.get('page'))
-                                                                                ? parseInt(searchParams.get('page'))
-                                                                                : 1
-                                                                        }
-                                                                        totalItemsCount={countForStore}
-                                                                        defaultPageSize={pageLimit}
-                                                                        pageSize={
-                                                                            parseInt(searchParams.get('limit'))
-                                                                                ? parseInt(searchParams.get('limit'))
-                                                                                : pageLimit
-                                                                        }
-                                                                        handlePageNumberChange={handlePageNumberChange}
-                                                                        showSizeChanger={true}
-                                                                        showTotal={true}
-                                                                        showQuickJumper={true}
-                                                                    />
-                                                                ) : null}
-                                                            </Content>
-                                                        ) : null}
-                                                    </Content>
+                                                    <DynamicTable tableComponentData={storeTableData} />
                                                 ) : (
                                                     <Content className='pb-4'>
                                                         <Empty description={t('messages:no_data_available')} />
@@ -1431,15 +1395,15 @@ const Stores = () => {
                                     </Content>
                                 ) : parseInt(currentTab) === 2 ? (
                                     <>
-                                        <Content className='shadow-brandShadow rounded-md bg-white mb-3'>
-                                            <Title className='!text-regal-blue pt-3 ml-6' level={4}>
+                                        <Content>
+                                            <Title className='!text-[#023047] pt-3 ml-6' level={4}>
                                                 {t('labels:account_restrictions')}
                                             </Title>
                                             <Divider className='w-full mt-2 mb-2' />
                                             <DynamicTable tableComponentData={tablePropsThreshold1} />
                                         </Content>
-                                        <Content className='shadow-brandShadow rounded-md bg-white'>
-                                            <Title className='!text-regal-blue  pt-3 ml-6' level={4}>
+                                        <Content>
+                                            <Title className='!text-[#023047]  pt-3 ml-6' level={4}>
                                                 {t('labels:store_restrictions')}
                                             </Title>
                                             <Divider className='w-full mt-2 mb-2' />
@@ -1470,6 +1434,35 @@ const Stores = () => {
                                         {t('messages:store_network_error')}
                                     </Content>
                                 )}
+                                {parseInt(m_tab_id) === 1 ? (
+                                    <Content className=' grid justify-items-end mx-3 h-fit'>
+                                        {countForStore && countForStore >= pageLimit ? (
+                                            <DmPagination
+                                                currentPage={
+                                                    parseInt(searchParams.get('page'))
+                                                        ? parseInt(searchParams.get('page'))
+                                                        : 1
+                                                }
+                                                presentPage={
+                                                    parseInt(searchParams.get('page'))
+                                                        ? parseInt(searchParams.get('page'))
+                                                        : 1
+                                                }
+                                                totalItemsCount={countForStore}
+                                                defaultPageSize={pageLimit}
+                                                pageSize={
+                                                    parseInt(searchParams.get('limit'))
+                                                        ? parseInt(searchParams.get('limit'))
+                                                        : pageLimit
+                                                }
+                                                handlePageNumberChange={handlePageNumberChange}
+                                                showSizeChanger={true}
+                                                showTotal={true}
+                                                showQuickJumper={true}
+                                            />
+                                        ) : null}
+                                    </Content>
+                                ) : null}
                             </Content>
                         </>
                     )}

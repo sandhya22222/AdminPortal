@@ -124,11 +124,7 @@ function VersionHistory({ userConsentId, refetchUserConsent, setVersionHistory }
             )}
             <StoreModal
                 isVisible={addVersion}
-                title={
-                    <div className='text-regal-blue font-bold text-[18px] leading-[26px]'>
-                        {t('labels:add_version')}
-                    </div>
-                }
+                title={t('labels:add_version')}
                 isSpin={false}
                 cancelCallback={() => setAddVersion(false)}
                 width={400}

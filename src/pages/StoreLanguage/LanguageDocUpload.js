@@ -214,10 +214,6 @@ function LanguageDocUpload({ langCode }) {
 
     return (
         <Content className='!w-[750px]'>
-            <div className='font-semibold text-lg leading-[26px] text-regal-blue mb-2 px-1'>
-                {t('labels:support_document')}
-            </div>
-            <p className='text-brandGray2 px-1'>{t('messages:language_document_data')}</p>
             <Content className='!flex gap-4'>
                 <Content className='border rounded-md '>
                     <Spin spinning={isSpinning} tip='Please wait'>

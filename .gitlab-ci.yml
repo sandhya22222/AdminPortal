@@ -1,8 +1,9 @@
 stages:
   - build
   - deploy
+  - notify
 
-fdm283_build:
+build:
     stage: build
     tags:
       - 283-cicd
@@ -13,8 +14,8 @@ fdm283_build:
         - cd devops
         - ansible-playbook -i inventory portals/AP/create_build.yml --extra-vars "branchname=$CI_COMMIT_BRANCH"
     only:
-        - fdm283
-fdm283_deploy:
+        - version2.8.5
+deploy:
     stage: deploy
     tags:
       - 283-cicd
@@ -30,4 +31,61 @@ fdm283_deploy:
         - echo -e "[ap]\n$IP_283 ansible_user=rocky ansible_ssh_private_key_file=$SSH_PRIVATE_KEY" > inventory
         - ansible-playbook -i inventory --extra-vars "@portals.yml" AP/upgradeap.yml
     only:
-        - fdm283
+        - version2.8.5
+
+notify_build_success:
+  stage: notify
+  tags:
+    - 283-cicd
+  script:
+    - |
+      CURRENT_DATE_TIME=$(date +"%Y-%m-%d %H:%M:%S")
+      EMAIL_SUBJECT="Build Status: Success for $CI_PROJECT_NAME"
+      EMAIL_BODY="Hello,\n\nThe build for project: $CI_PROJECT_NAME (ID: $CI_PROJECT_ID) was successful.\n\nCommit ID: $CI_COMMIT_SHA\nCommit Message: $CI_COMMIT_MESSAGE\n\nBuild Completed At: $CURRENT_DATE_TIME\n\nYou can view the build details at: $CI_PROJECT_URL\n\nThank you,\nThe DevOps Team"
+
+      echo -e "Subject: $EMAIL_SUBJECT\n\n$EMAIL_BODY" | sendmail -F CICD -v adarsha_kanthabailu@thbs.com,somashekhara_chandappa@thbs.com
+  when: on_success
+  needs:
+    - job: build
+
+notify_build_failure:
+  stage: notify
+  tags:
+    - 283-cicd
+  script:
+    - |
+      EMAIL_SUBJECT="Build Status: Failure for $CI_PROJECT_NAME"
+      EMAIL_BODY="Hello,\n\nThe build for project: $CI_PROJECT_NAME (ID: $CI_PROJECT_ID) has failed.\n\nCommit ID: $CI_COMMIT_SHA\nCommit Message: $CI_COMMIT_MESSAGE\n\nPlease check the pipeline details at: $CI_PROJECT_URL\n\nThank you,\nDevOps Team"
+
+      echo -e "Subject: $EMAIL_SUBJECT\n\n$EMAIL_BODY" | sendmail -F CICD -v adarsha_kanthabailu@thbs.com,somashekhara_chandappa@thbs.com
+  when: on_failure
+  needs:
+    - job: build
+
+notify_deploy_success:
+  stage: notify
+  tags:
+    - 283-cicd
+  script:
+    - |
+      EMAIL_SUBJECT="Deployment Status: Success for $CI_PROJECT_NAME"
+      EMAIL_BODY="Hello,\n\nThe deployment for project: $CI_PROJECT_NAME (ID: $CI_PROJECT_ID) was successful.\n\nCommit ID: $CI_COMMIT_SHA\nCommit Message: $CI_COMMIT_MESSAGE\n\nYou can view the deployment details at: $CI_PROJECT_URL\n\nThank you,\nDevOps Team"
+
+      echo -e "Subject: $EMAIL_SUBJECT\n\n$EMAIL_BODY" | sendmail -F CICD -v adarsha_kanthabailu@thbs.com,somashekhara_chandappa@thbs.com
+  when: on_success
+  needs:
+    - job: deploy
+  
+notify_deploy_failure:
+  stage: notify
+  tags:
+    - 283-cicd
+  script:
+    - |
+      EMAIL_SUBJECT="Deployment Status: Failure for $CI_PROJECT_NAME"
+      EMAIL_BODY="Hello,\n\nThe deployment for project: $CI_PROJECT_NAME (ID: $CI_PROJECT_ID) has failed.\n\nCommit ID: $CI_COMMIT_SHA\nCommit Message: $CI_COMMIT_MESSAGE\n\nPlease check the pipeline details at: $CI_PROJECT_URL\n\nThank you,\nDevOps Team"
+
+      echo -e "Subject: $EMAIL_SUBJECT\n\n$EMAIL_BODY" | sendmail -F CICD -v adarsha_kanthabailu@thbs.com,somashekhara_chandappa@thbs.com
+  when: on_failure
+  needs:
+    - job: deploy

@@ -70,14 +70,6 @@
     color: var(--mp-brand-color) !important;
 }
 
-.ant-tabs-tab {
-    color: var(--mp-text-gray1) !important;
-}
-
-.ant-radio-button-wrapper {
-    color: var(--mp-text-gray1) !important;
-}
-
 .ant-pagination-options-size-changer .ant-select-dropdown {
     z-index: unset !important;
 }
@@ -265,6 +257,7 @@ a {
     background-color: var(--select-option-color-h) !important;
 }
 
+
 /*!Search bar related styles*/
 .ant-input-group-addon .ant-btn {
     background: none !important;
@@ -275,8 +268,4 @@ a {
     background: none !important;
     border-color: var(--mp-primary-border-color-h) !important;
     color: var(--mp-brand-color) !important;
-}
-
-.ant-anchor-link-title {
-    color: var(--mp-text-gray1) !important;
 }

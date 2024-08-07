@@ -162,7 +162,7 @@ const PoliciesSettings = ({ storeName }) => {
                     </div>
                     <div className='mt-3'>
                         <Text className='input-label-color font-bold'>{t('labels:bonus')}</Text>
-                        <span>{': '}</span>
+                        <span>{": "}</span>
                         <Text className='input-label-color '> {t('messages:policy_bonus_note')}</Text>
                     </div>
                 </div>
@@ -215,7 +215,7 @@ const PoliciesSettings = ({ storeName }) => {
                         ) : null}
                         <div className=' flex items-center '>
                             <Checkbox onChange={onContactInfoChange} checked={addContactInfo}>
-                                <div className='text-brandGray2'>{t('messages:display_contact')}</div>
+                                {t('messages:display_contact')}
                             </Checkbox>
                             <Tooltip title={t('messages:contact_policy_info')}>
                                 <RiInformationFill className=' text-[#1677ff] text-base cursor-pointer' />
@@ -284,11 +284,7 @@ const PoliciesSettings = ({ storeName }) => {
                 </Modal>
                 <StoreModal
                     isVisible={previewAndCustomise}
-                    title={
-                        <div className='text-regal-blue font-bold text-[18px] leading-[26px]'>
-                            {t('labels:preview_and_customise')}
-                        </div>
-                    }
+                    title={t('labels:preview_and_customise')}
                     isSpin={false}
                     cancelCallback={() => setPreviewAndCustomise(null)}
                     width={1088}

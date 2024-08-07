@@ -56,9 +56,11 @@ const NewFooter = () => {
                     </div>
                 ) : null}
             </>
-            {t('messages:footer_content') !== 'Not Applicable' && (
-                <Paragraph className='text-brandGray2 text-xs !mb-0'>{t('messages:footer_content')}</Paragraph>
-            )}
+            <Paragraph className='text-brandGray2 text-xs !mb-0'>
+                {t('labels:copyright')} - {t('labels:torry_harris_integration_solutions')} -{' '}
+                {t('labels:torry_harris_marketplace')}{" - "}{t('labels:admin_portal')}{" - "}{t('labels:version')}{' '}
+                {portalInfo.version} | {t('labels:credits')}
+            </Paragraph>
         </div>
     )
 }

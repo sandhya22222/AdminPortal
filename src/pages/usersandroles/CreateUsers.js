@@ -795,26 +795,22 @@ const CreateUsers = () => {
                 isVisible={showDeleteUserModal}
                 okButtonText={`${t('labels:yes')}`}
                 cancelButtonText={`${t('labels:cancel')}`}
-                title={
-                    <div className='text-regal-blue font-bold text-[18px] leading-[26px]'>{t('labels:warning')}</div>
-                }
+                title={t('labels:warning')}
                 okCallback={() => removeUser()}
                 cancelCallback={() => setShowDeleteUserModal(false)}
                 isSpin={deleteModalLoading}>
-                {<div className='text-brandGray1'> {t('messages:are_you_sure_you_want_delete_the_user')}?</div>}
+                {<div> {t('messages:are_you_sure_you_want_delete_the_user')}?</div>}
             </StoreModal>
             <StoreModal
                 isVisible={showUserEnableDisableModal}
                 okButtonText={`${t('labels:yes')}`}
                 cancelButtonText={`${t('labels:cancel')}`}
-                title={
-                    <div className='text-regal-blue font-bold text-[18px] leading-[26px]'>{t('labels:warning')}</div>
-                }
+                title={t('labels:warning')}
                 okCallback={() => enableDisableUserFromServer()}
                 cancelCallback={() => setShowUserEnableDisableModal(false)}
                 isSpin={deleteModalLoading}>
                 {
-                    <div className='text-brandGray1'>
+                    <div>
                         {userStatus === true ? (
                             <p>{t('messages:are_you_sure_you_want_disable_status')}</p>
                         ) : (
@@ -827,16 +823,12 @@ const CreateUsers = () => {
                 isVisible={primaryStatusModalOpen}
                 okButtonText={`${t('labels:yes')}`}
                 cancelButtonText={`${t('labels:no')}`}
-                title={
-                    <div className='text-regal-blue font-bold text-[18px] leading-[26px]'>
-                        {t('messages:warning_heading')}
-                    </div>
-                }
+                title={<div className=''>{t('messages:warning_heading')}</div>}
                 okCallback={() => updatePrimaryUser()}
                 cancelCallback={() => setPrimaryStatusModalOpen(false)}
                 isSpin={primaryStatusUpdateLoading}>
                 {
-                    <div className='text-brandGray1'>
+                    <div>
                         <p className='!mb-2'>
                             {t('labels:making')} {userName} {t('messages:primary_status_modal_confirmation')}
                         </p>

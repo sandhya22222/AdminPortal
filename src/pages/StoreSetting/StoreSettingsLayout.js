@@ -300,7 +300,7 @@ const StoreSettingsLayout = () => {
         setHideActionButton(isScopeAvailable)
         setDisableStatus(isScopeAvailable)
         setDisableMediaButton(isScopeAvailable)
-    }, [auth,permissionValue])
+    }, [auth])
 
     useEffect(() => {
         findAllStoreApi()
@@ -314,7 +314,20 @@ const StoreSettingsLayout = () => {
 
     useEffect(() => {
         if (!searchParams.get('tab')) {
-            if (permissionValue?.includes('UI-product-admin') === true) {
+            setSearchParams({
+                id: id,
+                page: searchParams.get('page') ? searchParams.get('page') : 1,
+                limit: searchParams.get('limit') ? searchParams.get('limit') : pageLimit,
+                storeId: storeIdFromUrl,
+                rmn: realmName,
+                tab: STORE_SETTINGS_TABS_OPTIONS.OVERVIEW,
+            })
+        }
+    }, [searchParams, setSearchParams])
+
+    useEffect(() => {
+        if (!searchParams.get('tab')) {
+            if (permissionValue?.includes('UI-product-admin')) {
                 setSearchParams({
                     id: id,
                     page: searchParams.get('page') ? searchParams.get('page') : 1,
@@ -323,20 +336,11 @@ const StoreSettingsLayout = () => {
                     rmn: realmName,
                     tab: STORE_SETTINGS_TABS_OPTIONS.STORE_RESTRICTIONS,
                 })
-            } else {
-                setSearchParams({
-                    id: id,
-                    page: searchParams.get('page') ? searchParams.get('page') : 1,
-                    limit: searchParams.get('limit') ? searchParams.get('limit') : pageLimit,
-                    storeId: storeIdFromUrl,
-                    rmn: realmName,
-                    tab: STORE_SETTINGS_TABS_OPTIONS.OVERVIEW,
-                })
             }
         }
-    }, [searchParams, hideActionButton, permissionValue])
+    }, [searchParams, setSearchParams, hideActionButton, permissionValue])
 
-    console.log('changeSwitchStatus----->', changeSwitchStatus)
+    console.log("changeSwitchStatus----->",changeSwitchStatus);
 
     return (
         <Content>
@@ -352,7 +356,7 @@ const StoreSettingsLayout = () => {
                             </div>
                         </Content>
                         <Content className=' flex !gap-2 !mt-3'>
-                            <Text className='text-brandGray2'>{t('labels:status')} : </Text>
+                            <Text>{t('labels:status')} : </Text>
 
                             <Status
                                 storeId={id}
@@ -378,31 +382,27 @@ const StoreSettingsLayout = () => {
             <div className='!px-6 !pb-6  !mt-[10.6rem]'>
                 <div className=' w-full bg-white rounded shadow-brandShadow flex  justify-start'>
                     <div className=' py-4 h-full '>
-                        {permissionValue?.length > 0 ? (
-                            permissionValue?.includes('UI-product-admin') === true ? (
-                                <Tabs
-                                    items={hideStoreSettingsTabData}
-                                    tabPosition={'left'}
-                                    defaultActiveKey={STORE_SETTINGS_TABS_OPTIONS.STORE_RESTRICTIONS}
-                                    activeKey={
-                                        searchParams.get('tab') || STORE_SETTINGS_TABS_OPTIONS.STORE_RESTRICTIONS
-                                    }
-                                    onTabClick={handelMyProfileTabChange}
-                                    type='line'
-                                    className=' !h-full '
-                                />
-                            ) : (
-                                <Tabs
-                                    items={storeSettingsTabData}
-                                    tabPosition={'left'}
-                                    defaultActiveKey={STORE_SETTINGS_TABS_OPTIONS.OVERVIEW}
-                                    activeKey={searchParams.get('tab') || STORE_SETTINGS_TABS_OPTIONS.OVERVIEW}
-                                    onTabClick={handelMyProfileTabChange}
-                                    type='line'
-                                    className=' !h-full '
-                                />
-                            )
-                        ) : null}
+                        {hideActionButton ? (
+                            <Tabs
+                                items={hideStoreSettingsTabData}
+                                tabPosition={'left'}
+                                defaultActiveKey={STORE_SETTINGS_TABS_OPTIONS.STORE_RESTRICTIONS}
+                                activeKey={searchParams.get('tab') || STORE_SETTINGS_TABS_OPTIONS.STORE_RESTRICTIONS}
+                                onTabClick={handelMyProfileTabChange}
+                                type='line'
+                                className=' !h-full '
+                            />
+                        ) : (
+                            <Tabs
+                                items={storeSettingsTabData}
+                                tabPosition={'left'}
+                                defaultActiveKey={STORE_SETTINGS_TABS_OPTIONS.OVERVIEW}
+                                activeKey={searchParams.get('tab') || STORE_SETTINGS_TABS_OPTIONS.OVERVIEW}
+                                onTabClick={handelMyProfileTabChange}
+                                type='line'
+                                className=' !h-full '
+                            />
+                        )}
                     </div>
                     <div className='w-[80%]'>
                         {searchParams.get('tab') === STORE_SETTINGS_TABS_OPTIONS.OVERVIEW && (

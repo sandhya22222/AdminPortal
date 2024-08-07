@@ -10,8 +10,10 @@ function VersionBanner({ addPolicyHandler }) {
     return (
         <Content className='flex items-center flex-col'>
             <img src={PolicyBanner} className='!my-2' alt='globeIcon' />
-            <div className='!mt-1 !text-regal-blue text-lg font-semibold'>{t('messages:policies')}</div>
-            <p className='w-[80%] text-center text-brandGray2'>{t('messages:policy_banner_image_note')}</p>
+            <Title level={3} className='!mt-1'>
+                {t('messages:policies')}
+            </Title>
+            <p className='w-[80%] text-center'>{t('messages:policy_banner_image_note')}</p>
             <Button className='app-btn-primary my-2  !flex !justify-items-center' onClick={addPolicyHandler}>
                 <div className='mr-[10px]'>{t('labels:add_new_policy')}</div>
             </Button>

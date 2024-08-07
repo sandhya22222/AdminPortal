@@ -242,7 +242,7 @@ const UserProfile = () => {
                 ) : (
                     <div className=' border-1 border-solid border-brandGray rounded-lg'>
                         <div className='  border-b border-solid border-brandGray'>
-                            <Title className='!mb-4 !mt-6 !mx-3 !font-semibold !text-lg !text-regal-blue'>
+                            <Title className='!mb-4 !mt-6 !mx-3 !font-semibold !text-lg'>
                                 {t('labels:profile_information')}
                             </Title>
                         </div>
@@ -250,7 +250,7 @@ const UserProfile = () => {
                             <div className='my-6 flex gap-4 items-center'>
                                 <Avatar shape='square' size={100} icon={<UserOutlined />} />
                                 <div className='gap-2 flex flex-col '>
-                                    <div className=' font-semibold text-base !text-regal-blue'>
+                                    <div className=' font-semibold text-base'>
                                         {storeUsersData && storeUsersData.username && storeUsersData.username.length > 0
                                             ? storeUsersData.username.slice(0, 1).toUpperCase() +
                                               storeUsersData.username.slice(1)
@@ -319,11 +319,7 @@ const UserProfile = () => {
             {isPasswordChangeModalOpen ? (
                 <StoreModal
                     isVisible={isPasswordChangeModalOpen}
-                    title={
-                        <div className='text-regal-blue font-bold text-[18px] leading-[26px]'>
-                            {t('labels:change_password')}
-                        </div>
-                    }
+                    title={t('labels:change_password')}
                     okCallback={() => handleOkPasswordChangeModal()}
                     cancelCallback={() => handleCancelPasswordChangeModal()}
                     okButtonText={`${t('labels:save')}`}
@@ -419,53 +415,51 @@ const UserProfile = () => {
                             </Col>
                             <Col span={12} className=' border-l-2 border-gray-300'>
                                 <Content>
-                                    <Title level={5} className='!text-regal-blue'>
-                                        {t('labels:your_password_must_contain')}
-                                    </Title>
-                                    <p className='!mb-0 pb-2 text-brandGray1'>
+                                    <Title level={5}>{t('labels:your_password_must_contain')}</Title>
+                                    <p className='!mb-0 pb-2'>
                                         <IoMdCheckmarkCircleOutline
                                             style={{
-                                                color: `${password && password.length >= 12 ? 'green' : 'text-brandGray1'}`,
+                                                color: `${password && password.length >= 12 ? 'green' : 'initial'}`,
                                                 display: 'inline',
                                             }}
                                         />{' '}
                                         {t('messages:at_least_12_characters')}
                                     </p>
-                                    <p className='!mb-0 pb-2 text-brandGray1'>
+                                    <p className='!mb-0 pb-2'>
                                         <IoMdCheckmarkCircleOutline
                                             style={{
-                                                color: `${password && /[A-Z]/.test(password) ? 'green' : 'text-brandGray1'}`,
+                                                color: `${password && /[A-Z]/.test(password) ? 'green' : 'initial'}`,
                                                 display: 'inline',
                                             }}
                                         />{' '}
                                         {t('messages:one_or_more_upper_case_letter')}
                                     </p>
-                                    <p className='!mb-0 pb-2 text-brandGray1'>
+                                    <p className='!mb-0 pb-2'>
                                         <IoMdCheckmarkCircleOutline
                                             style={{
                                                 color: `${
                                                     password && /[!@#$%^&*"'()_+{}\[\]:;<>,.?~\\/-]/.test(password)
                                                         ? 'green'
-                                                        : 'text-brandGray1'
+                                                        : 'initial'
                                                 }`,
                                                 display: 'inline',
                                             }}
                                         />{' '}
                                         {t('messages:one_or_more_special_character_or_symbols')}
                                     </p>
-                                    <p className='!mb-0 pb-2 text-brandGray1'>
+                                    <p className='!mb-0 pb-2'>
                                         <IoMdCheckmarkCircleOutline
                                             style={{
-                                                color: `${password && /[a-z]/.test(password) ? 'green' : 'text-brandGray1'}`,
+                                                color: `${password && /[a-z]/.test(password) ? 'green' : 'initial'}`,
                                                 display: 'inline',
                                             }}
                                         />{' '}
                                         {t('messages:one_or_more_lower_case_letters')}
                                     </p>
-                                    <p className='!mb-0 pb-2 text-brandGray1'>
+                                    <p className='!mb-0 pb-2'>
                                         <IoMdCheckmarkCircleOutline
                                             style={{
-                                                color: `${password && /[\d]/.test(password) ? 'green' : 'text-brandGray1'}`,
+                                                color: `${password && /[\d]/.test(password) ? 'green' : 'initial'}`,
                                                 display: 'inline',
                                             }}
                                         />{' '}

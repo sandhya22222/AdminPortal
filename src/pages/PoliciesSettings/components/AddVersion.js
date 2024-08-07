@@ -96,7 +96,7 @@ function AddVersion({
 
     return (
         <div>
-            <p className='text-brandGray1'>{t('messages:add_version_note')}</p>
+            <p className='input-label-color'>{t('messages:add_version_note')}</p>
             <div className='mb-10 flex items-center'>
                 <Typography>{t('labels:version')}</Typography>
                 <InputNumber

@@ -307,7 +307,7 @@ const Language = () => {
                                 </Button>
                             </Content>
                         </div>
-                        <p className='!font-normal !text-brandGray1 !mt-2 !mb-6'>{t('labels:languages_note')}</p>
+                        <p className='!font-semibold !text-slate-400 !mt-2 !mb-6'>{t('labels:languages_note')}</p>
                     </Content>
                 }
                 titleContent={<Content className=' !flex !justify-end'></Content>}
