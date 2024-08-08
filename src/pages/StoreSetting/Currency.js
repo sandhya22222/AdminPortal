@@ -27,6 +27,8 @@ const Currency = ({ storeUUId }) => {
     const [currencyIsoCode, setCurrencyIsoCode] = useState('')
     const [isVendorsOnBoarded, setIsVendorsOnBoarded] = useState()
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [currencyChangeFLag, setCurrencyChangeFlag] = useState(false)
+    const [selectedCurrency, setSelectedCurrency] = useState(null)
 
     //!get call of list currency
     const findByPageCurrencyData = () => {
@@ -116,13 +118,24 @@ const Currency = ({ storeUUId }) => {
             })
     }
 
-    const handleCurrencyChange = (value) => {
-        findAllWithoutCurrencyDataByChange(value)
-        if (value !== currencyIsoCode) {
+    const currencyChangeConsent = (val) => {
+        setCurrencyChangeFlag(true)
+        setSelectedCurrency(val)
+    }
+
+    const handleCurrencyChange = () => {
+        setCurrencyChangeFlag(false)
+        findAllWithoutCurrencyDataByChange(selectedCurrency)
+
+        if (selectedCurrency !== currencyIsoCode) {
             setCurrencyOnChange(true)
         } else {
             setCurrencyOnChange(false)
         }
+    }
+    const closeCurrencyChangeConsentModal = () => {
+        setCurrencyChangeFlag(false)
+        setSelectedCurrency(null)
     }
 
     const currencyDataProcessor = (currencyProcessorData) => {
@@ -209,7 +222,7 @@ const Currency = ({ storeUUId }) => {
                     )}
                     <Content className='bg-white  p-3 rounded-lg border my-4'>
                         <label className='text-lg  font-semibold mb-4 text-regal-blue'>{t('labels:currency')}</label>
-                        <Content>
+                        <Content className='mb-1'>
                             <Col span={8}>
                                 <label className='text-[14px] mb-2 ml-1 input-label-color'>
                                     {t('labels:choose_store_currency')}
@@ -222,16 +235,17 @@ const Currency = ({ storeUUId }) => {
                                     placeholder={t('messages:please_choose_a_store_currency')}
                                     value={currencyData && currencyData.length > 0 && currencyData[0].currency_name}
                                     onChange={(e) => {
-                                        handleCurrencyChange(e)
+                                        currencyChangeConsent(e)
                                     }}
                                     options={filteredCurrencyData}
                                 />
                             </Col>
                         </Content>
-                        <Divider className='!my-4' />
-                        <Title level={4} className='font-normal mb-2'>
-                            {t('labels:currency_details')}
-                        </Title>
+                        <Row className='!flex w-[100%]' justify='space-between' align='middle'>
+                            <Title level={5} className='font-normal my-2'>
+                                {t('labels:currency_details')}
+                            </Title>
+                        </Row>
                         {currencyData && currencyData.length > 0 ? (
                             <Row className='w-[80%]'>
                                 <Col
@@ -312,7 +326,7 @@ const Currency = ({ storeUUId }) => {
                                     <Col>
                                         <Button
                                             className='app-btn-primary '
-                                            onClick={() => setIsModalOpen(true)}
+                                            onClick={() =>  updateStoreCurrencyApi()}
                                             disabled={!currencyOnChange}>
                                             {t('labels:save')}
                                         </Button>
@@ -334,18 +348,18 @@ const Currency = ({ storeUUId }) => {
                 </>
             )}
             <StoreModal
-                isVisible={isModalOpen}
+                isVisible={currencyChangeFLag}
                 okButtonText={t('labels:yes')}
                 title={
                     <Text className='text-regal-blue font-bold text-[18px] leading-[26px]'>
                         {t('labels:change_currency_details')}
                     </Text>
                 }
-                cancelButtonText={t('labels:cancel')}
-                okCallback={() => updateStoreCurrencyApi()}
-                cancelCallback={() => closeModal()}
+                okCallback={() => handleCurrencyChange()}
+                cancelCallback={() => closeCurrencyChangeConsentModal()}
                 isSpin={isCurrencyLoading}
-                hideCloseButton={false}>
+                width={'400px'}
+                hideCloseButton={true}>
                 <div className='text-brandGray1'>
                     <p className='mb-0'>{t('messages:currency_warning_message')}</p>
                     <p>{t('messages:currency_message')}</p>

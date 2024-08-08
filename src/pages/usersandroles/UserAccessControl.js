@@ -145,7 +145,9 @@ const UserAccessControl = () => {
                 return (
                     <Content className='flex gap-2'>
                         <div className='text-brandGray1'>
-                            {record.groups[0]?.name ? String(record.groups[0]?.name).replaceAll('-', ' ') : 'NA'}
+                            {record.groups[0]?.name
+                                ? String(record.groups[0]?.name).replaceAll('-', ' ')
+                                : t('labels:not_available')}
                         </div>
                         <div className=''>
                             {record.attributes?.is_default_owner[0] === 'True' ? (
@@ -373,7 +375,7 @@ const UserAccessControl = () => {
                                 </Button>
                             ) : null}
                         </div>
-                        <p className='!font-semibold !text-slate-400 mt-2'>{t('labels:user_access_control_note')}</p>
+                        <p className='!font-normal !text-brandGray1 mt-2'>{t('labels:user_access_control_note')}</p>
                     </Content>
                 }
                 headerContent={

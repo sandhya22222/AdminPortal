@@ -440,9 +440,10 @@ const Theme = ({ id, getImageData }) => {
                                     />
                                 </StoreModal>
                             </Row>
-                            <Divider className='!my-4 input-label-color' orientation='left'>
+                            <div className='text-regal-blue font-medium text-base'>{t('labels:page_theme')}</div>
+                            {/* <Divider className='!my-4 input-label-color' orientation='left'>
                                 {t('labels:page_theme')}
-                            </Divider>
+                            </Divider> */}
                             {/* <Row className='mt-2'>
                                 <Col span={8} className='mr-2 '>
                                     <label className='text-[13px] mb-2 ml-1 select-none input-label-color'>
@@ -1602,7 +1603,7 @@ const Theme = ({ id, getImageData }) => {
                         <StoreModal
                             isVisible={resetModalOpen}
                             okButtonText={t('labels:yes')}
-                            cancelButtonText={t('labels:cancel')}
+                            // cancelButtonText={t('labels:cancel')}
                             title={
                                 <Text className='text-regal-blue font-bold text-[18px] leading-[26px]'>
                                     {t('labels:reset_default')}
@@ -1613,7 +1614,7 @@ const Theme = ({ id, getImageData }) => {
                                 closeResetWaringModal()
                             }}
                             isSpin={resetLoader}
-                            hideCloseButton={false}>
+                            hideCloseButton={true}>
                             {
                                 <div className='!text-brandGray1'>
                                     <p className='!mb-0'>{t('messages:restore_settings_warning_msg')}</p>

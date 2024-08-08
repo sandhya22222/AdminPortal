@@ -48,12 +48,12 @@ const MyProfile = () => {
             <HeaderForTitle
                 title={
                     <Content className=''>
-                        <Title level={3} className='!font-normal'>
+                        <Title level={3} className='!font-semibold !text-regal-blue text-2xl'>
                             {t('labels:profile')}
                         </Title>
                     </Content>
                 }
-                headerContent={<Content className=' !pt-14 text-brandGray1'>{t("messages:profile_note")}</Content>}
+                headerContent={<Content className=' !pt-14 text-brandGray1'>{t('messages:profile_note')}</Content>}
             />
             <div className='!px-6 !pb-6 !mt-6'>
                 <div className=' w-full bg-white rounded flex  justify-start shadow-brandShadow'>

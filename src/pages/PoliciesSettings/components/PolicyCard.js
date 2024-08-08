@@ -1,9 +1,9 @@
 import { DownOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons'
-import { Button, Divider, Dropdown, Input, Space, Tooltip, Typography } from 'antd'
+import { Button, Divider, Dropdown, Input, Tooltip, Typography } from 'antd'
 import moment from 'moment/moment'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { RiDeleteBin6Fill, RiInformationFill, RiInformationLine, RiTranslate2 } from 'react-icons/ri'
+import { RiDeleteBin6Fill, RiInformationFill, RiTranslate2 } from 'react-icons/ri'
 import ReactQuill, { Quill } from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { toast } from 'react-toastify'
@@ -16,7 +16,6 @@ import AddVersion from './AddVersion'
 import TranslatePolicy from './TranslatePolicy'
 import VersionHistory from './VersionHistory'
 const { Text } = Typography
-const { Paragraph } = Typography
 const Link = Quill.import('formats/link')
 Link.sanitize = function (url) {
     const trimmedURL = url?.trim()
@@ -146,7 +145,6 @@ const PolicyCard = ({
             if (!descriptionModified) setDescriptionModified(true)
         }
     }
-
     const handelPublishConsent = () => {
         const body = {
             status: 2,
@@ -157,9 +155,6 @@ const PolicyCard = ({
                 onSuccess: (response) => {
                     refetchUserConsent()
                     MarketplaceToaster.showToast(response)
-                    // toast(t('Policy updated successfully'), {
-                    //     type: 'success',
-                    // })
                     setPolicyConfirmation(false)
                     setTimeout(() => {
                         setDescriptionModified(false)
@@ -167,9 +162,6 @@ const PolicyCard = ({
                 },
                 onError: (err) => {
                     MarketplaceToaster.showToast(err.response)
-                    // toast(err?.response?.data?.response_message || t('messages:error_saving_policy'), {
-                    //     type: 'error',
-                    // })
                 },
             }
         )
@@ -192,18 +184,12 @@ const PolicyCard = ({
                     onSuccess: (response) => {
                         refetchUserConsent()
                         MarketplaceToaster.showToast(response)
-                        // toast(t('messages:policy_saved_successfully'), {
-                        //     type: 'success',
-                        // })
                         setTimeout(() => {
                             setAddNewPolicy(false)
                         }, [100])
                     },
                     onError: (err) => {
                         MarketplaceToaster.showToast(err?.response)
-                        // toast(err?.response?.data?.response_message || t('messages:error_saving_policy'), {
-                        //     type: 'error',
-                        // })
                     },
                 }
             )
@@ -223,9 +209,6 @@ const PolicyCard = ({
                     },
                     onError: (err) => {
                         MarketplaceToaster.showToast(err?.response)
-                        // toast(err?.response?.data?.response_message || t('messages:error_saving_policy'), {
-                        //     type: 'error',
-                        // })
                     },
                 }
             )
@@ -284,10 +267,10 @@ const PolicyCard = ({
                         {consentName?.substring(0, 50) || t('labels:untitled_policy')}
                     </Text>
                 </div>
-                <div className='flex justify-end'>
-                    <div className='flex items-center'>
+                <div className='flex justify-end '>
+                    <div className='flex items-center  !pl-3'>
                         <Dropdown
-                            className='w-[105px] cursor-pointer'
+                            className='w-[87px] cursor-pointer'
                             disabled={!(policyStatus === 2)}
                             menu={{
                                 items: [
@@ -310,7 +293,7 @@ const PolicyCard = ({
                             </Text>
                         </Dropdown>
                     </div>
-                    <div className='mx-2'>
+                    <div className='!mx-2'>
                         <Button
                             icon={<PlusOutlined />}
                             disabled={!(policyStatus === 2)}
@@ -380,10 +363,9 @@ const PolicyCard = ({
                 <div
                     className=' rounded border-[1px] drop-shadow-sm shadow-[#D9D9D9] border-[#D9D9D9] overflow-hidden bg-white   w-full'
                     data-text-editor={'policyCard'}>
-                    {console.log('see', consentDiscriptionDisplayName)}
                     <ReactQuill
                         theme='snow'
-                        value={policyStatus === 2 ? consentDiscriptionDisplayName : description}
+                        value={description}
                         className={policyStatus === 2 ? 'opacity-40 bg-[#00000014]' : ''}
                         readOnly={policyStatus === 2}
                         onChange={handelDescriptionChange}
@@ -476,7 +458,11 @@ const PolicyCard = ({
             </StoreModal>
             <StoreModal
                 isVisible={addVersion}
-                title={t('labels:add_version')}
+                title={
+                    <div className='text-regal-blue font-bold text-[18px] leading-[26px]'>
+                        {t('labels:add_version')}
+                    </div>
+                }
                 isSpin={false}
                 cancelCallback={() => setAddVersion(false)}
                 width={400}
@@ -490,7 +476,9 @@ const PolicyCard = ({
             </StoreModal>
             <StoreModal
                 isVisible={translatePolicy}
-                title={t('labels:translate')}
+                title={
+                    <div className='text-regal-blue font-bold text-[18px] leading-[26px]'>{t('labels:translate')}</div>
+                }
                 isSpin={false}
                 cancelCallback={() => setTranslatePolicy(false)}
                 width={1088}
@@ -502,11 +490,16 @@ const PolicyCard = ({
                     storeId={storeId}
                     setTranslatePolicy={setTranslatePolicy}
                     storeUUID={storeUUID}
-                    refetchUserConsent={refetchUserConsent}></TranslatePolicy>
+                    refetchUserConsent={refetchUserConsent}
+                    policyStatus={policyStatus}></TranslatePolicy>
             </StoreModal>
             <StoreModal
                 isVisible={policyConfirmation}
-                title={t('labels:publish_policy_confirmation')}
+                title={
+                    <div className='text-regal-blue font-bold text-[18px] leading-[26px]'>
+                        {t('labels:publish_policy_confirmation')}
+                    </div>
+                }
                 isSpin={publishUserConsentStatus === 'pending'}
                 cancelCallback={() => setPolicyConfirmation(false)}
                 width={500}
@@ -514,19 +507,21 @@ const PolicyCard = ({
                 cancelButtonText={t('labels:cancel')}
                 okCallback={() => handelPublishConsent()}
                 destroyOnClose={true}>
-                <div className='pt-[6px]'>
-                    <p>{t('messages:policy_confirmation_message')}</p>
+                <div className='pt-[6px] text-brandGray1'>
+                    <p className='!mb-0'>{t('messages:policy_confirmation_message')}</p>
                     <p>{t('messages:policy_confirmation_note')}</p>
                 </div>
             </StoreModal>
             <StoreModal
                 isVisible={policyChangeWarning}
-                title={t('labels:confirm')}
+                title={
+                    <div className='text-regal-blue font-bold text-[18px] leading-[26px]'>{t('labels:confirm')}</div>
+                }
                 isSpin={false}
                 cancelCallback={() => setPolicyChangeWarning(false)}
                 width={380}
                 destroyOnClose={true}>
-                <div className='input-label-color'>
+                <div className='text-brandGray1'>
                     <p>
                         {t('messages:policy_change_warning_info', {
                             version,

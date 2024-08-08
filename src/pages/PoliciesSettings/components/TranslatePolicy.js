@@ -70,6 +70,7 @@ function TranslatePolicy({
     setTranslatePolicy,
     storeUUID,
     refetchUserConsent,
+    policyStatus,
 }) {
     const { t } = useTranslation()
     const {
@@ -426,6 +427,7 @@ function TranslatePolicy({
                                                 placeholder={t('labels:enter_policy_title')}
                                                 onChange={(e) => consentNameHandler(e.target?.value)}
                                                 value={selectedConsentDisplayNameData?.consentTitleDisplayName}
+                                                disabled={policyStatus === 2}
                                                 maxLength={CONSENT_NAME_LENGTH}
                                                 onBlur={(e) => {
                                                     if (e.target?.value) {
@@ -442,7 +444,7 @@ function TranslatePolicy({
                                             </span>
                                         </label>
                                         <div
-                                            className=' rounded border-[1px] drop-shadow-sm shadow-[#D9D9D9] border-[#D9D9D9]  bg-white w-[600px] !max-h-[300px] !h-[270px] !overflow-y-auto overflow-x-hidden'
+                                            className={`rounded border-[1px] drop-shadow-sm shadow-[#D9D9D9] border-[#D9D9D9]  w-[600px] !max-h-[300px] !h-[270px] !overflow-y-auto overflow-x-hidden ${policyStatus === 2 ? 'opacity-40 !cursor-not-allowed pointer-events-none bg-[#00000014]' : 'bg-white'}`}
                                             data-text-editor={'versiontranslate'}>
                                             <ReactQuill
                                                 theme='snow'
@@ -453,6 +455,7 @@ function TranslatePolicy({
                                                 formats={formats}
                                                 placeholder={t('labels:enter_policy_description')}
                                                 bounds={`[data-text-editor=versiontranslate]`}
+                                                readOnly={policyStatus === 2}
                                             />
                                         </div>
                                     </div>

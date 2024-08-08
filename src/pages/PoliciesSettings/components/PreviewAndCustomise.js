@@ -167,10 +167,10 @@ const PreviewAndCustomise = ({ closeModal, refetchUserConsent, storeName, storeI
                             </Paragraph>
                             <div className=' relative w-[600px] h-[507px] '>
                                 <img src={ConsentPreview} alt='ConsentPreview' />
-                                <div className=' absolute  flex w-full items-start gap-x-2 bg-white !pl-[70px] top-[145px] !text-[13px] max-h-[114px] overflow-y-auto drop-shadow-md py-3'>
+                                <div className=' absolute  flex w-full items-start gap-x-2 bg-[#F5F5F5] !pl-[70px] top-[238px] !text-[13px] max-h-[114px] overflow-y-auto drop-shadow-md py-3'>
                                     {explicit ? <Checkbox /> : null}
                                     <div className={` ${explicit ? 'w-[90%]' : ' w-full'} `}>
-                                        <span className=' mr-1'>{leadInLine?.trim()}</span>
+                                        <span className=' mr-1 input-label-color'>{leadInLine?.trim()}</span>
                                         {reorderList?.length > 0 &&
                                             reorderList?.map((list, index) => {
                                                 return (
@@ -183,7 +183,7 @@ const PreviewAndCustomise = ({ closeModal, refetchUserConsent, storeName, storeI
                                                                     mouseEnterDelay: 0.5,
                                                                 },
                                                             }}
-                                                            className=' text-[#1890FF] text-[13px] '>
+                                                            className=' text-[13px] '>
                                                             <span className=' text-black'>
                                                                 {index !== 0 ? ', ' : ''}
                                                             </span>
@@ -208,16 +208,16 @@ const PreviewAndCustomise = ({ closeModal, refetchUserConsent, storeName, storeI
                                                                     mouseEnterDelay: 0.5,
                                                                 },
                                                             }}
-                                                            className=' text-[#1890FF] text-xs  '>
+                                                            className=' text-xs  '>
                                                             {list?.name}
                                                         </Text>
                                                     </div>
                                                 )
                                             })}
                                     </div>
-                                    <p className=' text-xs text-black !mb-0'>
+                                    <p className=' text-xs text-black'>
                                         {t('labels:copyright')} - {t('labels:torry_harris_integration_solutions')} -{' '}
-                                        {t('labels:torry_harris_marketplace')} - {t('labels:admin_portal')}{' '}
+                                        {t('labels:torry_harris_marketplace')} - {t('labels:admin_portal')} -{' '}
                                         {t('labels:version')} {portalInfo.version}
                                     </p>
                                 </div>
@@ -234,7 +234,7 @@ const PreviewAndCustomise = ({ closeModal, refetchUserConsent, storeName, storeI
                             <Switch
                                 checked={explicit}
                                 onChange={handelExplicitChange}
-                                className={` mb-4 ${explicit ? '!bg-green-500' : '!bg-gray-400'}`}
+                                className={` mb-4 ${explicit ? '!bg-brandPrimaryColor' : '!bg-gray-400'}`}
                             />
                             <p className=' !text-black font-normal !text-opacity-40  !mb-0'>
                                 {t('labels:lead_in_line')} <span className=' text-red-500'>*</span>
@@ -315,14 +315,17 @@ const PreviewAndCustomise = ({ closeModal, refetchUserConsent, storeName, storeI
                         </div>
                     </div>
                     <div className=' flex justify-end'>
+                        <Button className='app-btn-secondary mx-2' onClick={() => closeModal()}>
+                            {t('labels:cancel')}
+                        </Button>
                         <Button
-                            className='app-btn-primary  uppercase'
+                            className='app-btn-primary'
                             loading={updateConsentsOrderStatus === 'pending' || UpdateConsentLeadStatus === 'pending'}
                             onClick={handelSave}
                             disabled={!leadInLine?.trim()}>
                             {updateConsentsOrderStatus === 'pending' || UpdateConsentLeadStatus === 'pending'
                                 ? ''
-                                : t('common:ok')}
+                                : t('labels:publish')}
                         </Button>
                     </div>
                 </>

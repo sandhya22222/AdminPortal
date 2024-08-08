@@ -29,7 +29,7 @@ deploy:
         - eval `ssh-agent -s`
         - ssh-add $SSH_PRIVATE_KEY_FDM283
         - echo -e "[ap]\n$IP_FDM283 ansible_user=rocky ansible_ssh_private_key_file=$SSH_PRIVATE_KEY_FDM283" > inventory
-        - ansible-playbook -i inventory --extra-vars "@portals.yml" AP/upgradeap.yml
+        - ansible-playbook -i inventory --extra-vars "@portals.yml" --extra-vars "branchname=$CI_COMMIT_BRANCH" AP/upgradeap.yml
     only:
         - version2.8.5
     needs: [build]    
@@ -40,7 +40,7 @@ notify_build_success:
     - 283-cicd
   script:
     - |
-      CURRENT_DATE_TIME=$(date +"%Y-%m-%d %H:%M:%S")
+      CURRENT_DATE_TIME=$(date +"%Y-%m-%d %I:%M:%S %p")
       EMAIL_SUBJECT="Build Status: Success for $CI_PROJECT_NAME"
       EMAIL_BODY="Hello,\n\nThe build for project: $CI_PROJECT_NAME (ID: $CI_PROJECT_ID) was successful.\n\nCommit ID: $CI_COMMIT_SHA\nCommit Message: $CI_COMMIT_MESSAGE\n\nBuild Completed At: $CURRENT_DATE_TIME\n\nYou can view the build details at: $CI_PROJECT_URL\n\nThank you,\nThe DevOps Team"
 
@@ -90,3 +90,4 @@ notify_deploy_failure:
   when: on_failure
   needs:
     - job: deploy
+  
