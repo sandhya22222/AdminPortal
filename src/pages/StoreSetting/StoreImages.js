@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { Typography, Upload, Layout, Modal, Button, Tooltip, Image, Alert } from 'antd'
-import { PlusOutlined, UploadOutlined } from '@ant-design/icons'
+import {  Upload, Layout, Modal, Image, Alert } from 'antd'
+import { PlusOutlined } from '@ant-design/icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { fnAbsoluteStoreImageInfo } from '../../services/redux/actions/ActionStoreImages'
 import { useTranslation } from 'react-i18next'
@@ -11,7 +11,6 @@ import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import './StoreImages.css'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import util from '../../util/common'
-const { Title } = Typography
 const { Content } = Layout
 
 const storeDeleteImagesAPI = process.env.REACT_APP_STORE_DELETE_IMAGES_API
@@ -75,7 +74,7 @@ const StoreImages = ({
                 parseInt(allImageUrl && allImageUrl.length) + parseInt(e && e.fileList && e.fileList.length)
             )
             selectedImageArrayOfObject.push(e.file)
-            var sampleBannerImagesLength =
+            let sampleBannerImagesLength =
                 parseInt(allImageUrl && allImageUrl.length) + parseInt(e && e.fileList && e.fileList.length)
 
             if (e.fileList.length === 0) {
@@ -175,8 +174,6 @@ const StoreImages = ({
                     setImagePathShow()
                 }
             }
-            if (type === 'banner_images') {
-            }
             if (type === 'customer_logo') {
                 let temp = getImageData && getImageData.customer_logo_path
                 if (temp !== null) {
@@ -220,7 +217,7 @@ const StoreImages = ({
     useEffect(() => {
         if (bannerAbsoluteImage && bannerAbsoluteImage.length > 0) {
             let temp = []
-            for (var i = 0; i < bannerAbsoluteImage.length; i++) {
+            for (let i = 0; i < bannerAbsoluteImage.length; i++) {
                 if (type === 'banner_images') {
                     temp.push(baseURL + bannerAbsoluteImage[i].image_fullpath)
                 }
@@ -522,7 +519,7 @@ const StoreImages = ({
                 okButtonText={t('labels:yes')}
                 cancelButtonText={t('labels:cancel')}
                 title={
-                    <div className='text-regal-blue font-bold text-[18px] leading-[26px]'>{t('labels:warning')}</div>
+                    <div className='text-regal-blue font-bold text-[18px] leading-[26px]'>{t('labels:delete_image')}</div>
                 }
                 okCallback={() => removeMedia()}
                 cancelCallback={() => closeDeleteModal()}
@@ -530,7 +527,6 @@ const StoreImages = ({
                 hideCloseButton={false}>
                 {
                     <div className='text-brandGray1'>
-                        <p className='!mb-0'>{t('messages:confirm_image_deletion')}</p>
                         <p>{t('messages:delete_confirmation_message')}</p>
                     </div>
                 }

@@ -28,7 +28,6 @@ import FrontEndKeysDownloadIcon from '../assets/images/common/FrontEndKeysDownlo
 import BackendKeysDownloadIcon from '../assets/images/common/BackendKeysDownloadIcon.svg'
 import UserAccessControl from '../assets/images/common/UserAccessControl.svg'
 import StoreSettings from '../assets/images/sidebar/cog.svg'
-// import PaymentSettingsIcon from '../assets/images/sidebar/settings.svg'
 import SettingsSelected from '../assets/images/sidebar/SettingsSelected.svg'
 import SettingsNotSelected from '../assets/images/sidebar/SettingsNotSelected.svg'
 import BackIcon from '../assets/images/sidebar/backIcon.svg'
@@ -45,6 +44,11 @@ import CheckGreen from '../assets/images/common/checkgreen.svg'
 import deleteIcon from '../assets/images/common/deleteIcon.svg'
 import InfoIcon from '../assets/images/common/infoIcon.svg'
 import EmptySVG from '../assets/images/common/Empty.svg'
+import InfoSymbol from '../assets/images/common/InfoSymbol.svg'
+import ExclamationCircle from '../assets/images/common/ExclamationCircle.svg'
+import storeDefaultImage from '../assets/images/common/storeDefaultImage.svg'
+import warningInfoIcon from '../assets/images/common/warningInfoIcon.svg'
+
 export {
     LoginBackground,
     Favicon,
@@ -77,7 +81,6 @@ export {
     BackendKeysDownloadIcon,
     UserAccessControl,
     StoreSettings,
-    // PaymentSettingsIcon,
     BackIcon,
     Collapse,
     saveStoreConfirmationImage,
@@ -91,5 +94,9 @@ export {
     CheckGreen,
     deleteIcon,
     InfoIcon,
-    EmptySVG
+    EmptySVG,
+    InfoSymbol,
+    ExclamationCircle,
+    storeDefaultImage,
+    warningInfoIcon,
 }

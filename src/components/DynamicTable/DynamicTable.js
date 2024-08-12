@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Dropdown, DropdownToggle, DropdownMenu } from 'reactstrap'
-import { Button, Skeleton } from 'antd'
-import { Layout, Table, Row, Col, Input, Space, Checkbox, Select, Typography } from 'antd'
+import { Button, Skeleton, Layout, Table, Row, Col, Input, Space, Checkbox, Select, Typography } from 'antd'
 import { sortObjectArrayByKey, deepCopy } from '../../util/util'
 import { AiFillFilter } from 'react-icons/ai'
 const { Content } = Layout
@@ -63,7 +62,6 @@ const DynamicTable = ({ tableComponentData }) => {
     //tableComponentData is the props getting from other component
     //copyOfDataSource is taking the copy of props.i.e tableComponentData for this here we are making the deep copy these props conatins the nested array of objects;
     let copyofDataSource = deepCopy(tableComponentData)
-    const [copyOfDataSource, setCopyOfDataSource] = useState()
     // dataSource is the state variable which stores the copyOfDataSource
     const [dataSource, setDataSource] = useState(copyofDataSource)
     // storing the data for table
@@ -74,19 +72,14 @@ const DynamicTable = ({ tableComponentData }) => {
     const [selectedSortingType, setSelectedSortingType] = useState()
     // opening and closing of dropdown
     const [openFilteringDropDown, setOpenFilteringDropDown] = useState(false)
-    //selecting the rows of the table
-    const [alreadySelectedRows, setAlreadySelectedRows] = useState()
-    //text we are typing in searchbox we are storing here
-    const [searchBoxTitle, setSearchBoxTitle] = useState('')
     //when ever user click on any check box that values should saved on this state variable
     const [checkBoxData, setCheckBoxData] = useState([])
     const [updateingDataFromServer, setUpdateingDataFromServer] = useState(0)
     // onloading we are sorting the data based on sorting props where user will define on what bases which we have to sort
-    //!TODO Check this componet properly
+  
     useEffect(() => {
         let copyOfDataSource = deepCopy(tableComponentData)
         setDataSource(copyOfDataSource)
-        setCopyOfDataSource(copyOfDataSource)
         let copyData = [...dataSource.table_content]
         if (
             tableComponentData.sorting_settings.sorting_data &&
@@ -140,7 +133,7 @@ const DynamicTable = ({ tableComponentData }) => {
                 // in result we are stored the data based on text which user enters in the serach box
                 let searchResult = []
                 // for loop will goes until serachdata length and we will store data in serach Result
-                for (var i = 0; i < dataSource.search_settings.search_data.length; i++) {
+                for (let i = 0; i < dataSource.search_settings.search_data.length; i++) {
                     const searchKey = dataSource.search_settings.search_data[i]
                     const results = dataSource.table_content.filter((user) => {
                         return user[searchKey].toLowerCase().startsWith(searchValue.toLowerCase())
@@ -158,7 +151,6 @@ const DynamicTable = ({ tableComponentData }) => {
                 // If the text field is empty, show all users
             }
         }
-        setSearchBoxTitle(searchValue)
     }
     const handleSorting = (sortkey, data, sorttype) => {
         const sortedData = sortObjectArrayByKey(sortkey, 'string', data, sorttype)
@@ -170,7 +162,7 @@ const DynamicTable = ({ tableComponentData }) => {
         if (checkBoxData && checkBoxData.length > 0) {
             let allCheckBoxTypes = []
             // first loop goes until checkBox Datalength
-            for (var i = 0; i < checkBoxData.length; i++) {
+            for (let i = 0; i < checkBoxData.length; i++) {
                 // type contains checkbox type ,,i.e type =producttypr or categoryid
                 const type = checkBoxData[i].type
                 // we are collecting all types and storing it in allcheckboxtypes array
@@ -181,25 +173,24 @@ const DynamicTable = ({ tableComponentData }) => {
             if (uniqueCheckBoxTypes.length > 0) {
                 let finalFilterData = []
                 // in this loop we are uniqueCheckBoxTypeslength
-                for (var i = 0; i < uniqueCheckBoxTypes.length; i++) {
+                for (let i = 0; i < uniqueCheckBoxTypes.length; i++) {
                     let filteredData = finalFilterData
                     if (filteredData.length === 0) {
                         // we are setting tabledata to filteredData during initial rendering and if filtereddata.length ===0
                         filteredData = [...table_content]
                     }
-                    var type = uniqueCheckBoxTypes[i]
+                    let type = uniqueCheckBoxTypes[i]
                     // we are getting the data which equals to type we are getting in firstloop and we are storing to typedaata
                     const typeData = checkBoxData.filter((element) => element.type === type)
                     let localFilteredData = []
                     // in this loop we are until typedatalength
-                    for (var j = 0; j < typeData.length; j++) {
+                    for (let j = 0; j < typeData.length; j++) {
                         // we are storing the id of that selected check box type
-                        var value = typeData[j].id
+                        let value = typeData[j].id
                         // we are filtering the data based on that id
                         const filterResult = filteredData.filter((element) => element[type] === value)
                         // storing the filterresult to localFiltereddata
                         localFilteredData = localFilteredData.concat(filterResult)
-                        // console.log("localfiltereddata--------------", localFilteredData);
                     }
                     finalFilterData = localFilteredData
                 }
@@ -246,7 +237,6 @@ const DynamicTable = ({ tableComponentData }) => {
         if (sortType !== 'default') {
             setTableData(handleSorting(sortKey, copyData, sortType))
         } else {
-            //handleFilter(dataSource.table_content);
             setUpdateingDataFromServer(updateingDataFromServer + 1)
         }
     }

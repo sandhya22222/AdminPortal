@@ -6,7 +6,7 @@ stages:
 build:
     stage: build
     tags:
-      - 283-cicd
+      - 291-cicd
     script: 
         - pwd
         - echo "Fetching devops scripts..."
@@ -14,30 +14,31 @@ build:
         - cd devops
         - ansible-playbook -i inventory portals/AP/create_build.yml --extra-vars "branchname=$CI_COMMIT_BRANCH"
     only:
-        - version2.8.5
+        - version2.9.4
+
 deploy:
     stage: deploy
     tags:
-      - 283-cicd
+      - 291-cicd
     script:
         - git clone http://$username:$password@172.30.58.37/marketplace/devops.git
         - cd devops
-        - git checkout fdm283
+        - git checkout thmp291
         - cd Dev-Upgrades
-        - chmod 600 $SSH_PRIVATE_KEY_FDM283
+        - chmod 600 $SSH_PRIVATE_KEY_THMP291
         - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )'
         - eval `ssh-agent -s`
-        - ssh-add $SSH_PRIVATE_KEY_FDM283
-        - echo -e "[ap]\n$IP_FDM283 ansible_user=rocky ansible_ssh_private_key_file=$SSH_PRIVATE_KEY_FDM283" > inventory
+        - ssh-add $SSH_PRIVATE_KEY_THMP291
+        - echo -e "[ap]\n$IP_THMP291 ansible_user=rocky ansible_ssh_private_key_file=$SSH_PRIVATE_KEY_THMP291" > inventory
         - ansible-playbook -i inventory --extra-vars "@portals.yml" --extra-vars "branchname=$CI_COMMIT_BRANCH" AP/upgradeap.yml
     only:
-        - version2.8.5
+        - version2.9.4
     needs: [build]    
 
 notify_build_success:
   stage: notify
   tags:
-    - 283-cicd
+    - 291-cicd
   script:
     - |
       CURRENT_DATE_TIME=$(date +"%Y-%m-%d %I:%M:%S %p")
@@ -52,7 +53,7 @@ notify_build_success:
 notify_build_failure:
   stage: notify
   tags:
-    - 283-cicd
+    - 291-cicd
   script:
     - |
       EMAIL_SUBJECT="Build Status: Failure for $CI_PROJECT_NAME"
@@ -66,7 +67,7 @@ notify_build_failure:
 notify_deploy_success:
   stage: notify
   tags:
-    - 283-cicd
+    - 291-cicd
   script:
     - |
       EMAIL_SUBJECT="Deployment Status: Success for $CI_PROJECT_NAME"
@@ -80,7 +81,7 @@ notify_deploy_success:
 notify_deploy_failure:
   stage: notify
   tags:
-    - 283-cicd
+    - 291-cicd
   script:
     - |
       EMAIL_SUBJECT="Deployment Status: Failure for $CI_PROJECT_NAME"

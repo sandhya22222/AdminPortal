@@ -1,7 +1,6 @@
-import { UserOutlined, InfoCircleOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons'
+import { UserOutlined, InfoCircleOutlined, PlusOutlined, SearchOutlined, StarFilled } from '@ant-design/icons'
 import {
     Button,
-    Col,
     Divider,
     Drawer,
     Input,
@@ -18,14 +17,21 @@ import {
     Alert,
     Badge,
     Empty,
-    Table,
+    Segmented,
+    Tag,
 } from 'antd'
 import React, { useEffect, useState } from 'react'
 import validator from 'validator'
-import { MdInfo, MdSettings } from 'react-icons/md'
-import { Link, useLocation, useSearchParams } from 'react-router-dom'
+import { MdInfo } from 'react-icons/md'
+import { Link, useLocation, useSearchParams, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { saveStoreConfirmationImage } from '../../constants/media'
+import {
+    saveStoreConfirmationImage,
+    InfoSymbol,
+    ExclamationCircle,
+    storeDefaultImage,
+    warningInfoIcon,
+} from '../../constants/media'
 //! Import user defined components
 import DmPagination from '../../components/DmPagination/DmPagination'
 import DynamicTable from '../../components/DynamicTable/DynamicTable'
@@ -61,9 +67,11 @@ const currentUserDetailsAPI = process.env.REACT_APP_USER_PROFILE_API
 const maxDataLimit = process.env.REACT_APP_MAX_DATA_LIMIT
 const emailRegexPattern = process.env.REACT_APP_REGEX_PATTERN_EMAIL
 const searchMaxLength = process.env.REACT_APP_SEARCH_MAX_LENGTH
+const domainName = process.env.REACT_APP_DOMAIN_NAME
 
 const Stores = () => {
     const { t } = useTranslation()
+    const navigate = useNavigate()
     usePageTitle(t('labels:stores'))
     const instance = axios.create()
     const search = useLocation().search
@@ -105,6 +113,12 @@ const Stores = () => {
     const [errorField, setErrorField] = useState('')
     const [searchValue, setSearchValue] = useState('')
     const [isSearchTriggered, setIsSearchTriggered] = useState(false)
+    const [storeType, setStoreType] = useState('partner')
+    const [isDistributor, setIsDistributor] = useState(false)
+    const [errors, setErrors] = useState({})
+    const [isOpenModalForMakingDistributor, setIsOpenModalForMakingDistributor] = useState(false)
+    const [inValidEmailFormat, setInValidEmailFormat] = useState(false)
+
     const auth = useAuth()
     const permissionValue = util.getPermissionData() || []
     let keyCLoak = sessionStorage.getItem('keycloakData')
@@ -138,6 +152,7 @@ const Stores = () => {
     }
 
     const handleRadioChange = (e) => {
+        setSearchValue('')
         setValue(e.target.value)
         setSearchParams({
             m_t: m_tab_id,
@@ -364,7 +379,7 @@ const Stores = () => {
     //! table columns
     const StoreTableColumn = [
         {
-            title: `${t('labels:name')}`,
+            title: `${t('labels:store_name')}`,
             dataIndex: 'name',
             key: 'name',
             width: '30%',
@@ -372,28 +387,52 @@ const Stores = () => {
             render: (text, record) => {
                 return (
                     <>
-                        <Row>
-                            <Tooltip title={record.name} placement='bottom'>
-                                <Text
-                                    className='max-w-xs text-brandGray1'
-                                    ellipsis={{ tooltip: record.name }}
-                                    disabled={record.status === 3 ? true : false}>
-                                    {record.name}
-                                </Text>
-                            </Tooltip>
-                        </Row>
-                        {record.status === 3 ? (
-                            <Spin spinning={storeStatusLoading}>
-                                {console.log('storeId === record.storeId', storeId, record.storeId)}
-                                <div
-                                    className='flex space-x-2'
-                                    // onLoad={handleStoreDataStore(record.id, record.storeId)}
-                                >
-                                    <Badge status='processing' />
-                                    <Text>{t('labels:processing')}</Text>
-                                </div>
-                            </Spin>
-                        ) : null}
+                        <div className='flex'>
+                            <div className=''>
+                                <img src={storeDefaultImage} className='aspect-square mt-1' />
+                            </div>
+                            <div className=''>
+                                <Row>
+                                    <Text
+                                        className='text-brandGray1 mb-1 !max-w-[150px]'
+                                        ellipsis={{ tooltip: record.name }}
+                                        disabled={record.status === 3 ? true : false}>
+                                        {record.name}
+                                    </Text>
+                                </Row>
+                                <Row>
+                                    {record.isDistributor ? (
+                                        <Tag color='blue'>
+                                            <StarFilled /> {t('labels:distributor')}
+                                        </Tag>
+                                    ) : (
+                                        <Tag color='cyan'>{t('labels:partner')}</Tag>
+                                    )}{' '}
+                                    {!isDistributor && (
+                                        <Tooltip title={t('messages:store_type_info')}>
+                                            <img
+                                                src={ExclamationCircle}
+                                                alt='ExclamationCircleIcon'
+                                                width={15}
+                                                height={15}
+                                            />
+                                        </Tooltip>
+                                    )}
+                                </Row>
+                                {record.status === 3 ? (
+                                    <Spin spinning={storeStatusLoading}>
+                                        {console.log('storeId === record.storeId', storeId, record.storeId)}
+                                        <div
+                                            className='flex space-x-1'
+                                            // onLoad={handleStoreDataStore(record.id, record.storeId)}
+                                        >
+                                            <Badge status='processing' />
+                                            <Text>{t('labels:processing')}</Text>
+                                        </div>
+                                    </Spin>
+                                ) : null}
+                            </div>
+                        </div>
                     </>
                 )
             },
@@ -421,6 +460,7 @@ const Stores = () => {
                         statusInprogressData={statusInprogressData}
                         setPreviousStatus={setPreviousStatus}
                         previousStatus={previousStatus}
+                        isDistributor={record.isDistributor}
                     />
                 )
             },
@@ -465,29 +505,30 @@ const Stores = () => {
                                 </Tooltip>
                             </Link>
                         ) : (
-                            <Button type='text' className='app-btn-text' disabled={record.status === 3 ? true : false}>
-                                <Link
-                                    to={{
-                                        pathname: 'storesetting',
-                                        search: `?id=${record.id}&page=${
+                            <Button
+                                type='text'
+                                className='app-btn-icon'
+                                disabled={record.status === 3 ? true : false}
+                                onClick={() => {
+                                    navigate(
+                                        `/dashboard/store/storesetting?id=${record.id}&page=${
                                             searchParams.get('page') ? searchParams.get('page') : 1
                                         }&limit=${
                                             searchParams.get('limit') ? searchParams.get('limit') : pageLimit
-                                        }&storeId=${record.storeId}&rmn=${record.realmName}`,
-                                    }}
-                                    className=' !no-underline'>
-                                    {/* <Tooltip
-                                            overlayStyle={{ zIndex: 1 }}
-                                            title={t('labels:store_settings')}
-                                            placement='bottom'>
-                                            <MdSettings className='text-[var(--mp-primary-border-color)] hover:text-[var(--mp-primary-border-color-h)] !text-xl' /> */}
-                                    {/* </Tooltip> */}
-                                    <Text
-                                        className='text-brandPrimaryColor text-sm font-medium leading-[22px]'
-                                        disabled={record.status === 3 ? true : false}>
-                                        {t('labels:edit')}
-                                    </Text>
-                                </Link>
+                                        }&storeId=${record.storeId}&rmn=${record.realmName}&storeType=${record.isDistributor ? 'distributor' : 'partner'}&isDistributor=${record.isDistributor}`
+                                    )
+                                }}>
+                                <svg
+                                    width='14'
+                                    height='14'
+                                    viewBox='0 0 14 14'
+                                    fill='none'
+                                    xmlns='http://www.w3.org/2000/svg'>
+                                    <path
+                                        d='M3.02644 10.75C3.05769 10.75 3.08894 10.7469 3.12019 10.7422L5.74832 10.2813C5.77957 10.275 5.80925 10.261 5.83113 10.2375L12.4546 3.61411C12.4691 3.59965 12.4805 3.58248 12.4884 3.56358C12.4962 3.54468 12.5003 3.52442 12.5003 3.50395C12.5003 3.48349 12.4962 3.46323 12.4884 3.44432C12.4805 3.42542 12.4691 3.40825 12.4546 3.3938L9.85769 0.795358C9.828 0.765671 9.78894 0.750046 9.74675 0.750046C9.70457 0.750046 9.6655 0.765671 9.63582 0.795358L3.01238 7.4188C2.98894 7.44223 2.97488 7.47036 2.96863 7.50161L2.50769 10.1297C2.49249 10.2134 2.49792 10.2996 2.52351 10.3807C2.54911 10.4619 2.59409 10.5355 2.65457 10.5954C2.75769 10.6954 2.88738 10.75 3.02644 10.75ZM4.07957 8.02505L9.74675 2.35942L10.8921 3.50473L5.22488 9.17036L3.83582 9.41567L4.07957 8.02505ZM12.7499 12.0625H1.24988C0.973315 12.0625 0.749878 12.286 0.749878 12.5625V13.125C0.749878 13.1938 0.806128 13.25 0.874878 13.25H13.1249C13.1936 13.25 13.2499 13.1938 13.2499 13.125V12.5625C13.2499 12.286 13.0264 12.0625 12.7499 12.0625Z'
+                                        fill='#023047'
+                                    />
+                                </svg>
                             </Button>
                         )}
                     </>
@@ -516,6 +557,7 @@ const Stores = () => {
                 var createdOn = element.created_on
                 var storeStatus = element.status
                 var realmName = element.realmname
+                var isDistributor = element.distributor_store
                 tempArray &&
                     tempArray.push({
                         key: index,
@@ -525,6 +567,7 @@ const Stores = () => {
                         status: storeStatus,
                         storeId: storeActualId,
                         realmName: realmName,
+                        isDistributor: isDistributor,
                     })
             })
         setSelectedTabTableContent(tempArray)
@@ -663,6 +706,7 @@ const Stores = () => {
         setName('')
         setStoreEmail('')
         setStoreUserName('')
+        setStoreType('partner')
         setOnChangeValues(false)
     }
 
@@ -673,6 +717,7 @@ const Stores = () => {
 
     //!get call for stores
     const findByPageStoreApi = (pageNumber, pageLimit, storeStatus, searchKey) => {
+        console.log('pageNumber--->',pageNumber,'storeStatus--->',storeStatus)
         setIsLoading(true)
         let params = {}
         params['status'] = storeStatus ? storeStatus : null
@@ -701,6 +746,7 @@ const Stores = () => {
                 console.log('Server Response from findByPageStoreApi Function: ', response.data.response_body)
                 setStoreApiData(response.data.response_body.data)
                 setCountForStore(response.data.response_body.count)
+                setIsDistributor(response.data.response_body.distributor_store)
             })
             .catch((error) => {
                 setIsLoading(false)
@@ -740,8 +786,6 @@ const Stores = () => {
 
     //! another get call for stores for particular store_uuid
     const findAllStoreData = (statusUUid, id) => {
-        console.log('statusUUid', statusUUid, id)
-
         MarketplaceServices.findAll(
             storeAPI,
             {
@@ -847,97 +891,122 @@ const Stores = () => {
         return () => clearInterval(intervalId)
     }, [statusInprogressData, storeApiData])
 
-    //! validation for post call
+    // //! validation for post call
+    // const validateStorePostField = () => {
+    //     const emailRegex = new RegExp(emailRegexPattern)
+    //     let count = 3
+    //     if (storeEmail === '' && storeUserName === '' && name === '') {
+    //         setInValidEmail(true)
+    //         setInValidUserName(true)
+    //         setInValidName(true)
+    //         count--
+    //         MarketplaceToaster.showToast(
+    //             util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
+    //         )
+    //     } else if (storeEmail === '' && storeUserName === '' && name !== '') {
+    //         setInValidEmail(true)
+    //         setInValidUserName(true)
+    //         count--
+    //         MarketplaceToaster.showToast(
+    //             util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
+    //         )
+    //     } else if (storeEmail !== '' && storeUserName === '' && name === '') {
+    //         setInValidUserName(true)
+    //         setInValidName(true)
+    //         count--
+    //         MarketplaceToaster.showToast(
+    //             util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
+    //         )
+    //     } else if (storeEmail === '' && storeUserName !== '' && name === '') {
+    //         setInValidEmail(true)
+    //         setInValidName(true)
+    //         count--
+    //         MarketplaceToaster.showToast(
+    //             util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
+    //         )
+    //     } else if (storeEmail === '' && storeUserName !== '' && name !== '') {
+    //         setInValidEmail(true)
+    //         count--
+    //         MarketplaceToaster.showToast(
+    //             util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
+    //         )
+    //     } else if (storeEmail !== '' && storeUserName === '' && name !== '') {
+    //         setInValidUserName(true)
+    //         count--
+    //         MarketplaceToaster.showToast(
+    //             util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
+    //         )
+    //     } else if (storeEmail !== '' && storeUserName !== '' && name === '') {
+    //         setInValidName(true)
+    //         count--
+    //         MarketplaceToaster.showToast(
+    //             util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
+    //         )
+    //     } else if (
+    //         name &&
+    //         validator.isLength(name.trim(), {
+    //             min: storeNameMinLength,
+    //             max: storeNameMaxLength,
+    //         }) === false
+    //     ) {
+    //         setInValidName(true)
+    //         count--
+    //         MarketplaceToaster.showToast(
+    //             util.getToastObject(
+    //                 `${t('messages:store_name_must_contain_minimum_of')} ${storeNameMinLength}, ${t(
+    //                     'messages:maximum_of'
+    //                 )} ${storeNameMaxLength} ${t('messages:characters')}`,
+    //                 'error'
+    //             )
+    //         )
+    //     } else if (storeEmail && emailRegex.test(storeEmail) === false) {
+    //         setInValidEmail(true)
+    //         count--
+    //         MarketplaceToaster.showToast(
+    //             util.getToastObject(`${t('messages:please_enter_the_valid_email_address')}`, 'error')
+    //         )
+    //     } else if (
+    //         storeUserName &&
+    //         validator.isLength(storeUserName.trim(), {
+    //             min: userNameMinLength,
+    //             max: userNameMaxLength,
+    //         }) === false
+    //     ) {
+    //         setInValidUserName(true)
+    //         count--
+    //         MarketplaceToaster.showToast(
+    //             util.getToastObject(
+    //                 `${t('messages:username_must_contain_minimum_of')} ${userNameMinLength}, ${t(
+    //                     'messages:maximum_of'
+    //                 )} ${userNameMaxLength} ${t('messages:characters')}`,
+    //                 'error'
+    //             )
+    //         )
+    //     }
+    //     if (count === 3) {
+    //         saveStoreData()
+    //     }
+    // }
+
     const validateStorePostField = () => {
         const emailRegex = new RegExp(emailRegexPattern)
         let count = 3
-        if (storeEmail === '' && storeUserName === '' && name === '') {
-            setInValidEmail(true)
-            setInValidUserName(true)
+        if (!name || name.length < 3) {
             setInValidName(true)
             count--
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        } else if (storeEmail === '' && storeUserName === '' && name !== '') {
+        }
+
+        if (!storeEmail || emailRegex.test(storeEmail) === false) {
             setInValidEmail(true)
+            if (storeEmail && !emailRegex.test(storeEmail)) {
+                setInValidEmailFormat(true)
+            }
+            count--
+        }
+
+        if (!storeUserName || storeUserName.length < 3) {
             setInValidUserName(true)
             count--
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        } else if (storeEmail !== '' && storeUserName === '' && name === '') {
-            setInValidUserName(true)
-            setInValidName(true)
-            count--
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        } else if (storeEmail === '' && storeUserName !== '' && name === '') {
-            setInValidEmail(true)
-            setInValidName(true)
-            count--
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        } else if (storeEmail === '' && storeUserName !== '' && name !== '') {
-            setInValidEmail(true)
-            count--
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        } else if (storeEmail !== '' && storeUserName === '' && name !== '') {
-            setInValidUserName(true)
-            count--
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        } else if (storeEmail !== '' && storeUserName !== '' && name === '') {
-            setInValidName(true)
-            count--
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-            )
-        } else if (
-            name &&
-            validator.isLength(name.trim(), {
-                min: storeNameMinLength,
-                max: storeNameMaxLength,
-            }) === false
-        ) {
-            setInValidName(true)
-            count--
-            MarketplaceToaster.showToast(
-                util.getToastObject(
-                    `${t('messages:store_name_must_contain_minimum_of')} ${storeNameMinLength}, ${t(
-                        'messages:maximum_of'
-                    )} ${storeNameMaxLength} ${t('messages:characters')}`,
-                    'error'
-                )
-            )
-        } else if (storeEmail && emailRegex.test(storeEmail) === false) {
-            setInValidEmail(true)
-            count--
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('messages:please_enter_the_valid_email_address')}`, 'error')
-            )
-        } else if (
-            storeUserName &&
-            validator.isLength(storeUserName.trim(), {
-                min: userNameMinLength,
-                max: userNameMaxLength,
-            }) === false
-        ) {
-            setInValidUserName(true)
-            count--
-            MarketplaceToaster.showToast(
-                util.getToastObject(
-                    `${t('messages:username_must_contain_minimum_of')} ${userNameMinLength}, ${t(
-                        'messages:maximum_of'
-                    )} ${userNameMaxLength} ${t('messages:characters')}`,
-                    'error'
-                )
-            )
         }
         if (count === 3) {
             saveStoreData()
@@ -950,6 +1019,7 @@ const Stores = () => {
             name: name.trim(),
             username: storeUserName.trim(),
             email: storeEmail.trim(),
+            distributor_store: storeType === 'partner' ? false : true,
         }
         setIsUpLoading(true)
         MarketplaceServices.save(storeAPI, postBody)
@@ -972,9 +1042,8 @@ const Stores = () => {
                 MarketplaceToaster.showToast(error.response)
                 if (Number(error.response.data.status_code) === 409) {
                     setInValidName(true)
-                    // setName('')
-                    setOnChangeValues(false)
                 }
+
                 console.log('Error response from the store post call', error.response)
             })
     }
@@ -1104,7 +1173,9 @@ const Stores = () => {
             )
         } else {
             if (isSearchTriggered) {
-                findByPageStoreApi()
+                findByPageStoreApi(undefined,undefined,parseInt(searchParams.get('tab')) && parseInt(searchParams.get('tab')) <= 2
+                ? parseInt(searchParams.get('tab'))
+                : '',undefined)
                 setIsSearchTriggered(false)
             }
         }
@@ -1115,11 +1186,29 @@ const Stores = () => {
         setSearchValue(trimmedUpdate)
         if (event.target.value == '') {
             if (isSearchTriggered) {
-                findByPageStoreApi()
+                findByPageStoreApi(undefined,undefined,parseInt(searchParams.get('tab')) && parseInt(searchParams.get('tab')) <= 2
+                ? parseInt(searchParams.get('tab'))
+                : '',undefined)
                 setIsSearchTriggered(false)
             }
         }
     }
+
+    const handleStoreTypeChange = (val) => {
+        if (storeType === 'partner') {
+            setIsOpenModalForMakingDistributor(true)
+        } else {
+            setStoreType(val)
+        }
+    }
+    const handleStoreTypeChangeConfirmation = () => {
+        setStoreType('distributor')
+        setIsOpenModalForMakingDistributor(false)
+    }
+    const onCloseStoreTypeChangeModal = () => {
+        setIsOpenModalForMakingDistributor(false)
+    }
+
     const customButton = (
         <Button type='primary' disabled={searchValue?.trim() === '' ? true : false} icon={<SearchOutlined />} />
     )
@@ -1167,172 +1256,6 @@ const Stores = () => {
                     </Content>
                 }
             />
-            <Drawer
-                title={
-                    drawerAction && drawerAction === 'post' ? (
-                        <div className='text-regal-blue leading-[26px] text-[18px] font-bold'>
-                            {t('labels:add_store')}
-                        </div>
-                    ) : (
-                        `${t('labels:edit_store')}`
-                    )
-                }
-                placement={util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'left' : 'right'}
-                onClose={onClose}
-                open={open}
-                width={'40%'}>
-                {drawerAction && drawerAction === 'post' ? (
-                    <>
-                        {/* <Row>
-                            <Col span={1} className='flex items-start mt-[3px]'>
-                                <MdInfo className='!text-[var(--mp-brand-color-h)] text-[16px]' />
-                            </Col>
-                            <Col span={23} className='align-center mb-3'>
-                                <Text className=' mr-1 font-bold'> {t('labels:note')}: </Text>
-                                <Text>{t('messages:add_store_description')}</Text>
-                            </Col>
-                        </Row> */}
-                        <Spin tip={t('labels:please_wait')} size='large' spinning={isUpLoading}>
-                            <label
-                                className='text-[14px] leading-[22px] font-normal text-brandGray2 mb-2 ml-1 '
-                                id='labStNam'>
-                                {t('labels:store_name')}
-                            </label>
-                            <span className='mandatory-symbol-color text-sm ml-1'>*</span>
-                            <Input
-                                placeholder={t('placeholders:enter_store_name')}
-                                value={name}
-                                minLength={storeNameMinLength}
-                                maxLength={storeNameMaxLength}
-                                className={`${
-                                    inValidName
-                                        ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-[0.5rem]'
-                                        : 'mb-[0.5rem]'
-                                }`}
-                                onChange={(e) => {
-                                    const alphaWithoutSpaces = /^[a-zA-Z0-9]+$/
-                                    if (
-                                        e.target.value !== '' &&
-                                        validator.matches(e.target.value, alphaWithoutSpaces)
-                                    ) {
-                                        setName(e.target.value)
-                                        setOnChangeValues(true)
-                                    } else if (e.target.value === '') {
-                                        setName(e.target.value)
-                                        setOnChangeValues(false)
-                                    }
-                                    setInValidName(false)
-                                }}
-                                onBlur={() => {
-                                    const trimmed = name.trim()
-                                    const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
-                                    setName(trimmedUpdate)
-                                }}
-                            />
-                            <div className='font-semibold my-2 text-[18px] leading-[26px] text-regal-blue'>
-                                {t('labels:store_administrator_details')}
-                            </div>
-                            <Alert
-                                icon={<MdInfo className='font-bold !text-center' />}
-                                message={
-                                    <div className=''>
-                                        <Text className=' mr-1 text-brandGray1'> {t('labels:note')}:</Text>
-                                        <Text className='text-brandGray1'>{t('messages:add_store_description')}</Text>
-                                    </div>
-                                }
-                                type='info'
-                                showIcon
-                                className='my-3'
-                            />
-                            <label
-                                className='mb-2 ml-1 text-[14px] leading-[22px] font-normal text-brandGray2'
-                                id='labStEmail'>
-                                {t('labels:email')}
-                            </label>
-                            <span className='mandatory-symbol-color text-sm ml-1'>*</span>
-                            <Input
-                                placeholder={t('placeholders:enter_email')}
-                                value={storeEmail}
-                                minLength={emailMinLength}
-                                maxLength={emailMaxLength}
-                                className={`${
-                                    inValidEmail
-                                        ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-6'
-                                        : 'mb-6'
-                                }`}
-                                onChange={(e) => {
-                                    setInValidEmail(false)
-                                    if (e.target.value === '') {
-                                        setOnChangeValues(false)
-                                        setStoreEmail(e.target.value)
-                                    } else {
-                                        setOnChangeValues(true)
-                                        setStoreEmail(e.target.value.trim())
-                                    }
-                                }}
-                                onBlur={() => {
-                                    const trimmed = storeEmail.trim()
-                                    const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
-                                    setStoreEmail(trimmedUpdate)
-                                }}
-                            />
-
-                            <label
-                                className=' mb-2 ml-1 text-[14px] leading-[22px] font-normal text-brandGray2'
-                                id='labStUseName'>
-                                {t('labels:username')}
-                            </label>
-                            <span className='mandatory-symbol-color text-sm ml-1'>*</span>
-                            <Input
-                                placeholder={t('placeholders:enter_username')}
-                                value={storeUserName}
-                                minLength={userNameMinLength}
-                                maxLength={userNameMaxLength}
-                                className={`${
-                                    inValidUserName
-                                        ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400 mb-10'
-                                        : 'mb-10'
-                                }`}
-                                prefix={<UserOutlined className='site-form-item-icon' />}
-                                onChange={(e) => {
-                                    const regex = /^[A-Za-z0-9_\- ]+$/
-                                    if (e.target.value !== '' && validator.matches(e.target.value, regex)) {
-                                        setInValidUserName(false)
-                                        setStoreUserName(String(e.target.value).toLowerCase().trim())
-                                        setOnChangeValues(true)
-                                    } else if (e.target.value === '') {
-                                        setStoreUserName(e.target.value)
-                                        setOnChangeValues(false)
-                                    }
-                                }}
-                                onBlur={() => {
-                                    const trimmed = storeUserName.trim()
-                                    const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
-                                    setStoreUserName(trimmedUpdate)
-                                }}
-                            />
-                            <Content className='flex space-x-3 !justify-end'>
-                                <Button
-                                    className={onChangeValues ? 'app-btn-secondary' : '!opacity-75'}
-                                    disabled={!onChangeValues}
-                                    onClick={() => {
-                                        onClose()
-                                    }}>
-                                    {t('labels:cancel')}
-                                </Button>
-                                <Button
-                                    className={onChangeValues ? 'app-btn-primary' : '!opacity-75'}
-                                    disabled={!onChangeValues}
-                                    onClick={() => {
-                                        validateStorePostField()
-                                    }}>
-                                    {t('labels:save')}
-                                </Button>
-                            </Content>
-                        </Spin>
-                    </>
-                ) : null}
-            </Drawer>
             <div className='!p-5'>
                 <Content className=''>
                     {isLoading ? (
@@ -1350,46 +1273,63 @@ const Stores = () => {
                         <>
                             <Content className=''>
                                 {parseInt(currentTab) === 1 ? (
-                                    <Content className=''>
+                                    <Content className='bg-white p-3 shadow-brandShadow rounded-md '>
+                                        <div className='flex w-full justify-between items-center py-3 px-3'>
+                                            <div className='text-base font-semibold text-regal-blue'>
+                                                {t('labels:my_stores')}
+                                            </div>
+                                            <div className='flex items-center justify-end gap-2 flex-row flex-grow'>
+                                                <Radio.Group
+                                                    className={`min-w-min`}
+                                                    optionType='button'
+                                                    onChange={handleRadioChange}
+                                                    value={value}>
+                                                    <Radio value={0}>{t('labels:all')}</Radio>
+                                                    <Radio value={1}>{t('labels:active')}</Radio>
+                                                    <Radio value={2}>{t('labels:inactive')}</Radio>
+                                                </Radio.Group>
+                                                <Search
+                                                    placeholder={t('placeholders:please_enter_search_text_here')}
+                                                    onSearch={handleSearchChange}
+                                                    onChange={handleInputChange}
+                                                    value={searchValue}
+                                                    suffix={null}
+                                                    maxLength={searchMaxLength}
+                                                    enterButton={customButton}
+                                                    allowClear
+                                                    className='w-[250px]'
+                                                />
+                                            </div>
+                                        </div>
                                         {selectedTabTableContent?.length === 0 &&
                                         isSearchTriggered &&
                                         searchValue?.length > 0 ? (
-                                            <Content className='text-center font-semibold ml-2 mt-3 bg-white p-3'>
+                                            <Content className='text-center font-semibold ml-2 mt-3 '>
                                                 <Text>{t('placeholders:not_able_to_find_searched_details')}</Text>
                                             </Content>
                                         ) : (
                                             <>
                                                 {selectedTabTableContent?.length > 0 ? (
-                                                    <Content className='shadow-brandShadow rounded-md bg-white'>
-                                                        <div className='flex w-full justify-between items-center py-3 px-3'>
-                                                            <div className='text-base font-semibold text-regal-blue'>
-                                                                {t('labels:my_stores')}
-                                                            </div>
-                                                            <div className='flex items-center justify-end gap-2 flex-row flex-grow'>
-                                                                <Radio.Group
-                                                                    className={`min-w-min`}
-                                                                    optionType='button'
-                                                                    onChange={handleRadioChange}
-                                                                    value={value}>
-                                                                    <Radio value={0}>{t('labels:all')}</Radio>
-                                                                    <Radio value={1}>{t('labels:active')}</Radio>
-                                                                    <Radio value={2}>{t('labels:inactive')}</Radio>
-                                                                </Radio.Group>
-                                                                <Search
-                                                                    placeholder={t(
-                                                                        'placeholders:please_enter_search_text_here'
-                                                                    )}
-                                                                    onSearch={handleSearchChange}
-                                                                    onChange={handleInputChange}
-                                                                    value={searchValue}
-                                                                    suffix={null}
-                                                                    maxLength={searchMaxLength}
-                                                                    enterButton={customButton}
-                                                                    allowClear
-                                                                    className='w-[250px]'
+                                                    <Content className=''>
+                                                        {!isDistributor && (
+                                                            <div className='px-3 my-2'>
+                                                                <Alert
+                                                                    icon={<MdInfo className='font-bold !text-center' />}
+                                                                    message={
+                                                                        <div className=''>
+                                                                            <Text className='text-brandGray1'>
+                                                                                {t(
+                                                                                    'messages:no_distributor_store_present_info'
+                                                                                )}{' '}
+                                                                            </Text>
+                                                                        </div>
+                                                                    }
+                                                                    type='info'
+                                                                    showIcon
+                                                                    className=''
                                                                 />
                                                             </div>
-                                                        </div>
+                                                        )}
                                                         <DynamicTable tableComponentData={storeTableData} />
                                                         {parseInt(m_tab_id) === 1 ? (
                                                             <Content className=' grid justify-items-end mx-3 h-fit'>
@@ -1518,6 +1458,269 @@ const Stores = () => {
                         <p>{t('messages:store_deletion_confirmation_message')}</p>
                     </div>
                 }
+            </StoreModal>
+            <StoreModal
+                title={t('labels:add_store')}
+                isVisible={open}
+                okButtonText={null}
+                cancelButtonText={null}
+                okCallback={() => validateStorePostField()}
+                hideCloseButton={true}
+                cancelCallback={() => onClose()}
+                isSpin={false}
+                width={800}
+                isScroll={false}>
+                <Content>
+                    {drawerAction && drawerAction === 'post' ? (
+                        <>
+                            <Spin tip={t('labels:please_wait')} size='large' spinning={isUpLoading}>
+                                <div>
+                                    <label
+                                        className='text-[14px] leading-[22px] font-normal text-brandGray2 mb-2 ml-1 '
+                                        id='labStNam'>
+                                        {t('labels:store_domain_name')}
+                                    </label>
+                                    <span className='mandatory-symbol-color text-sm ml-1'>*</span>
+                                </div>
+                                <div className='flex'>
+                                    <Input
+                                        placeholder={t('placeholders:enter_store_name')}
+                                        value={name}
+                                        minLength={storeNameMinLength}
+                                        maxLength={storeNameMaxLength}
+                                        className={`!w-[50%] ${
+                                            inValidName
+                                                ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400 '
+                                                : ''
+                                        }`}
+                                        onChange={(e) => {
+                                            const alphaWithoutSpaces = /^[a-zA-Z0-9]+$/
+                                            if (
+                                                e.target.value !== '' &&
+                                                validator.matches(e.target.value, alphaWithoutSpaces)
+                                            ) {
+                                                setName(e.target.value)
+                                                setOnChangeValues(true)
+                                            } else if (e.target.value === '') {
+                                                setName(e.target.value)
+                                                setOnChangeValues(false)
+                                            }
+                                            setInValidName(false)
+                                        }}
+                                        onBlur={() => {
+                                            const trimmed = name.trim()
+                                            const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
+                                            setName(trimmedUpdate)
+                                        }}
+                                    />
+                                    <span className='mx-3 mt-1 text-brandGray2'>{domainName}</span>
+                                </div>
+                                {inValidName && name === '' && (
+                                    <div className='text-red-600 flex gap-1 mt-1'>
+                                        <img src={warningInfoIcon} /> {t('messages:empty_store_name_message')}
+                                    </div>
+                                )}
+                                {inValidName && name && name?.length < 3 && (
+                                    <div className='text-red-600 flex gap-1 mt-1'>
+                                        <img src={warningInfoIcon} /> {t('messages:enter_valid_store_name_message')}
+                                    </div>
+                                )}
+                                <div className='flex !mt-5'>
+                                    <label
+                                        className='text-[14px] leading-[22px] font-normal text-brandGray2 mb-2 ml-1 '
+                                        id='labStNam'>
+                                        {t('labels:store_type')}
+                                    </label>
+                                    <span className='mandatory-symbol-color text-sm ml-1'>*</span>
+                                    <span className='mt-1 ml-1'>
+                                        <Tooltip
+                                            autoAdjustOverflow={true}
+                                            title={
+                                                <>
+                                                    <ul
+                                                        style={{
+                                                            listStyleType: 'disc',
+                                                            marginLeft: 0,
+                                                            paddingLeft: '20px',
+                                                        }}>
+                                                        <li>{t('messages:store_type_info_partner')}</li>
+                                                        <li>{t('messages:store_type_info_distributor')}</li>
+                                                    </ul>
+                                                </>
+                                            }>
+                                            <img src={InfoSymbol} alt='InfoSymbol' />
+                                        </Tooltip>
+                                    </span>
+                                </div>
+                                <Segmented
+                                    options={[
+                                        {
+                                            value: 'partner',
+                                            label: t('labels:partner'),
+                                        },
+                                        {
+                                            value: 'distributor',
+                                            label: t('labels:Distributor'),
+                                        },
+                                    ]}
+                                    block={true}
+                                    className='w-[35%] custom-segmented'
+                                    value={storeType}
+                                    onChange={(value) => {
+                                        handleStoreTypeChange(value)
+                                    }}
+                                    disabled={isDistributor}
+                                />
+                                <div className='font-bold  mt-[22px] text-[16px] leading-[24px] text-regal-blue'>
+                                    {t('labels:store_administrator_details')}
+                                </div>
+                                <Alert
+                                    icon={<MdInfo className='font-bold !text-center' />}
+                                    message={
+                                        <div className=''>
+                                            <Text className=' mr-1 text-brandGray1'> {t('labels:note')}:</Text>
+                                            <Text className='text-brandGray1'>
+                                                {t('messages:add_store_description')}{' '}
+                                                <span className='font-bold'>{t('labels:store_management_portal')}</span>
+                                            </Text>
+                                        </div>
+                                    }
+                                    type='info'
+                                    showIcon
+                                    className='my-3 !w-[89%]'
+                                />
+                                <div>
+                                    <label
+                                        className='mb-2 ml-1 text-[14px] leading-[22px] font-normal text-brandGray2'
+                                        id='labStEmail'>
+                                        {t('labels:email')}
+                                    </label>
+                                    <span className='mandatory-symbol-color text-sm ml-1'>*</span>
+                                </div>
+                                <Input
+                                    placeholder={t('placeholders:enter_email')}
+                                    value={storeEmail}
+                                    minLength={emailMinLength}
+                                    maxLength={emailMaxLength}
+                                    className={`!w-[50%] ${
+                                        inValidEmail
+                                            ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400'
+                                            : ''
+                                    }`}
+                                    onChange={(e) => {
+                                        setInValidEmail(false)
+                                        if (e.target.value === '') {
+                                            setOnChangeValues(false)
+                                            setStoreEmail(e.target.value)
+                                        } else {
+                                            setOnChangeValues(true)
+                                            setStoreEmail(e.target.value.trim())
+                                        }
+                                    }}
+                                    onBlur={() => {
+                                        const trimmed = storeEmail.trim()
+                                        const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
+                                        setStoreEmail(trimmedUpdate)
+                                    }}
+                                />
+                                {inValidEmail && storeEmail === '' && (
+                                    <div className='text-red-600 flex gap-1 mt-1'>
+                                        <img src={warningInfoIcon} /> {t('messages:empty_email_name_message')}
+                                    </div>
+                                )}
+                                {inValidEmail && storeEmail && inValidEmailFormat && (
+                                    <div className='text-red-600 flex gap-1 mt-1'>
+                                        <img src={warningInfoIcon} /> {t('messages:enter_valid_email_message')}
+                                    </div>
+                                )}
+                                <div>
+                                    <label
+                                        className='mt-4 ml-1 text-[14px] leading-[22px] font-normal text-brandGray2'
+                                        id='labStUseName'>
+                                        {t('labels:username')}
+                                    </label>
+                                    <span className='mandatory-symbol-color text-sm ml-1'>*</span>
+                                </div>
+                                <Input
+                                    placeholder={t('placeholders:enter_username')}
+                                    value={storeUserName}
+                                    minLength={userNameMinLength}
+                                    maxLength={userNameMaxLength}
+                                    className={`!w-[50%] mt-2 ${
+                                        inValidUserName
+                                            ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400'
+                                            : ''
+                                    }`}
+                                    prefix={<UserOutlined className='site-form-item-icon' />}
+                                    onChange={(e) => {
+                                        const regex = /^[A-Za-z0-9_\- ]+$/
+                                        if (e.target.value !== '' && validator.matches(e.target.value, regex)) {
+                                            setInValidUserName(false)
+                                            setStoreUserName(String(e.target.value).toLowerCase().trim())
+                                            setOnChangeValues(true)
+                                        } else if (e.target.value === '') {
+                                            setStoreUserName(e.target.value)
+                                            setOnChangeValues(false)
+                                        }
+                                    }}
+                                    onBlur={() => {
+                                        const trimmed = storeUserName.trim()
+                                        const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
+                                        setStoreUserName(trimmedUpdate)
+                                    }}
+                                />
+                                {inValidUserName && storeUserName === '' && (
+                                    <div className='text-red-600 flex gap-1 mt-1'>
+                                        <img src={warningInfoIcon} /> {t('messages:empty_user_name_message')}
+                                    </div>
+                                )}
+                                {inValidUserName && storeUserName && storeUserName?.length < 3 && (
+                                    <div className='text-red-600 flex gap-1 mt-1'>
+                                        <img src={warningInfoIcon} /> {t('messages:enter_valid_user_name_message')}
+                                    </div>
+                                )}
+                                <Content className='flex space-x-3 !justify-end'>
+                                    <Button
+                                        className={onChangeValues ? 'app-btn-secondary' : '!opacity-75'}
+                                        disabled={!onChangeValues}
+                                        onClick={() => {
+                                            onClose()
+                                        }}>
+                                        {t('labels:cancel')}
+                                    </Button>
+                                    <Button
+                                        className={onChangeValues ? 'app-btn-primary' : '!opacity-75'}
+                                        disabled={!onChangeValues}
+                                        onClick={() => {
+                                            validateStorePostField()
+                                        }}>
+                                        {t('labels:save')}
+                                    </Button>
+                                </Content>
+                            </Spin>
+                        </>
+                    ) : null}
+                </Content>
+            </StoreModal>
+            <StoreModal
+                title={
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <img src={ExclamationCircle} alt='ExclamationCircleIcon' />
+                        {t('labels:set_as_distributor_store')}
+                    </div>
+                }
+                isVisible={isOpenModalForMakingDistributor}
+                okButtonText={t('labels:set_as_distributor')}
+                cancelButtonText={t('labels:cancel')}
+                okCallback={() => handleStoreTypeChangeConfirmation()}
+                hideCloseButton={true}
+                cancelCallback={() => onCloseStoreTypeChangeModal()}
+                isSpin={false}
+                width={600}
+                isScroll={false}>
+                <div className='!px-7'>
+                    <p>{t('messages:set_as_distributor_store_desc')}</p>
+                </div>
             </StoreModal>
         </Content>
     )

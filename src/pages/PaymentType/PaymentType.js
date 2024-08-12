@@ -1,12 +1,10 @@
 import React, { useEffect } from 'react'
-import { Layout, Typography, Table } from 'antd'
+import { Layout, Table } from 'antd'
 
-import DynamicTable from '../../components/DynamicTable/DynamicTable'
 import HeaderForTitle from '../../components/header/HeaderForTitle'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import { useTranslation } from 'react-i18next'
 const { Content } = Layout
-const { Title } = Typography
 
 const PaymentType = () => {
     const { t } = useTranslation()

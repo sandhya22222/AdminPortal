@@ -7,11 +7,14 @@ import MarketplaceToaster from '../../util/marketplaceToaster'
 import util from '../../util/common'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useSearchParams, useNavigate } from 'react-router-dom'
+import { StarFilled } from '@ant-design/icons'
 import Status from '../Stores/Status'
 import StoreImages from './StoreImages'
 import StoreRestrictions from './StoreRestrictions'
 import Currency from './Currency'
 import PoliciesSettings from '../PoliciesSettings/PoliciesSettings'
+import { storeDefaultImage } from '../../constants/media'
+
 import Theme from './Theme'
 import StoreOverview from './StoreOverview'
 const { Content } = Layout
@@ -30,6 +33,8 @@ const StoreSettingsLayout = () => {
     const storeIdFromUrl = new URLSearchParams(search).get('storeId')
     const mainTab = new URLSearchParams(search).get('tab')
     const realmName = new URLSearchParams(search).get('rmn')
+    const isDistributor = new URLSearchParams(search).get('isDistributor')
+    const storeType = new URLSearchParams(search).get('storeType')
     const [searchParams, setSearchParams] = useSearchParams()
     const [changeSwitchStatus, setChangeSwitchStatus] = useState()
     const [storeData, setStoreData] = useState()
@@ -275,6 +280,8 @@ const StoreSettingsLayout = () => {
             storeId: storeIdFromUrl,
             rmn: realmName,
             tab: tabKey,
+            storeType: storeType,
+            isDistributor: isDistributor,
         })
     }
 
@@ -300,7 +307,7 @@ const StoreSettingsLayout = () => {
         setHideActionButton(isScopeAvailable)
         setDisableStatus(isScopeAvailable)
         setDisableMediaButton(isScopeAvailable)
-    }, [auth,permissionValue])
+    }, [auth, permissionValue])
 
     useEffect(() => {
         findAllStoreApi()
@@ -322,6 +329,8 @@ const StoreSettingsLayout = () => {
                     storeId: storeIdFromUrl,
                     rmn: realmName,
                     tab: STORE_SETTINGS_TABS_OPTIONS.STORE_RESTRICTIONS,
+                    storeType: storeType,
+                    isDistributor: isDistributor,
                 })
             } else {
                 setSearchParams({
@@ -331,29 +340,50 @@ const StoreSettingsLayout = () => {
                     storeId: storeIdFromUrl,
                     rmn: realmName,
                     tab: STORE_SETTINGS_TABS_OPTIONS.OVERVIEW,
+                    storeType: storeType,
+                    isDistributor: isDistributor,
                 })
             }
         }
     }, [searchParams, hideActionButton, permissionValue])
 
-    console.log('changeSwitchStatus----->', changeSwitchStatus)
+   console.log('isDistributor---->', typeof isDistributor)
 
     return (
         <Content>
             <HeaderForTitle
                 title={
                     <Content className='flex !w-[80vw]'>
-                        <Content className='!w-[75%] flex gap-2 mb-3'>
-                            <div className='!font-semibold  text-2xl mt-2 '>{storeName}</div>
-                            <div className='mt-3'>
-                                <Tag color='success' className=''>
-                                    {changeSwitchStatus === 1 ? `${t('labels:active')}` : `${t('labels:inactive')}`}
-                                </Tag>
+                        <Content className='!w-[75%] flex gap-2 !mt-2'>
+                            <div className=''>
+                                <img src={storeDefaultImage} className='aspect-square !mt-2' />
+                            </div>
+                            <div className='flex gap-2'>
+                                <div className='!font-semibold  text-2xl'>
+                                    {storeName}{' '}
+                                    <div className='!mb-3'>
+                                        {storeType === 'distributor' ? (
+                                            <Tag color='blue'>
+                                                {' '}
+                                                <StarFilled /> {t('labels:distributor')}
+                                            </Tag>
+                                        ) : (
+                                            <Tag color='cyan'>{t('labels:partner')}</Tag>
+                                        )}
+                                    </div>
+                                </div>
+                                <div className='mt-2'>
+                                    <Tag
+                                        color={`${changeSwitchStatus === 1 ? '#52C41A' : '#F0F0F0'}`}
+                                        style={{ color: `${changeSwitchStatus === 1 ? 'white' : '#b4b4b4'}` }}
+                                        className='!rounded-xl'>
+                                        {changeSwitchStatus === 1 ? `${t('labels:active')}` : `${t('labels:inactive')}`}
+                                    </Tag>
+                                </div>
                             </div>
                         </Content>
-                        <Content className=' flex !gap-2 !mt-3'>
+                        <div className=' !w-[180px] flex  !gap-2 !mt-3 !mx-2'>
                             <Text className='text-brandGray2'>{t('labels:status')} : </Text>
-
                             <Status
                                 storeId={id}
                                 storeStatus={changeSwitchStatus === 1 ? true : false}
@@ -365,8 +395,9 @@ const StoreSettingsLayout = () => {
                                 setDuplicateStoreStatus={setDuplicateStoreStatus}
                                 setPreviousStatus={setPreviousStatus}
                                 previousStatus={previousStatus}
+                                isDistributor={JSON.parse(isDistributor)}
                             />
-                        </Content>
+                        </div>
                     </Content>
                 }
                 backNavigationPath={`/dashboard/store?m_t=1`}
@@ -375,7 +406,7 @@ const StoreSettingsLayout = () => {
                 className='!min-h-20'
             />
 
-            <div className='!px-6 !pb-6  !mt-[10.6rem]'>
+            <div className='!px-6 !pb-6  !mt-[12.5rem]'>
                 <div className=' w-full bg-white rounded shadow-brandShadow flex  justify-start'>
                     <div className=' py-4 h-full '>
                         {permissionValue?.length > 0 ? (

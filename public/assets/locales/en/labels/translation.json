@@ -306,5 +306,15 @@
     "change_currency_details": "Change Currency Details",
     "primary_button": "Primary Button",
     "secondary_button": "Secondary Button",
-    "tertiary_button": "Tertiary Button"
+    "tertiary_button": "Tertiary Button",
+    "delete_image": "Delete Image",
+    "store_type": "Store Type",
+    "partner": "Partner",
+    "distributor": "Distributor",
+    "set_as_distributor": "Set as Distributor",
+    "set_as_distributor_store": "Set as Distributor Store",
+    "store_management_portal": "Store Management Portal.",
+    "store_domain_name": "Store Domain Name",
+    "go_to": "Go to",
+    "page_capital": "Page"
 }
