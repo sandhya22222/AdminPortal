@@ -14,6 +14,7 @@ import Cookies from 'js-cookie'
 
 const useAuthorization = () => {
     const authorizationValue =
+        // window.sessionStorage.getItem("ap_access_token") || null;
         Cookies.get('ap_access_token') || null
 
     const authorizationHeader = {

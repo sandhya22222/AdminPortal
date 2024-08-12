@@ -18,6 +18,7 @@ function AddVersion({
     const [inputValuefirst, setInputValueFirst] = useState()
     const [inputValueSecond, setInputValueSecond] = useState()
     const { t } = useTranslation()
+    const [versionNumberChanged, setVersionNumberChanged] = useState(false)
     const { mutate: createNewVersion, status: createNewVersionStatus } = useCreateVersion()
     let numbers = String(versionNumber).split('.')
     useEffect(() => {
@@ -39,6 +40,17 @@ function AddVersion({
         }
     }, [versionNumber])
 
+    // useEffect(() => {
+    //     if (
+    //         inputValuefirst &&
+    //         inputValueSecond &&
+    //         (String(versionNumber) === '1' ? '1.0' : String(versionNumber)) !== inputValuefirst + '.' + inputValueSecond
+    //     ) {
+    //         setVersionNumberChanged(true)
+    //     } else {
+    //         setVersionNumberChanged(false)
+    //     }
+    // }, [inputValuefirst, inputValueSecond])
 
     const inputHandlerfirst = (value) => {
         if (value === null) {

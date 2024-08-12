@@ -65,8 +65,11 @@ const StoreSettings = () => {
     const [storeName, setStoreName] = useState()
     const [currencySymbol, setCurrencySymbol] = useState('')
     const [currencyIsoCode, setCurrencyIsoCode] = useState('')
+
     const [pageBackgroundColor, setPageBackgroundColor] = useState('#EBEBEB')
+    const [pageBgColor, setPageBgColor] = useState('#EBEBEB')
     const [foreGroundColor, setForeGroundColor] = useState('#333333')
+    const [pageFgColor, setPageFgColor] = useState('#333333')
     const [buttonPrimaryBackgroundColor, setButtonPrimaryBackgroundColor] = useState('#000000')
     const [btnPrimaryBgColor, setBtnPrimaryBgColor] = useState('#000000')
     const [buttonSecondaryBackgroundColor, setButtonSecondaryBackgroundColor] = useState('#000000')
@@ -80,9 +83,13 @@ const StoreSettings = () => {
     const [buttonTeritaryForegroundColor, setButtonTeritaryForegroundColor] = useState('#000000')
     const [btnTeritaryFgColor, setbtnTeritaryFgColor] = useState('#000000')
     const [footerBackgroundColor, setFooterBackgroundColor] = useState('#000000')
+    const [footerBgColor, setFooterBgColor] = useState('#000000')
     const [footerForegroundColor, setFooterForegroundColor] = useState('#000000')
+    const [footerFgColor, setFooterFgColor] = useState('#000000')
     const [headerBackgroundColor, setHeaderBackgroundColor] = useState('#000000')
+    const [headerBgColor, setHeaderBgColor] = useState('#000000')
     const [headerForegroundColor, setHeaderForegroundColor] = useState('#000000')
+    const [headerFgColor, setHeaderFgColor] = useState('#000000')
     const [isLoading, setIsLoading] = useState(false)
     const [isStoreLimitDataLoading, setIsStoreLimitDataLoading] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -118,6 +125,7 @@ const StoreSettings = () => {
         footerTextValidation: false,
     })
     const [onChangeValues, setOnChangeValues] = useState(false)
+    const [imageChangeValues, setImageChangeValues] = useState(false)
     const [filteredCurrencyData, setFilteredCurrencyData] = useState([])
     const [resetModalOpen, setResetModalOpen] = useState(false)
     const [resetLoader, setResetLoader] = useState(false)
@@ -205,7 +213,9 @@ const StoreSettings = () => {
                 setPageBackgroundColor(
                     response.data.response_body.store_settings_data[0].store_page_settings[0].bg_color
                 )
+                setPageBgColor(response.data.response_body.store_settings_data[0].store_page_settings[0].bg_color)
                 setForeGroundColor(response.data.response_body.store_settings_data[0].store_page_settings[0].fg_color)
+                setPageFgColor(response.data.response_body.store_settings_data[0].store_page_settings[0].fg_color)
                 setButtonPrimaryBackgroundColor(
                     response.data.response_body.store_settings_data[0].store_page_settings[0].btn_primary_bg_color
                 )
@@ -245,15 +255,19 @@ const StoreSettings = () => {
                 setHeaderBackgroundColor(
                     response.data.response_body.store_settings_data[0].store_header_settings[0].bg_color
                 )
+                setHeaderBgColor(response.data.response_body.store_settings_data[0].store_header_settings[0].bg_color)
                 setHeaderForegroundColor(
                     response.data.response_body.store_settings_data[0].store_header_settings[0].fg_color
                 )
+                setHeaderFgColor(response.data.response_body.store_settings_data[0].store_header_settings[0].fg_color)
                 setFooterBackgroundColor(
                     response.data.response_body.store_settings_data[0].store_footer_settings[0].bg_color
                 )
+                setFooterBgColor(response.data.response_body.store_settings_data[0].store_footer_settings[0].bg_color)
                 setFooterForegroundColor(
                     response.data.response_body.store_settings_data[0].store_footer_settings[0].fg_color
                 )
+                setFooterFgColor(response.data.response_body.store_settings_data[0].store_footer_settings[0].fg_color)
             })
             .catch((error) => {
                 console.log('error response from store settings API', error)
@@ -302,7 +316,9 @@ const StoreSettings = () => {
                 setCopyImageOfStoreFooterSetting(response.data.response_body.store_footer_settings[0])
                 setImageOfStoreFooterSettings(response.data.response_body.store_footer_settings[0])
                 setPageBackgroundColor(response.data.response_body.store_page_settings[0].bg_color)
+                setPageBgColor(response.data.response_body.store_page_settings[0].bg_color)
                 setForeGroundColor(response.data.response_body.store_page_settings[0].fg_color)
+                setPageFgColor(response.data.response_body.store_page_settings[0].fg_color)
                 setButtonPrimaryBackgroundColor(response.data.response_body.store_page_settings[0].btn_primary_bg_color)
                 setBtnPrimaryBgColor(response.data.response_body.store_page_settings[0].btn_primary_bg_color)
                 setButtonPrimaryForegroundColor(response.data.response_body.store_page_settings[0].btn_primary_fg_color)
@@ -324,9 +340,13 @@ const StoreSettings = () => {
                 )
                 setbtnTeritaryFgColor(response.data.response_body.store_page_settings[0].btn_tertiary_fg_color)
                 setHeaderBackgroundColor(response.data.response_body.store_header_settings[0].bg_color)
+                setHeaderBgColor(response.data.response_body.store_header_settings[0].bg_color)
                 setHeaderForegroundColor(response.data.response_body.store_header_settings[0].fg_color)
+                setHeaderFgColor(response.data.response_body.store_header_settings[0].fg_color)
                 setFooterBackgroundColor(response.data.response_body.store_footer_settings[0].bg_color)
+                setFooterBgColor(response.data.response_body.store_footer_settings[0].bg_color)
                 setFooterForegroundColor(response.data.response_body.store_footer_settings[0].fg_color)
+                setFooterFgColor(response.data.response_body.store_footer_settings[0].fg_color)
             })
             .catch((error) => {
                 setResetLoader(false)
@@ -530,7 +550,9 @@ const StoreSettings = () => {
                 setCopyImageOfStoreFooterSetting(response.data.response_body.store_footer_settings[0])
                 setImageOfStoreFooterSettings(response.data.response_body.store_footer_settings[0])
                 setPageBackgroundColor(response.data.response_body.store_page_settings[0].bg_color)
+                setPageBgColor(response.data.response_body.store_page_settings[0].bg_color)
                 setForeGroundColor(response.data.response_body.store_page_settings[0].fg_color)
+                setPageFgColor(response.data.response_body.store_page_settings[0].fg_color)
                 setButtonPrimaryBackgroundColor(response.data.response_body.store_page_settings[0].btn_primary_bg_color)
                 setBtnPrimaryBgColor(response.data.response_body.store_page_settings[0].btn_primary_bg_color)
                 setButtonPrimaryForegroundColor(response.data.response_body.store_page_settings[0].btn_primary_fg_color)
@@ -552,9 +574,13 @@ const StoreSettings = () => {
                 )
                 setbtnTeritaryFgColor(response.data.response_body.store_page_settings[0].btn_tertiary_fg_color)
                 setHeaderBackgroundColor(response.data.response_body.store_header_settings[0].bg_color)
+                setHeaderBgColor(response.data.response_body.store_header_settings[0].bg_color)
                 setHeaderForegroundColor(response.data.response_body.store_header_settings[0].fg_color)
+                setHeaderFgColor(response.data.response_body.store_header_settings[0].fg_color)
                 setFooterBackgroundColor(response.data.response_body.store_footer_settings[0].bg_color)
+                setFooterBgColor(response.data.response_body.store_footer_settings[0].bg_color)
                 setFooterForegroundColor(response.data.response_body.store_footer_settings[0].fg_color)
+                setFooterFgColor(response.data.response_body.store_footer_settings[0].fg_color)
             })
             .catch((error) => {
                 console.log('Error Response From storeSettingPostCall', error.response)
@@ -734,12 +760,12 @@ const StoreSettings = () => {
     const saveStoreLogoImageCall = () => {
         const formData = new FormData()
         if (imagesUpload && imagesUpload.length > 0) {
-            for (let i = 0; i < imagesUpload.length; i++) {
+            for (var i = 0; i < imagesUpload.length; i++) {
                 if (imagesUpload[i].type === 'store_logo') {
                     formData.append('store_logo', imagesUpload[i].imageValue)
                 } else if (imagesUpload[i].type === 'banner_images') {
                     let localBannerImagesUpload = imagesUpload[i].imageValue
-                    for (let j = 0; j < localBannerImagesUpload.length; j++) {
+                    for (var j = 0; j < localBannerImagesUpload.length; j++) {
                         formData.append('banner_images', localBannerImagesUpload[j])
                     }
                 } else if (imagesUpload[i].type === 'search_logo') {
@@ -782,12 +808,12 @@ const StoreSettings = () => {
     const updateStoreLogoImageCall = () => {
         const formData = new FormData()
         if (imagesUpload && imagesUpload.length > 0) {
-            for (let i = 0; i < imagesUpload.length; i++) {
+            for (var i = 0; i < imagesUpload.length; i++) {
                 if (imagesUpload[i].type === 'store_logo') {
                     formData.append('store_logo', imagesUpload[i].imageValue)
                 } else if (imagesUpload[i].type === 'banner_images') {
                     let localBannerImagesUpload = imagesUpload[i].imageValue
-                    for (let j = 0; j < localBannerImagesUpload.length; j++) {
+                    for (var j = 0; j < localBannerImagesUpload.length; j++) {
                         formData.append('banner_images', localBannerImagesUpload[j])
                     }
                 } else if (imagesUpload[i].type === 'search_logo') {
@@ -811,6 +837,7 @@ const StoreSettings = () => {
                 setImagesUpload([])
                 setIsUpLoading(false)
                 setIsLoading(false)
+                setImageChangeValues(false)
             })
             .catch((error) => {
                 console.log('error response from the store images put call', error)
@@ -1631,6 +1658,7 @@ const StoreSettings = () => {
                                         validStoreLogo={validStoreLogo}
                                         setValidStoreLogo={setValidStoreLogo}
                                         InfoCircleText={`${t('messages:store_logo_info')}`}
+                                        setImageChangeValues={setImageChangeValues}
                                         disabelMediaButton={disableMediaButton}
                                     />
                                 </Col>
@@ -1644,6 +1672,7 @@ const StoreSettings = () => {
                                 setImagesUpload={setImagesUpload}
                                 isSingleUpload={false}
                                 InfoCircleText={`${t('messages:banner_logo_info')}`}
+                                setImageChangeValues={setImageChangeValues}
                                 disabelMediaButton={disableMediaButton}
                             />
                             <Content className='mt-4'>

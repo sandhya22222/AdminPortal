@@ -4,6 +4,14 @@ import { Layout, Menu, Spin } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import {
+    DashboardNotSelected,
+    DashboardSelected,
+    SettingsNotSelected,
+    SettingsSelected,
+    StoresNotSelected,
+    StoresSelected,
+} from '../../constants/media'
 import NewFooter from './../footer/Footer'
 //! Import CSS libraries
 
@@ -41,6 +49,12 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
     const navigate = useNavigate()
 
     const [myData, setMyData] = useState([])
+
+    const handlePageRefresh = (navigationPath) => {
+        if (pathname !== navigationPath) {
+            // navigate(0);
+        }
+    }
 
     // Function to handle mouse enter event on the sidebar
     const handleMouseEnter = () => {
@@ -116,7 +130,10 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                             navigate_to: '/dashboard/language',
                             show_in_menu:
                                 !auth.isAuthenticated ||
-                                (auth.isAuthenticated && permissionValue.includes('UI-product-admin'))
+                                (auth.isAuthenticated &&
+                                    permissionValue &&
+                                    permissionValue.length > 0 &&
+                                    permissionValue.includes('UI-product-admin'))
                                     ? false
                                     : true,
                         },
@@ -148,7 +165,10 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                             navigate_to: `/dashboard/user-access-control/list-user-roles?tab=0&page=1&limit=${pageLimitFromENV}`,
                             show_in_menu:
                                 !auth.isAuthenticated ||
-                                (auth.isAuthenticated && permissionValue.includes('UI-user-access-control'))
+                                (auth.isAuthenticated &&
+                                    permissionValue &&
+                                    permissionValue.length > 0 &&
+                                    permissionValue.includes('UI-user-access-control'))
                                     ? true
                                     : false,
                         },
@@ -158,7 +178,10 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                             navigate_to: '/dashboard/platformadmin',
                             show_in_menu:
                                 !auth.isAuthenticated ||
-                                (auth.isAuthenticated && permissionValue.includes('UI-user-access-control'))
+                                (auth.isAuthenticated &&
+                                    permissionValue &&
+                                    permissionValue.length > 0 &&
+                                    permissionValue.includes('UI-user-access-control'))
                                     ? false
                                     : true,
                         },
@@ -232,6 +255,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                                                 // style={{ color: "black" }}
                                                 onClick={() => {
                                                     navigate(child.navigate_to)
+                                                    handlePageRefresh(child.navigate_to)
                                                 }}
                                                 style={{
                                                     opacity: !item.childrenKeys.includes(selectedItem)
@@ -257,6 +281,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                                     disabled={!item.show_in_menu}
                                     onClick={() => {
                                         navigate(item.navigate_to)
+                                        handlePageRefresh(item.navigate_to)
                                     }}
                                     style={{
                                         opacity: selectedItem === item.key ? 1 : 0.8,

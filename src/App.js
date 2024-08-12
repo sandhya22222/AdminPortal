@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { Suspense, useState } from 'react'
 import { Container } from 'reactstrap'
 import { Layout, Spin } from 'antd'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
@@ -13,7 +13,9 @@ import axios from 'axios'
 import Store from './pages/Stores/Store'
 import SidebarNew from './components/Sidebar2.0.js/SidebarNew'
 import PaymentType from './pages/PaymentType/PaymentType'
+import StoreSettings from './pages/StoreSetting/StoreSettings'
 import Preview from './pages/StoreSetting/Preview'
+import UserProfile from './pages/StoreUsers/UserProfile'
 import Language from './pages/StoreLanguage/Language'
 import LanguageSettings from './pages/StoreLanguage/LanguageSettings'
 import UserAccessControl from './pages/usersandroles/UserAccessControl'
@@ -26,6 +28,7 @@ import { useAuth } from 'react-oidc-context'
 import StoreLimitComponent from './pages/adminPlatform/StoreLimitComponent'
 import MarketplaceServices from './services/axios/MarketplaceServices'
 import NewDashboard from './pages/NewDashboard/Newdashboard'
+import { useEffect } from 'react'
 import ListCurrency from './pages/storeCurrency/ListCurrency'
 import EditCurrency from './pages/storeCurrency/EditCurrency'
 import MyProfile from './pages/StoreUsers/MyProfile'
@@ -33,6 +36,7 @@ import StoreSettingsLayout from './pages/StoreSetting/StoreSettingsLayout'
 import PlatformAdmin from './pages/adminPlatform/PlatformAdmin'
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL
 
+// const authFromEnv = process.env.REACT_APP_AUTH;
 const getPermissionsUrl = process.env.REACT_APP_USER_PROFILE_API
 const umsBaseUrl = process.env.REACT_APP_USM_BASE_URL
 
@@ -41,7 +45,6 @@ const App = () => {
     const auth = useAuth()
     const [permissionData, setPermissionData] = useState([])
     const [collapsed, setCollapsed] = useState(false)
-    const [isLanguageSelected, setIsLanguageSelected] = useState(false)
 
     useFavicon()
 
@@ -50,7 +53,7 @@ const App = () => {
         MarketplaceServices.findAll(baseurl, null, false)
             .then((res) => {
                 console.log('get permission api res', res)
-                let realmNameClient = res.data.response_body['realm-name'] + '-client'
+                var realmNameClient = res.data.response_body['realm-name'] + '-client'
                 util.setPermissionData(res.data.response_body.resource_access[`${realmNameClient}`].roles)
                 setPermissionData(res.data.response_body.resource_access[`${realmNameClient}`].roles)
             })
@@ -78,10 +81,10 @@ const App = () => {
         case 'signinSilent':
             return <div></div>
         case 'signoutRedirect':
-            return <></>
+            return <div></div>
     }
 
-    if (auth.isLoading || isLanguageSelected) {
+    if (auth.isLoading) {
         util.removePermission()
         return (
             <Layout className='h-[100vh]'>
@@ -102,7 +105,7 @@ const App = () => {
                 rtl={util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? true : false}
                 position={util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'top-left' : 'top-right'}
             />
-            <Header2 collapsed={collapsed} setCollapsed={setCollapsed} setIsLanguageSelected={setIsLanguageSelected}/>
+            <Header2 collapsed={collapsed} setCollapsed={setCollapsed} />
             <Container fluid className='p-0 bg-[#F4F4F4] text-[#393939]'>
                 <Routes>
                     <Route path='/' element={<Home />} />
@@ -148,6 +151,7 @@ const App = () => {
                 </Routes>
             </Container>
         </Router>
+        //     {/* <Footer /> */}
     )
 }
 

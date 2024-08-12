@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Layout, Col, Select, Typography, Row, Button, Skeleton, Alert } from 'antd'
+import { Layout, Spin, Col, Select, Divider, Typography, Row, Button, Skeleton, Alert } from 'antd'
 import util from '../../util/common'
 import { useTranslation } from 'react-i18next'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
@@ -9,7 +9,7 @@ import StoreModal from '../../components/storeModal/StoreModal'
 import { MdInfo } from 'react-icons/md'
 
 const { Content } = Layout
-const {  Text ,Title} = Typography
+const { Title, Text } = Typography
 
 const storeCurrencyAPI = process.env.REACT_APP_STORE_CURRENCY_API
 const currencyAPI = process.env.REACT_APP_CHANGE_CURRENCY_API
@@ -26,6 +26,7 @@ const Currency = ({ storeUUId }) => {
     const [currencySymbol, setCurrencySymbol] = useState('')
     const [currencyIsoCode, setCurrencyIsoCode] = useState('')
     const [isVendorsOnBoarded, setIsVendorsOnBoarded] = useState()
+    const [isModalOpen, setIsModalOpen] = useState(false)
     const [currencyChangeFLag, setCurrencyChangeFlag] = useState(false)
     const [selectedCurrency, setSelectedCurrency] = useState(null)
 
@@ -98,6 +99,7 @@ const Currency = ({ storeUUId }) => {
             .then((response) => {
                 setIsCurrencyLoading(false)
                 setCurrencyOnChange(false)
+                setIsModalOpen(false)
                 setCurrencyIsoCode(response?.data?.response_body?.iso_code)
 
                 console.log(
@@ -108,6 +110,8 @@ const Currency = ({ storeUUId }) => {
                 MarketplaceToaster.showToast(response)
             })
             .catch((error) => {
+                setIsModalOpen(false)
+
                 setIsCurrencyLoading(false)
                 MarketplaceToaster.showToast(error.response)
                 console.log('ERROR response  for Store Settings Restore Factory ', storeCurrencyAPI, error)
@@ -137,7 +141,7 @@ const Currency = ({ storeUUId }) => {
     const currencyDataProcessor = (currencyProcessorData) => {
         let localCurrencyData = []
         if (currencyProcessorData && currencyProcessorData.length > 0) {
-            for (let i = 0; i < currencyProcessorData.length; i++) {
+            for (var i = 0; i < currencyProcessorData.length; i++) {
                 const temp = {}
                 temp['label'] = currencyProcessorData[i].currency_name
                 temp['value'] = currencyProcessorData[i].iso_currency_code
@@ -167,6 +171,10 @@ const Currency = ({ storeUUId }) => {
             setCurrencyData(currencyDisplayData)
         }
     }, [filteredCurrencyData, currencySymbol])
+
+    const closeModal = () => {
+        setIsModalOpen(false)
+    }
 
     useEffect(() => {
         findByPageCurrencyData()

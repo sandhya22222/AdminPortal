@@ -26,7 +26,6 @@ function Status({
     setPreviousStatus,
     setDuplicateStoreStatus,
     previousStatus,
-    isDistributor
 }) {
     const { t } = useTranslation()
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -187,7 +186,7 @@ function Status({
                             onClick={() => {
                                 openModal()
                             }}
-                            disabled={disableStatus || statusInprogress === 3 ||isDistributor}
+                            disabled={disableStatus || statusInprogress === 3}
                         />
                     </Space>
                 </Col>

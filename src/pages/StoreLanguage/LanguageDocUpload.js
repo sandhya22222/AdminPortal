@@ -1,10 +1,11 @@
-import { CheckCircleFilled, UploadOutlined ,CloseOutlined} from '@ant-design/icons'
+import { CheckCircleFilled, UploadOutlined } from '@ant-design/icons'
 import { Button, Card, Divider, Layout, Spin, Typography, Upload } from 'antd'
 import React, { useState } from 'react'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
+import { CloseOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import StoreModal from '../../components/storeModal/StoreModal'
-import { DownloadIcon, codeJsonIcon, tableIcon } from '../../constants/media'
+import { DownloadIcon, codeJsonIcon, tableIcon, DownloadIconDisable } from '../../constants/media'
 import util from '../../util/common'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import { DownloadIconSVG } from './DownloadIconSVG'
@@ -33,7 +34,7 @@ function LanguageDocUpload({ langCode }) {
             formData.append('language_file', languageFile)
             formData.append('language_code', langCode)
         }
-        for (let key of formData.entries()) {
+        for (var key of formData.entries()) {
             console.log(key[0] + ', ' + key[1])
         }
         let storeLanguageKeysPOSTBody = {
@@ -64,7 +65,7 @@ function LanguageDocUpload({ langCode }) {
             formData.append('language_code', langCode)
         }
         console.log('formBody', formData)
-        for (let key of formData.entries()) {
+        for (var key of formData.entries()) {
             console.log(key[0] + ', ' + key[1])
         }
         let storeLanguageKeysPOSTBody = {
@@ -99,6 +100,7 @@ function LanguageDocUpload({ langCode }) {
     }
 
     const downloadBEKeysFile = (isFormat, languageCode) => {
+        // setIsSpinningForBEUpload(true);
         MarketplaceServices.findMedia(downloadBackendKeysAPI, {
             'is-format': isFormat,
             language_code: languageCode,
