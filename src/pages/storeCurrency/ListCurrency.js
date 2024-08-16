@@ -215,7 +215,7 @@ const ListCurrency = () => {
             </div>
             <Content className='p-3 mt-[9.5rem]'>
                 {isLoading ? (
-                    <Content className=' bg-white text-center !p-2'>
+                    <Content className=' bg-white text-center !p-2 rounded-md'>
                         <SkeletonComponent />
                     </Content>
                 ) : isNetworkError ? (

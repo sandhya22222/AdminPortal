@@ -304,7 +304,7 @@ const Language = () => {
             />
             <Content className='!p-3 mt-[195px]'>
                 {isLoading ? (
-                    <Content className=' bg-white p-3 shadow-brandShadow'>
+                    <Content className=' bg-white p-3 shadow-brandShadow rounded-md'>
                         <SkeletonComponent />
                     </Content>
                 ) : isNetworkErrorLanguage ? (
