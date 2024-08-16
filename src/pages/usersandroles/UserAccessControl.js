@@ -405,7 +405,7 @@ const UserAccessControl = () => {
             />
             <Content className='p-3'>
                 {isLoading ? (
-                    <Content className='bg-white'>
+                    <Content className='bg-white rounded-md'>
                         <Skeleton
                             active
                             paragraph={{
