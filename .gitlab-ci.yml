@@ -3,10 +3,13 @@ stages:
   - deploy
   - notify
 
+variables:
+  CI_TAG: "283-cicd"
+
 build:
     stage: build
     tags:
-      - 283-cicd
+      - $CI_TAG
     script: 
         - pwd
         - echo "Fetching devops scripts..."
@@ -18,7 +21,7 @@ build:
 deploy:
     stage: deploy
     tags:
-      - 283-cicd
+      - $CI_TAG
     script:
         - git clone http://$username:$password@172.30.58.37/marketplace/devops.git
         - cd devops
@@ -37,7 +40,7 @@ deploy:
 notify_build_success:
   stage: notify
   tags:
-    - 283-cicd
+    - $CI_TAG
   script:
     - |
       CURRENT_DATE_TIME=$(date +"%Y-%m-%d %I:%M:%S %p")
@@ -52,7 +55,7 @@ notify_build_success:
 notify_build_failure:
   stage: notify
   tags:
-    - 283-cicd
+    - $CI_TAG
   script:
     - |
       EMAIL_SUBJECT="Build Status: Failure for $CI_PROJECT_NAME"
@@ -66,7 +69,7 @@ notify_build_failure:
 notify_deploy_success:
   stage: notify
   tags:
-    - 283-cicd
+    - $CI_TAG
   script:
     - |
       EMAIL_SUBJECT="Deployment Status: Success for $CI_PROJECT_NAME"
@@ -80,7 +83,7 @@ notify_deploy_success:
 notify_deploy_failure:
   stage: notify
   tags:
-    - 283-cicd
+    - $CI_TAG
   script:
     - |
       EMAIL_SUBJECT="Deployment Status: Failure for $CI_PROJECT_NAME"
