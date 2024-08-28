@@ -272,3 +272,7 @@ a {
 .custom-segmented .ant-segmented-item-label {
     font-weight: bold;
 }
+
+.usernameTooltip.ant-tooltip-placement-topLeft>.ant-tooltip-arrow{
+    left: 4px;
+}

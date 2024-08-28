@@ -1633,13 +1633,36 @@ const Stores = () => {
                                         <img src={warningInfoIcon} /> {t('messages:enter_valid_email_message')}
                                     </div>
                                 )}
-                                <div>
+                                <div className='flex mt-3'>
                                     <label
-                                        className='mt-4 ml-1 text-[14px] leading-[22px] font-normal text-brandGray2'
+                                        className=' ml-1 text-[14px] leading-[22px] font-normal text-brandGray2'
                                         id='labStUseName'>
                                         {t('labels:username')}
                                     </label>
                                     <span className='mandatory-symbol-color text-sm ml-1'>*</span>
+                                    <span className='mt-1 ml-1'>
+                                        <Tooltip
+                                            title={
+                                                <div className='text-sm text-white'>
+                                                    <p className='m-0 p-0'>{t('labels:your_username_can_include')}<span>:</span></p>
+                                                    <ul className='list-disc !ml-3 space-y-1 mb-0'>
+                                                        <li>{t('messages:uppercase_letters')}</li>
+                                                        <li>{t('messages:lowercase_letters')}</li>
+                                                        <li>{t('messages:digits')}</li>
+                                                        <li>{t('messages:underscore')}</li>
+                                                        <li>{t('messages:hyphens')}</li>
+                                                    </ul>
+                                                    <p className='p-0 m-0'>
+                                                        {t('messages:username_acceptance_criteria_note')}
+                                                    </p>
+                                                </div>
+                                            }
+                                            placement='topLeft'
+                                            overlayClassName='usernameTooltip'
+                                            overlayInnerStyle={{ width: '400px' }}>
+                                            <img src={InfoSymbol} alt='InfoSymbol' />
+                                        </Tooltip>
+                                    </span>
                                 </div>
                                 <Input
                                     placeholder={t('placeholders:enter_username')}
@@ -1651,7 +1674,7 @@ const Stores = () => {
                                             ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400'
                                             : ''
                                     }`}
-                                    prefix={<UserOutlined className='site-form-item-icon' />}
+                                    // prefix={<UserOutlined className='site-form-item-icon' />}
                                     onChange={(e) => {
                                         const regex = /^[A-Za-z0-9_\- ]+$/
                                         if (e.target.value !== '' && validator.matches(e.target.value, regex)) {
@@ -1681,16 +1704,16 @@ const Stores = () => {
                                 )}
                                 <Content className='flex space-x-3 !justify-end'>
                                     <Button
-                                        className={onChangeValues ? 'app-btn-secondary' : '!opacity-75'}
-                                        disabled={!onChangeValues}
+                                        className={'app-btn-secondary'}
+                                        // disabled={!onChangeValues}
                                         onClick={() => {
                                             onClose()
                                         }}>
                                         {t('labels:cancel')}
                                     </Button>
                                     <Button
-                                        className={onChangeValues ? 'app-btn-primary' : '!opacity-75'}
-                                        disabled={!onChangeValues}
+                                        className={'app-btn-primary'}
+                                        // disabled={!onChangeValues}
                                         onClick={() => {
                                             validateStorePostField()
                                         }}>
