@@ -2,3 +2,11 @@
     fill: var(--mp-secondary-border-color-h);
     transition: fill 0.3s ease-in-out;
 }
+.delete-profile-btn:hover svg path {
+    fill: var(--mp-secondary-border-color-h);
+    transition: fill 0.3s ease-in-out;
+}
+.delete-profile-btn:disabled svg path {
+    fill: #D9D9D9 !important;
+    transition: fill 0.3s ease-in-out;
+}
