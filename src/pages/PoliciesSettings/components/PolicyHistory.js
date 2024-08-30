@@ -12,7 +12,7 @@ const { Text } = Typography
 function PolicyHistory() {
     const { t } = useTranslation()
     const search = useLocation().search
-    const storeUUID = new URLSearchParams(search).get('tab')
+    const storeUUID = new URLSearchParams(search).get('id')
 
     const { policiesWithoutContactInformation, versionDetails } = useGetPolicyHistory({
         storeId: storeUUID,
