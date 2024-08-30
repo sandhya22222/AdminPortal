@@ -1,0 +1,103 @@
+stages:
+  - build
+  - deploy
+  - notify
+
+variables:
+  CI_TAG: "283-cicd"
+
+build:
+    stage: build
+    tags:
+      - $CI_TAG
+    script: 
+        - pwd
+        - echo "Fetching devops scripts..."
+        - git clone http://$username:$password@172.30.58.37/marketplace/devops.git
+        - cd devops
+        - ansible-playbook -i inventory portals/AP/create_build.yml --extra-vars "branchname=$CI_COMMIT_BRANCH"
+    only:
+        - version2.8.5
+deploy:
+    stage: deploy
+    tags:
+      - $CI_TAG
+    script:
+        - git clone http://$username:$password@172.30.58.37/marketplace/devops.git
+        - cd devops
+        - git checkout fdm283
+        - cd Dev-Upgrades
+        - chmod 600 $SSH_PRIVATE_KEY_FDM283
+        - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )'
+        - eval `ssh-agent -s`
+        - ssh-add $SSH_PRIVATE_KEY_FDM283
+        - echo -e "[ap]\n$IP_FDM283 ansible_user=rocky ansible_ssh_private_key_file=$SSH_PRIVATE_KEY_FDM283" > inventory
+        - ansible-playbook -i inventory --extra-vars "@portals.yml" --extra-vars "branchname=$CI_COMMIT_BRANCH" AP/upgradeap.yml
+    only:
+        - version2.8.5
+    needs: [build]    
+
+notify_build_success:
+  stage: notify
+  tags:
+    - $CI_TAG
+  script:
+    - |
+      CURRENT_DATE_TIME=$(date +"%Y-%m-%d %I:%M:%S %p")
+      AUTHOR_EMAIL=$(git log -1 --pretty=format:'%ae')
+      AUTHOR_NAME=$(git log -1 --pretty=format:'%an')
+      EMAIL_SUBJECT="Build Status: Success for $CI_PROJECT_NAME"
+      EMAIL_BODY="Hello $AUTHOR_NAME,\n\nThe build for project: $CI_PROJECT_NAME (ID: $CI_PROJECT_ID) was successful.\n\nCommit ID: $CI_COMMIT_SHA\nCommit Message: $CI_COMMIT_MESSAGE\n\nBuild Completed At: $CURRENT_DATE_TIME\n\nYou can view the build details at: $CI_PROJECT_URL\n\nThank you,\nThe DevOps Team"
+
+      echo -e "Subject: $EMAIL_SUBJECT\n\n$EMAIL_BODY" | sendmail -F CICD -v $AUTHOR_EMAIL,somashekhara_chandappa@thbs.com,sunilkumar_ramamurthy@thbs.com
+  when: on_success
+  needs:
+    - job: build
+
+notify_build_failure:
+  stage: notify
+  tags:
+    - $CI_TAG
+  script:
+    - |
+      EMAIL_SUBJECT="Build Status: Failure for $CI_PROJECT_NAME"
+      AUTHOR_EMAIL=$(git log -1 --pretty=format:'%ae')
+      AUTHOR_NAME=$(git log -1 --pretty=format:'%an')
+      EMAIL_BODY="Hello $AUTHOR_NAME,\n\nThe build for project: $CI_PROJECT_NAME (ID: $CI_PROJECT_ID) has failed.\n\nCommit ID: $CI_COMMIT_SHA\nCommit Message: $CI_COMMIT_MESSAGE\n\nPlease check the pipeline details at: $CI_PROJECT_URL\n\nThank you,\nDevOps Team"
+
+      echo -e "Subject: $EMAIL_SUBJECT\n\n$EMAIL_BODY" | sendmail -F CICD -v $AUTHOR_EMAIL,somashekhara_chandappa@thbs.com
+  when: on_failure
+  needs:
+    - job: build
+
+notify_deploy_success:
+  stage: notify
+  tags:
+    - $CI_TAG
+  script:
+    - |
+      EMAIL_SUBJECT="Deployment Status: Success for $CI_PROJECT_NAME"
+      AUTHOR_EMAIL=$(git log -1 --pretty=format:'%ae')
+      AUTHOR_NAME=$(git log -1 --pretty=format:'%an')      
+      EMAIL_BODY="Hello $AUTHOR_NAME,\n\nThe deployment for project: $CI_PROJECT_NAME (ID: $CI_PROJECT_ID) was successful.\n\nCommit ID: $CI_COMMIT_SHA\nCommit Message: $CI_COMMIT_MESSAGE\n\nYou can view the deployment details at: $CI_PROJECT_URL\n\nThank you,\nDevOps Team"
+
+      echo -e "Subject: $EMAIL_SUBJECT\n\n$EMAIL_BODY" | sendmail -F CICD -v $AUTHOR_EMAIL,somashekhara_chandappa@thbs.com,
+  when: on_success
+  needs:
+    - job: deploy
+  
+notify_deploy_failure:
+  stage: notify
+  tags:
+    - $CI_TAG
+  script:
+    - |
+      EMAIL_SUBJECT="Deployment Status: Failure for $CI_PROJECT_NAME"
+      AUTHOR_EMAIL=$(git log -1 --pretty=format:'%ae')
+      AUTHOR_NAME=$(git log -1 --pretty=format:'%an')      
+      EMAIL_BODY="Hello $AUTHOR_NAME,\n\nThe deployment for project: $CI_PROJECT_NAME (ID: $CI_PROJECT_ID) has failed.\n\nCommit ID: $CI_COMMIT_SHA\nCommit Message: $CI_COMMIT_MESSAGE\n\nPlease check the pipeline details at: $CI_PROJECT_URL\n\nThank you,\nDevOps Team"
+
+      echo -e "Subject: $EMAIL_SUBJECT\n\n$EMAIL_BODY" | sendmail -F CICD -v $AUTHOR_EMAIL,somashekhara_chandappa@thbs.com
+  when: on_failure
+  needs:
+    - job: deploy
