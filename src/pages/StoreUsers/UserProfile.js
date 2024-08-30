@@ -14,6 +14,7 @@ import MarketplaceToaster from '../../util/marketplaceToaster'
 import SkeletonComponent from '../../components/Skeleton/SkeletonComponent'
 import useGetStoreUserData from '../../hooks/useGetStoreUsersData'
 import './UserProfile.css'
+import ProfileImage from './ProfileImage'
 
 const { Content } = Layout
 const { Text, Title } = Typography
@@ -25,7 +26,7 @@ const minPasswordLength = process.env.REACT_APP_PASSWORD_MIN_LENGTH
 const UserProfile = () => {
     const { t } = useTranslation()
     usePageTitle(t('labels:profile'))
-    const { data: storeUsersData, status: userDataStatus } = useGetStoreUserData()
+    const { data: storeUsersData, status: userDataStatus, refetch: refetchUserData } = useGetStoreUserData()
 
     const [isLoading, setIsLoading] = useState(true)
     const [isNetworkError, setIsNetworkError] = useState(false)
@@ -249,7 +250,11 @@ const UserProfile = () => {
                         <div className='mx-6 mb-6'>
                             <div className='my-6 flex gap-4 items-center'>
                                 <Avatar shape='square' size={100} icon={<UserOutlined />} />
-                                <div className='gap-2 flex flex-col '>
+                                {/*<ProfileImage
+                                    imagePath={storeUsersData?.attributes?.profile_image_path?.[0]}
+                                    refetchUserData={refetchUserData}
+                                /> */}
+                                {/* <div className='gap-2 flex flex-col '>
                                     <div className=' font-semibold text-base !text-regal-blue'>
                                         {storeUsersData && storeUsersData.username && storeUsersData.username.length > 0
                                             ? storeUsersData.username.slice(0, 1).toUpperCase() +
@@ -270,21 +275,82 @@ const UserProfile = () => {
                                             'MMM D YYYY'
                                         ).replace(/(\w{3} \d{1,2}) (\d{4})/, '$1, $2')}
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                             <hr className='text-brandGray1' />
-                            <div className='w-1/2 flex flex-col gap-7'>
+                            <div className='mt-3 flex flex-col gap-6'>
+                                {storeUsersData && storeUsersData?.username && (
+                                    <div>
+                                        <Typography className='input-label-color !text-[16px]'>
+                                            {t('labels:user_name')}
+                                        </Typography>
+                                        <Text className='text-regal-blue text-lg font-semibold'>
+                                            {storeUsersData && storeUsersData.username}
+                                        </Text>
+                                    </div>
+                                )}
+                                {storeUsersData && storeUsersData?.firstName && (
+                                    <div>
+                                        <Typography className='input-label-color !text-[16px]'>
+                                            {t('labels:first_name')}
+                                        </Typography>
+                                        <Text className='text-regal-blue text-lg font-semibold'>
+                                            {storeUsersData && storeUsersData.firstName}
+                                        </Text>
+                                    </div>
+                                )}
+                                {storeUsersData && storeUsersData?.lastName && (
+                                    <div>
+                                        <Typography className='input-label-color !text-[16px]'>
+                                            {t('labels:last_name')}
+                                        </Typography>
+                                        <Text className='text-regal-blue text-lg font-semibold'>
+                                            {storeUsersData.lastName}
+                                        </Text>
+                                    </div>
+                                )}
+                                {storeUsersData && storeUsersData?.email && (
+                                    <div>
+                                        <Typography className='input-label-color !text-[16px]'>
+                                            {t('labels:email')}
+                                        </Typography>
+                                        <Text className='text-regal-blue text-lg font-semibold'>
+                                            {storeUsersData.email}
+                                        </Text>
+                                    </div>
+                                )}
+                                {storeUsersData && storeUsersData?.attributes?.mobile && (
+                                    <div>
+                                        <Typography className='input-label-color !text-[16px]'>
+                                            {t('labels:mobile_number')}
+                                        </Typography>
+                                        <Text className='text-regal-blue text-lg font-semibold'>
+                                            {storeUsersData.attributes.mobile && storeUsersData.attributes.mobile[0]}
+                                        </Text>
+                                    </div>
+                                )}
                                 <div>
-                                    <Typography className='input-label-color'>{t('labels:first_name')}</Typography>
-                                    <Input value={storeUsersData && storeUsersData.firstName} disabled />
+                                    <Typography className='input-label-color !text-[16px]'>
+                                        {t('labels:role')}
+                                    </Typography>
+                                    <Text className='text-regal-blue text-lg font-semibold'>
+                                        {storeUsersData &&
+                                            storeUsersData.groups.length > 0 &&
+                                            storeUsersData.groups.map((ele, index) => (
+                                                <span key={index}>{ele.name.replace(/-/g, ' ')}</span>
+                                            ))}
+                                    </Text>
                                 </div>
                                 <div>
-                                    <Typography className='input-label-color'>{t('labels:last_name')}</Typography>
-                                    <Input value={storeUsersData && storeUsersData.lastName} disabled />
-                                </div>
-                                <div>
-                                    <Typography className='input-label-color'>{t('labels:email')}</Typography>
-                                    <Input value={storeUsersData.email} disabled />
+                                    <Typography className='input-label-color !text-[16px]'>
+                                        {t('labels:onboarded_on')}
+                                    </Typography>
+                                    <Text className='text-regal-blue text-lg font-semibold'>
+                                        {getGenerateDateAndTime(
+                                            storeUsersData && storeUsersData.createdTimestamp,
+                                            'MMM D YYYY'
+                                        ).replace(/(\w{3} \d{1,2}) (\d{4})/, '$1, $2')}
+                                    </Text>
                                 </div>
                                 <Button
                                     onClick={showPasswordChangeModal}

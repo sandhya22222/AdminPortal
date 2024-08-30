@@ -48,6 +48,7 @@ import InfoSymbol from '../assets/images/common/InfoSymbol.svg'
 import ExclamationCircle from '../assets/images/common/ExclamationCircle.svg'
 import storeDefaultImage from '../assets/images/common/storeDefaultImage.svg'
 import warningInfoIcon from '../assets/images/common/warningInfoIcon.svg'
+import profileFallBackImage from '../assets/images/common/ProfileFallback.svg'
 
 export {
     LoginBackground,
@@ -99,4 +100,5 @@ export {
     ExclamationCircle,
     storeDefaultImage,
     warningInfoIcon,
+    profileFallBackImage,
 }
