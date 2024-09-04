@@ -118,6 +118,7 @@ const Stores = () => {
     const [errors, setErrors] = useState({})
     const [isOpenModalForMakingDistributor, setIsOpenModalForMakingDistributor] = useState(false)
     const [inValidEmailFormat, setInValidEmailFormat] = useState(false)
+    const [isDistributorStoreActive, setIsDistributorStoreActive] = useState(false)
 
     const auth = useAuth()
     const permissionValue = util.getPermissionData() || []
@@ -717,7 +718,7 @@ const Stores = () => {
 
     //!get call for stores
     const findByPageStoreApi = (pageNumber, pageLimit, storeStatus, searchKey) => {
-        console.log('pageNumber--->',pageNumber,'storeStatus--->',storeStatus)
+        console.log('pageNumber--->', pageNumber, 'storeStatus--->', storeStatus)
         setIsLoading(true)
         let params = {}
         params['status'] = storeStatus ? storeStatus : null
@@ -746,7 +747,8 @@ const Stores = () => {
                 console.log('Server Response from findByPageStoreApi Function: ', response.data.response_body)
                 setStoreApiData(response.data.response_body.data)
                 setCountForStore(response.data.response_body.count)
-                setIsDistributor(response.data.response_body.distributor_store)
+                setIsDistributor(response?.data?.response_body?.distributor_store)
+                setIsDistributorStoreActive(response?.data?.response_body?.distributor_store_active)
             })
             .catch((error) => {
                 setIsLoading(false)
@@ -1173,9 +1175,14 @@ const Stores = () => {
             )
         } else {
             if (isSearchTriggered) {
-                findByPageStoreApi(undefined,undefined,parseInt(searchParams.get('tab')) && parseInt(searchParams.get('tab')) <= 2
-                ? parseInt(searchParams.get('tab'))
-                : '',undefined)
+                findByPageStoreApi(
+                    undefined,
+                    undefined,
+                    parseInt(searchParams.get('tab')) && parseInt(searchParams.get('tab')) <= 2
+                        ? parseInt(searchParams.get('tab'))
+                        : '',
+                    undefined
+                )
                 setIsSearchTriggered(false)
             }
         }
@@ -1186,9 +1193,14 @@ const Stores = () => {
         setSearchValue(trimmedUpdate)
         if (event.target.value == '') {
             if (isSearchTriggered) {
-                findByPageStoreApi(undefined,undefined,parseInt(searchParams.get('tab')) && parseInt(searchParams.get('tab')) <= 2
-                ? parseInt(searchParams.get('tab'))
-                : '',undefined)
+                findByPageStoreApi(
+                    undefined,
+                    undefined,
+                    parseInt(searchParams.get('tab')) && parseInt(searchParams.get('tab')) <= 2
+                        ? parseInt(searchParams.get('tab'))
+                        : '',
+                    undefined
+                )
                 setIsSearchTriggered(false)
             }
         }
@@ -1320,6 +1332,26 @@ const Stores = () => {
                                                                             <Text className='text-brandGray1'>
                                                                                 {t(
                                                                                     'messages:no_distributor_store_present_info'
+                                                                                )}{' '}
+                                                                            </Text>
+                                                                        </div>
+                                                                    }
+                                                                    type='info'
+                                                                    showIcon
+                                                                    className=''
+                                                                />
+                                                            </div>
+                                                        )}
+
+                                                        {(isDistributor===true && isDistributorStoreActive===false) && (
+                                                            <div className='px-3 my-2'>
+                                                                <Alert
+                                                                    icon={<MdInfo className='font-bold !text-center' />}
+                                                                    message={
+                                                                        <div className=''>
+                                                                            <Text className='text-brandGray1'>
+                                                                                {t(
+                                                                                    'messages:distributor_store_inactive_msg'
                                                                                 )}{' '}
                                                                             </Text>
                                                                         </div>
@@ -1644,7 +1676,10 @@ const Stores = () => {
                                         <Tooltip
                                             title={
                                                 <div className='text-sm text-white'>
-                                                    <p className='m-0 p-0'>{t('labels:your_username_can_include')}<span>:</span></p>
+                                                    <p className='m-0 p-0'>
+                                                        {t('labels:your_username_can_include')}
+                                                        <span>:</span>
+                                                    </p>
                                                     <ul className='list-disc !ml-3 space-y-1 mb-0'>
                                                         <li>{t('messages:uppercase_letters')}</li>
                                                         <li>{t('messages:lowercase_letters')}</li>
