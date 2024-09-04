@@ -50,13 +50,13 @@ const ProfileImage = ({ imagePath, refetchUserData }) => {
         if (e.fileList?.length <= 0 || supportedFileTypes?.includes(file?.type)) {
             if (bytesToMegabytes(file?.size) > 2) {
                 setFileList([])
-                setFileError(t('profile:image_size_error'))
+                setFileError(t('messages:image_size_error'))
             } else {
                 setFileList(e.fileList)
                 setFileError(null)
             }
         } else {
-            setFileError(t('profile:upload_valid_image'))
+            setFileError(t('messages:upload_valid_image'))
         }
     }
     const handleImageUpload = () => {
@@ -92,7 +92,6 @@ const ProfileImage = ({ imagePath, refetchUserData }) => {
             {
                 onSuccess: (response) => {
                     refetchUserData()
-                    refetchProfileImage()
                     MarketplaceToaster.showToast(response)
                     setDeleteModalOpen(false)
                 },
@@ -116,12 +115,12 @@ const ProfileImage = ({ imagePath, refetchUserData }) => {
                                 src={profileImage}
                                 fallback={profileFallBackImage}
                                 width={140}
-                                preview={{ mask: t('user_profile:preview') }}
+                                preview={{ mask: t('labels:preview') }}
                             />
                         )}
                     </>
                 ) : (
-                    <Image src={profileFallBackImage} width={140} preview={{ mask: t('user_profile:preview') }} />
+                    <Image src={profileFallBackImage} width={140} preview={{ mask: t('labels:preview') }} />
                 )}
                 <div className='self-end flex gap-[16px]'>
                     <Button
@@ -134,7 +133,7 @@ const ProfileImage = ({ imagePath, refetchUserData }) => {
                                 fill='white'
                             />
                         </svg>
-                        {t('profile:change_profile_picture')}
+                        {t('labels:change_profile_picture')}
                     </Button>
                     <Button
                         onClick={() => handleDeleteClick()}
@@ -146,7 +145,7 @@ const ProfileImage = ({ imagePath, refetchUserData }) => {
                                 fill='#023047'
                             />
                         </svg>
-                        {t('profile:delete_profile_picture')}
+                        {t('labels:delete_profile_picture')}
                     </Button>
                 </div>
             </div>
@@ -156,10 +155,10 @@ const ProfileImage = ({ imagePath, refetchUserData }) => {
                     cancelCallback={() => handleCloseImageModal()}
                     okCallback={() => handleImageUpload()}
                     isSpin={uploadImageStatus === 'pending'}
-                    okButtonText={t('common:save')}
-                    cancelButtonText={t('common:cancel')}
+                    okButtonText={t('labels:save')}
+                    cancelButtonText={t('labels:cancel')}
                     isOkButtonDisabled={fileList?.length === 0 || uploadImageStatus === 'pending'}
-                    title={t('profile:add_new_file')}>
+                    title={t('labels:add_new_file')}>
                     <Upload
                         fileList={fileList}
                         accept={supportedFileExtensions}
@@ -168,28 +167,29 @@ const ProfileImage = ({ imagePath, refetchUserData }) => {
                         beforeUpload={() => {
                             return false
                         }}
+                        className='custom-upload-delete-btn'
                         onChange={(e) => handelFileSelect(e)}>
                         <Button className={'app-btn-secondary flex items-center mt-6'} icon={<UploadOutlined />}>
-                            {t('common:click_to_upload')}
+                            {t('labels:click_to_upload')}
                         </Button>
                     </Upload>
-                    {fileError && <p className='text-sm !mb-0 text-brandRed mt-2'>{fileError}</p>}
-                    <p className='mb-6 !mt-2'>{t('profile:accepted_image_formats')}</p>
+                    {fileError && <p className='text-sm !mb-0 text-dangerColor mt-2'>{fileError}</p>}
+                    <p className='mb-6 !mt-2'>{t('messages:accepted_image_formats')}</p>
                 </StoreModal>
             )}
             <StoreModal
                 isVisible={deleteModalOpen}
-                okButtonText={t('common:delete')}
+                okButtonText={t('labels:delete')}
                 cancelButtonText={null}
                 width='420px'
-                title={t('profile:delete_profile_picture')}
+                title={t('labels:delete_profile_picture')}
                 okCallback={() => handleDeleteProfileImage(imagePath)}
                 cancelCallback={() => setDeleteModalOpen(false)}
                 isSpin={deleteImageStatus === 'pending'}>
                 {
                     <div className='mb-6'>
                         <>
-                            <p>{t('profile:delete_profile_picture_confirmation')}</p>
+                            <p>{t('messages:delete_profile_picture_confirmation')}</p>
                         </>
                     </div>
                 }
