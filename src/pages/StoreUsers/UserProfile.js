@@ -249,33 +249,10 @@ const UserProfile = () => {
                         </div>
                         <div className='mx-6 mb-6'>
                             <div className='my-6 flex gap-4 items-center'>
-                                <Avatar shape='square' size={100} icon={<UserOutlined />} />
-                                {/*<ProfileImage
+                                <ProfileImage
                                     imagePath={storeUsersData?.attributes?.profile_image_path?.[0]}
                                     refetchUserData={refetchUserData}
-                                /> */}
-                                {/* <div className='gap-2 flex flex-col '>
-                                    <div className=' font-semibold text-base !text-regal-blue'>
-                                        {storeUsersData && storeUsersData.username && storeUsersData.username.length > 0
-                                            ? storeUsersData.username.slice(0, 1).toUpperCase() +
-                                              storeUsersData.username.slice(1)
-                                            : null}
-                                    </div>
-                                    <div className='text-brandGray1'>
-                                        {storeUsersData &&
-                                            storeUsersData.groups.length > 0 &&
-                                            storeUsersData.groups.map((ele, index) => (
-                                                <span key={index}>{ele.name.replace(/-/g, ' ')}</span>
-                                            ))}
-                                    </div>
-                                    <div className='text-brandGray1'>
-                                        {t('labels:onboarded_on')}{' '}
-                                        {getGenerateDateAndTime(
-                                            storeUsersData && storeUsersData.createdTimestamp,
-                                            'MMM D YYYY'
-                                        ).replace(/(\w{3} \d{1,2}) (\d{4})/, '$1, $2')}
-                                    </div>
-                                </div> */}
+                                />
                             </div>
                             <hr className='text-brandGray1' />
                             <div className='mt-3 flex flex-col gap-6'>
