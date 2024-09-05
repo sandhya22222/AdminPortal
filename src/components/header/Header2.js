@@ -18,6 +18,8 @@ import { marketPlaceLogo, Collapse, BackIcon } from '../../constants/media'
 
 import util from '../../util/common'
 import { useAuth } from 'react-oidc-context'
+import useGetStoreUserData from '../../hooks/useGetStoreUsersData'
+import useGetProfileImage from '../../pages/StoreUsers/hooks/useGetProfileImage'
 
 const { Header, Content } = Layout
 const { Option } = Select
@@ -27,7 +29,7 @@ const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API
 const storeUsersAPI = process.env.REACT_APP_USERS_API
 const portalInfo = JSON.parse(process.env.REACT_APP_PORTAL_INFO)
 
-const Header2 = ({ collapsed, setCollapsed,setIsLanguageSelected }) => {
+const Header2 = ({ collapsed, setCollapsed, setIsLanguageSelected }) => {
     const { t } = useTranslation()
     const dispatch = useDispatch()
     const { Text } = Typography
@@ -79,7 +81,9 @@ const Header2 = ({ collapsed, setCollapsed,setIsLanguageSelected }) => {
         dispatch(fnSelectedLanguage(storeLanguages.find((item) => item.language_code === value)))
         document.body.style.direction = util.getSelectedLanguageDirection()?.toLowerCase()
         setIsLanguageSelected(true)
-        setTimeout(()=>{navigate(0)},500)
+        setTimeout(() => {
+            navigate(0)
+        }, 500)
     }
 
     const findAllLanguages = () => {
@@ -144,6 +148,8 @@ const Header2 = ({ collapsed, setCollapsed,setIsLanguageSelected }) => {
             })
     }
 
+    const { data: storeUsersData } = useGetStoreUserData()
+    const { data: profileImage } = useGetProfileImage(storeUsersData?.attributes?.profile_image_path?.[0])
     useEffect(() => {
         findAllLanguages()
         findAllWithoutPageStoreUsers()
@@ -152,7 +158,6 @@ const Header2 = ({ collapsed, setCollapsed,setIsLanguageSelected }) => {
         setStoreSelectedLngCode(selectedLanguage && selectedLanguage.language_code)
         setDefaultLanguageCode(util.getUserSelectedLngCode())
     }, [selectedLanguage])
-
 
     return (
         <Content>
@@ -216,7 +221,17 @@ const Header2 = ({ collapsed, setCollapsed,setIsLanguageSelected }) => {
                                         ? 'ml-[5px]'
                                         : 'mr-[5px]'
                                 }`}>
-                                <Avatar className='bg-gray-400 mx-1' size={48} icon={<UserOutlined />} />
+                                <Avatar
+                                    className='bg-gray-400 mx-1'
+                                    size={48}
+                                    src={
+                                        storeUsersData?.attributes?.profile_image_path?.[0] ? (
+                                            profileImage || <UserOutlined />
+                                        ) : (
+                                            <UserOutlined />
+                                        )
+                                    }
+                                />
                                 <Text className={`!flex flex-col`}>
                                     <Text className='font-normal text-sm text-[#637381] leading-[22px] whitespace-nowrap *:'>
                                         {userName ? userName : userProfileInfo}{' '}

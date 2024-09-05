@@ -318,5 +318,8 @@
     "go_to": "Go to",
     "page_capital": "Page",
     "your_username_can_include": "Your username can include",
-    "mobile_number": "Mobile Number"
+    "mobile_number": "Mobile Number",
+    "change_profile_picture": "Change Profile Picture",
+    "delete_profile_picture": "Delete Profile Picture",
+    "add_new_file": "Add New File"
 }
