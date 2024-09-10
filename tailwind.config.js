@@ -1,7 +1,16 @@
 // /** @type {import('tailwindcss').Config} */
+const { fontFamily } = require('tailwindcss/defaultTheme')
+
 module.exports = {
     content: ['./src/**/*.{js,jsx,ts,tsx}'],
     theme: {
+        container: {
+            center: true,
+            padding: '2rem',
+            screens: {
+                '2xl': '1400px',
+            },
+        },
         extend: {
             boxShadow: {
                 brandShadow: '0px 2px 8px 0px #00000026',
@@ -13,9 +22,65 @@ module.exports = {
                 brandGray: 'var(--mp-text-gray)',
                 brandPrimaryColor: 'var(--mp-brand-color)',
                 'regal-orange': '#FFA229',
-                dangerColor : '#FF4D4F'
+                dangerColor: '#FF4D4F',
+                //Below are the shadcn Changes
+                border: 'hsl(var(--border))',
+                input: 'hsl(var(--input))',
+                ring: 'hsl(var(--ring))',
+                background: 'hsl(var(--background))',
+                foreground: 'hsl(var(--foreground))',
+                primary: {
+                    DEFAULT: 'var(--mp-primary-background-color)',
+                    foreground: 'var(--mp-primary-text-color)',
+                },
+                secondary: {
+                    DEFAULT: 'var(--mp-secondary-color)',
+                    foreground: 'var(--mp-secondary-text-color)',
+                },
+                destructive: {
+                    DEFAULT: 'var(--mp-danger-primary-color)',
+                    foreground: 'var(--mp-danger-primary-text-color)',
+                },
+                muted: {
+                    DEFAULT: 'hsl(var(--muted))',
+                    foreground: 'hsl(var(--muted-foreground))',
+                },
+                accent: {
+                    DEFAULT: 'hsl(var(--accent))',
+                    foreground: 'hsl(var(--accent-foreground))',
+                },
+                popover: {
+                    DEFAULT: 'hsl(var(--popover))',
+                    foreground: 'hsl(var(--popover-foreground))',
+                },
+                card: {
+                    DEFAULT: 'hsl(var(--card))',
+                    foreground: 'hsl(var(--card-foreground))',
+                },
+            },
+            borderRadius: {
+                lg: `var(--radius)`,
+                md: `calc(var(--radius) - 2px)`,
+                sm: 'calc(var(--radius) - 4px)',
+            },
+            fontFamily: {
+                sans: ['var(--font-sans)', ...fontFamily.sans],
+            },
+            keyframes: {
+                'accordion-down': {
+                    from: { height: '0' },
+                    to: { height: 'var(--radix-accordion-content-height)' },
+                },
+                'accordion-up': {
+                    from: { height: 'var(--radix-accordion-content-height)' },
+                    to: { height: '0' },
+                },
+            },
+            animation: {
+                'accordion-down': 'accordion-down 0.2s ease-out',
+                'accordion-up': 'accordion-up 0.2s ease-out',
             },
         },
     },
-    plugins: [],
+    plugins: [require('tailwindcss-animate')],
 }
