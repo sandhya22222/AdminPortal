@@ -9,7 +9,7 @@
     "rsc": false,
     "tsx": false,
     "aliases": {
-        "utils": "@/lib/utils",
-        "components": "@/src/shadcnComponents"
+        "utils": "src/lib/utils",
+        "components": "src/shadcnComponents"
     }
 }

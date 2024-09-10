@@ -23,23 +23,23 @@ module.exports = {
                 brandPrimaryColor: 'var(--mp-brand-color)',
                 'regal-orange': '#FFA229',
                 dangerColor: '#FF4D4F',
-                //here
+                //Below are the shadcn Changes
                 border: 'hsl(var(--border))',
                 input: 'hsl(var(--input))',
                 ring: 'hsl(var(--ring))',
                 background: 'hsl(var(--background))',
                 foreground: 'hsl(var(--foreground))',
                 primary: {
-                    DEFAULT: 'hsl(var(--primary))',
-                    foreground: 'hsl(var(--primary-foreground))',
+                    DEFAULT: 'var(--mp-primary-background-color)',
+                    foreground: 'var(--mp-primary-text-color)',
                 },
                 secondary: {
-                    DEFAULT: 'hsl(var(--secondary))',
-                    foreground: 'hsl(var(--secondary-foreground))',
+                    DEFAULT: 'var(--mp-secondary-color)',
+                    foreground: 'var(--mp-secondary-text-color)',
                 },
                 destructive: {
-                    DEFAULT: 'hsl(var(--destructive))',
-                    foreground: 'hsl(var(--destructive-foreground))',
+                    DEFAULT: 'var(--mp-danger-primary-color)',
+                    foreground: 'var(--mp-danger-primary-text-color)',
                 },
                 muted: {
                     DEFAULT: 'hsl(var(--muted))',
