@@ -1517,12 +1517,12 @@ const Stores = () => {
                                 </div>
                                 {inValidName && name === '' && (
                                     <div className='text-red-600 flex gap-1 mt-1'>
-                                        <img src={warningInfoIcon} /> {t('messages:empty_store_name_message')}
+                                        <img src={warningInfoIcon} alt='warningInfoIcon'/> {t('messages:empty_store_name_message')}
                                     </div>
                                 )}
                                 {inValidName && name && name?.length < 3 && (
                                     <div className='text-red-600 flex gap-1 mt-1'>
-                                        <img src={warningInfoIcon} /> {t('messages:enter_valid_store_name_message')}
+                                        <img src={warningInfoIcon} alt='warningInfoIcon'/> {t('messages:enter_valid_store_name_message')}
                                     </div>
                                 )}
                                 <div className='flex !mt-5'>
@@ -1625,12 +1625,12 @@ const Stores = () => {
                                 />
                                 {inValidEmail && storeEmail === '' && (
                                     <div className='text-red-600 flex gap-1 mt-1'>
-                                        <img src={warningInfoIcon} /> {t('messages:empty_email_name_message')}
+                                        <img src={warningInfoIcon} alt='warningInfoIcon'/> {t('messages:empty_email_name_message')}
                                     </div>
                                 )}
                                 {inValidEmail && storeEmail && inValidEmailFormat && (
                                     <div className='text-red-600 flex gap-1 mt-1'>
-                                        <img src={warningInfoIcon} /> {t('messages:enter_valid_email_message')}
+                                        <img alt='warningInfoIcon' src={warningInfoIcon} /> {t('messages:enter_valid_email_message')}
                                     </div>
                                 )}
                                 <div className='flex mt-3'>
@@ -1694,12 +1694,12 @@ const Stores = () => {
                                 />
                                 {inValidUserName && storeUserName === '' && (
                                     <div className='text-red-600 flex gap-1 mt-1'>
-                                        <img src={warningInfoIcon} /> {t('messages:empty_user_name_message')}
+                                        <img src={warningInfoIcon} alt='warningInfoIcon'/> {t('messages:empty_user_name_message')}
                                     </div>
                                 )}
                                 {inValidUserName && storeUserName && storeUserName?.length < 3 && (
                                     <div className='text-red-600 flex gap-1 mt-1'>
-                                        <img src={warningInfoIcon} /> {t('messages:enter_valid_user_name_message')}
+                                        <img src={warningInfoIcon} alt='warningInfoIcon'/> {t('messages:enter_valid_user_name_message')}
                                     </div>
                                 )}
                                 <Content className='flex space-x-3 !justify-end'>
