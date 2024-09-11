@@ -1,9 +1,8 @@
 //! Import libraries
 import React, { useState, useEffect } from 'react'
-import { Layout, Typography, Col, Tag, Tooltip, Image, Table, Button } from 'antd'
+import { Layout, Typography, Tag, Tooltip, Button } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-
 //! Import user defined components
 import HeaderForTitle from '../../components/header/HeaderForTitle'
 import { useTranslation } from 'react-i18next'
@@ -11,16 +10,14 @@ import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import SkeletonComponent from '../../components/Skeleton/SkeletonComponent'
 import DmPagination from '../../components/DmPagination/DmPagination'
 import { usePageTitle } from '../../hooks/usePageTitle'
-import util from '../../util/common'
-import { starIcon } from '../../constants/media'
-
+import ShadCNTable from '../../components/shadCNCustomComponents/ShadCNTable'
 //! Get all required details from .env file
 const currencyAPI = process.env.REACT_APP_CHANGE_CURRENCY_API
 const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE)
 
 //! Destructure the ant design components
 const { Content } = Layout
-const { Title, Text } = Typography
+const { Text } = Typography
 
 const ListCurrency = () => {
     const { t } = useTranslation()
@@ -36,138 +33,57 @@ const ListCurrency = () => {
     //! columns for currency
     const listCurrencyColumns = [
         {
-            title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:title')}</Text>,
-            dataIndex: 'currencyName',
-            key: 'currencyName',
-            width: '28%',
-            ellipsis: true,
-            render: (text, record) => {
-                return (
-                    <Content className='inline-block'>
-                        <Text
-                            className={`mx-1 text-brandGray1
-                   ${record.is_default === true ? '!max-w-[68px]' : '!max-w-[150px]'} `}
-                            ellipsis={{ tooltip: record.currency_name }}>
-                            {record.currency_name}
-                        </Text>
-                        {record.is_default === true ? (
-                            <Tag
-                                // icon={<img src={starIcon} className='mr-1 flex !items-center ' alt='defaultIcon' />}
-                                className='inline-flex items-center gap-1 rounded-xl'
-                                color='#FB8500'>
-                                {t('labels:default_currency')}
-                            </Tag>
-                        ) : (
-                            ''
-                        )}
-                    </Content>
-                )
-            },
+            label: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:title')}</Text>,
+            key: 'currency_name',
         },
         {
-            title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:code')}</Text>,
-            dataIndex: 'currency_code',
-            key: 'currency_code',
-            width: '8%',
-            render: (text, record) => {
-                return (
-                    <>
-                        <Tooltip title={record.iso_currency_code}>
-                            <Text className='max-w-xs text-brandGray1' ellipsis={{ tooltip: record.iso_currency_code }}>
-                                {record.iso_currency_code}
-                            </Text>
-                        </Tooltip>
-                    </>
-                )
-            },
+            label: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:code')}</Text>,
+            key: 'iso_currency_code',
         },
         {
-            title: (
+            label: (
                 <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:conversation')}</Text>
             ),
-            dataIndex: 'conversation',
-            key: 'conversation',
-            ellipsis: true,
-            width: '13%',
-            render: (text, record) => {
-                return <Text className='text-brandGray1'>{record.unit_conversion}</Text>
-            },
+            key: 'unit_conversion',
         },
         {
-            title: (
+            label: (
                 <Text className='text-regal-blue text-sm font-medium leading-[22px]'>
                     {t('labels:unit_price_name')}
                 </Text>
             ),
-            dataIndex: 'unitPriceName',
-            key: 'unitPriceName',
-            width: '10%',
-            render: (text, record) => {
-                return <Text className='text-brandGray1'>{record.unit_price_name}</Text>
-            },
+            key: 'unit_price_name',
         },
         {
-            title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:min_amount')}</Text>,
-            dataIndex: 'minAmount',
-            key: 'minAmount',
-            width: '10%',
-            render: (text, record) => {
-                return <Text className='text-brandGray1'>{record.minimum_amount}</Text>
-            },
+            label: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:min_amount')}</Text>,
+            key: 'minimum_amount',
         },
         {
-            title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:symbol')}</Text>,
-            dataIndex: 'symbol',
+            label: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:symbol')}</Text>,
             key: 'symbol',
-            width: '10%',
-            render: (text, record) => {
-                return <Text className='text-brandGray1'>{record.symbol}</Text>
-            },
         },
         {
-            title: (
+            label: (
                 <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:no_of_decimals')}</Text>
             ),
-            dataIndex: 'noOfDecimals',
-            key: 'noOfDecimals',
-            width: '10%',
-            render: (text, record) => {
-                return <Text className='text-brandGray1'>{record.no_of_decimal}</Text>
-            },
+            key: 'no_of_decimal',
         },
         {
-            title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:action')}</Text>,
-            dataIndex: '',
-            key: '',
-            width: '12%',
-            ellipsis: true,
-            // align: 'center',
-            render: (text, record) => {
-                return (
-                    <Button
-                        type='text'
-                        className='app-btn-text !mr-1 font-medium'
-                        onClick={() => {
-                            navigate(`/dashboard/currency/edit-currency?k=${record.id}`)
-                        }}>
-                        <Text
-                            ellipsis={{
-                                tooltip: {
-                                    title: t('labels:view_details'),
-                                    mouseLeaveDelay: 0,
-                                    mouseEnterDelay: 0.5,
-                                    placement: 'bottom',
-                                },
-                            }}
-                            className='app-primary-color w-[80px]'>
-                            {t('labels:view_details')}
-                        </Text>
-                    </Button>
-                )
-            },
+            label: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:action')}</Text>,
+            key: 'action',
         },
     ]
 
+    const actions = [
+        {
+            label: t('labels:view_details'),
+            color: 'app-primary-color',
+            hoverColor: 'app-primary-color',
+            handler: (row) => {
+                navigate(`/dashboard/currency/edit-currency?k=${row.id}`)
+            },
+        },
+    ]
     //!doing get call for currency using React Query
     const findByPageCurrencyData = async (page, limit) => {
         // Fetcher function
@@ -213,7 +129,7 @@ const ListCurrency = () => {
                     titleContent={<Content className=' !flex items-center !justify-end gap-3'></Content>}
                 />
             </div>
-            <Content className='p-3 mt-[9.5rem]'>
+            <Content className='p-3 mt-[8.8rem]'>
                 {isLoading ? (
                     <Content className=' bg-white text-center !p-2 rounded-md'>
                         <SkeletonComponent />
@@ -223,8 +139,9 @@ const ListCurrency = () => {
                         <p>{`${t('messages:network_error')}`}</p>
                     </Content>
                 ) : (
-                    <Content className='bg-white p-3 shadow-brandShadow rounded-md'>
-                        <Table dataSource={listCurrencyData?.data} columns={listCurrencyColumns} pagination={false} />
+                    <Content className='bg-white p-3 !shadow-brandShadow rounded-md'>
+                        {/* <Table dataSource={listCurrencyData?.data} columns={listCurrencyColumns} pagination={false} /> */}
+                        <ShadCNTable data={listCurrencyData?.data} columns={listCurrencyColumns} actions={actions} />
                         {listCurrencyData && listCurrencyData?.count >= pageLimit ? (
                             <Content className=' grid justify-items-end'>
                                 <DmPagination
