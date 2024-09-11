@@ -1,5 +1,6 @@
 import React from 'react'
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '../../shadcnComponents/ui/table'
+import { Button } from '../../shadcnComponents/ui/button'
 const ShadCNTable = ({ data, columns, actions }) => {
     return (
         <Table>
@@ -23,12 +24,13 @@ const ShadCNTable = ({ data, columns, actions }) => {
                                 {column.key === 'action' ? (
                                     <div className='flex space-x-2'>
                                         {actions.map((action, index) => (
-                                            <button
+                                            <Button
+                                                variant='ghost'
                                                 key={index}
                                                 className={`py-1 text-sm font-medium rounded ${action.color}`}
                                                 onClick={() => action.handler(row)}>
                                                 {action.label}
-                                            </button>
+                                            </Button>
                                         ))}
                                     </div>
                                 ) : (
