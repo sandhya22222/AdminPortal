@@ -202,7 +202,7 @@ function TranslatePolicy({
             ],
         }
 
-        if (selectedConsentDisplayNameData.actionType === 'save') {
+        if (selectedConsentDisplayNameData?.actionType === 'save') {
             createVersionDisplayName(
                 { body: postbody },
                 {

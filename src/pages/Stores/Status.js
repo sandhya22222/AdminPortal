@@ -187,7 +187,7 @@ function Status({
                             onClick={() => {
                                 openModal()
                             }}
-                            disabled={disableStatus || statusInprogress === 3 ||isDistributor}
+                            disabled={disableStatus || statusInprogress === 3 || (isDistributor && switchStatus)}
                         />
                     </Space>
                 </Col>
