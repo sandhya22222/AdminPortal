@@ -176,5 +176,6 @@
     "delete_profile_picture_confirmation": "Are you sure you want to permanently remove your profile picture?",
     "upload_valid_image": "Please upload valid image file",
     "accepted_image_formats": "Accepted image formats include .png, .jpg, .jpeg. Please ensure that the image size falls within the range of 1KB to 2MB.",
-    "image_size_error": "Please choose image file less than 2MB."
+    "image_size_error": "Please choose image file less than 2MB.",
+    "distributor_store_inactive_msg":"Your Distributor store is not activated yet."
 }
