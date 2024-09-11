@@ -35,16 +35,19 @@ const ListCurrency = () => {
         {
             label: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:title')}</Text>,
             key: 'currency_name',
+            width: '25%',
         },
         {
             label: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:code')}</Text>,
             key: 'iso_currency_code',
+            width: '10%',
         },
         {
             label: (
                 <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:conversation')}</Text>
             ),
             key: 'unit_conversion',
+            width: '12%',
         },
         {
             label: (
@@ -53,20 +56,24 @@ const ListCurrency = () => {
                 </Text>
             ),
             key: 'unit_price_name',
+            width: '15%',
         },
         {
             label: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:min_amount')}</Text>,
             key: 'minimum_amount',
+            width: '10%',
         },
         {
             label: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:symbol')}</Text>,
             key: 'symbol',
+            width: '10%',
         },
         {
             label: (
                 <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:no_of_decimals')}</Text>
             ),
             key: 'no_of_decimal',
+            width:'10%'
         },
         {
             label: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:action')}</Text>,
