@@ -42,7 +42,7 @@ import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import Status from './Status'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import util from '../../util/common'
-
+import ShadCNTable from '../../components/shadCNCustomComponents/ShadCNTable'
 import axios from 'axios'
 import { useAuth } from 'react-oidc-context'
 import { validatePositiveNumber } from '../../util/validation'
@@ -207,7 +207,7 @@ const Stores = () => {
 
     const StoreTableColumnThreshold1 = [
         {
-            title: `${t('labels:limits')}`,
+            label: `${t('labels:limits')}`,
             dataIndex: 'limits',
             key: 'limits',
             width: '30%',
@@ -269,7 +269,7 @@ const Stores = () => {
         },
 
         {
-            title: `${t('labels:stats_name')}`,
+            label: `${t('labels:stats_name')}`,
             dataIndex: 'stats',
             key: 'stats',
             width: '20%',
@@ -318,7 +318,7 @@ const Stores = () => {
 
     const StoreTableColumnThreshold2 = [
         {
-            title: `${t('labels:limits')}`,
+            label: `${t('labels:limits')}`,
             dataIndex: 'limits',
             key: 'limits',
             width: '30%',
@@ -389,7 +389,7 @@ const Stores = () => {
                     <>
                         <div className='flex'>
                             <div className=''>
-                                <img src={storeDefaultImage} className='aspect-square mt-1' />
+                                <img src={storeDefaultImage} alt='storeDefaultImage' className='aspect-square mt-1' />
                             </div>
                             <div className=''>
                                 <Row>
@@ -691,6 +691,45 @@ const Stores = () => {
         },
     }
 
+    const storeRestrictionsData = [
+        {
+            key: '1',
+
+            limits: `${t('labels:max_vendor_onboarding_limit')},${
+                storeLimitValues?.vendor_limit
+            },vendor_limit, ${t('labels:vendor_limit_tooltip')}`,
+        },
+        {
+            key: '2',
+            limits: `${t('labels:max_customer_onboarding_limit')},${
+                storeLimitValues?.customer_limit
+            },customer_limit, ${t('labels:customer_limit_tooltip')}`,
+        },
+        {
+            key: '3',
+            limits: `${t('labels:max_product_limit')},${
+                storeLimitValues?.product_limit
+            },product_limit, ${t('labels:product_limit_tooltip')}`,
+        },
+        {
+            key: '4',
+            limits: `${t('labels:max_order_limit')} ,${
+                storeLimitValues?.order_limit_per_day
+            },order_limit_per_day, ${t('labels:order_limit_tooltip')}`,
+        },
+        {
+            key: '5',
+            limits: `${t('labels:max_language_limit')} ,${
+                storeLimitValues?.langauge_limit
+            },langauge_limit, ${t('labels:language_limit_tooltip')}`,
+        },
+        {
+            key: '6',
+            limits: `${t('labels:max_product_template_limit')},${
+                storeLimitValues?.product_template_limit
+            },product_template_limit, ${t('labels:product_template_limit_tooltip')}`,
+        },
+    ]
     //! add drawer
     const showAddDrawer = () => {
         setOpen(true)
@@ -717,7 +756,7 @@ const Stores = () => {
 
     //!get call for stores
     const findByPageStoreApi = (pageNumber, pageLimit, storeStatus, searchKey) => {
-        console.log('pageNumber--->',pageNumber,'storeStatus--->',storeStatus)
+        console.log('pageNumber--->', pageNumber, 'storeStatus--->', storeStatus)
         setIsLoading(true)
         let params = {}
         params['status'] = storeStatus ? storeStatus : null
@@ -1173,9 +1212,14 @@ const Stores = () => {
             )
         } else {
             if (isSearchTriggered) {
-                findByPageStoreApi(undefined,undefined,parseInt(searchParams.get('tab')) && parseInt(searchParams.get('tab')) <= 2
-                ? parseInt(searchParams.get('tab'))
-                : '',undefined)
+                findByPageStoreApi(
+                    undefined,
+                    undefined,
+                    parseInt(searchParams.get('tab')) && parseInt(searchParams.get('tab')) <= 2
+                        ? parseInt(searchParams.get('tab'))
+                        : '',
+                    undefined
+                )
                 setIsSearchTriggered(false)
             }
         }
@@ -1186,9 +1230,14 @@ const Stores = () => {
         setSearchValue(trimmedUpdate)
         if (event.target.value == '') {
             if (isSearchTriggered) {
-                findByPageStoreApi(undefined,undefined,parseInt(searchParams.get('tab')) && parseInt(searchParams.get('tab')) <= 2
-                ? parseInt(searchParams.get('tab'))
-                : '',undefined)
+                findByPageStoreApi(
+                    undefined,
+                    undefined,
+                    parseInt(searchParams.get('tab')) && parseInt(searchParams.get('tab')) <= 2
+                        ? parseInt(searchParams.get('tab'))
+                        : '',
+                    undefined
+                )
                 setIsSearchTriggered(false)
             }
         }
@@ -1376,14 +1425,40 @@ const Stores = () => {
                                                 {t('labels:account_restrictions')}
                                             </Title>
                                             <Divider className='w-full mt-2 mb-2' />
-                                            <DynamicTable tableComponentData={tablePropsThreshold1} />
+                                            {/* <DynamicTable tableComponentData={tablePropsThreshold1} /> */}
+                                            <div className='!p-3'>
+                                                <ShadCNTable
+                                                    data={[
+                                                        {
+                                                            key: '1',
+                                                            limits: `${t('labels:maximum_store_creation_limit')},${storeLimitValues?.store_limit},store_limit,
+                                                ${t('labels:store_limit_tooltip')}`,
+                                                            stats:
+                                                                analysisCount?.store_count +
+                                                                ',' +
+                                                                storeLimitValues?.store_limit +
+                                                                ',' +
+                                                                'store_limit',
+                                                        },
+                                                    ]}
+                                                    columns={StoreTableColumnThreshold1}
+                                                    actions={null}
+                                                />
+                                            </div>
                                         </Content>
                                         <Content className='shadow-brandShadow rounded-md bg-white'>
                                             <Title className='!text-regal-blue  pt-3 ml-6' level={4}>
                                                 {t('labels:store_restrictions')}
                                             </Title>
                                             <Divider className='w-full mt-2 mb-2' />
-                                            <DynamicTable tableComponentData={tablePropsThreshold2} />
+                                            {/* <DynamicTable tableComponentData={tablePropsThreshold2} /> */}
+                                            <div className='!p-3'>
+                                                <ShadCNTable
+                                                    data={storeRestrictionsData}
+                                                    columns={StoreTableColumnThreshold2}
+                                                    actions={null}
+                                                />
+                                            </div>
                                         </Content>
                                         {hideAddStoreButton ? (
                                             <Content className='flex gap-2 !ml-6 !pb-6'>
@@ -1517,12 +1592,14 @@ const Stores = () => {
                                 </div>
                                 {inValidName && name === '' && (
                                     <div className='text-red-600 flex gap-1 mt-1'>
-                                        <img src={warningInfoIcon} alt='warningInfoIcon'/> {t('messages:empty_store_name_message')}
+                                        <img src={warningInfoIcon} alt='warningInfoIcon' />{' '}
+                                        {t('messages:empty_store_name_message')}
                                     </div>
                                 )}
                                 {inValidName && name && name?.length < 3 && (
                                     <div className='text-red-600 flex gap-1 mt-1'>
-                                        <img src={warningInfoIcon} alt='warningInfoIcon'/> {t('messages:enter_valid_store_name_message')}
+                                        <img src={warningInfoIcon} alt='warningInfoIcon' />{' '}
+                                        {t('messages:enter_valid_store_name_message')}
                                     </div>
                                 )}
                                 <div className='flex !mt-5'>
@@ -1625,12 +1702,14 @@ const Stores = () => {
                                 />
                                 {inValidEmail && storeEmail === '' && (
                                     <div className='text-red-600 flex gap-1 mt-1'>
-                                        <img src={warningInfoIcon} alt='warningInfoIcon'/> {t('messages:empty_email_name_message')}
+                                        <img src={warningInfoIcon} alt='warningInfoIcon' />{' '}
+                                        {t('messages:empty_email_name_message')}
                                     </div>
                                 )}
                                 {inValidEmail && storeEmail && inValidEmailFormat && (
                                     <div className='text-red-600 flex gap-1 mt-1'>
-                                        <img alt='warningInfoIcon' src={warningInfoIcon} /> {t('messages:enter_valid_email_message')}
+                                        <img alt='warningInfoIcon' src={warningInfoIcon} />{' '}
+                                        {t('messages:enter_valid_email_message')}
                                     </div>
                                 )}
                                 <div className='flex mt-3'>
@@ -1644,7 +1723,10 @@ const Stores = () => {
                                         <Tooltip
                                             title={
                                                 <div className='text-sm text-white'>
-                                                    <p className='m-0 p-0'>{t('labels:your_username_can_include')}<span>:</span></p>
+                                                    <p className='m-0 p-0'>
+                                                        {t('labels:your_username_can_include')}
+                                                        <span>:</span>
+                                                    </p>
                                                     <ul className='list-disc !ml-3 space-y-1 mb-0'>
                                                         <li>{t('messages:uppercase_letters')}</li>
                                                         <li>{t('messages:lowercase_letters')}</li>
@@ -1694,12 +1776,14 @@ const Stores = () => {
                                 />
                                 {inValidUserName && storeUserName === '' && (
                                     <div className='text-red-600 flex gap-1 mt-1'>
-                                        <img src={warningInfoIcon} alt='warningInfoIcon'/> {t('messages:empty_user_name_message')}
+                                        <img src={warningInfoIcon} alt='warningInfoIcon' />{' '}
+                                        {t('messages:empty_user_name_message')}
                                     </div>
                                 )}
                                 {inValidUserName && storeUserName && storeUserName?.length < 3 && (
                                     <div className='text-red-600 flex gap-1 mt-1'>
-                                        <img src={warningInfoIcon} alt='warningInfoIcon'/> {t('messages:enter_valid_user_name_message')}
+                                        <img src={warningInfoIcon} alt='warningInfoIcon' />{' '}
+                                        {t('messages:enter_valid_user_name_message')}
                                     </div>
                                 )}
                                 <Content className='flex space-x-3 !justify-end'>
