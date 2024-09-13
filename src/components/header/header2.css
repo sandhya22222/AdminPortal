@@ -56,3 +56,8 @@
 .ant-dropdown {
     overflow: visible !important;
 }
+.custom-avatar > img {
+    margin-top: 0px;
+    object-fit: contain;
+    background: white;
+}
