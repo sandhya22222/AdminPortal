@@ -10,3 +10,9 @@
     fill: #D9D9D9 !important;
     transition: fill 0.3s ease-in-out;
 }
+.custom-upload-delete-btn .ant-btn.ant-btn-sm{
+    background-color: initial !important;
+}
+.custom-upload-delete-btn .ant-btn.ant-btn-sm:hover{
+    background-color: initial !important;
+}
