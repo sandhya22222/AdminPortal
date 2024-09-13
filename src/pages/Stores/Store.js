@@ -33,7 +33,6 @@ import {
     warningInfoIcon,
 } from '../../constants/media'
 //! Import user defined components
-import DmPagination from '../../components/DmPagination/DmPagination'
 import DynamicTable from '../../components/DynamicTable/DynamicTable'
 import HeaderForTitle from '../../components/header/HeaderForTitle'
 import StoreModal from '../../components/storeModal/StoreModal'
@@ -46,6 +45,7 @@ import util from '../../util/common'
 import axios from 'axios'
 import { useAuth } from 'react-oidc-context'
 import { validatePositiveNumber } from '../../util/validation'
+import ShadCNPagination from '../../components/shadCNCustomComponents/ShadCNPagination'
 
 const { Content } = Layout
 const { Title, Text } = Typography
@@ -1334,29 +1334,25 @@ const Stores = () => {
                                                         {parseInt(m_tab_id) === 1 ? (
                                                             <Content className=' grid justify-items-end mx-3 h-fit'>
                                                                 {countForStore && countForStore >= pageLimit ? (
-                                                                    <DmPagination
-                                                                        currentPage={
-                                                                            parseInt(searchParams.get('page'))
-                                                                                ? parseInt(searchParams.get('page'))
-                                                                                : 1
-                                                                        }
-                                                                        presentPage={
-                                                                            parseInt(searchParams.get('page'))
-                                                                                ? parseInt(searchParams.get('page'))
-                                                                                : 1
-                                                                        }
-                                                                        totalItemsCount={countForStore}
-                                                                        defaultPageSize={pageLimit}
-                                                                        pageSize={
-                                                                            parseInt(searchParams.get('limit'))
-                                                                                ? parseInt(searchParams.get('limit'))
-                                                                                : pageLimit
-                                                                        }
-                                                                        handlePageNumberChange={handlePageNumberChange}
-                                                                        showSizeChanger={true}
-                                                                        showTotal={true}
-                                                                        showQuickJumper={true}
-                                                                    />
+                                                                    <ShadCNPagination
+                                                                            totalItemsCount={countForStore}
+                                                                            handlePageNumberChange={
+                                                                                handlePageNumberChange
+                                                                            }
+                                                                            currentPage={
+                                                                                parseInt(searchParams.get('page'))
+                                                                                    ? parseInt(searchParams.get('page'))
+                                                                                    : 1
+                                                                            }
+                                                                            itemsPerPage={
+                                                                                parseInt(searchParams.get('limit'))
+                                                                                    ? parseInt(
+                                                                                          searchParams.get('limit')
+                                                                                      )
+                                                                                    : pageLimit
+                                                                            }
+                                                                            showQuickJumper={true}
+                                                                        />
                                                                 ) : null}
                                                             </Content>
                                                         ) : null}
