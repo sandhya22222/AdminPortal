@@ -222,7 +222,7 @@ const Header2 = ({ collapsed, setCollapsed, setIsLanguageSelected }) => {
                                         : 'mr-[5px]'
                                 }`}>
                                 <Avatar
-                                    className='bg-gray-400 mx-1'
+                                    className={`bg-gray-400 mx-1 !leading-10  ${profileImage && 'custom-avatar'}`}
                                     size={48}
                                     src={
                                         storeUsersData?.attributes?.profile_image_path?.[0] ? (
