@@ -1,6 +1,5 @@
 //! Import libraries
 import React, { useState, useEffect } from 'react'
-import { Layout, Typography, Tag, Tooltip, Button } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 //! Import user defined components
@@ -11,13 +10,13 @@ import SkeletonComponent from '../../components/Skeleton/SkeletonComponent'
 import DmPagination from '../../components/DmPagination/DmPagination'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import ShadCNTable from '../../components/shadCNCustomComponents/ShadCNTable'
+import ShadCNTooltip from '../../components/shadCNCustomComponents/ShadCNTooltip'
+import { Badge } from '../../shadcnComponents/ui/badge'
 //! Get all required details from .env file
 const currencyAPI = process.env.REACT_APP_CHANGE_CURRENCY_API
 const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE)
 
 //! Destructure the ant design components
-const { Content } = Layout
-const { Text } = Typography
 
 const ListCurrency = () => {
     const { t } = useTranslation()
@@ -33,50 +32,75 @@ const ListCurrency = () => {
     //! columns for currency
     const listCurrencyColumns = [
         {
-            label: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:title')}</Text>,
+            label: <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:title')}</span>,
             key: 'currency_name',
             width: '25%',
+            ellipsis: true,
+            render: (text, record) => (
+                <div className='flex items-center'>
+                    {record.is_default ? (
+                        <ShadCNTooltip content={record.currency_name}>
+                            <div
+                                className={`mx-1 text-brandGray1  ${record.is_default ? '!max-w-[68px] truncate' : '!max-w-[150px]'}`}
+                                style={{
+                                    whiteSpace: 'nowrap',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                }}>
+                                {record.currency_name}
+                            </div>
+                        </ShadCNTooltip>
+                    ) : (
+                        <div>{record.currency_name}</div>
+                    )}
+                    {record.is_default && (
+                        <Badge variant='' className='inline-flex items-center gap-1 rounded-xl' color='#FB8500'>
+                            {t('labels:default_currency')}
+                        </Badge>
+                    )}
+                </div>
+            ),
         },
         {
-            label: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:code')}</Text>,
+            label: <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:code')}</span>,
             key: 'iso_currency_code',
             width: '10%',
         },
         {
             label: (
-                <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:conversation')}</Text>
+                <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:conversation')}</span>
             ),
             key: 'unit_conversion',
             width: '12%',
         },
         {
             label: (
-                <Text className='text-regal-blue text-sm font-medium leading-[22px]'>
+                <span className='text-regal-blue text-sm font-medium leading-[22px]'>
                     {t('labels:unit_price_name')}
-                </Text>
+                </span>
             ),
             key: 'unit_price_name',
             width: '15%',
         },
         {
-            label: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:min_amount')}</Text>,
+            label: <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:min_amount')}</span>,
             key: 'minimum_amount',
             width: '10%',
         },
         {
-            label: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:symbol')}</Text>,
+            label: <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:symbol')}</span>,
             key: 'symbol',
             width: '10%',
         },
         {
             label: (
-                <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:no_of_decimals')}</Text>
+                <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:no_of_decimals')}</span>
             ),
             key: 'no_of_decimal',
-            width:'10%'
+            width: '10%',
         },
         {
-            label: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:action')}</Text>,
+            label: <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:action')}</span>,
             key: 'action',
         },
     ]
@@ -124,33 +148,29 @@ const ListCurrency = () => {
 
     //!JSX for list currency page
     return (
-        <Content>
+        <div>
             <div className='!shadow-lg'>
                 <HeaderForTitle
                     className=''
-                    title={
-                        <Content className=''>
-                            <div className='!font-semibold text-2xl mb-4 text-regal-blue'>{t('labels:currency')}</div>
-                        </Content>
-                    }
-                    titleContent={<Content className=' !flex items-center !justify-end gap-3'></Content>}
+                    title={<div className='!font-semibold text-2xl mb-4 text-regal-blue'>{t('labels:currency')}</div>}
+                    titleContent={<div className=' !flex items-center !justify-end gap-3'></div>}
                 />
             </div>
-            <Content className='p-3 mt-[8.8rem]'>
+            <div className='p-3 mt-[8.8rem]'>
                 {isLoading ? (
-                    <Content className=' bg-white text-center !p-2 rounded-md'>
+                    <div className=' bg-white text-center !p-2 rounded-md'>
                         <SkeletonComponent />
-                    </Content>
+                    </div>
                 ) : isNetworkError ? (
-                    <Content className='pt-[2.3rem] px-3 pb-3 text-center ml-2 '>
+                    <div className='pt-[2.3rem] px-3 pb-3 text-center ml-2 '>
                         <p>{`${t('messages:network_error')}`}</p>
-                    </Content>
+                    </div>
                 ) : (
-                    <Content className='bg-white p-3 !shadow-brandShadow rounded-md'>
+                    <div className='bg-white p-3 !shadow-brandShadow rounded-md'>
                         {/* <Table dataSource={listCurrencyData?.data} columns={listCurrencyColumns} pagination={false} /> */}
                         <ShadCNTable data={listCurrencyData?.data} columns={listCurrencyColumns} actions={actions} />
                         {listCurrencyData && listCurrencyData?.count >= pageLimit ? (
-                            <Content className=' grid justify-items-end'>
+                            <div className=' grid justify-items-end'>
                                 <DmPagination
                                     currentPage={currencyPaginationData.pageNumber}
                                     totalItemsCount={listCurrencyData?.count}
@@ -160,12 +180,12 @@ const ListCurrency = () => {
                                     showTotal={true}
                                     showQuickJumper={true}
                                 />
-                            </Content>
+                            </div>
                         ) : null}
-                    </Content>
+                    </div>
                 )}
-            </Content>
-        </Content>
+            </div>
+        </div>
     )
 }
 

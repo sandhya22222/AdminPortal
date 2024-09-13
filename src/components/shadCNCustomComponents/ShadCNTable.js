@@ -27,20 +27,22 @@ const ShadCNTable = ({ data, columns, actions }) => {
                                 key={column.key}
                                 style={{ width: column.width }} // Applying dynamic width here
                                 className='!text-brandGray1'>
-                                {column.key === 'action' ? (
+                                {column.render ? (
+                                    column.render(row[column.key], row) // Call the custom render function
+                                ) : column.key === 'action' ? (
                                     <div className='flex space-x-2'>
                                         {actions.map((action, index) => (
                                             <Button
                                                 variant='ghost'
                                                 key={index}
-                                                className={` text-sm font-medium rounded ${action.color}`}
+                                                className={`text-sm font-medium rounded ${action.color}`}
                                                 onClick={() => action.handler(row)}>
                                                 {action.label}
                                             </Button>
                                         ))}
                                     </div>
                                 ) : (
-                                    row[column.key]
+                                    row[column.key] // Default rendering
                                 )}
                             </TableCell>
                         ))}
