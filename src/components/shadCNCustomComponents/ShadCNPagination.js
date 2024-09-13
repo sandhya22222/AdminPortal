@@ -19,12 +19,12 @@ const PAGE_LIMIT_OPTIONS = [20, 50, 100]
  * ShadCNPagination component renders a pagination control for navigating through pages of items.
  *
  * @param totalItemsCount - The total number of items to be paginated.
- * @param handlePageNumberChange - Callback function to handle page number changes.
+ * @param handlePageNumberChange - Callback function to handle page number changes. This function should be defined in the parent component and will receive the new page number and the page limit as arguments.
  * @param currentPage - The currently selected page number.
  * @param itemsPerPage - The number of items displayed per page.
  * @param showQuickJumper - Optional. Whether to show a quick jumper for direct page navigation.
  */
-const ShadCNPagination = ({ totalItemsCount, handlePageNumberChange, currentPage, itemsPerPage, showQuickJumper }) => {
+const ShadCNPagination = ({ totalItemsCount, handlePageNumberChange = ()=>{}, currentPage, itemsPerPage, showQuickJumper }) => {
     const { t } = useTranslation()
     const [goToValue, setGoToValue] = useState('')
     const totalPages = Math.ceil(totalItemsCount / itemsPerPage)
@@ -108,7 +108,9 @@ const ShadCNPagination = ({ totalItemsCount, handlePageNumberChange, currentPage
             <Pagination>
                 <PaginationContent>
                     <div>
-                        <span>{`${startIndex}-${endIndex} ${t('labels:of')} ${totalItemsCount} ${t('labels:items')}`}</span>
+                        {startIndex != null && endIndex != null && totalItemsCount != null && (
+                            <span>{`${startIndex}-${endIndex} ${t('labels:of')} ${totalItemsCount} ${t('labels:items')}`}</span>
+                        )}
                     </div>
                     <PaginationItem>
                         <PaginationPrevious
