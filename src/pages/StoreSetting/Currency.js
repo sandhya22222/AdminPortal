@@ -241,10 +241,10 @@ const Currency = ({ storeUUId }) => {
                         {currencyData && currencyData.length > 0 ? (
                             <Row className='w-[80%]'>
                                 <Col
-                                    className={`w-[20%] justify-items-start  !inline-block   ${
+                                    className={`!w-max justify-items-start  !inline-block   ${
                                         util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                            ? 'text-left ml-2'
-                                            : 'text-right mr-2'
+                                            ? 'text-right mr-2'
+                                            : 'text-left ml-2'
                                     }`}>
                                     <p className='!text-brandGray1 my-3 flex'>{t('labels:currency_code')} </p>
                                     <p className='!text-brandGray1 my-3 flex'>{t('labels:conversation')}</p>
@@ -318,7 +318,7 @@ const Currency = ({ storeUUId }) => {
                                     <Col>
                                         <Button
                                             className='app-btn-primary '
-                                            onClick={() =>  updateStoreCurrencyApi()}
+                                            onClick={() => updateStoreCurrencyApi()}
                                             disabled={!currencyOnChange}>
                                             {t('labels:save')}
                                         </Button>

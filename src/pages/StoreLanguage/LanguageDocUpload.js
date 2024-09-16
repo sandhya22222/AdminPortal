@@ -218,7 +218,7 @@ function LanguageDocUpload({ langCode }) {
             <p className='text-brandGray2 px-1'>{t('messages:language_document_data')}</p>
             <Content className='!flex gap-4'>
                 <Content className='border rounded-md '>
-                    <Spin spinning={isSpinning} tip='Please wait'>
+                    <Spin spinning={isSpinning} tip={t('labels:please_wait')}>
                         <Content className='flex p-3 justify-between'>
                             <Content>
                                 <Text className='text-base font-semibold !text-regal-blue'>
@@ -273,7 +273,7 @@ function LanguageDocUpload({ langCode }) {
             </Content>
             <Content className=' mt-4 !flex gap-4'>
                 <Content className='border rounded-md'>
-                    <Spin spinning={isSpinningForBEUpload} tip='Please wait'>
+                    <Spin spinning={isSpinningForBEUpload} tip={t('labels:please_wait')}>
                         <Content className='flex justify-between p-3'>
                             <Content>
                                 <Text className='text-base font-semibold !text-regal-blue'>
@@ -409,7 +409,7 @@ function LanguageDocUpload({ langCode }) {
                 cancelButtonText={null}
                 cancelCallback={() => setChooseDownloadModalVisible(false)}
                 isSpin={false}>
-                <Spin spinning={isSpinning} tip='Please wait'>
+                <Spin spinning={isSpinning} tip={t('labels:please_wait')}>
                     <Content className='flex justify-between items-center'>
                         {/* <Title level={4}>{t('messages:download_current_document')}</Title> */}
                         <div className='font-semibold text-lg'>{t('messages:choose_download_format')}</div>

@@ -87,7 +87,7 @@ function StoreLimitComponent() {
                     </Content>
                 }
             />
-            <Spin tip='Please wait!' size='large' spinning={isStoreLimitSaving}>
+            <Spin tip={t('labels:please_wait')} size='large' spinning={isStoreLimitSaving}>
                 {isLoading ? (
                     // <Content className="!text-center !p-6">
                     <Content className='inline-block shadow-sm  bg-[#FFFFFF] !rounded-md mt-[9rem] w-[100%] py-3'>
