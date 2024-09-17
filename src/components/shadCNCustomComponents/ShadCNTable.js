@@ -1,5 +1,6 @@
 import React from 'react'
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '../../shadcnComponents/ui/table'
+import { Button } from '../../shadcnComponents/ui/button'
 const ShadCNTable = ({ data, columns, actions }) => {
     return (
         <Table>
@@ -7,7 +8,10 @@ const ShadCNTable = ({ data, columns, actions }) => {
             <TableHeader>
                 <TableRow>
                     {columns.map((column) => (
-                        <TableHead key={column.key} className='text-regal-blue text-sm font-medium leading-[22px]'>
+                        <TableHead
+                            key={column.key}
+                            style={{ width: column.width }} // Applying dynamic width here
+                            className='text-regal-blue text-sm font-medium leading-[22px]'>
                             {column.label}
                         </TableHead>
                     ))}
@@ -19,20 +23,26 @@ const ShadCNTable = ({ data, columns, actions }) => {
                 {data.map((row) => (
                     <TableRow key={row.id}>
                         {columns.map((column) => (
-                            <TableCell key={column.key} className='!text-brandGray1'>
-                                {column.key === 'action' ? (
+                            <TableCell
+                                key={column.key}
+                                style={{ width: column.width }} // Applying dynamic width here
+                                className='!text-brandGray1'>
+                                {column.render ? (
+                                    column.render(row[column.key], row) // Call the custom render function
+                                ) : column.key === 'action' ? (
                                     <div className='flex space-x-2'>
                                         {actions.map((action, index) => (
-                                            <button
+                                            <Button
+                                                variant='ghost'
                                                 key={index}
-                                                className={`py-1 text-sm font-medium rounded ${action.color}`}
+                                                className={`text-sm font-medium rounded ${action.color}`}
                                                 onClick={() => action.handler(row)}>
                                                 {action.label}
-                                            </button>
+                                            </Button>
                                         ))}
                                     </div>
                                 ) : (
-                                    row[column.key]
+                                    row[column.key] // Default rendering
                                 )}
                             </TableCell>
                         ))}
