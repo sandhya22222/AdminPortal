@@ -31,6 +31,7 @@ import EditCurrency from './pages/storeCurrency/EditCurrency'
 import MyProfile from './pages/StoreUsers/MyProfile'
 import StoreSettingsLayout from './pages/StoreSetting/StoreSettingsLayout'
 import PlatformAdmin from './pages/adminPlatform/PlatformAdmin'
+
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL
 
 const getPermissionsUrl = process.env.REACT_APP_USER_PROFILE_API
@@ -106,6 +107,7 @@ const App = () => {
             <Container fluid className='p-0 bg-[#F4F4F4] text-[#393939]'>
                 <Routes>
                     <Route path='/' element={<Home />} />
+                    
                     <Route path='/logout' element={<LogOut />} />
 
                     {auth.isAuthenticated ? (
@@ -139,6 +141,7 @@ const App = () => {
                                     <Route path='edit-user' element={<CreateUsers />} />
                                     <Route path='add-roles' element={<CreateRoles />} />
                                     <Route path='edit-roles' element={<CreateRoles />} />
+
                                 </Route>
                             </>
                         </Route>

@@ -21,6 +21,7 @@ module.exports = {
                 brandGray2: 'var(--mp-text-gray2)',
                 brandGray: 'var(--mp-text-gray)',
                 brandPrimaryColor: 'var(--mp-brand-color)',
+                brandOrange: '#FB8500',
                 'regal-orange': '#FFA229',
                 dangerColor: '#FF4D4F',
                 //Below are the shadcn Changes
