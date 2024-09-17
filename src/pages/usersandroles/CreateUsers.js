@@ -24,6 +24,7 @@ import util from '../../util/common'
 import validator from 'validator'
 import { InfoIcon } from '../../constants/media'
 import StoreModal from '../../components/storeModal/StoreModal'
+import { usePageTitle } from '../../hooks/usePageTitle'
 //! Import CSS libraries
 
 const userAPI = process.env.REACT_APP_USERS_API
@@ -79,6 +80,7 @@ const CreateUsers = () => {
     const [primaryStatusModalOpen, setPrimaryStatusModalOpen] = useState(false)
     const [userPrimaryStatus, setUserPrimaryStatus] = useState()
     const [primaryStatusUpdateLoading, setPrimaryStatusUpdateLoading] = useState(false)
+    usePageTitle(`${t('labels:user_access_control')}`)
     //Get call of groups
     const findAllGroupLists = () => {
         MarketplaceServices.findAll(groupsAPI, { is_marketplace_role: true }, true)

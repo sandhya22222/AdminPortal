@@ -1,6 +1,6 @@
 //! Import libraries
 import { LoadingOutlined } from '@ant-design/icons'
-import { Layout, Menu, Spin } from 'antd'
+import { Layout, Menu, Spin, Tooltip, Typography } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
@@ -26,6 +26,7 @@ const pageLimitFromENV = process.env.REACT_APP_ITEM_PER_PAGE
 //! Global Variables
 
 const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
+    const { Text } = Typography
     const { t } = useTranslation()
     const [selectedItem, setSelectedItem] = useState([])
     const [openedItem, setOpenedItem] = useState([])
@@ -241,9 +242,17 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                                                           : 0.8,
                                                 }}>
                                                 {selectedItem === child.key ? (
-                                                    <span className='font-semibold'>{child.label}</span>
+                                                    <Tooltip
+                                                        placement='bottom'
+                                                        title={child?.label?.length > 23 ? child.label : undefined}>
+                                                        <span className='font-semibold'>{child.label}</span>
+                                                    </Tooltip>
                                                 ) : (
-                                                    child.label
+                                                    <Tooltip
+                                                        placement='bottom'
+                                                        title={child?.label?.length > 23 ? child.label : undefined}>
+                                                        <span>{child.label}</span>
+                                                    </Tooltip>
                                                 )}
                                             </Menu.Item>
                                         ) : null
@@ -262,9 +271,17 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                                         opacity: selectedItem === item.key ? 1 : 0.8,
                                     }}>
                                     {selectedItem === item.key ? (
-                                        <span className='font-semibold '>{item.label}</span>
+                                        <Tooltip
+                                            placement='bottom'
+                                            title={item?.label?.length > 23 ? item.label : undefined}>
+                                            <span className='font-semibold'>{item.label}</span>
+                                        </Tooltip>
                                     ) : (
-                                        item.label
+                                        <Tooltip
+                                            placement='bottom'
+                                            title={item?.label?.length > 23 ? item.label : undefined}>
+                                            <span>{item.label}</span>
+                                        </Tooltip>
                                     )}
                                 </Menu.Item>
                             ) : null
