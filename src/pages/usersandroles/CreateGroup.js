@@ -95,7 +95,7 @@ const CreateGroup = ({ groupNameProps, setShowGroupModal }) => {
 
     return (
         <Content className='pb-4'>
-            <Spin tip='Please wait' spinning={isLoading}>
+            <Spin tip={t('labels:please_wait')} spinning={isLoading}>
                 <Text className='text-xl font-semibold'>
                     {groupNameProps === '' ? t('users_roles:add_group') : t('users_roles:edit_group')}
                 </Text>

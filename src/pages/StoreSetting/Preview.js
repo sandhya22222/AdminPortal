@@ -47,8 +47,8 @@ const Preview = ({
             <Divider style={{ margin: '8px 0' }} />
             <Content
                 className={`min-h-[320px] text-center bg-[var(--mp-theme-preview-page-content-background-color)] `}>
-                <p className={`text-bold !text-[#6d7b88] !mt-8 !mr-6`}>{t('labels:main_content_of_the_page')}</p>
-                <Content className='text-center p-24 '>
+                <p className={`text-bold !text-[#6d7b88] !mt-8`}>{t('labels:main_content_of_the_page')}</p>
+                <Content className='text-center pt-24 '>
                     <Button
                         style={{
                             backgroundColor: buttonPrimaryBackgroundColor,

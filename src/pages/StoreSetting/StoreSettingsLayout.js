@@ -444,7 +444,7 @@ const StoreSettingsLayout = () => {
                                 {disableMediaButton ? (
                                     ''
                                 ) : (
-                                    <Spin tip='Please wait!' size='large' spinning={isUpLoading}>
+                                    <Spin tip={t('labels:please_wait')} size='large' spinning={isUpLoading}>
                                         <Content className='bg-white p-3 !rounded-md border my-4'>
                                             <label className='text-lg mb-3 font-semibold text-regal-blue'>
                                                 {t('labels:media')}

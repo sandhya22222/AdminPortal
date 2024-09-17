@@ -45,8 +45,8 @@ const instance = axios.create()
 const Dashboard = () => {
     const { t } = useTranslation()
 
-    const auth = useAuth()
     usePageTitle(t('labels:dashboard'))
+    const auth = useAuth()
     const [dashboardData, setDashboardData] = useState()
     const [dashboardDataLoading, setDashboardDataLoading] = useState(true)
     const [dashboardDataNetWorkError, setDashboardDataNetWorkError] = useState(false)
