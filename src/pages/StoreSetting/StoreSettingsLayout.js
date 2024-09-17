@@ -17,6 +17,7 @@ import { storeDefaultImage } from '../../constants/media'
 
 import Theme from './Theme'
 import StoreOverview from './StoreOverview'
+import { usePageTitle } from '../../hooks/usePageTitle'
 const { Content } = Layout
 const { Text } = Typography
 
@@ -27,6 +28,7 @@ const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE)
 
 const StoreSettingsLayout = () => {
     const { t } = useTranslation()
+    usePageTitle(t('labels:stores'))
     const navigate = useNavigate()
     const search = useLocation().search
     const id = new URLSearchParams(search).get('id')
@@ -347,7 +349,7 @@ const StoreSettingsLayout = () => {
         }
     }, [searchParams, hideActionButton, permissionValue])
 
-   console.log('isDistributor---->', typeof isDistributor)
+    console.log('isDistributor---->', typeof isDistributor)
 
     return (
         <Content>
