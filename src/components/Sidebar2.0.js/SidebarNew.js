@@ -1,10 +1,11 @@
 //! Import libraries
 import { LoadingOutlined } from '@ant-design/icons'
 import { Layout, Menu, Spin } from 'antd'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Suspense } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import NewFooter from './../footer/Footer'
+
 //! Import CSS libraries
 
 //! Import user defined functions
@@ -21,6 +22,15 @@ import { SettingsSVG } from './components/SettingsSVG'
 const { Sider, Content } = Layout
 
 const antIcon = <LoadingOutlined className='text-[10px] hidden' spin />
+
+const antLazyLoadingIcon = (
+    <LoadingOutlined
+        style={{
+            fontSize: 54,
+        }}
+        spin
+    />
+)
 const pageLimitFromENV = process.env.REACT_APP_ITEM_PER_PAGE
 
 //! Global Variables
@@ -281,7 +291,16 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                         : `${collapsed ? 'ml-[80px]' : 'ml-[252px]'}`
                 }`}>
                 <Content className='!bg-[#F4F4F4]  flex-grow'>
-                    <Outlet />
+                    <Suspense
+                        fallback={
+                            <Layout className='h-[100vh]'>
+                                <Content className='grid justify-items-center align-items-center h-full'>
+                                    <Spin indicator={antLazyLoadingIcon} />
+                                </Content>
+                            </Layout>
+                        }>
+                        <Outlet />
+                    </Suspense>
                 </Content>
                 <Content className='flex-grow-0  !w-[100%]'>
                     <NewFooter />
