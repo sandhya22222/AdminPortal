@@ -390,16 +390,18 @@ const Stores = () => {
                     <>
                         <div className='flex'>
                             <div className=''>
-                                <img src={storeDefaultImage} className='aspect-square mt-1' />
+                                <img src={storeDefaultImage} alt='storeDefaultImage' className='aspect-square mt-1' />
                             </div>
                             <div className=''>
                                 <Row>
-                                    <Text
-                                        className='text-brandGray1 mb-1 !max-w-[150px]'
-                                        ellipsis={{ tooltip: record.name }}
-                                        disabled={record.status === 3 ? true : false}>
-                                        {record.name}
-                                    </Text>
+                                    <Tooltip title={record.name} placement='top'>
+                                        <Text
+                                            className='text-brandGray1 mb-1 !max-w-[150px]'
+                                            ellipsis={{ tooltip: record.name }}
+                                            disabled={record.status === 3 ? true : false}>
+                                            {record.name}
+                                        </Text>
+                                    </Tooltip>
                                 </Row>
                                 <Row>
                                     {record.isDistributor ? (
