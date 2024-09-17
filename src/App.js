@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, lazy } from 'react'
+import { LoadingOutlined } from '@ant-design/icons'
 import { Container } from 'reactstrap'
 import { Layout, Spin } from 'antd'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
@@ -6,31 +7,33 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
 import './core-ui/app.css'
 import './core-ui/buttons.css'
-import Header2 from './components/header/Header2'
-import Home from './pages/home/Home'
 import { useFavicon } from './hooks/useFavicon'
 import axios from 'axios'
-import Store from './pages/Stores/Store'
-import SidebarNew from './components/Sidebar2.0.js/SidebarNew'
-import PaymentType from './pages/PaymentType/PaymentType'
-import Preview from './pages/StoreSetting/Preview'
-import Language from './pages/StoreLanguage/Language'
-import LanguageSettings from './pages/StoreLanguage/LanguageSettings'
-import UserAccessControl from './pages/usersandroles/UserAccessControl'
-import CreateUsers from './pages/usersandroles/CreateUsers'
-import CreateRoles from './pages/usersandroles/CreateRoles'
-import { LoadingOutlined } from '@ant-design/icons'
-import LogOut from './components/LogOut'
-import util from './util/common'
 import { useAuth } from 'react-oidc-context'
-import StoreLimitComponent from './pages/adminPlatform/StoreLimitComponent'
-import MarketplaceServices from './services/axios/MarketplaceServices'
+
 import NewDashboard from './pages/NewDashboard/Newdashboard'
-import ListCurrency from './pages/storeCurrency/ListCurrency'
-import EditCurrency from './pages/storeCurrency/EditCurrency'
-import MyProfile from './pages/StoreUsers/MyProfile'
-import StoreSettingsLayout from './pages/StoreSetting/StoreSettingsLayout'
-import PlatformAdmin from './pages/adminPlatform/PlatformAdmin'
+import MarketplaceServices from './services/axios/MarketplaceServices'
+import util from './util/common'
+
+const Home = lazy(() => import('./pages/home/Home'))
+const Header2 = lazy(() => import('./components/header/Header2'))
+const Store = lazy(() => import('./pages/Stores/Store'))
+const SidebarNew = lazy(() => import('./components/Sidebar2.0.js/SidebarNew'))
+const PaymentType = lazy(() => import('./pages/PaymentType/PaymentType'))
+const Preview = lazy(() => import('./pages/StoreSetting/Preview'))
+const Language = lazy(() => import('./pages/StoreLanguage/Language'))
+const LanguageSettings = lazy(() => import('./pages/StoreLanguage/LanguageSettings'))
+const UserAccessControl = lazy(() => import('./pages/usersandroles/UserAccessControl'))
+const CreateUsers = lazy(() => import('./pages/usersandroles/CreateUsers'))
+const CreateRoles = lazy(() => import('./pages/usersandroles/CreateRoles'))
+const LogOut = lazy(() => import('./components/LogOut'))
+const StoreLimitComponent = lazy(() => import('./pages/adminPlatform/StoreLimitComponent'))
+const ListCurrency = lazy(() => import('./pages/storeCurrency/ListCurrency'))
+const EditCurrency=lazy(()=>import('./pages/storeCurrency/EditCurrency'))
+const MyProfile=lazy(()=>import('./pages/StoreUsers/MyProfile'))
+const StoreSettingsLayout=lazy(()=>import('./pages/StoreSetting/StoreSettingsLayout'))
+const PlatformAdmin=lazy(()=>import('./pages/adminPlatform/PlatformAdmin'))
+
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL
 
 const getPermissionsUrl = process.env.REACT_APP_USER_PROFILE_API
@@ -102,7 +105,7 @@ const App = () => {
                 rtl={util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? true : false}
                 position={util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'top-left' : 'top-right'}
             />
-            <Header2 collapsed={collapsed} setCollapsed={setCollapsed} setIsLanguageSelected={setIsLanguageSelected}/>
+            <Header2 collapsed={collapsed} setCollapsed={setCollapsed} setIsLanguageSelected={setIsLanguageSelected} />
             <Container fluid className='p-0 bg-[#F4F4F4] text-[#393939]'>
                 <Routes>
                     <Route path='/' element={<Home />} />
