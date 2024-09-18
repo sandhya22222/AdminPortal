@@ -38,7 +38,7 @@ const PreviewAndCustomise = ({ closeModal, refetchUserConsent, storeName, storeI
 
     useEffect(() => {
         if (userConsents?.store_userconsent_data?.length > 0 && userConsentsStatus === 'success') {
-            setLeadInLine(userConsents?.leading_line || 'I have read and agreed to the following policies.')
+            setLeadInLine(userConsents?.leading_line || t('labels:leading_line'))
             setExplicit(userConsents?.explicit)
             const tempReorderList = []
             userConsents?.store_userconsent_data?.forEach((consent) => {

@@ -411,7 +411,7 @@ function TranslatePolicy({
                                                         consentDisplayNameData?.filter(
                                                             (data) => data.translatedVersionId !== ''
                                                         ).length
-                                                    } of ${consentDisplayNameData?.length} Languages translated`}
+                                                    } of ${consentDisplayNameData?.length} ${t('labels:language_translated')}`}
                                                 </span>
                                             </div>
                                         </div>

@@ -390,16 +390,18 @@ const Stores = () => {
                     <>
                         <div className='flex'>
                             <div className=''>
-                                <img src={storeDefaultImage} className='aspect-square mt-1' />
+                                <img src={storeDefaultImage} alt='storeDefaultImage' className='aspect-square mt-1' />
                             </div>
                             <div className=''>
                                 <Row>
-                                    <Text
-                                        className='text-brandGray1 mb-1 !max-w-[150px]'
-                                        ellipsis={{ tooltip: record.name }}
-                                        disabled={record.status === 3 ? true : false}>
-                                        {record.name}
-                                    </Text>
+                                    <Tooltip title={record.name} placement='top'>
+                                        <Text
+                                            className='text-brandGray1 mb-1 !max-w-[150px]'
+                                            ellipsis={{ tooltip: record.name }}
+                                            disabled={record.status === 3 ? true : false}>
+                                            {record.name}
+                                        </Text>
+                                    </Tooltip>
                                 </Row>
                                 <Row>
                                     {record.isDistributor ? (
@@ -1343,25 +1345,28 @@ const Stores = () => {
                                                             </div>
                                                         )}
 
-                                                        {(isDistributor===true && isDistributorStoreActive===false) && (
-                                                            <div className='px-3 my-2'>
-                                                                <Alert
-                                                                    icon={<MdInfo className='font-bold !text-center' />}
-                                                                    message={
-                                                                        <div className=''>
-                                                                            <Text className='text-brandGray1'>
-                                                                                {t(
-                                                                                    'messages:distributor_store_inactive_msg'
-                                                                                )}{' '}
-                                                                            </Text>
-                                                                        </div>
-                                                                    }
-                                                                    type='info'
-                                                                    showIcon
-                                                                    className=''
-                                                                />
-                                                            </div>
-                                                        )}
+                                                        {isDistributor === true &&
+                                                            isDistributorStoreActive === false && (
+                                                                <div className='px-3 my-2'>
+                                                                    <Alert
+                                                                        icon={
+                                                                            <MdInfo className='font-bold !text-center' />
+                                                                        }
+                                                                        message={
+                                                                            <div className=''>
+                                                                                <Text className='text-brandGray1'>
+                                                                                    {t(
+                                                                                        'messages:distributor_store_inactive_msg'
+                                                                                    )}{' '}
+                                                                                </Text>
+                                                                            </div>
+                                                                        }
+                                                                        type='info'
+                                                                        showIcon
+                                                                        className=''
+                                                                    />
+                                                                </div>
+                                                            )}
                                                         <DynamicTable tableComponentData={storeTableData} />
                                                         {parseInt(m_tab_id) === 1 ? (
                                                             <Content className=' grid justify-items-end mx-3 h-fit'>

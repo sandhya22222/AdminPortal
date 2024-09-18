@@ -964,7 +964,7 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                         }}></Skeleton>
                 </Content>
             ) : (
-                <Spin tip='Please wait!' size='large' spinning={isStoreDataLimitSaving}>
+                <Spin tip={t('labels:please_wait')} size='large' spinning={isStoreDataLimitSaving}>
                     <Content className='bg-white !rounded-md border my-4'>
                         <Content className='p-3'>
                             <label className='text-lg font-semibold text-regal-blue'>

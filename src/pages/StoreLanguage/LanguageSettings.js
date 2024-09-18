@@ -7,9 +7,11 @@ import LanguageDocUpload from './LanguageDocUpload'
 import LanguageForm from './LanguageForm'
 import LanguageHeaderAction from './LanguageHeaderAction'
 import util from '../../util/common'
+import { usePageTitle } from '../../hooks/usePageTitle'
 function LanguageSettings() {
-    const navigate = useNavigate()
     const { t } = useTranslation()
+    usePageTitle(t('labels:language_settings'))
+    const navigate = useNavigate()
     const { Content } = Layout
     const { Title } = Typography
     const [languageCode, setLanguageCode] = useState()

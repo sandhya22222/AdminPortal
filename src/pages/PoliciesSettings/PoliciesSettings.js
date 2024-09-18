@@ -62,7 +62,6 @@ const PoliciesSettings = ({ storeName }) => {
             setContactInfo(e.target.checked)
         }
     }
-
     useEffect(() => {
         let tempContactInformation = []
         const tempPoliciesWithoutContactInformation = []
@@ -234,7 +233,7 @@ const PoliciesSettings = ({ storeName }) => {
                                     policyType='CONTACT_POLICY'
                                     refetchUserConsent={refetchUserConsent}
                                     consent={contactInformation?.[0] || null}
-                                    policyName={t('labels:contact_information')}
+                                    policyName={CONTACT_INFORMATION}
                                     isNewPolicy={contactInformation?.length === 0}
                                     key={contactInformation?.[0]?.id || 'addContactInfo'}
                                     storeId={storeId}

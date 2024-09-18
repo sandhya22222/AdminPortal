@@ -17,6 +17,7 @@ import { storeDefaultImage } from '../../constants/media'
 
 import Theme from './Theme'
 import StoreOverview from './StoreOverview'
+import { usePageTitle } from '../../hooks/usePageTitle'
 const { Content } = Layout
 const { Text } = Typography
 
@@ -27,6 +28,7 @@ const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE)
 
 const StoreSettingsLayout = () => {
     const { t } = useTranslation()
+    usePageTitle(t('labels:stores'))
     const navigate = useNavigate()
     const search = useLocation().search
     const id = new URLSearchParams(search).get('id')
@@ -347,7 +349,7 @@ const StoreSettingsLayout = () => {
         }
     }, [searchParams, hideActionButton, permissionValue])
 
-   console.log('isDistributor---->', typeof isDistributor)
+    console.log('isDistributor---->', typeof isDistributor)
 
     return (
         <Content>
@@ -444,7 +446,7 @@ const StoreSettingsLayout = () => {
                                 {disableMediaButton ? (
                                     ''
                                 ) : (
-                                    <Spin tip='Please wait!' size='large' spinning={isUpLoading}>
+                                    <Spin tip={t('labels:please_wait')} size='large' spinning={isUpLoading}>
                                         <Content className='bg-white p-3 !rounded-md border my-4'>
                                             <label className='text-lg mb-3 font-semibold text-regal-blue'>
                                                 {t('labels:media')}
