@@ -396,7 +396,7 @@ const Theme = ({ id, getImageData }) => {
                         }}></Skeleton>
                 </Content>
             ) : (
-                <Spin tip='Please wait!' size='large' spinning={isLoading}>
+                <Spin tip={t('labels:please_wait')} size='large' spinning={isLoading}>
                     <Content className='bg-white my-4 p-3 rounded-lg border'>
                         <Content className=''>
                             <Row className='!mb-4'>

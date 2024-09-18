@@ -5,7 +5,10 @@ const StoreLanguageUri = process.env.REACT_APP_STORE_LANGUAGE
 const useGetStoreLanguage = ({ storeUUID }) => {
     const getUserConsentVersionDisplayNames = async () => {
         const params = {}
-        if (storeUUID) params['store-id'] = storeUUID
+        if (storeUUID) {
+            params['store-id'] = storeUUID
+            params['language-status'] = 1
+        }
         const res = await MarketplaceServices.findAll(StoreLanguageUri, params)
         return res?.data?.response_body
     }

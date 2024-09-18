@@ -141,30 +141,12 @@ const StoreOverview = ({ realmName }) => {
                                 <div
                                     className={`justify-items-start  !inline-block  !w-[30%] ${
                                         util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                            ? 'text-left ml-2'
-                                            : 'text-right mr-2 '
+                                            ? 'text-right mr-2 '
+                                            : 'text-left ml-2'
                                     }`}>
-                                    <p className='text-brandGray1  my-3 flex'>
-                                        {t('labels:store_front_url')}
-                                        <span
-                                            className={
-                                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                                    ? '!mr-[108px]'
-                                                    : '!ml-[108px]'
-                                            }>
-                                            :
-                                        </span>
-                                    </p>
+                                    <p className='text-brandGray1  my-3 flex'>{t('labels:store_front_url')}</p>
                                     <p className='text-brandGray1  my-3 flex'>
                                         {t('labels:store_management_portal_url')}
-                                        <span
-                                            className={
-                                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                                    ? 'mr-3'
-                                                    : 'ml-3'
-                                            }>
-                                            :
-                                        </span>
                                     </p>
                                 </div>
                                 <div
@@ -174,6 +156,7 @@ const StoreOverview = ({ realmName }) => {
                                             : ' w-[67%] !inline-block '
                                     }`}>
                                     <p className='!font-semibold my-3'>
+                                        {': '}
                                         {userAllAPIData[0]?.store_front_url !== null ? (
                                             <a
                                                 className='cursor-pointer text-brandPrimaryColor no-underline'
@@ -187,6 +170,7 @@ const StoreOverview = ({ realmName }) => {
                                         )}
                                     </p>
                                     <p className='!font-semibold my-3'>
+                                        {': '}
                                         {userAllAPIData[0]?.store_redirect_url !== null ? (
                                             <a
                                                 className='cursor-pointer text-brandPrimaryColor no-underline'

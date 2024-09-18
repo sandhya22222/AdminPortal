@@ -1,6 +1,7 @@
 import React from 'react'
 import { Modal, Button, Spin, Layout } from 'antd'
 import './StoreModal.css'
+import { useTranslation } from 'react-i18next'
 const { Content } = Layout
 const StoreModal = ({
     okCallback,
@@ -18,6 +19,7 @@ const StoreModal = ({
     destroyOnClose,
     removePadding,
 }) => {
+    const { t } = useTranslation()
     const handleOk = () => {
         okCallback()
     }
@@ -64,7 +66,7 @@ const StoreModal = ({
                       ]
             }
             destroyOnClose={destroyOnClose}>
-            <Spin tip='Please wait' spinning={isSpin}>
+            <Spin tip={t('labels:please_wait')} spinning={isSpin}>
                 <Content>{children}</Content>
             </Spin>
         </Modal>
