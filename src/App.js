@@ -17,7 +17,7 @@ import Preview from './pages/StoreSetting/Preview'
 import Language from './pages/StoreLanguage/Language-v2'
 // import Language from './pages/StoreLanguage/Language'
 import LanguageSettings from './pages/StoreLanguage/LanguageSettings'
-import UserAccessControl from './pages/usersandroles/UserAccessControl'
+import UserAccessControl2 from './pages/usersandroles/UserAccessControl2'
 import CreateUsers from './pages/usersandroles/CreateUsers'
 import CreateRoles from './pages/usersandroles/CreateRoles'
 import { LoadingOutlined } from '@ant-design/icons'
@@ -135,7 +135,7 @@ const App = () => {
                                 <Route path='platformadmin' element={<PlatformAdmin />} />
 
                                 <Route path='user-access-control'>
-                                    <Route path='list-user-roles' element={<UserAccessControl />} />
+                                    <Route path='list-user-roles' element={<UserAccessControl2 />} />
                                     <Route path='add-user' element={<CreateUsers />} />
                                     <Route path='edit-user' element={<CreateUsers />} />
                                     <Route path='add-roles' element={<CreateRoles />} />
