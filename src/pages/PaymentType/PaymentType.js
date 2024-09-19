@@ -1,71 +1,96 @@
-import React, { useEffect } from 'react'
-import { Layout, Table } from 'antd'
-
-import HeaderForTitle from '../../components/header/HeaderForTitle'
-import { usePageTitle } from '../../hooks/usePageTitle'
+import React, { useState } from 'react'
+import { Card, CardContent } from '../../shadcnComponents/ui/card'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../../shadcnComponents/ui/accordion'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../shadcnComponents/ui/table'
 import { useTranslation } from 'react-i18next'
+import HeaderForTitle from '../../components/header/HeaderForTitle'
+import { Separator } from '../../shadcnComponents/ui/separator'
+import { Layout } from 'antd'
+import { FaPlus, FaMinus } from 'react-icons/fa' // Import plus and minus icons
+
 const { Content } = Layout
 
-const PaymentType = () => {
+export default function PaymentSettings() {
     const { t } = useTranslation()
-    usePageTitle(t('labels:payment_settings'))
-    useEffect(() => {
+    const [isOpen, setIsOpen] = useState(false) // Track if accordion is open or closed
+
+    React.useEffect(() => {
         window.scroll(0, 0)
     }, [])
 
-    const paymentTypeColumns = [
-        {
-            title: <div className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:payment_types')}</div>,
-            dataIndex: 'name',
-            key: 'name',
-            width: '40%',
-        },
-    ]
-
-    const data = [
-        {
-            key: 1,
-            name: <div className='text-brandGray1'>{t('labels:cash_on_delivery')}</div>,
-            is_payment_gateway: false,
-        },
-        {
-            key: 2,
-            name: <div className='text-brandGray1'>{t('labels:online_payment')}</div>,
-            is_payment_gateway: true,
-            children: [
-                // {
-                //   key: 21,
-                //   name: `${t("labels:razor_pay")}`,
-                //   is_payment_gateway: true,
-                // },
-                {
-                    key: 22,
-                    name: <div className='text-brandGray1'>{t('labels:stripe')}</div>,
-                    is_payment_gateway: true,
-                },
-                {
-                    key: 23,
-                    name: <div className='text-brandGray1'>{t('labels:cash_free')}</div>,
-                    is_payment_gateway: true,
-                },
-            ],
-        },
-    ]
+    const toggleAccordion = () => {
+        setIsOpen(!isOpen)
+    }
 
     return (
-        <Content className=''>
+        <div className=' mt-10 w-full flex flex-col gap-[10px]'>
             <HeaderForTitle
+                className=''
                 title={
-                    <Content>
-                        <div className='!font-semibold text-2xl mb-4 text-regal-blue'>{t('labels:payment_setting')}</div>
-                    </Content>
+                    <div className=''>
+                        <div className='!font-semibold text-2xl mb-4 text-regal-blue'>
+                            {t('labels:payment_settings')}
+                        </div>
+                    </div>
                 }
+                titleContent={<Content className=' !flex items-center !justify-end gap-3'></Content>}
             />
-            <Content className='!p-3 !mt-[10.5rem] mx-3 bg-white  rounded-md shadow-brandShadow'>
-                <Table dataSource={data} columns={paymentTypeColumns} pagination={false} />
-            </Content>
-        </Content>
+            <div className='p-3 mt-24'>
+                <Card className='w-full p-3 bg-white shadow-lg'>
+                    <CardContent>
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead className='w-full bg-[#f0f0f0]'>{t('labels:payment_types')}</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell className='text-[#4a4a4a] pl-[48px] pb-4 '>
+                                        {t('labels:cash_on_delivery')}
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>
+                                        <Accordion type='single' collapsible className='w-full'>
+                                            <AccordionItem value='online-payment'>
+                                                <AccordionTrigger
+                                                    className='text-[#4a4a4a] pl-3 mt-2 flex items-center justify-start gap-3'
+                                                    onClick={toggleAccordion}>
+                                                    <span
+                                                        className={`ml-2 transition-transform duration-300 border p-1 rounded-[7px]  ${
+                                                            isOpen ? 'rotate-180' : 'rotate-0'
+                                                        }`}>
+                                                        {isOpen ? (
+                                                            <FaMinus className='text-[8px]' />
+                                                        ) : (
+                                                            <FaPlus className='text-[8px]' />
+                                                        )}
+                                                    </span>
+                                                    <span>{t('labels:online_payment')}</span>
+                                                </AccordionTrigger>
+                                                <Separator />
+
+                                                <AccordionContent>
+                                                    <div className='pl-0 space-y-2 '>
+                                                        <p className='text-[#4a4a4a] p-2 mt-3 mb-3 mr-3 ml-[55px]'>
+                                                            {t('labels:stripe')}
+                                                        </p>
+                                                        <Separator />
+                                                        <p className='text-[#4a4a4a] mt-3 mb-3 mr-3 ml-[55px] pl-2 pt-3 pr-2 pb-5'>
+                                                            {t('labels:cash_free')}
+                                                        </p>
+                                                    </div>
+                                                </AccordionContent>
+                                            </AccordionItem>
+                                        </Accordion>
+                                    </TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </CardContent>
+                </Card>
+            </div>
+        </div>
     )
 }
-
-export default PaymentType
