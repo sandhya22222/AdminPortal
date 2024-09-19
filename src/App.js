@@ -14,7 +14,8 @@ import Store from './pages/Stores/Store'
 import SidebarNew from './components/Sidebar2.0.js/SidebarNew'
 import PaymentType from './pages/PaymentType/PaymentType'
 import Preview from './pages/StoreSetting/Preview'
-import Language from './pages/StoreLanguage/Language'
+import Language from './pages/StoreLanguage/Language-v2'
+// import Language from './pages/StoreLanguage/Language'
 import LanguageSettings from './pages/StoreLanguage/LanguageSettings'
 import UserAccessControl from './pages/usersandroles/UserAccessControl'
 import CreateUsers from './pages/usersandroles/CreateUsers'
@@ -102,7 +103,7 @@ const App = () => {
                 rtl={util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? true : false}
                 position={util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'top-left' : 'top-right'}
             />
-            <Header2 collapsed={collapsed} setCollapsed={setCollapsed} setIsLanguageSelected={setIsLanguageSelected}/>
+            <Header2 collapsed={collapsed} setCollapsed={setCollapsed} setIsLanguageSelected={setIsLanguageSelected} />
             <Container fluid className='p-0 bg-[#F4F4F4] text-[#393939]'>
                 <Routes>
                     <Route path='/' element={<Home />} />
