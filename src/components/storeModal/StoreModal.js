@@ -1,7 +1,82 @@
-import React from 'react'
-import { Modal, Button, Spin, Layout } from 'antd'
-import './StoreModal.css'
-const { Content } = Layout
+// import React from 'react'
+// import { Modal, Button, Spin, Layout } from 'antd'
+// import './StoreModal.css'
+// const { Content } = Layout
+// const StoreModal = ({
+//     okCallback,
+//     cancelCallback,
+//     isVisible,
+//     children,
+//     title,
+//     cancelButtonText,
+//     okButtonText,
+//     width,
+//     hideCloseButton,
+//     isSpin,
+//     isCancelButtonDisabled,
+//     isOkButtonDisabled,
+//     destroyOnClose,
+//     removePadding,
+// }) => {
+//     const handleOk = () => {
+//         okCallback()
+//     }
+
+//     const handleCancel = () => {
+//         cancelCallback()
+//     }
+
+//     return (
+//         <Modal
+//             title={<div className='text-regal-blue font-bold text-[18px] leading-[26px]'>{title}</div>}
+//             open={isVisible}
+//             onOk={handleOk}
+//             closable={hideCloseButton}
+//             centered={true}
+//             maskClosable={hideCloseButton}
+//             onCancel={handleCancel}
+//             width={width}
+//             className={removePadding ? 'custom-modal' : ''}
+//             footer={
+//                 okButtonText == null
+//                     ? null
+//                     : [
+//                           cancelButtonText == null ? null : (
+//                               <Button
+//                                   className={` app-btn-secondary ${
+//                                       isCancelButtonDisabled ? ' !opacity-50 !cursor-not-allowed' : ' '
+//                                   }`}
+//                                   key='back'
+//                                   onClick={handleCancel}
+//                                   disabled={isCancelButtonDisabled ? isCancelButtonDisabled : false}>
+//                                   {cancelButtonText}
+//                               </Button>
+//                           ),
+//                           okButtonText == null ? null : (
+//                               <Button
+//                                   className={` app-btn-primary ${isOkButtonDisabled ? ' !opacity-50 !cursor-not-allowed' : ' '}`}
+//                                   disabled={isOkButtonDisabled ? isOkButtonDisabled : false}
+//                                   key='submit'
+//                                   onClick={handleOk}>
+//                                   {okButtonText}
+//                               </Button>
+//                           ),
+//                       ]
+//             }
+//             destroyOnClose={destroyOnClose}>
+//             <Spin tip='Please wait' spinning={isSpin}>
+//                 <Content>{children}</Content>
+//             </Spin>
+//         </Modal>
+//     )
+// }
+
+// export default StoreModal
+
+import React from 'react';
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter, DialogTitle } from '../../shadcnComponents/ui/dialog';
+import { Button } from '../../shadcnComponents/ui/button';
+
 const StoreModal = ({
     okCallback,
     cancelCallback,
@@ -10,65 +85,57 @@ const StoreModal = ({
     title,
     cancelButtonText,
     okButtonText,
-    width,
     hideCloseButton,
-    isSpin,
     isCancelButtonDisabled,
     isOkButtonDisabled,
-    destroyOnClose,
     removePadding,
 }) => {
     const handleOk = () => {
-        okCallback()
-    }
+        okCallback();
+    };
 
     const handleCancel = () => {
-        cancelCallback()
-    }
+        cancelCallback();
+    };
 
     return (
-        <Modal
-            title={<div className='text-regal-blue font-bold text-[18px] leading-[26px]'>{title}</div>}
-            open={isVisible}
-            onOk={handleOk}
-            closable={hideCloseButton}
-            centered={true}
-            maskClosable={hideCloseButton}
-            onCancel={handleCancel}
-            width={width}
-            className={removePadding ? 'custom-modal' : ''}
-            footer={
-                okButtonText == null
-                    ? null
-                    : [
-                          cancelButtonText == null ? null : (
-                              <Button
-                                  className={` app-btn-secondary ${
-                                      isCancelButtonDisabled ? ' !opacity-50 !cursor-not-allowed' : ' '
-                                  }`}
-                                  key='back'
-                                  onClick={handleCancel}
-                                  disabled={isCancelButtonDisabled ? isCancelButtonDisabled : false}>
-                                  {cancelButtonText}
-                              </Button>
-                          ),
-                          okButtonText == null ? null : (
-                              <Button
-                                  className={` app-btn-primary ${isOkButtonDisabled ? ' !opacity-50 !cursor-not-allowed' : ' '}`}
-                                  disabled={isOkButtonDisabled ? isOkButtonDisabled : false}
-                                  key='submit'
-                                  onClick={handleOk}>
-                                  {okButtonText}
-                              </Button>
-                          ),
-                      ]
-            }
-            destroyOnClose={destroyOnClose}>
-            <Spin tip='Please wait' spinning={isSpin}>
-                <Content>{children}</Content>
-            </Spin>
-        </Modal>
-    )
-}
+        <Dialog open={isVisible} onOpenChange={(open) => !open && handleCancel()}>
+            <DialogContent
+                className={`${removePadding ? '' : ''} ${hideCloseButton ? '' : ''}`}
+            >
+                <DialogHeader>
+                    <DialogTitle>
+                        {title}
+                    </DialogTitle>
+                </DialogHeader>
+                <div className='p-4'>
+                    {children}
+                </div>
+                <DialogFooter>
+                    {cancelButtonText && (
+                        <Button
+                            variant='secondary'
+                            className={`app-btn-secondary ${isCancelButtonDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            onClick={handleCancel}
+                            disabled={isCancelButtonDisabled}
+                        >
+                            {cancelButtonText}
+                        </Button>
+                    )}
+                    {okButtonText && (
+                        <Button
+                            variant='primary'
+                            className={`app-btn-primary ${isOkButtonDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            onClick={handleOk}
+                            disabled={isOkButtonDisabled}
+                        >
+                            {okButtonText}
+                        </Button>
+                    )}
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    );
+};
 
-export default StoreModal
+export default StoreModal;

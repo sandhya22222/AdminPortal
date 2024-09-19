@@ -15,12 +15,13 @@ import {
     Progress,
     InputNumber,
     Alert,
-    Badge,
+    // Badge,
     Empty,
     Segmented,
     Tag,
 } from 'antd'
 import React, { useEffect, useState } from 'react'
+
 import validator from 'validator'
 import { MdInfo } from 'react-icons/md'
 import { Link, useLocation, useSearchParams, useNavigate } from 'react-router-dom'
@@ -33,7 +34,8 @@ import {
     warningInfoIcon,
 } from '../../constants/media'
 //! Import user defined components
-import DynamicTable from '../../components/DynamicTable/DynamicTable'
+// import DynamicTable from '../../components/DynamicTable/DynamicTable'
+// import DynamicTable2 from '../../components/DynamicTable/DynamicTable2'
 import HeaderForTitle from '../../components/header/HeaderForTitle'
 import StoreModal from '../../components/storeModal/StoreModal'
 import { usePageTitle } from '../../hooks/usePageTitle'
@@ -41,11 +43,17 @@ import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import Status from './Status'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import util from '../../util/common'
-import ShadCNTable from '../../components/shadCNCustomComponents/ShadCNTable'
+
+import { Toggle } from '../../shadcnComponents/ui/toggle'
+import DmPagination2 from '../../components/DmPagination/DmPagination2'
 import axios from 'axios'
 import { useAuth } from 'react-oidc-context'
 import { validatePositiveNumber } from '../../util/validation'
-import ShadCNPagination from '../../components/shadCNCustomComponents/ShadCNPagination'
+
+import ShadCNTable from '../../components/shadCNCustomComponents/ShadCNTable'
+import StoreListing from './StoreListing'
+import { Star } from 'lucide-react'
+import { Badge } from '../../shadcnComponents/ui/badge'
 
 const { Content } = Layout
 const { Title, Text } = Typography
@@ -118,6 +126,7 @@ const Stores = () => {
     const [errors, setErrors] = useState({})
     const [isOpenModalForMakingDistributor, setIsOpenModalForMakingDistributor] = useState(false)
     const [inValidEmailFormat, setInValidEmailFormat] = useState(false)
+    const [isDistributorStoreActive, setIsDistributorStoreActive] = useState(false)
 
     const auth = useAuth()
     const permissionValue = util.getPermissionData() || []
@@ -162,7 +171,17 @@ const Stores = () => {
         })
         console.log('object status', e.target.value)
     }
-
+    const handleToggleChange = (selectedValue) => {
+        console.log('Toggle changed to:', selectedValue)
+        setSearchValue('')
+        setValue(selectedValue)
+        setSearchParams({
+            m_t: m_tab_id,
+            tab: selectedValue,
+            page: 1,
+            limit: parseInt(searchParams.get('limit')) || pageLimit,
+        })
+    }
     useEffect(() => {
         setErrorField('')
     }, [currentTab])
@@ -402,11 +421,19 @@ const Stores = () => {
                                 </Row>
                                 <Row>
                                     {record.isDistributor ? (
-                                        <Tag color='blue'>
-                                            <StarFilled /> {t('labels:distributor')}
-                                        </Tag>
+                                        <Badge className='bg-[#E6F4FF] border-[#91CAFF] text-[#0958D9] flex items-center'>
+                                            <Star
+                                                className='w-3 h-3 mr-1'
+                                                fill='#0958D9' // Fill color
+                                                // stroke='#0958D9'Stroke color (if needed)
+                                                strokeWidth={0} // Set stroke width to 0 to hide the outline
+                                            />
+                                            {t('labels:distributor')}
+                                        </Badge>
                                     ) : (
-                                        <Tag color='cyan'>{t('labels:partner')}</Tag>
+                                        <Badge className='bg-[#E6FFFB] border-[#87E8DE] text-[#08979C]'>
+                                            {t('labels:partner')}
+                                        </Badge>
                                     )}{' '}
                                     {!isDistributor && (
                                         <Tooltip title={t('messages:store_type_info')}>
@@ -785,7 +812,8 @@ const Stores = () => {
                 console.log('Server Response from findByPageStoreApi Function: ', response.data.response_body)
                 setStoreApiData(response.data.response_body.data)
                 setCountForStore(response.data.response_body.count)
-                setIsDistributor(response.data.response_body.distributor_store)
+                setIsDistributor(response?.data?.response_body?.distributor_store)
+                setIsDistributorStoreActive(response?.data?.response_body?.distributor_store_active)
             })
             .catch((error) => {
                 setIsLoading(false)
@@ -1322,21 +1350,37 @@ const Stores = () => {
                         <>
                             <Content className=''>
                                 {parseInt(currentTab) === 1 ? (
+                                    //  <Store2/>
+
                                     <Content className='bg-white p-3 shadow-brandShadow rounded-md '>
                                         <div className='flex w-full justify-between items-center py-3 px-3'>
                                             <div className='text-base font-semibold text-regal-blue'>
                                                 {t('labels:my_stores')}
                                             </div>
-                                            <div className='flex items-center justify-end gap-2 flex-row flex-grow'>
-                                                <Radio.Group
-                                                    className={`min-w-min`}
-                                                    optionType='button'
-                                                    onChange={handleRadioChange}
-                                                    value={value}>
-                                                    <Radio value={0}>{t('labels:all')}</Radio>
-                                                    <Radio value={1}>{t('labels:active')}</Radio>
-                                                    <Radio value={2}>{t('labels:inactive')}</Radio>
-                                                </Radio.Group>
+                                            <div className='flex items-center justify-end flex-row gap-3 flex-grow'>
+                                                <div className='flex flex-row'>
+                                                    <Toggle
+                                                        className='rounded-l-[7px]'
+                                                        variant={value === 0 ? 'active' : 'default'}
+                                                        checked={value === 0}
+                                                        onClick={() => handleToggleChange(0)}>
+                                                        {t('labels:all')}
+                                                    </Toggle>
+                                                    <Toggle
+                                                        variant={value === 1 ? 'active' : 'default'}
+                                                        checked={value === 1}
+                                                        onClick={() => handleToggleChange(1)}>
+                                                        {t('labels:active')}
+                                                    </Toggle>
+                                                    <Toggle
+                                                        className='rounded-r-[7px]'
+                                                        variant={value === 2 ? 'active' : 'default'}
+                                                        checked={value === 2}
+                                                        onClick={() => handleToggleChange(2)}>
+                                                        {t('labels:inactive')}
+                                                    </Toggle>
+                                                </div>
+
                                                 <Search
                                                     placeholder={t('placeholders:please_enter_search_text_here')}
                                                     onSearch={handleSearchChange}
@@ -1379,29 +1423,48 @@ const Stores = () => {
                                                                 />
                                                             </div>
                                                         )}
-                                                        <DynamicTable tableComponentData={storeTableData} />
+
+                                                        {isDistributor === true &&
+                                                            isDistributorStoreActive === false && (
+                                                                <div className='px-3 my-2'>
+                                                                    <Alert
+                                                                        icon={
+                                                                            <MdInfo className='font-bold !text-center' />
+                                                                        }
+                                                                        message={
+                                                                            <div className=''>
+                                                                                <Text className='text-brandGray1'>
+                                                                                    {t(
+                                                                                        'messages:distributor_store_inactive_msg'
+                                                                                    )}{' '}
+                                                                                </Text>
+                                                                            </div>
+                                                                        }
+                                                                        type='info'
+                                                                        showIcon
+                                                                        className=''
+                                                                    />
+                                                                </div>
+                                                            )}
+                                                        {/* <StoreTable storeTableData={storeTableData} t={t} /> */}
+                                                        {/* <DynamicTable2 tableComponentData={storeTableData} /> */}
+                                                        <StoreListing tableComponentData={storeTableData} />
+
                                                         {parseInt(m_tab_id) === 1 ? (
                                                             <Content className=' grid justify-items-end mx-3 h-fit'>
                                                                 {countForStore && countForStore >= pageLimit ? (
-                                                                    <ShadCNPagination
-                                                                            totalItemsCount={countForStore}
-                                                                            handlePageNumberChange={
-                                                                                handlePageNumberChange
-                                                                            }
-                                                                            currentPage={
-                                                                                parseInt(searchParams.get('page'))
-                                                                                    ? parseInt(searchParams.get('page'))
-                                                                                    : 1
-                                                                            }
-                                                                            itemsPerPage={
-                                                                                parseInt(searchParams.get('limit'))
-                                                                                    ? parseInt(
-                                                                                          searchParams.get('limit')
-                                                                                      )
-                                                                                    : pageLimit
-                                                                            }
-                                                                            showQuickJumper={true}
-                                                                        />
+                                                                    <DmPagination2
+                                                                        currentPage={
+                                                                            parseInt(searchParams.get('page')) || 1
+                                                                        }
+                                                                        totalItemsCount={countForStore}
+                                                                        itemsPerPage={
+                                                                            parseInt(searchParams.get('limit')) ||
+                                                                            pageLimit
+                                                                        }
+                                                                        handlePageNumberChange={handlePageNumberChange}
+                                                                        showQuickJumper={true}
+                                                                    />
                                                                 ) : null}
                                                             </Content>
                                                         ) : null}

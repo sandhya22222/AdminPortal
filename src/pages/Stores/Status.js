@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { Switch, Space, Row, Col, Layout, Button, Typography } from 'antd'
+import { Row, Col, Layout, Button, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
+import { Switch } from '../../shadcnComponents/ui/switch' // Import ShadCN's Switch
 import StoreModal from '../../components/storeModal/StoreModal'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import MarketplaceToaster from '../../util/marketplaceToaster'
@@ -26,7 +27,7 @@ function Status({
     setPreviousStatus,
     setDuplicateStoreStatus,
     previousStatus,
-    isDistributor
+    isDistributor,
 }) {
     const { t } = useTranslation()
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -36,7 +37,6 @@ function Status({
     const [activeConfirmationModalOpen, setActiveConfirmationModalOpen] = useState(false)
     const [storeCheckStatus, setStoreCheckStatus] = useState()
 
-    // closing the delete popup model
     const closeModal = () => {
         setIsModalOpen(false)
     }
@@ -45,7 +45,6 @@ function Status({
         setSwitchStatus(storeStatus)
     }, [storeStatus])
 
-    // opening the delete popup model
     const openModal = () => {
         setIsModalOpen(true)
     }
@@ -61,7 +60,6 @@ function Status({
         const reqbody = {
             status: changeSwitchStatus === true ? 1 : 2,
         }
-        // Enabling spinner
         setIsLoading(true)
         MarketplaceServices.update(storeEditStatusAPI, reqbody, {
             store_id: storeId,
@@ -78,7 +76,6 @@ function Status({
                     setActiveConfirmationModalOpen(true)
                 }
                 setStoreCheckStatus(response.data.response_body.status)
-                // MarketplaceToaster.showToast(response);
                 let temp = [...storeApiData]
                 let index = temp.findIndex((ele) => ele.id === response.data.response_body.id)
                 temp[index]['status'] = response.data.response_body.status
@@ -127,7 +124,6 @@ function Status({
                         setSelectedTabTableContent(temp)
                     }
                 }
-                // setIsLoading(false);
             })
             .catch((error) => {
                 setIsLoading(false)
@@ -146,6 +142,37 @@ function Status({
     return (
         <div>
             <StoreModal
+                isVisible={isModalOpen}
+                okButtonText={t('labels:proceed')}
+                title={
+                    changeSwitchStatus ? (
+                        <span className='text-regal-blue font-bold text-[18px] leading-[26px]'>
+                            {t('messages:store_activation_confirmation')}
+                        </span>
+                    ) : (
+                        <span className='text-regal-blue font-bold text-[18px] leading-[26px]'>
+                            {t('messages:store_deactivation_confirmation')}
+                        </span>
+                    )
+                }
+                cancelButtonText={t('labels:cancel')}
+                okCallback={() => updateStoreStatus()}
+                cancelCallback={() => closeModal()}
+                isSpin={isLoading}
+                hideCloseButton={false}>
+                {changeSwitchStatus ? (
+                    <div className='text-brandGray1'>
+                        <p className='!mb-0'>{t('messages:store_active_confirmation_message')}</p>
+                        <p className='!m-0 !p-0'>{t('messages:are_you_sure_you_like_to_proceed')}</p>
+                    </div>
+                ) : (
+                    <div className='text-brandGray1'>
+                        <p>{t('messages:store_deactivation_confirmation_message')}</p>
+                    </div>
+                )}
+            </StoreModal>
+
+            {/* <StoreModal
                 isVisible={isModalOpen}
                 okButtonText={t('labels:proceed')}
                 title={
@@ -174,22 +201,15 @@ function Status({
                         <p>{t('messages:store_deactivation_confirmation_message')}</p>
                     </div>
                 )}
-            </StoreModal>
+            </StoreModal> */}
 
             <Row className='gap-1'>
                 <Col>
-                    <Space direction='vertical'>
-                        <Switch
-                            loading={statusInprogress === 4 || statusInprogress === 5 ? true : false}
-                            // className={switchStatus ? '!bg-green-500' : '!bg-gray-400'}
-                            checked={switchStatus}
-                            onChange={onChange}
-                            onClick={() => {
-                                openModal()
-                            }}
-                            disabled={disableStatus || statusInprogress === 3 ||isDistributor}
-                        />
-                    </Space>
+                    <Switch
+                        checked={switchStatus}
+                        onCheckedChange={onChange} // Adjust this handler to match the ShadCN API
+                        disabled={disableStatus || statusInprogress === 3 || isDistributor}
+                    />
                 </Col>
             </Row>
             <StoreModal isVisible={activeConfirmationModalOpen} isSpin={false} hideCloseButton={false} width={800}>
@@ -198,10 +218,7 @@ function Status({
                         <Text className=' text-lg leading-[26px] font-bold text-regal-blue]'>
                             {t('labels:activating_store')}
                         </Text>
-                        <div
-                            className='mt-5 mb-3'
-                            // style={{ "text-align": "-webkit-center" }}
-                        >
+                        <div className='mt-5 mb-3'>
                             <img
                                 src={storeActiveConfirmationImage}
                                 alt='storeActiveConfirmationImage'
