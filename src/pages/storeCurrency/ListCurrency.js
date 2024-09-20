@@ -12,6 +12,8 @@ import { usePageTitle } from '../../hooks/usePageTitle'
 import ShadCNTable from '../../shadcnComponents/customComponents/ShadCNTable'
 import ShadCNTooltip from '../../shadcnComponents/customComponents/ShadCNTooltip'
 import { Badge } from '../../shadcnComponents/ui/badge'
+import DataTable from '../../components/shadCNCustomComponents/DataTable'
+import { Button } from '../../shadcnComponents/ui/button'
 //! Get all required details from .env file
 const currencyAPI = process.env.REACT_APP_CHANGE_CURRENCY_API
 const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE)
@@ -32,11 +34,11 @@ const ListCurrency = () => {
     //! columns for currency
     const listCurrencyColumns = [
         {
-            label: <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:title')}</span>,
-            key: 'currency_name',
+            header: <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:title')}</span>,
+            value: 'currency_name',
             width: '25%',
             ellipsis: true,
-            render: (text, record) => (
+            render: (record) => (
                 <div className='flex items-center'>
                     {record.is_default ? (
                         <ShadCNTooltip content={record.currency_name}>
@@ -62,46 +64,60 @@ const ListCurrency = () => {
             ),
         },
         {
-            label: <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:code')}</span>,
-            key: 'iso_currency_code',
+            header: <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:code')}</span>,
+            value: 'iso_currency_code',
             width: '10%',
         },
         {
-            label: (
+            header: (
                 <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:conversation')}</span>
             ),
-            key: 'unit_conversion',
+            value: 'unit_conversion',
             width: '12%',
         },
         {
-            label: (
+            header: (
                 <span className='text-regal-blue text-sm font-medium leading-[22px]'>
                     {t('labels:unit_price_name')}
                 </span>
             ),
-            key: 'unit_price_name',
+            value: 'unit_price_name',
             width: '15%',
         },
         {
-            label: <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:min_amount')}</span>,
-            key: 'minimum_amount',
+            header: (
+                <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:min_amount')}</span>
+            ),
+            value: 'minimum_amount',
             width: '10%',
         },
         {
-            label: <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:symbol')}</span>,
-            key: 'symbol',
+            header: <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:symbol')}</span>,
+            value: 'symbol',
             width: '10%',
         },
         {
-            label: (
+            header: (
                 <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:no_of_decimals')}</span>
             ),
-            key: 'no_of_decimal',
+            value: 'no_of_decimal',
             width: '10%',
         },
         {
-            label: <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:action')}</span>,
-            key: 'action',
+            header: <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:action')}</span>,
+            value: 'action',
+            render: (record) => {
+                return (
+                    <Button
+                        variant='ghost'
+                        className='app-btn-text text-sm font-medium rounded hover:bg-slate-100'
+                        onClick={() => {
+                            navigate(`/dashboard/currency/edit-currency?k=${record.id}`)
+                        }}>
+                        {t('labels:view_details')}
+                    </Button>
+                )
+            },
         },
     ]
 
@@ -166,9 +182,9 @@ const ListCurrency = () => {
                         <p>{`${t('messages:network_error')}`}</p>
                     </div>
                 ) : (
-                    <div className='bg-white p-3 !shadow-brandShadow rounded-md'>
+                    <div className='bg-white p-3 !shadow-brandShadow !rounded-md'>
                         {/* <Table dataSource={listCurrencyData?.data} columns={listCurrencyColumns} pagination={false} /> */}
-                        <ShadCNTable data={listCurrencyData?.data} columns={listCurrencyColumns} actions={actions} />
+                        <DataTable columns={listCurrencyColumns} data={listCurrencyData?.data} />
                         {listCurrencyData && listCurrencyData?.count >= pageLimit ? (
                             <div className=' grid justify-items-end'>
                                 <DmPagination
