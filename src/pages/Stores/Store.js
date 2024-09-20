@@ -50,11 +50,11 @@ import axios from 'axios'
 import { useAuth } from 'react-oidc-context'
 import { validatePositiveNumber } from '../../util/validation'
 
-import ShadCNTable from '../../components/shadCNCustomComponents/ShadCNTable'
+import ShadCNTable from '../../shadcnComponents/customComponents/ShadCNTable'
 import StoreListing from './StoreListing'
 import { Star } from 'lucide-react'
 import { Badge } from '../../shadcnComponents/ui/badge'
-import ShadCNPagination from '../../components/shadCNCustomComponents/ShadCNPagination'
+import ShadCNPagination from '../../shadcnComponents/customComponents/ShadCNPagination'
 
 const { Content } = Layout
 const { Title, Text } = Typography

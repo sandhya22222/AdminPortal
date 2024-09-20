@@ -9,8 +9,8 @@ import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import SkeletonComponent from '../../components/Skeleton/SkeletonComponent'
 import DmPagination from '../../components/DmPagination/DmPagination'
 import { usePageTitle } from '../../hooks/usePageTitle'
-import ShadCNTable from '../../components/shadCNCustomComponents/ShadCNTable'
-import ShadCNTooltip from '../../components/shadCNCustomComponents/ShadCNTooltip'
+import ShadCNTable from '../../shadcnComponents/customComponents/ShadCNTable'
+import ShadCNTooltip from '../../shadcnComponents/customComponents/ShadCNTooltip'
 import { Badge } from '../../shadcnComponents/ui/badge'
 //! Get all required details from .env file
 const currencyAPI = process.env.REACT_APP_CHANGE_CURRENCY_API

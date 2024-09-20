@@ -1,4 +1,4 @@
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../shadcnComponents/ui/select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import {
     Pagination,
     PaginationContent,
@@ -7,9 +7,9 @@ import {
     PaginationLink,
     PaginationNext,
     PaginationPrevious,
-} from '../../shadcnComponents/ui/pagination'
+} from '../ui/pagination'
 import React, { useState } from 'react'
-import { Input } from '../../shadcnComponents/ui/input'
+import { Input } from '../ui/input'
 import { useTranslation } from 'react-i18next'
 
 // Constants
@@ -24,7 +24,13 @@ const PAGE_LIMIT_OPTIONS = [20, 50, 100]
  * @param itemsPerPage - The number of items displayed per page.
  * @param showQuickJumper - Optional. Whether to show a quick jumper for direct page navigation.
  */
-const ShadCNPagination = ({ totalItemsCount, handlePageNumberChange = ()=>{}, currentPage, itemsPerPage, showQuickJumper }) => {
+const ShadCNPagination = ({
+    totalItemsCount,
+    handlePageNumberChange = () => {},
+    currentPage,
+    itemsPerPage,
+    showQuickJumper,
+}) => {
     const { t } = useTranslation()
     const [goToValue, setGoToValue] = useState('')
     const totalPages = Math.ceil(totalItemsCount / itemsPerPage)

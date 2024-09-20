@@ -1,5 +1,5 @@
 import React from 'react'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../../shadcnComponents/ui/tooltip'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip'
 const ShadCNTooltip = ({ children, content }) => {
     return (
         <TooltipProvider>

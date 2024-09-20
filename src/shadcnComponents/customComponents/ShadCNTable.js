@@ -1,6 +1,6 @@
 import React from 'react'
-import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '../../shadcnComponents/ui/table'
-import { Button } from '../../shadcnComponents/ui/button'
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '../ui/table'
+import { Button } from '../ui/button'
 const ShadCNTable = ({ data, columns, actions }) => {
     return (
         <Table>
