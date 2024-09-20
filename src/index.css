@@ -2,69 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    :root {
+        --background: 0 0% 100%;
+        --foreground: 222.2 47.4% 11.2%;
 
+        --muted: 210 40% 96.1%;
+        --muted-foreground: 215.4 16.3% 46.9%;
 
-:root {
-  --background: 0 0% 100%; /* Example value for white background */
-  --foreground: 222.2 47.4% 11.2%; /* Example dark text color */
-  --primary: 222.2 47.4% 11.2%; /* Example color, adjust as needed */
-  --primary-foreground: 210 40% 98%; /* Example contrasting color */
-  --secondary: 210 40% 96%; /* Example color, adjust as needed */
-  --secondary-foreground: 210 38% 96%; /* Example contrasting color */
-  --muted: 210 38% 95%; /* Example muted color */
-  --muted-foreground: 215 20% 46%; /* Example muted foreground color */
-  --accent: 220 80% 60%; /* Example accent color */
-  --accent-foreground: 210 25% 98%; /* Example accent foreground color */
-  --destructive: 0 90% 50%; /* Example red color for destructive actions */
-  --destructive-foreground: 0 0% 100%; /* Example white color */
-  --input: 210 40% 96%; /* Example input background color */
-  --ring: 215 100% 50%; /* Example ring color */
-  --border: 210 30% 90%; /* Example border color */
-  --popover: 0 0% 100%; /* Example popover background color */
-  --popover-foreground: 222.2 47.4% 11.2%; /* Example color */
-  --card: 0 0% 100%; /* Example card background color */
-  --card-foreground: 222.2 47.4% 11.2%; /* Example text color */
-  --chart-1: 210 38% 95%; /* Example chart color */
-  --chart-2: 215 20% 46%; /* Example chart color */
-  --chart-3: 222.2 47.4% 11.2%; /* Example chart color */
-  --chart-4: 220 80% 60%; /* Example chart color */
-  --chart-5: 0 90% 50%; /* Example chart color */
+        --popover: 0 0% 100%;
+        --popover-foreground: 222.2 47.4% 11.2%;
+
+        --border: 214.3 31.8% 91.4%;
+        --input: 214.3 31.8% 91.4%;
+
+        --card: 0 0% 100%;
+        --card-foreground: 222.2 47.4% 11.2%;
+
+        --accent: 210 40% 96.1%;
+        --accent-foreground: 222.2 47.4% 11.2%;
+
+        --ring: 215 20.2% 65.1%;
+
+        --radius: 0.5rem;
+    }
 }
-
-/* Example of dark mode variables */
-.dark {
-  --background: 210 30% 8%;
-  --foreground: 210 38% 96%;
-  --primary: 210 40% 96%;
-  --primary-foreground: 222.2 47.4% 11.2%;
-  --secondary: 215 20% 46%;
-  --secondary-foreground: 210 40% 96%;
-  --muted: 210 38% 95%;
-  --muted-foreground: 222.2 47.4% 11.2%;
-  --accent: 220 80% 60%;
-  --accent-foreground: 210 25% 98%;
-  --destructive: 0 90% 50%;
-  --destructive-foreground: 0 0% 100%;
-  --input: 210 40% 96%;
-  --ring: 215 100% 50%;
-  --border: 210 30% 90%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 222.2 47.4% 11.2%;
-  --card: 0 0% 100%;
-  --card-foreground: 222.2 47.4% 11.2%;
-  --chart-1: 210 38% 95%;
-  --chart-2: 215 20% 46%;
-  --chart-3: 222.2 47.4% 11.2%;
-  --chart-4: 220 80% 60%;
-  --chart-5: 0 90% 50%;
-}
-
 
 @layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+    * {
+        @apply border-border;
+    }
+    body {
+        @apply bg-background text-foreground;
+        font-feature-settings:
+            'rlig' 1,
+            'calt' 1;
+    }
 }
+
