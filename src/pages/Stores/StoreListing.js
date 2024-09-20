@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ShadCNTable from '../../components/shadCNCustomComponents/ShadCNTable'; // Import your custom ShadCNTable component
+import ShadCNTable from '../../shadcnComponents/customComponents/ShadCNTable'; // Import your custom ShadCNTable component
 import { deepCopy } from '../../util/util'; // Import your deepCopy function if still needed
 
 const ShadCNTableComponent = ({ tableComponentData }) => {
