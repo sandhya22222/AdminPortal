@@ -2,7 +2,7 @@ import React from 'react'
 import { Table, TableHead, TableRow, TableCell, TableBody, TableHeader } from '../../shadcnComponents/ui/table'
 
 // Reusable Table Component
-const DataTable = ({ columns, data }) => {
+const ShadCNDataTable = ({ columns, data }) => {
     return (
         <Table className='!rounded-sm'>
             {/* Table Header */}
@@ -24,13 +24,13 @@ const DataTable = ({ columns, data }) => {
             <TableBody>
                 {data.map((row, rowIndex) => (
                     <TableRow key={rowIndex} className='border-b'>
-                        {columns.map((column, colIndex) => (
+                        {columns.map((column) => (
                             <TableCell
-                                key={colIndex}
+                                key={column.key}
                                 className='px-4 !text-brandGray1'
                                 style={{ width: column.width || 'auto' }} // Ensure columns are contained
                             >
-                                {column.render ? column.render(row) : row[column.value]}
+                                {column.render ? column.render(row[column.key], row) : row[column.value]}
                             </TableCell>
                         ))}
                     </TableRow>
@@ -40,4 +40,4 @@ const DataTable = ({ columns, data }) => {
     )
 }
 
-export default DataTable
+export default ShadCNDataTable

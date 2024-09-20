@@ -1,8 +1,7 @@
-import { UserOutlined, InfoCircleOutlined, PlusOutlined, SearchOutlined, StarFilled } from '@ant-design/icons'
+import { InfoCircleOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons'
 import {
     Button,
     Divider,
-    Drawer,
     Input,
     Layout,
     Row,
@@ -10,15 +9,12 @@ import {
     Spin,
     Tooltip,
     Typography,
-    Radio,
     Tabs,
     Progress,
     InputNumber,
     Alert,
-    // Badge,
     Empty,
     Segmented,
-    Tag,
 } from 'antd'
 import React, { useEffect, useState } from 'react'
 
@@ -34,8 +30,6 @@ import {
     warningInfoIcon,
 } from '../../constants/media'
 //! Import user defined components
-// import DynamicTable from '../../components/DynamicTable/DynamicTable'
-// import DynamicTable2 from '../../components/DynamicTable/DynamicTable2'
 import HeaderForTitle from '../../components/header/HeaderForTitle'
 import StoreModal from '../../components/storeModal/StoreModal'
 import { usePageTitle } from '../../hooks/usePageTitle'
@@ -45,13 +39,11 @@ import MarketplaceToaster from '../../util/marketplaceToaster'
 import util from '../../util/common'
 
 import { Toggle } from '../../shadcnComponents/ui/toggle'
-import DmPagination2 from '../../components/DmPagination/DmPagination2'
 import axios from 'axios'
 import { useAuth } from 'react-oidc-context'
 import { validatePositiveNumber } from '../../util/validation'
 
-import ShadCNTable from '../../shadcnComponents/customComponents/ShadCNTable'
-import StoreListing from './StoreListing'
+import ShadCNDataTable from '../../shadcnComponents/customComponents/ShadCNDataTable'
 import { Star } from 'lucide-react'
 import { Badge } from '../../shadcnComponents/ui/badge'
 import ShadCNPagination from '../../shadcnComponents/customComponents/ShadCNPagination'
@@ -227,8 +219,8 @@ const Stores = () => {
 
     const StoreTableColumnThreshold1 = [
         {
-            label: `${t('labels:limits')}`,
-            dataIndex: 'limits',
+            header: `${t('labels:limits')}`,
+            value: 'limits',
             key: 'limits',
             width: '30%',
             render: (text) => {
@@ -289,8 +281,8 @@ const Stores = () => {
         },
 
         {
-            label: `${t('labels:stats_name')}`,
-            dataIndex: 'stats',
+            header: `${t('labels:stats_name')}`,
+            value: 'stats',
             key: 'stats',
             width: '20%',
 
@@ -338,9 +330,9 @@ const Stores = () => {
 
     const StoreTableColumnThreshold2 = [
         {
-            label: `${t('labels:limits')}`,
-            dataIndex: 'limits',
+            header: `${t('labels:limits')}`,
             key: 'limits',
+            value: 'limits',
             width: '30%',
             render: (text) => {
                 const [limitName, limitValue, keyName, tooltip] = text.split(',')
@@ -399,9 +391,8 @@ const Stores = () => {
     //! table columns
     const StoreTableColumn = [
         {
-            title: `${t('labels:store_name')}`,
-            dataIndex: 'name',
-            key: 'name',
+            header: `${t('labels:store_name')}`,
+            value: 'name',
             width: '30%',
             ellipsis: true,
             render: (text, record) => {
@@ -466,8 +457,8 @@ const Stores = () => {
             },
         },
         {
-            title: `${t('labels:status')}`,
-            dataIndex: 'status',
+            header: `${t('labels:status')}`,
+            value: 'status',
             key: 'status',
             width: '20%',
             render: (text, record) => {
@@ -494,9 +485,8 @@ const Stores = () => {
             },
         },
         {
-            title: `${t('labels:created_date_and_time')}`,
-            dataIndex: 'created_on',
-            key: 'created_on',
+            header: `${t('labels:created_date_and_time')}`,
+            value: 'created_on',
             width: '30%',
             render: (text, record) => {
                 return (
@@ -507,9 +497,8 @@ const Stores = () => {
             },
         },
         {
-            title: `${t('labels:action')}`,
-            dataIndex: '',
-            key: '',
+            header: `${t('labels:action')}`,
+            value: '',
             width: '12%',
             render: (text, record) => {
                 return (
@@ -601,34 +590,6 @@ const Stores = () => {
         setSelectedTabTableContent(tempArray)
     }
 
-    const tablePropsThreshold1 = {
-        table_header: StoreTableColumnThreshold1,
-        table_content: [
-            {
-                key: '1',
-                limits: `${t('labels:maximum_store_creation_limit')},${storeLimitValues?.store_limit},store_limit,
-        ${t('labels:store_limit_tooltip')}`,
-                stats: analysisCount?.store_count + ',' + storeLimitValues?.store_limit + ',' + 'store_limit',
-            },
-        ],
-        pagenationSettings: pagination,
-        search_settings: {
-            is_enabled: false,
-            search_title: 'Search by name',
-            search_data: ['name'],
-        },
-        filter_settings: {
-            is_enabled: false,
-            filter_title: "Filter's",
-            filter_data: [],
-        },
-        sorting_settings: {
-            is_enabled: false,
-            sorting_title: 'Sorting by',
-            sorting_data: [],
-        },
-    }
-
     //!this useEffect for tab(initial rendering)
     useEffect(() => {
         if (storeApiData && storeApiData.length > 0 && !isLoading) {
@@ -638,86 +599,6 @@ const Stores = () => {
             setSelectedTabTableContent([])
         }
     }, [storeApiData])
-
-    const storeTableData = {
-        table_header: StoreTableColumn,
-        table_content: selectedTabTableContent,
-        search_settings: {
-            is_enabled: false,
-            search_title: 'Search by name',
-            search_data: ['name'],
-        },
-        filter_settings: {
-            is_enabled: false,
-            filter_title: "Filter's",
-            filter_data: [],
-        },
-        sorting_settings: {
-            is_enabled: false,
-            sorting_title: 'Sorting by',
-            sorting_data: [],
-        },
-    }
-
-    const tablePropsThreshold2 = {
-        table_header: StoreTableColumnThreshold2,
-        table_content: [
-            {
-                key: '1',
-
-                limits: `${t('labels:max_vendor_onboarding_limit')},${
-                    storeLimitValues?.vendor_limit
-                },vendor_limit, ${t('labels:vendor_limit_tooltip')}`,
-            },
-
-            {
-                key: '2',
-                limits: `${t('labels:max_customer_onboarding_limit')},${
-                    storeLimitValues?.customer_limit
-                },customer_limit, ${t('labels:customer_limit_tooltip')}`,
-            },
-            {
-                key: '3',
-                limits: `${t('labels:max_product_limit')},${
-                    storeLimitValues?.product_limit
-                },product_limit, ${t('labels:product_limit_tooltip')}`,
-            },
-            {
-                key: '4',
-                limits: `${t('labels:max_order_limit')} ,${
-                    storeLimitValues?.order_limit_per_day
-                },order_limit_per_day, ${t('labels:order_limit_tooltip')}`,
-            },
-            {
-                key: '5',
-                limits: `${t('labels:max_language_limit')} ,${
-                    storeLimitValues?.langauge_limit
-                },langauge_limit, ${t('labels:language_limit_tooltip')}`,
-            },
-            {
-                key: '6',
-                limits: `${t('labels:max_product_template_limit')},${
-                    storeLimitValues?.product_template_limit
-                },product_template_limit, ${t('labels:product_template_limit_tooltip')}`,
-            },
-        ],
-        pagenationSettings: pagination,
-        search_settings: {
-            is_enabled: false,
-            search_title: 'Search by name',
-            search_data: ['name'],
-        },
-        filter_settings: {
-            is_enabled: false,
-            filter_title: "Filter's",
-            filter_data: [],
-        },
-        sorting_settings: {
-            is_enabled: false,
-            sorting_title: 'Sorting by',
-            sorting_data: [],
-        },
-    }
 
     const storeRestrictionsData = [
         {
@@ -958,103 +839,6 @@ const Stores = () => {
         }, 30000)
         return () => clearInterval(intervalId)
     }, [statusInprogressData, storeApiData])
-
-    // //! validation for post call
-    // const validateStorePostField = () => {
-    //     const emailRegex = new RegExp(emailRegexPattern)
-    //     let count = 3
-    //     if (storeEmail === '' && storeUserName === '' && name === '') {
-    //         setInValidEmail(true)
-    //         setInValidUserName(true)
-    //         setInValidName(true)
-    //         count--
-    //         MarketplaceToaster.showToast(
-    //             util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-    //         )
-    //     } else if (storeEmail === '' && storeUserName === '' && name !== '') {
-    //         setInValidEmail(true)
-    //         setInValidUserName(true)
-    //         count--
-    //         MarketplaceToaster.showToast(
-    //             util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-    //         )
-    //     } else if (storeEmail !== '' && storeUserName === '' && name === '') {
-    //         setInValidUserName(true)
-    //         setInValidName(true)
-    //         count--
-    //         MarketplaceToaster.showToast(
-    //             util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-    //         )
-    //     } else if (storeEmail === '' && storeUserName !== '' && name === '') {
-    //         setInValidEmail(true)
-    //         setInValidName(true)
-    //         count--
-    //         MarketplaceToaster.showToast(
-    //             util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-    //         )
-    //     } else if (storeEmail === '' && storeUserName !== '' && name !== '') {
-    //         setInValidEmail(true)
-    //         count--
-    //         MarketplaceToaster.showToast(
-    //             util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-    //         )
-    //     } else if (storeEmail !== '' && storeUserName === '' && name !== '') {
-    //         setInValidUserName(true)
-    //         count--
-    //         MarketplaceToaster.showToast(
-    //             util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-    //         )
-    //     } else if (storeEmail !== '' && storeUserName !== '' && name === '') {
-    //         setInValidName(true)
-    //         count--
-    //         MarketplaceToaster.showToast(
-    //             util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-    //         )
-    //     } else if (
-    //         name &&
-    //         validator.isLength(name.trim(), {
-    //             min: storeNameMinLength,
-    //             max: storeNameMaxLength,
-    //         }) === false
-    //     ) {
-    //         setInValidName(true)
-    //         count--
-    //         MarketplaceToaster.showToast(
-    //             util.getToastObject(
-    //                 `${t('messages:store_name_must_contain_minimum_of')} ${storeNameMinLength}, ${t(
-    //                     'messages:maximum_of'
-    //                 )} ${storeNameMaxLength} ${t('messages:characters')}`,
-    //                 'error'
-    //             )
-    //         )
-    //     } else if (storeEmail && emailRegex.test(storeEmail) === false) {
-    //         setInValidEmail(true)
-    //         count--
-    //         MarketplaceToaster.showToast(
-    //             util.getToastObject(`${t('messages:please_enter_the_valid_email_address')}`, 'error')
-    //         )
-    //     } else if (
-    //         storeUserName &&
-    //         validator.isLength(storeUserName.trim(), {
-    //             min: userNameMinLength,
-    //             max: userNameMaxLength,
-    //         }) === false
-    //     ) {
-    //         setInValidUserName(true)
-    //         count--
-    //         MarketplaceToaster.showToast(
-    //             util.getToastObject(
-    //                 `${t('messages:username_must_contain_minimum_of')} ${userNameMinLength}, ${t(
-    //                     'messages:maximum_of'
-    //                 )} ${userNameMaxLength} ${t('messages:characters')}`,
-    //                 'error'
-    //             )
-    //         )
-    //     }
-    //     if (count === 3) {
-    //         saveStoreData()
-    //     }
-    // }
 
     const validateStorePostField = () => {
         const emailRegex = new RegExp(emailRegexPattern)
@@ -1447,25 +1231,13 @@ const Stores = () => {
                                                                     />
                                                                 </div>
                                                             )}
-                                                        {/* <StoreTable storeTableData={storeTableData} t={t} /> */}
-                                                        {/* <DynamicTable2 tableComponentData={storeTableData} /> */}
-                                                        <StoreListing tableComponentData={storeTableData} />
-
+                                                        <ShadCNDataTable
+                                                            columns={StoreTableColumn}
+                                                            data={selectedTabTableContent}
+                                                        />
                                                         {parseInt(m_tab_id) === 1 ? (
                                                             <Content className=' grid justify-items-end mx-3 h-fit'>
                                                                 {countForStore && countForStore >= pageLimit ? (
-                                                                    // <DmPagination2
-                                                                    //     currentPage={
-                                                                    //         parseInt(searchParams.get('page')) || 1
-                                                                    //     }
-                                                                    //     totalItemsCount={countForStore}
-                                                                    //     itemsPerPage={
-                                                                    //         parseInt(searchParams.get('limit')) ||
-                                                                    //         pageLimit
-                                                                    //     }
-                                                                    //     handlePageNumberChange={handlePageNumberChange}
-                                                                    //     showQuickJumper={true}
-                                                                    // />
                                                                     <ShadCNPagination
                                                                         totalItemsCount={countForStore}
                                                                         handlePageNumberChange={handlePageNumberChange}
@@ -1500,9 +1272,9 @@ const Stores = () => {
                                                 {t('labels:account_restrictions')}
                                             </Title>
                                             <Divider className='w-full mt-2 mb-2' />
-                                            {/* <DynamicTable tableComponentData={tablePropsThreshold1} /> */}
                                             <div className='!p-3'>
-                                                <ShadCNTable
+                                                <ShadCNDataTable
+                                                    columns={StoreTableColumnThreshold1}
                                                     data={[
                                                         {
                                                             key: '1',
@@ -1516,8 +1288,6 @@ const Stores = () => {
                                                                 'store_limit',
                                                         },
                                                     ]}
-                                                    columns={StoreTableColumnThreshold1}
-                                                    actions={null}
                                                 />
                                             </div>
                                         </Content>
@@ -1526,12 +1296,10 @@ const Stores = () => {
                                                 {t('labels:store_restrictions')}
                                             </Title>
                                             <Divider className='w-full mt-2 mb-2' />
-                                            {/* <DynamicTable tableComponentData={tablePropsThreshold2} /> */}
                                             <div className='!p-3'>
-                                                <ShadCNTable
-                                                    data={storeRestrictionsData}
+                                                <ShadCNDataTable
                                                     columns={StoreTableColumnThreshold2}
-                                                    actions={null}
+                                                    data={storeRestrictionsData}
                                                 />
                                             </div>
                                         </Content>

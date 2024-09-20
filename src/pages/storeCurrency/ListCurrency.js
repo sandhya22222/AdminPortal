@@ -9,10 +9,9 @@ import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import SkeletonComponent from '../../components/Skeleton/SkeletonComponent'
 import DmPagination from '../../components/DmPagination/DmPagination'
 import { usePageTitle } from '../../hooks/usePageTitle'
-import ShadCNTable from '../../shadcnComponents/customComponents/ShadCNTable'
 import ShadCNTooltip from '../../shadcnComponents/customComponents/ShadCNTooltip'
 import { Badge } from '../../shadcnComponents/ui/badge'
-import DataTable from '../../components/shadCNCustomComponents/DataTable'
+import ShadCNDataTable from '../../shadcnComponents/customComponents/ShadCNDataTable'
 import { Button } from '../../shadcnComponents/ui/button'
 //! Get all required details from .env file
 const currencyAPI = process.env.REACT_APP_CHANGE_CURRENCY_API
@@ -38,7 +37,7 @@ const ListCurrency = () => {
             value: 'currency_name',
             width: '25%',
             ellipsis: true,
-            render: (record) => (
+            render: (text, record) => (
                 <div className='flex items-center'>
                     {record.is_default ? (
                         <ShadCNTooltip content={record.currency_name}>
@@ -106,7 +105,7 @@ const ListCurrency = () => {
         {
             header: <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:action')}</span>,
             value: 'action',
-            render: (record) => {
+            render: (text, record) => {
                 return (
                     <Button
                         variant='ghost'
@@ -121,16 +120,6 @@ const ListCurrency = () => {
         },
     ]
 
-    const actions = [
-        {
-            label: t('labels:view_details'),
-            color: 'app-primary-color',
-            hoverColor: 'app-primary-color',
-            handler: (row) => {
-                navigate(`/dashboard/currency/edit-currency?k=${row.id}`)
-            },
-        },
-    ]
     //!doing get call for currency using React Query
     const findByPageCurrencyData = async (page, limit) => {
         // Fetcher function
@@ -183,8 +172,7 @@ const ListCurrency = () => {
                     </div>
                 ) : (
                     <div className='bg-white p-3 !shadow-brandShadow !rounded-md'>
-                        {/* <Table dataSource={listCurrencyData?.data} columns={listCurrencyColumns} pagination={false} /> */}
-                        <DataTable columns={listCurrencyColumns} data={listCurrencyData?.data} />
+                        <ShadCNDataTable columns={listCurrencyColumns} data={listCurrencyData?.data} />
                         {listCurrencyData && listCurrencyData?.count >= pageLimit ? (
                             <div className=' grid justify-items-end'>
                                 <DmPagination
