@@ -7,7 +7,6 @@ import { usePageTitle } from '../../hooks/usePageTitle'
 import { Button } from '../../shadcnComponents/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '../../shadcnComponents/ui/card'
 import { Switch } from '../../shadcnComponents/ui/switch'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../shadcnComponents/ui/table'
 import { Badge } from '../../shadcnComponents/ui/badge'
 import { Separator } from '../../shadcnComponents/ui/separator'
 import {
@@ -19,6 +18,7 @@ import {
     DialogTitle,
 } from '../../shadcnComponents/ui/dialog'
 import { cn } from '../../lib/utils'
+import ShadCNDataTable from '../../../src/shadcnComponents/customComponents/ShadCNDataTable'
 
 const itemsPerPageFromEnv = process.env.REACT_APP_ITEM_PER_PAGE
 const groupsAPI = process.env.REACT_APP_GROUPS_API
@@ -75,39 +75,41 @@ export default function UserAccessControl() {
 
     const usersColumns = [
         {
-            accessorKey: 'username',
+            key: 'username',
             header: t('labels:username'),
+            value: 'username',
         },
         {
-            accessorKey: 'email',
+            key: 'email',
             header: t('labels:email'),
+            value: 'email',
         },
         {
-            accessorKey: 'status',
+            key: 'status',
             header: t('labels:status'),
-            cell: ({ row }) => (
+            render: (value, row) => (
                 <Switch
                     disabled={
-                        (currentUserDetailsAPIData?.preferred_username === row.original?.username &&
-                            currentUserDetailsAPIData?.email === row.original?.email) ||
-                        row.original?.attributes?.is_default_owner[0] === 'True'
+                        (currentUserDetailsAPIData?.preferred_username === row?.username &&
+                            currentUserDetailsAPIData?.email === row?.email) ||
+                        row?.attributes?.is_default_owner[0] === 'True'
                     }
-                    checked={row.original?.enabled || false}
-                    onCheckedChange={() => openUserEnableDisableModal(row.original?.enabled, row.original?.username)}
+                    checked={row?.enabled || false}
+                    onCheckedChange={() => openUserEnableDisableModal(row?.enabled, row?.username)}
                 />
             ),
         },
         {
-            accessorKey: 'role',
+            key: 'role',
             header: t('labels:role'),
-            cell: ({ row }) => (
+            render: (value, row) => (
                 <div className='flex gap-2'>
                     <span>
-                        {row.original?.groups && row.original.groups[0]?.name
-                            ? String(row.original.groups[0].name).replaceAll('-', ' ')
+                        {row?.groups && row.groups[0]?.name
+                            ? String(row.groups[0].name).replaceAll('-', ' ')
                             : t('labels:not_available')}
                     </span>
-                    {row.original?.attributes?.is_default_owner[0] === 'True' && (
+                    {row?.attributes?.is_default_owner[0] === 'True' && (
                         <Badge className='bg-black text-white border px-3 py-1  text-xs rounded-none'>
                             {t('labels:primary_account')}
                         </Badge>
@@ -116,13 +118,13 @@ export default function UserAccessControl() {
             ),
         },
         {
-            id: 'actions',
+            key: 'actions',
             header: t('labels:action'),
-            cell: ({ row }) => {
+            render: (value, row) => {
                 const isDeleteDisabled =
-                    currentUserDetailsAPIData?.preferred_username === row.original?.username ||
-                    row.original?.attributes?.is_default_owner[0] === 'True' ||
-                    currentUserDetailsAPIData?.email === row.original?.email
+                    currentUserDetailsAPIData?.preferred_username === row?.username ||
+                    row?.attributes?.is_default_owner[0] === 'True' ||
+                    currentUserDetailsAPIData?.email === row?.email
 
                 return (
                     <div className='flex items-center space-x-2'>
@@ -134,7 +136,7 @@ export default function UserAccessControl() {
                                     ? 'text-gray-400 cursor-not-allowed'
                                     : 'text-red-500 hover:text-red-700'
                             )}
-                            onClick={() => !isDeleteDisabled && openUserDeleteModal(row.original?.username)}
+                            onClick={() => !isDeleteDisabled && openUserDeleteModal(row?.username)}
                             disabled={isDeleteDisabled}>
                             {t('labels:delete')}
                         </Button>
@@ -144,7 +146,7 @@ export default function UserAccessControl() {
                             className='text-sm text-orange-500 hover:text-orange-700 font-medium px-2 py-1'
                             onClick={() =>
                                 navigate(
-                                    `/dashboard/user-access-control/edit-user?id=${row.original?.id}&Loginuname=${currentUserDetailsAPIData?.preferred_username}&default=${row.original?.attributes?.is_default_owner[0]}`
+                                    `/dashboard/user-access-control/edit-user?id=${row?.id}&Loginuname=${currentUserDetailsAPIData?.preferred_username}&default=${row?.attributes?.is_default_owner[0]}`
                                 )
                             }>
                             {t('labels:edit')}
@@ -157,9 +159,10 @@ export default function UserAccessControl() {
 
     const groupColumns = [
         {
-            accessorKey: 'name',
+            key: 'name',
             header: t('labels:role_name'),
-            cell: ({ row }) => String(row.original?.name || '').replaceAll('-', ' '),
+            value: 'name',
+            render: (value) => String(value || '').replaceAll('-', ' '),
         },
     ]
 
@@ -313,26 +316,7 @@ export default function UserAccessControl() {
                         ) : isUsersError ? (
                             <p className='text-center text-red-500'>{t('messages:network_error')}</p>
                         ) : (
-                            <Table>
-                                <TableHeader className='bg-slate-100'>
-                                    {usersColumns.map((column) => (
-                                        <TableHead key={column.accessorKey || column.id}>{column.header}</TableHead>
-                                    ))}
-                                </TableHeader>
-                                <TableBody>
-                                    {usersServerData?.map((row) => (
-                                        <TableRow key={row.id}>
-                                            {usersColumns.map((column) => (
-                                                <TableCell key={column.accessorKey || column.id}>
-                                                    {column.cell
-                                                        ? column.cell({ row: { original: row } })
-                                                        : row[column.accessorKey]}
-                                                </TableCell>
-                                            ))}
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
+                            <ShadCNDataTable columns={usersColumns} data={usersServerData || []} />
                         )}
                     </CardContent>
                 </Card>
@@ -349,27 +333,7 @@ export default function UserAccessControl() {
                         ) : isGroupError ? (
                             <p className='text-center text-red-500'>{t('messages:network_error')}</p>
                         ) : (
-                            <Table>
-                                <TableHeader className='bg-slate-100'>
-                                    {groupColumns.map((column) => (
-                                        <TableHead key={column.accessorKey}>{column.header}</TableHead>
-                                    ))}
-                                </TableHeader>
-                                <TableBody>
-                                    {groupServerData?.map((row) => (
-                                        <TableRow key={row.id}>
-                                            {groupColumns.map((column) => (
-                                                <TableCell key={column.accessorKey}>
-                                                    {column.cell
-                                                        ? column.cell({ row: { original: row } })
-                                                        : row[column.accessorKey]}
-                                                </TableCell>
-                                            ))}
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                                <Separator />
-                            </Table>
+                            <ShadCNDataTable columns={groupColumns} data={groupServerData || []} />
                         )}
                     </CardContent>
                 </Card>
