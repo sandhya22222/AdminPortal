@@ -322,7 +322,7 @@ const DynamicTable = ({ tableComponentData }) => {
                         {dataSource.filter_settings.is_enabled === true ||
                         dataSource.search_settings.is_enabled === true ||
                         dataSource.sorting_settings.is_enabled === true ? (
-                            <Row justify='space-between' className='pt-3 px-3'>
+                            <Row justify='space-between' className='pt-4 px-4'>
                                 {/* serachBox Design starts here */}
                                 <Col className=''>
                                     {dataSource.search_settings.is_enabled ? (
@@ -492,7 +492,7 @@ const DynamicTable = ({ tableComponentData }) => {
 
                         {tableData ? (
                             <Table
-                                className='p-3'
+                                className='p-4'
                                 dataSource={tableData}
                                 columns={dataSource.table_header}
                                 // pagination={{

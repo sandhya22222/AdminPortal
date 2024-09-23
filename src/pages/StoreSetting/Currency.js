@@ -212,17 +212,17 @@ const Currency = ({ storeUUId }) => {
                             className='my-3'
                         />
                     )}
-                    <Content className='bg-white  p-3 rounded-lg border my-4'>
+                    <Content className='bg-white  p-4 rounded-lg border my-4'>
                         <label className='text-lg  font-semibold mb-4 text-regal-blue'>{t('labels:currency')}</label>
                         <Content className='mb-1'>
-                            <Col span={8}>
-                                <label className='text-[14px] mb-2 ml-1 input-label-color'>
+                            <Col span={8} className='my-4'>
+                                <label className='text-[14px] mb-3 ml-1 input-label-color'>
                                     {t('labels:choose_store_currency')}
                                 </label>
                                 <Select
                                     showSearch={false}
                                     disabled={isVendorsOnBoarded ? true : false}
-                                    className='w-100'
+                                    className='w-[300px] my-2'
                                     dropdownStyle={{ zIndex: 1 }}
                                     placeholder={t('messages:please_choose_a_store_currency')}
                                     value={currencyData && currencyData.length > 0 && currencyData[0].currency_name}
