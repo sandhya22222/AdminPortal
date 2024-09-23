@@ -7,12 +7,12 @@ import HeaderForTitle from '../../components/header/HeaderForTitle'
 import { useTranslation } from 'react-i18next'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import SkeletonComponent from '../../components/Skeleton/SkeletonComponent'
-import DmPagination from '../../components/DmPagination/DmPagination'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import ShadCNTooltip from '../../shadcnComponents/customComponents/ShadCNTooltip'
 import { Badge } from '../../shadcnComponents/ui/badge'
 import ShadCNDataTable from '../../shadcnComponents/customComponents/ShadCNDataTable'
 import { Button } from '../../shadcnComponents/ui/button'
+import ShadCNPagination from '../../shadcnComponents/customComponents/ShadCNPagination'
 //! Get all required details from .env file
 const currencyAPI = process.env.REACT_APP_CHANGE_CURRENCY_API
 const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE)
@@ -175,13 +175,11 @@ const ListCurrency = () => {
                         <ShadCNDataTable columns={listCurrencyColumns} data={listCurrencyData?.data} />
                         {listCurrencyData && listCurrencyData?.count >= pageLimit ? (
                             <div className=' grid justify-items-end'>
-                                <DmPagination
-                                    currentPage={currencyPaginationData.pageNumber}
+                                <ShadCNPagination
                                     totalItemsCount={listCurrencyData?.count}
-                                    pageSize={currencyPaginationData.pageSize}
                                     handlePageNumberChange={handleCurrencyPageNumberChange}
-                                    showSizeChanger={true}
-                                    showTotal={true}
+                                    currentPage={currencyPaginationData.pageNumber}
+                                    itemsPerPage={currencyPaginationData.pageSize}
                                     showQuickJumper={true}
                                 />
                             </div>
