@@ -47,6 +47,7 @@ import ShadCNDataTable from '../../shadcnComponents/customComponents/ShadCNDataT
 import { Star } from 'lucide-react'
 import { Badge } from '../../shadcnComponents/ui/badge'
 import ShadCNPagination from '../../shadcnComponents/customComponents/ShadCNPagination'
+import Ellipsis from '../../components/shadCNCustomComponents/Ellipsis'
 
 const { Content } = Layout
 const { Title, Text } = Typography
