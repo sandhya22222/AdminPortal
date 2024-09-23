@@ -47,6 +47,7 @@ import ShadCNDataTable from '../../shadcnComponents/customComponents/ShadCNDataT
 import { Star } from 'lucide-react'
 import { Badge } from '../../shadcnComponents/ui/badge'
 import ShadCNPagination from '../../shadcnComponents/customComponents/ShadCNPagination'
+import ShadCNTooltip from '../../shadcnComponents/customComponents/ShadCNTooltip'
 
 const { Content } = Layout
 const { Title, Text } = Typography
@@ -229,14 +230,13 @@ const Stores = () => {
                     <Content className='flex flex-col gap-2'>
                         <div className='flex gap-2 items-center text-[#8899A8]'>
                             {limitName}
-                            <Tooltip
-                                overlayStyle={{ zIndex: 1 }}
-                                title={tooltip}
-                                placement={
+                            <ShadCNTooltip
+                                content={tooltip}
+                                position={
                                     util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'left' : 'right'
                                 }>
                                 <InfoCircleOutlined />
-                            </Tooltip>
+                            </ShadCNTooltip>
                         </div>
 
                         <InputNumber
@@ -340,14 +340,13 @@ const Stores = () => {
                     <Content className='flex flex-col gap-2'>
                         <div className='flex gap-2 items-center text-[#8899A8]'>
                             {limitName}
-                            <Tooltip
-                                overlayStyle={{ zIndex: 1 }}
-                                title={tooltip}
-                                placement={
+                            <ShadCNTooltip
+                                content={tooltip}
+                                position={
                                     util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'left' : 'right'
                                 }>
                                 <InfoCircleOutlined />
-                            </Tooltip>
+                            </ShadCNTooltip>
                         </div>
                         <Content>
                             <InputNumber
