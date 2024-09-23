@@ -11,9 +11,6 @@ import './services/i18next/1i18n'
 import { AuthProvider } from 'react-oidc-context'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-import 'bootstrap/dist/js/bootstrap.min.js'
-import 'bootstrap/dist/css/bootstrap.min.css'
-
 import './core-ui/index.css'
 
 const queryClient = new QueryClient()

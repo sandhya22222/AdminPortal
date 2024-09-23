@@ -358,7 +358,7 @@ const StoreImages = ({
                                 </Upload>
                             </div>
                             <div className='mt-4 text-[#a8a8a8]'>
-                                <ul className='list-disc '>
+                                <ul className='list-disc pl-3 '>
                                     <li className='!mb-0 '>{t('messages:store_logo_info')}</li>
                                     <li>{t('messages:store_logo_resolution')}</li>
                                     <li className='!mb-0 '>{t('messages:upload_image_content')}</li>

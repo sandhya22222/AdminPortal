@@ -212,14 +212,14 @@ function LanguageDocUpload({ langCode }) {
 
     return (
         <Content className='!w-[750px]'>
-            <div className='font-semibold text-lg leading-[26px] text-regal-blue mb-2 px-1'>
+            <div className='font-semibold text-lg leading-[26px] text-regal-blue mb-2 px-2 pt-2 pb-1'>
                 {t('labels:support_document')}
             </div>
-            <p className='text-brandGray2 px-1'>{t('messages:language_document_data')}</p>
+            <p className='text-brandGray2 px-2 pb-4'>{t('messages:language_document_data')}</p>
             <Content className='!flex gap-4'>
                 <Content className='border rounded-md '>
                     <Spin spinning={isSpinning} tip={t('labels:please_wait')}>
-                        <Content className='flex p-3 justify-between'>
+                        <Content className='flex p-4 justify-between'>
                             <Content>
                                 <Text className='text-base font-semibold !text-regal-blue'>
                                     {t('labels:frontend_keys')}
@@ -236,7 +236,7 @@ function LanguageDocUpload({ langCode }) {
 
                         <Divider className='my-0 ' />
                         <p className='!p-4 !pb-0 text-brandGray2'>{t('messages:frontend_document')}</p>
-                        <Content className='flex p-3 gap-4'>
+                        <Content className='flex p-4 gap-4'>
                             <Upload
                                 beforeUpload={() => {
                                     return false
@@ -274,7 +274,7 @@ function LanguageDocUpload({ langCode }) {
             <Content className=' mt-4 !flex gap-4'>
                 <Content className='border rounded-md'>
                     <Spin spinning={isSpinningForBEUpload} tip={t('labels:please_wait')}>
-                        <Content className='flex justify-between p-3'>
+                        <Content className='flex justify-between p-4'>
                             <Content>
                                 <Text className='text-base font-semibold !text-regal-blue'>
                                     {t('labels:backend_keys')}
@@ -290,7 +290,7 @@ function LanguageDocUpload({ langCode }) {
                         <Divider className='my-0 ' />
 
                         <p className='!p-4 !pb-0 text-brandGray2'>{t('messages:backend_document')}</p>
-                        <Content className='flex p-3 gap-4'>
+                        <Content className='flex p-4 gap-4'>
                             <Upload
                                 beforeUpload={() => {
                                     return false

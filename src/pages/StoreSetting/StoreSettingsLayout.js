@@ -356,7 +356,7 @@ const StoreSettingsLayout = () => {
             <HeaderForTitle
                 title={
                     <Content className='flex !w-[80vw]'>
-                        <Content className='!w-[75%] flex gap-2 !mt-2'>
+                        <Content className='!w-[75%] flex gap-2 !mt-3'>
                             <div className=''>
                                 <img src={storeDefaultImage} className='aspect-square !mt-2' />
                             </div>
@@ -410,7 +410,7 @@ const StoreSettingsLayout = () => {
 
             <div className='!px-6 !pb-6  !mt-[12.5rem]'>
                 <div className=' w-full bg-white rounded shadow-brandShadow flex  justify-start'>
-                    <div className=' py-4 h-full '>
+                    <div className=' py-5 h-full px-1 '>
                         {permissionValue?.length > 0 ? (
                             permissionValue?.includes('UI-product-admin') === true ? (
                                 <Tabs
@@ -447,12 +447,12 @@ const StoreSettingsLayout = () => {
                                     ''
                                 ) : (
                                     <Spin tip={t('labels:please_wait')} size='large' spinning={isUpLoading}>
-                                        <Content className='bg-white p-3 !rounded-md border my-4'>
-                                            <label className='text-lg mb-3 font-semibold text-regal-blue'>
+                                        <Content className='bg-white p-4 !rounded-md border my-5'>
+                                            <label className='text-lg mb-4 font-semibold text-regal-blue'>
                                                 {t('labels:media')}
                                             </label>
                                             <Row class='flex space-x-4'>
-                                                <Col>
+                                                <Col className='my-3'>
                                                     <StoreImages
                                                         title={`${t('labels:store_logo')}`}
                                                         type={'store_logo'}
