@@ -46,6 +46,7 @@ import util from '../../util/common'
 
 import { Toggle } from '../../shadcnComponents/ui/toggle'
 import DmPagination2 from '../../components/DmPagination/DmPagination2'
+import DmPagination from '../../components/DmPagination/DmPagination'
 import axios from 'axios'
 import { useAuth } from 'react-oidc-context'
 import { validatePositiveNumber } from '../../util/validation'
@@ -54,6 +55,7 @@ import ShadCNTable from '../../components/shadCNCustomComponents/ShadCNTable'
 import StoreListing from './StoreListing'
 import { Star } from 'lucide-react'
 import { Badge } from '../../shadcnComponents/ui/badge'
+import Ellipsis from '../../components/shadCNCustomComponents/Ellipsis'
 
 const { Content } = Layout
 const { Title, Text } = Typography
@@ -1448,12 +1450,20 @@ const Stores = () => {
                                                             )}
                                                         {/* <StoreTable storeTableData={storeTableData} t={t} /> */}
                                                         {/* <DynamicTable2 tableComponentData={storeTableData} /> */}
-                                                        <StoreListing tableComponentData={storeTableData} />
+                                                        <StoreListing tableComponentData={storeTableData} t={t}/>
+                                                        {/* <Ellipsis
+                                                            text='A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.'
+                                                            style={{
+                                                                width: '400px',
+                                                                backgroundColor: '#ffffff',
+                                                                color: '#333',
+                                                            }}
+                                                        /> */}
 
                                                         {parseInt(m_tab_id) === 1 ? (
                                                             <Content className=' grid justify-items-end mx-3 h-fit'>
                                                                 {countForStore && countForStore >= pageLimit ? (
-                                                                    <DmPagination2
+                                                                    <DmPagination
                                                                         currentPage={
                                                                             parseInt(searchParams.get('page')) || 1
                                                                         }

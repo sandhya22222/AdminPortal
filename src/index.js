@@ -10,6 +10,7 @@ import './services/i18next/1i18n'
 
 import { AuthProvider } from 'react-oidc-context'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { TooltipProvider } from "./shadcnComponents/ui/tooltip";
 
 // import 'bootstrap/dist/js/bootstrap.min.js'
 // import 'bootstrap/dist/css/bootstrap.min.css'
@@ -50,9 +51,11 @@ root.render(
         <Provider store={Store}>
             <PersistGate loading={null} persistor={Persistor}>
                 <StrictMode>
-                    <QueryClientProvider client={queryClient}>
-                        <App />
-                    </QueryClientProvider>
+                    <TooltipProvider>
+                        <QueryClientProvider client={queryClient}>
+                            <App />
+                        </QueryClientProvider>
+                    </TooltipProvider>
                 </StrictMode>
             </PersistGate>
         </Provider>
