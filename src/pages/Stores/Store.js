@@ -52,6 +52,7 @@ import { Input } from '../../shadcnComponents/ui/input'
 import { Progress } from '../../shadcnComponents/ui/progress'
 import { Button } from '../../shadcnComponents/ui/button'
 import SearchInput from './SearchInput'
+import { SEARCH_PAGE_LIMIT } from '../../constants/SearchPageLimit'
 const { Content } = Layout
 const { Title, Text } = Typography
 // const { Search } = Input
@@ -120,7 +121,6 @@ const Stores = () => {
     const [isSearchTriggered, setIsSearchTriggered] = useState(false)
     const [storeType, setStoreType] = useState('partner')
     const [isDistributor, setIsDistributor] = useState(false)
-    const [errors, setErrors] = useState({})
     const [isOpenModalForMakingDistributor, setIsOpenModalForMakingDistributor] = useState(false)
     const [inValidEmailFormat, setInValidEmailFormat] = useState(false)
     const [isDistributorStoreActive, setIsDistributorStoreActive] = useState(false)
@@ -658,7 +658,6 @@ const Stores = () => {
 
     //!get call for stores
     const findByPageStoreApi = (pageNumber, pageLimit, storeStatus, searchKey) => {
-        console.log('pageNumber--->', pageNumber, 'storeStatus--->', storeStatus)
         setIsLoading(true)
         let params = {}
         params['status'] = storeStatus ? storeStatus : null
@@ -666,7 +665,7 @@ const Stores = () => {
             params['search'] = String(searchKey)
             setIsSearchTriggered(true)
         }
-        MarketplaceServices.findByPage(storeAPI, params, pageNumber, pageLimit, false)
+        MarketplaceServices.findByPage(storeAPI, params, searchKey ? SEARCH_PAGE_LIMIT : pageNumber, pageLimit, false)
             .then(function (response) {
                 setActiveCount({
                     totalStores:
@@ -1019,8 +1018,8 @@ const Stores = () => {
         } else {
             if (isSearchTriggered) {
                 findByPageStoreApi(
-                    undefined,
-                    undefined,
+                    searchParams.get('page') ? parseInt(searchParams.get('page')) : 1,
+                    searchParams.get('limit') ? parseInt(searchParams.get('limit')) : pageLimit,
                     parseInt(searchParams.get('tab')) && parseInt(searchParams.get('tab')) <= 2
                         ? parseInt(searchParams.get('tab'))
                         : '',
@@ -1037,8 +1036,8 @@ const Stores = () => {
         if (event.target.value == '') {
             if (isSearchTriggered) {
                 findByPageStoreApi(
-                    undefined,
-                    undefined,
+                    searchParams.get('page') ? parseInt(searchParams.get('page')) : 1,
+                    searchParams.get('limit') ? parseInt(searchParams.get('limit')) : pageLimit,
                     parseInt(searchParams.get('tab')) && parseInt(searchParams.get('tab')) <= 2
                         ? parseInt(searchParams.get('tab'))
                         : '',
