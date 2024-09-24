@@ -27,7 +27,7 @@ module.exports = {
                 //Below are the shadcn Changes
                 border: 'hsl(var(--border))',
                 input: 'hsl(var(--input))',
-                ring: 'hsl(var(--ring))',
+                ring: 'var(--mp-brand-color)',
                 background: 'hsl(var(--background))',
                 foreground: 'hsl(var(--foreground))',
                 primary: {

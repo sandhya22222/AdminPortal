@@ -1,8 +1,8 @@
 import { InfoCircleOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons'
 import {
-    Button,
+    // Button,
     Divider,
-    Input,
+    // Input,
     Layout,
     Row,
     Skeleton,
@@ -10,8 +10,8 @@ import {
     Tooltip,
     Typography,
     Tabs,
-    Progress,
-    InputNumber,
+    // Progress,
+    // InputNumber,
     Alert,
     Empty,
     Segmented,
@@ -48,10 +48,14 @@ import { Star } from 'lucide-react'
 import { Badge } from '../../shadcnComponents/ui/badge'
 import ShadCNPagination from '../../shadcnComponents/customComponents/ShadCNPagination'
 import ShadCNTooltip from '../../shadcnComponents/customComponents/ShadCNTooltip'
-
+import { Input } from '../../shadcnComponents/ui/input'
+import { Progress } from '../../shadcnComponents/ui/progress'
+import { Button } from '../../shadcnComponents/ui/button'
+import SearchInput from './SearchInput'
+import { SEARCH_PAGE_LIMIT } from '../../constants/SearchPageLimit'
 const { Content } = Layout
 const { Title, Text } = Typography
-const { Search } = Input
+// const { Search } = Input
 //! Get all required details from .env file
 const storeAPI = process.env.REACT_APP_STORE_API
 const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE)
@@ -117,7 +121,6 @@ const Stores = () => {
     const [isSearchTriggered, setIsSearchTriggered] = useState(false)
     const [storeType, setStoreType] = useState('partner')
     const [isDistributor, setIsDistributor] = useState(false)
-    const [errors, setErrors] = useState({})
     const [isOpenModalForMakingDistributor, setIsOpenModalForMakingDistributor] = useState(false)
     const [inValidEmailFormat, setInValidEmailFormat] = useState(false)
     const [isDistributorStoreActive, setIsDistributorStoreActive] = useState(false)
@@ -227,7 +230,7 @@ const Stores = () => {
             render: (text) => {
                 const [limitName, limitValue, keyName, tooltip] = text.split(',')
                 return (
-                    <Content className='flex flex-col gap-2'>
+                    <div className='flex flex-col gap-2'>
                         <div className='flex gap-2 items-center text-[#8899A8]'>
                             {limitName}
                             <ShadCNTooltip
@@ -238,23 +241,23 @@ const Stores = () => {
                                 <InfoCircleOutlined />
                             </ShadCNTooltip>
                         </div>
-
-                        <InputNumber
+                        <Input
+                            type='number'
+                            className={`w-28 ${keyName === errorField ? 'error' : ''}`} // Add error border class
+                            placeholder={t('labels:placeholder_unlimited')}
                             value={storeLimitValues?.[keyName] > 0 ? storeLimitValues?.[keyName] : ''}
                             min={0}
                             max={maxDataLimit}
-                            maxLength={10}
+                            onChange={(e) => {
+                                let copyofStoreLimitValues = { ...storeLimitValues }
+                                copyofStoreLimitValues[keyName] = parseInt(e.target.value) // Access value from event
+                                setStoreLimitValues(copyofStoreLimitValues)
+                            }}
                             onKeyDown={(e) => {
                                 validatePositiveNumber(e, /[0-9]/)
                             }}
-                            status={keyName === errorField ? 'error' : ''}
                             onFocus={() => {
                                 setErrorField('')
-                            }}
-                            onChange={(value) => {
-                                let copyofStoreLimitValues = { ...storeLimitValues }
-                                copyofStoreLimitValues[keyName] = value
-                                setStoreLimitValues(copyofStoreLimitValues)
                             }}
                             onPaste={(e) => {
                                 e.preventDefault()
@@ -264,7 +267,6 @@ const Stores = () => {
                                 const numericValue = pastedText.replace(/[^0-9]/g, '')
                                 const truncatedValue = numericValue.substring(0, 12)
 
-                                // Check if the resulting value is a positive number
                                 if (/^[0-9]+$/.test(truncatedValue)) {
                                     let copyOfStoreLimitValues = { ...storeLimitValues }
                                     copyOfStoreLimitValues[keyName] = truncatedValue
@@ -272,10 +274,8 @@ const Stores = () => {
                                 }
                             }}
                             disabled={!superAdmin}
-                            className='w-28'
-                            placeholder={t('labels:placeholder_unlimited')}
                         />
-                    </Content>
+                    </div>
                 )
             },
         },
@@ -289,9 +289,9 @@ const Stores = () => {
             render: (text) => {
                 const [count, total, keyName] = text.split(',')
                 return (
-                    <Content>
+                    <div>
                         {count === 'undefined' || total === 'undefined' ? null : count !== 'undefined' && total ? (
-                            <Content className='flex flex-col'>
+                            <div className='flex flex-col'>
                                 <div
                                     className={
                                         util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
@@ -310,19 +310,13 @@ const Stores = () => {
                                     <p>{keyName === 'store_limit' ? t('labels:active_stores') : null}</p>
                                 </div>
                                 {total > 0 ? (
-                                    <Progress
-                                        strokeColor={'#FA8C16'}
-                                        className='w-24'
-                                        size='small'
-                                        percent={(count / total) * 100}
-                                        showInfo={false}
-                                    />
+                                    <Progress className='w-24 h-[6px] mt-2' value={(count / total) * 100} />
                                 ) : null}
-                            </Content>
+                            </div>
                         ) : (
                             <Spin tip='Loading'></Spin>
                         )}
-                    </Content>
+                    </div>
                 )
             },
         },
@@ -337,7 +331,7 @@ const Stores = () => {
             render: (text) => {
                 const [limitName, limitValue, keyName, tooltip] = text.split(',')
                 return (
-                    <Content className='flex flex-col gap-2'>
+                    <div className='flex flex-col gap-2'>
                         <div className='flex gap-2 items-center text-[#8899A8]'>
                             {limitName}
                             <ShadCNTooltip
@@ -348,23 +342,22 @@ const Stores = () => {
                                 <InfoCircleOutlined />
                             </ShadCNTooltip>
                         </div>
-                        <Content>
-                            <InputNumber
+                        <div>
+                            <Input
+                                type='number'
                                 value={storeLimitValues?.[keyName] > 0 ? storeLimitValues?.[keyName] : ''}
-                                status={keyName === errorField ? 'error' : ''}
                                 min={0}
                                 max={maxDataLimit}
-                                maxLength={10}
                                 onFocus={() => {
                                     setErrorField('')
                                 }}
                                 onKeyDown={(e) => {
                                     validatePositiveNumber(e, /[0-9]/)
                                 }}
-                                onChange={(value) => {
-                                    let copyofStoreimitValues = { ...storeLimitValues }
-                                    copyofStoreimitValues[keyName] = value
-                                    setStoreLimitValues(copyofStoreimitValues)
+                                onChange={(e) => {
+                                    let copyOfStoreLimitValues = { ...storeLimitValues }
+                                    copyOfStoreLimitValues[keyName] = parseInt(e.target.value)
+                                    setStoreLimitValues(copyOfStoreLimitValues)
                                 }}
                                 onPaste={(e) => {
                                     setErrorField('')
@@ -377,11 +370,11 @@ const Stores = () => {
                                     document.execCommand('insertText', false, pastedValue)
                                 }}
                                 disabled={!superAdmin}
-                                className={'w-28'}
+                                className={`w-28 ${keyName === errorField ? 'error' : ''}`}
                                 placeholder={t('labels:placeholder_unlimited')}
                             />
-                        </Content>
-                    </Content>
+                        </div>
+                    </div>
                 )
             },
         },
@@ -524,6 +517,7 @@ const Stores = () => {
                             <Button
                                 type='text'
                                 className='app-btn-icon'
+                                variant='ghost'
                                 disabled={record.status === 3 ? true : false}
                                 onClick={() => {
                                     navigate(
@@ -664,7 +658,6 @@ const Stores = () => {
 
     //!get call for stores
     const findByPageStoreApi = (pageNumber, pageLimit, storeStatus, searchKey) => {
-        console.log('pageNumber--->', pageNumber, 'storeStatus--->', storeStatus)
         setIsLoading(true)
         let params = {}
         params['status'] = storeStatus ? storeStatus : null
@@ -672,7 +665,7 @@ const Stores = () => {
             params['search'] = String(searchKey)
             setIsSearchTriggered(true)
         }
-        MarketplaceServices.findByPage(storeAPI, params, pageNumber, pageLimit, false)
+        MarketplaceServices.findByPage(storeAPI, params, searchKey ? SEARCH_PAGE_LIMIT : pageNumber, pageLimit, false)
             .then(function (response) {
                 setActiveCount({
                     totalStores:
@@ -1025,8 +1018,8 @@ const Stores = () => {
         } else {
             if (isSearchTriggered) {
                 findByPageStoreApi(
-                    undefined,
-                    undefined,
+                    searchParams.get('page') ? parseInt(searchParams.get('page')) : 1,
+                    searchParams.get('limit') ? parseInt(searchParams.get('limit')) : pageLimit,
                     parseInt(searchParams.get('tab')) && parseInt(searchParams.get('tab')) <= 2
                         ? parseInt(searchParams.get('tab'))
                         : '',
@@ -1043,8 +1036,8 @@ const Stores = () => {
         if (event.target.value == '') {
             if (isSearchTriggered) {
                 findByPageStoreApi(
-                    undefined,
-                    undefined,
+                    searchParams.get('page') ? parseInt(searchParams.get('page')) : 1,
+                    searchParams.get('limit') ? parseInt(searchParams.get('limit')) : pageLimit,
                     parseInt(searchParams.get('tab')) && parseInt(searchParams.get('tab')) <= 2
                         ? parseInt(searchParams.get('tab'))
                         : '',
@@ -1070,9 +1063,7 @@ const Stores = () => {
         setIsOpenModalForMakingDistributor(false)
     }
 
-    const customButton = (
-        <Button type='primary' disabled={searchValue?.trim() === '' ? true : false} icon={<SearchOutlined />} />
-    )
+    const customButton = <Button disabled={searchValue?.trim() === '' ? true : false} icon={<SearchOutlined />} />
 
     return (
         <Content className=''>
@@ -1165,7 +1156,7 @@ const Stores = () => {
                                                     </Toggle>
                                                 </div>
 
-                                                <Search
+                                                <SearchInput
                                                     placeholder={t('placeholders:please_enter_search_text_here')}
                                                     onSearch={handleSearchChange}
                                                     onChange={handleInputChange}
@@ -1174,7 +1165,7 @@ const Stores = () => {
                                                     maxLength={searchMaxLength}
                                                     enterButton={customButton}
                                                     allowClear
-                                                    className='w-[250px]'
+                                                    // className='w-[300px]'
                                                 />
                                             </div>
                                         </div>
@@ -1303,29 +1294,28 @@ const Stores = () => {
                                             </div>
                                         </Content>
                                         {hideAddStoreButton ? (
-                                            <Content className='flex gap-2 !ml-6 !pb-6'>
-                                                <Button
-                                                    className={'app-btn-primary'}
-                                                    onClick={() => validationForSaveStoreLimit()}>
+                                            <div className='flex gap-2 !ml-6 !py-4'>
+                                                <Button size='sm' onClick={() => validationForSaveStoreLimit()}>
                                                     {t('labels:save')}
                                                 </Button>
                                                 <Button
-                                                    className='app-btn-secondary'
+                                                    variant='secondary'
+                                                    size='sm'
                                                     onClick={() => {
                                                         setCurrentTab(1)
                                                         sessionStorage.setItem('currentStoretab', 1)
                                                     }}>
                                                     {t('labels:discard')}
                                                 </Button>
-                                            </Content>
+                                            </div>
                                         ) : (
                                             ''
                                         )}
                                     </>
                                 ) : (
-                                    <Content className='!mt-[1.7rem] !text-center bg-white p-3 !rounded-md'>
+                                    <div className='!mt-[1.7rem] !text-center bg-white p-3 !rounded-md'>
                                         {t('messages:store_network_error')}
-                                    </Content>
+                                    </div>
                                 )}
                             </Content>
                         </>
