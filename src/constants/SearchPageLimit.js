@@ -1,1 +1,1 @@
-export const SEARCH_PAGE_LIMIT = -1
+export const PAGE_NUMBER_TO_SEARCH = -1

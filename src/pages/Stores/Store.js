@@ -52,7 +52,7 @@ import { Input } from '../../shadcnComponents/ui/input'
 import { Progress } from '../../shadcnComponents/ui/progress'
 import { Button } from '../../shadcnComponents/ui/button'
 import SearchInput from './SearchInput'
-import { SEARCH_PAGE_LIMIT } from '../../constants/SearchPageLimit'
+import { PAGE_NUMBER_TO_SEARCH } from '../../constants/SearchPageLimit'
 const { Content } = Layout
 const { Title, Text } = Typography
 // const { Search } = Input
@@ -665,7 +665,13 @@ const Stores = () => {
             params['search'] = String(searchKey)
             setIsSearchTriggered(true)
         }
-        MarketplaceServices.findByPage(storeAPI, params, searchKey ? SEARCH_PAGE_LIMIT : pageNumber, pageLimit, false)
+        MarketplaceServices.findByPage(
+            storeAPI,
+            params,
+            searchKey ? PAGE_NUMBER_TO_SEARCH : pageNumber,
+            pageLimit,
+            false
+        )
             .then(function (response) {
                 setActiveCount({
                     totalStores:
