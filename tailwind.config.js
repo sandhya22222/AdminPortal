@@ -24,6 +24,8 @@ module.exports = {
                 brandOrange: '#FB8500',
                 'regal-orange': '#FFA229',
                 dangerColor: '#FF4D4F',
+                tootltipText: '#ffffff',
+                tooltipBg: '#000000',
                 //Below are the shadcn Changes
                 border: 'hsl(var(--border))',
                 input: 'hsl(var(--input))',
