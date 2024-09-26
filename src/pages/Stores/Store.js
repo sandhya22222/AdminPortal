@@ -52,7 +52,7 @@ import { Input } from '../../shadcnComponents/ui/input'
 import { Progress } from '../../shadcnComponents/ui/progress'
 import { Button } from '../../shadcnComponents/ui/button'
 import SearchInput from './SearchInput'
-import { PAGE_NUMBER_TO_SEARCH } from '../../constants/SearchPageLimit'
+import { PAGE_NUMBER_TO_SEARCH } from '../../constants/constants'
 const { Content } = Layout
 const { Title, Text } = Typography
 // const { Search } = Input
