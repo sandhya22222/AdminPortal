@@ -7,12 +7,12 @@
     transition: fill 0.3s ease-in-out;
 }
 .delete-profile-btn:disabled svg path {
-    fill: #D9D9D9 !important;
+    fill: var(--mp-text-gray1) !important;
     transition: fill 0.3s ease-in-out;
 }
-.custom-upload-delete-btn .ant-btn.ant-btn-sm{
+.custom-upload-delete-btn .ant-btn.ant-btn-sm {
     background-color: initial !important;
 }
-.custom-upload-delete-btn .ant-btn.ant-btn-sm:hover{
+.custom-upload-delete-btn .ant-btn.ant-btn-sm:hover {
     background-color: initial !important;
 }
