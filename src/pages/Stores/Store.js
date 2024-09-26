@@ -53,6 +53,8 @@ import { Progress } from '../../shadcnComponents/ui/progress'
 import { Button } from '../../shadcnComponents/ui/button'
 import SearchInput from './SearchInput'
 import { SEARCH_PAGE_LIMIT } from '../../constants/SearchPageLimit'
+// import Ellipsis from '../../shadcnComponents/customComponents/Ellipsis'
+
 const { Content } = Layout
 const { Title, Text } = Typography
 // const { Search } = Input
@@ -405,17 +407,11 @@ const Stores = () => {
                                 </Row>
                                 <Row>
                                     {record.isDistributor ? (
-                                        <Badge className='bg-[#E6F4FF] border-[#91CAFF] text-[#0958D9] flex items-center'>
-                                            <Star
-                                                className='w-3 h-3 mr-1'
-                                                fill='#0958D9' // Fill color
-                                                // stroke='#0958D9'Stroke color (if needed)
-                                                strokeWidth={0} // Set stroke width to 0 to hide the outline
-                                            />
-                                            {t('labels:distributor')}
+                                        <Badge className='bg-[#E6F4FF] border-[#91CAFF] text-[#0958D9] rounded-[5px] flex items-center'>
+                                            <Star className='w-3 h-3 mr-1' fill='#0958D9' strokeWidth={0} />                                            {t('labels:distributor')}
                                         </Badge>
                                     ) : (
-                                        <Badge className='bg-[#E6FFFB] border-[#87E8DE] text-[#08979C]'>
+                                        <Badge className='bg-[#E6FFFB] border-[#87E8DE] text-[#08979C] rounded-[5px]'>
                                             {t('labels:partner')}
                                         </Badge>
                                     )}{' '}
