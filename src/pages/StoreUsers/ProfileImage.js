@@ -1,5 +1,5 @@
 import { UploadOutlined } from '@ant-design/icons'
-import { Button, Image, Spin, Typography, Upload } from 'antd'
+import { Image, Spin, Typography, Upload } from 'antd'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { profileFallBackImage } from '../../constants/media'
@@ -7,7 +7,7 @@ import MarketplaceToaster from '../../util/marketplaceToaster'
 import useDeleteProfileImage from './hooks/useDeleteProfileImage'
 import useGetProfileImage from './hooks/useGetProfileImage'
 import useUploadProfileImage from './hooks/useUploadProfileImage'
-
+import { Button } from '../../shadcnComponents/ui/button'
 import './UserProfile.css'
 import StoreModal from '../../components/storeModal/StoreModal'
 const supportedFileExtensions = process.env.REACT_APP_IMAGES_EXTENSIONS
@@ -124,7 +124,7 @@ const ProfileImage = ({ imagePath, refetchUserData }) => {
                 )}
                 <div className='self-end flex gap-[16px]'>
                     <Button
-                        className=' app-btn-primary flex items-center gap-2'
+                        className='flex items-center gap-2'
                         type='link'
                         onClick={() => setIsImageModalVisible(true)}>
                         <svg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -138,7 +138,8 @@ const ProfileImage = ({ imagePath, refetchUserData }) => {
                     <Button
                         onClick={() => handleDeleteClick()}
                         disabled={!imagePath}
-                        className='app-btn-secondary delete-profile-btn flex items-center justify-center gap-2'>
+                        variant='secondary'
+                        className='delete-profile-btn flex items-center justify-center gap-2'>
                         <svg width='12' height='16' viewBox='0 0 12 16' fill='none' xmlns='http://www.w3.org/2000/svg'>
                             <path
                                 d='M10.225 2.1998H8.29999V1.7748C8.29999 1.0248 7.69999 0.424805 6.94999 0.424805H5.02499C4.27499 0.424805 3.67499 1.0248 3.67499 1.7748V2.1998H1.74999C1.02499 2.1998 0.424988 2.7998 0.424988 3.5248V4.2748C0.424988 4.8248 0.749988 5.2748 1.22499 5.4748L1.62499 14.1248C1.67499 14.9498 2.32499 15.5748 3.14999 15.5748H8.77499C9.59999 15.5748 10.275 14.9248 10.3 14.1248L10.75 5.4498C11.225 5.2498 11.55 4.7748 11.55 4.2498V3.4998C11.55 2.7998 10.95 2.1998 10.225 2.1998ZM4.82499 1.7748C4.82499 1.6498 4.92499 1.5498 5.04999 1.5498H6.97499C7.09999 1.5498 7.19999 1.6498 7.19999 1.7748V2.1998H4.84999V1.7748H4.82499ZM1.57499 3.5248C1.57499 3.4248 1.64999 3.3248 1.77499 3.3248H10.225C10.325 3.3248 10.425 3.3998 10.425 3.5248V4.2748C10.425 4.3748 10.35 4.4748 10.225 4.4748H1.77499C1.67499 4.4748 1.57499 4.3998 1.57499 4.2748V3.5248ZM8.79999 14.4498H3.19999C2.97499 14.4498 2.79999 14.2748 2.79999 14.0748L2.39999 5.5998H9.62499L9.22499 14.0748C9.19999 14.2748 9.02499 14.4498 8.79999 14.4498Z'
@@ -169,7 +170,10 @@ const ProfileImage = ({ imagePath, refetchUserData }) => {
                         }}
                         className='custom-upload-delete-btn'
                         onChange={(e) => handelFileSelect(e)}>
-                        <Button className={'app-btn-secondary flex items-center mt-6'} icon={<UploadOutlined />}>
+                        <Button
+                            className={' flex items-center mt-6 hover:text-brandPrimaryColor'}
+                            variant='outline'
+                            icon={<UploadOutlined />}>
                             {t('labels:click_to_upload')}
                         </Button>
                     </Upload>
