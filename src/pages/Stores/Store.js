@@ -231,7 +231,7 @@ const Stores = () => {
                 const [limitName, limitValue, keyName, tooltip] = text.split(',')
                 return (
                     <div className='flex flex-col gap-2'>
-                        <div className='flex gap-2 items-center text-[#8899A8]'>
+                        <div className='flex gap-2 items-center'>
                             {limitName}
                             <ShadCNTooltip
                                 content={tooltip}
@@ -332,7 +332,7 @@ const Stores = () => {
                 const [limitName, limitValue, keyName, tooltip] = text.split(',')
                 return (
                     <div className='flex flex-col gap-2'>
-                        <div className='flex gap-2 items-center text-[#8899A8]'>
+                        <div className='flex gap-2 items-center'>
                             {limitName}
                             <ShadCNTooltip
                                 content={tooltip}
@@ -385,7 +385,6 @@ const Stores = () => {
         {
             header: `${t('labels:store_name')}`,
             value: 'name',
-            width: '30%',
             ellipsis: true,
             render: (text, record) => {
                 return (
@@ -397,7 +396,7 @@ const Stores = () => {
                             <div className=''>
                                 <Row>
                                     <Text
-                                        className='text-brandGray1 mb-1 !max-w-[150px]'
+                                        className=' mb-1 !max-w-[150px]'
                                         ellipsis={{ tooltip: record.name }}
                                         disabled={record.status === 3 ? true : false}>
                                         {record.name}
@@ -446,7 +445,6 @@ const Stores = () => {
             header: `${t('labels:status')}`,
             value: 'status',
             key: 'status',
-            width: '20%',
             render: (text, record) => {
                 return (
                     <Status
@@ -473,10 +471,9 @@ const Stores = () => {
         {
             header: `${t('labels:created_date_and_time')}`,
             value: 'created_on',
-            width: '30%',
             render: (text, record) => {
                 return (
-                    <Text disabled={record.status === 3 ? true : false} className='text-brandGray1'>
+                    <Text disabled={record.status === 3 ? true : false} className=''>
                         {new Date(record.created_on).toLocaleString()}
                     </Text>
                 )
@@ -485,7 +482,6 @@ const Stores = () => {
         {
             header: `${t('labels:action')}`,
             value: '',
-            width: '12%',
             render: (text, record) => {
                 return (
                     <>

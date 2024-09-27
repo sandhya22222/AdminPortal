@@ -11,8 +11,7 @@ const ShadCNDataTable = ({ columns, data }) => {
                     {columns.map((column, index) => (
                         <TableHead
                             key={index}
-                            className='px-4 py-2 font-semibold bg-gray-50 '
-                            style={{ width: column.width || 'auto' }} // Ensure proper width handling
+                            className=' '
                         >
                             {column.header}
                         </TableHead>
@@ -27,8 +26,7 @@ const ShadCNDataTable = ({ columns, data }) => {
                         {columns.map((column) => (
                             <TableCell
                                 key={column.key}
-                                className='px-4 !text-brandGray1'
-                                style={{ width: column.width || 'auto' }} // Ensure columns are contained
+                                className=''
                             >
                                 {column.render ? column.render(row[column.key], row) : row[column.value]}
                             </TableCell>
