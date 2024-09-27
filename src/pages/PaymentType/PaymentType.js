@@ -41,23 +41,19 @@ export default function PaymentSettings() {
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead className=' text-regal-blue w-full bg-[#FAFAFA] !p-[16px]'>
-                                        {t('labels:payment_types')}
-                                    </TableHead>
+                                    <TableHead className=' w-full !p-[16px]'>{t('labels:payment_types')}</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 <TableRow>
-                                    <TableCell className='text-brandGray1 pl-[46px] pb-4 '>
-                                        {t('labels:cash_on_delivery')}
-                                    </TableCell>
+                                    <TableCell className=' pl-[46px] pb-4 '>{t('labels:cash_on_delivery')}</TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell className='!p-0'>
                                         <Accordion type='single' collapsible className='w-full'>
                                             <AccordionItem value='online-payment' className='!border-none'>
                                                 <AccordionTrigger
-                                                    className='text-brandGray1 !m-[16px] flex items-center justify-start gap-2 hover:no-underline' // Added hover:no-underline here
+                                                    className=' !m-[16px] flex items-center justify-start gap-2 hover:no-underline' // Added hover:no-underline here
                                                     onClick={toggleAccordion}>
                                                     <span
                                                         className={`ml-2 p-[2px] transition-transform duration-300 border rounded-[4px] ${
@@ -80,13 +76,9 @@ export default function PaymentSettings() {
 
                                                 <AccordionContent>
                                                     <div className='pl-0  '>
-                                                        <p className='text-brandGray1 py-[16px] pl-[60px]'>
-                                                            {t('labels:stripe')}
-                                                        </p>
+                                                        <p className=' py-[16px] pl-[60px]'>{t('labels:stripe')}</p>
                                                         <Separator />
-                                                        <p className='text-brandGray1 py-[16px] pl-[60px]'>
-                                                            {t('labels:cash_free')}
-                                                        </p>
+                                                        <p className=' py-[16px] pl-[60px]'>{t('labels:cash_free')}</p>
                                                     </div>
                                                 </AccordionContent>
                                             </AccordionItem>

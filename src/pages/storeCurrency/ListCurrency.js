@@ -33,16 +33,15 @@ const ListCurrency = () => {
     //! columns for currency
     const listCurrencyColumns = [
         {
-            header: <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:title')}</span>,
+            header: t('labels:title'),
             value: 'currency_name',
-            width: '25%',
             ellipsis: true,
             render: (text, record) => (
                 <div className='flex items-center'>
                     {record.is_default ? (
                         <ShadCNTooltip content={record.currency_name}>
                             <div
-                                className={`mx-1 text-brandGray1  ${record.is_default ? '!max-w-[68px] truncate' : '!max-w-[150px]'}`}
+                                className={`mx-1 ${record.is_default ? '!max-w-[68px] truncate' : '!max-w-[150px]'}`}
                                 style={{
                                     whiteSpace: 'nowrap',
                                     overflow: 'hidden',
@@ -55,7 +54,10 @@ const ListCurrency = () => {
                         <div>{record.currency_name}</div>
                     )}
                     {record.is_default && (
-                        <Badge variant='' className='inline-flex items-center gap-1 rounded-xl' color='#FB8500'>
+                        <Badge
+                            variant=''
+                            className='inline-flex items-center gap-1 rounded-xl  w-[113px]'
+                            color='#FB8500'>
                             {t('labels:default_currency')}
                         </Badge>
                     )}
@@ -63,47 +65,37 @@ const ListCurrency = () => {
             ),
         },
         {
-            header: <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:code')}</span>,
+            header: t('labels:code'),
             value: 'iso_currency_code',
             width: '10%',
         },
         {
-            header: (
-                <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:conversation')}</span>
-            ),
+            header: t('labels:conversation'),
             value: 'unit_conversion',
             width: '12%',
         },
         {
-            header: (
-                <span className='text-regal-blue text-sm font-medium leading-[22px]'>
-                    {t('labels:unit_price_name')}
-                </span>
-            ),
+            header: t('labels:unit_price_name'),
             value: 'unit_price_name',
             width: '15%',
         },
         {
-            header: (
-                <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:min_amount')}</span>
-            ),
+            header: t('labels:min_amount'),
             value: 'minimum_amount',
             width: '10%',
         },
         {
-            header: <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:symbol')}</span>,
+            header: t('labels:symbol'),
             value: 'symbol',
             width: '10%',
         },
         {
-            header: (
-                <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:no_of_decimals')}</span>
-            ),
+            header: t('labels:no_of_decimals'),
             value: 'no_of_decimal',
             width: '10%',
         },
         {
-            header: <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:action')}</span>,
+            header: t('labels:action'),
             value: 'action',
             render: (text, record) => {
                 return (
