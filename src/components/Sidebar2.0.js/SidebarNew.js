@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import NewFooter from './../footer/Footer'
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '../../shadcnComponents/ui/resizable'
 //! Import CSS libraries
 
 //! Import user defined functions
@@ -177,15 +178,120 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
     }, [permissionValue])
 
     return (
-        <Layout className=''>
-            {/* <div className='' style={{ width: '252px' }}> */}
-            {/* <Affix offsetTop={48}> */}
-            <Sider
-                trigger={null}
-                collapsible
-                collapsed={collapsed}
+        // <Layout className=''>
+        //     {/* <div className='' style={{ width: '252px' }}> */}
+        //     {/* <Affix offsetTop={48}> */}
+        //     <Sider
+        //         trigger={null}
+        //         collapsible
+        //         collapsed={collapsed}
+        //         onCollapse={(value) => setCollapsed(value)}
+        //         width={252}
+        //         onMouseEnter={() => {
+        //             handleMouseEnter()
+        //         }}
+        //         onMouseLeave={() => {
+        //             handleMouseLeave()
+        //         }}
+        //         style={{
+        //             overflow: isHovering ? 'auto' : 'hidden',
+        //             height: '100vh',
+        //             position: 'fixed',
+        //             top: 72,
+        //             left: `${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? null : 0}`,
+        //             right: `${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 0 : null}`,
+        //         }}>
+        //         <Spin spinning={myData.length > 0 ? false : true} indicator={antIcon} tip=''>
+        //             <Menu
+        //                 mode='inline'
+        //                 className='h-full !text-base !transition-all'
+        //                 selectedKeys={selectedItem}
+        //                 openKeys={openedItem}
+        //                 onOpenChange={(e) => {
+        //                     setOpenedItem(e)
+        //                 }}
+        //                 theme={'light'}
+        //                 style={{
+        //                     height: 'calc(100vh)',
+        //                     overflow: isHovering ? 'auto' : 'hidden',
+        //                 }}>
+        //                 {myData.map((item) =>
+        //                     item.show_in_menu && item.children ? (
+        //                         <Menu.SubMenu
+        //                             icon={item?.icon}
+        //                             // icon={item.icon}
+        //                             key={item.key}
+        //                             title={item.label}
+        //                             style={{
+        //                                 opacity: item.childrenKeys.includes(selectedItem) ? 1 : 0.8,
+        //                             }}>
+        //                             {item.children.map((child) =>
+        //                                 child.show_in_menu ? (
+        //                                     <Menu.Item
+        //                                         // icon={child.icon}
+        //                                         key={child.key}
+        //                                         // style={{ color: "black" }}
+        //                                         onClick={() => {
+        //                                             navigate(child.navigate_to)
+        //                                         }}
+        //                                         style={{
+        //                                             opacity: !item.childrenKeys.includes(selectedItem)
+        //                                                 ? 1
+        //                                                 : selectedItem === child.key
+        //                                                   ? 1
+        //                                                   : 0.8,
+        //                                         }}>
+        //                                         {selectedItem === child.key ? (
+        //                                             <span className='font-semibold'>{child.label}</span>
+        //                                         ) : (
+        //                                             child.label
+        //                                         )}
+        //                                     </Menu.Item>
+        //                                 ) : null
+        //                             )}
+        //                         </Menu.SubMenu>
+        //                     ) : item.show_in_menu ? (
+        //                         <Menu.Item
+        //                             icon={item?.icon}
+        //                             // icon={item.icon}
+        //                             key={item.key}
+        //                             disabled={!item.show_in_menu}
+        //                             onClick={() => {
+        //                                 navigate(item.navigate_to)
+        //                             }}
+        //                             style={{
+        //                                 opacity: selectedItem === item.key ? 1 : 0.8,
+        //                             }}>
+        //                             {selectedItem === item.key ? (
+        //                                 <span className='font-semibold '>{item.label}</span>
+        //                             ) : (
+        //                                 item.label
+        //                             )}
+        //                         </Menu.Item>
+        //                     ) : null
+        //                 )}
+        //             </Menu>
+        //         </Spin>
+        //     </Sider>
+        //     {/* </Affix> */}
+        //     {/* </div> */}
+        //     <Content
+        //         className={`flex flex-col min-h-screen transition-all ${
+        //             util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+        //                 ? `${collapsed ? 'mr-[80px]' : 'mr-[252px]'}`
+        //                 : `${collapsed ? 'ml-[80px]' : 'ml-[252px]'}`
+        //         }`}>
+        //         <Content className='!bg-[#F4F4F4]  flex-grow'>
+        //             <Outlet />
+        //         </Content>
+        //         <Content className='flex-grow-0  !w-[100%]'>
+        //             <NewFooter />
+        //         </Content>
+        //     </Content>
+        <ResizablePanelGroup direction='horizontal' className=''>
+            <ResizablePanel
                 onCollapse={(value) => setCollapsed(value)}
-                width={252}
+                collapsible={collapsed}
                 onMouseEnter={() => {
                     handleMouseEnter()
                 }}
@@ -197,6 +303,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                     height: '100vh',
                     position: 'fixed',
                     top: 72,
+                    width: collapsed ? 70 : 252,
                     left: `${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? null : 0}`,
                     right: `${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 0 : null}`,
                 }}>
@@ -271,23 +378,25 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                         )}
                     </Menu>
                 </Spin>
-            </Sider>
-            {/* </Affix> */}
-            {/* </div> */}
-            <Content
-                className={`flex flex-col min-h-screen transition-all ${
-                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                        ? `${collapsed ? 'mr-[80px]' : 'mr-[252px]'}`
-                        : `${collapsed ? 'ml-[80px]' : 'ml-[252px]'}`
-                }`}>
-                <Content className='!bg-[#F4F4F4]  flex-grow'>
-                    <Outlet />
-                </Content>
-                <Content className='flex-grow-0  !w-[100%]'>
-                    <NewFooter />
-                </Content>
-            </Content>
-        </Layout>
+            </ResizablePanel>
+            <ResizableHandle />
+            <ResizablePanel>
+                <div
+                    className={`flex flex-col min-h-screen transition-all ${
+                        util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                            ? `${collapsed ? 'mr-[80px]' : 'mr-[252px]'}`
+                            : `${collapsed ? 'ml-[80px]' : 'ml-[252px]'}`
+                    }`}>
+                    <div className='!bg-[#F4F4F4]  flex-grow'>
+                        <Outlet />
+                    </div>
+                    <div className='flex-grow-0  !w-[100%]'>
+                        <NewFooter />
+                    </div>
+                </div>
+            </ResizablePanel>
+        </ResizablePanelGroup>
+        // </Layout>
     )
 }
 export default SidebarNew

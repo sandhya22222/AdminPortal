@@ -57,9 +57,9 @@ module.exports = {
                     foreground: 'hsl(var(--card-foreground))',
                 },
             },
-            fontFamily: {
-                sans: ['var(--font-sans)', ...fontFamily.sans],
-            },
+            // fontFamily: {
+            //     sans: ['var(--font-sans)', ...fontFamily.sans],
+            // },
             keyframes: {
                 'accordion-down': {
                     from: { height: '0' },
