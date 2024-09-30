@@ -4,35 +4,37 @@ import { Table, TableHead, TableRow, TableCell, TableBody, TableHeader } from '.
 // Reusable Table Component
 const ShadCNDataTable = ({ columns, data }) => {
     return (
-        <Table className='!rounded-sm'>
-            {/* Table Header */}
-            <TableHeader>
-                <TableRow>
-                    {columns.map((column, index) => (
-                        <TableHead key={index} className=''>
-                            {column.header}
-                        </TableHead>
-                    ))}
-                </TableRow>
-            </TableHeader>
-
-            {/* Table Body */}
-            <TableBody>
-                {data.map((row, rowIndex) => (
-                    <TableRow key={rowIndex} className='border-b'>
-                        {columns.map((column) => (
-                            <TableCell key={column.key} className=''>
-                                {column.render ? (
-                                    <div className='capitalize'>{column.render(row[column.key], row)}</div>
-                                ) : (
-                                    <div className='capitalize'> {row[column.value]} </div>
-                                )}
-                            </TableCell>
+        <div className='border rounded-md'>
+            <Table className='!rounded-sm'>
+                {/* Table Header */}
+                <TableHeader>
+                    <TableRow>
+                        {columns.map((column, index) => (
+                            <TableHead key={index} className=''>
+                                {column.header}
+                            </TableHead>
                         ))}
                     </TableRow>
-                ))}
-            </TableBody>
-        </Table>
+                </TableHeader>
+
+                {/* Table Body */}
+                <TableBody>
+                    {data.map((row, rowIndex) => (
+                        <TableRow key={rowIndex} className='border-b'>
+                            {columns.map((column) => (
+                                <TableCell key={column.key} className=''>
+                                    {column.render ? (
+                                        <div className='capitalize'>{column.render(row[column.key], row)}</div>
+                                    ) : (
+                                        <div className='capitalize'> {row[column.value]} </div>
+                                    )}
+                                </TableCell>
+                            ))}
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </div>
     )
 }
 

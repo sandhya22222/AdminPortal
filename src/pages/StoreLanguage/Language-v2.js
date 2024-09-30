@@ -83,7 +83,7 @@ const Language = () => {
     const languageColumn = [
         {
             header: (
-                <span className='text-regal-blue bg-grey-200 text-sm font-medium leading-[22px]'>
+                <span className='bg-grey-200 text-sm font-medium leading-[22px]'>
                     {t('labels:language')}
                 </span>
             ),
@@ -116,13 +116,13 @@ const Language = () => {
             ),
         },
         {
-            header: <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:code')}</span>,
+            header: <span className=' text-sm font-medium leading-[22px]'>{t('labels:code')}</span>,
             value: 'language_code',
             width: '10%',
         },
         {
             header: (
-                <span className='text-regal-blue text-sm font-medium leading-[22px]'>
+                <span className=' text-sm font-medium leading-[22px]'>
                     {t('labels:script_direction')}
                 </span>
             ),
@@ -147,7 +147,7 @@ const Language = () => {
             ),
         },
         {
-            header: <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:status')}</span>,
+            header: <span className=' text-sm font-medium leading-[22px]'>{t('labels:status')}</span>,
             value: 'status',
             width: '15%',
             render: (text, record) => (
@@ -168,7 +168,7 @@ const Language = () => {
         },
         {
             header: (
-                <span className='text-regal-blue text-sm font-medium leading-[22px]'>
+                <span className=' text-sm font-medium leading-[22px]'>
                     {t('labels:support_document')}
                 </span>
             ),
@@ -190,7 +190,7 @@ const Language = () => {
             ),
         },
         {
-            header: <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:action')}</span>,
+            header: <span className=' text-sm font-medium leading-[22px]'>{t('labels:action')}</span>,
             value: 'action',
             width: '10%',
             render: (text, record) => (
@@ -265,8 +265,8 @@ const Language = () => {
     return (
         <div>
             <div className='sticky bg-white shadow-md p-4 top-[72px] w-[100%] flex flex-col justify-between items-start h-fit z-20'>
-                <div className='flex font-family-sans w-[100%] justify-center items-center'>
-                    <h1 className='!font-semibold w-2/5 text-regal-blue text-2xl'>{t('labels:language_settings')}</h1>
+                <div className='flex w-[100%] justify-center items-center'>
+                    <h1 className='!font-semibold w-2/5  text-2xl'>{t('labels:language_settings')}</h1>
                     <div className='w-3/5 flex items-center justify-end'>
                         <DropdownMenu>
                             <DropdownMenuTrigger className='app-btn-link flex items-center'>
@@ -275,7 +275,7 @@ const Language = () => {
                                     <ChevronDown className='ml-1' />
                                 </span>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent className='font-sans'>
+                            <DropdownMenuContent>
                                 {items.map((item, index) => (
                                     <DropdownMenuItem
                                         key={index}
