@@ -9,10 +9,7 @@ const ShadCNDataTable = ({ columns, data }) => {
             <TableHeader>
                 <TableRow>
                     {columns.map((column, index) => (
-                        <TableHead
-                            key={index}
-                            className=' '
-                        >
+                        <TableHead key={index} className=''>
                             {column.header}
                         </TableHead>
                     ))}
@@ -24,11 +21,12 @@ const ShadCNDataTable = ({ columns, data }) => {
                 {data.map((row, rowIndex) => (
                     <TableRow key={rowIndex} className='border-b'>
                         {columns.map((column) => (
-                            <TableCell
-                                key={column.key}
-                                className=''
-                            >
-                                {column.render ? column.render(row[column.key], row) : row[column.value]}
+                            <TableCell key={column.key} className=''>
+                                {column.render ? (
+                                    <div className='capitalize'>{column.render(row[column.key], row)}</div>
+                                ) : (
+                                    <div className='capitalize'> {row[column.value]} </div>
+                                )}
                             </TableCell>
                         ))}
                     </TableRow>
