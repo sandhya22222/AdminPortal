@@ -73,12 +73,6 @@ const Language = () => {
     const totalItemsCount = languageData?.data?.length
     // const totalItemsCount = 21
 
-    const totalPages = Math.ceil(totalItemsCount / languagePaginationData.pageSize)
-
-    console.log('testing=======================')
-    console.log(languageData)
-    // console.log(totalPages)
-
     // Columns for table data
     const languageColumn = [
         {
@@ -133,13 +127,13 @@ const Language = () => {
                     {record.writing_script_direction === 'LTR' ? (
                         <Badge
                             variant='success'
-                            className='bg-green-50 text-green-500 border border-green-600 rounded-sm px-1 py-0.5 text-xs'>
+                            className='bg-[#f3ffea] text-[#74c32f] border border-[#d4ffb6] font-normal rounded-[5px] px-1 py-0.5 text-xs'>
                             {t('labels:left_to_right')}
                         </Badge>
                     ) : (
                         <Badge
                             variant='fail'
-                            className='bg-blue-200 text-blue-800 border border-blue-600 rounded-sm px-1 py-0.5 text-xs'>
+                            className='bg-[#e6f4ff] text-[#407ed4] border border-[#b5dcff] rounded-[5px] font-normal px-1 py-0.5 text-xs'>
                             {t('labels:right_to_left')}
                         </Badge>
                     )}
@@ -176,7 +170,7 @@ const Language = () => {
             width: '20%',
             render: (data, record) => (
                 <Button
-                    className='flex gap-2 hover:bg-gray-100 '
+                    className='flex gap-2 hover:bg-gray-100 !p-0 '
                     variant='ghost'
                     size='default'
                     onClick={() => {
@@ -272,7 +266,10 @@ const Language = () => {
                             <DropdownMenuTrigger className='app-btn-link flex items-center'>
                                 <span className='flex items-center'>
                                     Download Support Document Template
-                                    <ChevronDown className='ml-1' />
+                                    <ChevronDown
+                                        className='!ml-[7px] !mr-[4px] '
+                                        style={{ width: '1.6em', height: '1.6em', fontWeight: 'normal' }}
+                                    />
                                 </span>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className='font-sans'>
@@ -311,16 +308,23 @@ const Language = () => {
                         <LanguageBanner />
                     </>
                 ) : (
-                    <ShadCNDataTable columns={languageColumn} data={languageData?.data} />
+                    <div className='  flex flex-col items-end justify-between w-full'>
+                        <div className='w-full'>
+                            <ShadCNDataTable columns={languageColumn} data={languageData?.data} />
+                        </div>
+                        {!totalItemsCount > languagePaginationData.pageSize && (
+                            <div className='flex  mt-4 mb-2'>
+                                <ShadCNPagination
+                                    totalItemsCount={totalItemsCount}
+                                    handlePageNumberChange={handlePageNumberChange}
+                                    currentPage={languagePaginationData.pageNumber}
+                                    itemsPerPage={languagePaginationData.pageSize}
+                                    showQuickJumper={true}
+                                />
+                            </div>
+                        )}
+                    </div>
                 )}
-            </div>
-            <div className='flex justify-center mb-4'>
-                <ShadCNPagination
-                    totalItemsCount={totalItemsCount}
-                    handlePageNumberChange={handlePageNumberChange}
-                    currentPage={languagePaginationData.pageNumber}
-                    itemsPerPage={languagePaginationData.pageSize}
-                />
             </div>
         </div>
     )
