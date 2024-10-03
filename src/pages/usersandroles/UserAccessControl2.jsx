@@ -76,17 +76,17 @@ export default function UserAccessControl() {
     const usersColumns = [
         {
             key: 'username',
-            header: <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:username')}</span>,
+            header: <span>{t('labels:username')}</span>,
             value: 'username',
         },
         {
             key: 'email',
-            header: <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:email')}</span>,
+            header: <span>{t('labels:email')}</span>,
             value: 'email',
         },
         {
             key: 'status',
-            header: <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:status')}</span>,
+            header: <span>{t('labels:status')}</span>,
             render: (value, row) => (
                 <Switch
                     disabled={
@@ -101,7 +101,7 @@ export default function UserAccessControl() {
         },
         {
             key: 'role',
-            header: <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:role')}</span>,
+            header: <span>{t('labels:role')}</span>,
             render: (value, row) => (
                 <div className='flex gap-2'>
                     <span>
@@ -121,7 +121,7 @@ export default function UserAccessControl() {
         },
         {
             key: 'actions',
-            header: <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:action')}</span>,
+            header: <span>{t('labels:action')}</span>,
             render: (value, row) => {
                 const isDeleteDisabled =
                     currentUserDetailsAPIData?.preferred_username === row?.username ||
@@ -162,7 +162,7 @@ export default function UserAccessControl() {
     const groupColumns = [
         {
             key: 'name',
-            header: <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:role_name')}</span>,
+            header: <span>{t('labels:role_name')}</span>,
             value: 'name',
             render: (value) => String(value || '').replaceAll('-', ' '),
         },
