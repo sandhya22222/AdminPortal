@@ -1,5 +1,7 @@
 //! Import libraries & components
-import { Badge, Button, Divider, Layout, Progress, Skeleton, Table, Typography } from 'antd'
+// import { Badge, Button, Divider, Layout, Progress, Skeleton, Table, Typography } from 'antd'
+import { Button, Divider, Layout, Progress, Skeleton, Typography } from 'antd'
+// import { Skeleton } from '../../shadcnComponents/ui/skeleton'
 import React, { useEffect, useState } from 'react'
 
 import axios from 'axios'
@@ -26,6 +28,7 @@ import util from '../../util/common'
 import OrdersIcon from '../../assets/images/dashboard/ordersIcon.svg'
 import PerformanceIcon from '../../assets/images/dashboard/performanceIcon.svg'
 import StatisticsIcon from '../../assets/images/dashboard/statisticsIcon.svg'
+import ShadCNDataTable from '../../shadcnComponents/customComponents/ShadCNDataTable'
 
 //! Get all required details from .env file
 
@@ -134,328 +137,393 @@ const Newdashboard = () => {
             })
     }, [])
 
+    // const statisticsColumns = [
+    //     {
+    //         title: (
+    //             <Title className='!text-[#023047]' level={5}>
+    //                 {t('labels:store_name')}
+    //             </Title>
+    //         ),
+
+    //         dataIndex: 'store_name',
+    //         key: 'store_name',
+    //     },
+    //     {
+    //         title: (
+    //             <Title className='!text-[#023047]' level={5}>
+    //                 {t('labels:number_of') + ' ' + t('labels:product_templates')}
+    //             </Title>
+    //         ),
+    //         dataIndex: 'product_templates',
+    //         key: 'product_templates',
+    //     },
+    //     {
+    //         title: (
+    //             <Title className='!text-[#023047]' level={5}>
+    //                 {t('labels:number_of') + ' ' + t('labels:products')}
+    //             </Title>
+    //         ),
+    //         dataIndex: 'products',
+    //         key: 'products',
+    //     },
+    //     {
+    //         title: (
+    //             <Title className='!text-[#023047]' level={5}>
+    //                 {t('labels:number_of') + ' ' + t('labels:vendors')}
+    //             </Title>
+    //         ),
+    //         dataIndex: 'vendors',
+    //         key: 'vendors',
+    //     },
+    //     {
+    //         title: (
+    //             <Title className='!text-[#023047]' level={5}>
+    //                 {t('labels:number_of') + ' ' + t('labels:orders')}
+    //             </Title>
+    //         ),
+    //         dataIndex: 'orders',
+    //         key: 'orders',
+    //     },
+    // ]
+
     const statisticsColumns = [
         {
-            title: (
-                <Title className='!text-[#023047]' level={5}>
-                    {t('labels:store_name')}
-                </Title>
-            ),
+            header: `${t('labels:store_name')}`,
+            value: 'store_name',
+            render: (text, record) => <div className='!text-[#023047]'>{record.store_name}</div>,
+        },
+        {
+            header: `${t('labels:number_of') + ' ' + t('labels:product_templates')}`,
+            value: 'product_templates',
+            render: (text, record) => <div className='!text-[#023047]'>{record.product_templates}</div>,
+        },
+        {
+            header: `${t('labels:number_of') + ' ' + t('labels:products')}`,
+            value: 'products',
+            render: (text, record) => <div className='!text-[#023047]'>{record.products}</div>,
+        },
+        {
+            header: `${t('labels:number_of') + ' ' + t('labels:vendors')}`,
+            value: 'vendors',
+            render: (text, record) => <div className='!text-[#023047]'>{record.vendors}</div>,
+        },
+        {
+            header: `${t('labels:number_of') + ' ' + t('labels:orders')}`,
+            value: 'orders',
+            render: (text, record) => <div className='!text-[#023047]'>{record.orders}</div>,
+        },
+    ];
+    
+    
 
-            dataIndex: 'store_name',
-            key: 'store_name',
-        },
-        {
-            title: (
-                <Title className='!text-[#023047]' level={5}>
-                    {t('labels:number_of') + ' ' + t('labels:product_templates')}
-                </Title>
-            ),
-            dataIndex: 'product_templates',
-            key: 'product_templates',
-        },
-        {
-            title: (
-                <Title className='!text-[#023047]' level={5}>
-                    {t('labels:number_of') + ' ' + t('labels:products')}
-                </Title>
-            ),
-            dataIndex: 'products',
-            key: 'products',
-        },
-        {
-            title: (
-                <Title className='!text-[#023047]' level={5}>
-                    {t('labels:number_of') + ' ' + t('labels:vendors')}
-                </Title>
-            ),
-            dataIndex: 'vendors',
-            key: 'vendors',
-        },
-        {
-            title: (
-                <Title className='!text-[#023047]' level={5}>
-                    {t('labels:number_of') + ' ' + t('labels:orders')}
-                </Title>
-            ),
-            dataIndex: 'orders',
-            key: 'orders',
-        },
-    ]
+    // const ordersColumns = [
+    //     {
+    //         title: (
+    //             <Title className='!text-[#023047]' level={5}>
+    //                 {t('labels:store_name')}
+    //             </Title>
+    //         ),
+    //         dataIndex: 'store_name',
+    //         key: 'store_name',
+    //     },
+    //     {
+    //         title: (
+    //             <Title className='!text-[#023047]' level={5}>
+    //                 {t('labels:number_of') + ' ' + t('labels:orders_received')}
+    //             </Title>
+    //         ),
+    //         dataIndex: 'orders_received',
+    //         key: 'orders_received',
+    //     },
 
+    //     {
+    //         title: (
+    //             <Title className='!text-[#023047]' level={5}>
+    //                 {t('labels:number_of') + ' ' + t('labels:orders_inprogress')}
+    //             </Title>
+    //         ),
+    //         dataIndex: 'in_progress',
+    //         key: 'in_progress',
+    //     },
+    //     {
+    //         title: (
+    //             <Title className='!text-[#023047]' level={5}>
+    //                 {t('labels:number_of') + ' ' + t('labels:orders_fulfilled')}
+    //             </Title>
+    //         ),
+    //         dataIndex: 'orders_fulfilled',
+    //         key: 'orders_fulfilled',
+    //     },
+
+    //     {
+    //         title: (
+    //             <Title level={5} className='!text-[#023047]'>
+    //                 {t('labels:number_of') + ' ' + t('labels:orders_cancelled')}
+    //             </Title>
+    //         ),
+    //         dataIndex: 'orders_cancelled',
+    //         key: 'orders_cancelled',
+    //     },
+
+    //     {
+    //         title: (
+    //             <Title className='!text-[#023047]' level={5}>
+    //                 {t('labels:total') + ' ' + t('labels:number_of') + ' ' + t('labels:orders')}
+    //             </Title>
+    //         ),
+    //         dataIndex: 'orders',
+    //         key: 'orders',
+    //     },
+    // ]
     const ordersColumns = [
         {
-            title: (
-                <Title className='!text-[#023047]' level={5}>
-                    {t('labels:store_name')}
-                </Title>
-            ),
-            dataIndex: 'store_name',
-            key: 'store_name',
+            header: `${t('labels:store_name')}`,
+            value: 'store_name',
+            render: (text, record) => <div className='!text-[#023047]'>{record.store_name}</div>,
         },
         {
-            title: (
-                <Title className='!text-[#023047]' level={5}>
-                    {t('labels:number_of') + ' ' + t('labels:orders_received')}
-                </Title>
-            ),
-            dataIndex: 'orders_received',
-            key: 'orders_received',
+            header: `${t('labels:number_of') + ' ' + t('labels:orders_received')}`,
+            value: 'orders_received',
+            render: (text, record) => <div className='!text-[#023047]'>{record.orders_received}</div>,
         },
+        {
+            header: `${t('labels:number_of') + ' ' + t('labels:orders_inprogress')}`,
+            value: 'in_progress',
+            render: (text, record) => <div className='!text-[#023047]'>{record.in_progress}</div>,
+        },
+        {
+            header: `${t('labels:number_of') + ' ' + t('labels:orders_fulfilled')}`,
+            value: 'orders_fulfilled',
+            render: (text, record) => <div className='!text-[#023047]'>{record.orders_fulfilled}</div>,
+        },
+        {
+            header: `${t('labels:number_of') + ' ' + t('labels:orders_cancelled')}`,
+            value: 'orders_cancelled',
+            render: (text, record) => <div className='!text-[#023047]'>{record.orders_cancelled}</div>,
+        },
+        {
+            header: `${t('labels:total') + ' ' + t('labels:number_of') + ' ' + t('labels:orders')}`,
+            value: 'orders',
+            render: (text, record) => <div className='!text-[#023047]'>{record.orders}</div>,
+        },
+    ];
+    
 
-        {
-            title: (
-                <Title className='!text-[#023047]' level={5}>
-                    {t('labels:number_of') + ' ' + t('labels:orders_inprogress')}
-                </Title>
-            ),
-            dataIndex: 'in_progress',
-            key: 'in_progress',
-        },
-        {
-            title: (
-                <Title className='!text-[#023047]' level={5}>
-                    {t('labels:number_of') + ' ' + t('labels:orders_fulfilled')}
-                </Title>
-            ),
-            dataIndex: 'orders_fulfilled',
-            key: 'orders_fulfilled',
-        },
-
-        {
-            title: (
-                <Title level={5} className='!text-[#023047]'>
-                    {t('labels:number_of') + ' ' + t('labels:orders_cancelled')}
-                </Title>
-            ),
-            dataIndex: 'orders_cancelled',
-            key: 'orders_cancelled',
-        },
-
-        {
-            title: (
-                <Title className='!text-[#023047]' level={5}>
-                    {t('labels:total') + ' ' + t('labels:number_of') + ' ' + t('labels:orders')}
-                </Title>
-            ),
-            dataIndex: 'orders',
-            key: 'orders',
-        },
-    ]
+    // const performanceColumns = [
+    //     {
+    //         title: (
+    //             <Title className='!text-[#023047]' level={5}>
+    //                 {t('labels:store_name')}
+    //             </Title>
+    //         ),
+    //         dataIndex: 'store_name',
+    //         key: 'store_name',
+    //     },
+    //     {
+    //         title: (
+    //             <Title className='!text-[#023047]  ' level={5}>
+    //                 {t('labels:number_of') + ' ' + t('labels:orders')}
+    //             </Title>
+    //         ),
+    //         dataIndex: 'orders',
+    //         key: 'orders',
+    //     },
+    // ]
 
     const performanceColumns = [
         {
-            title: (
-                <Title className='!text-[#023047]' level={5}>
-                    {t('labels:store_name')}
-                </Title>
+            header: `${t('labels:store_name')}`,
+            value: 'store_name',
+            width: '30%', // Specify the width if needed
+            render: (text, record) => (
+                <div className='!text-[#023047] mb-1 !max-w-[150px]' title={record.store_name}>
+                    {record.store_name}
+                </div>
             ),
-            dataIndex: 'store_name',
-            key: 'store_name',
         },
         {
-            title: (
-                <Title className='!text-[#023047]  ' level={5}>
-                    {t('labels:number_of') + ' ' + t('labels:orders')}
-                </Title>
-            ),
-            dataIndex: 'orders',
-            key: 'orders',
+            header: `${t('labels:number_of') + ' ' + t('labels:orders')}`,
+            value: 'orders',
+            width: '20%', // Specify the width if needed
+            render: (text, record) => <div className='!text-[#023047]'>{record.orders}</div>,
         },
-    ]
+    ];
+    
 
     return (
-        <Content className='mb-2'>
-            <Content className='mb-2'>
+        <div className='mb-2'>
+            <div className='mb-2'>
                 <HeaderForTitle
                     title={
-                        <Content className='flex z-20 mb-3  !justify-between'>
-                            <Content className='!w-[80%] mr-2 flex flex-col gap-1 '>
-                                <Content className='flex gap-1 '>
-                                    <Title level={3} className='!text-[#637381] m-0 '>
-                                        {t('messages:hello') + ','}
-                                    </Title>
-                                    <Title level={3} className='!text-[#023047] !m-0  '>
+                        <div className='flex z-20 w-full mb-3 mt-2 !justify-between'>
+                            <div className='!w-[80%] mr-2 flex !font-semibold text-lg flex-col gap-1 '>
+                                <div className='flex gap-1 !font-semibold text-[24px] '>
+                                    <h3 className='!text-[#637381] m-0 '>{t('messages:hello') + ','}</h3>
+                                    <h3 className='!text-[#023047] !m-0  '>
                                         {username.slice(0, 1).toUpperCase() + username.slice(1)}
-                                    </Title>
-                                </Content>
+                                    </h3>
+                                </div>
 
-                                <Text className='!text-sm mb-2 !text-[#637381] w-[47em] '>
+                                <p className='!text-sm mb-2 !text-[#637381] w-[47em] font-normal'>
                                     {t('messages:dashboard_welcome_message')}
-                                </Text>
-                            </Content>
-                            <Content
+                                </p>
+                            </div>
+                            <div
                                 className={
                                     storeLimitValues?.store_limit
                                         ? ' !w-[40%] flex flex-col justify-center items-baseline'
                                         : ' !w-[24%]  mr-0 pr-0 flex flex-col justify-center items-baseline'
-                                }
-                                // "  !w-[30%] flex flex-col justify-center items-baseline"
-                            >
-                                <Text className='text-[#637381] text-base  !font-bold flex justify-left gap-1 items-center'>
-                                    <Badge
-                                        status='success'
-                                        text={<Text className='!text-brandGray2'>{t('labels:active_stores')}</Text>}
-                                    />
-                                </Text>
-
-                                <Content className='flex flex-col items-baseline min-h-4 min-w-40 max-w-72 space-x-2 '>
-                                    <div className='flex justify-between items-baseline  gap-1 '>
-                                        {langDirection == 'ltr' ? (
-                                            <div className={'!max-w-[3.4em]'}>
-                                                <Title className='!text-[#023047] m-0 p-0 whitespace-nowrap' level={2}>
-                                                    {activeStoreCount ? activeStoreCount : 0}{' '}
-                                                </Title>
-                                            </div>
-                                        ) : null}
-                                        {storeLimitValues?.store_limit ? (
-                                            <Text
-                                                level={5}
-                                                className={
-                                                    storeLimitValues?.store_limit.toString().length >= 5
-                                                        ? `!text-md  text-[#8899A8]    ${
-                                                              langDirection == 'rtl' ? 'w-[185px]' : 'w-60'
-                                                          }`
-                                                        : '!text-md  text-[#8899A8] '
-                                                }>
-                                                {' '}
-                                                {t('labels:of')}{' '}
-                                                {storeLimitValues?.store_limit ? storeLimitValues?.store_limit : 0}{' '}
-                                                {t('labels:stores')} ({t('labels:max_allowed')})
-                                            </Text>
-                                        ) : null}
-                                        {langDirection == 'rtl' ? (
-                                            <div className=''>
-                                                <Title
-                                                    style={{ color: '#023047' }}
-                                                    className='leading-[30px] text-[24px]'>
-                                                    {activeStoreCount ? activeStoreCount : 0}{' '}
-                                                </Title>
-                                            </div>
-                                        ) : null}
+                                }>
+                                <div className='text-[#637381] text-base !font-bold flex justify-left gap-1 items-center'>
+                                    <div className='flex items-center'>
+                                        <span className='inline-block w-1.5 h-1.5 bg-green-500 rounded-full mr-2'></span>
+                                        <span className='!text-brandGray2 text-[14px] font-bold'>
+                                            {t('labels:active_stores')}
+                                        </span>
                                     </div>
-                                </Content>
-                                {storeLimitValues?.store_limit ? (
+                                </div>
+
+                                <div className='flex flex-col items-baseline min-h-4 min-w-40 max-w-72 space-x-2 '>
+                                    <div className='flex justify-between items-baseline gap-1 '>
+                                        {langDirection === 'ltr' && (
+                                            <div className={'!max-w-[3.4em]'}>
+                                                <h2 className='!text-[#023047] m-0 text-[28px] font-semibold p-0 whitespace-nowrap'>
+                                                    {activeStoreCount || 0}
+                                                </h2>
+                                            </div>
+                                        )}
+                                        {storeLimitValues?.store_limit && (
+                                            <span
+                                                className={`${
+                                                    storeLimitValues.store_limit.toString().length >= 5
+                                                        ? `!text-md  text-[#8899A8] ${
+                                                              langDirection === 'rtl' ? 'w-[185px]' : 'w-60'
+                                                          }`
+                                                        : '!text-md  text-[#8899A8]'
+                                                }`}>
+                                                {t('labels:of')} {storeLimitValues.store_limit || 0}{' '}
+                                                {t('labels:stores')} ({t('labels:max_allowed')})
+                                            </span>
+                                        )}
+                                        {langDirection === 'rtl' && (
+                                            <div>
+                                                <h2
+                                                    style={{ color: '#023047' }}
+                                                    className='leading-[30px]  text-[24px]'>
+                                                    {activeStoreCount || 0}
+                                                </h2>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                                {storeLimitValues?.store_limit && (
                                     <Progress
-                                        className='mt-0 pt-0 '
+                                        className='mt-0 pt-0'
                                         strokeColor={'#FA8C16'}
                                         style={{ width: '90%', margin: 0, padding: 0 }}
                                         size='small'
-                                        percent={(activeStoreCount / storeLimitValues?.store_limit) * 100}
+                                        percent={(activeStoreCount / storeLimitValues.store_limit) * 100}
                                         showInfo={false}
                                     />
-                                ) : null}
-                            </Content>
+                                )}
+                            </div>
 
                             <Divider className='h-20 ml-0 pl-0' type='vertical' />
 
-                            <Content
+                            <div
                                 className={`!w-[25%] flex flex-col justify-center ${
                                     util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'pr-10' : 'pl-4'
                                 }`}>
-                                <Content>
-                                    <Text className='text-[#637381] text-base  !font-bold flex justify-left gap-1 items-center'>
-                                        <Badge
-                                            status='default'
-                                            text={
-                                                <Text className='!text-brandGray2'>{t('labels:inactive_sores')}</Text>
-                                            }
-                                        />
-                                    </Text>
-                                    <Content className='flex items-baseline'>
-                                        <Title class='text-brandGray1 leading-[30px] text-[24px]'>
-                                            {' '}
-                                            {inActiveStoreCount ? inActiveStoreCount : 0}{' '}
-                                        </Title>
-                                    </Content>
-                                </Content>
-                            </Content>
-                        </Content>
+                                <div>
+                                    <div className='text-[#637381] text-base !font-bold flex justify-left gap-1 items-center'>
+                                        <div className='flex items-center'>
+                                            <span className='inline-block w-1.5 h-1.5 bg-gray-400 rounded-full mr-2'></span>
+                                            <span className='!text-brandGray2 text-[14px] font-bold'>
+                                                {t('labels:inactive_stores')}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className='flex items-baseline'>
+                                        <h2 className='text-brandGray1 leading-[30px] font-semibold text-[24px]'>
+                                            {inActiveStoreCount || 0}
+                                        </h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     }
                 />
-            </Content>
-            <Content className='!p-3 !mt-[9rem]'>
+            </div>
+            <div className='!p-3 !mt-[9rem]'>
                 {loading ? (
-                    <Content className='mt-5 !bg-[var(--mp-bright-color)] !p-3 !rounded-md'>
-                        <Content className='mt-2 flex justify-between'>
-                            <Skeleton
-                                paragraph={{
-                                    rows: 6,
-                                }}
-                            />
-                        </Content>
-                    </Content>
+                    <div className='mt-5 !bg-[var(--mp-bright-color)] !p-3 !rounded-md'>
+                        <div className='mt-2 flex justify-between'>
+                            <Skeleton className='mt-2' rows={6} />
+                        </div>
+                    </div>
                 ) : dashboardDataNetWorkError ? (
-                    <Content className='text-center !bg-[var(--mp-bright-color)] !p-3 mt-5 !rounded-md'>
+                    <div className='text-center !bg-[var(--mp-bright-color)] !p-3 mt-5 !rounded-md'>
                         {t('messages:dashboard_network_error')}
-                    </Content>
+                    </div>
                 ) : (
-                    <Content>
-                        <Content className='flex gap-3'></Content>
+                    <div>
+                        <div className='flex gap-3'></div>
 
-                        <Content
-                            hidden={dm4sightEnabled === 'true' ? false : true}
-                            className='flex justify-between !mt-14'>
-                            <Content className='!w-[70%]  bg-[#ffff] p-[24px] mt-0 ml-2  shadow-sm rounded-md justify-center'>
-                                <Content className='flex items-center justify-between mb-1'>
-                                    <Title level={4} className='!m-0  !text-[#023047] flex gap-2'>
+                        <div hidden={dm4sightEnabled === 'true' ? false : true} className='flex justify-between !mt-14'>
+                            <div className='!w-[70%] bg-[#ffff] p-[24px] mt-0 ml-2 shadow-sm rounded-md justify-center'>
+                                <div className='flex items-center justify-between mb-1'>
+                                    <h4 className='!m-0  !text-[#023047] !font-semibold text-lg flex gap-2'>
                                         <img
-                                            className='w-8 p-1.5  flex items-center justify-center bg-[#FA8C16] rounded'
+                                            className='w-8 p-1.5 flex items-center justify-center bg-[#FA8C16] rounded'
                                             src={StatisticsIcon}
                                             alt=''
                                         />
-
                                         {t('labels:statistics')}
-                                    </Title>                                   
-                                </Content>
+                                    </h4>
+                                </div>
                                 <Divider style={{ width: 'calc(100% + 48px)', marginLeft: '-24px' }} />
-                                <Content>
-                                    <Table
-                                        responsive
-                                        pagination={false}
-                                        dataSource={tableData}
-                                        columns={statisticsColumns}
-                                    />
-                                </Content>
-                            </Content>
-                            <Content className='!w-[30%] mt-0 ml-5 mr-2  bg-[#ffff] p-4  shadow-sm rounded-md justify-center'>
-                                <Content className='flex items-center justify-between mb-1'>
-                                    <Title level={4} className='!m-0  !text-[#023047] flex gap-2 '>
+                                <div>
+                                    <ShadCNDataTable pagination={false} data={tableData} columns={statisticsColumns} />
+                                </div>
+                            </div>
+                            <div className='!w-[30%] mt-0 ml-5 mr-2 bg-[#ffff] p-[24px] shadow-sm rounded-md justify-center'>
+                                <div className='flex items-center justify-between mb-1'>
+                                    <h4 className='!m-0  !text-[#023047] !font-semibold text-lg flex gap-2'>
                                         <img
-                                            className='w-8 p-1.5  flex items-center justify-center bg-[#13C2C2] rounded'
+                                            className='w-8 p-1.5 flex items-center justify-center bg-[#13C2C2] rounded'
                                             src={PerformanceIcon}
                                             alt=''
                                         />
                                         {t('labels:performance')}
-                                    </Title>
-                                </Content>
+                                    </h4>
+                                </div>
                                 <Divider style={{ width: 'calc(100% + 48px)', marginLeft: '-24px' }} />
-                                <Content>
-                                    <Table pagination={false} dataSource={tableData} columns={performanceColumns} />
-                                </Content>
-                            </Content>
-                        </Content>
-                        <Content className='!w-[98.5%]  bg-[#ffff] p-[24px] mt-4 ml-2 shadow-sm rounded-md justify-center'>
-                            <Content className='flex items-center justify-between mb-1'>
-                                <Title level={4} className='!m-0  !text-[#023047] !font-semibold text-lg flex gap-2'>
+                                <div>
+                                    <ShadCNDataTable pagination={false} data={tableData} columns={performanceColumns} />
+                                </div>
+                            </div>
+                        </div>
+                        <div className='!w-[98.5%] bg-[#ffff] p-[24px] mt-4 ml-2 shadow-sm rounded-md justify-center'>
+                            <div className='flex items-center justify-between mb-1'>
+                                <h4 className='!m-0  !text-[#023047] !font-semibold text-lg flex gap-2'>
                                     <img
-                                        className='w-8 p-1.5  flex items-center justify-center bg-[#2F54EB]  rounded'
+                                        className='w-8 p-1.5 flex items-center justify-center bg-[#2F54EB] rounded'
                                         src={OrdersIcon}
                                         alt=''
                                     />
                                     {t('labels:orders')}
-                                </Title>
+                                </h4>
                                 <Button onClick={() => navigate('/dashboard/store')} type='link'></Button>
-                            </Content>
+                            </div>
                             <Divider style={{ width: 'calc(100% + 48px)', marginLeft: '-24px' }} />
-                            <Content>
-                                <Table pagination={false} dataSource={tableData} columns={ordersColumns} />
-                            </Content>
-                        </Content>
-                    </Content>
+                            <div>
+                                <ShadCNDataTable pagination={false} data={tableData} columns={ordersColumns} />
+                            </div>
+                        </div>
+                    </div>
                 )}
-            </Content>
-        </Content>
+            </div>
+        </div>
     )
 }
 

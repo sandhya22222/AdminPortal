@@ -406,7 +406,8 @@ const Stores = () => {
                                 <Row>
                                     {record.isDistributor ? (
                                         <Badge className='bg-[#E6F4FF] border-[#91CAFF] text-[#0958D9] rounded-[5px] flex items-center'>
-                                            <Star className='w-3 h-3 mr-1' fill='#0958D9' strokeWidth={0} />                                            {t('labels:distributor')}
+                                            <Star className='w-3 h-3 mr-1' fill='#0958D9' strokeWidth={0} />{' '}
+                                            {t('labels:distributor')}
                                         </Badge>
                                     ) : (
                                         <Badge className='bg-[#E6FFFB] border-[#87E8DE] text-[#08979C] rounded-[5px]'>
@@ -425,16 +426,13 @@ const Stores = () => {
                                     )}
                                 </Row>
                                 {record.status === 3 ? (
-                                    <Spin spinning={storeStatusLoading}>
-                                        {console.log('storeId === record.storeId', storeId, record.storeId)}
-                                        <div
-                                            className='flex space-x-1'
-                                            // onLoad={handleStoreDataStore(record.id, record.storeId)}
-                                        >
-                                            <Badge status='processing' />
-                                            <Text>{t('labels:processing')}</Text>
-                                        </div>
-                                    </Spin>
+                                    <div className='flex items-center space-x-1'>
+                                        {storeStatusLoading && (
+                                            <div className='w-4 h-4 border-2 border-blue-500 border-t-transparent border-solid rounded-full animate-spin'></div>
+                                        )}
+                                        <div className='h-1.5 w-1.5 rounded-full bg-blue-500'></div>
+                                        <Text>{t('labels:processing')}</Text>
+                                    </div>
                                 ) : null}
                             </div>
                         </div>
@@ -1135,20 +1133,21 @@ const Stores = () => {
                                             <div className='flex items-center justify-end flex-row gap-3 flex-grow'>
                                                 <div className='flex flex-row'>
                                                     <Toggle
-                                                        className='rounded-l-[7px]'
+                                                        className={`rounded-l-[7px] ${value === 0 ? 'border-brandOrange text-brandOrange' : ''}`}
                                                         variant={value === 0 ? 'active' : 'default'}
                                                         checked={value === 0}
                                                         onClick={() => handleToggleChange(0)}>
                                                         {t('labels:all')}
                                                     </Toggle>
                                                     <Toggle
+                                                        className={`${value === 1 ? 'border-brandOrange text-brandOrange' : ''}`}
                                                         variant={value === 1 ? 'active' : 'default'}
                                                         checked={value === 1}
                                                         onClick={() => handleToggleChange(1)}>
                                                         {t('labels:active')}
                                                     </Toggle>
                                                     <Toggle
-                                                        className='rounded-r-[7px]'
+                                                        className={`rounded-r-[7px] ${value === 2 ? 'border-brandOrange text-brandOrange' : ''}`}
                                                         variant={value === 2 ? 'active' : 'default'}
                                                         checked={value === 2}
                                                         onClick={() => handleToggleChange(2)}>
