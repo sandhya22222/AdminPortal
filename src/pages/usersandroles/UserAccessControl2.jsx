@@ -76,17 +76,17 @@ export default function UserAccessControl() {
     const usersColumns = [
         {
             key: 'username',
-            header: t('labels:username'),
+            header: <span>{t('labels:username')}</span>,
             value: 'username',
         },
         {
             key: 'email',
-            header: t('labels:email'),
+            header: <span>{t('labels:email')}</span>,
             value: 'email',
         },
         {
             key: 'status',
-            header: t('labels:status'),
+            header: <span>{t('labels:status')}</span>,
             render: (value, row) => (
                 <Switch
                     disabled={
@@ -101,7 +101,7 @@ export default function UserAccessControl() {
         },
         {
             key: 'role',
-            header: t('labels:role'),
+            header: <span>{t('labels:role')}</span>,
             render: (value, row) => (
                 <div className='flex gap-2'>
                     <span>
@@ -110,7 +110,9 @@ export default function UserAccessControl() {
                             : t('labels:not_available')}
                     </span>
                     {row?.attributes?.is_default_owner[0] === 'True' && (
-                        <Badge className='bg-black text-white border px-3 py-1  text-xs rounded-none'>
+                        <Badge
+                            className='bg-black text-white font-normal py-0.5 px-0.5  font-sans
+                          text-sm text-center rounded-none'>
                             {t('labels:primary_account')}
                         </Badge>
                     )}
@@ -119,7 +121,7 @@ export default function UserAccessControl() {
         },
         {
             key: 'actions',
-            header: t('labels:action'),
+            header: <span>{t('labels:action')}</span>,
             render: (value, row) => {
                 const isDeleteDisabled =
                     currentUserDetailsAPIData?.preferred_username === row?.username ||
@@ -160,7 +162,7 @@ export default function UserAccessControl() {
     const groupColumns = [
         {
             key: 'name',
-            header: t('labels:role_name'),
+            header: <span>{t('labels:role_name')}</span>,
             value: 'name',
             render: (value) => String(value || '').replaceAll('-', ' '),
         },
@@ -260,15 +262,19 @@ export default function UserAccessControl() {
     }
 
     const Header = () => (
-        <div className='flex flex-col justify-between items-start px-4 pt-4 w-full'>
+        <div className='flex flex-col justify-between items-start px-4 pt-2 w-full '>
             <div className='flex justify-between w-full items-center '>
-                <div className='justify-between mb-5'>
-                    <h1 className='text-2xl font-bold my-3'>{t('labels:user_access_control')}</h1>
+                <div className='justify-between mb-3'>
+                    <h1 className=' font-sans text-2xl font-semibold my-3 text-regal-blue'>
+                        {t('labels:user_access_control')}
+                    </h1>
                     <p className='text-muted-foreground'>{t('labels:user_access_control_note')}</p>
                 </div>
-                <div className=' mb-8 mr-80  '>
+                <div className=' mb-8 mr-[263px]  '>
                     {activeTab === 'users' && (
-                        <Button onClick={() => navigate('/dashboard/user-access-control/add-user')}>
+                        <Button
+                            className='h-8 w-[5.5rem] font-normal'
+                            onClick={() => navigate('/dashboard/user-access-control/add-user')}>
                             {t('labels:add_user')}
                         </Button>
                     )}
@@ -288,7 +294,7 @@ export default function UserAccessControl() {
                         : 'text-muted-foreground hover:text-primary'
                 )}
                 onClick={() => handleTabChange('users')}>
-                Users
+                {t('labels:users')}
             </button>
             <button
                 className={cn(
@@ -298,7 +304,7 @@ export default function UserAccessControl() {
                         : 'text-muted-foreground hover:text-primary'
                 )}
                 onClick={() => handleTabChange('roles')}>
-                Roles
+                {t('labels:roles')}
             </button>
         </div>
     )
@@ -308,7 +314,7 @@ export default function UserAccessControl() {
             return (
                 <Card>
                     <CardHeader>
-                        <CardTitle>{t('labels:users')}</CardTitle>
+                        <CardTitle className='text-regal-blue text-lg'>{t('labels:users')}</CardTitle>
                     </CardHeader>
                     <CardContent>
                         {isUsersLoading ? (
@@ -318,6 +324,7 @@ export default function UserAccessControl() {
                         ) : (
                             <ShadCNDataTable columns={usersColumns} data={usersServerData || []} />
                         )}
+                        <Separator />
                     </CardContent>
                 </Card>
             )
@@ -325,7 +332,7 @@ export default function UserAccessControl() {
             return (
                 <Card>
                     <CardHeader>
-                        <CardTitle>{t('labels:roles')}</CardTitle>
+                        <CardTitle className='text-regal-blue text-lg'>{t('labels:roles')}</CardTitle>
                     </CardHeader>
                     <CardContent>
                         {isGroupLoading ? (
@@ -335,6 +342,7 @@ export default function UserAccessControl() {
                         ) : (
                             <ShadCNDataTable columns={groupColumns} data={groupServerData || []} />
                         )}
+                        <Separator />
                     </CardContent>
                 </Card>
             )
@@ -346,7 +354,7 @@ export default function UserAccessControl() {
             <div className='mb-3 w-full bg-white fixed z-20 '>
                 <Header />
             </div>
-            <div className='mx-3 mt-40'>
+            <div className='mx-3 mt-[152px]'>
                 {renderContent()}
 
                 <Dialog open={showDeleteUserModal} onOpenChange={setShowDeleteUserModal}>
