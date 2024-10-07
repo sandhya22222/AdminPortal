@@ -469,14 +469,14 @@ const Stores = () => {
             },
         },
         {
-            title: `${t('labels:created_date_and_time')}`,
-            dataIndex: 'created_on',
-            key: 'created_on',
+            title: `${t('labels:updated_date_and_time')}`,
+            dataIndex: 'updated_on',
+            key: 'updated_on',
             width: '30%',
             render: (text, record) => {
                 return (
                     <Text disabled={record.status === 3 ? true : false} className='text-brandGray1'>
-                        {new Date(record.created_on).toLocaleString()}
+                        {new Date(record.updated_on).toLocaleString()}
                     </Text>
                 )
             },
@@ -558,6 +558,7 @@ const Stores = () => {
                 var storeId = element.store_uuid
                 var storeName = element.name
                 var createdOn = element.created_on
+                var updatedOn = element.updated_on
                 var storeStatus = element.status
                 var realmName = element.realmname
                 var isDistributor = element.distributor_store
@@ -567,6 +568,7 @@ const Stores = () => {
                         name: storeName,
                         id: storeId,
                         created_on: createdOn,
+                        updated_on: updatedOn,
                         status: storeStatus,
                         storeId: storeActualId,
                         realmName: realmName,
