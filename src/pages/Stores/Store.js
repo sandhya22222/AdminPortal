@@ -420,26 +420,23 @@ const Stores = () => {
                                     )}{' '}
                                     {!isDistributor && (
                                         <Tooltip title={t('messages:store_type_info')}>
-                                        <img
-                                            src={ExclamationCircle}
-                                            alt='ExclamationCircleIcon'
-                                            width={15}
-                                            height={15}
-                                        />
+                                            <img
+                                                src={ExclamationCircle}
+                                                alt='ExclamationCircleIcon'
+                                                width={15}
+                                                height={15}
+                                            />
                                         </Tooltip>
                                     )}
                                 </div>
                                 {record.status === 3 ? (
-                                    <Spin spinning={storeStatusLoading}>
-                                    {console.log('storeId === record.storeId', storeId, record.storeId)}
-                                    <div
-                                        className='flex space-x-1'
-                                        // onLoad={handleStoreDataStore(record.id, record.storeId)}
-                                    >
-                                        <Badge status='processing' />
-                                        <p>{t('labels:processing')}</p>
+                                    <div className='flex items-center space-x-1'>
+                                        {storeStatusLoading && (
+                                            <div className='w-4 h-4 border-2 border-blue-500 border-t-transparent border-solid rounded-full animate-spin'></div>
+                                        )}
+                                        <div className='h-1.5 w-1.5 rounded-full bg-blue-500'></div>
+                                        <div>{t('labels:processing')}</div>
                                     </div>
-                                 </Spin>
                                 ) : null}
                             </div>
                         </div>
@@ -1137,20 +1134,21 @@ const Stores = () => {
                                             <div className='flex items-center justify-end flex-row gap-3 flex-grow'>
                                                 <div className='flex flex-row'>
                                                     <Toggle
-                                                        className='rounded-l-[7px]'
+                                                        className={`rounded-l-[7px] ${value === 0 ? 'border-brandOrange text-brandOrange' : ''}`}
                                                         variant={value === 0 ? 'active' : 'default'}
                                                         checked={value === 0}
                                                         onClick={() => handleToggleChange(0)}>
                                                         {t('labels:all')}
                                                     </Toggle>
                                                     <Toggle
+                                                        className={`${value === 1 ? 'border-brandOrange text-brandOrange' : ''}`}
                                                         variant={value === 1 ? 'active' : 'default'}
                                                         checked={value === 1}
                                                         onClick={() => handleToggleChange(1)}>
                                                         {t('labels:active')}
                                                     </Toggle>
                                                     <Toggle
-                                                        className='rounded-r-[7px]'
+                                                        className={`rounded-r-[7px] ${value === 2 ? 'border-brandOrange text-brandOrange' : ''}`}
                                                         variant={value === 2 ? 'active' : 'default'}
                                                         checked={value === 2}
                                                         onClick={() => handleToggleChange(2)}>
@@ -1223,10 +1221,10 @@ const Stores = () => {
                                                                     />
                                                                 </div>
                                                             )}
-                                                            <ShadCNDataTable
-                                                                columns={StoreTableColumn}
-                                                                data={selectedTabTableContent}
-                                                            />
+                                                        <ShadCNDataTable
+                                                            columns={StoreTableColumn}
+                                                            data={selectedTabTableContent}
+                                                        />
                                                         {parseInt(m_tab_id) === 1 ? (
                                                             <Content className=' grid justify-items-end mx-3 h-fit'>
                                                                 {countForStore && countForStore >= pageLimit ? (
