@@ -420,12 +420,12 @@ const Stores = () => {
                                     )}{' '}
                                     {!isDistributor && (
                                         <Tooltip title={t('messages:store_type_info')}>
-                                        <img
-                                            src={ExclamationCircle}
-                                            alt='ExclamationCircleIcon'
-                                            width={15}
-                                            height={15}
-                                        />
+                                            <img
+                                                src={ExclamationCircle}
+                                                alt='ExclamationCircleIcon'
+                                                width={15}
+                                                height={15}
+                                            />
                                         </Tooltip>
                                     )}
                                 </div>
@@ -435,7 +435,7 @@ const Stores = () => {
                                             <div className='w-4 h-4 border-2 border-blue-500 border-t-transparent border-solid rounded-full animate-spin'></div>
                                         )}
                                         <div className='h-1.5 w-1.5 rounded-full bg-blue-500'></div>
-                                        <Text>{t('labels:processing')}</Text>
+                                        <div>{t('labels:processing')}</div>
                                     </div>
                                 ) : null}
                             </div>
@@ -1221,10 +1221,10 @@ const Stores = () => {
                                                                     />
                                                                 </div>
                                                             )}
-                                                            <ShadCNDataTable
-                                                                columns={StoreTableColumn}
-                                                                data={selectedTabTableContent}
-                                                            />
+                                                        <ShadCNDataTable
+                                                            columns={StoreTableColumn}
+                                                            data={selectedTabTableContent}
+                                                        />
                                                         {parseInt(m_tab_id) === 1 ? (
                                                             <Content className=' grid justify-items-end mx-3 h-fit'>
                                                                 {countForStore && countForStore >= pageLimit ? (
