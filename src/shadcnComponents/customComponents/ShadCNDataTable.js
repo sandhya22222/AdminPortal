@@ -4,39 +4,37 @@ import { Table, TableHead, TableRow, TableCell, TableBody, TableHeader } from '.
 // Reusable Table Component
 const ShadCNDataTable = ({ columns, data }) => {
     return (
-        <Table className='!rounded-sm'>
-            {/* Table Header */}
-            <TableHeader>
-                <TableRow>
-                    {columns.map((column, index) => (
-                        <TableHead
-                            key={index}
-                            className='px-4 py-2 font-semibold bg-gray-50 '
-                            style={{ width: column.width || 'auto' }} // Ensure proper width handling
-                        >
-                            {column.header}
-                        </TableHead>
-                    ))}
-                </TableRow>
-            </TableHeader>
-
-            {/* Table Body */}
-            <TableBody>
-                {data.map((row, rowIndex) => (
-                    <TableRow key={rowIndex} className='border-b'>
-                        {columns.map((column) => (
-                            <TableCell
-                                key={column.key}
-                                className='px-4 !text-brandGray1'
-                                style={{ width: column.width || 'auto' }} // Ensure columns are contained
-                            >
-                                {column.render ? column.render(row[column.key], row) : row[column.value]}
-                            </TableCell>
+        <div className='border rounded-md'>
+            <Table className='!rounded-sm'>
+                {/* Table Header */}
+                <TableHeader>
+                    <TableRow>
+                        {columns.map((column, index) => (
+                            <TableHead key={index} className=''>
+                                {column.header}
+                            </TableHead>
                         ))}
                     </TableRow>
-                ))}
-            </TableBody>
-        </Table>
+                </TableHeader>
+
+                {/* Table Body */}
+                <TableBody>
+                    {data.map((row, rowIndex) => (
+                        <TableRow key={rowIndex} className='border-b'>
+                            {columns.map((column) => (
+                                <TableCell key={column.key} className=''>
+                                    {column.render ? (
+                                        <div className='capitalize'>{column.render(row[column.key], row)}</div>
+                                    ) : (
+                                        <div className='capitalize'> {row[column.value]} </div>
+                                    )}
+                                </TableCell>
+                            ))}
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </div>
     )
 }
 

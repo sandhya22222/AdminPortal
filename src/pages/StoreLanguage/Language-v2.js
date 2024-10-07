@@ -8,6 +8,7 @@ import LanguageBanner from '../StoreLanguage/LanguageBanner-v2'
 import { Button } from '../../shadcnComponents/ui/button'
 import { DownloadIcon, EditIconNew, plusIcon } from '../../constants/media'
 import { Badge } from '../../shadcnComponents/ui/badge'
+import { Card } from '../../shadcnComponents/ui/card'
 
 import { DotIconSVG } from './DotIconSVG'
 import { Skeleton } from '../../shadcnComponents/ui/skeleton'
@@ -70,23 +71,13 @@ const Language = () => {
         retry: false,
     })
 
-    const totalItemsCount = languageData?.data?.length
+    const totalItemsCount = languageData?.count
     // const totalItemsCount = 21
-
-    const totalPages = Math.ceil(totalItemsCount / languagePaginationData.pageSize)
-
-    console.log('testing=======================')
-    console.log(languageData)
-    // console.log(totalPages)
 
     // Columns for table data
     const languageColumn = [
         {
-            header: (
-                <span className='text-regal-blue bg-grey-200 text-sm font-medium leading-[22px]'>
-                    {t('labels:language')}
-                </span>
-            ),
+            header: <span>{t('labels:language')}</span>,
             value: 'language',
             width: '25%',
             ellipsis: true,
@@ -96,7 +87,7 @@ const Language = () => {
                         <Ellipsis
                             text={record.language}
                             styles={{
-                                maxWidth: '50px', // Adjust as necessary
+                                maxWidth: '50px',
                                 padding: '5px',
                                 fontSize: '14px',
                             }}
@@ -107,7 +98,7 @@ const Language = () => {
                     {record.is_default && (
                         <Badge
                             variant='default'
-                            className='inline-flex items-center gap-1 px-2  py-0.5 text-white text-xs rounded-2xl'
+                            className='inline-flex items-center gap-1 px-2  py-0.5 text-xs rounded-2xl'
                             color='#FB8500'>
                             {t('labels:default_language')}
                         </Badge>
@@ -116,16 +107,12 @@ const Language = () => {
             ),
         },
         {
-            header: <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:code')}</span>,
+            header: <span>{t('labels:code')}</span>,
             value: 'language_code',
             width: '10%',
         },
         {
-            header: (
-                <span className='text-regal-blue text-sm font-medium leading-[22px]'>
-                    {t('labels:script_direction')}
-                </span>
-            ),
+            header: <span>{t('labels:script_direction')}</span>,
             value: 'writing_script_direction',
             width: '15%',
             render: (text, record) => (
@@ -133,13 +120,13 @@ const Language = () => {
                     {record.writing_script_direction === 'LTR' ? (
                         <Badge
                             variant='success'
-                            className='bg-green-50 text-green-500 border border-green-600 rounded-sm px-1 py-0.5 text-xs'>
+                            className='bg-[#f3ffea] text-[#74c32f] border border-[#d4ffb6] font-normal rounded-[5px] px-1 py-0.5 text-xs'>
                             {t('labels:left_to_right')}
                         </Badge>
                     ) : (
                         <Badge
                             variant='fail'
-                            className='bg-blue-200 text-blue-800 border border-blue-600 rounded-sm px-1 py-0.5 text-xs'>
+                            className='bg-[#e6f4ff] text-[#407ed4] border border-[#b5dcff] rounded-[5px] font-normal px-1 py-0.5 text-xs'>
                             {t('labels:right_to_left')}
                         </Badge>
                     )}
@@ -147,19 +134,19 @@ const Language = () => {
             ),
         },
         {
-            header: <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:status')}</span>,
+            header: <span>{t('labels:status')}</span>,
             value: 'status',
             width: '15%',
             render: (text, record) => (
                 <div>
                     {String(record.status) === '2' ? (
-                        <div className='!text-brandGray1 w-fit flex items-center space-x-1'>
-                            <DotIconSVG className={`w-2 h-2 text-current  `} fill={'#cbd5e1 '} />
+                        <div className=' w-fit flex items-center space-x-1'>
+                            <DotIconSVG className={`w-2 h-2   `} fill={'#cbd5e1 '} />
                             <span>{t('labels:inactive')}</span>
                         </div>
                     ) : (
-                        <div className='!text-brandGray1  w-fit flex items-center space-x-1'>
-                            <DotIconSVG className={`w-2 h-2 text-current`} fill={'#22C55E'} />
+                        <div className='  w-fit flex items-center space-x-1'>
+                            <DotIconSVG className={`w-2 h-2 `} fill={'#22C55E'} />
                             <span>{t('labels:active')}</span>
                         </div>
                     )}
@@ -167,34 +154,28 @@ const Language = () => {
             ),
         },
         {
-            header: (
-                <span className='text-regal-blue text-sm font-medium leading-[22px]'>
-                    {t('labels:support_document')}
-                </span>
-            ),
+            header: <span>{t('labels:support_document')}</span>,
             value: 'status',
             width: '20%',
             render: (data, record) => (
                 <Button
-                    className='flex gap-2 hover:bg-gray-100 '
+                    className='flex gap-2 hover:bg-gray-100 !p-0 '
                     variant='ghost'
                     size='default'
                     onClick={() => {
                         findAllSupportDocumentTemplateDownload(2, record.language_code)
                     }}>
                     <img src={DownloadIcon} alt='DownloadIcon' className='!text-xs !items-center' />
-                    <span className='text-brandPrimaryColor text-sm font-medium leading-[22px]'>
-                        {t('labels:download_document')}
-                    </span>
+                    <span>{t('labels:download_document')}</span>
                 </Button>
             ),
         },
         {
-            header: <span className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:action')}</span>,
+            header: <span>{t('labels:action')}</span>,
             value: 'action',
             width: '10%',
             render: (text, record) => (
-                <ShadCNTooltip className='bg-black' content={<span>Edit {record.language}</span>}>
+                <ShadCNTooltip content={<span>Edit {record.language}</span>}>
                     <Button
                         className='hover:bg-gray-100'
                         variant='ghost'
@@ -265,17 +246,20 @@ const Language = () => {
     return (
         <div>
             <div className='sticky bg-white shadow-md p-4 top-[72px] w-[100%] flex flex-col justify-between items-start h-fit z-20'>
-                <div className='flex font-family-sans w-[100%] justify-center items-center'>
-                    <h1 className='!font-semibold w-2/5 text-regal-blue text-2xl'>{t('labels:language_settings')}</h1>
+                <div className='flex  w-[100%] justify-center items-center'>
+                    <h1 className='!font-semibold w-2/5 text-2xl'>{t('labels:language_settings')}</h1>
                     <div className='w-3/5 flex items-center justify-end'>
                         <DropdownMenu>
                             <DropdownMenuTrigger className='app-btn-link flex items-center'>
                                 <span className='flex items-center'>
                                     Download Support Document Template
-                                    <ChevronDown className='ml-1' />
+                                    <ChevronDown
+                                        className='!ml-[7px] !mr-[4px] '
+                                        style={{ width: '1.6em', height: '1.6em', fontWeight: 'normal' }}
+                                    />
                                 </span>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent className='font-sans'>
+                            <DropdownMenuContent>
                                 {items.map((item, index) => (
                                     <DropdownMenuItem
                                         key={index}
@@ -286,17 +270,17 @@ const Language = () => {
                             </DropdownMenuContent>
                         </DropdownMenu>
                         <Button
-                            className='app-btn-primary flex w-fit items-center md:gap-1'
+                            className=' flex w-fit items-center md:gap-1'
                             onClick={() => navigate('/dashboard/language/language-settings')}>
                             <img src={plusIcon} alt='plusIcon' className='text-xs w-3 my-1 mr-2' />
                             <div className='mr-[10px]'>{t('labels:add_language')}</div>
                         </Button>
                     </div>
                 </div>
-                <p className='!font-normal !text-brandGray1 !mt-3 !mb-1'>{t('labels:languages_note')}</p>
+                <p className=' !mt-3 !mb-1'>{t('labels:languages_note')}</p>
             </div>
 
-            <div className='bg-white shadow-md mb-10 rounded-lg p-4 w-[97%] flex flex-row ml-[1.25%] mt-[100px]'>
+            <Card className='mb-10  ml-[1.25%] mt-[100px] mr-[1.25%]'>
                 {isLoading ? (
                     <div className='w-full'>
                         <Skeleton className='h-10 w-[70%] mb-3' />
@@ -305,23 +289,30 @@ const Language = () => {
                         <Skeleton className='h-7 w-[50%] mb-2' />
                     </div>
                 ) : isNetworkErrorLanguage ? (
-                    <div className='w-full text-center text-red-500'>{t('messages:fetch_error')}</div>
+                    <div className='w-full text-center '>{t('messages:fetch_error')}</div>
                 ) : languageData === 0 ? (
                     <>
                         <LanguageBanner />
                     </>
                 ) : (
-                    <ShadCNDataTable columns={languageColumn} data={languageData?.data} />
+                    <div className='  flex flex-col items-end justify-between w-full'>
+                        <div className='w-full'>
+                            <ShadCNDataTable columns={languageColumn} data={languageData?.data} />
+                        </div>
+                        {!totalItemsCount > languagePaginationData.pageSize && (
+                            <div className='flex  mt-4 mb-2'>
+                                <ShadCNPagination
+                                    totalItemsCount={totalItemsCount}
+                                    handlePageNumberChange={handlePageNumberChange}
+                                    currentPage={languagePaginationData.pageNumber}
+                                    itemsPerPage={languagePaginationData.pageSize}
+                                    showQuickJumper={true}
+                                />
+                            </div>
+                        )}
+                    </div>
                 )}
-            </div>
-            <div className='flex justify-center mb-4'>
-                <ShadCNPagination
-                    totalItemsCount={totalItemsCount}
-                    handlePageNumberChange={handlePageNumberChange}
-                    currentPage={languagePaginationData.pageNumber}
-                    itemsPerPage={languagePaginationData.pageSize}
-                />
-            </div>
+            </Card>
         </div>
     )
 }

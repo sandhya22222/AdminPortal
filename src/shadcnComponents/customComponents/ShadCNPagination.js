@@ -110,7 +110,7 @@ const ShadCNPagination = ({
     }
 
     return (
-        <div>
+        <div className='my-2'>
             <Pagination>
                 <PaginationContent>
                     <div>

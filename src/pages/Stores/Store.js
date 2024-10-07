@@ -53,6 +53,7 @@ import { Progress } from '../../shadcnComponents/ui/progress'
 import { Button } from '../../shadcnComponents/ui/button'
 import SearchInput from './SearchInput'
 import { PAGE_NUMBER_TO_SEARCH } from '../../constants/constants'
+import { Avatar, AvatarFallback, AvatarImage } from '../../shadcnComponents/ui/avatar'
 const { Content } = Layout
 const { Title, Text } = Typography
 // const { Search } = Input
@@ -231,7 +232,7 @@ const Stores = () => {
                 const [limitName, limitValue, keyName, tooltip] = text.split(',')
                 return (
                     <div className='flex flex-col gap-2'>
-                        <div className='flex gap-2 items-center text-[#8899A8]'>
+                        <div className='flex gap-2 items-center'>
                             {limitName}
                             <ShadCNTooltip
                                 content={tooltip}
@@ -332,7 +333,7 @@ const Stores = () => {
                 const [limitName, limitValue, keyName, tooltip] = text.split(',')
                 return (
                     <div className='flex flex-col gap-2'>
-                        <div className='flex gap-2 items-center text-[#8899A8]'>
+                        <div className='flex gap-2 items-center'>
                             {limitName}
                             <ShadCNTooltip
                                 content={tooltip}
@@ -385,25 +386,28 @@ const Stores = () => {
         {
             header: `${t('labels:store_name')}`,
             value: 'name',
-            width: '30%',
             ellipsis: true,
             render: (text, record) => {
                 return (
                     <>
-                        <div className='flex'>
+                        <div className='flex items-center'>
                             <div className=''>
-                                <img src={storeDefaultImage} alt='storeDefaultImage' className='aspect-square mt-1' />
+                                <Avatar className=''>
+                                    <AvatarImage src={storeDefaultImage} alt='Avatar' className />
+                                    <AvatarFallback>Avatar</AvatarFallback>
+                                </Avatar>
+                                {/* <img src={storeDefaultImage} alt='storeDefaultImage' className='aspect-square mt-1' /> */}
                             </div>
-                            <div className=''>
-                                <Row>
-                                    <Text
-                                        className='text-brandGray1 mb-1 !max-w-[150px]'
+                            <div className='ml-2 space-y-1'>
+                                <div>
+                                    <p
+                                        className=' !max-w-[150px]'
                                         ellipsis={{ tooltip: record.name }}
                                         disabled={record.status === 3 ? true : false}>
                                         {record.name}
-                                    </Text>
-                                </Row>
-                                <Row>
+                                    </p>
+                                </div>
+                                <div>
                                     {record.isDistributor ? (
                                         <Badge className='bg-[#E6F4FF] border-[#91CAFF] text-[#0958D9] rounded-[5px] flex items-center'>
                                             <Star className='w-3 h-3 mr-1' fill='#0958D9' strokeWidth={0} />{' '}
@@ -416,15 +420,15 @@ const Stores = () => {
                                     )}{' '}
                                     {!isDistributor && (
                                         <Tooltip title={t('messages:store_type_info')}>
-                                            <img
-                                                src={ExclamationCircle}
-                                                alt='ExclamationCircleIcon'
-                                                width={15}
-                                                height={15}
-                                            />
+                                        <img
+                                            src={ExclamationCircle}
+                                            alt='ExclamationCircleIcon'
+                                            width={15}
+                                            height={15}
+                                        />
                                         </Tooltip>
                                     )}
-                                </Row>
+                                </div>
                                 {record.status === 3 ? (
                                     <div className='flex items-center space-x-1'>
                                         {storeStatusLoading && (
@@ -444,7 +448,6 @@ const Stores = () => {
             header: `${t('labels:status')}`,
             value: 'status',
             key: 'status',
-            width: '20%',
             render: (text, record) => {
                 return (
                     <Status
@@ -471,19 +474,17 @@ const Stores = () => {
         {
             header: `${t('labels:created_date_and_time')}`,
             value: 'created_on',
-            width: '30%',
             render: (text, record) => {
                 return (
-                    <Text disabled={record.status === 3 ? true : false} className='text-brandGray1'>
-                        {new Date(record.created_on).toLocaleString()}
-                    </Text>
+                    // <p disabled={record.status === 3 ? true : false} className=''>
+                    new Date(record.created_on).toLocaleString()
+                    // {/* </p> */}
                 )
             },
         },
         {
             header: `${t('labels:action')}`,
             value: '',
-            width: '12%',
             render: (text, record) => {
                 return (
                     <>
@@ -1220,10 +1221,10 @@ const Stores = () => {
                                                                     />
                                                                 </div>
                                                             )}
-                                                        <ShadCNDataTable
-                                                            columns={StoreTableColumn}
-                                                            data={selectedTabTableContent}
-                                                        />
+                                                            <ShadCNDataTable
+                                                                columns={StoreTableColumn}
+                                                                data={selectedTabTableContent}
+                                                            />
                                                         {parseInt(m_tab_id) === 1 ? (
                                                             <Content className=' grid justify-items-end mx-3 h-fit'>
                                                                 {countForStore && countForStore >= pageLimit ? (
