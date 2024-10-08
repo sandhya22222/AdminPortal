@@ -279,50 +279,59 @@ const ChangePassword = ({ isPasswordChangeModalOpen, setIsPasswordChangeModalOpe
                             <h5 className='text-lg font-semibold text-regal-blue'>
                                 {t('labels:your_password_must_contain')}
                             </h5>
-                            <p className='!mb-0 pb-2 text-brandGray1'>
+                            <p
+                                className={`!mb-0 pb-2 ${password && password.length >= minPasswordLength ? 'text-green-400' : 'text-brandGray1'}`}>
                                 <IoMdCheckmarkCircleOutline
                                     style={{
-                                        color: `${password && password.length >= minPasswordLength ? 'green' : 'text-brandGray1'}`,
+                                        color: `${password && password.length >= minPasswordLength ? 'lightgreen' : 'gray'}`,
                                         display: 'inline',
                                     }}
                                 />{' '}
                                 {t('messages:at_least_12_characters')}
                             </p>
-                            <p className='!mb-0 pb-2 text-brandGray1'>
+                            <p
+                                className={`!mb-0 pb-2 ${password && /[A-Z]/.test(password) ? 'text-green-400' : 'text-brandGray1'} `}>
                                 <IoMdCheckmarkCircleOutline
                                     style={{
-                                        color: `${password && /[A-Z]/.test(password) ? 'green' : 'text-brandGray1'}`,
+                                        color: `${password && /[A-Z]/.test(password) ? 'lightgreen' : 'gray'}`,
                                         display: 'inline',
                                     }}
                                 />{' '}
                                 {t('messages:one_or_more_upper_case_letter')}
                             </p>
-                            <p className='!mb-0 pb-2 text-brandGray1'>
+                            <p
+                                className={`!mb-0 pb-2 ${
+                                    password && /[!@#$%^&*"'()_+{}\[\]:;<>,.?~\\/-]/.test(password)
+                                        ? 'text-green-400'
+                                        : 'text-brandGray1'
+                                } `}>
                                 <IoMdCheckmarkCircleOutline
                                     style={{
                                         color: `${
                                             password && /[!@#$%^&*"'()_+{}\[\]:;<>,.?~\\/-]/.test(password)
-                                                ? 'green'
-                                                : 'text-brandGray1'
+                                                ? 'lightgreen'
+                                                : 'gray'
                                         }`,
                                         display: 'inline',
                                     }}
                                 />{' '}
                                 {t('messages:one_or_more_special_character_or_symbols')}
                             </p>
-                            <p className='!mb-0 pb-2 text-brandGray1'>
+                            <p
+                                className={`!mb-0 pb-2 ${password && /[a-z]/.test(password) ? 'text-green-400' : 'text-brandGray1'}`}>
                                 <IoMdCheckmarkCircleOutline
                                     style={{
-                                        color: `${password && /[a-z]/.test(password) ? 'green' : 'text-brandGray1'}`,
+                                        color: `${password && /[a-z]/.test(password) ? 'lightgreen' : 'gray'}`,
                                         display: 'inline',
                                     }}
                                 />{' '}
                                 {t('messages:one_or_more_lower_case_letters')}
                             </p>
-                            <p className='!mb-0 pb-2 text-brandGray1'>
+                            <p
+                                className={`!mb-0 pb-2 ' ${password && /[\d]/.test(password) ? 'text-green-400' : 'text-brandGray1'} `}>
                                 <IoMdCheckmarkCircleOutline
                                     style={{
-                                        color: `${password && /[\d]/.test(password) ? 'green' : 'text-brandGray1'}`,
+                                        color: `${password && /[\d]/.test(password) ? 'lightgreen' : 'gray'}`,
                                         display: 'inline',
                                     }}
                                 />{' '}
