@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Layout, Tag, Typography, Tabs, Spin, Row, Col, Button } from 'antd'
+import { Spin, Row, Col, Button } from 'antd'
 import { useAuth } from 'react-oidc-context'
 import HeaderForTitle from '../../components/header/HeaderForTitle'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
@@ -14,12 +14,11 @@ import StoreRestrictions from './StoreRestrictions'
 import Currency from './Currency'
 import PoliciesSettings from '../PoliciesSettings/PoliciesSettings'
 import { storeDefaultImage } from '../../constants/media'
-
 import Theme from './Theme'
 import StoreOverview from './StoreOverview'
-const { Content } = Layout
-const { Text } = Typography
 
+import { Badge } from '../../shadcnComponents/ui/badge'
+import { Tabs, TabsContent, TabsTrigger, TabsList } from '../../shadcnComponents/ui/tabs'
 const storeAPI = process.env.REACT_APP_STORE_API
 const storeImagesAPI = process.env.REACT_APP_STORE_IMAGES_API
 const storeBannerImageAPI = process.env.REACT_APP_STORE_BANNER_IMAGES_API
@@ -347,43 +346,45 @@ const StoreSettingsLayout = () => {
         }
     }, [searchParams, hideActionButton, permissionValue])
 
-   console.log('isDistributor---->', typeof isDistributor)
+    console.log('isDistributor---->', typeof isDistributor)
 
     return (
-        <Content>
+        <div>
             <HeaderForTitle
                 title={
-                    <Content className='flex !w-[80vw]'>
-                        <Content className='!w-[75%] flex gap-2 !mt-2'>
+                    <div className='flex !w-[85vw]'>
+                        <div className='!w-[75%] flex gap-2 !mt-2'>
                             <div className=''>
-                                <img src={storeDefaultImage} className='aspect-square !mt-2' />
+                                <img src={storeDefaultImage} alt='storeDefaultImage' className='aspect-square !mt-2' />
                             </div>
                             <div className='flex gap-2'>
                                 <div className='!font-semibold  text-2xl'>
                                     {storeName}{' '}
                                     <div className='!mb-3'>
                                         {storeType === 'distributor' ? (
-                                            <Tag color='blue'>
+                                            <Badge className='gap-1 text-[#0958d9] bg-[#e6f4ff] rounded-none border border-[#91caff]'>
                                                 {' '}
                                                 <StarFilled /> {t('labels:distributor')}
-                                            </Tag>
+                                            </Badge>
                                         ) : (
-                                            <Tag color='cyan'>{t('labels:partner')}</Tag>
+                                            <Badge
+                                                color='cyan'
+                                                className='bg-[#e6fffb] rounded-none text-[#08979c] border border-[#87e8de]'>
+                                                {t('labels:partner')}
+                                            </Badge>
                                         )}
                                     </div>
                                 </div>
                                 <div className='mt-2'>
-                                    <Tag
-                                        color={`${changeSwitchStatus === 1 ? '#52C41A' : '#F0F0F0'}`}
-                                        style={{ color: `${changeSwitchStatus === 1 ? 'white' : '#b4b4b4'}` }}
-                                        className='!rounded-xl'>
+                                    <Badge
+                                        className={`!rounded-xl ${changeSwitchStatus === 1 ? 'bg-[#52C41A]' : 'bg-[#F0F0F0] text-brandGray1'}`}>
                                         {changeSwitchStatus === 1 ? `${t('labels:active')}` : `${t('labels:inactive')}`}
-                                    </Tag>
+                                    </Badge>
                                 </div>
                             </div>
-                        </Content>
+                        </div>
                         <div className=' !w-[180px] flex  !gap-2 !mt-3 !mx-2'>
-                            <Text className='text-brandGray2'>{t('labels:status')} : </Text>
+                            <span className='text-brandGray2'>{t('labels:status')} : </span>
                             <Status
                                 storeId={id}
                                 storeStatus={changeSwitchStatus === 1 ? true : false}
@@ -398,7 +399,7 @@ const StoreSettingsLayout = () => {
                                 isDistributor={JSON.parse(isDistributor)}
                             />
                         </div>
-                    </Content>
+                    </div>
                 }
                 backNavigationPath={`/dashboard/store?m_t=1`}
                 showArrowIcon={true}
@@ -411,31 +412,71 @@ const StoreSettingsLayout = () => {
                     <div className=' py-4 h-full '>
                         {permissionValue?.length > 0 ? (
                             permissionValue?.includes('UI-product-admin') === true ? (
+                                // <Tabs
+                                //     items={hideStoreSettingsTabData}
+                                //     tabPosition={'left'}
+                                //     defaultActiveKey={STORE_SETTINGS_TABS_OPTIONS.STORE_RESTRICTIONS}
+                                //     activeKey={
+                                //         searchParams.get('tab') || STORE_SETTINGS_TABS_OPTIONS.STORE_RESTRICTIONS
+                                //     }
+                                //     onTabClick={handelMyProfileTabChange}
+                                //     type='line'
+                                //     className=' !h-full '
+                                // />
                                 <Tabs
-                                    items={hideStoreSettingsTabData}
-                                    tabPosition={'left'}
-                                    defaultActiveKey={STORE_SETTINGS_TABS_OPTIONS.STORE_RESTRICTIONS}
-                                    activeKey={
-                                        searchParams.get('tab') || STORE_SETTINGS_TABS_OPTIONS.STORE_RESTRICTIONS
-                                    }
-                                    onTabClick={handelMyProfileTabChange}
-                                    type='line'
-                                    className=' !h-full '
-                                />
+                                    value={searchParams.get('tab') || STORE_SETTINGS_TABS_OPTIONS.STORE_RESTRICTIONS}
+                                    onValueChange={handelMyProfileTabChange}
+                                    className='h-full'
+                                    orientation='vertical'>
+                                    <TabsList className='!h-full px-3'>
+                                        {hideStoreSettingsTabData.map((tab) => (
+                                            <TabsTrigger key={tab.key} value={tab.key}>
+                                                {tab.label}
+                                            </TabsTrigger>
+                                        ))}
+                                    </TabsList>
+
+                                    {hideStoreSettingsTabData.map((tab) => (
+                                        <TabsContent key={tab.key} value={tab.key}>
+                                            {tab.content}
+                                        </TabsContent>
+                                    ))}
+                                </Tabs>
                             ) : (
+                                // <Tabs
+                                //     items={storeSettingsTabData}
+                                //     tabPosition={'left'}
+                                //     defaultActiveKey={STORE_SETTINGS_TABS_OPTIONS.OVERVIEW}
+                                //     activeKey={searchParams.get('tab') || STORE_SETTINGS_TABS_OPTIONS.OVERVIEW}
+                                //     onTabClick={handelMyProfileTabChange}
+                                //     type='line'
+                                //     className=' !h-full '
+                                // />
                                 <Tabs
-                                    items={storeSettingsTabData}
-                                    tabPosition={'left'}
-                                    defaultActiveKey={STORE_SETTINGS_TABS_OPTIONS.OVERVIEW}
-                                    activeKey={searchParams.get('tab') || STORE_SETTINGS_TABS_OPTIONS.OVERVIEW}
-                                    onTabClick={handelMyProfileTabChange}
-                                    type='line'
-                                    className=' !h-full '
-                                />
+                                    value={searchParams.get('tab') || STORE_SETTINGS_TABS_OPTIONS.OVERVIEW}
+                                    onValueChange={handelMyProfileTabChange}
+                                    className='h-full px-3'
+                                    orientation='vertical'>
+                                    <TabsList className=' flex flex-col !h-full space-y-3'>
+                                        {storeSettingsTabData.map((tab) => (
+                                            <TabsTrigger key={tab.key} value={tab.key}>
+                                                {tab.label}
+                                            </TabsTrigger>
+                                        ))}
+                                    </TabsList>
+                                    {/* Content Area */}
+                                    <div className=''>
+                                        {storeSettingsTabData.map((tab) => (
+                                            <TabsContent key={tab.key} value={tab.key}>
+                                                {tab.content}
+                                            </TabsContent>
+                                        ))}
+                                    </div>
+                                </Tabs>
                             )
                         ) : null}
                     </div>
-                    <div className='w-[80%]'>
+                    <div className='!w-[80%]'>
                         {searchParams.get('tab') === STORE_SETTINGS_TABS_OPTIONS.OVERVIEW && (
                             <>{hideActionButton ? '' : <StoreOverview realmName={realmName} />}</>
                         )}
@@ -445,7 +486,7 @@ const StoreSettingsLayout = () => {
                                     ''
                                 ) : (
                                     <Spin tip='Please wait!' size='large' spinning={isUpLoading}>
-                                        <Content className='bg-white p-3 !rounded-md border my-4'>
+                                        <div className='bg-white p-3 !rounded-md border my-4'>
                                             <label className='text-lg mb-3 font-semibold text-regal-blue'>
                                                 {t('labels:media')}
                                             </label>
@@ -473,7 +514,7 @@ const StoreSettingsLayout = () => {
                                                 isSingleUpload={false}
                                                 disabelMediaButton={disableMediaButton}
                                             />
-                                            <Content className='mt-4'>
+                                            <div className='mt-4'>
                                                 <Row className='gap-2'>
                                                     <Col>
                                                         <Button
@@ -509,8 +550,8 @@ const StoreSettingsLayout = () => {
                                                         </Button>
                                                     </Col>
                                                 </Row>
-                                            </Content>
-                                        </Content>
+                                            </div>
+                                        </div>
                                     </Spin>
                                 )}
                             </>
@@ -529,7 +570,7 @@ const StoreSettingsLayout = () => {
                     </div>
                 </div>
             </div>
-        </Content>
+        </div>
     )
 }
 
