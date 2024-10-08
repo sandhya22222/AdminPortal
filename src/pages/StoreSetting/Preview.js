@@ -46,9 +46,9 @@ const Preview = ({
             </Content>
             <Divider style={{ margin: '8px 0' }} />
             <Content
-                className={`min-h-[320px] text-center bg-[var(--mp-theme-preview-page-content-background-color)] `}>
-                <p className={`text-bold !text-[#6d7b88] !mt-8 !mr-6`}>{t('labels:main_content_of_the_page')}</p>
-                <Content className='text-center p-24 '>
+                className={`min-h-[320px] justify-center text-center bg-[var(--mp-theme-preview-page-content-background-color)] `}>
+                <p className={`text-bold !text-[#6d7b88] !mt-8 !mx-auto`}>{t('labels:main_content_of_the_page')}</p>
+                <Content className='text-center pt-24 '>
                     <Button
                         style={{
                             backgroundColor: buttonPrimaryBackgroundColor,
@@ -80,10 +80,7 @@ const Preview = ({
             </Content>
             <Content
                 className={`!h-24  flex items-center justify-center bg-[var(--mp-theme-preview-footer-background-color)]`}>
-                <Content className='w-[40%]'></Content>
-                <Content className='!w-[50%]'>
-                    <p className=''>{t('labels:footer_content_of_the_page')}</p>
-                </Content>
+                <p className=''>{t('labels:footer_content_of_the_page')}</p>
             </Content>
         </Content>
     )

@@ -1615,7 +1615,7 @@ const StoreSettings = () => {
                 {disableMediaButton ? (
                     ''
                 ) : (
-                    <Spin tip='Please wait!' size='large' spinning={isUpLoading}>
+                    <Spin tip={t('labels:please_wait')} size='large' spinning={isUpLoading}>
                         <Content className='bg-white p-3 !rounded-md'>
                             <label className='text-[20px] mb-2 font-bold'>{t('labels:media')}</label>
                             <Row class='flex space-x-4'>
@@ -1696,7 +1696,7 @@ const StoreSettings = () => {
                             }}></Skeleton>
                     </Content>
                 ) : (
-                    <Spin tip='Please wait!' size='large' spinning={isStoreDataLimitSaving}>
+                    <Spin tip={t('labels:please_wait')} size='large' spinning={isStoreDataLimitSaving}>
                         <Content className='bg-white !rounded-md'>
                             <Content className='p-3'>
                                 <label className='text-[20px] mb-2 font-bold'>{t('labels:thershold_limit')}</label>
@@ -1743,7 +1743,7 @@ const StoreSettings = () => {
                     ''
                 ) : (
                     <>
-                        <Spin tip='Please wait!' size='large' spinning={isCurrencyLoading}>
+                        <Spin tip={t('labels:please_wait')} size='large' spinning={isCurrencyLoading}>
                             <Content className='bg-white mt-3 p-3 rounded-lg'>
                                 <label className='text-[20px] font-bold !text-center mb-4'>
                                     {t('labels:currency')}
@@ -1778,8 +1778,8 @@ const StoreSettings = () => {
                                         <div
                                             className={`justify-items-start  !inline-block   ${
                                                 util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                                    ? 'text-left ml-2'
-                                                    : 'text-right mr-2 '
+                                                    ? 'text-right mr-2 '
+                                                    : 'text-left ml-2'
                                             }`}>
                                             <p className='!text-gray-500 my-3 flex'>
                                                 {t('labels:currency_code')} <span className='ml-11'>:</span>
@@ -1865,7 +1865,7 @@ const StoreSettings = () => {
                                 </div>
                             </Content>
                         </Spin>
-                        <Spin tip='Please wait!' size='large' spinning={isLoading}>
+                        <Spin tip={t('labels:please_wait')} size='large' spinning={isLoading}>
                             <Content className='bg-white mt-3 p-3 rounded-lg'>
                                 <Content className=''>
                                     <Row className='!mb-4'>

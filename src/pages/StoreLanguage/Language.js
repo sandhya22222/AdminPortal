@@ -291,7 +291,7 @@ const Language = () => {
                                     <img
                                         src={plusIcon}
                                         alt='plusIconWithAddLanguage'
-                                        className=' !w-3 mr-2 items-center'
+                                        className='!w-3 mt-[0.3rem] mr-2 items-center'
                                     />
                                     <div className='mr-[10px]'>{t('labels:add_language')}</div>
                                 </Button>
@@ -302,7 +302,7 @@ const Language = () => {
                 }
                 titleContent={<Content className=' !flex !justify-end'></Content>}
             />
-            <Content className='!p-3 mt-[195px]'>
+            <Content className='!p-4 mt-[185px]'>
                 {isLoading ? (
                     <Content className=' bg-white p-3 shadow-brandShadow rounded-md'>
                         <SkeletonComponent />
@@ -313,7 +313,7 @@ const Language = () => {
                     </Content>
                 ) : (
                     <>
-                        <Content className='bg-white p-3 shadow-brandShadow rounded-md'>
+                        <Content className='bg-white p-4 shadow-brandShadow rounded-md'>
                             <Table dataSource={languageData?.data} columns={columns} pagination={false} />
                             {languageData?.count >= pageLimit ? (
                                 <Content className=' grid justify-items-end'>

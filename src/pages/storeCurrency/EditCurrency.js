@@ -7,6 +7,9 @@ import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import util from '../../util/common'
 import StoreModal from '../../components/storeModal/StoreModal'
 import MarketplaceToaster from '../../util/marketplaceToaster'
+import { usePageTitle } from '../../hooks/usePageTitle'
+const { Content } = Layout
+
 import { Checkbox } from '../../shadcnComponents/ui/checkbox'
 import { Skeleton } from '../../shadcnComponents/ui/skeleton'
 import { Button } from '../../shadcnComponents/ui/button'
@@ -15,6 +18,7 @@ const defaultCurrencyAPI = process.env.REACT_APP_DEFAULT_CURRENCY_API
 
 const EditCurrency = () => {
     const { t } = useTranslation()
+    usePageTitle(t('labels:currency'))
     const search = useLocation().search
     const navigate = useNavigate()
     const cId = new URLSearchParams(search).get('k')
