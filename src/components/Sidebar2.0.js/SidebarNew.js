@@ -1,5 +1,4 @@
 //! Import libraries
-import { LoadingOutlined } from '@ant-design/icons'
 import React, { useEffect, useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
