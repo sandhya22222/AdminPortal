@@ -165,15 +165,17 @@
     "enter_valid_email_message": "Please enter a valid email address.",
     "enter_valid_user_name_message": "Username must be at least 3 characters long.",
     "enter_valid_store_name_message": "Store Domain Name must be at least 3 characters long.",
-    "no_distributor_store_present_info": "Your Distributor store is not activated yet.",
+    "no_distributor_store_present_info": "Your account does not have a Distributor store yet.",
     "uppercase_letters": "Uppercase letters (A-Z)",
     "lowercase_letters": "Lowercase letters (a-z)",
     "digits": "Digits (0-9)",
     "underscore": "Underscores (_)",
     "hyphens": "Hyphens (-)",
     "username_acceptance_criteria_note": "Please note that your username cannot contain any special characters or symbols other than those listed above.",
+    "distributor_store_inactive_msg":"Your Distributor store is not activated yet.",
     "delete_profile_picture_confirmation": "Are you sure you want to permanently remove your profile picture?",
     "upload_valid_image": "Please upload valid image file",
     "accepted_image_formats": "Accepted image formats include .png, .jpg, .jpeg. Please ensure that the image size falls within the range of 1KB to 2MB.",
-    "image_size_error": "Please choose image file less than 2MB."
+    "image_size_error": "Please choose image file less than 2MB.",
+    "distributor_store_inactive_msg":"Your Distributor store is not activated yet."
 }

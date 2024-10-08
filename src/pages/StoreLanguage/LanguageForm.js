@@ -245,9 +245,9 @@ const LanguageForm = ({
             <Spin tip={t('labels:please_wait')} size='large' spinning={isLoading}>
                 {/* <Row className='gap-3'> */}
                 <Content className=''>
-                    <Col span={16} className=' m-3'>
+                    <Col span={16} className='m-4'>
                         <Content className=''>
-                            <label className='font-normal text-sm mb-2 ml-1 text-brandGray2'>
+                            <label className='font-normal text-sm !mb-3 ml-1 text-brandGray2'>
                                 {t('labels:language')}
                             </label>
                             <span className='mandatory-symbol-color text-sm !text-center ml-1'>*</span>
@@ -257,7 +257,7 @@ const LanguageForm = ({
                                 minLength={titleMinLength}
                                 maxLength={titleMaxLength}
                                 disabled={parseInt(languageStatus) === 1 ? true : false}
-                                className={`${
+                                className={`!mt-2 ${
                                     isEditLanguageFieldEmpty
                                         ? 'border-red-400 !border-[0.5px] border-solid focus:border-red-400 hover:border-red-400'
                                         : ''
@@ -280,7 +280,7 @@ const LanguageForm = ({
                             />
                         </Content>
                     </Col>
-                    <Col span={16} className=' mb-3 mx-3'>
+                    <Col span={16} className='mb-3 mx-3'>
                         <Content className=''>
                             <label className='font-normal text-sm mb-2 ml-1 text-brandGray2'>
                                 {t('labels:language_code')}
@@ -296,7 +296,7 @@ const LanguageForm = ({
                                     const lowerCaseLettersRegex = /^[a-z]+$/
                                     setIsHelperTextVisible(!lowerCaseLettersRegex.test(e.nativeEvent.data))
                                 }}
-                                className={`${
+                                className={`mt-2 ${
                                     isEditLanguageCodeFieldEmpty
                                         ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400'
                                         : ''

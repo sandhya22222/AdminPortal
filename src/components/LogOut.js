@@ -1,12 +1,14 @@
 import { Image, Layout } from 'antd'
 import React, { useEffect } from 'react'
 import { useAuth } from 'react-oidc-context'
+import { useTranslation } from 'react-i18next'
 
 import { Logout503 } from '../constants/media'
 
 const { Content } = Layout
 
 function LogOut() {
+    const { t } = useTranslation()
     const auth = useAuth()
     useEffect(() => {
         void auth.signoutSilent()
@@ -23,7 +25,7 @@ function LogOut() {
                     marginBottom: '.5rem',
                     marginTop: '1rem',
                 }}>
-                Please wait
+                {t('labels:please_wait')}
             </h3>
             <h3
                 style={{

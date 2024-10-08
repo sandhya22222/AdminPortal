@@ -7,9 +7,11 @@ import LanguageDocUpload from './LanguageDocUpload'
 import LanguageForm from './LanguageForm'
 import LanguageHeaderAction from './LanguageHeaderAction'
 import util from '../../util/common'
+import { usePageTitle } from '../../hooks/usePageTitle'
 function LanguageSettings() {
-    const navigate = useNavigate()
     const { t } = useTranslation()
+    usePageTitle(t('labels:language_settings'))
+    const navigate = useNavigate()
     const { Content } = Layout
     const { Title } = Typography
     const [languageCode, setLanguageCode] = useState()
@@ -37,7 +39,7 @@ function LanguageSettings() {
         }
     }, [navigate])
     return (
-        <Content className='pt-1'>
+        <Content className='pt-2'>
             <Content className='!z-20'>
                 <HeaderForTitle
                     title={
@@ -88,7 +90,7 @@ function LanguageSettings() {
             </Content>
             <Content className='p-4 mt-[9rem] !min-h-screen'>
                 <Content className='!bg-white shadow-brandShadow  rounded-md'>
-                    <Content className='p-3'>
+                    <Content className='p-4'>
                         <Content className='my-2 mb-4 '>
                             {/**
                              * This particular container is to display the required language related fields

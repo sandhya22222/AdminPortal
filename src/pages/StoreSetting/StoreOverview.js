@@ -80,7 +80,7 @@ const StoreOverview = ({ realmName }) => {
     }, [])
 
     return (
-        <Content className='bg-white p-3 my-2'>
+        <Content className='bg-white p-4 my-2'>
             {isUsersLoading ? (
                 <Content className='bg-white p-3 !rounded-md mt-[2.0rem]'>
                     <Skeleton
@@ -99,20 +99,20 @@ const StoreOverview = ({ realmName }) => {
                         // spinning={action === "edit" && isLoadingProductTemplatesById}
                         spinning={isStoreTypeLoading}>
                         <label className='text-lg  font-semibold mb-4  text-regal-blue'>{t('labels:overview')}</label>
-                        <Content>
+                        <Content className='mt-4'>
                             <Col span={10} className='mb-3'>
                                 <label className='text-brandGray2 font-normal text-sm mb-2'>
                                     {t('labels:store_domain_name')}
                                 </label>
                                 <span className='mandatory-symbol-color text-sm text-center ml-1'>*</span>
                                 <div className='flex'>
-                                    <Input value={realmName} disabled={true} className={``} />
-                                    <span className='mx-3 mt-1 text-brandGray2'>{domainName}</span>
+                                    <Input value={realmName} disabled={true} className={`mt-2`} />
+                                    <span className='mx-3 mt-2 text-brandGray2'>{domainName}</span>
                                 </div>
                             </Col>
                             <div className='flex'>
                                 <label
-                                    className='text-[14px] leading-[22px] font-normal text-brandGray2 mb-2 ml-1 '
+                                    className='text-[14px] leading-[22px] font-normal text-brandGray2 mb-3 ml-1 '
                                     id='labStNam'>
                                     {t('labels:store_type')}
                                 </label>
@@ -141,30 +141,12 @@ const StoreOverview = ({ realmName }) => {
                                 <div
                                     className={`justify-items-start  !inline-block  !w-[30%] ${
                                         util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                            ? 'text-left ml-2'
-                                            : 'text-right mr-2 '
+                                            ? 'text-right mr-2 '
+                                            : 'text-left ml-2'
                                     }`}>
-                                    <p className='text-brandGray1  my-3 flex'>
-                                        {t('labels:store_front_url')}
-                                        <span
-                                            className={
-                                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                                    ? '!mr-[108px]'
-                                                    : '!ml-[108px]'
-                                            }>
-                                            :
-                                        </span>
-                                    </p>
-                                    <p className='text-brandGray1  my-3 flex'>
+                                    <p className='text-brandGray1  my-4 flex'>{t('labels:store_front_url')}</p>
+                                    <p className='text-brandGray1  my-4 flex'>
                                         {t('labels:store_management_portal_url')}
-                                        <span
-                                            className={
-                                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                                    ? 'mr-3'
-                                                    : 'ml-3'
-                                            }>
-                                            :
-                                        </span>
                                     </p>
                                 </div>
                                 <div
@@ -173,7 +155,8 @@ const StoreOverview = ({ realmName }) => {
                                             ? 'w-[67%] !inline-block '
                                             : ' w-[67%] !inline-block '
                                     }`}>
-                                    <p className='!font-semibold my-3'>
+                                    <p className='!font-semibold my-4'>
+                                        {': '}
                                         {userAllAPIData[0]?.store_front_url !== null ? (
                                             <a
                                                 className='cursor-pointer text-brandPrimaryColor no-underline'
@@ -186,7 +169,8 @@ const StoreOverview = ({ realmName }) => {
                                             `${t('labels:not_available')}`
                                         )}
                                     </p>
-                                    <p className='!font-semibold my-3'>
+                                    <p className='!font-semibold my-4'>
+                                        {': '}
                                         {userAllAPIData[0]?.store_redirect_url !== null ? (
                                             <a
                                                 className='cursor-pointer text-brandPrimaryColor no-underline'
@@ -201,20 +185,20 @@ const StoreOverview = ({ realmName }) => {
                                     </p>
                                 </div>
                             </div>
-                            <label className='my-2 text-regal-blue font-bold text-base'>
+                            <label className='my-3 text-regal-blue font-bold text-base'>
                                 {t('labels:store_administrator_details')}
                             </label>
-                            <Col span={12} className='mb-3 mt-2'>
+                            <Col span={12} className='mb-4 mt-3'>
                                 <label className='text-brandGray2 font-normal text-sm mb-2'>{t('labels:email')}</label>
                                 <span className='mandatory-symbol-color text-sm text-center ml-1'>*</span>
-                                <Input value={userAllAPIData[0]?.email} disabled={true} className={``} />
+                                <Input value={userAllAPIData[0]?.email} disabled={true} className={`mt-2`} />
                             </Col>
-                            <Col span={12} className='mb-3'>
-                                <label className='text-brandGray2 font-normal text-sm mb-2'>
+                            <Col span={12} className='mb-4'>
+                                <label className='text-brandGray2 font-normal text-sm mb-3'>
                                     {t('labels:store_user_name')}
                                 </label>
                                 <span className='mandatory-symbol-color text-sm text-center ml-1'>*</span>
-                                <Input value={userAllAPIData[0]?.username} disabled={true} className={``} />
+                                <Input value={userAllAPIData[0]?.username} disabled={true} className={`mt-2`} />
                             </Col>
                         </Content>
                         {isDistributor === 'false' && (

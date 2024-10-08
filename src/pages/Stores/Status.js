@@ -208,7 +208,7 @@ function Status({
                     <Switch
                         checked={switchStatus}
                         onCheckedChange={onChange} // Adjust this handler to match the ShadCN API
-                        disabled={disableStatus || statusInprogress === 3 || isDistributor}
+                        disabled={disableStatus || statusInprogress === 3 || (isDistributor && switchStatus)}
                     />
                 </Col>
             </Row>

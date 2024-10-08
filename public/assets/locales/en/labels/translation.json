@@ -321,5 +321,7 @@
     "mobile_number": "Mobile Number",
     "change_profile_picture": "Change Profile Picture",
     "delete_profile_picture": "Delete Profile Picture",
-    "add_new_file": "Add New File"
+    "add_new_file": "Add Profile Image",
+    "leading_line": "I have read and agreed to the following policies",
+    "updated_date_and_time":"Updated Date and Time"
 }

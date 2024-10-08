@@ -358,7 +358,7 @@ const StoreImages = ({
                                 </Upload>
                             </div>
                             <div className='mt-4 text-[#a8a8a8]'>
-                                <ul className='list-disc '>
+                                <ul className='list-disc pl-3 '>
                                     <li className='!mb-0 '>{t('messages:store_logo_info')}</li>
                                     <li>{t('messages:store_logo_resolution')}</li>
                                     <li className='!mb-0 '>{t('messages:upload_image_content')}</li>
@@ -437,7 +437,11 @@ const StoreImages = ({
                                                 ? '!relative !ml-6'
                                                 : '!relative '
                                         }>
-                                        <Image src={ele} className='!w-[140px] !h-[102px] ' />
+                                        <Image
+                                            src={ele}
+                                            className='!w-[140px] !h-[102px] '
+                                            preview={{ mask: t('labels:preview') }}
+                                        />
                                         <TiDelete
                                             className='!absolute !cursor-pointer !right-[-5px] !z-5  !top-[-10px] !text-2xl !text-red-600 !shadow-lg  hover:translate-'
                                             onClick={() => {

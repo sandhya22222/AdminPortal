@@ -476,11 +476,12 @@ const Stores = () => {
         },
         {
             header: `${t('labels:created_date_and_time')}`,
-            value: 'created_on',
+            value: 'updated_on',
+            key: 'updated_on',
             render: (text, record) => {
                 return (
                     // <p disabled={record.status === 3 ? true : false} className=''>
-                    new Date(record.created_on).toLocaleString()
+                    new Date(record.updated_on).toLocaleString()
                     // {/* </p> */}
                 )
             },
@@ -561,6 +562,7 @@ const Stores = () => {
                 var storeId = element.store_uuid
                 var storeName = element.name
                 var createdOn = element.created_on
+                var updatedOn = element.updated_on
                 var storeStatus = element.status
                 var realmName = element.realmname
                 var isDistributor = element.distributor_store
@@ -570,6 +572,7 @@ const Stores = () => {
                         name: storeName,
                         id: storeId,
                         created_on: createdOn,
+                        updated_on: updatedOn,
                         status: storeStatus,
                         storeId: storeActualId,
                         realmName: realmName,
@@ -1086,7 +1089,7 @@ const Stores = () => {
                     ) : null
                 }
                 headerContent={
-                    <Content className='!h-10 !mt-16'>
+                    <Content className='!h-[2.6rem] !mt-16'>
                         <Tabs
                             activeKey={currentTab}
                             defaultActiveKey='1'
@@ -1259,8 +1262,8 @@ const Stores = () => {
                                     </Content>
                                 ) : parseInt(currentTab) === 2 ? (
                                     <>
-                                        <Content className='shadow-brandShadow rounded-md bg-white mb-3'>
-                                            <Title className='!text-regal-blue pt-3 ml-6' level={4}>
+                                        <Content className='shadow-brandShadow rounded-md bg-white mb-4'>
+                                            <Title className='!text-regal-blue pt-4 ml-6' level={4}>
                                                 {t('labels:account_restrictions')}
                                             </Title>
                                             <Divider className='w-full mt-2 mb-2' />
@@ -1284,7 +1287,7 @@ const Stores = () => {
                                             </div>
                                         </Content>
                                         <Content className='shadow-brandShadow rounded-md bg-white'>
-                                            <Title className='!text-regal-blue  pt-3 ml-6' level={4}>
+                                            <Title className='!text-regal-blue  pt-4 ml-6' level={4}>
                                                 {t('labels:store_restrictions')}
                                             </Title>
                                             <Divider className='w-full mt-2 mb-2' />
@@ -1397,7 +1400,7 @@ const Stores = () => {
                                         value={name}
                                         minLength={storeNameMinLength}
                                         maxLength={storeNameMaxLength}
-                                        className={`!w-[50%] ${
+                                        className={`!w-[50%] mt-2 ${
                                             inValidName
                                                 ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400 '
                                                 : ''
@@ -1422,7 +1425,7 @@ const Stores = () => {
                                             setName(trimmedUpdate)
                                         }}
                                     />
-                                    <span className='mx-3 mt-1 text-brandGray2'>{domainName}</span>
+                                    <span className='mx-3 mt-2 text-brandGray2'>{domainName}</span>
                                 </div>
                                 {inValidName && name === '' && (
                                     <div className='text-red-600 flex gap-1 mt-1'>
@@ -1482,7 +1485,7 @@ const Stores = () => {
                                     }}
                                     disabled={isDistributor}
                                 />
-                                <div className='font-bold  mt-[22px] text-[16px] leading-[24px] text-regal-blue'>
+                                <div className='font-bold  mt-[24px] text-[16px] leading-[24px] text-regal-blue'>
                                     {t('labels:store_administrator_details')}
                                 </div>
                                 <Alert
@@ -1498,7 +1501,7 @@ const Stores = () => {
                                     }
                                     type='info'
                                     showIcon
-                                    className='my-3 !w-[89%]'
+                                    className='my-4 !w-[89%]'
                                 />
                                 <div>
                                     <label
@@ -1513,7 +1516,7 @@ const Stores = () => {
                                     value={storeEmail}
                                     minLength={emailMinLength}
                                     maxLength={emailMaxLength}
-                                    className={`!w-[50%] ${
+                                    className={`!w-[50%] mt-2 ${
                                         inValidEmail
                                             ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400'
                                             : ''

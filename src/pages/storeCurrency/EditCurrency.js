@@ -9,6 +9,7 @@ import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import util from '../../util/common'
 import StoreModal from '../../components/storeModal/StoreModal'
 import MarketplaceToaster from '../../util/marketplaceToaster'
+import { usePageTitle } from '../../hooks/usePageTitle'
 const { Content } = Layout
 const { Title } = Typography
 
@@ -17,6 +18,7 @@ const defaultCurrencyAPI = process.env.REACT_APP_DEFAULT_CURRENCY_API
 
 const EditCurrency = () => {
     const { t } = useTranslation()
+    usePageTitle(t('labels:currency'))
     const search = useLocation().search
     const navigate = useNavigate()
     const cId = new URLSearchParams(search).get('k')
@@ -195,15 +197,15 @@ const EditCurrency = () => {
                 />
             </Content>
             <Content className='!p-3 !mt-[9.5rem] !min-h-screen '>
-                <Spin tip='Please wait!' size='large' spinning={isLoading}>
+                <Spin tip={t('labels:please_wait')} size='large' spinning={isLoading}>
                     <Content className=' !bg-white !p-4 shadow-brandShadow rounded'>
                         <div className='font-semibold  text-lg my-2 '>{t('labels:currency_details')}</div>
                         <Row className='w-[100%]'>
                             <Col
-                                className={`justify-items-start  !inline-block   ${
+                                className={`justify-items-start !inline-block   ${
                                     util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                        ? 'text-left ml-2'
-                                        : 'text-right mr-2 '
+                                        ? 'text-right mr-2 '
+                                        : 'text-left ml-2'
                                 }`}>
                                 <p className='input-label-color my-4 flex font-normal text-sm'>
                                     {t('labels:currency_code')}{' '}
