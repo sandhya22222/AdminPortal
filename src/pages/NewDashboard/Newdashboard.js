@@ -224,7 +224,7 @@ const Newdashboard = () => {
             <div className='mb-2'>
                 <HeaderForTitle
                     title={
-                        <div className='flex z-20 w-full mb-3 mt-2 !justify-between'>
+                        <div className='flex z-20  mb-3 mt-2 !justify-between'>
                             <div className='!w-[80%] mr-2 flex !font-semibold text-lg flex-col gap-1 '>
                                 <div className='flex gap-1 !font-semibold text-[24px] '>
                                     <h3 className='!text-[#637381] m-0 '>{t('messages:hello') + ','}</h3>
@@ -233,7 +233,7 @@ const Newdashboard = () => {
                                     </h3>
                                 </div>
     
-                                <p className='!text-sm mb-2 !text-[#637381] w-[47em] font-normal'>
+                                <p className='!text-sm my-3 !text-[#637381] w-[47em] font-normal'>
                                     {t('messages:dashboard_welcome_message')}
                                 </p>
                             </div>
@@ -311,7 +311,7 @@ const Newdashboard = () => {
                                         <div className='flex items-center'>
                                             <span className='inline-block w-1.5 h-1.5 bg-gray-400 rounded-full mr-2'></span>
                                             <span className='!text-brandGray2 text-[14px] font-bold'>
-                                                {t('labels:inactive_stores')}
+                                            {t('labels:inactive_stores')}
                                             </span>
                                         </div>
                                     </div>

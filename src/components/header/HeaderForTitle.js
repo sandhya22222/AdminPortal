@@ -1,13 +1,11 @@
-import { Layout, Button, Row } from 'antd'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ArrowLeftOutlined, ArrowRightOutlined } from '@ant-design/icons'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
+import { Button } from '../../shadcnComponents/ui/button'
 
 import './header2.css'
-
-const { Content } = Layout
 
 function HeaderForTitle({
     title,
@@ -34,62 +32,61 @@ function HeaderForTitle({
             navigate(-1)
         }
     }
+
     return (
-        <Content className='shadow-sm'>
-            <Content
+        <div className='shadow-sm'>
+            <div
                 style={{ zIndex: '5' }}
                 className={`${
                     headerContent === undefined
-                        ? 'shadow-sm fixed !h-auto top-[72px]  bg-white flex justify-between headerWidth !px-5 pt-3 pb-1'
-                        : 'fixed !h-auto top-[72px]   bg-white flex justify-between headerWidth !px-5 pt-3 pb-1'
+                        ? 'shadow-sm fixed !h-auto top-[72px] bg-white flex justify-between headerWidth !px-5 pt-3 pb-1'
+                        : 'fixed !h-auto top-[72px] bg-white flex justify-between headerWidth !px-5 pt-3 pb-1'
                 }`}>
-                <Content className={`${showArrowIcon === true ? 'flex !items-center gap-2' : ''}`}>
-                    {showArrowIcon === true ? (
-                        selectedLanguageFromReduxState &&
-                        Object(selectedLanguageFromReduxState).hasOwnProperty('writing_script_direction') &&
-                        String(selectedLanguageFromReduxState?.writing_script_direction).toUpperCase() === 'RTL' ? (
-                            <ArrowRightOutlined className='!text-xl ml-2 ' onClick={handleNavigationBack} />
-                        ) : (
-                            <ArrowLeftOutlined className=' !text-xl mr-2 ' onClick={handleNavigationBack} />
-                        )
-                    ) : null}
-                    <Row className='w-full !items-center'>
-                        <Content className='w-[30%] flex justify-start'>{title}</Content>
-                        <div className='flex justify-end'>{titleContent}</div>
-                    </Row>
-                </Content>
-                {showArrowIcon === true ? (
+                <div className={`${showArrowIcon ? 'flex !items-center gap-2 cursor-pointer' : ''}`}>
+                    {showArrowIcon && (
+                        <>
+                            {selectedLanguageFromReduxState &&
+                            Object(selectedLanguageFromReduxState).hasOwnProperty('writing_script_direction') &&
+                            String(selectedLanguageFromReduxState?.writing_script_direction).toUpperCase() === 'RTL' ? (
+                                <ArrowRight className='!text-xl ml-2' onClick={handleNavigationBack} />
+                            ) : (
+                                <ArrowLeft className='!text-xl mr-2' onClick={handleNavigationBack} />
+                            )}
+                        </>
+                    )}
+                </div>
+                <div className='w-full flex justify-between items-center'>
+                    <div className='w-[30%] flex justify-start'>{title}</div>
+                    <div className='flex justify-end'>{titleContent}</div>
+                </div>
+                {showArrowIcon && (
                     <>
-                        {showButtons === false ? (
-                            ''
-                        ) : (
-                            <Content className='flex justify-end'>
-                                {' '}
-                                {disableDiscard === true ? null : (
-                                    <Button className='mx-2' onClick={() => navigate(-1)}>
+                        {showButtons === false ? null : (
+                            <div className='flex justify-end'>
+                                {disableDiscard ? null : (
+                                    <Button variant='secondary' className='mx-2' onClick={() => navigate(-1)}>
                                         {t('labels:discard')}
                                     </Button>
                                 )}
-                                {isVisible !== false ? (
+                                {isVisible !== false && (
                                     <Button
                                         disabled={disableSave === true ? true : false}
                                         onClick={() => saveFunction()}
-                                        className={`${
-                                            disableSave === true ? 'app-btn-primary opacity-50' : 'app-btn-primary'
-                                        }`}>
+                                        className={`${disableSave ? 'app-btn-primary opacity-50' : 'app-btn-primary'}`}>
                                         {/* // !This Button Renders on Store Product Type */}
+
                                         {action === 'add' ? t('labels:save') : t('labels:update')}
                                     </Button>
-                                ) : null}
-                            </Content>
+                                )}
+                            </div>
                         )}
                     </>
-                ) : null}
-            </Content>
+                )}
+            </div>
             {headerContent !== null && headerContent !== undefined ? (
                 <Content className='mt-[4.0rem] bg-white !px-5 !pt-3 !pb-1'>{headerContent}</Content>
             ) : null}
-        </Content>
+        </div>
     )
 }
 

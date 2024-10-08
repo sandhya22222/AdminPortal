@@ -9,7 +9,7 @@ import {
     Spin,
     Tooltip,
     Typography,
-    Tabs,
+    // Tabs,
     // Progress,
     // InputNumber,
     Alert,
@@ -44,7 +44,7 @@ import { useAuth } from 'react-oidc-context'
 import { validatePositiveNumber } from '../../util/validation'
 
 import ShadCNDataTable from '../../shadcnComponents/customComponents/ShadCNDataTable'
-import { Star } from 'lucide-react'
+import { Plus, Star } from 'lucide-react'
 import { Badge } from '../../shadcnComponents/ui/badge'
 import ShadCNPagination from '../../shadcnComponents/customComponents/ShadCNPagination'
 import ShadCNTooltip from '../../shadcnComponents/customComponents/ShadCNTooltip'
@@ -54,6 +54,7 @@ import { Button } from '../../shadcnComponents/ui/button'
 import SearchInput from './SearchInput'
 import { PAGE_NUMBER_TO_SEARCH } from '../../constants/constants'
 import { Avatar, AvatarFallback, AvatarImage } from '../../shadcnComponents/ui/avatar'
+import { Tabs, TabsList, TabsTrigger } from '../../shadcnComponents/ui/tabs'
 const { Content } = Layout
 const { Title, Text } = Typography
 // const { Search } = Input
@@ -1063,48 +1064,38 @@ const Stores = () => {
     }
 
     const customButton = <Button disabled={searchValue?.trim() === '' ? true : false} icon={<SearchOutlined />} />
+    useEffect(() => {
+        const tab = searchParams.get('m_t') || '1'
+        setCurrentTab(tab)
+    }, [searchParams])
+
+    const handleTabChange = (value) => {
+        setCurrentTab(value)
+        setSearchParams({ m_t: value })
+    }
 
     return (
         <Content className=''>
             <HeaderForTitle
-                title={<div className='!font-semibold text-2xl mb-4 !text-regal-blue'>{t('labels:stores')}</div>}
+                title={<h1 className='font-semibold text-2xl mb-4 text-primary'>{t('labels:stores')}</h1>}
                 titleContent={
-                    parseInt(currentTab) === 1 ? (
-                        hideAddStoreButton ? (
-                            ''
-                        ) : (
-                            <Button
-                                className='app-btn-primary mt-2 !h-[32px] flex items-center'
-                                onClick={showAddDrawer}>
-                                <PlusOutlined />
-                                {t('labels:add_store')}
-                            </Button>
-                        )
-                    ) : null
+                    parseInt(currentTab) === 1 &&
+                    !hideAddStoreButton && (
+                        <Button className='mt-2 h-8 flex items-center' onClick={showAddDrawer}>
+                            <Plus className='mr-2 h-4 w-4' />
+                            {t('labels:add_store')}
+                        </Button>
+                    )
                 }
                 headerContent={
-                    <Content className='!h-10 !mt-16'>
-                        <Tabs
-                            activeKey={currentTab}
-                            defaultActiveKey='1'
-                            items={[
-                                {
-                                    key: '1',
-                                    label: <span className=''>{t('labels:my_stores')}</span>,
-                                },
-                                {
-                                    key: '2',
-                                    label: <span className='!mr-3 '>{t('labels:threshold_configuration')}</span>,
-                                },
-                            ]}
-                            onChange={(key) => {
-                                setCurrentTab(key)
-                                setSearchParams({
-                                    m_t: key,
-                                })
-                            }}
-                        />
-                    </Content>
+                    <div className='mt-16'>
+                        <Tabs value={currentTab} onValueChange={handleTabChange}>
+                            <TabsList>
+                                <TabsTrigger value='1'>{t('labels:my_stores')}</TabsTrigger>
+                                <TabsTrigger value='2'>{t('labels:threshold_configuration')}</TabsTrigger>
+                            </TabsList>
+                        </Tabs>
+                    </div>
                 }
             />
             <div className='!p-5'>
