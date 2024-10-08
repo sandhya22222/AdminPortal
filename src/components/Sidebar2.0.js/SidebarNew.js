@@ -1,42 +1,31 @@
 //! Import libraries
 import { LoadingOutlined } from '@ant-design/icons'
-import { Layout, Menu, Spin, Tooltip, Typography } from 'antd'
-import React, { useEffect, useState, Suspense } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import NewFooter from './../footer/Footer'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '../../shadcnComponents/ui/resizable'
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '../../shadcnComponents/ui/tooltip'
+import { cn } from '../../lib/utils'
+import { MdArrowDropDown, MdArrowDropUp } from 'react-icons/md'
 //! Import CSS libraries
 
 //! Import user defined functions
 
 //! Import user defined CSS
 import { useAuth } from 'react-oidc-context'
-import util from '../../util/common'
 import './SidebarNewUpdated.css'
 import { DashboardSVG } from './components/DashboardSVG'
 import { StoresSVG } from './components/StoresSVG'
 import { SettingsSVG } from './components/SettingsSVG'
 
-//! Destructure the components
-const { Sider, Content } = Layout
-
-const antIcon = <LoadingOutlined className='text-[10px] hidden' spin />
-
-const antLazyLoadingIcon = (
-    <LoadingOutlined
-        style={{
-            fontSize: 54,
-        }}
-        spin
-    />
-)
 const pageLimitFromENV = process.env.REACT_APP_ITEM_PER_PAGE
 
 //! Global Variables
 
 const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
-    const { Text } = Typography
+    const previousSize = useRef(null)
+
     const { t } = useTranslation()
     const [selectedItem, setSelectedItem] = useState([])
     const [openedItem, setOpenedItem] = useState([])
@@ -53,15 +42,6 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
 
     const [myData, setMyData] = useState([])
 
-    // Function to handle mouse enter event on the sidebar
-    const handleMouseEnter = () => {
-        setIsHovering(true)
-    }
-
-    // Function to handle mouse leave event on the sidebar
-    const handleMouseLeave = () => {
-        setIsHovering(false)
-    }
     useEffect(() => {
         switch (pathname.split('/')[2]) {
             case 'platformadmin':
@@ -121,8 +101,6 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                     children: [
                         {
                             key: '3',
-                            // icon: <img src={TranslateIcon} alt='TranslateIcon' />,
-                            // inactive_icon: <img src={TranslateIcon} alt='TranslateIcon' />,
                             label: `${t('labels:language_settings')}`,
                             navigate_to: '/dashboard/language',
                             show_in_menu:
@@ -133,28 +111,18 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                         },
                         {
                             key: '13',
-                            // icon: <img src={currencyIcon} alt='currencyIcon' />,
-                            // inactive_icon: <img src={currencyInActiveIcon} alt='currencyInActiveIcon' />,
                             label: ` ${t('labels:currency')}`,
                             navigate_to: '/dashboard/currency',
                             show_in_menu: true,
                         },
                         {
                             key: '5',
-                            // icon: <img src={PaymentSettingsIcon} alt='PaymentSettingsIcon' />,
-                            // inactive_icon: <img src={PaymentTypeIcon} alt='PaymentTypeIcon' />,
                             label: ` ${t('labels:payment_settings')}`,
                             navigate_to: '/dashboard/paymenttype',
                             show_in_menu: true,
                         },
                         {
                             key: '12',
-                            // icon: (
-                            //     <img src={UserAccessControl} alt='userAccessControl' width={'15px'} height={'15px'} />
-                            // ),
-                            // inactive_icon: (
-                            //     <img src={UserAccessControl} alt='userAccessControl' width={'15px'} height={'15px'} />
-                            // ),
                             label: `${t('labels:user_access_control')}`,
                             navigate_to: `/dashboard/user-access-control/list-user-roles?tab=0&page=1&limit=${pageLimitFromENV}`,
                             show_in_menu:
@@ -175,8 +143,6 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                         },
                         {
                             key: '6',
-                            // icon: <img src={ProfileIcon} alt='profileIcon' width={'15px'} height={'15px'} />,
-                            // inactive_icon: <img src={ProfileIcon} alt='profileIcon' width={'15px'} height={'15px'} />,
                             label: ` ${t('labels:profile')}`,
                             navigate_to: '/dashboard/userprofile',
                             show_in_menu: true,
@@ -186,243 +152,214 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
             ])
         }
     }, [permissionValue])
+    const handleClick = (key, navigateTo) => {
+        setSelectedItem(key)
+        navigate(navigateTo)
+    }
 
+    const toggleSubMenu = (key) => {
+        setOpenedItem((prev) => (prev === key ? null : key))
+    }
     return (
-        // <Layout className=''>
-        //     {/* <div className='' style={{ width: '252px' }}> */}
-        //     {/* <Affix offsetTop={48}> */}
-        //     <Sider
-        //         trigger={null}
-        //         collapsible
-        //         collapsed={collapsed}
-        //         onCollapse={(value) => setCollapsed(value)}
-        //         width={252}
-        //         onMouseEnter={() => {
-        //             handleMouseEnter()
-        //         }}
-        //         onMouseLeave={() => {
-        //             handleMouseLeave()
-        //         }}
-        //         style={{
-        //             overflow: isHovering ? 'auto' : 'hidden',
-        //             height: '100vh',
-        //             position: 'fixed',
-        //             top: 72,
-        //             left: `${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? null : 0}`,
-        //             right: `${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 0 : null}`,
-        //         }}>
-        //         <Spin spinning={myData.length > 0 ? false : true} indicator={antIcon} tip=''>
-        //             <Menu
-        //                 mode='inline'
-        //                 className='h-full !text-base !transition-all'
-        //                 selectedKeys={selectedItem}
-        //                 openKeys={openedItem}
-        //                 onOpenChange={(e) => {
-        //                     setOpenedItem(e)
-        //                 }}
-        //                 theme={'light'}
-        //                 style={{
-        //                     height: 'calc(100vh)',
-        //                     overflow: isHovering ? 'auto' : 'hidden',
-        //                 }}>
-        //                 {myData.map((item) =>
-        //                     item.show_in_menu && item.children ? (
-        //                         <Menu.SubMenu
-        //                             icon={item?.icon}
-        //                             // icon={item.icon}
-        //                             key={item.key}
-        //                             title={item.label}
-        //                             style={{
-        //                                 opacity: item.childrenKeys.includes(selectedItem) ? 1 : 0.8,
-        //                             }}>
-        //                             {item.children.map((child) =>
-        //                                 child.show_in_menu ? (
-        //                                     <Menu.Item
-        //                                         // icon={child.icon}
-        //                                         key={child.key}
-        //                                         // style={{ color: "black" }}
-        //                                         onClick={() => {
-        //                                             navigate(child.navigate_to)
-        //                                         }}
-        //                                         style={{
-        //                                             opacity: !item.childrenKeys.includes(selectedItem)
-        //                                                 ? 1
-        //                                                 : selectedItem === child.key
-        //                                                   ? 1
-        //                                                   : 0.8,
-        //                                         }}>
-        //                                         {selectedItem === child.key ? (
-        //                                             <span className='font-semibold'>{child.label}</span>
-        //                                         ) : (
-        //                                             child.label
-        //                                         )}
-        //                                     </Menu.Item>
-        //                                 ) : null
-        //                             )}
-        //                         </Menu.SubMenu>
-        //                     ) : item.show_in_menu ? (
-        //                         <Menu.Item
-        //                             icon={item?.icon}
-        //                             // icon={item.icon}
-        //                             key={item.key}
-        //                             disabled={!item.show_in_menu}
-        //                             onClick={() => {
-        //                                 navigate(item.navigate_to)
-        //                             }}
-        //                             style={{
-        //                                 opacity: selectedItem === item.key ? 1 : 0.8,
-        //                             }}>
-        //                             {selectedItem === item.key ? (
-        //                                 <span className='font-semibold '>{item.label}</span>
-        //                             ) : (
-        //                                 item.label
-        //                             )}
-        //                         </Menu.Item>
-        //                     ) : null
-        //                 )}
-        //             </Menu>
-        //         </Spin>
-        //     </Sider>
-        //     {/* </Affix> */}
-        //     {/* </div> */}
-        //     <Content
-        //         className={`flex flex-col min-h-screen transition-all ${
-        //             util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-        //                 ? `${collapsed ? 'mr-[80px]' : 'mr-[252px]'}`
-        //                 : `${collapsed ? 'ml-[80px]' : 'ml-[252px]'}`
-        //         }`}>
-        //         <Content className='!bg-[#F4F4F4]  flex-grow'>
-        //             <Outlet />
-        //         </Content>
-        //         <Content className='flex-grow-0  !w-[100%]'>
-        //             <NewFooter />
-        //         </Content>
-        //     </Content>
-        <ResizablePanelGroup direction='horizontal' className=''>
-            <ResizablePanel
-                onCollapse={(value) => setCollapsed(value)}
-                collapsible={collapsed}
-                onMouseEnter={() => {
-                    handleMouseEnter()
-                }}
-                onMouseLeave={() => {
-                    handleMouseLeave()
-                }}
-                style={{
-                    overflow: isHovering ? 'auto' : 'hidden',
-                    height: '100vh',
-                    position: 'fixed',
-                    top: 72,
-                    width: collapsed ? 70 : 252,
-                    left: `${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? null : 0}`,
-                    right: `${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 0 : null}`,
-                }}>
-                <Spin spinning={myData.length > 0 ? false : true} indicator={antIcon} tip=''>
-                    <Menu
-                        mode='inline'
-                        className='h-full !text-base !transition-all'
-                        selectedKeys={selectedItem}
-                        openKeys={openedItem}
-                        onOpenChange={(e) => {
-                            setOpenedItem(e)
-                        }}
-                        theme={'light'}
-                        style={{
-                            height: 'calc(100vh)',
-                            overflow: isHovering ? 'auto' : 'hidden',
-                        }}>
+        <TooltipProvider delayDuration={0}>
+            <ResizablePanelGroup
+                direction='horizontal'
+                className='h-full min-h-screen bg-white '
+                style={{ transition: 'width 0.3s ease-in-out' }}>
+                <ResizablePanel
+                    onCollapse={() => setCollapsed(true)}
+                    collapsible={true}
+                    onMouseEnter={() => setIsHovering(true)}
+                    onMouseLeave={() => setIsHovering(false)}
+                    onResize={(size) => {
+                        const currentWidth = size
+
+                        // Check if the panel is shrinking
+                        if (previousSize.current && currentWidth < previousSize.current) {
+                            if (currentWidth < 100) {
+                                setCollapsed(true) // Trigger collapse when width is below 100px
+                            }
+                        } else if (previousSize.current && currentWidth > previousSize.current) {
+                            setCollapsed(false) // Expand if width goes beyond 100px
+                        }
+
+                        // Store the current size as the previous size for next comparison
+                        previousSize.current = currentWidth
+                    }}
+                    style={{
+                        height: '100vh',
+                        width: collapsed ? 50 : 252,
+                        maxWidth: 252,
+                        minWidth: 50,
+                        transition: 'width 0.3s ease-in-out, left 0.3s ease-in-out',
+                        position: 'fixed',
+                        top: 0, // Stick it to the top of the viewport
+                        left: 0, // Stick it to the left of the viewport
+                        zIndex: 10, // Keep it above other content
+                    }}
+                    className={'overflow-hidden'}>
+                    {/* <Spin spinning={myData.length > 0 ? false : true} indicator={antIcon} tip=''> */}
+
+                    <div
+                        className={`${collapsed ? 'w-[50px] p-[6px] !ml-1' : 'w-[252px] p-2'} min-h-screen relative transition-all`}
+                        style={{ top: '72px', zIndex: 1001 }}>
                         {myData.map((item) =>
-                            item.show_in_menu && item.children ? (
-                                <Menu.SubMenu
-                                    icon={item?.icon}
-                                    // icon={item.icon}
-                                    key={item.key}
-                                    title={item.label}
-                                    style={{
-                                        opacity: item.childrenKeys.includes(selectedItem) ? 1 : 0.8,
-                                    }}>
-                                    {item.children.map((child) =>
-                                        child.show_in_menu ? (
-                                            <Menu.Item
-                                                // icon={child.icon}
-                                                key={child.key}
-                                                // style={{ color: "black" }}
-                                                onClick={() => {
-                                                    navigate(child.navigate_to)
-                                                }}
-                                                style={{
-                                                    opacity: !item.childrenKeys.includes(selectedItem)
-                                                        ? 1
-                                                        : selectedItem === child.key
-                                                          ? 1
-                                                          : 0.8,
-                                                }}>
-                                                {selectedItem === child.key ? (
-                                                    <Tooltip
-                                                        placement='bottom'
-                                                        title={child?.label?.length > 23 ? child.label : undefined}>
-                                                        <span className='font-semibold'>{child.label}</span>
-                                                    </Tooltip>
-                                                ) : (
-                                                    <Tooltip
-                                                        placement='bottom'
-                                                        title={child?.label?.length > 23 ? child.label : undefined}>
-                                                        <span>{child.label}</span>
-                                                    </Tooltip>
-                                                )}
-                                            </Menu.Item>
-                                        ) : null
-                                    )}
-                                </Menu.SubMenu>
-                            ) : item.show_in_menu ? (
-                                <Menu.Item
-                                    icon={item?.icon}
-                                    // icon={item.icon}
-                                    key={item.key}
-                                    disabled={!item.show_in_menu}
-                                    onClick={() => {
-                                        navigate(item.navigate_to)
-                                    }}
-                                    style={{
-                                        opacity: selectedItem === item.key ? 1 : 0.8,
-                                    }}>
-                                    {selectedItem === item.key ? (
-                                        <Tooltip
-                                            placement='bottom'
-                                            title={item?.label?.length > 23 ? item.label : undefined}>
-                                            <span className='font-semibold'>{item.label}</span>
-                                        </Tooltip>
-                                    ) : (
-                                        <Tooltip
-                                            placement='bottom'
-                                            title={item?.label?.length > 23 ? item.label : undefined}>
-                                            <span>{item.label}</span>
-                                        </Tooltip>
-                                    )}
-                                </Menu.Item>
+                            item.show_in_menu ? (
+                                <Tooltip key={item.key}>
+                                    <TooltipTrigger asChild>
+                                        <div key={item.key}>
+                                            {item.children ? (
+                                                <div>
+                                                    {/* Parent Menu Item */}
+                                                    <div
+                                                        className={cn(
+                                                            'cursor-pointer flex items-center py-2 px-4',
+                                                            selectedItem === item.key
+                                                                ? 'font-medium text-brandPrimaryColor bg-slate-100 rounded-md'
+                                                                : 'opacity-80'
+                                                        )}
+                                                        onClick={() => toggleSubMenu(item.key)}>
+                                                        {item.icon && (
+                                                            <span className={`${collapsed ? 'ml-[-6px]' : ''} mr-3`}>
+                                                                {item.icon}
+                                                            </span>
+                                                        )}
+                                                        {!collapsed && (
+                                                            <div className='!flex items-center space-x-24'>
+                                                                <span>{item.label}</span>
+                                                                <span className='!text-lg'>
+                                                                    {openedItem === null ? (
+                                                                        <MdArrowDropDown />
+                                                                    ) : (
+                                                                        <MdArrowDropUp />
+                                                                    )}
+                                                                </span>
+                                                            </div>
+                                                        )}
+                                                    </div>
+
+                                                    {/* SubMenu Items */}
+                                                    {collapsed ? (
+                                                        <TooltipContent
+                                                            side='right'
+                                                            align='center'
+                                                            style={{ zIndex: 1002 }}
+                                                            className=' p-2'>
+                                                            <div className='ml-4'>
+                                                                {item.children.map((child) =>
+                                                                    child.show_in_menu ? (
+                                                                        <div
+                                                                            key={child.key}
+                                                                            className={cn(
+                                                                                'cursor-pointer py-2 px-7',
+                                                                                selectedItem === child.key
+                                                                                    ? `font-medium text-brandPrimaryColor rounded-md`
+                                                                                    : 'opacity-80'
+                                                                            )}
+                                                                            onClick={() =>
+                                                                                handleClick(
+                                                                                    child.key,
+                                                                                    child.navigate_to
+                                                                                )
+                                                                            }>
+                                                                            {child.label}
+                                                                        </div>
+                                                                    ) : null
+                                                                )}
+                                                            </div>
+                                                        </TooltipContent>
+                                                    ) : (
+                                                        openedItem === item.key &&
+                                                        !collapsed && (
+                                                            <div className='ml-4'>
+                                                                {item.children.map((child) =>
+                                                                    child.show_in_menu ? (
+                                                                        <div
+                                                                            key={child.key}
+                                                                            className={cn(
+                                                                                'cursor-pointer py-2 px-7',
+                                                                                selectedItem === child.key
+                                                                                    ? `font-medium text-brandPrimaryColor  rounded-md ${
+                                                                                          collapsed === false
+                                                                                              ? 'bg-slate-100 '
+                                                                                              : ''
+                                                                                      }`
+                                                                                    : 'opacity-80'
+                                                                            )}
+                                                                            onClick={() =>
+                                                                                handleClick(
+                                                                                    child.key,
+                                                                                    child.navigate_to
+                                                                                )
+                                                                            }>
+                                                                            {child.label}
+                                                                        </div>
+                                                                    ) : null
+                                                                )}
+                                                            </div>
+                                                        )
+                                                    )}
+                                                </div>
+                                            ) : (
+                                                <div
+                                                    className={cn(
+                                                        'cursor-pointer flex items-center py-2 px-4',
+                                                        selectedItem === item.key
+                                                            ? 'font-medium text-brandPrimaryColor bg-slate-100 rounded-md'
+                                                            : 'opacity-80'
+                                                    )}
+                                                    onClick={() => handleClick(item.key, item.navigate_to)}>
+                                                    {item.icon && (
+                                                        <span className={`${collapsed ? 'ml-[-6px]' : ''} mr-3`}>
+                                                            {item.icon}
+                                                        </span>
+                                                    )}
+                                                    {!collapsed ? (
+                                                        <span>{item.label}</span>
+                                                    ) : (
+                                                        <TooltipContent
+                                                            side='right'
+                                                            align='center'
+                                                            style={{ zIndex: 1002 }}>
+                                                            {item.label}
+                                                        </TooltipContent>
+                                                    )}
+                                                </div>
+                                            )}
+                                        </div>
+                                    </TooltipTrigger>
+                                </Tooltip>
                             ) : null
                         )}
-                    </Menu>
-                </Spin>
-            </ResizablePanel>
-            <ResizableHandle />
-            <ResizablePanel>
-                <div
-                    className={`flex flex-col min-h-screen transition-all ${
-                        util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                            ? `${collapsed ? 'mr-[80px]' : 'mr-[252px]'}`
-                            : `${collapsed ? 'ml-[80px]' : 'ml-[252px]'}`
-                    }`}>
-                    <div className='!bg-[#F4F4F4]  flex-grow'>
-                        <Outlet />
                     </div>
-                    <div className='flex-grow-0  !w-[100%]'>
-                        <NewFooter />
+                    {/* </Spin> */}
+                </ResizablePanel>
+                <ResizableHandle
+                    withHandle
+                    style={{
+                        position: 'fixed', // Keep it fixed relative to the viewport
+                        left: collapsed ? 50 : 252, // Align with the sidebar based on collapse state
+                        top: 0, // Align to the top of the viewport
+                        height: '100vh', // Make it span the full height
+                        zIndex: 11, // Ensure it's above sidebar content but below other elements
+                        cursor: 'col-resize', // Show resize cursor
+                        transition: 'left 0.2s ease',
+                    }}
+                />
+                <ResizablePanel>
+                    <div
+                        className={`flex flex-col min-h-screen transition-all `}
+                        style={{ marginLeft: collapsed ? 50 : 252 }}>
+                        <div className='!bg-[#F4F4F4]  flex-grow '>
+                            <Outlet />
+                        </div>
+                        <div className='flex-grow-0  !w-[100%] '>
+                            <NewFooter />
+                        </div>
                     </div>
-                </div>
-            </ResizablePanel>
-        </ResizablePanelGroup>
-        // </Layout>
+                </ResizablePanel>
+            </ResizablePanelGroup>
+        </TooltipProvider>
     )
 }
 export default SidebarNew

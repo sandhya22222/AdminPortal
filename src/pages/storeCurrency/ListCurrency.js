@@ -56,7 +56,7 @@ const ListCurrency = () => {
                     {record.is_default && (
                         <Badge
                             variant=''
-                            className='inline-flex items-center gap-1 rounded-xl  w-[113px]'
+                            className='inline-flex items-center gap-1 rounded-xl  w-[123px]'
                             color='#FB8500'>
                             {t('labels:default_currency')}
                         </Badge>

@@ -16,37 +16,32 @@ const StoreModal = ({
     isCancelButtonDisabled,
     isOkButtonDisabled,
     removePadding,
+    width,
 }) => {
     const { t } = useTranslation()
     const handleOk = () => {
-        okCallback();
-    };
+        okCallback()
+    }
 
     const handleCancel = () => {
-        cancelCallback();
-    };
+        cancelCallback()
+    }
 
     return (
         <Dialog open={isVisible} onOpenChange={(open) => !open && handleCancel()}>
             <DialogContent
-                className={`${removePadding ? '' : ''} ${hideCloseButton ? '' : ''}`}
-            >
+                className={`${removePadding ? '' : ''} ${hideCloseButton ? '' : ''} ${width ? `${width}` : 'w-full max-w-lg '} `}>
                 <DialogHeader>
-                    <DialogTitle>
-                        {title}
-                    </DialogTitle>
+                    <DialogTitle>{title}</DialogTitle>
                 </DialogHeader>
-                <div className='p-4'>
-                    {children}
-                </div>
+                <div className='px-0 py-2'>{children}</div>
                 <DialogFooter>
                     {cancelButtonText && (
                         <Button
                             variant='secondary'
                             className={`app-btn-secondary ${isCancelButtonDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
                             onClick={handleCancel}
-                            disabled={isCancelButtonDisabled}
-                        >
+                            disabled={isCancelButtonDisabled}>
                             {cancelButtonText}
                         </Button>
                     )}
@@ -55,16 +50,15 @@ const StoreModal = ({
                             variant='primary'
                             className={`app-btn-primary ${isOkButtonDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
                             onClick={handleOk}
-                            disabled={isOkButtonDisabled}
-                        >
+                            disabled={isOkButtonDisabled}>
                             {okButtonText}
                         </Button>
                     )}
                 </DialogFooter>
             </DialogContent>
         </Dialog>
-    );
-};
+    )
+}
 
 /**
  * @Girish to check this. this is old ANTd  design. 
