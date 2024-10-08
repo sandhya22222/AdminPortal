@@ -323,5 +323,6 @@
     "delete_profile_picture": "Delete Profile Picture",
     "add_new_file": "Add Profile Image",
     "leading_line": "I have read and agreed to the following policies",
-    "updated_date_and_time":"Updated Date and Time"
+    "updated_date_and_time": "Updated Date and Time",
+    "store_desc": "Store enable you to create store name and manage partner and distributor stores, ensuring they remain active at all times and allowing you to configure thresholds as needed."
 }
