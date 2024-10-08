@@ -435,7 +435,7 @@ const Stores = () => {
                                             <div className='w-4 h-4 border-2 border-blue-500 border-t-transparent border-solid rounded-full animate-spin'></div>
                                         )}
                                         <div className='h-1.5 w-1.5 rounded-full bg-blue-500'></div>
-                                        <div>{t('labels:processing')}</div>
+                                        <p>{t('labels:processing')}</p>
                                     </div>
                                 ) : null}
                             </div>
