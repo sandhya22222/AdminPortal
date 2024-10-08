@@ -1,5 +1,4 @@
 import React, { useState, useEffect, lazy } from 'react'
-import { LoadingOutlined } from '@ant-design/icons'
 import { Container } from 'reactstrap'
 import { Layout, Spin } from 'antd'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
