@@ -40,58 +40,50 @@ export default function LanguageSettings() {
 
     return (
         <div className='flex flex-col min-h-screen pt-1'>
-            <div className='z-20'>
-                <HeaderForTitle
-                    title={
-                        <div className='w-full flex'>
-                            <div
-                                className={
-                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'w-[27%]' : 'w-[30%]'
-                                }>
-                                <TooltipProvider>
-                                    <Tooltip>
-                                        <TooltipTrigger asChild>
-                                            <h3 className='text-2xl font-normal max-w-[250px] mb-3 mt-2 truncate'>
-                                                {languageName || t('labels:add_language')}
-                                            </h3>
-                                        </TooltipTrigger>
-                                        <TooltipContent>
-                                            <p>{languageName}</p>
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </TooltipProvider>
-                            </div>
-                        </div>
-                    }
-                    titleContent={
-                        languageId && languageCode && languageStatus !== null ? (
-                            <LanguageHeaderAction
-                                languageId={languageId}
-                                languageCode={languageCode}
-                                languageStatus={languageStatus}
-                                languageDefault={languageDefault}
-                            />
-                        ) : null
-                    }
-                    backNavigationPath='/dashboard/language'
-                    showArrowIcon={true}
-                    showButtons={false}
-                />
-            </div>
-            <div className='p-4 mt-36 min-h-screen'>
+            <HeaderForTitle
+                title={
+                    <TooltipProvider>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <h3 className='text-2xl font-normal truncate max-w-[250px] '>
+                                    {languageName || t('labels:add_language')}
+                                </h3>
+                            </TooltipTrigger>
+                            <TooltipContent side='right'>
+                                <p>{languageName}</p>
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
+                }
+                titleContent={
+                    languageId && languageCode && languageStatus !== null ? (
+                        <LanguageHeaderAction
+                            languageId={languageId}
+                            languageCode={languageCode}
+                            languageStatus={languageStatus}
+                            languageDefault={languageDefault}
+                        />
+                    ) : null
+                }
+                backNavigationPath='/dashboard/language'
+                showArrowIcon={true}
+                showButtons={false}
+            />
+
+            <div className='flex-grow p-4 mt-[125px]'>
                 <div className='bg-white shadow-md rounded-md'>
-                    <div className='p-3'>
-                        <div className='my-2 mb-4'>
-                            <LanguageForm
-                                languageCode={languageCode}
-                                languageId={languageId}
-                                setLanguageName={setLanguageName}
-                                languageStatus={languageStatus}
-                                setLanguageStatus={setLanguageStatus}
-                                languageName={languageName}
-                            />
+                    <div className='p-6'>
+                        <LanguageForm
+                            languageCode={languageCode}
+                            languageId={languageId}
+                            setLanguageName={setLanguageName}
+                            languageStatus={languageStatus}
+                            setLanguageStatus={setLanguageStatus}
+                            languageName={languageName}
+                        />
+                        <div className='mt-7'>
+                            <LanguageDocUpload langCode={languageCode} />
                         </div>
-                        <LanguageDocUpload langCode={languageCode} />
                     </div>
                 </div>
             </div>

@@ -177,8 +177,11 @@ export default function LanguageHeaderAction({
                         }}
                         disabled={!switchStatus || isMakeAsDefault}
                     />
-                    <label htmlFor='default-language'>Make this the Default Language</label>
+                    <label htmlFor='default-language' className='whitespace-nowrap'>
+                        {t('labels:default_language_label')}
+                    </label>
                 </div>
+
                 <div>
                     <Button
                         className='w-44 h-8'
@@ -186,7 +189,7 @@ export default function LanguageHeaderAction({
                         onClick={() => setIsDeleteLanguageModalOpen(true)}
                         disabled={isMakeAsDefault}>
                         <Trash2 size={20} strokeWidth={2} className='mr-2 w-4 h-4 ' />
-                        Delete Language
+                        {t('labels:delete_language')}
                     </Button>
                 </div>
             </div>
