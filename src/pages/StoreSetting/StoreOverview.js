@@ -8,7 +8,7 @@ import { useLocation, useSearchParams } from 'react-router-dom'
 import { Input } from '../../shadcnComponents/ui/input'
 import { Skeleton } from '../../shadcnComponents/ui/skeleton'
 import { Button } from '../../shadcnComponents/ui/button'
-import { ToggleGroup, ToggleGroupItem } from '../../shadcnComponents/ui/toggle-group'
+import { Tabs, TabsTrigger, TabsList } from '../../shadcnComponents/ui/tabs'
 const usersAllAPI = process.env.REACT_APP_USERS_ALL_API
 
 const updateStoreDistributorAPI = process.env.REACT_APP_UPDATE_STORE_DISTRIBUTOR
@@ -120,40 +120,22 @@ const StoreOverview = ({ realmName }) => {
                             </label>
                             <span className='mandatory-symbol-color text-sm text-center ml-1'>*</span>
                         </div>
-                        {/* <Segmented
-                            options={[
-                                {
-                                    value: 'partner',
-                                    label: t('labels:partner'),
-                                },
-                                {
-                                    value: 'distributor',
-                                    label: t('labels:distributor'),
-                                },
-                            ]}
-                            block={true}
-                            className='w-[30%] custom-segmented'
+
+                        <Tabs
                             value={storeType}
-                            onChange={(value) => {
-                                handleStoreTypeChange(value)
+                            className='w-[30%]'
+                            onValueChange={(value) => {
+                                if (value) {
+                                    handleStoreTypeChange(value)
+                                }
                             }}
-                            disabled={isDistributor === 'true'}
-                        /> */}
-                        <ToggleGroup
-                            type='single'
-                            value={storeType}
-                            onValueChange={(value) => handleStoreTypeChange(value)}
-                            className='max-w-[25%] !px-2 '>
-                            <ToggleGroupItem value='partner' className='py-2 px-4 ' disabled={isDistributor === 'true'}>
-                                {t('labels:partner')}
-                            </ToggleGroupItem>
-                            <ToggleGroupItem
-                                value='distributor'
-                                className='py-2 px-4 '
-                                disabled={isDistributor === 'true'}>
-                                {t('labels:distributor')}
-                            </ToggleGroupItem>
-                        </ToggleGroup>
+                            disabled={isDistributor === 'true'}>
+                            <TabsList className='grid  grid-cols-2'>
+                                <TabsTrigger value='partner'>{t('labels:partner')}</TabsTrigger>
+                                <TabsTrigger value='distributor'> {t('labels:distributor')}</TabsTrigger>
+                            </TabsList>
+                        </Tabs>
+
                         <div className='w-full !flex-col !gap-2 !justify-start'>
                             <div
                                 className={`justify-items-start  !inline-block  !w-[35%] ${
