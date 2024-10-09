@@ -17,6 +17,7 @@ import './SidebarNewUpdated.css'
 import { DashboardSVG } from './components/DashboardSVG'
 import { StoresSVG } from './components/StoresSVG'
 import { SettingsSVG } from './components/SettingsSVG'
+import Ellipsis from '../../shadcnComponents/customComponents/Ellipsis'
 
 const pageLimitFromENV = process.env.REACT_APP_ITEM_PER_PAGE
 
@@ -225,7 +226,22 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                                                         )}
                                                         {!collapsed && (
                                                             <div className='!flex items-center space-x-24'>
-                                                                <span>{item.label}</span>
+                                                                {item.label.length > 23 ? (
+                                                                    <span
+                                                                        className={`overflow-ellipsis  overflow-hidden whitespace-nowrap `}>
+                                                                        {' '}
+                                                                        <Ellipsis
+                                                                            text={
+                                                                                item.label.length > 23
+                                                                                    ? item.label
+                                                                                    : undefined
+                                                                            }
+                                                                            position={'up'}
+                                                                            style={{}}></Ellipsis>
+                                                                    </span>
+                                                                ) : (
+                                                                    <span>{item.label}</span>
+                                                                )}
                                                                 <span className='!text-lg'>
                                                                     {openedItem === null ? (
                                                                         <MdArrowDropDown />
@@ -291,7 +307,22 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                                                                                     child.navigate_to
                                                                                 )
                                                                             }>
-                                                                            {child.label}
+                                                                            {child.label.length > 23 ? (
+                                                                                <span
+                                                                                    className={`overflow-ellipsis  overflow-hidden whitespace-nowrap `}>
+                                                                                    {' '}
+                                                                                    <Ellipsis
+                                                                                        text={
+                                                                                            child.label.length > 23
+                                                                                                ? child.label
+                                                                                                : undefined
+                                                                                        }
+                                                                                        position={'up'}
+                                                                                        style={{}}></Ellipsis>
+                                                                                </span>
+                                                                            ) : (
+                                                                                <span>{child.label}</span>
+                                                                            )}
                                                                         </div>
                                                                     ) : null
                                                                 )}
@@ -314,7 +345,20 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                                                         </span>
                                                     )}
                                                     {!collapsed ? (
-                                                        <span>{item.label}</span>
+                                                        item.label.length > 23 ? (
+                                                            <span
+                                                                className={`overflow-ellipsis  overflow-hidden whitespace-nowrap`}>
+                                                                {' '}
+                                                                <Ellipsis
+                                                                    text={
+                                                                        item.label.length > 23 ? item.label : undefined
+                                                                    }
+                                                                    position={'right'}
+                                                                    style={{}}></Ellipsis>
+                                                            </span>
+                                                        ) : (
+                                                            <span>{item.label}</span>
+                                                        )
                                                     ) : (
                                                         <TooltipContent
                                                             side='right'

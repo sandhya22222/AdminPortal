@@ -364,7 +364,7 @@ const StoreSettingsLayout = () => {
                                 <div className='flex items-baseline'>
                                     <h2 className='font-semibold text-2xl'>{storeName}</h2>
                                     <Badge
-                                        variant={changeSwitchStatus === 1 ? 'green' : 'gray'}
+                                        variant={changeSwitchStatus === 1 ? 'green' : 'secondary'}
                                         className='ml-2 rounded-xl'>
                                         {changeSwitchStatus === 1 ? `${t('labels:active')}` : `${t('labels:inactive')}`}
                                     </Badge>
@@ -376,7 +376,7 @@ const StoreSettingsLayout = () => {
                                             {t('labels:distributor')}
                                         </Badge>
                                     ) : (
-                                        <Badge variant='cyan' className='mt-1'>
+                                        <Badge className='mt-1 bg-[#E6FFFB] border-[#87E8DE] text-[#08979C] rounded-[5px]'>
                                             {t('labels:partner')}
                                         </Badge>
                                     )}

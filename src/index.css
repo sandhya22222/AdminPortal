@@ -3,6 +3,12 @@
 @tailwind components;
 @tailwind utilities;
 @layer base {
+    html{
+        font-family: 'Inter',sans-serif !important;
+    }
+    body{
+        font-family: 'Inter',sans-serif !important;
+    }
     :root {
         --background: 0 0% 100%;
         --foreground: 222.2 47.4% 11.2%;
