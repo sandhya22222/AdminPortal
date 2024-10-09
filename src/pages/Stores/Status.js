@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { Row, Col, Layout, Button, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
-import { Switch } from '../../shadcnComponents/ui/switch' // Import ShadCN's Switch
+import { Switch } from '../../shadcnComponents/ui/switch'
+import { Button } from '../../shadcnComponents/ui/button'
 import StoreModal from '../../components/storeModal/StoreModal'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import { storeActiveConfirmationImage } from '../../constants/media'
 const storeEditStatusAPI = process.env.REACT_APP_STORE_STATUS_API
 
-const { Content } = Layout
-const { Text } = Typography
 function Status({
     storeId,
     storeStatus,
@@ -28,6 +26,7 @@ function Status({
     setDuplicateStoreStatus,
     previousStatus,
     isDistributor,
+    isCancelButtonDisabled,
 }) {
     const { t } = useTranslation()
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -40,7 +39,9 @@ function Status({
     const closeModal = () => {
         setIsModalOpen(false)
     }
-
+    const closeModalconfirmation = () => {
+        setActiveConfirmationModalOpen(false)
+    }
     useEffect(() => {
         setSwitchStatus(storeStatus)
     }, [storeStatus])
@@ -155,7 +156,7 @@ function Status({
                 okCallback={() => updateStoreStatus()}
                 cancelCallback={() => closeModal()}
                 isSpin={isLoading}
-                hideCloseButton={false}>
+                hideCloseButton={true}>
                 {changeSwitchStatus ? (
                     <div className='text-brandGray1'>
                         <p className='!mb-0'>{t('messages:store_active_confirmation_message')}</p>
@@ -168,98 +169,68 @@ function Status({
                 )}
             </StoreModal>
 
-            {/* <StoreModal
-                isVisible={isModalOpen}
-                okButtonText={t('labels:proceed')}
-                title={
-                    changeSwitchStatus ? (
-                        <Text className='text-regal-blue font-bold text-[18px] leading-[26px]'>
-                            {t('messages:store_activation_confirmation')}
-                        </Text>
-                    ) : (
-                        <Text className='text-regal-blue font-bold text-[18px] leading-[26px]'>
-                            {t('messages:store_deactivation_confirmation')}
-                        </Text>
-                    )
-                }
-                cancelButtonText={t('labels:cancel')}
-                okCallback={() => updateStoreStatus()}
-                cancelCallback={() => closeModal()}
-                isSpin={isLoading}
-                hideCloseButton={false}>
-                {changeSwitchStatus ? (
-                    <div className='text-brandGray1'>
-                        <p className='!mb-0'>{t('messages:store_active_confirmation_message')}</p>
-                        <p className='!m-0 !p-0'>{t('messages:are_you_sure_you_like_to_proceed')}</p>
-                    </div>
-                ) : (
-                    <div className='text-brandGray1'>
-                        <p>{t('messages:store_deactivation_confirmation_message')}</p>
-                    </div>
-                )}
-            </StoreModal> */}
-
-            <Row className='gap-1'>
-                <Col>
+            <div className='flex gap-1'>
+                <div>
                     <Switch
                         checked={switchStatus}
-                        onCheckedChange={onChange} // Adjust this handler to match the ShadCN API
+                        onCheckedChange={onChange}
                         disabled={disableStatus || statusInprogress === 3 || (isDistributor && switchStatus)}
                     />
-                </Col>
-            </Row>
-            <StoreModal isVisible={activeConfirmationModalOpen} isSpin={false} hideCloseButton={false} width={800}>
-                {storeCheckStatus === 4 ? (
-                    <Content className='text-center'>
-                        <Text className=' text-lg leading-[26px] font-bold text-regal-blue]'>
-                            {t('labels:activating_store')}
-                        </Text>
-                        <div className='mt-5 mb-3'>
-                            <img
-                                src={storeActiveConfirmationImage}
-                                alt='storeActiveConfirmationImage'
-                                className='ml-[270px]'
-                            />
-                        </div>
-                        <div className='mb-3 text-brandGray1'>
-                            <p className='!mb-0'>{t('messages:patience_is_a_virtue')}</p>
-                            <p className='!mb-0'>{t('messages:activation_message')}</p>
-                        </div>
-                        <Button
-                            className='app-btn-primary'
-                            onClick={() => {
-                                setActiveConfirmationModalOpen(false)
-                            }}>
-                            {t('labels:close_message')}
-                        </Button>
-                    </Content>
-                ) : null}
-                {storeCheckStatus === 5 ? (
-                    <Content className='!text-center'>
-                        <Text className=' text-lg leading-[26px] font-bold text-regal-blue'>
-                            {t('labels:deactivating_store')}
-                        </Text>
-                        <div className='mt-5 mb-3'>
-                            <img
-                                src={storeActiveConfirmationImage}
-                                alt='storeActiveConfirmationImage'
-                                className='ml-[270px]'
-                            />
-                        </div>
-                        <div className='mb-3 text-brandGray1'>
-                            <p className='!mb-0'>{t('messages:patience_is_a_virtue')}</p>
-                            <p className='!mb-0'>{t('messages:deactivation_message')}</p>
-                        </div>
-                        <Button
-                            className='app-btn-primary'
-                            onClick={() => {
-                                setActiveConfirmationModalOpen(false)
-                            }}>
-                            {t('labels:close_message')}
-                        </Button>
-                    </Content>
-                ) : null}
-            </StoreModal>
+                </div>
+            </div>
+            <StoreModal
+    isVisible={activeConfirmationModalOpen}
+    isSpin={false}
+    hideCloseButton={true}
+    cancelCallback={() => closeModalconfirmation()}
+    width={800}
+>
+    {storeCheckStatus === 4 ? (
+        <div className='text-center'>
+            <div className='text-lg leading-[26px] font-bold text-regal-blue'>
+                {t('labels:activating_store')}
+            </div>
+            <div className='flex justify-center mt-5 mb-3'>
+                <img src={storeActiveConfirmationImage} alt='storeActiveConfirmationImage' />
+            </div>
+            <div className='mb-3 text-brandGray1'>
+                <p className='!mb-0'>{t('messages:patience_is_a_virtue')}</p>
+                <p className='!mb-0'>{t('messages:activation_message')}</p>
+            </div>
+            <Button
+                className='app-btn-primary'
+                onClick={() => {
+                    setActiveConfirmationModalOpen(false);
+                }}
+            >
+                {t('labels:close_message')}
+            </Button>
+        </div>
+    ) : null}
+    {storeCheckStatus === 5 ? (
+        <div className='!text-center'>
+            <div className='text-lg leading-[26px] font-bold text-regal-blue'>
+                {t('labels:deactivating_store')}
+            </div>
+            <div className='flex justify-center mt-5 mb-3'>
+                <img src={storeActiveConfirmationImage} alt='storeActiveConfirmationImage' />
+            </div>
+            <div className='mb-3 text-brandGray1'>
+                <p className='!mb-0'>{t('messages:patience_is_a_virtue')}</p>
+                <p className='!mb-0'>{t('messages:deactivation_message')}</p>
+            </div>
+            <Button
+                className='app-btn-primary'
+                onClick={() => {
+                    setActiveConfirmationModalOpen(false);
+                }}
+            >
+                {t('labels:close_message')}
+            </Button>
+        </div>
+    ) : null}
+</StoreModal>
+
         </div>
     )
 }
