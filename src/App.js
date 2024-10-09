@@ -17,7 +17,6 @@ import util from './util/common'
 import { LoadingOutlined } from '@ant-design/icons'
 
 const Home = lazyWithRetry(() => import('./pages/home/Home'))
-const Header2 = lazyWithRetry(() => import('./components/header/Header2'))
 const Store = lazyWithRetry(() => import('./pages/Stores/Store'))
 const SidebarNew = lazyWithRetry(() => import('./components/Sidebar2.0.js/SidebarNew'))
 const PaymentType = lazyWithRetry(() => import('./pages/PaymentType/PaymentType'))
