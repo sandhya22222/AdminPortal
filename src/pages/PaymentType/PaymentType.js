@@ -5,14 +5,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '.
 import { useTranslation } from 'react-i18next'
 import HeaderForTitle from '../../components/header/HeaderForTitle'
 import { Separator } from '../../shadcnComponents/ui/separator'
-import { Layout } from 'antd'
-import { FaPlus, FaMinus } from 'react-icons/fa' // Import plus and minus icons
-
-const { Content } = Layout
+import { FaPlus, FaMinus } from 'react-icons/fa'
 
 export default function PaymentSettings() {
     const { t } = useTranslation()
-    const [isOpen, setIsOpen] = useState(false) // Track if accordion is open or closed
+    const [isOpen, setIsOpen] = useState(false)
 
     React.useEffect(() => {
         window.scroll(0, 0)
@@ -33,7 +30,6 @@ export default function PaymentSettings() {
                         </div>
                     </div>
                 }
-                titleContent={<Content className=' !flex items-center !justify-end gap-3'></Content>}
             />
             <div className='p-3 mt-24'>
                 <Card className='w-full p-3 bg-white shadow-lg'>
