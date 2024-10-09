@@ -7,7 +7,6 @@ import MarketplaceToaster from '../../util/marketplaceToaster'
 import util from '../../util/common'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useSearchParams, useNavigate } from 'react-router-dom'
-import { StarFilled } from '@ant-design/icons'
 import Status from '../Stores/Status'
 import StoreImages from './StoreImages'
 import StoreRestrictions from './StoreRestrictions'
@@ -17,9 +16,10 @@ import { storeDefaultImage } from '../../constants/media'
 import Theme from './Theme'
 import StoreOverview from './StoreOverview'
 import { usePageTitle } from '../../hooks/usePageTitle'
-
+import { Star } from 'lucide-react'
 import { Badge } from '../../shadcnComponents/ui/badge'
 import { Tabs, TabsContent, TabsTrigger, TabsList } from '../../shadcnComponents/ui/tabs'
+
 const storeAPI = process.env.REACT_APP_STORE_API
 const storeImagesAPI = process.env.REACT_APP_STORE_IMAGES_API
 const storeBannerImageAPI = process.env.REACT_APP_STORE_BANNER_IMAGES_API
@@ -354,45 +354,44 @@ const StoreSettingsLayout = () => {
         <div>
             <HeaderForTitle
                 title={
-                    <div className='flex !w-[85vw]'>
-                        <div className='!w-[75%] flex gap-2 !mt-2'>
-                            <div className=''>
+                    <div className='flex w-[85vw] my-3'>
+                        <div className='w-[75%] gap-2 !mt-2 flex'>
+                            <div>
                                 <img src={storeDefaultImage} alt='storeDefaultImage' className='aspect-square !mt-2' />
                             </div>
-                            <div className='flex gap-2'>
-                                <div className='!font-semibold  text-2xl'>
-                                    {storeName}{' '}
-                                    <div className='!mb-3'>
-                                        {storeType === 'distributor' ? (
-                                            <Badge className='gap-1 text-[#0958d9] bg-[#e6f4ff] rounded-none border border-[#91caff]'>
-                                                {' '}
-                                                <StarFilled /> {t('labels:distributor')}
-                                            </Badge>
-                                        ) : (
-                                            <Badge
-                                                color='cyan'
-                                                className='bg-[#e6fffb] rounded-none text-[#08979c] border border-[#87e8de]'>
-                                                {t('labels:partner')}
-                                            </Badge>
-                                        )}
-                                    </div>
-                                </div>
-                                <div className='mt-2'>
+
+                            <div className='flex flex-col gap-2'>
+                                <div className='flex items-baseline'>
+                                    <h2 className='font-semibold text-2xl'>{storeName}</h2>
                                     <Badge
-                                        className={`!rounded-xl ${changeSwitchStatus === 1 ? 'bg-[#52C41A]' : 'bg-[#F0F0F0] text-brandGray1'}`}>
+                                        variant={changeSwitchStatus === 1 ? 'green' : 'gray'}
+                                        className='ml-2 rounded-xl'>
                                         {changeSwitchStatus === 1 ? `${t('labels:active')}` : `${t('labels:inactive')}`}
                                     </Badge>
                                 </div>
+                                <div>
+                                    {storeType === 'distributor' ? (
+                                        <Badge className='bg-[#E6F4FF] border-[#91CAFF] text-[#0958D9] rounded-[5px] '>
+                                            <Star className='w-3 h-3 mr-1' fill='#0958D9' strokeWidth={0} />{' '}
+                                            {t('labels:distributor')}
+                                        </Badge>
+                                    ) : (
+                                        <Badge variant='cyan' className='mt-1'>
+                                            {t('labels:partner')}
+                                        </Badge>
+                                    )}
+                                </div>
                             </div>
                         </div>
-                        <div className=' !w-[180px] flex  !gap-2 !mt-3 !mx-2'>
-                            <span className='text-brandGray2'>{t('labels:status')} : </span>
+
+                        <div className='flex items-center gap-2 mt-3 mx-2 justify-end'>
+                            <h2 className='text-brandGray2'>{t('labels:status')} :</h2>
                             <Status
                                 storeId={id}
-                                storeStatus={changeSwitchStatus === 1 ? true : false}
+                                storeStatus={changeSwitchStatus === 1}
                                 storeApiData={storeData}
                                 setStoreApiData={setStoreData}
-                                className='!inline-block '
+                                className='inline-block'
                                 disableStatus={disableStatus}
                                 statusInprogress={duplicateStoreStatus}
                                 setDuplicateStoreStatus={setDuplicateStoreStatus}
@@ -406,7 +405,7 @@ const StoreSettingsLayout = () => {
                 backNavigationPath={`/dashboard/store?m_t=1`}
                 showArrowIcon={true}
                 showButtons={false}
-                className='!min-h-20'
+                className='min-h-20'
             />
 
             <div className='!px-6 !pb-6  !mt-[12.5rem]'>
