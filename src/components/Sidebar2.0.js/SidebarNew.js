@@ -1,5 +1,5 @@
 //! Import libraries
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, Suspense } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import NewFooter from './../footer/Footer'
@@ -350,7 +350,9 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                         className={`flex flex-col min-h-screen transition-all `}
                         style={{ marginLeft: collapsed ? 50 : 252 }}>
                         <div className='!bg-[#F4F4F4]  flex-grow '>
-                            <Outlet />
+                            <Suspense fallback={<div className='mt-[200px] text-center'>{t('labels:loading')}...</div>}>
+                                <Outlet />
+                            </Suspense>
                         </div>
                         <div className='flex-grow-0  !w-[100%] '>
                             <NewFooter />
