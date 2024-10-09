@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Container } from 'reactstrap'
 import { Layout, Spin } from 'antd'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
@@ -10,28 +10,29 @@ import { useFavicon } from './hooks/useFavicon'
 import axios from 'axios'
 import { useAuth } from 'react-oidc-context'
 import NewDashboard from './pages/NewDashboard/Newdashboard'
+import Header2 from "./components/header/Header2"
+import { lazyWithRetry } from './components/loading/LazyRetry'
 import MarketplaceServices from './services/axios/MarketplaceServices'
 import util from './util/common'
 import { LoadingOutlined } from '@ant-design/icons'
 
-const Home = lazy(() => import('./pages/home/Home'))
-const Header2 = lazy(() => import('./components/header/Header2'))
-const Store = lazy(() => import('./pages/Stores/Store'))
-const SidebarNew = lazy(() => import('./components/Sidebar2.0.js/SidebarNew'))
-const PaymentType = lazy(() => import('./pages/PaymentType/PaymentType'))
-const Preview = lazy(() => import('./pages/StoreSetting/Preview'))
-const Language = lazy(() => import('./pages/StoreLanguage/Language'))
-const LanguageSettings = lazy(() => import('./pages/StoreLanguage/LanguageSettings'))
-const UserAccessControl2 = lazy(() => import('./pages/usersandroles/UserAccessControl2'))
-const CreateUsers = lazy(() => import('./pages/usersandroles/CreateUsers'))
-const CreateRoles = lazy(() => import('./pages/usersandroles/CreateRoles'))
-const LogOut = lazy(() => import('./components/LogOut'))
-const StoreLimitComponent = lazy(() => import('./pages/adminPlatform/StoreLimitComponent'))
-const ListCurrency = lazy(() => import('./pages/storeCurrency/ListCurrency'))
-const EditCurrency=lazy(()=>import('./pages/storeCurrency/EditCurrency'))
-const MyProfile=lazy(()=>import('./pages/StoreUsers/MyProfile'))
-const StoreSettingsLayout=lazy(()=>import('./pages/StoreSetting/StoreSettingsLayout'))
-const PlatformAdmin=lazy(()=>import('./pages/adminPlatform/PlatformAdmin'))
+const Home = lazyWithRetry(() => import('./pages/home/Home'))
+const Store = lazyWithRetry(() => import('./pages/Stores/Store'))
+const SidebarNew = lazyWithRetry(() => import('./components/Sidebar2.0.js/SidebarNew'))
+const PaymentType = lazyWithRetry(() => import('./pages/PaymentType/PaymentType'))
+const Preview = lazyWithRetry(() => import('./pages/StoreSetting/Preview'))
+const Language = lazyWithRetry(() => import('./pages/StoreLanguage/Language-v2'))
+const LanguageSettings = lazyWithRetry(() => import('./pages/StoreLanguage/LanguageSettings'))
+const UserAccessControl2 = lazyWithRetry(() => import('./pages/usersandroles/UserAccessControl2'))
+const CreateUsers = lazyWithRetry(() => import('./pages/usersandroles/CreateUsers'))
+const CreateRoles = lazyWithRetry(() => import('./pages/usersandroles/CreateRoles'))
+const LogOut = lazyWithRetry(() => import('./components/LogOut'))
+const StoreLimitComponent = lazyWithRetry(() => import('./pages/adminPlatform/StoreLimitComponent'))
+const ListCurrency = lazyWithRetry(() => import('./pages/storeCurrency/ListCurrency'))
+const EditCurrency=lazyWithRetry(()=>import('./pages/storeCurrency/EditCurrency'))
+const MyProfile=lazyWithRetry(()=>import('./pages/StoreUsers/MyProfile'))
+const StoreSettingsLayout=lazyWithRetry(()=>import('./pages/StoreSetting/StoreSettingsLayout'))
+const PlatformAdmin=lazyWithRetry(()=>import('./pages/adminPlatform/PlatformAdmin'))
 
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL
 
