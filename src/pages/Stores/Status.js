@@ -45,10 +45,6 @@ function Status({
         setSwitchStatus(storeStatus)
     }, [storeStatus])
 
-    const openModal = () => {
-        setIsModalOpen(true)
-    }
-
     useEffect(() => {
         setIsLoading(false)
         if (statusInprogress === 1 || statusInprogress === 2) {
