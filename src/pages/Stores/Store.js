@@ -1232,21 +1232,32 @@ const Stores = () => {
     return (
         <Content className=''>
             <HeaderForTitle
-                title={<div className='!font-semibold text-2xl mb-4 !text-regal-blue'>{t('labels:stores')}</div>}
-                titleContent={
-                    parseInt(currentTab) === 1 ? (
-                        hideAddStoreButton ? (
-                            ''
-                        ) : (
-                            <Button
-                                className='app-btn-primary mt-2 !h-[32px] flex items-center'
-                                onClick={showAddDrawer}>
-                                <PlusOutlined />
-                                {t('labels:add_store')}
-                            </Button>
-                        )
-                    ) : null
+                title={
+                    <Content>
+                        <Content className='flex  flex-row justify-between items-center h-[42px]'>
+                            <div className='!font-semibold text-2xl mb-4 !text-regal-blue'>{t('labels:stores')}</div>
+                            <div>
+                                {' '}
+                                {parseInt(currentTab) === 1 ? (
+                                    hideAddStoreButton ? (
+                                        ''
+                                    ) : (
+                                        <Button
+                                            className='app-btn-primary mt-2 !h-[32px] flex items-center'
+                                            onClick={showAddDrawer}>
+                                            <PlusOutlined />
+                                            {t('labels:add_store')}
+                                        </Button>
+                                    )
+                                ) : null}
+                            </div>
+                        </Content>
+                        <div className='!w-[60%]'>
+                            <p className='!font-normal !text-brandGray1 !mt-2 !mb-6'>{t('labels:store_desc')}</p>
+                        </div>
+                    </Content>
                 }
+                titleContent={<Content className=' !flex !justify-end'></Content>}
                 headerContent={
                     <Content className='!h-[2.6rem] !mt-16'>
                         <Tabs
