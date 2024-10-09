@@ -3,7 +3,6 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter, Dialo
 import { Button } from '../../shadcnComponents/ui/button';
 import { useTranslation } from 'react-i18next'
 import './StoreModal.css'
-
 const StoreModal = ({
     okCallback,
     cancelCallback,
@@ -19,6 +18,7 @@ const StoreModal = ({
     width,
 }) => {
     const { t } = useTranslation()
+
     const handleOk = () => {
         okCallback()
     }
@@ -30,9 +30,10 @@ const StoreModal = ({
     return (
         <Dialog open={isVisible} onOpenChange={(open) => !open && handleCancel()}>
             <DialogContent
-                className={`${removePadding ? '' : ''} ${hideCloseButton ? '' : ''} ${width ? `${width}` : 'w-full max-w-lg '} `}>
+                className={`${removePadding ? '' : ''} ${width ? `${width}` : 'w-full max-w-lg'} `}>
                 <DialogHeader>
                     <DialogTitle>{title}</DialogTitle>
+                    
                 </DialogHeader>
                 <div className='px-0 py-2'>{children}</div>
                 <DialogFooter>
@@ -59,6 +60,7 @@ const StoreModal = ({
         </Dialog>
     )
 }
+export default StoreModal;
 
 /**
  * @Girish to check this. this is old ANTd  design. 
@@ -107,4 +109,4 @@ const StoreModal = ({
 //     )
 // }
 
-export default StoreModal;
+// export default StoreModal;
