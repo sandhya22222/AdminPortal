@@ -18,6 +18,7 @@ import { DashboardSVG } from './components/DashboardSVG'
 import { StoresSVG } from './components/StoresSVG'
 import { SettingsSVG } from './components/SettingsSVG'
 import Ellipsis from '../../shadcnComponents/customComponents/Ellipsis'
+import Spin from '../../shadcnComponents/customComponents/Spin'
 
 const pageLimitFromENV = process.env.REACT_APP_ITEM_PER_PAGE
 
@@ -394,7 +395,12 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                         className={`flex flex-col min-h-screen transition-all `}
                         style={{ marginLeft: collapsed ? 50 : 252 }}>
                         <div className='!bg-[#F4F4F4]  flex-grow '>
-                            <Suspense fallback={<div className='mt-[200px] text-center'>{t('labels:loading')}...</div>}>
+                            <Suspense
+                                fallback={
+                                    <div className='mt-[200px] text-center'>
+                                        <Spin />
+                                    </div>
+                                }>
                                 <Outlet />
                             </Suspense>
                         </div>
