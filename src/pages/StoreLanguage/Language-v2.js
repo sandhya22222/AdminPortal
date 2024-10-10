@@ -24,6 +24,7 @@ import ShadCNTooltip from '../../shadcnComponents/customComponents/ShadCNTooltip
 import ShadCNDataTable from '../../shadcnComponents/customComponents/ShadCNDataTable'
 import ShadCNPagination from '../../shadcnComponents/customComponents/ShadCNPagination'
 import Ellipsis from '../../shadcnComponents/customComponents/Ellipsis'
+import HeaderForTitle from '../../components/header/HeaderForTitle'
 
 const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API
 const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE)
@@ -245,14 +246,18 @@ const Language = () => {
 
     return (
         <div>
-            <div className='sticky bg-white shadow-md p-4 top-[72px] w-[100%] flex flex-col justify-between items-start h-fit z-20'>
-                <div className='flex  w-[100%] justify-center items-center'>
-                    <h1 className='!font-semibold w-2/5 text-2xl'>{t('labels:language_settings')}</h1>
-                    <div className='w-3/5 flex items-center justify-end'>
+            <HeaderForTitle
+                title={
+                    <>
+                        <h2 className='font-semibold text-2xl mb-4 text-regal-blue'>{t('labels:language_settings')}</h2>
+                    </>
+                }
+                titleContent={
+                    <div className='!flex gap-2 items-center !justify-end '>
                         <DropdownMenu>
                             <DropdownMenuTrigger className='app-btn-link flex items-center'>
                                 <span className='flex items-center'>
-                                    Download Support Document Template
+                                    {t('labels:download_support_document_template')}
                                     <ChevronDown
                                         className='!ml-[7px] !mr-[4px] '
                                         style={{ width: '1.6em', height: '1.6em', fontWeight: 'normal' }}
@@ -276,43 +281,45 @@ const Language = () => {
                             <div className='mr-[10px]'>{t('labels:add_language')}</div>
                         </Button>
                     </div>
-                </div>
-                <p className=' !mt-3 !mb-1'>{t('labels:languages_note')}</p>
-            </div>
-
-            <Card className='mb-10  ml-[1.25%] mt-[100px] mr-[1.25%]'>
-                {isLoading ? (
-                    <div className='w-full'>
-                        <Skeleton className='h-10 w-[70%] mb-3' />
-                        <Skeleton className='h-7 w-full mb-2' />
-                        <Skeleton className='h-7 w-full mb-2' />
-                        <Skeleton className='h-7 w-[50%] mb-2' />
-                    </div>
-                ) : isNetworkErrorLanguage ? (
-                    <div className='w-full text-center '>{t('messages:fetch_error')}</div>
-                ) : languageData === 0 ? (
-                    <>
-                        <LanguageBanner />
-                    </>
-                ) : (
-                    <div className='  flex flex-col items-end justify-between w-full'>
+                }
+                headerContent={<p className='mt-16 text-brandGray1'>{t('labels:languages_note')}</p>}
+            />
+            <div className='p-3 '>
+                <Card className='p-3'>
+                    {isLoading ? (
                         <div className='w-full'>
-                            <ShadCNDataTable columns={languageColumn} data={languageData?.data} />
+                            <Skeleton className='h-4 w-[70%] mb-3' />
+                            <Skeleton className='h-4 w-full mb-2' />
+                            <Skeleton className='h-4 w-full mb-2' />
+                            <Skeleton className='h-4 w-full mb-2' />
+                            <Skeleton className='h-4 w-[50%] mb-2' />
                         </div>
-                        {!totalItemsCount > languagePaginationData.pageSize && (
-                            <div className='flex  mt-4 mb-2'>
-                                <ShadCNPagination
-                                    totalItemsCount={totalItemsCount}
-                                    handlePageNumberChange={handlePageNumberChange}
-                                    currentPage={languagePaginationData.pageNumber}
-                                    itemsPerPage={languagePaginationData.pageSize}
-                                    showQuickJumper={true}
-                                />
+                    ) : isNetworkErrorLanguage ? (
+                        <div className='w-full text-center '>{t('messages:fetch_error')}</div>
+                    ) : languageData === 0 ? (
+                        <>
+                            <LanguageBanner />
+                        </>
+                    ) : (
+                        <div className='  flex flex-col items-end justify-between w-full'>
+                            <div className='w-full'>
+                                <ShadCNDataTable columns={languageColumn} data={languageData?.data} />
                             </div>
-                        )}
-                    </div>
-                )}
-            </Card>
+                            {!totalItemsCount > languagePaginationData.pageSize && (
+                                <div className='flex  mt-4 mb-2'>
+                                    <ShadCNPagination
+                                        totalItemsCount={totalItemsCount}
+                                        handlePageNumberChange={handlePageNumberChange}
+                                        currentPage={languagePaginationData.pageNumber}
+                                        itemsPerPage={languagePaginationData.pageSize}
+                                        showQuickJumper={true}
+                                    />
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </Card>
+            </div>
         </div>
     )
 }
