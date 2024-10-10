@@ -31,7 +31,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
     const [selectedItem, setSelectedItem] = useState([])
     const [openedItem, setOpenedItem] = useState([])
     const [isHovering, setIsHovering] = useState(false)
-
+    const [hoveredItem, setHoveredItem] = useState(null)
     // get permissions from storage
 
     const auth = useAuth()
@@ -161,6 +161,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
     const toggleSubMenu = (key) => {
         setOpenedItem((prev) => (prev === key ? null : key))
     }
+
     return (
         <TooltipProvider delayDuration={0}>
             <ResizablePanelGroup
@@ -188,6 +189,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                         previousSize.current = currentWidth
                     }}
                     style={{
+                        //  overflow: isHovering ? 'auto' : 'hidden'
                         height: '100vh',
                         width: collapsed ? 50 : 252,
                         maxWidth: 252,
@@ -208,7 +210,10 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                             item.show_in_menu ? (
                                 <Tooltip key={item.key}>
                                     <TooltipTrigger asChild>
-                                        <div key={item.key}>
+                                        <div
+                                            key={item.key}
+                                            onMouseEnter={() => setHoveredItem(item.key)} // Track hover
+                                            onMouseLeave={() => setHoveredItem(null)}>
                                             {item.children ? (
                                                 <div>
                                                     {/* Parent Menu Item */}
@@ -255,7 +260,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                                                     </div>
 
                                                     {/* SubMenu Items */}
-                                                    {collapsed ? (
+                                                    {collapsed && isHovering ? (
                                                         <TooltipContent
                                                             side='right'
                                                             align='center'
@@ -287,11 +292,15 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                                                     ) : (
                                                         openedItem === item.key &&
                                                         !collapsed && (
-                                                            <div className='ml-4'>
+                                                            <div className={`ml-4 `}>
                                                                 {item.children.map((child) =>
                                                                     child.show_in_menu ? (
                                                                         <div
                                                                             key={child.key}
+                                                                            onMouseEnter={() =>
+                                                                                setHoveredItem(child.key)
+                                                                            } // Track hover
+                                                                            onMouseLeave={() => setHoveredItem(null)}
                                                                             className={cn(
                                                                                 'cursor-pointer py-2 px-7',
                                                                                 selectedItem === child.key
@@ -300,7 +309,10 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                                                                                               ? 'bg-slate-100 '
                                                                                               : ''
                                                                                       }`
-                                                                                    : 'opacity-80'
+                                                                                    : 'opacity-80',
+                                                                                hoveredItem === child.key
+                                                                                    ? 'bg-brandGray rounded-md'
+                                                                                    : ''
                                                                             )}
                                                                             onClick={() =>
                                                                                 handleClick(
@@ -337,11 +349,14 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                                                         'cursor-pointer flex items-center py-2 px-4',
                                                         selectedItem === item.key
                                                             ? 'font-medium text-brandPrimaryColor bg-slate-100 rounded-md'
-                                                            : 'opacity-80'
+                                                            : 'opacity-80',
+                                                        hoveredItem === item.key
+                                                            ? 'bg-brandGray rounded-md' // Apply hover effect
+                                                            : ''
                                                     )}
                                                     onClick={() => handleClick(item.key, item.navigate_to)}>
                                                     {item.icon && (
-                                                        <span className={`${collapsed ? 'ml-[-6px]' : ''} mr-3`}>
+                                                        <span className={`${collapsed ? 'ml-[-6px]' : ''} mr-3 `}>
                                                             {item.icon}
                                                         </span>
                                                     )}
@@ -360,14 +375,14 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                                                         ) : (
                                                             <span>{item.label}</span>
                                                         )
-                                                    ) : (
+                                                    ) : isHovering ? (
                                                         <TooltipContent
                                                             side='right'
                                                             align='center'
                                                             style={{ zIndex: 1002 }}>
                                                             {item.label}
                                                         </TooltipContent>
-                                                    )}
+                                                    ) : null}
                                                 </div>
                                             )}
                                         </div>

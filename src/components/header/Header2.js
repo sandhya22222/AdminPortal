@@ -165,7 +165,7 @@ const Header2 = ({ collapsed, setCollapsed, setIsLanguageSelected }) => {
                 <Content className='px-3 border-b-[1px] !h-[72px] flex flex-row !justify-between items-center '>
                     {/* Left content which displays brand logo and other stuffs */}
                     <div className='flex flex-row items-center'>
-                        <div
+                        {/* <div
                             className={`${
                                 util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'ml-4 mr-2' : 'ml-2 mr-4'
                             } `}>
@@ -188,7 +188,7 @@ const Header2 = ({ collapsed, setCollapsed, setIsLanguageSelected }) => {
                                 }
                                 onClick={() => setCollapsed(!collapsed)}
                             />
-                        </div>
+                        </div> */}
                         <div className='flex items-center mx-2 '>
                             <Link to='/dashboard'>
                                 <Image
