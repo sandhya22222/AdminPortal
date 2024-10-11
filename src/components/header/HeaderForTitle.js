@@ -57,7 +57,7 @@ function HeaderForTitle({
                 </div>
                 <div className='w-full flex justify-between'>
                     <div>{title}</div>
-                    <div className='flex  w-[20%] justify-end'>{titleContent}</div>
+                    <div className='flex  justify-end'>{titleContent}</div>
                 </div>
                 {showArrowIcon && (
                     <>
