@@ -154,7 +154,7 @@ export default function LanguageHeaderAction({
 
     return (
         <div>
-            <div className='flex items-center space-x-4'>
+            <div className='flex items-center space-x-4 mt-2.5'>
                 <div className='flex items-center space-x-2'>
                     <span>Status:</span>
                     <span>{switchStatus ? 'Active' : 'Inactive'}</span>

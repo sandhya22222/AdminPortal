@@ -45,7 +45,7 @@ export default function LanguageSettings() {
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <h3 className='text-2xl font-normal truncate max-w-[250px] '>
+                                <h3 className='text-2xl font-normal truncate max-w-[250px] my-3'>
                                     {languageName || t('labels:add_language')}
                                 </h3>
                             </TooltipTrigger>
@@ -70,7 +70,7 @@ export default function LanguageSettings() {
                 showButtons={false}
             />
 
-            <div className='flex-grow p-4 mt-[125px]'>
+            <div className='flex-grow p-4 mt-[140px]'>
                 <div className='bg-white shadow-md rounded-md'>
                     <div className='p-6'>
                         <LanguageForm
