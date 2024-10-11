@@ -176,7 +176,7 @@ function Status({
             <div className='flex gap-1'>
                 <div className='relative inline-flex items-center'>
                     {statusInprogress === 4 || statusInprogress === 5 ? (
-                        <div className='absolute left-0 top-0 flex items-center justify-center animate-spin rounded-full h-6 w-6 border-b-2 border-brandPrimaryColor border-t-transparent border-solid  opacity-75'></div>
+                        <div className='absolute  flex items-center justify-center animate-spin rounded-full h-6 w-6 border-b-2 border-brandPrimaryColor border-t-transparent border-solid  opacity-75 !mb-3'></div>
                     ) : (
                         <Switch
                             checked={switchStatus}

@@ -1080,7 +1080,12 @@ const Stores = () => {
     return (
         <Content className=''>
             <HeaderForTitle
-                title={<h1 className='font-semibold text-2xl mb-4 text-primary'>{t('labels:stores')}</h1>}
+                title={
+                    <>
+                        <h1 className='font-semibold text-2xl mb-4 text-regal-blue'>{t('labels:stores')}</h1>
+                        <p className='text-brandGray1 font-normal'>{t('messages:store_desc')}</p>
+                    </>
+                }
                 titleContent={
                     parseInt(currentTab) === 1 &&
                     !hideAddStoreButton && (
