@@ -1091,11 +1091,15 @@ const Stores = () => {
                     )
                 }
                 headerContent={
-                    <div className='mt-16'>
+                    <div className='mt-10'>
                         <Tabs value={currentTab} onValueChange={handleTabChange}>
                             <TabsList>
-                                <TabsTrigger value='1'>{t('labels:my_stores')}</TabsTrigger>
-                                <TabsTrigger value='2'>{t('labels:threshold_configuration')}</TabsTrigger>
+                                <TabsTrigger value='1' borderPosition='bottom'>
+                                    {t('labels:my_stores')}
+                                </TabsTrigger>
+                                <TabsTrigger value='2' borderPosition='bottom'>
+                                    {t('labels:threshold_configuration')}
+                                </TabsTrigger>
                             </TabsList>
                         </Tabs>
                     </div>
