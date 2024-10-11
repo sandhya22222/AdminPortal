@@ -1,8 +1,9 @@
-import { Tabs, Typography, Layout } from 'antd'
+import { Typography, Layout } from 'antd'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import HeaderForTitle from '../../components/header/HeaderForTitle'
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '../../shadcnComponents/ui/tabs'
 
 import ListPolicies from './ListPolicies'
 import UserProfile from './UserProfile'
@@ -58,7 +59,7 @@ const MyProfile = () => {
             <div className='!px-6 !pb-6 !mt-6'>
                 <div className=' w-full bg-white rounded flex  justify-start shadow-brandShadow'>
                     <div className='py-4 h-full top-[110px] sticky !w-[17%] '>
-                        <Tabs
+                        {/* <Tabs
                             items={myProfileTabData}
                             tabPosition={'left'}
                             defaultActiveKey={USER_PROFILE_TABS_OPTIONS.PROFILE_INFORMATION}
@@ -66,7 +67,27 @@ const MyProfile = () => {
                             onTabClick={handelMyProfileTabChange}
                             type='line'
                             className=' !h-full'
-                        />
+                        /> */}
+
+                        <Tabs
+                            defaultActiveKey='profile'
+                            activeKey={searchParams.get('tab') || USER_PROFILE_TABS_OPTIONS.PROFILE_INFORMATION}
+                            onTabClick={handelMyProfileTabChange}
+                            orientation='vertical'
+                            className='h-full'>
+                            <TabsList orientation='vertical'>
+                                {myProfileTabData.map((tab) => (
+                                    <TabsTrigger key={tab.key} value={tab.key} borderPosition='right'>
+                                        {tab.label}
+                                    </TabsTrigger>
+                                ))}
+                            </TabsList>
+                            {myProfileTabData.map((tab) => (
+                                <TabsContent key={tab.key} value={tab.key}>
+                                    {tab.content}
+                                </TabsContent>
+                            ))}
+                        </Tabs>
                     </div>
                     <div className=' w-full '>
                         {searchParams.get('tab') === USER_PROFILE_TABS_OPTIONS.PROFILE_INFORMATION && <UserProfile />}

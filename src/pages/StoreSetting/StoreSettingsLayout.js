@@ -429,9 +429,9 @@ const StoreSettingsLayout = () => {
                                     onValueChange={handelMyProfileTabChange}
                                     className='h-full'
                                     orientation='vertical'>
-                                    <TabsList className='!h-full px-3'>
+                                    <TabsList className='!h-full px-3' orientation='vertical'>
                                         {hideStoreSettingsTabData.map((tab) => (
-                                            <TabsTrigger key={tab.key} value={tab.key}>
+                                            <TabsTrigger key={tab.key} value={tab.key} borderPosition='right'>
                                                 {tab.label}
                                             </TabsTrigger>
                                         ))}
@@ -458,9 +458,9 @@ const StoreSettingsLayout = () => {
                                     onValueChange={handelMyProfileTabChange}
                                     className='h-full px-3'
                                     orientation='vertical'>
-                                    <TabsList className=' flex flex-col !h-full space-y-3'>
+                                    <TabsList className=' flex flex-col !h-full space-y-3' orientation='vertical'>
                                         {storeSettingsTabData.map((tab) => (
-                                            <TabsTrigger key={tab.key} value={tab.key}>
+                                            <TabsTrigger key={tab.key} value={tab.key} borderPosition='right'>
                                                 {tab.label}
                                             </TabsTrigger>
                                         ))}

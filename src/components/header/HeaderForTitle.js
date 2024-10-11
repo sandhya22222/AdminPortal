@@ -84,7 +84,7 @@ function HeaderForTitle({
                 )}
             </div>
             {headerContent !== null && headerContent !== undefined ? (
-                <div className='mt-[4.0rem] bg-white !px-5 !pt-3 !pb-1'>{headerContent}</div>
+                <div className='mt-[4.0rem] bg-white !px-5 !pt-3'>{headerContent}</div>
             ) : null}
         </div>
     )
