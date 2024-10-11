@@ -497,10 +497,8 @@ const Theme = ({ id, getImageData }) => {
                             <StoreModal
                                 isVisible={isModalOpen}
                                 title={`${t('labels:sample_preview_page_for_store_front')}`}
-                                width={1000}
                                 cancelCallback={() => closeModal()}
-                                isSpin={false}
-                                className='!h-96'>
+                                isSpin={false}>
                                 <Preview
                                     headerBackgroundColor={headerBackgroundColor}
                                     headerForegroundColor={headerForegroundColor}

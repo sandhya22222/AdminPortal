@@ -1,8 +1,8 @@
 import React from 'react';
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter, DialogTitle } from '../../shadcnComponents/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogFooter, DialogTitle } from '../../shadcnComponents/ui/dialog';
 import { Button } from '../../shadcnComponents/ui/button';
-import { useTranslation } from 'react-i18next'
-import './StoreModal.css'
+import { useTranslation } from 'react-i18next';
+
 const StoreModal = ({
     okCallback,
     cancelCallback,
@@ -15,25 +15,31 @@ const StoreModal = ({
     isCancelButtonDisabled,
     isOkButtonDisabled,
     removePadding,
-    width,
+    width, 
+    height, 
 }) => {
-    const { t } = useTranslation()
+    const { t } = useTranslation();
 
     const handleOk = () => {
-        okCallback()
-    }
+        okCallback();
+    };
 
     const handleCancel = () => {
-        cancelCallback()
-    }
+        cancelCallback();
+    };
 
     return (
         <Dialog open={isVisible} onOpenChange={(open) => !open && handleCancel()}>
-            <DialogContent
-                className={`${removePadding ? '' : ''} ${width ? `${width}` : 'w-full max-w-lg'} `}>
+            <DialogContent 
+                className={`${removePadding ? '' : ''}`}
+                style={{ 
+                    width: width || 'auto', 
+                    maxWidth: '100%',
+                    height: height || 'auto', 
+                }}
+            >
                 <DialogHeader>
                     <DialogTitle>{title}</DialogTitle>
-                    
                 </DialogHeader>
                 <div className='px-0 py-2'>{children}</div>
                 <DialogFooter>
@@ -58,9 +64,12 @@ const StoreModal = ({
                 </DialogFooter>
             </DialogContent>
         </Dialog>
-    )
-}
+    );
+};
+
 export default StoreModal;
+
+
 
 /**
  * @Girish to check this. this is old ANTd  design. 
