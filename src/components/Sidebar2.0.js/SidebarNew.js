@@ -201,197 +201,203 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                         zIndex: 10, // Keep it above other content
                     }}
                     className={'overflow-hidden'}>
-                    {/* <Spin spinning={myData.length > 0 ? false : true} indicator={antIcon} tip=''> */}
+                    {!myData.length > 0 ? (
+                        <Spin />
+                    ) : (
+                        <div
+                            className={`${collapsed ? 'w-[50px] p-[6px] !ml-1' : 'w-[252px] p-2'} min-h-screen relative transition-all`}
+                            style={{ top: '72px', zIndex: 1001 }}>
+                            {myData.map((item) =>
+                                item.show_in_menu ? (
+                                    <Tooltip key={item.key}>
+                                        <TooltipTrigger asChild>
+                                            <div
+                                                key={item.key}
+                                                onMouseEnter={() => setHoveredItem(item.key)} // Track hover
+                                                onMouseLeave={() => setHoveredItem(null)}>
+                                                {item.children ? (
+                                                    <div>
+                                                        {/* Parent Menu Item */}
+                                                        <div
+                                                            className={cn(
+                                                                'cursor-pointer flex items-center py-2 px-4',
+                                                                selectedItem === item.key
+                                                                    ? 'font-medium text-brandPrimaryColor bg-slate-100 rounded-md'
+                                                                    : 'opacity-80'
+                                                            )}
+                                                            onClick={() => toggleSubMenu(item.key)}>
+                                                            {item.icon && (
+                                                                <span
+                                                                    className={`${collapsed ? 'ml-[-6px]' : ''} mr-3`}>
+                                                                    {item.icon}
+                                                                </span>
+                                                            )}
+                                                            {!collapsed && (
+                                                                <div className='!flex items-center space-x-24'>
+                                                                    {item.label.length > 23 ? (
+                                                                        <span
+                                                                            className={`overflow-ellipsis  overflow-hidden whitespace-nowrap `}>
+                                                                            {' '}
+                                                                            <Ellipsis
+                                                                                text={
+                                                                                    item.label.length > 23
+                                                                                        ? item.label
+                                                                                        : undefined
+                                                                                }
+                                                                                position={'up'}
+                                                                                style={{}}></Ellipsis>
+                                                                        </span>
+                                                                    ) : (
+                                                                        <span>{item.label}</span>
+                                                                    )}
+                                                                    <span className='!text-lg'>
+                                                                        {openedItem === null ? (
+                                                                            <MdArrowDropDown />
+                                                                        ) : (
+                                                                            <MdArrowDropUp />
+                                                                        )}
+                                                                    </span>
+                                                                </div>
+                                                            )}
+                                                        </div>
 
-                    <div
-                        className={`${collapsed ? 'w-[50px] p-[6px] !ml-1' : 'w-[252px] p-2'} min-h-screen relative transition-all`}
-                        style={{ top: '72px', zIndex: 1001 }}>
-                        {myData.map((item) =>
-                            item.show_in_menu ? (
-                                <Tooltip key={item.key}>
-                                    <TooltipTrigger asChild>
-                                        <div
-                                            key={item.key}
-                                            onMouseEnter={() => setHoveredItem(item.key)} // Track hover
-                                            onMouseLeave={() => setHoveredItem(null)}>
-                                            {item.children ? (
-                                                <div>
-                                                    {/* Parent Menu Item */}
+                                                        {/* SubMenu Items */}
+                                                        {collapsed && isHovering ? (
+                                                            <TooltipContent
+                                                                side='right'
+                                                                align='center'
+                                                                style={{ zIndex: 1002 }}
+                                                                className=' p-2'>
+                                                                <div className='ml-4'>
+                                                                    {item.children.map((child) =>
+                                                                        child.show_in_menu ? (
+                                                                            <div
+                                                                                key={child.key}
+                                                                                className={cn(
+                                                                                    'cursor-pointer py-2 px-7',
+                                                                                    selectedItem === child.key
+                                                                                        ? `font-medium text-brandPrimaryColor rounded-md`
+                                                                                        : 'opacity-80'
+                                                                                )}
+                                                                                onClick={() =>
+                                                                                    handleClick(
+                                                                                        child.key,
+                                                                                        child.navigate_to
+                                                                                    )
+                                                                                }>
+                                                                                {child.label}
+                                                                            </div>
+                                                                        ) : null
+                                                                    )}
+                                                                </div>
+                                                            </TooltipContent>
+                                                        ) : (
+                                                            openedItem === item.key &&
+                                                            !collapsed && (
+                                                                <div className={`ml-4 `}>
+                                                                    {item.children.map((child) =>
+                                                                        child.show_in_menu ? (
+                                                                            <div
+                                                                                key={child.key}
+                                                                                onMouseEnter={() =>
+                                                                                    setHoveredItem(child.key)
+                                                                                } // Track hover
+                                                                                onMouseLeave={() =>
+                                                                                    setHoveredItem(null)
+                                                                                }
+                                                                                className={cn(
+                                                                                    'cursor-pointer py-2 px-7',
+                                                                                    selectedItem === child.key
+                                                                                        ? `font-medium text-brandPrimaryColor  rounded-md ${
+                                                                                              collapsed === false
+                                                                                                  ? 'bg-slate-100 '
+                                                                                                  : ''
+                                                                                          }`
+                                                                                        : 'opacity-80',
+                                                                                    hoveredItem === child.key
+                                                                                        ? 'bg-brandGray rounded-md'
+                                                                                        : ''
+                                                                                )}
+                                                                                onClick={() =>
+                                                                                    handleClick(
+                                                                                        child.key,
+                                                                                        child.navigate_to
+                                                                                    )
+                                                                                }>
+                                                                                {child.label.length > 23 ? (
+                                                                                    <span
+                                                                                        className={`overflow-ellipsis  overflow-hidden whitespace-nowrap `}>
+                                                                                        {' '}
+                                                                                        <Ellipsis
+                                                                                            text={
+                                                                                                child.label.length > 23
+                                                                                                    ? child.label
+                                                                                                    : undefined
+                                                                                            }
+                                                                                            position={'up'}
+                                                                                            style={{}}></Ellipsis>
+                                                                                    </span>
+                                                                                ) : (
+                                                                                    <span>{child.label}</span>
+                                                                                )}
+                                                                            </div>
+                                                                        ) : null
+                                                                    )}
+                                                                </div>
+                                                            )
+                                                        )}
+                                                    </div>
+                                                ) : (
                                                     <div
                                                         className={cn(
                                                             'cursor-pointer flex items-center py-2 px-4',
                                                             selectedItem === item.key
                                                                 ? 'font-medium text-brandPrimaryColor bg-slate-100 rounded-md'
-                                                                : 'opacity-80'
+                                                                : 'opacity-80',
+                                                            hoveredItem === item.key
+                                                                ? 'bg-brandGray rounded-md' // Apply hover effect
+                                                                : ''
                                                         )}
-                                                        onClick={() => toggleSubMenu(item.key)}>
+                                                        onClick={() => handleClick(item.key, item.navigate_to)}>
                                                         {item.icon && (
-                                                            <span className={`${collapsed ? 'ml-[-6px]' : ''} mr-3`}>
+                                                            <span className={`${collapsed ? 'ml-[-6px]' : ''} mr-3 `}>
                                                                 {item.icon}
                                                             </span>
                                                         )}
-                                                        {!collapsed && (
-                                                            <div className='!flex items-center space-x-24'>
-                                                                {item.label.length > 23 ? (
-                                                                    <span
-                                                                        className={`overflow-ellipsis  overflow-hidden whitespace-nowrap `}>
-                                                                        {' '}
-                                                                        <Ellipsis
-                                                                            text={
-                                                                                item.label.length > 23
-                                                                                    ? item.label
-                                                                                    : undefined
-                                                                            }
-                                                                            position={'up'}
-                                                                            style={{}}></Ellipsis>
-                                                                    </span>
-                                                                ) : (
-                                                                    <span>{item.label}</span>
-                                                                )}
-                                                                <span className='!text-lg'>
-                                                                    {openedItem === null ? (
-                                                                        <MdArrowDropDown />
-                                                                    ) : (
-                                                                        <MdArrowDropUp />
-                                                                    )}
+                                                        {!collapsed ? (
+                                                            item.label.length > 23 ? (
+                                                                <span
+                                                                    className={`overflow-ellipsis  overflow-hidden whitespace-nowrap`}>
+                                                                    {' '}
+                                                                    <Ellipsis
+                                                                        text={
+                                                                            item.label.length > 23
+                                                                                ? item.label
+                                                                                : undefined
+                                                                        }
+                                                                        position={'right'}
+                                                                        style={{}}></Ellipsis>
                                                                 </span>
-                                                            </div>
-                                                        )}
+                                                            ) : (
+                                                                <span>{item.label}</span>
+                                                            )
+                                                        ) : isHovering ? (
+                                                            <TooltipContent
+                                                                side='right'
+                                                                align='center'
+                                                                style={{ zIndex: 1002 }}>
+                                                                {item.label}
+                                                            </TooltipContent>
+                                                        ) : null}
                                                     </div>
-
-                                                    {/* SubMenu Items */}
-                                                    {collapsed && isHovering ? (
-                                                        <TooltipContent
-                                                            side='right'
-                                                            align='center'
-                                                            style={{ zIndex: 1002 }}
-                                                            className=' p-2'>
-                                                            <div className='ml-4'>
-                                                                {item.children.map((child) =>
-                                                                    child.show_in_menu ? (
-                                                                        <div
-                                                                            key={child.key}
-                                                                            className={cn(
-                                                                                'cursor-pointer py-2 px-7',
-                                                                                selectedItem === child.key
-                                                                                    ? `font-medium text-brandPrimaryColor rounded-md`
-                                                                                    : 'opacity-80'
-                                                                            )}
-                                                                            onClick={() =>
-                                                                                handleClick(
-                                                                                    child.key,
-                                                                                    child.navigate_to
-                                                                                )
-                                                                            }>
-                                                                            {child.label}
-                                                                        </div>
-                                                                    ) : null
-                                                                )}
-                                                            </div>
-                                                        </TooltipContent>
-                                                    ) : (
-                                                        openedItem === item.key &&
-                                                        !collapsed && (
-                                                            <div className={`ml-4 `}>
-                                                                {item.children.map((child) =>
-                                                                    child.show_in_menu ? (
-                                                                        <div
-                                                                            key={child.key}
-                                                                            onMouseEnter={() =>
-                                                                                setHoveredItem(child.key)
-                                                                            } // Track hover
-                                                                            onMouseLeave={() => setHoveredItem(null)}
-                                                                            className={cn(
-                                                                                'cursor-pointer py-2 px-7',
-                                                                                selectedItem === child.key
-                                                                                    ? `font-medium text-brandPrimaryColor  rounded-md ${
-                                                                                          collapsed === false
-                                                                                              ? 'bg-slate-100 '
-                                                                                              : ''
-                                                                                      }`
-                                                                                    : 'opacity-80',
-                                                                                hoveredItem === child.key
-                                                                                    ? 'bg-brandGray rounded-md'
-                                                                                    : ''
-                                                                            )}
-                                                                            onClick={() =>
-                                                                                handleClick(
-                                                                                    child.key,
-                                                                                    child.navigate_to
-                                                                                )
-                                                                            }>
-                                                                            {child.label.length > 23 ? (
-                                                                                <span
-                                                                                    className={`overflow-ellipsis  overflow-hidden whitespace-nowrap `}>
-                                                                                    {' '}
-                                                                                    <Ellipsis
-                                                                                        text={
-                                                                                            child.label.length > 23
-                                                                                                ? child.label
-                                                                                                : undefined
-                                                                                        }
-                                                                                        position={'up'}
-                                                                                        style={{}}></Ellipsis>
-                                                                                </span>
-                                                                            ) : (
-                                                                                <span>{child.label}</span>
-                                                                            )}
-                                                                        </div>
-                                                                    ) : null
-                                                                )}
-                                                            </div>
-                                                        )
-                                                    )}
-                                                </div>
-                                            ) : (
-                                                <div
-                                                    className={cn(
-                                                        'cursor-pointer flex items-center py-2 px-4',
-                                                        selectedItem === item.key
-                                                            ? 'font-medium text-brandPrimaryColor bg-slate-100 rounded-md'
-                                                            : 'opacity-80',
-                                                        hoveredItem === item.key
-                                                            ? 'bg-brandGray rounded-md' // Apply hover effect
-                                                            : ''
-                                                    )}
-                                                    onClick={() => handleClick(item.key, item.navigate_to)}>
-                                                    {item.icon && (
-                                                        <span className={`${collapsed ? 'ml-[-6px]' : ''} mr-3 `}>
-                                                            {item.icon}
-                                                        </span>
-                                                    )}
-                                                    {!collapsed ? (
-                                                        item.label.length > 23 ? (
-                                                            <span
-                                                                className={`overflow-ellipsis  overflow-hidden whitespace-nowrap`}>
-                                                                {' '}
-                                                                <Ellipsis
-                                                                    text={
-                                                                        item.label.length > 23 ? item.label : undefined
-                                                                    }
-                                                                    position={'right'}
-                                                                    style={{}}></Ellipsis>
-                                                            </span>
-                                                        ) : (
-                                                            <span>{item.label}</span>
-                                                        )
-                                                    ) : isHovering ? (
-                                                        <TooltipContent
-                                                            side='right'
-                                                            align='center'
-                                                            style={{ zIndex: 1002 }}>
-                                                            {item.label}
-                                                        </TooltipContent>
-                                                    ) : null}
-                                                </div>
-                                            )}
-                                        </div>
-                                    </TooltipTrigger>
-                                </Tooltip>
-                            ) : null
-                        )}
-                    </div>
-                    {/* </Spin> */}
+                                                )}
+                                            </div>
+                                        </TooltipTrigger>
+                                    </Tooltip>
+                                ) : null
+                            )}
+                        </div>
+                    )}
                 </ResizablePanel>
                 <ResizableHandle
                     withHandle

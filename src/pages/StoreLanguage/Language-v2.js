@@ -247,11 +247,7 @@ const Language = () => {
     return (
         <div>
             <HeaderForTitle
-                title={
-                    <>
-                        <h2 className='font-semibold text-2xl mb-4 text-regal-blue'>{t('labels:language_settings')}</h2>
-                    </>
-                }
+                title={<h2 className='font-semibold text-2xl mb-4 text-regal-blue'>{t('labels:language_settings')}</h2>}
                 titleContent={
                     <div className='!flex gap-2 items-center !justify-end '>
                         <DropdownMenu>
@@ -282,7 +278,7 @@ const Language = () => {
                         </Button>
                     </div>
                 }
-                headerContent={<p className='mt-16 text-brandGray1'>{t('labels:languages_note')}</p>}
+                headerContent={<p className='mt-16 text-brandGray1 font-normal'>{t('labels:languages_note')}</p>}
             />
             <div className='p-3 '>
                 <Card className='p-3'>
