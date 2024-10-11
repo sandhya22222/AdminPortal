@@ -1096,7 +1096,7 @@ const Stores = () => {
                     )
                 }
                 headerContent={
-                    <div className='mt-10'>
+                    <div className='mt-24'>
                         <Tabs value={currentTab} onValueChange={handleTabChange}>
                             <TabsList>
                                 <TabsTrigger value='1' borderPosition='bottom'>
