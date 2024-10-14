@@ -983,7 +983,7 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
             ) : (
                 <div className='bg-white flex flex-col gap-4 !rounded-md border'>
                     <div className='pl-4 pt-4'>
-                        <h2 className='text-lg font-semibold'>{t('labels:threshold_limit')}</h2>
+                        <h2 className='text-lg font-semibold'>{t('labels:store_restrictions')}</h2>
                     </div>
                     {storeLimitValues && analysisCount ? (
                         <ShadCNDataTable data={data} columns={StoreTableColumnThreshold} />
