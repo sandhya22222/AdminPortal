@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Layout, Row, Col, Button, Skeleton, Spin, Progress, InputNumber } from 'antd'
-import DynamicTable from '../../components/DynamicTable/DynamicTable'
+
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import { useTranslation } from 'react-i18next'
@@ -9,8 +8,12 @@ import util from '../../util/common'
 import { useAuth } from 'react-oidc-context'
 import { validatePositiveNumber } from '../../util/validation'
 import axios from 'axios'
-
-const { Content } = Layout
+import { Input } from '../../shadcnComponents/ui/input'
+import { Progress } from '../../shadcnComponents/ui/progress'
+import ShadCNDataTable from '../../shadcnComponents/customComponents/ShadCNDataTable'
+import { Skeleton } from '../../shadcnComponents/ui/skeleton'
+import { Button } from '../../shadcnComponents/ui/button'
+import Spin from '../../shadcnComponents/customComponents/Spin'
 
 const dm4sightDataLimitAnalysisDetailsCountAPI = process.env.REACT_APP_4SIGHT_GET_DATA_ANALYSISDETAIL_API
 const dm4sightClientID = process.env.REACT_APP_4SIGHT_CLIENT_ID
@@ -131,7 +134,8 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
         switch (key) {
             case 'vendor_limit':
                 return (
-                    <InputNumber
+                    <Input
+                        type='number'
                         placeholder={t('labels:placeholder_unlimited')}
                         value={storeDataLimitValues.vendor_limit > 0 ? storeDataLimitValues.vendor_limit : ''}
                         disabled={hideActionButton}
@@ -141,12 +145,13 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                         onPaste={(e) => {
                             validatePositiveNumber(e, /\d/)
                         }}
-                        className={'w-28'}
-                        max={9999999999}
+                        className={`w-28 ${invalidVendorLimit ? 'error' : ''}`}
+                        max={maxDataLimit}
+                        min={0}
                         maxLength={10}
-                        onChange={(value) => {
+                        onChange={(e) => {
                             let copyofStoreDataLimitValue = { ...storeDataLimitValues }
-                            copyofStoreDataLimitValue.vendor_limit = value
+                            copyofStoreDataLimitValue.vendor_limit = parseInt(e.target.value)
                             setStoreDataLimitValues(copyofStoreDataLimitValue)
                             setIsStoreDataLimitChanged(true)
                             setInvalidVendorLimit(false)
@@ -159,28 +164,28 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                             setIsStoreDataLimitChanged(true)
                             setInvalidVendorLimit(false)
                         }}
-                        status={invalidVendorLimit ? 'error' : ''}
                     />
                 )
             case 'customer_limit':
                 return (
-                    <InputNumber
+                    <Input
+                        type='number'
                         placeholder={t('labels:placeholder_unlimited')}
                         disabled={hideActionButton}
                         value={storeDataLimitValues.customer_limit > 0 ? storeDataLimitValues.customer_limit : ''}
-                        status={invalidCustomerLimit ? 'error' : ''}
                         onKeyPress={(e) => {
                             validatePositiveNumber(e, /\d/)
                         }}
                         onPaste={(e) => {
                             validatePositiveNumber(e, /\d/)
                         }}
-                        className={'w-28'}
-                        max={9999999999}
+                        className={`w-28 ${invalidCustomerLimit ? 'error' : ''}`}
+                        min={0}
+                        max={maxDataLimit}
                         maxLength={10}
-                        onChange={(value) => {
+                        onChange={(e) => {
                             let copyofStoreDataLimitValue = { ...storeDataLimitValues }
-                            copyofStoreDataLimitValue.customer_limit = value
+                            copyofStoreDataLimitValue.customer_limit = parseInt(e.target.value)
                             setStoreDataLimitValues(copyofStoreDataLimitValue)
                             setIsStoreDataLimitChanged(true)
                             setInvalidCustomerLimit(false)
@@ -198,23 +203,24 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                 )
             case 'product_limit':
                 return (
-                    <InputNumber
+                    <Input
+                        type='number'
                         disabled={hideActionButton}
                         placeholder={t('labels:placeholder_unlimited')}
                         value={storeDataLimitValues.product_limit > 0 ? storeDataLimitValues.product_limit : ''}
-                        status={invalidProductLimit ? 'error' : ''}
                         onKeyPress={(e) => {
                             validatePositiveNumber(e, /\d/)
                         }}
                         onPaste={(e) => {
                             validatePositiveNumber(e, /\d/)
                         }}
-                        className={'w-28'}
-                        max={9999999999}
+                        className={`w-28 ${invalidProductLimit ? 'error' : ''}`}
+                        min={0}
+                        max={maxDataLimit}
                         maxLength={10}
-                        onChange={(value) => {
+                        onChange={(e) => {
                             let copyofStoreDataLimitValue = { ...storeDataLimitValues }
-                            copyofStoreDataLimitValue.product_limit = value
+                            copyofStoreDataLimitValue.product_limit = parseInt(e.target.value)
                             setStoreDataLimitValues(copyofStoreDataLimitValue)
                             setIsStoreDataLimitChanged(true)
                             setInvalidProductLimit(false)
@@ -232,25 +238,26 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                 )
             case 'order_limit_per_day':
                 return (
-                    <InputNumber
+                    <Input
+                        type='number'
                         disabled={hideActionButton}
                         placeholder={t('labels:placeholder_unlimited')}
                         value={
                             storeDataLimitValues.order_limit_per_day > 0 ? storeDataLimitValues.order_limit_per_day : ''
                         }
-                        status={invalidOrderLimit ? 'error' : ''}
                         onKeyPress={(e) => {
                             validatePositiveNumber(e, /\d/)
                         }}
                         onPaste={(e) => {
                             validatePositiveNumber(e, /\d/)
                         }}
-                        className={'w-28'}
-                        max={9999999999}
+                        className={`w-28 ${invalidOrderLimit ? 'error' : ''}`}
+                        min={0}
+                        max={maxDataLimit}
                         maxLength={10}
-                        onChange={(value) => {
+                        onChange={(e) => {
                             let copyofStoreDataLimitValue = { ...storeDataLimitValues }
-                            copyofStoreDataLimitValue.order_limit_per_day = value
+                            copyofStoreDataLimitValue.order_limit_per_day = parseInt(e.target.value)
                             setStoreDataLimitValues(copyofStoreDataLimitValue)
                             setIsStoreDataLimitChanged(true)
                             setInvalidOrderLimit(false)
@@ -268,23 +275,24 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                 )
             case 'langauge_limit':
                 return (
-                    <InputNumber
+                    <Input
+                        type='number'
                         disabled={hideActionButton}
                         placeholder={t('labels:placeholder_unlimited')}
                         value={storeDataLimitValues.langauge_limit > 0 ? storeDataLimitValues.langauge_limit : ''}
-                        status={invalidLanguageLimit ? 'error' : ''}
                         onKeyPress={(e) => {
                             validatePositiveNumber(e, /\d/)
                         }}
                         onPaste={(e) => {
                             validatePositiveNumber(e, /\d/)
                         }}
-                        className={'w-28'}
-                        max={9999999999}
+                        className={`w-28 ${invalidLanguageLimit ? 'error' : ''}`}
+                        min={0}
+                        max={maxDataLimit}
                         maxLength={10}
-                        onChange={(value) => {
+                        onChange={(e) => {
                             let copyofStoreDataLimitValue = { ...storeDataLimitValues }
-                            copyofStoreDataLimitValue.langauge_limit = value
+                            copyofStoreDataLimitValue.langauge_limit = parseInt(e.target.value)
                             setStoreDataLimitValues(copyofStoreDataLimitValue)
                             setIsStoreDataLimitChanged(true)
                             setInvalidLanguageLimit(false)
@@ -302,7 +310,8 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                 )
             case 'product_template_limit':
                 return (
-                    <InputNumber
+                    <Input
+                        type='number'
                         disabled={hideActionButton}
                         placeholder={t('labels:placeholder_unlimited')}
                         value={
@@ -310,19 +319,19 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                                 ? storeDataLimitValues.product_template_limit
                                 : ''
                         }
-                        status={invalidProductTemplateLimit ? 'error' : ''}
                         onKeyPress={(e) => {
                             validatePositiveNumber(e, /\d/)
                         }}
                         onPaste={(e) => {
                             validatePositiveNumber(e, /\d/)
                         }}
-                        className={'w-28'}
-                        max={9999999999}
+                        className={`w-28 ${invalidProductTemplateLimit ? 'error' : ''}`}
+                        min={0}
+                        max={maxDataLimit}
                         maxLength={10}
-                        onChange={(value) => {
+                        onChange={(e) => {
                             let copyofStoreDataLimitValue = { ...storeDataLimitValues }
-                            copyofStoreDataLimitValue.product_template_limit = value
+                            copyofStoreDataLimitValue.product_template_limit = parseInt(e.target.value)
                             setStoreDataLimitValues(copyofStoreDataLimitValue)
                             setIsStoreDataLimitChanged(true)
                             setInvalidProductTemplateLimit(false)
@@ -340,23 +349,24 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                 )
             case 'store_users_limit':
                 return (
-                    <InputNumber
+                    <Input
+                        type='number'
                         placeholder={t('labels:placeholder_unlimited')}
                         disabled={hideActionButton}
                         value={storeDataLimitValues.store_users_limit > 0 ? storeDataLimitValues.store_users_limit : ''}
-                        status={invalidStoreUserLimit ? 'error' : ''}
                         onKeyPress={(e) => {
                             validatePositiveNumber(e, /\d/)
                         }}
                         onPaste={(e) => {
                             validatePositiveNumber(e, /\d/)
                         }}
-                        className={'w-28'}
-                        max={9999999999}
+                        className={`w-28 ${invalidStoreUserLimit ? 'error' : ''}`}
+                        min={0}
+                        max={maxDataLimit}
                         maxLength={10}
-                        onChange={(value) => {
+                        onChange={(e) => {
                             let copyofStoreDataLimitValue = { ...storeDataLimitValues }
-                            copyofStoreDataLimitValue.store_users_limit = value
+                            copyofStoreDataLimitValue.store_users_limit = parseInt(e.target.value)
                             setStoreDataLimitValues(copyofStoreDataLimitValue)
                             setIsStoreDataLimitChanged(true)
                             setInvalidStoreUserLimit(false)
@@ -374,25 +384,26 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                 )
             case 'vendor_users_limit':
                 return (
-                    <InputNumber
+                    <Input
+                        type='number'
                         disabled={hideActionButton}
                         placeholder={t('labels:placeholder_unlimited')}
                         value={
                             storeDataLimitValues.vendor_users_limit > 0 ? storeDataLimitValues.vendor_users_limit : ''
                         }
-                        status={invalidVendorUserLimit ? 'error' : ''}
                         onKeyPress={(e) => {
                             validatePositiveNumber(e, /\d/)
                         }}
                         onPaste={(e) => {
                             validatePositiveNumber(e, /\d/)
                         }}
-                        className={'w-28'}
-                        max={9999999999}
+                        className={`w-28 ${invalidVendorUserLimit ? 'error' : ''}`}
+                        min={0}
+                        max={maxDataLimit}
                         maxLength={10}
-                        onChange={(value) => {
+                        onChange={(e) => {
                             let copyofStoreDataLimitValue = { ...storeDataLimitValues }
-                            copyofStoreDataLimitValue.vendor_users_limit = value
+                            copyofStoreDataLimitValue.vendor_users_limit = parseInt(e.target.value)
                             setStoreDataLimitValues(copyofStoreDataLimitValue)
                             setIsStoreDataLimitChanged(true)
                             setInvalidVendorUserLimit(false)
@@ -410,7 +421,8 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                 )
             case 'maximum_vendor_product_limit':
                 return (
-                    <InputNumber
+                    <Input
+                        type='number'
                         disabled={hideActionButton}
                         placeholder={t('labels:placeholder_unlimited')}
                         value={
@@ -418,19 +430,19 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                                 ? storeDataLimitValues.max_products_per_vendor
                                 : ''
                         }
-                        status={invalidMaxProductLimit ? 'error' : ''}
                         onKeyPress={(e) => {
                             validatePositiveNumber(e, /\d/)
                         }}
                         onPaste={(e) => {
                             validatePositiveNumber(e, /\d/)
                         }}
-                        className={'w-28'}
-                        max={9999999999}
+                        className={`w-28 ${invalidMaxProductLimit ? 'error' : ''}`}
+                        min={0}
+                        max={maxDataLimit}
                         maxLength={10}
-                        onChange={(value) => {
+                        onChange={(e) => {
                             let copyofStoreDataLimitValue = { ...storeDataLimitValues }
-                            copyofStoreDataLimitValue.max_products_per_vendor = value
+                            copyofStoreDataLimitValue.max_products_per_vendor = parseInt(e.target.value)
                             setStoreDataLimitValues(copyofStoreDataLimitValue)
                             setIsStoreDataLimitChanged(true)
                             setInvalidMaxProductLimit(false)
@@ -448,7 +460,8 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                 )
             case 'maximum_vendor_product_template_limit':
                 return (
-                    <InputNumber
+                    <Input
+                        type='number'
                         disabled={hideActionButton}
                         placeholder={t('labels:placeholder_unlimited')}
                         value={
@@ -456,19 +469,19 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                                 ? storeDataLimitValues.max_templates_per_vendor
                                 : ''
                         }
-                        status={invalidMaxTemplateLimit ? 'error' : ''}
                         onKeyPress={(e) => {
                             validatePositiveNumber(e, /\d/)
                         }}
                         onPaste={(e) => {
                             validatePositiveNumber(e, /\d/)
                         }}
-                        className={'w-28'}
-                        max={9999999999}
+                        className={`w-24 ${invalidMaxTemplateLimit ? 'error' : ''}`}
+                        min={0}
+                        max={maxDataLimit}
                         maxLength={10}
-                        onChange={(value) => {
+                        onChange={(e) => {
                             let copyofStoreDataLimitValue = { ...storeDataLimitValues }
-                            copyofStoreDataLimitValue.max_templates_per_vendor = value
+                            copyofStoreDataLimitValue.max_templates_per_vendor = parseInt(e.target.value)
                             setStoreDataLimitValues(copyofStoreDataLimitValue)
                             setIsStoreDataLimitChanged(true)
                             setInvalidMaxTemplateLimit(false)
@@ -485,7 +498,8 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                 )
             case 'default_vendor_commission':
                 return (
-                    <InputNumber
+                    <Input
+                        type='number'
                         disabled={hideActionButton}
                         value={
                             storeDataLimitValues.default_store_commission
@@ -506,9 +520,9 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                             validatePositiveNumber(e, /\d/)
                         }}
                         className={'w-28'}
-                        onChange={(value) => {
+                        onChange={(e) => {
                             let copyofStoreDataLimitValue = { ...storeDataLimitValues }
-                            copyofStoreDataLimitValue.default_store_commission = value
+                            copyofStoreDataLimitValue.default_store_commission = parseInt(e.target.value)
                             setStoreDataLimitValues(copyofStoreDataLimitValue)
                             setIsStoreDataLimitChanged(true)
                         }}
@@ -521,23 +535,25 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
 
     const StoreTableColumnThreshold = [
         {
-            title: `${t('labels:limit_set_by_admin_name')}`,
+            header: `${t('labels:limit_set_by_admin_name')}`,
             dataIndex: 'limits',
             key: 'limits',
             width: '30%',
             render: (text) => {
                 if (text != null) {
                     const [limitName, value] = text.split(',')
+
                     return (
-                        <Content className='flex flex-col gap-2'>
-                            <label className='text-[13px] mb-2 ml-1 input-label-color'>{limitName}</label>
-                            <InputNumber
+                        <div className='flex flex-col gap-2'>
+                            <h2 className='text-[13px]  mb-2 ml-1 input-label-color'>{limitName}</h2>
+                            <Input
+                                type='number'
                                 value={value > 0 ? value : ''}
                                 disabled={true}
                                 className={'w-28'}
                                 placeholder={t('labels:placeholder_unlimited')}
                             />
-                        </Content>
+                        </div>
                     )
                 } else {
                     return null
@@ -545,28 +561,29 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
             },
         },
         {
-            title: `${t('labels:override_limit_name')}`,
+            header: `${t('labels:override_limit_name')}`,
             dataIndex: 'limitfields',
             key: 'limitfields',
             width: '30%',
             render: (text) => {
                 const [labelname, value, key] = text.split(',')
                 return (
-                    <Content className='flex flex-col'>
-                        <label className='text-[13px] mb-3 input-label-color'>{labelname}</label>
+                    <div className='flex flex-col'>
+                        <h2 className='text-[13px]  mb-3 input-h2-color '>{labelname}</h2>
                         {getStoreRestrictionControl(key)}
-                    </Content>
+                    </div>
                 )
             },
         },
         {
-            title: `${t('labels:stats_name')}`,
+            header: `${t('labels:stats_name')}`,
             dataIndex: 'stats',
             key: 'stats',
             width: '30%',
             render: (text) => {
                 if (text != null) {
                     const [count, total, keyName] = text.split(',')
+                    console.log('===========================', total)
                     const labelText =
                         keyName === 'vendor_limit'
                             ? t('labels:active_vendors')
@@ -586,18 +603,18 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                                           ? t('labels:vendor_users')
                                           : null
                     return (
-                        <Content className='flex !flex-col'>
+                        <div className='flex !flex-col'>
                             <div
-                                className={
+                                className={`${
                                     util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                        ? 'flex flex-row-reverse !justify-end !space-x-1'
-                                        : 'flex !space-x-1'
-                                }>
-                                <p>{count}</p>
+                                        ? 'flex flex-row-reverse !justify-end !space-x-1 '
+                                        : 'flex !space-x-1  '
+                                } text-[13px]`}>
+                                <span>{count}</span>
                                 {total > 0 ? (
                                     <>
-                                        <p>{t('labels:of')}</p>
-                                        <p>{total}</p>
+                                        <span>{t('labels:of')}</span>
+                                        <span>{total}</span>
                                     </>
                                 ) : (
                                     ''
@@ -607,15 +624,15 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
                             <div>
                                 {total > 0 ? (
                                     <Progress
-                                        strokeColor={'#FB8500'}
-                                        className='w-24'
+                                        color={'brandOrange'}
+                                        className={'w-40 h-[6px] mt-2'}
                                         size='small'
-                                        percent={(count / total) * 100}
+                                        value={(count / total) * 100}
                                         showInfo={false}
                                     />
                                 ) : null}
                             </div>
-                        </Content>
+                        </div>
                     )
                 } else {
                     return null
@@ -632,95 +649,94 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
         },
     ]
 
+    const data = [
+        {
+            key: '4',
+            limitfields: `${t('labels:vendor_limit')},${
+                storeDataLimitValues.vendor_limit > 0 ? storeDataLimitValues.vendor_limit : ''
+            },vendor_limit`,
+            limits: `${t('labels:max_vendor_onboarding_limit')},${storeLimitValues?.vendor_limit}`,
+            stats: analysisCount?.vendor_count + ',' + storeDataLimitValues?.vendor_limit + ',' + 'vendor_limit',
+        },
+        {
+            key: '5',
+            limitfields: `${t('labels:customer_limit')},${
+                storeDataLimitValues.customer_limit > 0 ? storeDataLimitValues.customer_limit : ''
+            },customer_limit`,
+            limits: `${t('labels:max_customer_onboarding_limit')},${storeLimitValues?.customer_limit}`,
+            stats: analysisCount?.customer_count + ',' + storeDataLimitValues?.customer_limit + ',' + 'customer_limit',
+        },
+        {
+            key: '6',
+            limitfields: `${t('labels:product_limit')},${
+                storeDataLimitValues.product_limit > 0 ? storeDataLimitValues.product_limit : ''
+            },product_limit`,
+            limits: `${t('labels:max_product_limit')},${storeLimitValues?.product_limit}`,
+            stats: analysisCount?.product_count + ',' + storeDataLimitValues?.product_limit + ',' + 'product_limit',
+        },
+        {
+            key: '7',
+            limitfields: `${t('labels:order_limit_per_day')},${
+                storeDataLimitValues.order_limit_per_day > 0 ? storeDataLimitValues.order_limit_per_day : ''
+            },order_limit_per_day`,
+            limits: `${t('labels:max_order_limit')},${storeLimitValues?.order_limit_per_day}`,
+            stats:
+                analysisCount?.order_count +
+                ',' +
+                storeDataLimitValues?.order_limit_per_day +
+                ',' +
+                'order_limit_per_day',
+        },
+        {
+            key: '8',
+            limitfields: `${t('labels:langauge_limit')},${
+                storeDataLimitValues.langauge_limit > 0 ? storeDataLimitValues.langauge_limit : ''
+            },langauge_limit`,
+            limits: `${t('labels:max_language_limit')},${storeLimitValues?.langauge_limit}`,
+            stats: analysisCount?.lang_count + ',' + storeDataLimitValues?.langauge_limit + ',' + 'langauge_limit',
+        },
+        {
+            key: '9',
+            limitfields: `${t('labels:product_template_limit')},${
+                storeDataLimitValues.product_template_limit > 0 ? storeDataLimitValues.product_template_limit : ''
+            },product_template_limit`,
+            limits: `${t('labels:max_product_template_limit')},${storeLimitValues?.product_template_limit}`,
+            stats:
+                analysisCount?.prod_temp_count +
+                ',' +
+                storeDataLimitValues?.product_template_limit +
+                ',' +
+                'product_template_limit',
+        },
+        {
+            key: '12',
+            limitfields: `${t('labels:maximum_vendor_product_limit')},${
+                storeDataLimitValues.max_products_per_vendor > 0 ? storeDataLimitValues.max_products_per_vendor : ''
+            },maximum_vendor_product_limit`,
+            limits: null,
+            stats: null,
+        },
+        {
+            key: '12',
+            limitfields: `${t('labels:maximum_vendor_product_template_limit')},${
+                storeDataLimitValues.max_templates_per_vendor > 0 ? storeDataLimitValues.max_templates_per_vendor : ''
+            },maximum_vendor_product_template_limit`,
+            limits: null,
+            stats: null,
+        },
+        {
+            key: '13',
+            limitfields: `${t('labels:default_vendor_commission')},${
+                storeDataLimitValues.default_store_commission
+            },default_vendor_commission`,
+            limits: null,
+            stats: null,
+        },
+    ]
+
     const tablePropsThreshold = {
         table_header: StoreTableColumnThreshold,
-        table_content: [
-            {
-                key: '4',
-                limitfields: `${t('labels:vendor_limit')},${
-                    storeDataLimitValues.vendor_limit > 0 ? storeDataLimitValues.vendor_limit : ''
-                },vendor_limit`,
-                limits: `${t('labels:max_vendor_onboarding_limit')},${storeLimitValues?.vendor_limit}`,
-                stats: analysisCount?.vendor_count + ',' + storeDataLimitValues?.vendor_limit + ',' + 'vendor_limit',
-            },
-            {
-                key: '5',
-                limitfields: `${t('labels:customer_limit')},${
-                    storeDataLimitValues.customer_limit > 0 ? storeDataLimitValues.customer_limit : ''
-                },customer_limit`,
-                limits: `${t('labels:max_customer_onboarding_limit')},${storeLimitValues?.customer_limit}`,
-                stats:
-                    analysisCount?.customer_count + ',' + storeDataLimitValues?.customer_limit + ',' + 'customer_limit',
-            },
-            {
-                key: '6',
-                limitfields: `${t('labels:product_limit')},${
-                    storeDataLimitValues.product_limit > 0 ? storeDataLimitValues.product_limit : ''
-                },product_limit`,
-                limits: `${t('labels:max_product_limit')},${storeLimitValues?.product_limit}`,
-                stats: analysisCount?.product_count + ',' + storeDataLimitValues?.product_limit + ',' + 'product_limit',
-            },
-            {
-                key: '7',
-                limitfields: `${t('labels:order_limit_per_day')},${
-                    storeDataLimitValues.order_limit_per_day > 0 ? storeDataLimitValues.order_limit_per_day : ''
-                },order_limit_per_day`,
-                limits: `${t('labels:max_order_limit')},${storeLimitValues?.order_limit_per_day}`,
-                stats:
-                    analysisCount?.order_count +
-                    ',' +
-                    storeDataLimitValues?.order_limit_per_day +
-                    ',' +
-                    'order_limit_per_day',
-            },
-            {
-                key: '8',
-                limitfields: `${t('labels:langauge_limit')},${
-                    storeDataLimitValues.langauge_limit > 0 ? storeDataLimitValues.langauge_limit : ''
-                },langauge_limit`,
-                limits: `${t('labels:max_language_limit')},${storeLimitValues?.langauge_limit}`,
-                stats: analysisCount?.lang_count + ',' + storeDataLimitValues?.langauge_limit + ',' + 'langauge_limit',
-            },
-            {
-                key: '9',
-                limitfields: `${t('labels:product_template_limit')},${
-                    storeDataLimitValues.product_template_limit > 0 ? storeDataLimitValues.product_template_limit : ''
-                },product_template_limit`,
-                limits: `${t('labels:max_product_template_limit')},${storeLimitValues?.product_template_limit}`,
-                stats:
-                    analysisCount?.prod_temp_count +
-                    ',' +
-                    storeDataLimitValues?.product_template_limit +
-                    ',' +
-                    'product_template_limit',
-            },
-            {
-                key: '12',
-                limitfields: `${t('labels:maximum_vendor_product_limit')},${
-                    storeDataLimitValues.max_products_per_vendor > 0 ? storeDataLimitValues.max_products_per_vendor : ''
-                },maximum_vendor_product_limit`,
-                limits: null,
-                stats: null,
-            },
-            {
-                key: '12',
-                limitfields: `${t('labels:maximum_vendor_product_template_limit')},${
-                    storeDataLimitValues.max_templates_per_vendor > 0
-                        ? storeDataLimitValues.max_templates_per_vendor
-                        : ''
-                },maximum_vendor_product_template_limit`,
-                limits: null,
-                stats: null,
-            },
-            {
-                key: '13',
-                limitfields: `${t('labels:default_vendor_commission')},${
-                    storeDataLimitValues.default_store_commission
-                },default_vendor_commission`,
-                limits: null,
-                stats: null,
-            },
-        ],
+        table_content: [],
         pagenationSettings: pagination,
         search_settings: {
             is_enabled: false,
@@ -954,60 +970,45 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
     }, [])
 
     return (
-        <Content>
+        <div className='p-4'>
             {isStoreLimitDataLoading ? (
-                <Content className='bg-white p-3 !rounded-md mt-[2.0rem]'>
-                    <Skeleton
-                        active
-                        paragraph={{
-                            rows: 6,
-                        }}></Skeleton>
-                </Content>
+                <div className='bg-white p-3 !rounded-md mt-[2.0rem]'>
+                    <Skeleton className='h-10 w-[70%] mb-3' />
+                    <Skeleton className='h-7 w-full mb-2' />
+                    <Skeleton className='h-7 w-full mb-2' />
+                    <Skeleton className='h-7 w-[50%] mb-2' />
+                </div>
+            ) : isStoreDataLimitSaving ? (
+                <Spin />
             ) : (
-                <Spin tip={t('labels:please_wait')} size='large' spinning={isStoreDataLimitSaving}>
-                    <Content className='bg-white !rounded-md border my-4'>
-                        <Content className='p-3'>
-                            <label className='text-lg font-semibold text-regal-blue'>
-                                {t('labels:thershold_limit')}
-                            </label>
-                        </Content>
-                        {storeLimitValues && analysisCount ? (
-                            <DynamicTable tableComponentData={tablePropsThreshold} />
-                        ) : (
-                            ''
-                        )}
-                        <Content className='p-3'>
-                            {hideActionButton ? (
-                                ''
-                            ) : (
-                                <Row className='gap-2'>
-                                    <Col>
-                                        <Button
-                                            className={isStoreDataLimitChanged ? 'app-btn-primary' : '!opacity-75'}
-                                            disabled={!isStoreDataLimitChanged}
-                                            onClick={() => {
-                                                storeLimitValidation()
-                                            }}>
-                                            {t('labels:save')}
-                                        </Button>
-                                    </Col>
-                                    <Col className=''>
-                                        <Button
-                                            className={isStoreDataLimitChanged ? 'app-btn-secondary' : '!opacity-75'}
-                                            disabled={!isStoreDataLimitChanged}
-                                            onClick={() => {
-                                                navigate('/dashboard/store?m_t=1')
-                                            }}>
-                                            {t('labels:discard')}
-                                        </Button>
-                                    </Col>
-                                </Row>
-                            )}
-                        </Content>
-                    </Content>
-                </Spin>
+                <div className='bg-white flex flex-col gap-4 !rounded-md border'>
+                    <div className='pl-4 pt-4'>
+                        <h2 className='text-lg font-semibold'>{t('labels:threshold_limit')}</h2>
+                    </div>
+                    {storeLimitValues && analysisCount ? (
+                        <ShadCNDataTable data={data} columns={StoreTableColumnThreshold} />
+                    ) : null}
+                    <div className='flex gap-5 pb-4 pl-4'>
+                        <Button
+                            variant='default'
+                            disabled={!isStoreDataLimitChanged}
+                            onClick={() => {
+                                storeLimitValidation()
+                            }}>
+                            {t('labels:save')}
+                        </Button>
+                        <Button
+                            variant='outline'
+                            disabled={!isStoreDataLimitChanged}
+                            onClick={() => {
+                                navigate('/dashboard/store?m_t=1')
+                            }}>
+                            {t('labels:discard')}
+                        </Button>
+                    </div>
+                </div>
             )}
-        </Content>
+        </div>
     )
 }
 
