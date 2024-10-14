@@ -1,68 +1,65 @@
-import { DownOutlined } from '@ant-design/icons'
-import { Alert, Button, Dropdown, Input, Progress, Skeleton, Space, Typography } from 'antd'
-import React, { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import ReactQuill, { Quill } from 'react-quill'
 import { useSelector } from 'react-redux'
-import MarketplaceToaster from '../../../util/marketplaceToaster'
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.snow.css'
+import { Button } from "../../../shadcnComponents/ui/button"
+import { Input } from "../../../shadcnComponents/ui/input"
+import { Progress } from "../../../shadcnComponents/ui/progress"
+import { Alert, AlertDescription } from "../../../shadcnComponents/ui/alert"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../shadcnComponents/ui/select"
+import { Card, CardContent } from "../../../shadcnComponents/ui/card"
+import { Skeleton } from "../../../shadcnComponents/ui/skeleton"
+
 import useCreateVersionDisplayname from '../hooks/useCreateVersionDisplayname'
 import useGetStoreLanguage from '../hooks/useGetStoreLanguage'
 import useGetUserConsentVersionDisplayName from '../hooks/useGetUserConsentVersionDisplayName'
 import useUpdateVersionDisplayname from '../hooks/useUpdateVersionDisplayname'
 
 const CONSENT_NAME_LENGTH = 100
-const Link = Quill.import('formats/link')
+
+// Quill configuration
+const Link = ReactQuill.Quill.import('formats/link')
 Link.sanitize = function (url) {
     const trimmedURL = url?.trim()
-    // quill by default creates relative links if scheme is missing.
     if (!trimmedURL.startsWith('http://') && !trimmedURL.startsWith('https://')) {
         return `https://${trimmedURL}`
     }
     return trimmedURL
 }
+
 const modules = {
     toolbar: [
         [{ header: [1, 2, 3, 4, 5, 6, false] }],
-        // [{ size: ["small", false, "large", "huge"] }], // custom dropdown
-        ['bold', 'italic', 'underline', 'strike'], // toggled buttons
-        ['blockquote'],
-        ['link'],
-        // [{ header: 1 }, { header: 2 }], // custom button values
+        ['bold', 'italic', 'underline', 'strike'],
+        ['blockquote', 'link'],
         [{ list: 'ordered' }, { list: 'bullet' }],
-        [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
-        [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
-        // [{ direction: "rtl" }], // text direction
-        [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+        [{ script: 'sub' }, { script: 'super' }],
+        [{ indent: '-1' }, { indent: '+1' }],
+        [{ color: [] }, { background: [] }],
         [{ align: [] }],
         ['clean'],
     ],
 }
 
 const formats = [
-    'background',
-    'bold',
-    'color',
-    'font',
-    'code',
-    'italic',
-    'link',
-    'size',
-    'strike',
-    'underline',
-    'blockquote',
-    'header',
-    'indent',
-    'list',
-    'align',
-    'direction',
-    // 'code-block',
-    // 'formula',
-    // 'image'
-    // 'video',
-    'script',
+    'background', 'bold', 'color', 'font', 'code', 'italic', 'link', 'size', 'strike', 'underline',
+    'blockquote', 'header', 'indent', 'list', 'align', 'direction', 'script',
 ]
-
-function TranslatePolicy({
+const userconsentVersionDisplayNameProcessor = (userConsentLanguageData) => {
+    return (userConsentLanguageData?.data || []).map((data) => ({
+        language: data?.language || 'English',
+        language_code: data?.language_code || 'en',
+        actionType: 'save',
+        consentTitleDisplayName: '',
+        consentDescriptionDisplayName: '',
+        consentDescriptionDisplayNameText: '',
+        translatedVersionId: '',
+        copyOfConsentDisplayName: '',
+        copyOfConsentDescriptionDisplayName: '',
+    }))
+}
+export default function TranslatePolicy({
     userConsentVersionId,
     userConsentBaseName,
     userConsentBaseDescription,
@@ -73,66 +70,36 @@ function TranslatePolicy({
     policyStatus,
 }) {
     const { t } = useTranslation()
-    const {
-        data: userConsentVersionDisplaynameData,
-        status: userConsentVersionDisplaynameDataStatus,
-        isFetched: isUserConsentVersionDisplayNameFetched,
-    } = useGetUserConsentVersionDisplayName({
-        userConsentVersionId,
-    })
-    const { data: userConsentLanguageData, status: userConsentLanguageStatus } = useGetStoreLanguage({
-        storeUUID,
-    })
     const [isContentDisplayNameChanged, setIsContentDisplayNameChanged] = useState(false)
     const [isContentDescriptionDisplayNameChanged, setIsContentDescriptionDisplayNameChanged] = useState(false)
     const [translateSuccessMessage, setTranslateSuccessMessage] = useState('')
     const [consentDisplayNameData, setConsentDisplayNameData] = useState([])
     const [selectedConsentDisplayNameData, setSelectedConsentDisplayNameData] = useState()
-    const [languages, setlanguages] = useState([{ label: 'English', key: 'en' }])
+    const [languages, setLanguages] = useState([{ label: 'English', key: 'en' }])
     const [selectedLanguage, setSelectedLanguage] = useState({ label: 'English', key: 'en' })
 
+    const { data: userConsentVersionDisplaynameData, status: userConsentVersionDisplaynameDataStatus } = useGetUserConsentVersionDisplayName({
+        userConsentVersionId,
+    })
+    const { data: userConsentLanguageData, status: userConsentLanguageStatus } = useGetStoreLanguage({
+        storeUUID,
+    })
     const { mutate: updateVersionDisplayName, status: updateDisplayNameStatus } = useUpdateVersionDisplayname()
     const { mutate: createVersionDisplayName, status: createDisplayNameStatus } = useCreateVersionDisplayname()
-    //! selected Language from Redux
+
     const selectedLanguageFromReduxState = useSelector((state) => state.reducerSelectedLanguage.selectedLanguage)
 
-    console.log('selected language from redux', selectedLanguageFromReduxState)
-
-    const userconsentVersionDisplayNameProcessor = (userConsentLanguageData) => {
-        return (userConsentLanguageData?.data || []).map((data) => ({
-            language: data?.language || 'English',
-            language_code: data?.language_code || 'en',
-            actionType: 'save',
-            consentTitleDisplayName: '',
-            consentDescriptionDisplayName: '',
-            consentDescriptionDisplayNameText: '',
-            translatedVersionId: '',
-            copyOfConsentDisplayName: '',
-            copyOfConsentDescriptionDisplayName: '',
-        }))
-    }
-
     useEffect(() => {
-        if (
-            (userConsentVersionDisplaynameDataStatus === 'success' && userConsentLanguageStatus === 'success') ||
-            isUserConsentVersionDisplayNameFetched
-        ) {
+        if (userConsentVersionDisplaynameDataStatus === 'success' && userConsentLanguageStatus === 'success') {
             if (userConsentLanguageData?.data?.length > 0) {
-                setlanguages(
-                    userConsentLanguageData?.data?.map((data) => {
-                        let obj = {}
-                        obj['label'] = data.language
-                        obj['key'] = data.language_code
-                        return obj
-                    })
-                )
+                setLanguages(userConsentLanguageData.data.map(data => ({
+                    label: data.language,
+                    key: data.language_code
+                })))
             }
-            if (
-                userConsentVersionDisplaynameData?.User_Consent_Version_Displaynames?.length > 0 &&
-                userConsentLanguageData?.data?.length > 0
-            ) {
+            if (userConsentVersionDisplaynameData?.User_Consent_Version_Displaynames?.length > 0 && userConsentLanguageData?.data?.length > 0) {
                 let storeLanguages = userconsentVersionDisplayNameProcessor(userConsentLanguageData)
-                userConsentVersionDisplaynameData?.User_Consent_Version_Displaynames?.forEach((displayNames) => {
+                userConsentVersionDisplaynameData.User_Consent_Version_Displaynames.forEach((displayNames) => {
                     storeLanguages.forEach((data) => {
                         if (data.language_code === displayNames.language_code) {
                             data.language_code = displayNames.language_code
@@ -149,349 +116,234 @@ function TranslatePolicy({
                 setConsentDisplayNameData(storeLanguages)
                 setSelectedConsentDisplayNameData(storeLanguages[0])
             } else {
-                // For intially render of the translate pop up filled with default data
                 let processedData = userconsentVersionDisplayNameProcessor(userConsentLanguageData)
                 setConsentDisplayNameData(processedData)
                 setSelectedConsentDisplayNameData(processedData[0])
             }
         }
-    }, [
-        userConsentVersionDisplaynameData,
-        userConsentVersionDisplaynameDataStatus,
-        isUserConsentVersionDisplayNameFetched,
-        userConsentLanguageData,
-    ])
+    }, [userConsentVersionDisplaynameData, userConsentVersionDisplaynameDataStatus, userConsentLanguageData, userConsentLanguageStatus])
 
-    console.log(
-        'displayNameData...',
-        userConsentVersionDisplaynameData,
-        userConsentLanguageData?.data,
-        languages,
-        consentDisplayNameData
-    )
-
-    const handleMenuClick = (e) => {
-        setSelectedLanguage(languages?.filter((data) => data.key === e.key)?.[0])
-        setSelectedConsentDisplayNameData(consentDisplayNameData?.filter((data) => data.language_code === e.key)?.[0])
+    const handleLanguageChange = (value) => {
+        setSelectedLanguage(languages.find(lang => lang.key === value))
+        setSelectedConsentDisplayNameData(consentDisplayNameData.find(data => data.language_code === value))
         setTranslateSuccessMessage('')
     }
 
-    const handelSaveConsentDisplayName = () => {
-        const postbody = {
-            userconsentversion_displayname: [
-                {
-                    store: Number(storeId),
-                    version: userConsentVersionId,
-                    language_code: selectedLanguage.key,
-                    display_name: selectedConsentDisplayNameData?.consentTitleDisplayName,
-                    version_display_name: 'Version_displayname',
-                    display_description: selectedConsentDisplayNameData?.consentDescriptionDisplayName,
-                },
-            ],
+    const handleSaveConsentDisplayName = () => {
+        const body = {
+            userconsentversion_displayname: [{
+                store: Number(storeId),
+                version: userConsentVersionId,
+                language_code: selectedLanguage.key,
+                display_name: selectedConsentDisplayNameData?.consentTitleDisplayName,
+                version_display_name: 'Version_displayname',
+                display_description: selectedConsentDisplayNameData?.consentDescriptionDisplayName,
+            }],
         }
 
-        const putbody = {
-            userconsentversions_displayname: [
-                {
-                    id: selectedConsentDisplayNameData?.translatedVersionId,
-                    language_code: selectedLanguage.key,
-                    display_name: selectedConsentDisplayNameData?.consentTitleDisplayName,
-                    version_display_name: 'Version_displayname',
-                    display_description: selectedConsentDisplayNameData?.consentDescriptionDisplayName,
-                },
-            ],
+        const mutateFunction = selectedConsentDisplayNameData?.actionType === 'save' ? createVersionDisplayName : updateVersionDisplayName
+        const mutateOptions = {
+            onSuccess: (response) => {
+                const responseData = response?.data?.response_body?.[0] || response?.response_body?.userconsentversions_displaynames?.[0]
+                if (responseData) {
+                    setTranslateSuccessMessage(response?.data?.response_message || response?.response_message)
+                    setIsContentDescriptionDisplayNameChanged(false)
+                    setIsContentDisplayNameChanged(false)
+                    updateConsentDisplayNameData(responseData)
+                }
+            },
+            onError: (err) => {
+                // Implement your error handling here
+                console.error("Error saving consent display name:", err)
+            },
         }
 
-        if (selectedConsentDisplayNameData?.actionType === 'save') {
-            createVersionDisplayName(
-                { body: postbody },
-                {
-                    onSuccess: (response) => {
-                        const responseData = response?.data?.response_body?.[0]
-                        if (responseData) {
-                            setTranslateSuccessMessage(response?.data?.response_message)
-                            setIsContentDescriptionDisplayNameChanged(false)
-                            setIsContentDisplayNameChanged(false)
-                            let copyOfSelectedConsentDisplayNameData = { ...selectedConsentDisplayNameData }
-                            let copyOfConsentDisplayNameData = [...consentDisplayNameData]
-                            copyOfSelectedConsentDisplayNameData.copyOfConsentDisplayName = responseData?.display_name
-                            copyOfSelectedConsentDisplayNameData.copyOfConsentDescriptionDisplayName =
-                                responseData?.display_description
-                            copyOfSelectedConsentDisplayNameData.actionType = 'update'
-                            copyOfSelectedConsentDisplayNameData.translatedVersionId = responseData?.id
-                            copyOfConsentDisplayNameData.forEach((data) => {
-                                if (data.language_code === responseData?.language_code) {
-                                    data.copyOfConsentDisplayName = responseData?.display_name
-                                    data.copyOfConsentDescriptionDisplayName = responseData?.display_description
-                                    data.actionType = 'update'
-                                    data.translatedVersionId = responseData?.id
-                                }
-                            })
-                            setSelectedConsentDisplayNameData(copyOfSelectedConsentDisplayNameData)
-                            setConsentDisplayNameData(copyOfConsentDisplayNameData)
-                        }
-                    },
-                    onError: (err) => {
-                        MarketplaceToaster.showToast(err?.response)
-                    },
-                }
-            )
-        } else {
-            updateVersionDisplayName(
-                { body: putbody, userConsentVersionId: userConsentVersionId },
-                {
-                    onSuccess: (response) => {
-                        const responseData = response?.response_body?.userconsentversions_displaynames?.[0]
-                        if (responseData) {
-                            setTranslateSuccessMessage(response?.response_message)
-                            setIsContentDescriptionDisplayNameChanged(false)
-                            setIsContentDisplayNameChanged(false)
-                            let copyOfSelectedConsentDisplayNameData = { ...selectedConsentDisplayNameData }
-                            let copyOfConsentDisplayNameData = [...consentDisplayNameData]
-                            copyOfSelectedConsentDisplayNameData.copyOfConsentDisplayName = responseData?.display_name
-                            copyOfSelectedConsentDisplayNameData.copyOfConsentDescriptionDisplayName =
-                                responseData?.display_description
-                            copyOfSelectedConsentDisplayNameData.actionType = 'update'
-                            copyOfSelectedConsentDisplayNameData.translatedVersionId = responseData?.id
-                            copyOfConsentDisplayNameData.forEach((data) => {
-                                if (data.language_code === responseData?.language_code) {
-                                    data.copyOfConsentDisplayName = responseData?.display_name
-                                    data.copyOfConsentDescriptionDisplayName = responseData?.display_description
-                                    data.actionType = 'update'
-                                    data.translatedVersionId = responseData?.id
-                                }
-                            })
-                            setSelectedConsentDisplayNameData(copyOfSelectedConsentDisplayNameData)
-                            setConsentDisplayNameData(copyOfConsentDisplayNameData)
-                        }
-                    },
-                    onError: (err) => {
-                        MarketplaceToaster.showToast(err?.response)
-                    },
-                }
-            )
-        }
+        mutateFunction({ body, userConsentVersionId }, mutateOptions)
+    }
+
+    const updateConsentDisplayNameData = (responseData) => {
+        let copyOfSelectedConsentDisplayNameData = { ...selectedConsentDisplayNameData }
+        let copyOfConsentDisplayNameData = [...consentDisplayNameData]
+        
+        copyOfSelectedConsentDisplayNameData.copyOfConsentDisplayName = responseData.display_name
+        copyOfSelectedConsentDisplayNameData.copyOfConsentDescriptionDisplayName = responseData.display_description
+        copyOfSelectedConsentDisplayNameData.actionType = 'update'
+        copyOfSelectedConsentDisplayNameData.translatedVersionId = responseData.id
+
+        copyOfConsentDisplayNameData = copyOfConsentDisplayNameData.map(data => 
+            data.language_code === responseData.language_code
+                ? { ...data, ...copyOfSelectedConsentDisplayNameData }
+                : data
+        )
+
+        setSelectedConsentDisplayNameData(copyOfSelectedConsentDisplayNameData)
+        setConsentDisplayNameData(copyOfConsentDisplayNameData)
     }
 
     const consentNameHandler = (name) => {
-        let copyOfSelectedConsentDisplayNameData = { ...selectedConsentDisplayNameData }
-        let copyOfConsentDisplayNameData = [...consentDisplayNameData]
-        copyOfConsentDisplayNameData.forEach((data) => {
-            if (data.language_code === copyOfSelectedConsentDisplayNameData.language_code) {
-                data.consentTitleDisplayName = name
-            }
-        })
-        copyOfSelectedConsentDisplayNameData.consentTitleDisplayName = name
+        let copyOfSelectedConsentDisplayNameData = { ...selectedConsentDisplayNameData, consentTitleDisplayName: name }
+        let copyOfConsentDisplayNameData = consentDisplayNameData.map(data => 
+            data.language_code === copyOfSelectedConsentDisplayNameData.language_code
+                ? { ...data, consentTitleDisplayName: name }
+                : data
+        )
+
         setConsentDisplayNameData(copyOfConsentDisplayNameData)
         setSelectedConsentDisplayNameData(copyOfSelectedConsentDisplayNameData)
         setTranslateSuccessMessage('')
-        if (
+        setIsContentDisplayNameChanged(
             selectedConsentDisplayNameData.actionType !== 'save' &&
             selectedConsentDisplayNameData.copyOfConsentDisplayName !== name
-        ) {
-            setIsContentDisplayNameChanged(true)
-        } else {
-            setIsContentDisplayNameChanged(false)
-        }
+        )
     }
 
     const consentDescriptionHandler = (content, delta, source, editor) => {
-        console.log('source...', source)
         if (source === 'user') {
-            let copyOfSelectedConsentDisplayNameData = { ...selectedConsentDisplayNameData }
-            let copyOfConsentDisplayNameData = [...consentDisplayNameData]
-            copyOfConsentDisplayNameData.forEach((data) => {
-                if (data.language_code === copyOfSelectedConsentDisplayNameData.language_code) {
-                    data.consentDescriptionDisplayName = content
-                    data.consentDescriptionDisplayNameText = editor.getText(content)?.trim()
-                }
-            })
-            copyOfSelectedConsentDisplayNameData.consentDescriptionDisplayName = content
-            copyOfSelectedConsentDisplayNameData.consentDescriptionDisplayNameText = editor.getText(content)?.trim()
-            setSelectedConsentDisplayNameData(copyOfSelectedConsentDisplayNameData)
+            let copyOfSelectedConsentDisplayNameData = { 
+                ...selectedConsentDisplayNameData, 
+                consentDescriptionDisplayName: content,
+                consentDescriptionDisplayNameText: editor.getText(content)?.trim()
+            }
+            let copyOfConsentDisplayNameData = consentDisplayNameData.map(data => 
+                data.language_code === copyOfSelectedConsentDisplayNameData.language_code
+                    ? { ...data, ...copyOfSelectedConsentDisplayNameData }
+                    : data
+            )
+
+            setConsentDisplayNameData(copyOfConsentDisplayNameData)
             setSelectedConsentDisplayNameData(copyOfSelectedConsentDisplayNameData)
             setTranslateSuccessMessage('')
-            if (
+            setIsContentDescriptionDisplayNameChanged(
                 selectedConsentDisplayNameData.actionType !== 'save' &&
                 selectedConsentDisplayNameData.copyOfConsentDescriptionDisplayName !== content?.trim()
-            ) {
-                setIsContentDescriptionDisplayNameChanged(true)
-            } else {
-                setIsContentDescriptionDisplayNameChanged(false)
-            }
+            )
         }
     }
-    const language = 'English'
+
+    const isLoading = userConsentVersionDisplaynameDataStatus === 'pending' || 
+                      updateDisplayNameStatus === 'pending' || 
+                      createDisplayNameStatus === 'pending' || 
+                      userConsentLanguageStatus === 'pending'
+
+
+    const language = "English";
     return (
-        <div>
+        <div className="space-y-4">
             {translateSuccessMessage && (
-                <Alert
-                    message={translateSuccessMessage}
-                    type='success'
-                    showIcon
-                    className='my-3 w-full !rounded-none'
-                    closable
-                    onClose={() => setTranslateSuccessMessage('')}
-                />
-                // <Tag
-                //     className='mb-2 w-full py-[7px] px-[9px] flex justify-between'
-                //     color='success'
-                //     closable
-                //     onClose={() => setTranslateSuccessMessage('')}>
-                //     <div className='flex items-center'>
-                //         <div className='pr-2'>
-                //             <CheckCircleOutlined className='text-[#52c41a] text-base' />
-                //         </div>
-                //         <span className='text-black'>{translateSuccessMessage}</span>
-                //     </div>
-                // </Tag>
+                <Alert>
+                    <AlertDescription>{translateSuccessMessage}</AlertDescription>
+                </Alert>
             )}
-            <div className='mt-3'>
-                {userConsentVersionDisplaynameDataStatus === 'pending' ||
-                updateDisplayNameStatus === 'pending' ||
-                createDisplayNameStatus === 'pending' ||
-                userConsentLanguageStatus === 'pending' ? (
-                    <Skeleton active />
-                ) : (
-                    <>
-                        {userConsentVersionDisplaynameDataStatus === 'success' && (
-                            <>
-                                <div className='flex justify-between space-x-8'>
-                                    <div>
-                                        <div className='flex mb-4'>
-                                            <label className='input-label-color'>{t('labels:translate_from')}</label>
-                                            <Typography className='font-bold px-2'>{language}</Typography>
-                                        </div>
-                                        <div>
-                                            <Typography.Title level={5}>{userConsentBaseName}</Typography.Title>
-                                        </div>
-                                        <div className='!w-[400px] '>
-                                            <ReactQuill
-                                                value={userConsentBaseDescription}
-                                                modules={{ toolbar: false }}
-                                                readOnly={true}
-                                                style={{ width: '100%', height: '390px' }}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className='mb-4 flex justify-between'>
-                                            <div className='flex'>
-                                                <label className='input-label-color'>{t('labels:translate_to')}</label>
-                                                <div className='flex items-center mx-2'>
-                                                    <Dropdown
-                                                        className='w-[90px]'
-                                                        menu={{
-                                                            items: languages,
-                                                            onClick: handleMenuClick,
-                                                        }}>
-                                                        <Space>
-                                                            <span className='font-bold'>{selectedLanguage.label}</span>
-                                                            <DownOutlined />
-                                                        </Space>
-                                                    </Dropdown>
-                                                </div>
-                                            </div>
-                                            <div className='w-[60%] '>
-                                                <Progress
-                                                    style={{ width: '50%', marginRight: '8px' }}
-                                                    strokeColor={'#FA8C16'}
-                                                    size='small'
-                                                    percent={
-                                                        (consentDisplayNameData?.filter(
-                                                            (data) => data.translatedVersionId !== ''
-                                                        ).length /
-                                                            consentDisplayNameData?.length) *
-                                                        100
-                                                    }
-                                                    showInfo={false}
-                                                />
-                                                <span>
-                                                    {`${
-                                                        consentDisplayNameData?.filter(
-                                                            (data) => data.translatedVersionId !== ''
-                                                        ).length
-                                                    } of ${consentDisplayNameData?.length} ${t('labels:language_translated')}`}
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <label className='text-[14px] pb-2 input-label-color'>
-                                            {t('labels:policy_title')}
-                                            <span
-                                                className={`mandatory-symbol-color text-sm mx-1 mt-[8px] font-medium`}>
-                                                *
-                                            </span>
-                                        </label>
-                                        <div className=' flex items-center gap-x-5 max-w-[40%] w-full pb-3'>
-                                            <Input
-                                                placeholder={t('labels:enter_policy_title')}
-                                                onChange={(e) => consentNameHandler(e.target?.value)}
-                                                value={selectedConsentDisplayNameData?.consentTitleDisplayName}
-                                                disabled={policyStatus === 2}
-                                                maxLength={CONSENT_NAME_LENGTH}
-                                                onBlur={(e) => {
-                                                    if (e.target?.value) {
-                                                        consentNameHandler(e.target.value.trim().replace(/\s+/g, ' '))
-                                                    }
-                                                }}
-                                            />
-                                        </div>
-                                        <label className='text-[14px] pb-2 input-label-color'>
-                                            {t('labels:policy_description')}
-                                            <span
-                                                className={`mandatory-symbol-color text-sm mx-1 mt-[8px] font-medium`}>
-                                                *
-                                            </span>
-                                        </label>
-                                        <div
-                                            className={`rounded border-[1px] drop-shadow-sm shadow-[#D9D9D9] border-[#D9D9D9]  w-[600px] !max-h-[300px] !h-[270px] !overflow-y-auto overflow-x-hidden ${policyStatus === 2 ? 'opacity-40 !cursor-not-allowed pointer-events-none bg-[#00000014]' : 'bg-white'}`}
-                                            data-text-editor={'versiontranslate'}>
-                                            <ReactQuill
-                                                theme='snow'
-                                                style={{ width: '100%' }}
-                                                value={selectedConsentDisplayNameData?.consentDescriptionDisplayName}
-                                                onChange={consentDescriptionHandler}
-                                                modules={modules}
-                                                formats={formats}
-                                                placeholder={t('labels:enter_policy_description')}
-                                                bounds={`[data-text-editor=versiontranslate]`}
-                                                readOnly={policyStatus === 2}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className='flex justify-end mt-2'>
-                                    <Button
-                                        onClick={() => {
-                                            setTranslatePolicy(false)
-                                            refetchUserConsent()
-                                        }}
-                                        disabled={''}
-                                        className='mx-2 app-btn-secondary'>
-                                        {t('labels:cancel')}
-                                    </Button>
-                                    <Button
-                                        className='app-btn-primary '
-                                        disabled={
-                                            !(
-                                                selectedConsentDisplayNameData?.consentTitleDisplayName?.trim() &&
-                                                selectedConsentDisplayNameData?.consentDescriptionDisplayNameText?.trim()
-                                            ) ||
-                                            (!isContentDisplayNameChanged &&
-                                                !isContentDescriptionDisplayNameChanged &&
-                                                selectedConsentDisplayNameData?.actionType !== 'save')
-                                        }
-                                        onClick={handelSaveConsentDisplayName}>
-                                        {t('labels:save')}
-                                    </Button>
-                                </div>
-                            </>
-                        )}
-                    </>
-                )}
+            {isLoading ? (
+                <Skeleton className="w-full h-[500px]" />
+            ) : (
+                <div className="grid grid-cols-5 gap-8">
+                    <div className="space-y-4 col-span-2">
+                        <div className="flex items-center space-x-3">
+                            <span className="text-sm font-medium">{t('labels:translate_from')}:</span>
+                            <span className="font-bold"> {language}</span>
+                        </div>
+                        <h3 className="text-lg font-semibold">{userConsentBaseName}</h3>
+                        <div className="w-full h-[390px] border rounded-md overflow-hidden">
+                            <ReactQuill
+                                value={userConsentBaseDescription}
+                                modules={{ toolbar: false }}
+                                readOnly={true}
+                                className="h-full"
+                            />
+                        </div>
+                    </div>
+                    <div className="space-y-4 col-span-3">
+                        <div className="flex items-center space-x-10 justify-between">
+                            <div className="flex items-center space-x-2">
+                                <span className="text-sm font-medium whitespace-nowrap ">{t('labels:translate_to')}:</span>
+                                <Select onValueChange={handleLanguageChange} value={selectedLanguage.key}>
+                                    <SelectTrigger className="w-[120px]">
+                                        <SelectValue placeholder="Select language" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {languages.map((lang) => (
+                                            <SelectItem key={lang.key} value={lang.key}>
+                                                {lang.label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                            <div className="flex flex-row items-center space-x-2 ">
+                                <Progress 
+                                    value={(consentDisplayNameData?.filter(data => data.translatedVersionId !== '').length / consentDisplayNameData?.length) * 100} 
+                                    className="w-[100px]"
+                                />
+                                <span className="text-sm  ">
+                                    {`${consentDisplayNameData?.filter(data => data.translatedVersionId !== '').length} of ${consentDisplayNameData?.length} ${t('labels:language_translated')}`}
+                                </span>
+                            </div>
+                        </div>
+                        <div className="space-y-2 ">
+                            <label className="text-sm font-medium">
+                                {t('labels:policy_title')}
+                                <span className="text-red-500">*</span>
+                            </label>
+                            <Input
+                                placeholder={t('labels:enter_policy_title')}
+                                onChange={(e) => consentNameHandler(e.target.value)}
+                                value={selectedConsentDisplayNameData?.consentTitleDisplayName}
+                                disabled={policyStatus === 2}
+                                maxLength={CONSENT_NAME_LENGTH}
+                                onBlur={(e) => {
+                                    if (e.target.value) {
+                                        consentNameHandler(e.target.value.trim().replace(/\s+/g, ' '))
+                                    }
+                                }}
+                                className="h-10 px-2"
+                            />
+                        </div>
+                        <div className="space-y-2 ">
+                            <label className="text-sm font-medium">
+                                {t('labels:policy_description')}
+                                <span className="text-red-500">*</span>
+                            </label>
+                            <Card className={`w-full h-[200px] overflow-hidden ${policyStatus === 2 ? 'opacity-40 cursor-not-allowed' : ''}`}>
+                                <CardContent className="p-0">
+                                    <ReactQuill
+                                        theme="snow"
+                                        value={selectedConsentDisplayNameData?.consentDescriptionDisplayName}
+                                        onChange={consentDescriptionHandler}
+                                        modules={modules}
+                                        formats={formats}
+                                        placeholder={t('labels:enter_policy_description')}
+                                        readOnly={policyStatus === 2}
+                                        className="h-[230px]"
+                                    />
+                                </CardContent>
+                            </Card>
+                        
+                        </div>
+                        <div className="flex justify-end space-x-2 mt-96 ">
+                <Button variant="outline" onClick={() => {
+                    setTranslatePolicy(false)
+                    refetchUserConsent()
+                }}>
+                    {t('labels:cancel')}
+                </Button>
+                <Button
+                    onClick={handleSaveConsentDisplayName}
+                    disabled={
+                        !(selectedConsentDisplayNameData?.consentTitleDisplayName?.trim() &&
+                        selectedConsentDisplayNameData?.consentDescriptionDisplayNameText?.trim()) ||
+                        (!isContentDisplayNameChanged &&
+                        !isContentDescriptionDisplayNameChanged &&
+                        selectedConsentDisplayNameData?.actionType !== 'save')
+                    }
+                >
+                    {t('labels:save')}
+                </Button>
             </div>
+                    </div>
+                </div>
+            )}
+
         </div>
     )
 }
-
-export default TranslatePolicy
