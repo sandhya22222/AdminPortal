@@ -473,7 +473,7 @@ const Theme = ({ id, getImageData }) => {
                     </Skeleton>
                 </div>
             ) : (
-                <div className='bg-white my-4 p-4 rounded-lg border'>
+                <div className='bg-white my-4 p-4 rounded-lg border w-auto'>
                     <div className=''>
                         {/* firstchange - DONE*/}
                         <div className='!mb-4'>
@@ -518,10 +518,10 @@ const Theme = ({ id, getImageData }) => {
 
                         <div className='text-regal-blue font-medium text-base'>{t('labels:page_theme')}</div>
                         {/* fourthchanges-top rows*/}
-                        <div className='flex flex-row mt-4 gap-16'>
+                        <div className='flex flex-row flex-wrap mt-4 gap-10'>
                             {/* rowONe */}
                             <TooltipProvider>
-                                <div className='mr-2'>
+                                <div className=''>
                                     <Label>{t('labels:primary_button_background_color')}</Label>
                                     <div className='flex gap-2 mt-1 items-center'>
                                         <div
@@ -604,7 +604,7 @@ const Theme = ({ id, getImageData }) => {
 
                             {/* row2 */}
                             <TooltipProvider>
-                                <div className='ml-1'>
+                                <div className=''>
                                     <Label>{t('labels:secondary_button_background_color')}</Label>
                                     <div className='flex gap-2 mt-1 items-center'>
                                         <div
@@ -697,7 +697,7 @@ const Theme = ({ id, getImageData }) => {
                             </TooltipProvider>
 
                             {/* row3 */}
-                            <div className='ml-2'>
+                            <div className=''>
                                 <Label>{t('labels:tertiary_button_text_color')}</Label>
                                 <div className='flex gap-2 mt-1'>
                                     <div
@@ -788,9 +788,9 @@ const Theme = ({ id, getImageData }) => {
                             </div>
                         </div>
                         {/*bottom row */}
-                        <div className=' mt-4 flex gap-16'>
+                        <div className=' mt-4 flex flex-wrap gap-10'>
                             {/* Primary Button Text Color Section */}
-                            <div className='mr-2'>
+                            <div className='mr-2 '>
                                 <Label>{t('labels:primary_button_text_color')}</Label>
                                 <div className='flex gap-2 mt-1 items-center'>
                                     {/* Color box that shows the current primary text color */}
