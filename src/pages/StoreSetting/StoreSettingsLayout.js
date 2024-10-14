@@ -409,7 +409,7 @@ const StoreSettingsLayout = () => {
             />
 
             <div className='!px-6 !pb-6  !mt-[12.5rem]'>
-                <div className=' w-full bg-white rounded shadow-brandShadow flex  justify-start'>
+                <div className=' w-full bg-white rounded shadow-brandShadow flex p-3 justify-start'>
                     <div className=' py-5 h-full px-1 '>
                         {permissionValue?.length > 0 ? (
                             permissionValue?.includes('UI-product-admin') === true ? (
@@ -477,7 +477,7 @@ const StoreSettingsLayout = () => {
                             )
                         ) : null}
                     </div>
-                    <div className='!w-[80%]'>
+                    <div className='w-full'>
                         {searchParams.get('tab') === STORE_SETTINGS_TABS_OPTIONS.OVERVIEW && (
                             <>{hideActionButton ? '' : <StoreOverview realmName={realmName} />}</>
                         )}
