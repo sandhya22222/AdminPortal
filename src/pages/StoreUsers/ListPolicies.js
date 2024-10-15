@@ -161,8 +161,10 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
                                                             <a
                                                                 href={item.href}
                                                                 onClick={(e) => handleClick(e, item.href)}
-                                                                className={`text-sm px-2 py-1.5 rounded-md !text-[#637381] !hover:text-regal-orange ${
-                                                                    policyLink === item.href ? 'font-medium' : ''
+                                                                className={`text-sm px-2 py-1.5 rounded-md !text-[#637381] ${
+                                                                    policyLink === item.href
+                                                                        ? '!text-regal-orange font-medium'
+                                                                        : '!hover:text-regal-orange'
                                                                 }`}>
                                                                 {item.title}
                                                             </a>
@@ -178,9 +180,7 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
                                             </nav>
                                         </TooltipProvider>
                                     </ScrollArea>
-                                    <div
-                                        ref={scrollbarRef}
-                                        className='w-1 bg-gray-200 rounded-full  ml-2 sticky top-0'>
+                                    <div ref={scrollbarRef} className='w-1 bg-gray-200 rounded-full  ml-2 sticky top-0'>
                                         <div
                                             className='w-3 h-3 bg-regal-orange rounded-full absolute -left-1'
                                             style={{ top: `${indicatorPosition}%` }}
