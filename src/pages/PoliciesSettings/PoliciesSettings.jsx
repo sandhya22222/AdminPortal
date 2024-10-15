@@ -124,7 +124,7 @@ export default function PoliciesSettings({ storeName }) {
     }
 
     return (
-        <Card className='bg-white rounded-lg border my-4'>
+        <Card className='bg-white rounded-lg border my-4 w-[92%]'>
             <CardContent className='p-4'>
                 <div className='mb-4'>
                     {policyWarning && (

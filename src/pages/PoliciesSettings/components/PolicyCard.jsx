@@ -294,11 +294,11 @@ export default function PolicyCard({
                                 }
                             }}
                             value={policyStatus === 2 ? consentDisplayName : consentName}
-                            className='max-w-[40%]'
+                            className='max-w-[40%] ml-4'
                         />
                     </div>
                 )}
-                <div className='mb-4'>
+                <div className='mb-4 '>
                     <label className='block text-sm font-medium text-gray-700 mb-1'>
                         {t('labels:policy_description')}
                         <span className='text-red-500 ml-1'>*</span>
@@ -312,8 +312,7 @@ export default function PolicyCard({
                         modules={modules}
                         formats={formats}
                         placeholder={t('labels:enter_policy_description')}
-                        className={`${policyStatus === 2 ? 'opacity-40 bg-gray-100' : ''} w-[680px] min-h-[200px] h-auto px-3 py-1.5`}
-                        style={{ minHeight: '100px', height: 'auto', overflow: 'hidden' }} // Add inline styles
+                        className={`w-[600px] min-h-[100px] h-auto px-3 py-1.5 overflow-hidden ${policyStatus === 2 ? 'opacity-40 bg-gray-100' : ''}`}
                     />
                 </div>
                 <div className='flex items-center text-sm text-gray-500'>
