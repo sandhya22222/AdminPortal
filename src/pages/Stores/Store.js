@@ -393,13 +393,13 @@ const Stores = () => {
                     <>
                         <div className='flex items-center'>
                             <div className=''>
-                                <Avatar className=''>
+                                <Avatar className='mx-2'>
                                     <AvatarImage src={storeDefaultImage} alt='Avatar' className />
                                     <AvatarFallback>Avatar</AvatarFallback>
                                 </Avatar>
                                 {/* <img src={storeDefaultImage} alt='storeDefaultImage' className='aspect-square mt-1' /> */}
                             </div>
-                            <div className='ml-2 space-y-1'>
+                            <div className='ml-0 space-y-1'>
                                 <div>
                                     <p
                                         className=' !max-w-[150px]'
@@ -1137,12 +1137,17 @@ const Stores = () => {
                                             <div className='flex items-center justify-end flex-row gap-3 flex-grow'>
                                                 <div className='flex flex-row'>
                                                     <Toggle
-                                                        className={`rounded-l-[7px] ${value === 0 ? 'border-brandOrange text-brandOrange' : ''}`}
+                                                        className={`${
+                                                            util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                                ? 'rounded-r-[7px]'
+                                                                : 'rounded-l-[7px]'
+                                                        } ${value === 0 ? 'border-brandOrange text-brandOrange' : 'border-defaultColor text-defaultColor'}`}
                                                         variant={value === 0 ? 'active' : 'default'}
                                                         checked={value === 0}
                                                         onClick={() => handleToggleChange(0)}>
                                                         {t('labels:all')}
                                                     </Toggle>
+
                                                     <Toggle
                                                         className={`${value === 1 ? 'border-brandOrange text-brandOrange' : ''}`}
                                                         variant={value === 1 ? 'active' : 'default'}
@@ -1151,7 +1156,11 @@ const Stores = () => {
                                                         {t('labels:active')}
                                                     </Toggle>
                                                     <Toggle
-                                                        className={`rounded-r-[7px] ${value === 2 ? 'border-brandOrange text-brandOrange' : ''}`}
+                                                        className={`${
+                                                            util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                                ? 'rounded-l-[7px]'
+                                                                : 'rounded-r-[7px]'
+                                                        } ${value === 2 ? 'border-brandOrange text-brandOrange' : ''}`}
                                                         variant={value === 2 ? 'active' : 'default'}
                                                         checked={value === 2}
                                                         onClick={() => handleToggleChange(2)}>
@@ -1168,7 +1177,11 @@ const Stores = () => {
                                                     maxLength={searchMaxLength}
                                                     enterButton={customButton}
                                                     allowClear
-                                                    // className='w-[300px]'
+                                                    className={`${
+                                                        util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                            ? 'text-left'
+                                                            : 'text-right'
+                                                    } `}
                                                 />
                                             </div>
                                         </div>
