@@ -91,11 +91,11 @@ const Newdashboard = () => {
         instance
             .get(dm4sightBaseURL + dm4sightGetAnalysisDetailAPI, dm4sightHeaders)
             .then((response) => {
-                const activeCount = response.data.active_store_count; 
-                setActiveStoreCount(activeCount);
-                console.log("Active Store Count:", activeCount); 
-    
-                setInActiveStoreCount(response.data.inactive_store_count);
+                const activeCount = response.data.active_store_count
+                setActiveStoreCount(activeCount)
+                console.log('Active Store Count:', activeCount)
+
+                setInActiveStoreCount(response.data.inactive_store_count)
                 const transformedData = Object.entries(response.data.count_info).map(([key, value]) => ({
                     key: key,
                     store_name: value.name,
@@ -107,37 +107,36 @@ const Newdashboard = () => {
                     in_progress: value.count_inprogress_order,
                     orders_cancelled: value.count_cancelled_order,
                     orders_fulfilled: value.count_fulfilled_order,
-                }));
-    
-                setTableData(transformedData);
-                setLoading(false);
-                setDashboardDataNetWorkError(false);
+                }))
+
+                setTableData(transformedData)
+                setLoading(false)
+                setDashboardDataNetWorkError(false)
             })
             .catch((err) => {
-                setLoading(false);
-                setDashboardDataNetWorkError(true);
-            });
+                setLoading(false)
+                setDashboardDataNetWorkError(true)
+            })
     }
-    
+
     useEffect(() => {
-        getActiveInactiveData();
+        getActiveInactiveData()
         MarketplaceServices.findAll(storePlatformLimitApi)
             .then(function (response) {
-                setStoreLimitValues(response.data.response_body);
+                setStoreLimitValues(response.data.response_body)
             })
             .catch((error) => {
-                console.log('Server error from store limit API ', error.response);
-            });
-    
+                console.log('Server error from store limit API ', error.response)
+            })
+
         MarketplaceServices.findAll(userProfileApi)
             .then(function (response) {
-                setUsername(response.data.response_body?.preferred_username);
+                setUsername(response.data.response_body?.preferred_username)
             })
             .catch((error) => {
-                console.log('Server error from user profile API ', error.response);
-            });
-    }, []);
-    
+                console.log('Server error from user profile API ', error.response)
+            })
+    }, [])
 
     const statisticsColumns = [
         {
@@ -223,25 +222,29 @@ const Newdashboard = () => {
         <div className='mb-2'>
             <div className='mb-2'>
                 <HeaderForTitle
+                    className='!w-full'
                     title={
-                        <div className='flex z-20  mb-3 mt-2 !justify-between'>
-                            <div className='!w-[80%] mr-2 flex !font-semibold text-lg flex-col gap-1 '>
-                                <div className='flex gap-1 !font-semibold text-[24px] '>
-                                    <h3 className='!text-[#637381] m-0 '>{t('messages:hello') + ','}</h3>
-                                    <h3 className='!text-regal-blue !m-0  '>
+                        <div className='flex z-20 mb-3 mt-2 w-full'>
+                            <div className='!w-full mr-2 flex !font-semibold text-lg flex-col gap-1'>
+                                <div className='flex gap-1 !font-semibold text-[24px]'>
+                                    <h3 className='!text-[#637381] m-0'>{t('messages:hello') + ','}</h3>
+                                    <h3 className='!text-regal-blue !m-0'>
                                         {username.slice(0, 1).toUpperCase() + username.slice(1)}
                                     </h3>
                                 </div>
-    
-                                <p className='!text-sm my-3 !text-[#637381] w-[47em] font-normal'>
+                                <p className='!text-sm my-3 !text-[#637381] w-auto font-normal'>
                                     {t('messages:dashboard_welcome_message')}
                                 </p>
                             </div>
+                        </div>
+                    }
+                    titleContent={
+                        <div className='flex flex-row items-baseline w-full overflow-hidden'>
                             <div
                                 className={
                                     storeLimitValues?.store_limit
-                                        ? ' !w-[40%] flex flex-col justify-center items-baseline'
-                                        : ' !w-[24%]  mr-0 pr-0 flex flex-col justify-center items-baseline'
+                                        ? '!w-full flex flex-col justify-center items-baseline'
+                                        : '!w-full mr-0 pr-0 flex flex-col justify-center items-baseline'
                                 }>
                                 <div className='text-[#637381] text-base !font-bold flex justify-left gap-1 items-center'>
                                     <div className='flex items-center'>
@@ -251,41 +254,27 @@ const Newdashboard = () => {
                                         </span>
                                     </div>
                                 </div>
-    
-                                <div className='flex flex-col items-baseline min-h-4 min-w-40 max-w-72 space-x-2 '>
-                                    <div className='flex justify-between items-baseline gap-1 '>
-                                        {langDirection === 'ltr' && (
-                                            <div className={'!max-w-[3.4em]'}>
-                                                <h2 className='!text-regal-blue m-0 text-[28px] font-semibold p-0 whitespace-nowrap'>
-                                                    {activeStoreCount || 0}
-                                                </h2>
-                                            </div>
-                                        )}
+
+                                <div className='flex flex-col items-baseline min-h-4 min-w-40 max-w-72 space-x-2'>
+                                    <div className='flex justify-between items-baseline gap-1'>
+                                        <div className={'!max-w-[3.4em]'}>
+                                            <h2 className='!text-regal-blue m-0 text-[28px] font-semibold p-0 whitespace-nowrap'>
+                                                {activeStoreCount || 0}
+                                            </h2>
+                                        </div>
                                         {storeLimitValues?.store_limit && (
                                             <span
                                                 className={`${
                                                     storeLimitValues.store_limit.toString().length >= 5
-                                                        ? `!text-md  text-[#8899A8] ${
-                                                              langDirection === 'rtl' ? 'w-[185px]' : 'w-60'
-                                                          }`
-                                                        : '!text-md  text-[#8899A8]'
+                                                        ? '!text-md text-[#8899A8] w-60'
+                                                        : '!text-md text-[#8899A8]'
                                                 }`}>
                                                 {t('labels:of')} {storeLimitValues.store_limit || 0}{' '}
                                                 {t('labels:stores')} ({t('labels:max_allowed')})
                                             </span>
                                         )}
-                                        {langDirection === 'rtl' && (
-                                            <div>
-                                                <h2
-                                                    style={{ color: '#023047' }}
-                                                    className='leading-[30px]  text-[24px]'>
-                                                    {activeStoreCount || 0}
-                                                </h2>
-                                            </div>
-                                        )}
                                     </div>
                                 </div>
-                                {console.log("Active Store Count:", activeStoreCount)}
                                 {storeLimitValues?.store_limit && (
                                     <Progress
                                         className='mt-0 pt-0 h-2'
@@ -296,22 +285,21 @@ const Newdashboard = () => {
                                     />
                                 )}
                             </div>
-    
                             <hr
-                                className='h-20 ml-0 pl-0'
-                                style={{ borderLeft: '1px solid #EAEAEA', height: 'auto' }}
+                                className='z-10 h-20 ml-0 pl-0'
+                                style={{ borderLeft: '3px solid #000000', height: 'auto' }}
                             />
-    
                             <div
-                                className={`!w-[25%] flex flex-col justify-center ${
-                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'pr-10' : 'pl-4'
-                                }`}>
+                                className={`!w-full
+                                 flex flex-col justify-center ${
+                                     util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'pr-10' : 'pl-4'
+                                 }`}>
                                 <div>
                                     <div className='text-[#637381] text-base !font-bold flex justify-left gap-1 items-center'>
                                         <div className='flex items-center'>
                                             <span className='inline-block w-1.5 h-1.5 bg-gray-400 rounded-full mr-2'></span>
                                             <span className='!text-brandGray2 text-[14px] font-bold'>
-                                            {t('labels:inactive_stores')}
+                                                {t('labels:inactive_stores')}
                                             </span>
                                         </div>
                                     </div>
@@ -342,7 +330,7 @@ const Newdashboard = () => {
                 ) : (
                     <div>
                         <div className='flex gap-3'></div>
-    
+
                         <div hidden={dm4sightEnabled === 'true' ? false : true} className='flex justify-between !mt-14'>
                             <div className='!w-[70%] bg-[#ffff] p-[24px] mt-0 ml-2 shadow-sm rounded-md justify-center'>
                                 <div className='flex items-center justify-between mb-1'>
@@ -355,7 +343,7 @@ const Newdashboard = () => {
                                         {t('labels:statistics')}
                                     </h4>
                                 </div>
-    
+
                                 <hr
                                     style={{
                                         width: 'calc(100% + 48px)',
@@ -365,7 +353,7 @@ const Newdashboard = () => {
                                         marginBottom: '24px',
                                     }}
                                 />
-    
+
                                 <div>
                                     <ShadCNDataTable pagination={false} data={tableData} columns={statisticsColumns} />
                                 </div>
@@ -381,7 +369,7 @@ const Newdashboard = () => {
                                         {t('labels:performance')}
                                     </h4>
                                 </div>
-    
+
                                 <hr
                                     style={{
                                         width: 'calc(100% + 48px)',
@@ -391,7 +379,7 @@ const Newdashboard = () => {
                                         marginBottom: '24px',
                                     }}
                                 />
-    
+
                                 <div>
                                     <ShadCNDataTable pagination={false} data={tableData} columns={performanceColumns} />
                                 </div>
@@ -408,7 +396,7 @@ const Newdashboard = () => {
                                     {t('labels:orders')}
                                 </h4>
                             </div>
-    
+
                             <hr
                                 style={{
                                     width: 'calc(100% + 48px)',
@@ -418,7 +406,7 @@ const Newdashboard = () => {
                                     marginBottom: '24px',
                                 }}
                             />
-    
+
                             <div>
                                 <ShadCNDataTable pagination={false} data={tableData} columns={ordersColumns} />
                             </div>
@@ -428,7 +416,6 @@ const Newdashboard = () => {
             </div>
         </div>
     )
-    
 }
 
 export default Newdashboard
