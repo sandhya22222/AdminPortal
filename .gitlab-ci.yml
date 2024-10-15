@@ -3,7 +3,6 @@ stages:
   - deploy
   - notify
 
-
 variables:
   CI_TAG: "291-cicd"
 
