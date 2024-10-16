@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import {  Upload, Layout, Modal, Image, Alert } from 'antd'
-import { PlusOutlined } from '@ant-design/icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { fnAbsoluteStoreImageInfo } from '../../services/redux/actions/ActionStoreImages'
 import { useTranslation } from 'react-i18next'
@@ -11,12 +9,13 @@ import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import './StoreImages.css'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import util from '../../util/common'
-const { Content } = Layout
-
+import CustomImageUpload from '../../components/UploadImageLayout/CustomImageUpload'
+import { MdRemoveRedEye } from 'react-icons/md'
+import { Alert } from 'antd'
+// import { Alert, AlertTitle, AlertDescription } from '../../shadcnComponents/ui/alert'
 const storeDeleteImagesAPI = process.env.REACT_APP_STORE_DELETE_IMAGES_API
 const baseURL = process.env.REACT_APP_BASE_URL
 const BannerImagesUploadLength = process.env.REACT_APP_BANNER_IMAGES_MAX_LENGTH
-const supportedFileExtensions = process.env.REACT_APP_IMAGES_EXTENSIONS
 
 const StoreImages = ({
     title,
@@ -44,59 +43,80 @@ const StoreImages = ({
     const [isImageDeleting, setIsImageDeleting] = useState(false)
     const [isDeleteImageModalOpen, setIsDeleteImageModalOpen] = useState(false)
     const [bannerImagesLength, setBannerImagesLength] = useState(0)
+    const [previewModalOpen, setPreviewModalOpen] = useState(false)
+    const [previewUrl, setPreviewUrl] = useState('')
     var selectedImageArrayOfObject = []
-    const uploadButton = (
-        <div>
-            <PlusOutlined />
-            <div
-                style={{
-                    marginTop: 8,
-                }}>
-                {t('labels:upload')}
-            </div>
-        </div>
-    )
 
     const handleChange = (e) => {
-        setFileList(e.fileList)
+        const files = Array.from(e.target.files)
+        console.log('firstttt', files)
+        const validImages = files.filter((file) => file.type.startsWith('image/'))
+
+        if (validImages.length > 0) {
+            // Map through valid images and assign a unique `uid`
+            const newFilesWithUid = validImages.map((file) => {
+                // Create a new object with the original properties and add the uid
+                return {
+                    uid: `${file.name}-${Date.now()}`,
+                    name: file.name,
+                    size: file.size,
+                    type: file.type,
+                    lastModified: file.lastModified,
+                    lastModifiedDate: file.lastModifiedDate,
+                    originFileObj: file,
+                    // Add any other properties you need
+                }
+            })
+            // Generate preview URLs using the original validImages array
+            const newPreviews = validImages.map((file) => {
+                return URL.createObjectURL(file)
+            })
+
+            // Update state with new files and previews
+            setFileList((prevFiles) => [...prevFiles, ...newFilesWithUid])
+            setPreviewImage((prevPreviews) => [...prevPreviews, ...newPreviews])
+        } else {
+            console.error('No valid image files selected')
+        }
         if (type === 'store_logo') {
-            if (e.fileList.length === 0) {
+            if (e.target.files.length === 0) {
                 let temp = imagesUpload.filter((e) => e.type !== 'store_logo')
                 setImagesUpload(temp)
             } else {
                 let copyImageData = [...imagesUpload]
-                copyImageData.push({ type: 'store_logo', imageValue: e.file })
+                copyImageData.push({ type: 'store_logo', imageValue: e.target.files[0] })
                 setImagesUpload(copyImageData)
             }
         }
         if (type === 'banner_images') {
-            setBannerImagesLength(
-                parseInt(allImageUrl && allImageUrl.length) + parseInt(e && e.fileList && e.fileList.length)
-            )
-            selectedImageArrayOfObject.push(e.file)
-            let sampleBannerImagesLength =
-                parseInt(allImageUrl && allImageUrl.length) + parseInt(e && e.fileList && e.fileList.length)
+            setBannerImagesLength(parseInt(allImageUrl?.length) + parseInt(e.target.files?.length))
+            files.forEach((obj) => {
+                selectedImageArrayOfObject.push(obj)
+            })
 
-            if (e.fileList.length === 0) {
+            console.log('selectedImageArrayOfObject', selectedImageArrayOfObject)
+            let sampleBannerImagesLength = parseInt(allImageUrl?.length) + parseInt(e.target.files?.length)
+
+            if (e.target.files.length === 0) {
                 let temp = imagesUpload.filter((e) => e.type !== 'banner_images')
                 setImagesUpload(temp)
             } else {
-                let totalSelectLength = e.fileList.length
-                if (sampleBannerImagesLength > BannerImagesUploadLength) {
-                    let imagesUploadLength = sampleBannerImagesLength - BannerImagesUploadLength
+                let totalSelectLength = e.target.files.length
+                if (sampleBannerImagesLength > parseInt(BannerImagesUploadLength)) {
+                    let imagesUploadLength = sampleBannerImagesLength - parseInt(BannerImagesUploadLength)
                     let imagesSelect = sampleBannerImagesLength - imagesUploadLength
                     totalSelectLength = imagesSelect - allImageUrl.length
-                    e.fileList.splice(totalSelectLength) // Limit the fileList to eight files
+                    files.splice(totalSelectLength) // Limit the fileList to eight files
                 }
                 let copyImageData = [...imagesUpload]
                 selectedImageArrayOfObject.splice(totalSelectLength)
                 let index = copyImageData.findIndex((item) => item.type === 'banner_images')
                 console.log('index', index)
                 if (index === -1) {
-                    if (e.fileList.length === 0) {
+                    if (e.target.files.length === 0) {
                         copyImageData.push({
                             type: 'banner_images',
-                            imageValue: [e.file],
+                            imageValue: [e.target.files],
                         })
                     } else {
                         copyImageData.push({
@@ -107,100 +127,24 @@ const StoreImages = ({
                 } else {
                     let bannerImagesData = copyImageData[index]
                     let duplicateValues = [...bannerImagesData.imageValue]
-                    if (e.file.status === 'removed') {
-                        let filteredDuplicateValues = duplicateValues.filter((ele) => ele.uid !== e.file.uid)
+                    if (e.target.files[0].status === 'removed') {
+                        let filteredDuplicateValues = duplicateValues.filter((ele) => ele.uid !== e.target.files[0].uid)
                         bannerImagesData['imageValue'] = filteredDuplicateValues
                     } else {
-                        duplicateValues.push(e.file)
+                        duplicateValues.push(e.target.files[0])
                         bannerImagesData['imageValue'] = duplicateValues
                     }
                     copyImageData[index] = bannerImagesData
-                    console.log('bannerImagesData', bannerImagesData)
                 }
-                console.log('copyImageData', copyImageData)
-                setImagesUpload(copyImageData)
-            }
-        }
-        if (type === 'search_logo') {
-            if (e.fileList.length == 0) {
-                let temp = imagesUpload.filter((e) => e.type !== 'search_logo')
-                setImagesUpload(temp)
-            } else {
-                let copyImageData = [...imagesUpload]
-                copyImageData.push({ type: 'search_logo', imageValue: e.file })
-                setImagesUpload(copyImageData)
-            }
-        }
-        if (type === 'customer_logo') {
-            if (e.fileList.length == 0) {
-                let temp = imagesUpload.filter((e) => e.type !== 'customer_logo')
-                setImagesUpload(temp)
-            } else {
-                let copyImageData = [...imagesUpload]
-                copyImageData.push({ type: 'customer_logo', imageValue: e.file })
-                setImagesUpload(copyImageData)
-            }
-        }
-        if (type === 'cart_logo') {
-            if (e.fileList.length == 0) {
-                let temp = imagesUpload.filter((e) => e.type !== 'cart_logo')
-                setImagesUpload(temp)
-            } else {
-                let copyImageData = [...imagesUpload]
-                copyImageData.push({ type: 'cart_logo', imageValue: e.file })
-                setImagesUpload(copyImageData)
-            }
-        }
-        if (type === 'wishlist_logo') {
-            if (e.fileList.length == 0) {
-                let temp = imagesUpload.filter((e) => e.type !== 'wishlist_logo')
-                setImagesUpload(temp)
-            } else {
-                let copyImageData = [...imagesUpload]
-                copyImageData.push({ type: 'wishlist_logo', imageValue: e.file })
                 setImagesUpload(copyImageData)
             }
         }
     }
-    console.log('getImageData', getImageData)
     useEffect(() => {
         if (getImageData && getImageData !== undefined) {
             if (type === 'store_logo') {
                 let temp = getImageData && getImageData.store_logo_path
-                console.log('temp', temp)
                 if (temp !== '' && temp !== null && temp !== undefined) {
-                    findAllWithoutPageStoreAbsoluteImagesApi(temp)
-                } else {
-                    setImagePathShow()
-                }
-            }
-            if (type === 'customer_logo') {
-                let temp = getImageData && getImageData.customer_logo_path
-                if (temp !== null) {
-                    findAllWithoutPageStoreAbsoluteImagesApi(temp)
-                } else {
-                    setImagePathShow()
-                }
-            }
-            if (type === 'cart_logo') {
-                let temp = getImageData && getImageData.cart_logo_path
-                if (temp !== null) {
-                    findAllWithoutPageStoreAbsoluteImagesApi(temp)
-                } else {
-                    setImagePathShow()
-                }
-            }
-            if (type === 'search_logo') {
-                let temp = getImageData && getImageData.search_logo_path
-                if (temp !== null) {
-                    findAllWithoutPageStoreAbsoluteImagesApi(temp)
-                } else {
-                    setImagePathShow()
-                }
-            }
-            if (type === 'wishlist_logo') {
-                let temp = getImageData && getImageData.wishlist_logo_path
-                if (temp !== null) {
                     findAllWithoutPageStoreAbsoluteImagesApi(temp)
                 } else {
                     setImagePathShow()
@@ -227,23 +171,43 @@ const StoreImages = ({
         }
     }, [bannerAbsoluteImage])
 
-    const getBase64 = (file) =>
-        new Promise((resolve, reject) => {
-            const reader = new FileReader()
-            reader.readAsDataURL(file)
-            reader.onload = () => resolve(reader.result)
-            reader.onerror = (error) => reject(error)
-        })
-
     const handleCancel = () => setPreviewOpen(false)
 
-    const handlePreview = async (file) => {
-        if (!file.url && !file.preview) {
-            file.preview = await getBase64(file.originFileObj)
+    const handlePreview = (file) => {
+        console.log('filessssss', file)
+        const originalFile = file.originFileObj // Access the original File object if it exists
+
+        if (originalFile) {
+            const previewUrl = URL.createObjectURL(originalFile) // Create preview for clicked image
+            setPreviewModalOpen(true)
+            setPreviewUrl(previewUrl)
+        } else {
+            console.error('No valid file object available for preview')
         }
-        setPreviewImage(file.url || file.preview)
-        setPreviewOpen(true)
-        setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1))
+    }
+
+    const handlePreviewForImage = (url) => {
+        setPreviewModalOpen(true)
+        setPreviewUrl(url) // Set the preview URL directly
+    }
+
+    const onRemove = (index) => {
+        // Ensure the file list exists and is not empty
+        if (fileList && fileList.length > 0) {
+            const removedFile = fileList[index]
+
+            // Step 1: Remove from fileList by matching the `uid`
+            const updatedFileList = fileList.filter((file) => file.uid !== removedFile.uid)
+            setFileList(updatedFileList)
+
+            // Step 2: Remove from preview images using the same index
+            const updatedPreviewImage = previewImage.filter((_, i) => i !== index)
+            setPreviewImage(updatedPreviewImage)
+
+            // Step 3: Optionally, remove from any other related state (e.g., imagesUpload)
+            const updatedImagesUpload = imagesUpload.filter((img) => img.imageValue.uid !== removedFile.uid)
+            setImagesUpload(updatedImagesUpload)
+        }
     }
 
     const findAllWithoutPageStoreAbsoluteImagesApi = (imagePath) => {
@@ -263,8 +227,6 @@ const StoreImages = ({
         }
         setImagePathShow(url)
     }
-
-    console.log('allImageUrl', allImageUrl)
 
     // closing the delete popup model
     const closeDeleteModal = () => {
@@ -315,6 +277,10 @@ const StoreImages = ({
             })
     }
 
+    const handlePreviewCancel = () => {
+        setPreviewModalOpen(false)
+    }
+
     useEffect(() => {
         if (imagesUpload && imagesUpload.length === 0) {
             setFileList([])
@@ -325,37 +291,27 @@ const StoreImages = ({
         setBannerImagesLength(bannerAbsoluteImage && bannerAbsoluteImage.length)
     }, [bannerAbsoluteImage])
 
+    console.log('bannerImagesLength', fileList.length)
     return (
-        <Content className=' mb-2'>
-            <Content className='flex !mb-3 gap-1'>
+        <div className=' mb-2'>
+            <div className='flex !mb-3 gap-1'>
                 <div className='font-semibold  text-base mb-1 mt-2 text-brandGray1'>{title}</div>
-            </Content>
+            </div>
             {imagePathShow === undefined ? (
-                <Content>
+                <div>
                     {isSingleUpload && isSingleUpload === true ? (
-                        <Content className='flex gap-4 mb-2'>
+                        <div className='flex gap-4 mb-2'>
                             <div>
-                                <Upload
-                                    className={
-                                        'hover:border-[var(--mp-primary-border-color)] hover:text-[var(--mp-brand-color-h)]'
-                                    }
-                                    listType='picture-card'
-                                    fileList={fileList}
-                                    name='file'
-                                    onPreview={handlePreview}
-                                    onChange={(e) => {
-                                        handleChange(e)
-                                    }}
-                                    beforeUpload={() => {
-                                        return false
-                                    }}
-                                    afterUpload={() => {
-                                        return false
-                                    }}
-                                    accept={supportedFileExtensions}
-                                    disabled={disabelMediaButton}>
-                                    {fileList.length >= 1 ? null : uploadButton}
-                                </Upload>
+                                <CustomImageUpload
+                                    selectedFile={fileList}
+                                    preview={previewImage}
+                                    onFileSelect={handleChange}
+                                    disabled={disabelMediaButton}
+                                    multiple={false}
+                                    handlePreview={handlePreview}
+                                    onRemove={onRemove}
+                                    maxImages={1}
+                                />
                             </div>
                             <div className='mt-4 text-[#a8a8a8]'>
                                 <ul className='list-disc pl-3 '>
@@ -364,33 +320,25 @@ const StoreImages = ({
                                     <li className='!mb-0 '>{t('messages:upload_image_content')}</li>
                                 </ul>
                             </div>
-                        </Content>
+                        </div>
                     ) : (
                         <>
-                            <Upload
-                                maxCount={BannerImagesUploadLength}
-                                listType='picture-card'
-                                multiple={true}
-                                className={
-                                    'hover:border-[var(--mp-primary-border-color)] hover:text-[var(--mp-brand-color-h)]'
-                                }
-                                beforeUpload={() => {
-                                    return false
-                                }}
-                                afterUpload={() => {
-                                    return false
-                                }}
-                                fileList={fileList}
-                                onPreview={handlePreview}
-                                accept={supportedFileExtensions}
-                                onChange={(e) => {
-                                    handleChange(e)
-                                }}
-                                openFileDialogOnClick={bannerImagesLength < BannerImagesUploadLength ? true : false}
-                                disabled={disabelMediaButton}>
-                                {bannerImagesLength < BannerImagesUploadLength ? uploadButton : null}
-                            </Upload>
-                            <div className='mt-3'>
+                            <div>
+                                <CustomImageUpload
+                                    selectedFile={fileList}
+                                    preview={previewImage}
+                                    onFileSelect={(e) => {
+                                        handleChange(e)
+                                    }}
+                                    multiple={true}
+                                    handlePreview={handlePreview}
+                                    disabled={disabelMediaButton}
+                                    onRemove={onRemove}
+                                    maxImages={BannerImagesUploadLength}
+                                    bannerImagesLength={allImageUrl}
+                                />
+                            </div>
+                            <div className='mt-6'>
                                 <Alert
                                     icon={<MdInfo className='font-bold !text-center' />}
                                     message={t('messages:image_requirements')}
@@ -411,22 +359,29 @@ const StoreImages = ({
                                     type='info'
                                     showIcon
                                 />
+                                {/* <Alert className='border-info text-info'>
+                                    <MdInfo className='font-bold text-center text-blue-500' />
+                                    <AlertTitle>{t('messages:image_requirements')}</AlertTitle>
+                                    <AlertDescription>
+                                        <ul className='list-disc pl-[17px]'>
+                                            <li className='mb-0'>{t('messages:banner_logo_info')}</li>
+                                            <li className='mb-0'>{t('messages:banner_logo_resolution')}</li>
+                                            <li className='!mb-0'>{t('messages:upload_image_content')}</li>
+                                            <li className='!mb-2'>
+                                                {t('messages:please_ensure_that_upload_only_eight_images', {
+                                                    BannerImagesUploadLength,
+                                                })}
+                                            </li>
+                                        </ul>
+                                    </AlertDescription>
+                                </Alert> */}
                             </div>
                         </>
                     )}
-                    <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
-                        <img
-                            alt='previewImage'
-                            style={{
-                                width: '100%',
-                            }}
-                            src={previewImage}
-                        />
-                    </Modal>
-                </Content>
+                </div>
             ) : (
                 <>
-                    <Content className=' flex !space-x-4 !w-full'>
+                    <div className=' flex !space-x-4 !w-full'>
                         {allImageUrl &&
                             allImageUrl.length > 0 &&
                             allImageUrl.map((ele, index) => {
@@ -437,11 +392,22 @@ const StoreImages = ({
                                                 ? '!relative !ml-6'
                                                 : '!relative '
                                         }>
-                                        <Image
+                                        <img
                                             src={ele}
-                                            className='!w-[140px] !h-[102px] '
-                                            preview={{ mask: t('labels:preview') }}
+                                            alt='ele'
+                                            className='!w-[140px] !h-[102px] hover:bg-brandGray'
+                                            // preview={{ mask: t('labels:preview') }}
                                         />
+
+                                        <div className='absolute inset-0 flex justify-center items-center'>
+                                            <button
+                                                type='button'
+                                                className='p-1 bg-brandGray1 text-white rounded-full hover:bg-gray-600'
+                                                onClick={() => handlePreviewForImage(ele)}>
+                                                <MdRemoveRedEye />
+                                            </button>
+                                        </div>
+
                                         <TiDelete
                                             className='!absolute !cursor-pointer !right-[-5px] !z-5  !top-[-10px] !text-2xl !text-red-600 !shadow-lg  hover:translate-'
                                             onClick={() => {
@@ -454,32 +420,22 @@ const StoreImages = ({
                                 )
                             })}
                         {type === 'banner_images' && (
-                            <Upload
-                                maxCount={BannerImagesUploadLength}
-                                multiple={true}
-                                className={
-                                    'hover:border-[var(--mp-primary-border-color)] hover:text-[var(--mp-brand-color-h)]'
-                                }
-                                listType='picture-card'
-                                onPreview={handlePreview}
-                                beforeUpload={() => {
-                                    return false
-                                }}
-                                afterUpload={() => {
-                                    return false
-                                }}
-                                fileList={fileList}
-                                accept={supportedFileExtensions}
-                                onChange={(e) => {
+                            <CustomImageUpload
+                                selectedFile={fileList}
+                                preview={previewImage}
+                                onFileSelect={(e) => {
                                     handleChange(e)
                                 }}
-                                openFileDialogOnClick={bannerImagesLength < BannerImagesUploadLength ? true : false}
-                                disabled={disabelMediaButton}>
-                                {bannerImagesLength < BannerImagesUploadLength ? uploadButton : null}
-                            </Upload>
+                                multiple={true}
+                                handlePreview={handlePreview}
+                                disabled={disabelMediaButton}
+                                onRemove={onRemove}
+                                maxImages={BannerImagesUploadLength}
+                                bannerImagesLength={allImageUrl}
+                            />
                         )}
-                    </Content>
-                    <Content className='!mt-4'>
+                    </div>
+                    <div className='!mt-4'>
                         {type === 'banner_images' ? (
                             <>
                                 <div className='mt-2'>
@@ -504,7 +460,7 @@ const StoreImages = ({
                                         showIcon
                                     />
                                 </div>
-                                <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
+                                <StoreModal isVisible={previewOpen} onCancel={handleCancel}>
                                     <img
                                         alt='previewImage'
                                         style={{
@@ -512,10 +468,10 @@ const StoreImages = ({
                                         }}
                                         src={previewImage}
                                     />
-                                </Modal>
+                                </StoreModal>
                             </>
                         ) : null}
-                    </Content>
+                    </div>
                 </>
             )}
             <StoreModal
@@ -523,7 +479,9 @@ const StoreImages = ({
                 okButtonText={t('labels:yes')}
                 cancelButtonText={t('labels:cancel')}
                 title={
-                    <div className='text-regal-blue font-bold text-[18px] leading-[26px]'>{t('labels:delete_image')}</div>
+                    <div className='text-regal-blue font-bold text-[18px] leading-[26px]'>
+                        {t('labels:delete_image')}
+                    </div>
                 }
                 okCallback={() => removeMedia()}
                 cancelCallback={() => closeDeleteModal()}
@@ -535,7 +493,17 @@ const StoreImages = ({
                     </div>
                 }
             </StoreModal>
-        </Content>
+            <StoreModal
+                isVisible={previewModalOpen}
+                okButtonText={''}
+                cancelButtonText={''}
+                hideCloseButton={true}
+                cancelCallback={handlePreviewCancel}>
+                <div className='flex justify-center'>
+                    <img src={previewUrl} alt='previewUrl' />
+                </div>
+            </StoreModal>
+        </div>
     )
 }
 
