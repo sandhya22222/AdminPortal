@@ -11,8 +11,7 @@ import MarketplaceToaster from '../../util/marketplaceToaster'
 import util from '../../util/common'
 import CustomImageUpload from '../../components/UploadImageLayout/CustomImageUpload'
 import { MdRemoveRedEye } from 'react-icons/md'
-import { Alert } from 'antd'
-// import { Alert, AlertTitle, AlertDescription } from '../../shadcnComponents/ui/alert'
+import { Alert, AlertDescription } from '../../shadcnComponents/ui/alert'
 const storeDeleteImagesAPI = process.env.REACT_APP_STORE_DELETE_IMAGES_API
 const baseURL = process.env.REACT_APP_BASE_URL
 const BannerImagesUploadLength = process.env.REACT_APP_BANNER_IMAGES_MAX_LENGTH
@@ -339,7 +338,7 @@ const StoreImages = ({
                                 />
                             </div>
                             <div className='mt-6'>
-                                <Alert
+                                {/* <Alert
                                     icon={<MdInfo className='font-bold !text-center' />}
                                     message={t('messages:image_requirements')}
                                     description={
@@ -358,12 +357,18 @@ const StoreImages = ({
                                     }
                                     type='info'
                                     showIcon
-                                />
-                                {/* <Alert className='border-info text-info'>
-                                    <MdInfo className='font-bold text-center text-blue-500' />
-                                    <AlertTitle>{t('messages:image_requirements')}</AlertTitle>
+                                /> */}
+                                <Alert className='my-4 px-4 !w-full bg-[#E6F7FF] border border-[#1677ff]'>
+                                    <div className='flex items-center gap-1'>
+                                        <MdInfo className='font-bold !text-center' color='#1677ff' size={20} />
+                                        <span className='font-medium text-regal-blue'>
+                                            {t('messages:image_requirements')}
+                                        </span>
+                                    </div>
+                                    {/* <AlertTitle>{t('messages:image_requirements')}</AlertTitle> */}
                                     <AlertDescription>
-                                        <ul className='list-disc pl-[17px]'>
+                                        <ul
+                                            className={`list-disc text-brandGray1 ${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? '!mr-[32px]' : '!ml-[32px]'}`}>
                                             <li className='mb-0'>{t('messages:banner_logo_info')}</li>
                                             <li className='mb-0'>{t('messages:banner_logo_resolution')}</li>
                                             <li className='!mb-0'>{t('messages:upload_image_content')}</li>
@@ -374,7 +379,7 @@ const StoreImages = ({
                                             </li>
                                         </ul>
                                     </AlertDescription>
-                                </Alert> */}
+                                </Alert>
                             </div>
                         </>
                     )}
