@@ -7,6 +7,7 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '../../shad
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '../../shadcnComponents/ui/tooltip'
 import { cn } from '../../lib/utils'
 import { MdArrowDropDown, MdArrowDropUp } from 'react-icons/md'
+import util from '../../util/common'
 //! Import CSS libraries
 
 //! Import user defined functions
@@ -194,18 +195,20 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                         width: collapsed ? 50 : 252,
                         maxWidth: 252,
                         minWidth: 50,
-                        transition: 'width 0.3s ease-in-out, left 0.3s ease-in-out',
+                        transition: 'width 0.3s ease-in-out',
                         position: 'fixed',
                         top: 0, // Stick it to the top of the viewport
-                        left: 0, // Stick it to the left of the viewport
+                        [util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'right' : 'left']: 0,
                         zIndex: 10, // Keep it above other content
+                        display: 'flex',
+                        flexDirection: 'column',
                     }}
-                    className={'overflow-hidden'}>
+                    className={`overflow-hidden`}>
                     {!myData.length > 0 ? (
                         <Spin />
                     ) : (
                         <div
-                            className={`${collapsed ? 'w-[50px] p-[6px] !ml-1' : 'w-[252px] p-2'} min-h-screen relative transition-all`}
+                            className={`${collapsed ? 'w-[50px] p-[6px] gap-1 ' : 'w-[252px] p-2'} min-h-screen relative transition-all `}
                             style={{ top: '72px', zIndex: 1001 }}>
                             {myData.map((item) =>
                                 item.show_in_menu ? (
@@ -220,7 +223,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                                                         {/* Parent Menu Item */}
                                                         <div
                                                             className={cn(
-                                                                'cursor-pointer flex items-center py-2 px-4',
+                                                                'cursor-pointer flex items-center py-2 px-4 gap-2',
                                                                 selectedItem === item.key
                                                                     ? 'font-medium text-brandPrimaryColor bg-slate-100 rounded-md'
                                                                     : 'opacity-80'
@@ -228,12 +231,12 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                                                             onClick={() => toggleSubMenu(item.key)}>
                                                             {item.icon && (
                                                                 <span
-                                                                    className={`${collapsed ? 'ml-[-6px]' : ''} mr-3`}>
+                                                                    className={`${collapsed ? (util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-[-6px] ml-3' : 'ml-[-6px] mr-3') : ''} `}>
                                                                     {item.icon}
                                                                 </span>
                                                             )}
                                                             {!collapsed && (
-                                                                <div className='!flex items-center space-x-24'>
+                                                                <div className='!flex items-center gap-24'>
                                                                     {item.label.length > 23 ? (
                                                                         <span
                                                                             className={`overflow-ellipsis  overflow-hidden whitespace-nowrap `}>
@@ -268,7 +271,8 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                                                                 align='center'
                                                                 style={{ zIndex: 1002 }}
                                                                 className=' p-2'>
-                                                                <div className='ml-4'>
+                                                                <div
+                                                                    className={`${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-4' : 'ml-4'}`}>
                                                                     {item.children.map((child) =>
                                                                         child.show_in_menu ? (
                                                                             <div
@@ -294,7 +298,8 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                                                         ) : (
                                                             openedItem === item.key &&
                                                             !collapsed && (
-                                                                <div className={`ml-4 `}>
+                                                                <div
+                                                                    className={`${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-4' : 'ml-4'} `}>
                                                                     {item.children.map((child) =>
                                                                         child.show_in_menu ? (
                                                                             <div
@@ -350,7 +355,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                                                 ) : (
                                                     <div
                                                         className={cn(
-                                                            'cursor-pointer flex items-center py-2 px-4',
+                                                            'cursor-pointer flex items-center py-2 px-4 gap-2',
                                                             selectedItem === item.key
                                                                 ? 'font-medium text-brandPrimaryColor bg-slate-100 rounded-md'
                                                                 : 'opacity-80',
@@ -360,7 +365,8 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                                                         )}
                                                         onClick={() => handleClick(item.key, item.navigate_to)}>
                                                         {item.icon && (
-                                                            <span className={`${collapsed ? 'ml-[-6px]' : ''} mr-3 `}>
+                                                            <span
+                                                                className={`${collapsed ? (util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-[-6px] ml-3' : 'ml-[-6px] mr-3') : ''}  `}>
                                                                 {item.icon}
                                                             </span>
                                                         )}
@@ -375,7 +381,13 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                                                                                 ? item.label
                                                                                 : undefined
                                                                         }
-                                                                        position={'right'}
+                                                                        position={
+                                                                            util
+                                                                                .getSelectedLanguageDirection()
+                                                                                ?.toUpperCase() === 'RTL'
+                                                                                ? 'left'
+                                                                                : 'right'
+                                                                        }
                                                                         style={{}}></Ellipsis>
                                                                 </span>
                                                             ) : (
@@ -383,7 +395,13 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                                                             )
                                                         ) : isHovering ? (
                                                             <TooltipContent
-                                                                side='right'
+                                                                side={
+                                                                    util
+                                                                        .getSelectedLanguageDirection()
+                                                                        ?.toUpperCase() === 'RTL'
+                                                                        ? 'left'
+                                                                        : 'right'
+                                                                }
                                                                 align='center'
                                                                 style={{ zIndex: 1002 }}>
                                                                 {item.label}
@@ -403,18 +421,25 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                     withHandle
                     style={{
                         position: 'fixed', // Keep it fixed relative to the viewport
-                        left: collapsed ? 50 : 252, // Align with the sidebar based on collapse state
+                        [util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'right' : 'left']: collapsed
+                            ? 50
+                            : 252,
                         top: 0, // Align to the top of the viewport
                         height: '100vh', // Make it span the full height
                         zIndex: 11, // Ensure it's above sidebar content but below other elements
                         cursor: 'col-resize', // Show resize cursor
-                        transition: 'left 0.2s ease',
+                        transition: 'all 0.3s ease',
                     }}
                 />
                 <ResizablePanel>
                     <div
-                        className={`flex flex-col min-h-screen transition-all `}
-                        style={{ marginLeft: collapsed ? 50 : 252 }}>
+                        className={`flex flex-col min-h-screen transition-all ${
+                            util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                ? `${collapsed ? 'mr-[50px]' : 'mr-[252px]'}`
+                                : `${collapsed ? 'ml-[50px]' : 'ml-[252px]'}`
+                        }`}
+                        // style={{ marginLeft: collapsed ? 50 : 252 }}
+                    >
                         <div className='!bg-[#F4F4F4]  flex-grow '>
                             <Suspense
                                 fallback={
