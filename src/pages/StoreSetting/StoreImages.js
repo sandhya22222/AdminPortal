@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { Layout, Image, Alert } from 'antd'
-import { PlusOutlined } from '@ant-design/icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { fnAbsoluteStoreImageInfo } from '../../services/redux/actions/ActionStoreImages'
 import { useTranslation } from 'react-i18next'
@@ -12,8 +10,9 @@ import './StoreImages.css'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import util from '../../util/common'
 import CustomImageUpload from '../../components/UploadImageLayout/CustomImageUpload'
-const { Content } = Layout
-
+import { MdRemoveRedEye } from 'react-icons/md'
+import { Alert } from 'antd'
+// import { Alert, AlertTitle, AlertDescription } from '../../shadcnComponents/ui/alert'
 const storeDeleteImagesAPI = process.env.REACT_APP_STORE_DELETE_IMAGES_API
 const baseURL = process.env.REACT_APP_BASE_URL
 const BannerImagesUploadLength = process.env.REACT_APP_BANNER_IMAGES_MAX_LENGTH
@@ -47,17 +46,6 @@ const StoreImages = ({
     const [previewModalOpen, setPreviewModalOpen] = useState(false)
     const [previewUrl, setPreviewUrl] = useState('')
     var selectedImageArrayOfObject = []
-    const uploadButton = (
-        <div>
-            <PlusOutlined />
-            <div
-                style={{
-                    marginTop: 8,
-                }}>
-                {t('labels:upload')}
-            </div>
-        </div>
-    )
 
     const handleChange = (e) => {
         const files = Array.from(e.target.files)
@@ -198,6 +186,11 @@ const StoreImages = ({
         }
     }
 
+    const handlePreviewForImage = (url) => {
+        setPreviewModalOpen(true)
+        setPreviewUrl(url) // Set the preview URL directly
+    }
+
     const onRemove = (index) => {
         // Ensure the file list exists and is not empty
         if (fileList && fileList.length > 0) {
@@ -300,14 +293,14 @@ const StoreImages = ({
 
     console.log('bannerImagesLength', fileList.length)
     return (
-        <Content className=' mb-2'>
-            <Content className='flex !mb-3 gap-1'>
+        <div className=' mb-2'>
+            <div className='flex !mb-3 gap-1'>
                 <div className='font-semibold  text-base mb-1 mt-2 text-brandGray1'>{title}</div>
-            </Content>
+            </div>
             {imagePathShow === undefined ? (
-                <Content>
+                <div>
                     {isSingleUpload && isSingleUpload === true ? (
-                        <Content className='flex gap-4 mb-2'>
+                        <div className='flex gap-4 mb-2'>
                             <div>
                                 <CustomImageUpload
                                     selectedFile={fileList}
@@ -327,7 +320,7 @@ const StoreImages = ({
                                     <li className='!mb-0 '>{t('messages:upload_image_content')}</li>
                                 </ul>
                             </div>
-                        </Content>
+                        </div>
                     ) : (
                         <>
                             <div>
@@ -366,13 +359,29 @@ const StoreImages = ({
                                     type='info'
                                     showIcon
                                 />
+                                {/* <Alert className='border-info text-info'>
+                                    <MdInfo className='font-bold text-center text-blue-500' />
+                                    <AlertTitle>{t('messages:image_requirements')}</AlertTitle>
+                                    <AlertDescription>
+                                        <ul className='list-disc pl-[17px]'>
+                                            <li className='mb-0'>{t('messages:banner_logo_info')}</li>
+                                            <li className='mb-0'>{t('messages:banner_logo_resolution')}</li>
+                                            <li className='!mb-0'>{t('messages:upload_image_content')}</li>
+                                            <li className='!mb-2'>
+                                                {t('messages:please_ensure_that_upload_only_eight_images', {
+                                                    BannerImagesUploadLength,
+                                                })}
+                                            </li>
+                                        </ul>
+                                    </AlertDescription>
+                                </Alert> */}
                             </div>
                         </>
                     )}
-                </Content>
+                </div>
             ) : (
                 <>
-                    <Content className=' flex !space-x-4 !w-full'>
+                    <div className=' flex !space-x-4 !w-full'>
                         {allImageUrl &&
                             allImageUrl.length > 0 &&
                             allImageUrl.map((ele, index) => {
@@ -383,11 +392,21 @@ const StoreImages = ({
                                                 ? '!relative !ml-6'
                                                 : '!relative '
                                         }>
-                                        <Image
+                                        <img
                                             src={ele}
-                                            className='!w-[140px] !h-[102px] '
-                                            preview={{ mask: t('labels:preview') }}
+                                            alt='ele'
+                                            className='!w-[140px] !h-[102px] hover:bg-brandGray'
+                                            // preview={{ mask: t('labels:preview') }}
                                         />
+
+                                        <div className='absolute inset-0 flex justify-center items-center'>
+                                            <button
+                                                type='button'
+                                                className='p-1 bg-brandGray1 text-white rounded-full hover:bg-gray-600'
+                                                onClick={() => handlePreviewForImage(ele)}>
+                                                <MdRemoveRedEye />
+                                            </button>
+                                        </div>
 
                                         <TiDelete
                                             className='!absolute !cursor-pointer !right-[-5px] !z-5  !top-[-10px] !text-2xl !text-red-600 !shadow-lg  hover:translate-'
@@ -415,8 +434,8 @@ const StoreImages = ({
                                 bannerImagesLength={allImageUrl}
                             />
                         )}
-                    </Content>
-                    <Content className='!mt-4'>
+                    </div>
+                    <div className='!mt-4'>
                         {type === 'banner_images' ? (
                             <>
                                 <div className='mt-2'>
@@ -452,7 +471,7 @@ const StoreImages = ({
                                 </StoreModal>
                             </>
                         ) : null}
-                    </Content>
+                    </div>
                 </>
             )}
             <StoreModal
@@ -484,7 +503,7 @@ const StoreImages = ({
                     <img src={previewUrl} alt='previewUrl' />
                 </div>
             </StoreModal>
-        </Content>
+        </div>
     )
 }
 
