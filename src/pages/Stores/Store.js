@@ -1259,7 +1259,7 @@ const Stores = () => {
                 }
                 titleContent={<Content className=' !flex !justify-end'></Content>}
                 headerContent={
-                    <Content className='!h-[2.6rem] !mt-16'>
+                    <Content className='!h-[2.6rem] !mt-28'>
                         <Tabs
                             activeKey={currentTab}
                             defaultActiveKey='1'
