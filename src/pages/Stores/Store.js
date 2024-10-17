@@ -54,7 +54,7 @@ import { Button } from '../../shadcnComponents/ui/button'
 import SearchInput from './SearchInput'
 import { PAGE_NUMBER_TO_SEARCH } from '../../constants/constants'
 import { Avatar, AvatarFallback, AvatarImage } from '../../shadcnComponents/ui/avatar'
-import { Tabs, TabsList, TabsTrigger } from '../../shadcnComponents/ui/tabs'
+import { ShadCNTabs, ShadCNTabsTrigger, ShadCNTabsContent } from '../../shadcnComponents/customComponents/ShadCNTabs'
 const { Content } = Layout
 const { Title, Text } = Typography
 // const { Search } = Input
@@ -1097,16 +1097,17 @@ const Stores = () => {
                 }
                 headerContent={
                     <div className='mt-24'>
-                        <Tabs value={currentTab} onValueChange={handleTabChange}>
-                            <TabsList>
-                                <TabsTrigger value='1' borderPosition='bottom'>
-                                    {t('labels:my_stores')}
-                                </TabsTrigger>
-                                <TabsTrigger value='2' borderPosition='bottom'>
-                                    {t('labels:threshold_configuration')}
-                                </TabsTrigger>
-                            </TabsList>
-                        </Tabs>
+                        <ShadCNTabs
+                            value={currentTab}
+                            onValueChange={handleTabChange}
+                            direction={util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'rtl' : 'ltr'}>
+                            <ShadCNTabsTrigger value='1' borderPosition='bottom'>
+                                {t('labels:my_stores')}
+                            </ShadCNTabsTrigger>
+                            <ShadCNTabsTrigger value='2' borderPosition='bottom'>
+                                {t('labels:threshold_configuration')}
+                            </ShadCNTabsTrigger>
+                        </ShadCNTabs>
                     </div>
                 }
             />
