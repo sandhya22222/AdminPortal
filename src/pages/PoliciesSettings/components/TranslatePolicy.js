@@ -227,6 +227,7 @@ export default function TranslatePolicy({
 
 
     const language = "English";
+    console.log(languages,'Languages')
     return (
         <div className="space-y-4">
             {translateSuccessMessage && (
@@ -235,7 +236,7 @@ export default function TranslatePolicy({
                 </Alert>
             )}
             {isLoading ? (
-                <Skeleton className="w-full h-[500px]" />
+                <Skeleton className="w-full h-[400px]" />
             ) : (
                 <div className="grid grid-cols-5 gap-8">
                     <div className="space-y-4 col-span-2">

@@ -249,18 +249,23 @@ export default function PolicyCard({
                             </div>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
-                            <DropdownMenuItem onSelect={handleVersionHistory}>
+                            <DropdownMenuItem className='py-1 px-1 text-xs' onSelect={handleVersionHistory}>
                                 <Eye className='mr-2 h-4 w-4' />
                                 <span>{t('labels:view_version_history')}</span>
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
-                    <Button variant='outline' onClick={addVersionHandler} disabled={policyStatus !== 2}>
+                    <Button
+                        variant='outline'
+                        className='px-2 py-1 text-sm h-8'
+                        onClick={addVersionHandler}
+                        disabled={policyStatus !== 2}>
                         <Plus className='mr-2 h-4 w-4' />
                         {t('labels:add_version')}
                     </Button>
                     <Button
                         variant='outline'
+                        className='px-2 py-1 text-sm h-8'
                         onClick={handleTranslateVersion}
                         disabled={
                             !(policyStatus === 1 || policyStatus === 2) || isConsentNameChanged || descriptionModified
@@ -269,7 +274,10 @@ export default function PolicyCard({
                         {t('labels:translate')}
                     </Button>
                     {policyType !== 'CONTACT_POLICY' && (
-                        <Button variant='destructive' onClick={() => handelDeletePolicy(consent?.id)}>
+                        <Button
+                            variant='destructive'
+                            className='px-2 py-1 text-sm h-8'
+                            onClick={() => handelDeletePolicy(consent?.id)}>
                             <Trash2 className='mr-2 h-4 w-4' />
                             {t('labels:delete_policy')}
                         </Button>
@@ -385,7 +393,7 @@ export default function PolicyCard({
                 }
                 isSpin={false}
                 cancelCallback={() => setVersionHistory(false)}
-                width={940}
+                width={1000}
                 destroyOnClose={true}>
                 <VersionHistory
                     userConsentId={consent?.id}
