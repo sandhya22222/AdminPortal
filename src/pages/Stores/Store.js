@@ -1,21 +1,5 @@
-import { InfoCircleOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons'
-import {
-    // Button,
-    Divider,
-    // Input,
-    Layout,
-    Row,
-    Skeleton,
-    Spin,
-    Tooltip,
-    Typography,
-    // Tabs,
-    // Progress,
-    // InputNumber,
-    Alert,
-    Empty,
-    Segmented,
-} from 'antd'
+import { InfoCircleOutlined, SearchOutlined } from '@ant-design/icons'
+import { Alert, Empty, Segmented } from 'antd'
 import React, { useEffect, useState } from 'react'
 
 import validator from 'validator'
@@ -55,8 +39,8 @@ import SearchInput from './SearchInput'
 import { PAGE_NUMBER_TO_SEARCH } from '../../constants/constants'
 import { Avatar, AvatarFallback, AvatarImage } from '../../shadcnComponents/ui/avatar'
 import { ShadCNTabs, ShadCNTabsTrigger, ShadCNTabsContent } from '../../shadcnComponents/customComponents/ShadCNTabs'
-const { Content } = Layout
-const { Title, Text } = Typography
+import { Skeleton } from '../../shadcnComponents/ui/skeleton'
+import Spin from '../../shadcnComponents/customComponents/Spin'
 // const { Search } = Input
 //! Get all required details from .env file
 const storeAPI = process.env.REACT_APP_STORE_API
@@ -316,7 +300,7 @@ const Stores = () => {
                                 ) : null}
                             </div>
                         ) : (
-                            <Spin tip='Loading'></Spin>
+                            <Spin />
                         )}
                     </div>
                 )
@@ -420,14 +404,14 @@ const Stores = () => {
                                         </Badge>
                                     )}{' '}
                                     {!isDistributor && (
-                                        <Tooltip title={t('messages:store_type_info')}>
+                                        <ShadCNTooltip content={t('messages:store_type_info')}>
                                             <img
                                                 src={ExclamationCircle}
                                                 alt='ExclamationCircleIcon'
                                                 width={15}
                                                 height={15}
                                             />
-                                        </Tooltip>
+                                        </ShadCNTooltip>
                                     )}
                                 </div>
                                 {record.status === 3 ? (
@@ -503,10 +487,12 @@ const Stores = () => {
                                 style={{ textDecoration: 'none' }}
                                 // className=" pl-[10px] font-semibold app-table-data-title"
                             >
-                                <Tooltip
-                                    title={t('labels:view_details').length > 20 ? t('labels:view_details') : undefined}>
+                                <ShadCNTooltip
+                                    content={
+                                        t('labels:view_details').length > 20 ? t('labels:view_details') : undefined
+                                    }>
                                     {t('labels:view_details')}
-                                </Tooltip>
+                                </ShadCNTooltip>
                             </Link>
                         ) : (
                             <Button
@@ -1078,7 +1064,7 @@ const Stores = () => {
     }
 
     return (
-        <Content className=''>
+        <div className=''>
             <HeaderForTitle
                 title={
                     <>
@@ -1112,25 +1098,27 @@ const Stores = () => {
                 }
             />
             <div className='!p-5'>
-                <Content className=''>
+                <div className=''>
                     {isLoading ? (
-                        <Skeleton
-                            className='px-3 w-full'
-                            active
-                            paragraph={{
-                                rows: 6,
-                            }}></Skeleton>
+                        <div className='bg-white p-3 space-y-4 w-full '>
+                            <Skeleton className={'h-4'} />
+                            <Skeleton className={'h-4'} />
+                            <Skeleton className={'h-4'} />
+                            <Skeleton className={'h-4'} />
+                            <Skeleton className={'h-4'} />
+                            <Skeleton className={'h-4'} />
+                        </div>
                     ) : isNetworkError ? (
-                        <Content className='!mt-[1.7rem] !text-center bg-white p-3 !rounded-md'>
+                        <div className='!mt-[1.7rem] !text-center bg-white p-3 !rounded-md'>
                             {t('messages:store_network_error')}
-                        </Content>
+                        </div>
                     ) : (
                         <>
-                            <Content className=''>
+                            <div className=''>
                                 {parseInt(currentTab) === 1 ? (
                                     //  <Store2/>
 
-                                    <Content className='bg-white p-3 shadow-brandShadow rounded-md '>
+                                    <div className='bg-white p-3 shadow-brandShadow rounded-md '>
                                         <div className='flex w-full justify-between items-center py-3 px-3'>
                                             <div className='text-base font-semibold text-regal-blue'>
                                                 {t('labels:my_stores')}
@@ -1189,24 +1177,24 @@ const Stores = () => {
                                         {selectedTabTableContent?.length === 0 &&
                                         isSearchTriggered &&
                                         searchValue?.length > 0 ? (
-                                            <Content className='text-center font-semibold ml-2 mt-3 '>
-                                                <Text>{t('placeholders:not_able_to_find_searched_details')}</Text>
-                                            </Content>
+                                            <div className='text-center font-semibold ml-2 mt-3 '>
+                                                <p>{t('placeholders:not_able_to_find_searched_details')}</p>
+                                            </div>
                                         ) : (
                                             <>
                                                 {selectedTabTableContent?.length > 0 ? (
-                                                    <Content className=''>
+                                                    <div className=''>
                                                         {!isDistributor && (
                                                             <div className='px-3 my-2'>
                                                                 <Alert
                                                                     icon={<MdInfo className='font-bold !text-center' />}
                                                                     message={
                                                                         <div className=''>
-                                                                            <Text className='text-brandGray1'>
+                                                                            <p className='text-brandGray1'>
                                                                                 {t(
                                                                                     'messages:no_distributor_store_present_info'
                                                                                 )}{' '}
-                                                                            </Text>
+                                                                            </p>
                                                                         </div>
                                                                     }
                                                                     type='info'
@@ -1225,11 +1213,11 @@ const Stores = () => {
                                                                         }
                                                                         message={
                                                                             <div className=''>
-                                                                                <Text className='text-brandGray1'>
+                                                                                <p className='text-brandGray1'>
                                                                                     {t(
                                                                                         'messages:distributor_store_inactive_msg'
                                                                                     )}{' '}
-                                                                                </Text>
+                                                                                </p>
                                                                             </div>
                                                                         }
                                                                         type='info'
@@ -1243,7 +1231,7 @@ const Stores = () => {
                                                             data={selectedTabTableContent}
                                                         />
                                                         {parseInt(m_tab_id) === 1 ? (
-                                                            <Content className=' grid justify-items-end mx-3 h-fit'>
+                                                            <div className=' grid justify-items-end mx-3 h-fit'>
                                                                 {countForStore && countForStore >= pageLimit ? (
                                                                     <ShadCNPagination
                                                                         totalItemsCount={countForStore}
@@ -1261,24 +1249,24 @@ const Stores = () => {
                                                                         showQuickJumper={true}
                                                                     />
                                                                 ) : null}
-                                                            </Content>
+                                                            </div>
                                                         ) : null}
-                                                    </Content>
+                                                    </div>
                                                 ) : (
-                                                    <Content className='pb-4'>
+                                                    <div className='pb-4'>
                                                         <Empty description={t('messages:no_data_available')} />
-                                                    </Content>
+                                                    </div>
                                                 )}
                                             </>
                                         )}
-                                    </Content>
+                                    </div>
                                 ) : parseInt(currentTab) === 2 ? (
                                     <>
-                                        <Content className='shadow-brandShadow rounded-md bg-white mb-4'>
-                                            <Title className='!text-regal-blue pt-4 ml-6' level={4}>
+                                        <div className='shadow-brandShadow rounded-md bg-white mb-4'>
+                                            <p className={`!text-regal-blue p-4 font-semibold text-lg`}>
                                                 {t('labels:account_restrictions')}
-                                            </Title>
-                                            <Divider className='w-full mt-2 mb-2' />
+                                            </p>
+                                            <p className='w-full my-2 bg-brandGray h-[1px]' />
                                             <div className='!p-3'>
                                                 <ShadCNDataTable
                                                     columns={StoreTableColumnThreshold1}
@@ -1297,19 +1285,19 @@ const Stores = () => {
                                                     ]}
                                                 />
                                             </div>
-                                        </Content>
-                                        <Content className='shadow-brandShadow rounded-md bg-white'>
-                                            <Title className='!text-regal-blue  pt-4 ml-6' level={4}>
+                                        </div>
+                                        <div className='shadow-brandShadow rounded-md bg-white'>
+                                            <p className='!text-regal-blue  p-4 font-semibold text-lg'>
                                                 {t('labels:store_restrictions')}
-                                            </Title>
-                                            <Divider className='w-full mt-2 mb-2' />
+                                            </p>
+                                            <p className='w-full my-2 !bg-brandGray !h-[1px] ' />
                                             <div className='!p-3'>
                                                 <ShadCNDataTable
                                                     columns={StoreTableColumnThreshold2}
                                                     data={storeRestrictionsData}
                                                 />
                                             </div>
-                                        </Content>
+                                        </div>
                                         {hideAddStoreButton ? (
                                             <div className='flex gap-2 !ml-6 !py-4'>
                                                 <Button size='sm' onClick={() => validationForSaveStoreLimit()}>
@@ -1334,17 +1322,17 @@ const Stores = () => {
                                         {t('messages:store_network_error')}
                                     </div>
                                 )}
-                            </Content>
+                            </div>
                         </>
                     )}
-                </Content>
+                </div>
             </div>
             <StoreModal isVisible={saveStoreModalOpen} isSpin={false} hideCloseButton={false} width={800}>
                 {
-                    <Content className='!text-center'>
-                        <Text className=' text-lg leading-[26px] font-bold text-regal-blue'>
+                    <div className='!text-center'>
+                        <p className=' text-lg leading-[26px] font-bold text-regal-blue'>
                             {t('labels:building_store')}
-                        </Text>
+                        </p>
                         <div className='mt-5 mb-3'>
                             <img
                                 src={saveStoreConfirmationImage}
@@ -1364,7 +1352,7 @@ const Stores = () => {
                             }}>
                             {t('labels:close_message')}
                         </Button>
-                    </Content>
+                    </div>
                 }
             </StoreModal>
             <StoreModal
@@ -1394,269 +1382,287 @@ const Stores = () => {
                 isSpin={false}
                 width={800}
                 isScroll={false}>
-                <Content>
+                <div>
                     {drawerAction && drawerAction === 'post' ? (
                         <>
-                            <Spin tip={t('labels:please_wait')} size='large' spinning={isUpLoading}>
-                                <div>
-                                    <label
-                                        className='text-[14px] leading-[22px] font-normal text-brandGray2 mb-2 ml-1 '
-                                        id='labStNam'>
-                                        {t('labels:store_domain_name')}
-                                    </label>
-                                    <span className='mandatory-symbol-color text-sm ml-1'>*</span>
-                                </div>
-                                <div className='flex'>
+                            {!isUpLoading ? (
+                                <>
+                                    <div>
+                                        <label
+                                            className='text-[14px] leading-[22px] font-normal text-brandGray2 mb-2 ml-1 '
+                                            id='labStNam'>
+                                            {t('labels:store_domain_name')}
+                                        </label>
+                                        <span className='mandatory-symbol-color text-sm ml-1'>*</span>
+                                    </div>
+                                    <div className='flex'>
+                                        <Input
+                                            placeholder={t('placeholders:enter_store_name')}
+                                            value={name}
+                                            minLength={storeNameMinLength}
+                                            maxLength={storeNameMaxLength}
+                                            className={`!w-[50%] mt-2 ${
+                                                inValidName
+                                                    ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400 '
+                                                    : ''
+                                            }`}
+                                            onChange={(e) => {
+                                                const alphaWithoutSpaces = /^[a-zA-Z0-9]+$/
+                                                if (
+                                                    e.target.value !== '' &&
+                                                    validator.matches(e.target.value, alphaWithoutSpaces)
+                                                ) {
+                                                    setName(e.target.value)
+                                                    setOnChangeValues(true)
+                                                } else if (e.target.value === '') {
+                                                    setName(e.target.value)
+                                                    setOnChangeValues(false)
+                                                }
+                                                setInValidName(false)
+                                            }}
+                                            onBlur={() => {
+                                                const trimmed = name.trim()
+                                                const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
+                                                setName(trimmedUpdate)
+                                            }}
+                                        />
+                                        <span className='mx-3 mt-2 text-brandGray2'>{domainName}</span>
+                                    </div>
+                                    {inValidName && name === '' && (
+                                        <div className='text-red-600 flex gap-1 mt-1'>
+                                            <img src={warningInfoIcon} alt='warningInfoIcon' />{' '}
+                                            {t('messages:empty_store_name_message')}
+                                        </div>
+                                    )}
+                                    {inValidName && name && name?.length < 3 && (
+                                        <div className='text-red-600 flex gap-1 mt-1'>
+                                            <img src={warningInfoIcon} alt='warningInfoIcon' />{' '}
+                                            {t('messages:enter_valid_store_name_message')}
+                                        </div>
+                                    )}
+                                    <div className='flex !mt-5'>
+                                        <label
+                                            className='text-[14px] leading-[22px] font-normal text-brandGray2 mb-2 ml-1 '
+                                            id='labStNam'>
+                                            {t('labels:store_type')}
+                                        </label>
+                                        <span className='mandatory-symbol-color text-sm ml-1'>*</span>
+                                        <span className='mt-1 ml-1'>
+                                            <ShadCNTooltip
+                                                // autoAdjustOverflow={true}
+                                                content={
+                                                    <>
+                                                        <ul
+                                                            style={{
+                                                                listStyleType: 'disc',
+                                                                marginLeft: 0,
+                                                                paddingLeft: '20px',
+                                                            }}>
+                                                            <li>{t('messages:store_type_info_partner')}</li>
+                                                            <li>{t('messages:store_type_info_distributor')}</li>
+                                                        </ul>
+                                                    </>
+                                                }
+                                                position={
+                                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                        ? 'left'
+                                                        : 'right'
+                                                }
+                                                width='400px'>
+                                                <img src={InfoSymbol} alt='InfoSymbol' />
+                                            </ShadCNTooltip>
+                                        </span>
+                                    </div>
+                                    <Segmented
+                                        options={[
+                                            {
+                                                value: 'partner',
+                                                label: t('labels:partner'),
+                                            },
+                                            {
+                                                value: 'distributor',
+                                                label: t('labels:Distributor'),
+                                            },
+                                        ]}
+                                        block={true}
+                                        className='w-[35%] custom-segmented'
+                                        value={storeType}
+                                        onChange={(value) => {
+                                            handleStoreTypeChange(value)
+                                        }}
+                                        disabled={isDistributor}
+                                    />
+                                    <div className='font-bold  mt-[24px] text-[16px] leading-[24px] text-regal-blue'>
+                                        {t('labels:store_administrator_details')}
+                                    </div>
+                                    <Alert
+                                        icon={<MdInfo className='font-bold !text-center' />}
+                                        message={
+                                            <div className=''>
+                                                <p className=' mr-1 text-brandGray1'> {t('labels:note')}:</p>
+                                                <p className='text-brandGray1'>
+                                                    {t('messages:add_store_description')}{' '}
+                                                    <span className='font-bold'>
+                                                        {t('labels:store_management_portal')}
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        }
+                                        type='info'
+                                        showIcon
+                                        className='my-4 !w-[89%]'
+                                    />
+                                    <div>
+                                        <label
+                                            className='mb-2 ml-1 text-[14px] leading-[22px] font-normal text-brandGray2'
+                                            id='labStEmail'>
+                                            {t('labels:email')}
+                                        </label>
+                                        <span className='mandatory-symbol-color text-sm ml-1'>*</span>
+                                    </div>
                                     <Input
-                                        placeholder={t('placeholders:enter_store_name')}
-                                        value={name}
-                                        minLength={storeNameMinLength}
-                                        maxLength={storeNameMaxLength}
+                                        placeholder={t('placeholders:enter_email')}
+                                        value={storeEmail}
+                                        minLength={emailMinLength}
+                                        maxLength={emailMaxLength}
                                         className={`!w-[50%] mt-2 ${
-                                            inValidName
-                                                ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400 '
+                                            inValidEmail
+                                                ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400'
                                                 : ''
                                         }`}
                                         onChange={(e) => {
-                                            const alphaWithoutSpaces = /^[a-zA-Z0-9]+$/
-                                            if (
-                                                e.target.value !== '' &&
-                                                validator.matches(e.target.value, alphaWithoutSpaces)
-                                            ) {
-                                                setName(e.target.value)
-                                                setOnChangeValues(true)
-                                            } else if (e.target.value === '') {
-                                                setName(e.target.value)
+                                            setInValidEmail(false)
+                                            if (e.target.value === '') {
                                                 setOnChangeValues(false)
+                                                setStoreEmail(e.target.value)
+                                            } else {
+                                                setOnChangeValues(true)
+                                                setStoreEmail(e.target.value.trim())
                                             }
-                                            setInValidName(false)
                                         }}
                                         onBlur={() => {
-                                            const trimmed = name.trim()
+                                            const trimmed = storeEmail.trim()
                                             const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
-                                            setName(trimmedUpdate)
+                                            setStoreEmail(trimmedUpdate)
                                         }}
                                     />
-                                    <span className='mx-3 mt-2 text-brandGray2'>{domainName}</span>
-                                </div>
-                                {inValidName && name === '' && (
-                                    <div className='text-red-600 flex gap-1 mt-1'>
-                                        <img src={warningInfoIcon} alt='warningInfoIcon' />{' '}
-                                        {t('messages:empty_store_name_message')}
-                                    </div>
-                                )}
-                                {inValidName && name && name?.length < 3 && (
-                                    <div className='text-red-600 flex gap-1 mt-1'>
-                                        <img src={warningInfoIcon} alt='warningInfoIcon' />{' '}
-                                        {t('messages:enter_valid_store_name_message')}
-                                    </div>
-                                )}
-                                <div className='flex !mt-5'>
-                                    <label
-                                        className='text-[14px] leading-[22px] font-normal text-brandGray2 mb-2 ml-1 '
-                                        id='labStNam'>
-                                        {t('labels:store_type')}
-                                    </label>
-                                    <span className='mandatory-symbol-color text-sm ml-1'>*</span>
-                                    <span className='mt-1 ml-1'>
-                                        <Tooltip
-                                            autoAdjustOverflow={true}
-                                            title={
-                                                <>
-                                                    <ul
-                                                        style={{
-                                                            listStyleType: 'disc',
-                                                            marginLeft: 0,
-                                                            paddingLeft: '20px',
-                                                        }}>
-                                                        <li>{t('messages:store_type_info_partner')}</li>
-                                                        <li>{t('messages:store_type_info_distributor')}</li>
-                                                    </ul>
-                                                </>
-                                            }>
-                                            <img src={InfoSymbol} alt='InfoSymbol' />
-                                        </Tooltip>
-                                    </span>
-                                </div>
-                                <Segmented
-                                    options={[
-                                        {
-                                            value: 'partner',
-                                            label: t('labels:partner'),
-                                        },
-                                        {
-                                            value: 'distributor',
-                                            label: t('labels:Distributor'),
-                                        },
-                                    ]}
-                                    block={true}
-                                    className='w-[35%] custom-segmented'
-                                    value={storeType}
-                                    onChange={(value) => {
-                                        handleStoreTypeChange(value)
-                                    }}
-                                    disabled={isDistributor}
-                                />
-                                <div className='font-bold  mt-[24px] text-[16px] leading-[24px] text-regal-blue'>
-                                    {t('labels:store_administrator_details')}
-                                </div>
-                                <Alert
-                                    icon={<MdInfo className='font-bold !text-center' />}
-                                    message={
-                                        <div className=''>
-                                            <Text className=' mr-1 text-brandGray1'> {t('labels:note')}:</Text>
-                                            <Text className='text-brandGray1'>
-                                                {t('messages:add_store_description')}{' '}
-                                                <span className='font-bold'>{t('labels:store_management_portal')}</span>
-                                            </Text>
+                                    {inValidEmail && storeEmail === '' && (
+                                        <div className='text-red-600 flex gap-1 mt-1'>
+                                            <img src={warningInfoIcon} alt='warningInfoIcon' />{' '}
+                                            {t('messages:empty_email_name_message')}
                                         </div>
-                                    }
-                                    type='info'
-                                    showIcon
-                                    className='my-4 !w-[89%]'
-                                />
-                                <div>
-                                    <label
-                                        className='mb-2 ml-1 text-[14px] leading-[22px] font-normal text-brandGray2'
-                                        id='labStEmail'>
-                                        {t('labels:email')}
-                                    </label>
-                                    <span className='mandatory-symbol-color text-sm ml-1'>*</span>
-                                </div>
-                                <Input
-                                    placeholder={t('placeholders:enter_email')}
-                                    value={storeEmail}
-                                    minLength={emailMinLength}
-                                    maxLength={emailMaxLength}
-                                    className={`!w-[50%] mt-2 ${
-                                        inValidEmail
-                                            ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400'
-                                            : ''
-                                    }`}
-                                    onChange={(e) => {
-                                        setInValidEmail(false)
-                                        if (e.target.value === '') {
-                                            setOnChangeValues(false)
-                                            setStoreEmail(e.target.value)
-                                        } else {
-                                            setOnChangeValues(true)
-                                            setStoreEmail(e.target.value.trim())
-                                        }
-                                    }}
-                                    onBlur={() => {
-                                        const trimmed = storeEmail.trim()
-                                        const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
-                                        setStoreEmail(trimmedUpdate)
-                                    }}
-                                />
-                                {inValidEmail && storeEmail === '' && (
-                                    <div className='text-red-600 flex gap-1 mt-1'>
-                                        <img src={warningInfoIcon} alt='warningInfoIcon' />{' '}
-                                        {t('messages:empty_email_name_message')}
+                                    )}
+                                    {inValidEmail && storeEmail && inValidEmailFormat && (
+                                        <div className='text-red-600 flex gap-1 mt-1'>
+                                            <img alt='warningInfoIcon' src={warningInfoIcon} />{' '}
+                                            {t('messages:enter_valid_email_message')}
+                                        </div>
+                                    )}
+                                    <div className='flex mt-3'>
+                                        <label
+                                            className=' ml-1 text-[14px] leading-[22px] font-normal text-brandGray2'
+                                            id='labStUseName'>
+                                            {t('labels:username')}
+                                        </label>
+                                        <span className='mandatory-symbol-color text-sm ml-1'>*</span>
+                                        <span className='mt-1 ml-1'>
+                                            <ShadCNTooltip
+                                                content={
+                                                    <div className='text-sm text-white'>
+                                                        <p className='m-0 p-0'>
+                                                            {t('labels:your_username_can_include')}
+                                                            <span>:</span>
+                                                        </p>
+                                                        <ul className='list-disc !ml-3 space-y-1 mb-0'>
+                                                            <li>{t('messages:uppercase_letters')}</li>
+                                                            <li>{t('messages:lowercase_letters')}</li>
+                                                            <li>{t('messages:digits')}</li>
+                                                            <li>{t('messages:underscore')}</li>
+                                                            <li>{t('messages:hyphens')}</li>
+                                                        </ul>
+                                                        <p className='p-0 m-0'>
+                                                            {t('messages:username_acceptance_criteria_note')}
+                                                        </p>
+                                                    </div>
+                                                }
+                                                position={
+                                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                        ? 'left'
+                                                        : 'right'
+                                                }
+                                                width='400px'
+                                                // overlayClassName='usernameTooltip'
+                                                // overlayInnerStyle={{ width: '400px' }}
+                                            >
+                                                <img src={InfoSymbol} alt='InfoSymbol' />
+                                            </ShadCNTooltip>
+                                        </span>
                                     </div>
-                                )}
-                                {inValidEmail && storeEmail && inValidEmailFormat && (
-                                    <div className='text-red-600 flex gap-1 mt-1'>
-                                        <img alt='warningInfoIcon' src={warningInfoIcon} />{' '}
-                                        {t('messages:enter_valid_email_message')}
-                                    </div>
-                                )}
-                                <div className='flex mt-3'>
-                                    <label
-                                        className=' ml-1 text-[14px] leading-[22px] font-normal text-brandGray2'
-                                        id='labStUseName'>
-                                        {t('labels:username')}
-                                    </label>
-                                    <span className='mandatory-symbol-color text-sm ml-1'>*</span>
-                                    <span className='mt-1 ml-1'>
-                                        <Tooltip
-                                            title={
-                                                <div className='text-sm text-white'>
-                                                    <p className='m-0 p-0'>
-                                                        {t('labels:your_username_can_include')}
-                                                        <span>:</span>
-                                                    </p>
-                                                    <ul className='list-disc !ml-3 space-y-1 mb-0'>
-                                                        <li>{t('messages:uppercase_letters')}</li>
-                                                        <li>{t('messages:lowercase_letters')}</li>
-                                                        <li>{t('messages:digits')}</li>
-                                                        <li>{t('messages:underscore')}</li>
-                                                        <li>{t('messages:hyphens')}</li>
-                                                    </ul>
-                                                    <p className='p-0 m-0'>
-                                                        {t('messages:username_acceptance_criteria_note')}
-                                                    </p>
-                                                </div>
+                                    <Input
+                                        placeholder={t('placeholders:enter_username')}
+                                        value={storeUserName}
+                                        minLength={userNameMinLength}
+                                        maxLength={userNameMaxLength}
+                                        className={`!w-[50%] mt-2 ${
+                                            inValidUserName
+                                                ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400'
+                                                : ''
+                                        }`}
+                                        // prefix={<UserOutlined className='site-form-item-icon' />}
+                                        onChange={(e) => {
+                                            const regex = /^[A-Za-z0-9_\- ]+$/
+                                            if (e.target.value !== '' && validator.matches(e.target.value, regex)) {
+                                                setInValidUserName(false)
+                                                setStoreUserName(String(e.target.value).toLowerCase().trim())
+                                                setOnChangeValues(true)
+                                            } else if (e.target.value === '') {
+                                                setStoreUserName(e.target.value)
+                                                setOnChangeValues(false)
                                             }
-                                            placement='topLeft'
-                                            overlayClassName='usernameTooltip'
-                                            overlayInnerStyle={{ width: '400px' }}>
-                                            <img src={InfoSymbol} alt='InfoSymbol' />
-                                        </Tooltip>
-                                    </span>
-                                </div>
-                                <Input
-                                    placeholder={t('placeholders:enter_username')}
-                                    value={storeUserName}
-                                    minLength={userNameMinLength}
-                                    maxLength={userNameMaxLength}
-                                    className={`!w-[50%] mt-2 ${
-                                        inValidUserName
-                                            ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400'
-                                            : ''
-                                    }`}
-                                    // prefix={<UserOutlined className='site-form-item-icon' />}
-                                    onChange={(e) => {
-                                        const regex = /^[A-Za-z0-9_\- ]+$/
-                                        if (e.target.value !== '' && validator.matches(e.target.value, regex)) {
-                                            setInValidUserName(false)
-                                            setStoreUserName(String(e.target.value).toLowerCase().trim())
-                                            setOnChangeValues(true)
-                                        } else if (e.target.value === '') {
-                                            setStoreUserName(e.target.value)
-                                            setOnChangeValues(false)
-                                        }
-                                    }}
-                                    onBlur={() => {
-                                        const trimmed = storeUserName.trim()
-                                        const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
-                                        setStoreUserName(trimmedUpdate)
-                                    }}
-                                />
-                                {inValidUserName && storeUserName === '' && (
-                                    <div className='text-red-600 flex gap-1 mt-1'>
-                                        <img src={warningInfoIcon} alt='warningInfoIcon' />{' '}
-                                        {t('messages:empty_user_name_message')}
+                                        }}
+                                        onBlur={() => {
+                                            const trimmed = storeUserName.trim()
+                                            const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
+                                            setStoreUserName(trimmedUpdate)
+                                        }}
+                                    />
+                                    {inValidUserName && storeUserName === '' && (
+                                        <div className='text-red-600 flex gap-1 mt-1'>
+                                            <img src={warningInfoIcon} alt='warningInfoIcon' />{' '}
+                                            {t('messages:empty_user_name_message')}
+                                        </div>
+                                    )}
+                                    {inValidUserName && storeUserName && storeUserName?.length < 3 && (
+                                        <div className='text-red-600 flex gap-1 mt-1'>
+                                            <img src={warningInfoIcon} alt='warningInfoIcon' />{' '}
+                                            {t('messages:enter_valid_user_name_message')}
+                                        </div>
+                                    )}
+                                    <div className='flex space-x-3 !justify-end'>
+                                        <Button
+                                            className={'app-btn-secondary'}
+                                            // disabled={!onChangeValues}
+                                            onClick={() => {
+                                                onClose()
+                                            }}>
+                                            {t('labels:cancel')}
+                                        </Button>
+                                        <Button
+                                            className={'app-btn-primary'}
+                                            // disabled={!onChangeValues}
+                                            onClick={() => {
+                                                validateStorePostField()
+                                            }}>
+                                            {t('labels:save')}
+                                        </Button>
                                     </div>
-                                )}
-                                {inValidUserName && storeUserName && storeUserName?.length < 3 && (
-                                    <div className='text-red-600 flex gap-1 mt-1'>
-                                        <img src={warningInfoIcon} alt='warningInfoIcon' />{' '}
-                                        {t('messages:enter_valid_user_name_message')}
-                                    </div>
-                                )}
-                                <Content className='flex space-x-3 !justify-end'>
-                                    <Button
-                                        className={'app-btn-secondary'}
-                                        // disabled={!onChangeValues}
-                                        onClick={() => {
-                                            onClose()
-                                        }}>
-                                        {t('labels:cancel')}
-                                    </Button>
-                                    <Button
-                                        className={'app-btn-primary'}
-                                        // disabled={!onChangeValues}
-                                        onClick={() => {
-                                            validateStorePostField()
-                                        }}>
-                                        {t('labels:save')}
-                                    </Button>
-                                </Content>
-                            </Spin>
+                                </>
+                            ) : (
+                                <Spin />
+                            )}
                         </>
                     ) : null}
-                </Content>
+                </div>
             </StoreModal>
             <StoreModal
                 title={
@@ -1678,7 +1684,7 @@ const Stores = () => {
                     <p>{t('messages:set_as_distributor_store_desc')}</p>
                 </div>
             </StoreModal>
-        </Content>
+        </div>
     )
 }
 export default Stores
