@@ -40,7 +40,7 @@ const SearchInput = ({ placeholder, onSearch, onChange, value, suffix, maxLength
                 />
                 {allowClear && value && (
                     <FiX
-                        className='absolute right-3 top-1/2 transform -translate-y-1/2 text-brandGray1 cursor-pointer bg-brandGray rounded-md'
+                        className={`${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'left-3' : 'right-3'}  absolute  top-1/2 transform -translate-y-1/2 text-brandGray1 cursor-pointer bg-brandGray rounded-md`}
                         onClick={handleClear}
                     />
                 )}

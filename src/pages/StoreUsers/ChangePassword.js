@@ -183,11 +183,7 @@ const ChangePassword = ({ isPasswordChangeModalOpen, setIsPasswordChangeModalOpe
                     className='bg-black w-[80%] h-[80%]'
                     width='w-4/5 min-w-[80%]'
                     isVisible={isPasswordChangeModalOpen}
-                    title={
-                        <div className='text-regal-blue font-bold text-[18px] leading-[26px]'>
-                            {t('labels:change_password')}
-                        </div>
-                    }
+                    title={<div className=' font-bold text-[18px] leading-[26px]'>{t('labels:change_password')}</div>}
                     okCallback={() => handleOkPasswordChangeModal()}
                     cancelCallback={() => handleCancelPasswordChangeModal()}
                     okButtonText={`${t('labels:save')}`}
