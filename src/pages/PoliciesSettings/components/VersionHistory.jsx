@@ -58,11 +58,11 @@ export default function VersionHistory({ userConsentId, refetchUserConsent, setV
     return (
         <div className='p-4 h-[400px] w-[950px] overflow-hidden'>
             {userConsentVersionStatus === 'pending' ? (
-                <Skeleton className='w-full h-20' />
+                <Skeleton className='w-full h-[400px]' />
             ) : userConsentVersionStatus === 'success' ? (
                 <div className='flex space-x-6'>
                     {/* Tab Card */}
-                    <Card className='w-[300px] h-[300px]'>
+                    <Card className='w-[300px] h-[300px] border-none'>
                         <CardContent className='p-0'>
                             <Tabs value={activeKey} onValueChange={handleTabChange} orientation='vertical'>
                                 <TabsList className='bg-background h-full flex-col items-start'>
@@ -110,7 +110,7 @@ export default function VersionHistory({ userConsentId, refetchUserConsent, setV
                             {t('labels:last_updated') + ': ' + getDate(userConsentVersionDetails?.updated_on)}
                         </p>
                         <div className='mr-10  flex justify-end'>
-                            <Button variant='primary' onClick={() => setAddVersion(true)}>
+                            <Button variant='default' onClick={() => setAddVersion(true)}>
                                 {t('labels:create_new_version')}
                             </Button>
                         </div>
@@ -122,7 +122,7 @@ export default function VersionHistory({ userConsentId, refetchUserConsent, setV
             <Dialog open={addVersion} onOpenChange={setAddVersion}>
                 <DialogContent className='sm:max-w-[400px]'>
                     <DialogHeader>
-                        <DialogTitle className='text-blue-600 font-bold text-lg'>{t('labels:add_version')}</DialogTitle>
+                        <DialogTitle className=' font-bold text-lg'>{t('labels:add_version')}</DialogTitle>
                     </DialogHeader>
                     <AddVersion
                         versionNumber={userConsentVersionDetails?.version_number}

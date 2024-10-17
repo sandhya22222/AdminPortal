@@ -19,6 +19,7 @@ import {
 } from '../../shadcnComponents/ui/dialog'
 import { cn } from '../../lib/utils'
 import ShadCNDataTable from '../../../src/shadcnComponents/customComponents/ShadCNDataTable'
+import HeaderForTitle from '../../components/header/HeaderForTitle'
 
 const itemsPerPageFromEnv = process.env.REACT_APP_ITEM_PER_PAGE
 const groupsAPI = process.env.REACT_APP_GROUPS_API
@@ -262,26 +263,39 @@ export default function UserAccessControl() {
     }
 
     const Header = () => (
-        <div className='flex flex-col justify-between items-start px-4 pt-2 w-full '>
-            <div className='flex justify-between w-full items-center '>
-                <div className='justify-between mb-3'>
-                    <h1 className=' font-sans text-2xl font-semibold my-3 text-regal-blue'>
-                        {t('labels:user_access_control')}
-                    </h1>
-                    <p className='text-muted-foreground'>{t('labels:user_access_control_note')}</p>
+        <HeaderForTitle
+            title={
+                <div className='relative flex flex-col justify-between items-start w-full'>
+                    {/* Top section: Title and button */}
+                    <div className='w-full'>
+                        <div className='flex items-center'>
+                            {/* Left side: Title and description */}
+                            <div className=''>
+                                <h1 className='font-sans text-2xl font-semibold my-3 text-regal-blue'>
+                                    {t('labels:user_access_control')}
+                                </h1>
+                                <p className='text-muted-foreground'>{t('labels:user_access_control_note')}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className='mt-4 w-full'>
+                        <TabNavigation />
+                    </div>
                 </div>
-                <div className=' mb-8 mr-[263px]  '>
+            }
+            titleContent={
+                <div className='w-[100%]'>
                     {activeTab === 'users' && (
                         <Button
-                            className='h-8 w-[5.5rem] font-normal'
+                            className=' h-8 w-[5.5rem] font-normal'
                             onClick={() => navigate('/dashboard/user-access-control/add-user')}>
                             {t('labels:add_user')}
                         </Button>
                     )}
                 </div>
-            </div>
-            <TabNavigation />
-        </div>
+            }
+        />
     )
 
     const TabNavigation = () => (
@@ -351,10 +365,8 @@ export default function UserAccessControl() {
 
     return (
         <div className='w-full mt-12 py-6 '>
-            <div className='mb-3 w-full bg-white fixed z-20 '>
-                <Header />
-            </div>
-            <div className='mx-3 mt-[152px]'>
+            <Header />
+            <div className='mx-3 mt-[180px]'>
                 {renderContent()}
 
                 <Dialog open={showDeleteUserModal} onOpenChange={setShowDeleteUserModal}>

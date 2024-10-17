@@ -100,10 +100,10 @@ function PolicyHistory() {
     return (
         <div className='flex justify-between pl-2 pr-6 pb-2 pt-2'>
             {policyData?.length <= 0 ? (
-                <Skeleton className='w-full h-[530px]' />
+                <Skeleton className='w-full h-[400px]' />
             ) : (
                 <>
-                    <div className='h-[530px] overflow-y-auto overflow-x-hidden'>
+                    <div className='h-[400px] overflow-y-auto overflow-x-hidden'>
                         <Tabs
                             value={activeKey}
                             onValueChange={handleTabChange}
@@ -132,7 +132,7 @@ function PolicyHistory() {
                     <div>
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                                <Button variant='outline' className='w-[90px] mb-4'>
+                                <Button variant='outline' className='w-[90px] mb-4 border-none'>
                                     {dropDownLabel}
                                     <ChevronDown className='ml-2 h-4 w-4' />
                                 </Button>

@@ -60,8 +60,13 @@ export default function PoliciesSettings({ storeName }) {
     const handelAddNewPolicy = () => {
         if (userConsents?.count < 10) {
             setAddNewPolicy(true)
+
             setTimeout(() => {
-                newPolicyRef.current?.scrollIntoView({ behavior: 'smooth' })
+                newPolicyRef.current.scrollIntoView({
+                    behavior: 'smooth', // Enables smooth scrolling
+                    block: 'end', // Scrolls to the bottom of the element
+                    inline: 'nearest',
+                })
             }, 100)
         } else {
             setPolicyWarning(true)
