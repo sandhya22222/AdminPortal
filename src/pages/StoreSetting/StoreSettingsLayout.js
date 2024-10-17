@@ -18,7 +18,7 @@ import StoreOverview from './StoreOverview'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import { Star } from 'lucide-react'
 import { Badge } from '../../shadcnComponents/ui/badge'
-import { Tabs, TabsContent, TabsTrigger, TabsList } from '../../shadcnComponents/ui/tabs'
+import { ShadCNTabs, ShadCNTabsTrigger, ShadCNTabsContent } from '../../shadcnComponents/customComponents/ShadCNTabs'
 
 const storeAPI = process.env.REACT_APP_STORE_API
 const storeImagesAPI = process.env.REACT_APP_STORE_IMAGES_API
@@ -453,27 +453,28 @@ const StoreSettingsLayout = () => {
                                 //     type='line'
                                 //     className=' !h-full '
                                 // />
-                                <Tabs
+                                <ShadCNTabs
                                     value={searchParams.get('tab') || STORE_SETTINGS_TABS_OPTIONS.OVERVIEW}
                                     onValueChange={handelMyProfileTabChange}
                                     className='h-full px-3'
                                     orientation='vertical'>
-                                    <TabsList className=' flex flex-col !h-full space-y-3' orientation='vertical'>
+                                    <div className='flex flex-col !h-full space-y-3'>
                                         {storeSettingsTabData.map((tab) => (
-                                            <TabsTrigger key={tab.key} value={tab.key} borderPosition='right'>
+                                            <ShadCNTabsTrigger key={tab.key} value={tab.key} borderPosition='right'>
                                                 {tab.label}
-                                            </TabsTrigger>
-                                        ))}
-                                    </TabsList>
-                                    {/* Content Area */}
-                                    <div className=''>
-                                        {storeSettingsTabData.map((tab) => (
-                                            <TabsContent key={tab.key} value={tab.key}>
-                                                {tab.content}
-                                            </TabsContent>
+                                            </ShadCNTabsTrigger>
                                         ))}
                                     </div>
-                                </Tabs>
+
+                                    {/* Content Area */}
+                                    <div>
+                                        {storeSettingsTabData.map((tab) => (
+                                            <ShadCNTabsContent key={tab.key} value={tab.key}>
+                                                {tab.content}
+                                            </ShadCNTabsContent>
+                                        ))}
+                                    </div>
+                                </ShadCNTabs>
                             )
                         ) : null}
                     </div>
