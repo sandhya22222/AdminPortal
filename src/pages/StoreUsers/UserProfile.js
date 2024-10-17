@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { Typography } from 'antd'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import { getGenerateDateAndTime } from '../../util/util'
 import { useTranslation } from 'react-i18next'
@@ -12,7 +11,6 @@ import ProfileImage from './ProfileImage'
 import { Button } from '../../shadcnComponents/ui/button'
 import ChangePassword from './ChangePassword'
 
-const { Title } = Typography
 const storeUsersAPI = process.env.REACT_APP_USERS_API
 const maxPasswordLength = process.env.REACT_APP_PASSWORD_MAX_LENGTH
 
