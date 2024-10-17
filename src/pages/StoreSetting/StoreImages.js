@@ -299,7 +299,7 @@ const StoreImages = ({
             {imagePathShow === undefined ? (
                 <div>
                     {isSingleUpload && isSingleUpload === true ? (
-                        <div className='flex gap-4 mb-2'>
+                        <div className='flex !gap-4 mb-2'>
                             <div>
                                 <CustomImageUpload
                                     selectedFile={fileList}
@@ -312,8 +312,9 @@ const StoreImages = ({
                                     maxImages={1}
                                 />
                             </div>
-                            <div className='mt-4 text-[#a8a8a8]'>
-                                <ul className='list-disc pl-3 '>
+                            <div className='mt-3 text-[#a8a8a8] mr-4'>
+                                <ul
+                                    className={`list-disc ${util.getSelectedLanguageCode()?.toUpperCase() === 'RTL' ? '!pr-4' : '!ml-4'}`}>
                                     <li className='!mb-0 '>{t('messages:store_logo_info')}</li>
                                     <li>{t('messages:store_logo_resolution')}</li>
                                     <li className='!mb-0 '>{t('messages:upload_image_content')}</li>
