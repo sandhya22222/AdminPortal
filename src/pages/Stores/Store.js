@@ -1,4 +1,4 @@
-import { InfoCircleOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons'
+
 import {
     // Button,
     Divider,
@@ -12,14 +12,13 @@ import {
     // Tabs,
     // Progress,
     // InputNumber,
-    Alert,
-    Empty,
-    Segmented,
 } from 'antd'
+import { Search } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 
 import validator from 'validator'
-import { MdInfo } from 'react-icons/md'
+// import { MdInfo } from 'react-icons/md'
+import { Info } from 'lucide-react';
 import { Link, useLocation, useSearchParams, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import {
@@ -42,7 +41,7 @@ import { Toggle } from '../../shadcnComponents/ui/toggle'
 import axios from 'axios'
 import { useAuth } from 'react-oidc-context'
 import { validatePositiveNumber } from '../../util/validation'
-
+import { Alert, AlertTitle, AlertDescription } from '../../shadcnComponents/ui/alert'
 import ShadCNDataTable from '../../shadcnComponents/customComponents/ShadCNDataTable'
 import { Plus, Star } from 'lucide-react'
 import { Badge } from '../../shadcnComponents/ui/badge'
@@ -240,7 +239,7 @@ const Stores = () => {
                                 position={
                                     util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'left' : 'right'
                                 }>
-                                <InfoCircleOutlined />
+                                <Info className="text-foreground" />
                             </ShadCNTooltip>
                         </div>
                         <Input
@@ -341,7 +340,7 @@ const Stores = () => {
                                 position={
                                     util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'left' : 'right'
                                 }>
-                                <InfoCircleOutlined />
+                                <Info className="text-foreground" />
                             </ShadCNTooltip>
                         </div>
                         <div>
@@ -1066,7 +1065,11 @@ const Stores = () => {
         setIsOpenModalForMakingDistributor(false)
     }
 
-    const customButton = <Button disabled={searchValue?.trim() === '' ? true : false} icon={<SearchOutlined />} />
+    const customButton = (
+        <Button disabled={searchValue?.trim() === ''}>
+            <Search className="text-foreground" /> {/* Using Lucide icon */}
+        </Button>
+    );
     useEffect(() => {
         const tab = searchParams.get('m_t') || '1'
         setCurrentTab(tab)
@@ -1197,44 +1200,53 @@ const Stores = () => {
                                                     <Content className=''>
                                                         {!isDistributor && (
                                                             <div className='px-3 my-2'>
-                                                                <Alert
-                                                                    icon={<MdInfo className='font-bold !text-center' />}
-                                                                    message={
-                                                                        <div className=''>
-                                                                            <Text className='text-brandGray1'>
-                                                                                {t(
-                                                                                    'messages:no_distributor_store_present_info'
-                                                                                )}{' '}
-                                                                            </Text>
+                                                                {/* Distributor Alert 1 */}
+                                                                <div className='px-3 my-2'>
+                                                                    <Alert
+                                                                        variant='default'
+                                                                        className='flex items-center !w-full'>
+                                                                        <Info className='text-foreground' />{' '}
+                                                                        {/* Icon */}
+                                                                        <div className='ml-2'>
+                                                                            <AlertTitle>
+                                                                                <Text className='text-brandGray1'>
+                                                                                    {t(
+                                                                                        'messages:no_distributor_store_present_info'
+                                                                                    )}
+                                                                                </Text>
+                                                                            </AlertTitle>
                                                                         </div>
-                                                                    }
-                                                                    type='info'
-                                                                    showIcon
-                                                                    className=''
-                                                                />
+                                                                    </Alert>
+                                                                </div>
                                                             </div>
                                                         )}
 
                                                         {isDistributor === true &&
                                                             isDistributorStoreActive === false && (
                                                                 <div className='px-3 my-2'>
-                                                                    <Alert
-                                                                        icon={
-                                                                            <MdInfo className='font-bold !text-center' />
-                                                                        }
-                                                                        message={
-                                                                            <div className=''>
-                                                                                <Text className='text-brandGray1'>
+                                                                    {/* Alert 2  */}
+                                                                    <div className='px-3 my-2'>
+                                                                        <Alert
+                                                                            variant='default'
+                                                                            className='flex items-center !w-full'>
+                                                                            <Info className='text-foreground' />{' '}
+                                                                            {/* Icon */}
+                                                                            <div className='ml-2'>
+                                                                                <AlertTitle>
                                                                                     {t(
                                                                                         'messages:distributor_store_inactive_msg'
-                                                                                    )}{' '}
-                                                                                </Text>
+                                                                                    )}
+                                                                                </AlertTitle>
+                                                                                <AlertDescription>
+                                                                                    <Text className='text-brandGray1'>
+                                                                                        {t(
+                                                                                            'messages:distributor_store_inactive_msg'
+                                                                                        )}
+                                                                                    </Text>
+                                                                                </AlertDescription>
                                                                             </div>
-                                                                        }
-                                                                        type='info'
-                                                                        showIcon
-                                                                        className=''
-                                                                    />
+                                                                        </Alert>
+                                                                    </div>
                                                                 </div>
                                                             )}
                                                         <ShadCNDataTable
@@ -1264,9 +1276,9 @@ const Stores = () => {
                                                         ) : null}
                                                     </Content>
                                                 ) : (
-                                                    <Content className='pb-4'>
-                                                        <Empty description={t('messages:no_data_available')} />
-                                                    </Content>
+                                                    <div className='flex justify-center items center pb-4'>
+                                                        <p>{t('messages:no_data_available')}</p>
+                                                    </div>
                                                 )}
                                             </>
                                         )}
@@ -1477,43 +1489,53 @@ const Stores = () => {
                                         </Tooltip>
                                     </span>
                                 </div>
-                                <Segmented
-                                    options={[
-                                        {
-                                            value: 'partner',
-                                            label: t('labels:partner'),
-                                        },
-                                        {
-                                            value: 'distributor',
-                                            label: t('labels:Distributor'),
-                                        },
-                                    ]}
-                                    block={true}
-                                    className='w-[35%] custom-segmented'
-                                    value={storeType}
-                                    onChange={(value) => {
-                                        handleStoreTypeChange(value)
-                                    }}
-                                    disabled={isDistributor}
-                                />
+                                <div className='flex'>
+                                    <Toggle
+                                        pressed={storeType === 'partner'} // Check if 'partner' is selected
+                                        onPressedChange={() => handleStoreTypeChange('partner')}
+                                        className={`${isDistributor ? 'opacity-50 cursor-not-allowed' : ''} ${
+                                            storeType === 'partner'
+                                                ? 'border-2 border-primary text-primary' // Apply border and text color for selected state
+                                                : 'border border-gray-300 text-gray-700 hover:border-gray-400' // Default border for unselected
+                                        } transition-all`}
+                                        disabled={isDistributor}>
+                                        {t('labels:partner')}
+                                    </Toggle>
+
+                                    <Toggle
+                                        pressed={storeType === 'distributor'} // Check if 'distributor' is selected
+                                        onPressedChange={() => handleStoreTypeChange('distributor')}
+                                        className={`${isDistributor ? 'opacity-50 cursor-not-allowed' : ''} ${
+                                            storeType === 'distributor'
+                                                ? 'border-2 border-primary text-primary' // Apply border and text color for selected state
+                                                : 'border border-gray-300 text-gray-700 hover:border-gray-400' // Default border for unselected
+                                        } transition-all`}
+                                        disabled={isDistributor}>
+                                        {t('labels:Distributor')}
+                                    </Toggle>
+                                </div>
                                 <div className='font-bold  mt-[24px] text-[16px] leading-[24px] text-regal-blue'>
                                     {t('labels:store_administrator_details')}
                                 </div>
-                                <Alert
-                                    icon={<MdInfo className='font-bold !text-center' />}
-                                    message={
-                                        <div className=''>
-                                            <Text className=' mr-1 text-brandGray1'> {t('labels:note')}:</Text>
-                                            <Text className='text-brandGray1'>
-                                                {t('messages:add_store_description')}{' '}
-                                                <span className='font-bold'>{t('labels:store_management_portal')}</span>
-                                            </Text>
+                                {/* alert 3 */}
+                                <div className='px-3 my-4'>
+                                    <Alert variant='default' className='flex items-start !w-full'>
+                                        <Info className='text-foreground' /> {/* Icon */}
+                                        <div className='ml-2'>
+                                            <AlertTitle>
+                                                <Text className='mr-1 text-brandGray1'>{t('labels:note')}:</Text>
+                                            </AlertTitle>
+                                            <AlertDescription>
+                                                <Text className='text-brandGray1'>
+                                                    {t('messages:add_store_description')}{' '}
+                                                    <span className='font-bold'>
+                                                        {t('labels:store_management_portal')}
+                                                    </span>
+                                                </Text>
+                                            </AlertDescription>
                                         </div>
-                                    }
-                                    type='info'
-                                    showIcon
-                                    className='my-4 !w-[89%]'
-                                />
+                                    </Alert>
+                                </div>
                                 <div>
                                     <label
                                         className='mb-2 ml-1 text-[14px] leading-[22px] font-normal text-brandGray2'
