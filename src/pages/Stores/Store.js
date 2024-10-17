@@ -1,9 +1,9 @@
-import { InfoCircleOutlined, SearchOutlined } from '@ant-design/icons'
-import { Alert, Empty, Segmented } from 'antd'
 import React, { useEffect, useState } from 'react'
+import { Search } from 'lucide-react'
 
 import validator from 'validator'
-import { MdInfo } from 'react-icons/md'
+// import { MdInfo } from 'react-icons/md'
+import { Info } from 'lucide-react'
 import { Link, useLocation, useSearchParams, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import {
@@ -26,7 +26,7 @@ import { Toggle } from '../../shadcnComponents/ui/toggle'
 import axios from 'axios'
 import { useAuth } from 'react-oidc-context'
 import { validatePositiveNumber } from '../../util/validation'
-
+import { Alert, AlertTitle, AlertDescription } from '../../shadcnComponents/ui/alert'
 import ShadCNDataTable from '../../shadcnComponents/customComponents/ShadCNDataTable'
 import { Plus, Star } from 'lucide-react'
 import { Badge } from '../../shadcnComponents/ui/badge'
@@ -224,7 +224,7 @@ const Stores = () => {
                                 position={
                                     util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'left' : 'right'
                                 }>
-                                <InfoCircleOutlined />
+                                <Info className='text-foreground' />
                             </ShadCNTooltip>
                         </div>
                         <Input
@@ -325,7 +325,7 @@ const Stores = () => {
                                 position={
                                     util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'left' : 'right'
                                 }>
-                                <InfoCircleOutlined />
+                                <Info className='text-foreground' />
                             </ShadCNTooltip>
                         </div>
                         <div>
@@ -1052,7 +1052,11 @@ const Stores = () => {
         setIsOpenModalForMakingDistributor(false)
     }
 
-    const customButton = <Button disabled={searchValue?.trim() === '' ? true : false} icon={<SearchOutlined />} />
+    const customButton = (
+        <Button disabled={searchValue?.trim() === ''}>
+            <Search className='text-foreground' /> {/* Using Lucide icon */}
+        </Button>
+    )
     useEffect(() => {
         const tab = searchParams.get('m_t') || '1'
         setCurrentTab(tab)
@@ -1186,44 +1190,53 @@ const Stores = () => {
                                                     <div className=''>
                                                         {!isDistributor && (
                                                             <div className='px-3 my-2'>
-                                                                <Alert
-                                                                    icon={<MdInfo className='font-bold !text-center' />}
-                                                                    message={
-                                                                        <div className=''>
-                                                                            <p className='text-brandGray1'>
-                                                                                {t(
-                                                                                    'messages:no_distributor_store_present_info'
-                                                                                )}{' '}
-                                                                            </p>
+                                                                {/* Distributor Alert 1 */}
+                                                                <div className='px-3 my-2'>
+                                                                    <Alert
+                                                                        variant='default'
+                                                                        className='flex items-center !w-full'>
+                                                                        <Info className='text-foreground' />{' '}
+                                                                        {/* Icon */}
+                                                                        <div className='ml-2'>
+                                                                            <AlertTitle>
+                                                                                <p className='text-brandGray1'>
+                                                                                    {t(
+                                                                                        'messages:no_distributor_store_present_info'
+                                                                                    )}
+                                                                                </p>
+                                                                            </AlertTitle>
                                                                         </div>
-                                                                    }
-                                                                    type='info'
-                                                                    showIcon
-                                                                    className=''
-                                                                />
+                                                                    </Alert>
+                                                                </div>
                                                             </div>
                                                         )}
 
                                                         {isDistributor === true &&
                                                             isDistributorStoreActive === false && (
                                                                 <div className='px-3 my-2'>
-                                                                    <Alert
-                                                                        icon={
-                                                                            <MdInfo className='font-bold !text-center' />
-                                                                        }
-                                                                        message={
-                                                                            <div className=''>
-                                                                                <p className='text-brandGray1'>
+                                                                    {/* Alert 2  */}
+                                                                    <div className='px-3 my-2'>
+                                                                        <Alert
+                                                                            variant='default'
+                                                                            className='flex items-center !w-full'>
+                                                                            <Info className='text-foreground' />{' '}
+                                                                            {/* Icon */}
+                                                                            <div className='ml-2'>
+                                                                                <AlertTitle>
                                                                                     {t(
                                                                                         'messages:distributor_store_inactive_msg'
-                                                                                    )}{' '}
-                                                                                </p>
+                                                                                    )}
+                                                                                </AlertTitle>
+                                                                                <AlertDescription>
+                                                                                    <p className='text-brandGray1'>
+                                                                                        {t(
+                                                                                            'messages:distributor_store_inactive_msg'
+                                                                                        )}
+                                                                                    </p>
+                                                                                </AlertDescription>
                                                                             </div>
-                                                                        }
-                                                                        type='info'
-                                                                        showIcon
-                                                                        className=''
-                                                                    />
+                                                                        </Alert>
+                                                                    </div>
                                                                 </div>
                                                             )}
                                                         <ShadCNDataTable
@@ -1253,8 +1266,8 @@ const Stores = () => {
                                                         ) : null}
                                                     </div>
                                                 ) : (
-                                                    <div className='pb-4'>
-                                                        <Empty description={t('messages:no_data_available')} />
+                                                    <div className='flex justify-center items center pb-4'>
+                                                        <p>{t('messages:no_data_available')}</p>
                                                     </div>
                                                 )}
                                             </>
@@ -1473,45 +1486,7 @@ const Stores = () => {
                                             </ShadCNTooltip>
                                         </span>
                                     </div>
-                                    <Segmented
-                                        options={[
-                                            {
-                                                value: 'partner',
-                                                label: t('labels:partner'),
-                                            },
-                                            {
-                                                value: 'distributor',
-                                                label: t('labels:Distributor'),
-                                            },
-                                        ]}
-                                        block={true}
-                                        className='w-[35%] custom-segmented'
-                                        value={storeType}
-                                        onChange={(value) => {
-                                            handleStoreTypeChange(value)
-                                        }}
-                                        disabled={isDistributor}
-                                    />
-                                    <div className='font-bold  mt-[24px] text-[16px] leading-[24px] text-regal-blue'>
-                                        {t('labels:store_administrator_details')}
-                                    </div>
-                                    <Alert
-                                        icon={<MdInfo className='font-bold !text-center' />}
-                                        message={
-                                            <div className=''>
-                                                <p className=' mr-1 text-brandGray1'> {t('labels:note')}:</p>
-                                                <p className='text-brandGray1'>
-                                                    {t('messages:add_store_description')}{' '}
-                                                    <span className='font-bold'>
-                                                        {t('labels:store_management_portal')}
-                                                    </span>
-                                                </p>
-                                            </div>
-                                        }
-                                        type='info'
-                                        showIcon
-                                        className='my-4 !w-[89%]'
-                                    />
+
                                     <div>
                                         <label
                                             className='mb-2 ml-1 text-[14px] leading-[22px] font-normal text-brandGray2'
@@ -1546,19 +1521,20 @@ const Stores = () => {
                                             setStoreEmail(trimmedUpdate)
                                         }}
                                     />
-                                    {inValidEmail && storeEmail === '' && (
+                                    <span className='mx-3 mt-2 text-brandGray2'>{domainName}</span>
+                                    {inValidName && name === '' && (
                                         <div className='text-red-600 flex gap-1 mt-1'>
                                             <img src={warningInfoIcon} alt='warningInfoIcon' />{' '}
-                                            {t('messages:empty_email_name_message')}
+                                            {t('messages:empty_store_name_message')}
                                         </div>
                                     )}
-                                    {inValidEmail && storeEmail && inValidEmailFormat && (
+                                    {inValidName && name && name?.length < 3 && (
                                         <div className='text-red-600 flex gap-1 mt-1'>
-                                            <img alt='warningInfoIcon' src={warningInfoIcon} />{' '}
-                                            {t('messages:enter_valid_email_message')}
+                                            <img src={warningInfoIcon} alt='warningInfoIcon' />{' '}
+                                            {t('messages:enter_valid_store_name_message')}
                                         </div>
                                     )}
-                                    <div className='flex mt-3'>
+                                    <div className='flex !mt-5'>
                                         <label
                                             className=' ml-1 text-[14px] leading-[22px] font-normal text-brandGray2'
                                             id='labStUseName'>
@@ -1598,34 +1574,126 @@ const Stores = () => {
                                             </ShadCNTooltip>
                                         </span>
                                     </div>
+                                    <div className='flex'>
+                                        <Toggle
+                                            pressed={storeType === 'partner'} // Check if 'partner' is selected
+                                            onPressedChange={() => handleStoreTypeChange('partner')}
+                                            className={`${isDistributor ? 'opacity-50 cursor-not-allowed' : ''} ${
+                                                storeType === 'partner'
+                                                    ? 'border-2 border-primary text-primary' // Apply border and text color for selected state
+                                                    : 'border border-gray-300 text-gray-700 hover:border-gray-400' // Default border for unselected
+                                            } transition-all`}
+                                            disabled={isDistributor}>
+                                            {t('labels:partner')}
+                                        </Toggle>
+
+                                        <Toggle
+                                            pressed={storeType === 'distributor'} // Check if 'distributor' is selected
+                                            onPressedChange={() => handleStoreTypeChange('distributor')}
+                                            className={`${isDistributor ? 'opacity-50 cursor-not-allowed' : ''} ${
+                                                storeType === 'distributor'
+                                                    ? 'border-2 border-primary text-primary' // Apply border and text color for selected state
+                                                    : 'border border-gray-300 text-gray-700 hover:border-gray-400' // Default border for unselected
+                                            } transition-all`}
+                                            disabled={isDistributor}>
+                                            {t('labels:Distributor')}
+                                        </Toggle>
+                                    </div>
+                                    <div className='font-bold  mt-[24px] text-[16px] leading-[24px] text-regal-blue'>
+                                        {t('labels:store_administrator_details')}
+                                    </div>
+                                    {/* alert 3 */}
+                                    <div className='px-3 my-4'>
+                                        <Alert variant='default' className='flex items-start !w-full'>
+                                            <Info className='text-foreground' /> {/* Icon */}
+                                            <div className='ml-2'>
+                                                <AlertTitle>
+                                                    <p className='mr-1 text-brandGray1'>{t('labels:note')}:</p>
+                                                </AlertTitle>
+                                                <AlertDescription>
+                                                    <p className='text-brandGray1'>
+                                                        {t('messages:add_store_description')}{' '}
+                                                        <span className='font-bold'>
+                                                            {t('labels:store_management_portal')}
+                                                        </span>
+                                                    </p>
+                                                </AlertDescription>
+                                            </div>
+                                        </Alert>
+                                    </div>
+                                    <div>
+                                        <label
+                                            className='mb-2 ml-1 text-[14px] leading-[22px] font-normal text-brandGray2'
+                                            id='labStEmail'>
+                                            {t('labels:email')}
+                                        </label>
+                                        <span className='mandatory-symbol-color text-sm ml-1'>*</span>
+                                    </div>
                                     <Input
-                                        placeholder={t('placeholders:enter_username')}
-                                        value={storeUserName}
-                                        minLength={userNameMinLength}
-                                        maxLength={userNameMaxLength}
+                                        placeholder={t('placeholders:enter_email')}
+                                        value={storeEmail}
+                                        minLength={emailMinLength}
+                                        maxLength={emailMaxLength}
                                         className={`!w-[50%] mt-2 ${
-                                            inValidUserName
+                                            inValidEmail
                                                 ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400'
                                                 : ''
                                         }`}
-                                        // prefix={<UserOutlined className='site-form-item-icon' />}
                                         onChange={(e) => {
-                                            const regex = /^[A-Za-z0-9_\- ]+$/
-                                            if (e.target.value !== '' && validator.matches(e.target.value, regex)) {
-                                                setInValidUserName(false)
-                                                setStoreUserName(String(e.target.value).toLowerCase().trim())
-                                                setOnChangeValues(true)
-                                            } else if (e.target.value === '') {
-                                                setStoreUserName(e.target.value)
+                                            setInValidEmail(false)
+                                            if (e.target.value === '') {
                                                 setOnChangeValues(false)
+                                                setStoreEmail(e.target.value)
+                                            } else {
+                                                setOnChangeValues(true)
+                                                setStoreEmail(e.target.value.trim())
                                             }
                                         }}
                                         onBlur={() => {
-                                            const trimmed = storeUserName.trim()
+                                            const trimmed = storeEmail.trim()
                                             const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
-                                            setStoreUserName(trimmedUpdate)
+                                            setStoreEmail(trimmedUpdate)
                                         }}
                                     />
+                                    {inValidEmail && storeEmail === '' && (
+                                        <>
+                                            <div className='text-red-600 flex gap-1 mt-1'>
+                                                <img src={warningInfoIcon} alt='warningInfoIcon' />{' '}
+                                                {t('messages:empty_email_name_message')}
+                                            </div>
+                                            <Input
+                                                placeholder={t('placeholders:enter_username')}
+                                                value={storeUserName}
+                                                minLength={userNameMinLength}
+                                                maxLength={userNameMaxLength}
+                                                className={`!w-[50%] mt-2 ${
+                                                    inValidUserName
+                                                        ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400'
+                                                        : ''
+                                                }`}
+                                                // prefix={<UserOutlined className='site-form-item-icon' />}
+                                                onChange={(e) => {
+                                                    const regex = /^[A-Za-z0-9_\- ]+$/
+                                                    if (
+                                                        e.target.value !== '' &&
+                                                        validator.matches(e.target.value, regex)
+                                                    ) {
+                                                        setInValidUserName(false)
+                                                        setStoreUserName(String(e.target.value).toLowerCase().trim())
+                                                        setOnChangeValues(true)
+                                                    } else if (e.target.value === '') {
+                                                        setStoreUserName(e.target.value)
+                                                        setOnChangeValues(false)
+                                                    }
+                                                }}
+                                                onBlur={() => {
+                                                    const trimmed = storeUserName.trim()
+                                                    const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
+                                                    setStoreUserName(trimmedUpdate)
+                                                }}
+                                            />
+                                        </>
+                                    )}
                                     {inValidUserName && storeUserName === '' && (
                                         <div className='text-red-600 flex gap-1 mt-1'>
                                             <img src={warningInfoIcon} alt='warningInfoIcon' />{' '}
