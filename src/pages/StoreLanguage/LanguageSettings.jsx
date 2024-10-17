@@ -42,18 +42,9 @@ export default function LanguageSettings() {
         <div className='flex flex-col min-h-screen pt-1'>
             <HeaderForTitle
                 title={
-                    <TooltipProvider>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <h3 className='text-2xl font-normal truncate max-w-[250px] my-3'>
-                                    {languageName || t('labels:add_language')}
-                                </h3>
-                            </TooltipTrigger>
-                            <TooltipContent side='right'>
-                                <p>{languageName}</p>
-                            </TooltipContent>
-                        </Tooltip>
-                    </TooltipProvider>
+                    <h3 className=' text-2xl font-normal truncate max-w-[250px] my-3'>
+                        {languageName || t('labels:add_language')}
+                    </h3>
                 }
                 titleContent={
                     languageId && languageCode && languageStatus !== null ? (

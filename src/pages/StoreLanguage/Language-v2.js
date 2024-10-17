@@ -141,12 +141,12 @@ const Language = () => {
             render: (text, record) => (
                 <div>
                     {String(record.status) === '2' ? (
-                        <div className=' w-fit flex items-center space-x-1'>
+                        <div className=' w-fit flex items-center gap-2'>
                             <DotIconSVG className={`w-2 h-2   `} fill={'#cbd5e1 '} />
                             <span>{t('labels:inactive')}</span>
                         </div>
                     ) : (
-                        <div className='  w-fit flex items-center space-x-1'>
+                        <div className='  w-fit flex items-center gap-2'>
                             <DotIconSVG className={`w-2 h-2 `} fill={'#22C55E'} />
                             <span>{t('labels:active')}</span>
                         </div>

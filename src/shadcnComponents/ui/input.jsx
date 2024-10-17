@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { cn } from '../../lib/utils'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
+import util from '../../util/common'
 
 const Input = React.forwardRef(({ className, type, variant, ...props }, ref) => {
     const [isPasswordVisible, setIsPasswordVisible] = React.useState(false)
@@ -28,7 +29,7 @@ const Input = React.forwardRef(({ className, type, variant, ...props }, ref) => 
                 <button
                     type='button'
                     onClick={togglePasswordVisibility}
-                    className='absolute bg-white w-8 h-8 z-50 right-1 top-1/2 transform -translate-y-1/2'>
+                    className={`${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'left-1' : 'right-1'} absolute bg-white w-8 h-8 z-50  top-1/2 transform -translate-y-1/2`}>
                     {isPasswordVisible ? <FaEye /> : <FaEyeSlash />}
                 </button>
             )}
