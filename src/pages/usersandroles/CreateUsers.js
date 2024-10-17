@@ -16,6 +16,7 @@ import { Skeleton } from '../../shadcnComponents/ui/skeleton'
 import ShadCNTooltip from '../../shadcnComponents/customComponents/ShadCNTooltip'
 import { Select, SelectContent, SelectItem, SelectValue, SelectTrigger } from '../../shadcnComponents/ui/select'
 import { Switch } from '../../shadcnComponents/ui/switch'
+import Spin from '../../shadcnComponents/customComponents/Spin'
 //! Import CSS libraries
 
 const userAPI = process.env.REACT_APP_USERS_API
@@ -570,159 +571,162 @@ const CreateUsers = () => {
                 backNavigationPath={'/dashboard/user-access-control/list-user-roles'}
             />
             <div className='!min-h-screen mt-[8.5rem] p-3'>
-                {isUserDetailFetching ? (
-                    <div className='bg-white p-3 space-y-4'>
-                        <Skeleton className={'h-4 w-[350px] '} />
-                        <Skeleton className={'h-4 w-[350px] '} />
-                        <Skeleton className={'h-4 w-[350px] '} />
-                        <Skeleton className={'h-4 w-[350px] '} />
-                        <Skeleton className={'h-4 w-[350px] '} />
-                        <Skeleton className={'h-4 w-[300px] '} />
-                    </div>
-                ) : (
-                    // <Spin tip={t('labels:please_wait')} size='large' spinning={isLoading}>
-                    <div className='bg-white p-3 rounded-md shadow-brandShadow'>
-                        <div className='w-[400px]'>
-                            <div className='my-3'>
-                                <p className='input-label-color mb-2 flex gap-1'>
-                                    {t('labels:user_name')}
-                                    <span className='mandatory-symbol-color text-sm '>*</span>
-                                </p>
-                                <div>
-                                    <Input
-                                        className={`${
-                                            invalidUserName
-                                                ? 'border-red-400  border-[1px] rounded-lg border-solid focus:border-red-400 hover:border-red-400'
-                                                : ' border-solid border-[#C6C6C6] '
-                                        }`}
-                                        value={userName}
-                                        disabled={pageAction !== 'add' ? true : false}
-                                        onChange={(e) => {
-                                            const alphaWithoutSpaces = /^[a-zA-Z0-9]+$/
-                                            if (
-                                                e.target.value !== '' &&
-                                                validator.matches(e.target.value, alphaWithoutSpaces)
-                                            ) {
-                                                setUserName(String(e.target.value).toLowerCase())
-                                                setInvalidUserName(false)
-                                                setIsUserDetailsEditted(true)
-                                            } else if (e.target.value === '') {
-                                                setUserName(e.target.value)
-                                            }
-                                        }}
-                                        onBlur={(e) => {
-                                            setUserName(e.target.value.trim().replace(/\s+/g, ' '))
-                                        }}
-                                        maxLength={userNameMaxLength}
-                                        placeholder={t('placeholders:user_name_placeholder')}
-                                    />
-                                </div>
-                            </div>
-                            {/* <Content className='flex my-3 gap-3'> */}
-                            <div className='my-3'>
-                                <p className='input-label-color mb-2 flex gap-1'>{t('labels:first_name')}</p>
-                                <div>
-                                    <Input
-                                        autoComplete='off'
-                                        value={firstName}
-                                        disabled={
-                                            pageAction !== 'add'
-                                                ? userName === currentUser || defaultStatus === 'True'
-                                                : false
-                                        }
-                                        onChange={(e) => {
-                                            const { value } = e.target
-                                            const regex = /^[a-zA-Z]*$/ // only allow letters
-                                            if (regex.test(value)) {
-                                                setFirstName(e.target.value)
-                                                setIsUserDetailsEditted(true)
-                                            }
-                                        }}
-                                        minLength={nameMinLength}
-                                        maxLength={nameMaxLength}
-                                        placeholder={t('placeholders:enter_first_name')}
-                                    />
-                                </div>
-                            </div>
-                            <div className='my-3'>
-                                <p className='input-label-color mb-2 flex gap-1'>{t('labels:last_name')}</p>
-                                <div>
-                                    <Input
-                                        autoComplete='off'
-                                        value={lastName}
-                                        disabled={
-                                            pageAction !== 'add'
-                                                ? userName === currentUser || defaultStatus === 'True'
-                                                : false
-                                        }
-                                        onChange={(e) => {
-                                            const { value } = e.target
-                                            const regex = /^[a-zA-Z]*$/ // only allow letters
-                                            if (regex.test(value)) {
-                                                setLastName(e.target.value)
-                                                setIsUserDetailsEditted(true)
-                                            }
-                                        }}
-                                        minLength={nameMinLength}
-                                        maxLength={nameMaxLength}
-                                        placeholder={t('placeholders:enter_last_name')}
-                                    />
-                                </div>
-                            </div>
-                            {/* </Content> */}
-                            <div className='my-3'>
-                                <p className='input-label-color mb-2 flex gap-1'>
-                                    {t('labels:email')}
-                                    <span className='mandatory-symbol-color text-sm '>*</span>
-                                </p>
-
-                                <div>
-                                    <Input
-                                        className={`${
-                                            invalidEmailId
-                                                ? 'border-red-400  border-[1px] rounded-lg border-solid focus:border-red-400 hover:border-red-400'
-                                                : ' border-solid border-[#C6C6C6]'
-                                        }`}
-                                        value={emailId}
-                                        onChange={(e) => {
-                                            if (
-                                                validator.matches(
-                                                    e.target.value.trim(),
-                                                    /^[a-zA-Z0-9\s!@#$%^&*()_+\-=\[\]{};'`~:"\\|,.<>\/?]+$/
-                                                )
-                                            ) {
-                                                setEmailId(e.target.value.toLowerCase())
-                                                setInvalidEmailId(false)
-                                                setIsUserDetailsEditted(true)
-                                            } else if (e.target.value === '') {
-                                                setEmailId(e.target.value.toLowerCase())
-                                                setInvalidEmailId(false)
-                                                setIsUserDetailsEditted(true)
-                                            }
-                                        }}
-                                        onBlur={(e) => {
-                                            setEmailId(e.target.value.trim().replace(/\s+/g, ' '))
-                                        }}
-                                        disabled={
-                                            pageAction !== 'add'
-                                                ? userName === currentUser || defaultStatus === 'True'
-                                                : false
-                                        }
-                                        autocomplete='off'
-                                        maxLength={emailMaxLength}
-                                        placeholder={t('placeholders:enter_email')}
-                                    />
-                                </div>
-                            </div>
-
-                            <div className='flex my-3'>
-                                <div className=''>
+                {
+                    isUserDetailFetching ? (
+                        <div className='bg-white p-3 space-y-4'>
+                            <Skeleton className={'h-4 w-[350px] '} />
+                            <Skeleton className={'h-4 w-[350px] '} />
+                            <Skeleton className={'h-4 w-[350px] '} />
+                            <Skeleton className={'h-4 w-[350px] '} />
+                            <Skeleton className={'h-4 w-[350px] '} />
+                            <Skeleton className={'h-4 w-[300px] '} />
+                        </div>
+                    ) : isLoading ? (
+                        <Spin />
+                    ) : (
+                        // <Spin tip={t('labels:please_wait')} size='large' spinning={isLoading}>
+                        <div className='bg-white p-3 rounded-md shadow-brandShadow'>
+                            <div className='w-[400px]'>
+                                <div className='my-3'>
                                     <p className='input-label-color mb-2 flex gap-1'>
-                                        {t('labels:role')}
+                                        {t('labels:user_name')}
                                         <span className='mandatory-symbol-color text-sm '>*</span>
                                     </p>
                                     <div>
-                                        {/* <Select
+                                        <Input
+                                            className={`${
+                                                invalidUserName
+                                                    ? 'border-red-400  border-[1px] rounded-lg border-solid focus:border-red-400 hover:border-red-400'
+                                                    : ' border-solid border-[#C6C6C6] '
+                                            }`}
+                                            value={userName}
+                                            disabled={pageAction !== 'add' ? true : false}
+                                            onChange={(e) => {
+                                                const alphaWithoutSpaces = /^[a-zA-Z0-9]+$/
+                                                if (
+                                                    e.target.value !== '' &&
+                                                    validator.matches(e.target.value, alphaWithoutSpaces)
+                                                ) {
+                                                    setUserName(String(e.target.value).toLowerCase())
+                                                    setInvalidUserName(false)
+                                                    setIsUserDetailsEditted(true)
+                                                } else if (e.target.value === '') {
+                                                    setUserName(e.target.value)
+                                                }
+                                            }}
+                                            onBlur={(e) => {
+                                                setUserName(e.target.value.trim().replace(/\s+/g, ' '))
+                                            }}
+                                            maxLength={userNameMaxLength}
+                                            placeholder={t('placeholders:user_name_placeholder')}
+                                        />
+                                    </div>
+                                </div>
+                                {/* <Content className='flex my-3 gap-3'> */}
+                                <div className='my-3'>
+                                    <p className='input-label-color mb-2 flex gap-1'>{t('labels:first_name')}</p>
+                                    <div>
+                                        <Input
+                                            autoComplete='off'
+                                            value={firstName}
+                                            disabled={
+                                                pageAction !== 'add'
+                                                    ? userName === currentUser || defaultStatus === 'True'
+                                                    : false
+                                            }
+                                            onChange={(e) => {
+                                                const { value } = e.target
+                                                const regex = /^[a-zA-Z]*$/ // only allow letters
+                                                if (regex.test(value)) {
+                                                    setFirstName(e.target.value)
+                                                    setIsUserDetailsEditted(true)
+                                                }
+                                            }}
+                                            minLength={nameMinLength}
+                                            maxLength={nameMaxLength}
+                                            placeholder={t('placeholders:enter_first_name')}
+                                        />
+                                    </div>
+                                </div>
+                                <div className='my-3'>
+                                    <p className='input-label-color mb-2 flex gap-1'>{t('labels:last_name')}</p>
+                                    <div>
+                                        <Input
+                                            autoComplete='off'
+                                            value={lastName}
+                                            disabled={
+                                                pageAction !== 'add'
+                                                    ? userName === currentUser || defaultStatus === 'True'
+                                                    : false
+                                            }
+                                            onChange={(e) => {
+                                                const { value } = e.target
+                                                const regex = /^[a-zA-Z]*$/ // only allow letters
+                                                if (regex.test(value)) {
+                                                    setLastName(e.target.value)
+                                                    setIsUserDetailsEditted(true)
+                                                }
+                                            }}
+                                            minLength={nameMinLength}
+                                            maxLength={nameMaxLength}
+                                            placeholder={t('placeholders:enter_last_name')}
+                                        />
+                                    </div>
+                                </div>
+                                {/* </Content> */}
+                                <div className='my-3'>
+                                    <p className='input-label-color mb-2 flex gap-1'>
+                                        {t('labels:email')}
+                                        <span className='mandatory-symbol-color text-sm '>*</span>
+                                    </p>
+
+                                    <div>
+                                        <Input
+                                            className={`${
+                                                invalidEmailId
+                                                    ? 'border-red-400  border-[1px] rounded-lg border-solid focus:border-red-400 hover:border-red-400'
+                                                    : ' border-solid border-[#C6C6C6]'
+                                            }`}
+                                            value={emailId}
+                                            onChange={(e) => {
+                                                if (
+                                                    validator.matches(
+                                                        e.target.value.trim(),
+                                                        /^[a-zA-Z0-9\s!@#$%^&*()_+\-=\[\]{};'`~:"\\|,.<>\/?]+$/
+                                                    )
+                                                ) {
+                                                    setEmailId(e.target.value.toLowerCase())
+                                                    setInvalidEmailId(false)
+                                                    setIsUserDetailsEditted(true)
+                                                } else if (e.target.value === '') {
+                                                    setEmailId(e.target.value.toLowerCase())
+                                                    setInvalidEmailId(false)
+                                                    setIsUserDetailsEditted(true)
+                                                }
+                                            }}
+                                            onBlur={(e) => {
+                                                setEmailId(e.target.value.trim().replace(/\s+/g, ' '))
+                                            }}
+                                            disabled={
+                                                pageAction !== 'add'
+                                                    ? userName === currentUser || defaultStatus === 'True'
+                                                    : false
+                                            }
+                                            autocomplete='off'
+                                            maxLength={emailMaxLength}
+                                            placeholder={t('placeholders:enter_email')}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className='flex my-3'>
+                                    <div className=''>
+                                        <p className='input-label-color mb-2 flex gap-1'>
+                                            {t('labels:role')}
+                                            <span className='mandatory-symbol-color text-sm '>*</span>
+                                        </p>
+                                        <div>
+                                            {/* <Select
                                             disabled={
                                                 pageAction === 'edit'
                                                     ? userName === currentUser || defaultStatus === 'True'
@@ -738,65 +742,66 @@ const CreateUsers = () => {
                                             onValueChange={handleChangeRole}
                                             options={roleSelectData}
                                         /> */}
-                                        <Select
-                                            disabled={
-                                                pageAction === 'edit'
-                                                    ? userName === currentUser || defaultStatus === 'True'
-                                                    : false
-                                            }
-                                            onValueChange={handleChangeRole}
-                                            value={selectRole}>
-                                            <SelectTrigger
-                                                className={`w-[400px] ${invalidRole ? 'border-red-500' : ''}`}>
-                                                <SelectValue placeholder={t('labels:select_a_role')} />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                {roleSelectData.map((role) => (
-                                                    <SelectItem key={role.value} value={role.value}>
-                                                        {role.label}
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
+                                            <Select
+                                                disabled={
+                                                    pageAction === 'edit'
+                                                        ? userName === currentUser || defaultStatus === 'True'
+                                                        : false
+                                                }
+                                                onValueChange={handleChangeRole}
+                                                value={selectRole}>
+                                                <SelectTrigger
+                                                    className={`w-[400px] ${invalidRole ? 'border-red-500' : ''}`}>
+                                                    <SelectValue placeholder={t('labels:select_a_role')} />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {roleSelectData.map((role) => (
+                                                        <SelectItem key={role.value} value={role.value}>
+                                                            {role.label}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div className='!mb-3 pt-3 flex gap-2'>
-                                <Button
-                                    onClick={pageAction != 'add' ? userFormValidationEdit : userFormValidation}
-                                    className={` 
+                                <div className='!mb-3 pt-3 flex gap-2'>
+                                    <Button
+                                        onClick={pageAction != 'add' ? userFormValidationEdit : userFormValidation}
+                                        className={` 
                        `}
-                                    disabled={
-                                        pageAction === 'add'
-                                            ? userName != '' ||
-                                              emailId != '' ||
-                                              firstName != '' ||
-                                              lastName != '' ||
-                                              userStatus ||
-                                              selectRole
-                                                ? false
-                                                : true
-                                            : firstName != currentFirstName ||
-                                                lastName != currentLastName ||
-                                                emailId != currentEmailId ||
-                                                selectRole != currentRole
-                                              ? false
-                                              : true
-                                    }>
-                                    {pageAction === 'edit' ? t('labels:update') : t('labels:save')}
-                                </Button>
-                                <Button
-                                    variant='outline'
-                                    className=''
-                                    onClick={() => navigate('/dashboard/user-access-control/list-user-roles')}>
-                                    {t('labels:discard')}
-                                </Button>
+                                        disabled={
+                                            pageAction === 'add'
+                                                ? userName != '' ||
+                                                  emailId != '' ||
+                                                  firstName != '' ||
+                                                  lastName != '' ||
+                                                  userStatus ||
+                                                  selectRole
+                                                    ? false
+                                                    : true
+                                                : firstName != currentFirstName ||
+                                                    lastName != currentLastName ||
+                                                    emailId != currentEmailId ||
+                                                    selectRole != currentRole
+                                                  ? false
+                                                  : true
+                                        }>
+                                        {pageAction === 'edit' ? t('labels:update') : t('labels:save')}
+                                    </Button>
+                                    <Button
+                                        variant='outline'
+                                        className=''
+                                        onClick={() => navigate('/dashboard/user-access-control/list-user-roles')}>
+                                        {t('labels:discard')}
+                                    </Button>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    )
                     // </Spin>
-                )}
+                }
             </div>
             <StoreModal
                 isVisible={showDeleteUserModal}
