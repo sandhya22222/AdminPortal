@@ -338,26 +338,6 @@ const StoreImages = ({
                                 />
                             </div>
                             <div className='mt-6'>
-                                {/* <Alert
-                                    icon={<MdInfo className='font-bold !text-center' />}
-                                    message={t('messages:image_requirements')}
-                                    description={
-                                        <div>
-                                            <ul className='list-disc pl-[17px]'>
-                                                <li className='mb-0'>{t('messages:banner_logo_info')}</li>
-                                                <li className='mb-0'>{t('messages:banner_logo_resolution')}</li>
-                                                <li className='!mb-0 '>{t('messages:upload_image_content')}</li>
-                                                <li className='!mb-2'>
-                                                    {t('messages:please_ensure_that_upload_only_eight_images', {
-                                                        BannerImagesUploadLength,
-                                                    })}
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    }
-                                    type='info'
-                                    showIcon
-                                /> */}
                                 <Alert className='my-4 px-4 !w-full bg-[#E6F7FF] border border-[#1677ff]'>
                                     <div className='flex items-center gap-1'>
                                         <MdInfo className='font-bold !text-center' color='#1677ff' size={20} />
