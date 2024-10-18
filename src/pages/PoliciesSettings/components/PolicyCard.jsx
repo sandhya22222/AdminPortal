@@ -24,6 +24,7 @@ import useUpdateUserConsent from '../hooks/useUpdateUserConsent'
 import AddVersion from './AddVersion'
 import TranslatePolicy from './TranslatePolicy'
 import VersionHistory from './VersionHistory'
+import util from '../../../util/common'
 
 const Link = ReactQuill.Quill.import('formats/link')
 Link.sanitize = function (url) {
@@ -228,7 +229,7 @@ export default function PolicyCard({
                         <TooltipContent>{consentName}</TooltipContent>
                     </Tooltip>
                 </TooltipProvider>
-                <div className='flex items-center space-x-2'>
+                <div className='flex items-center gap-2'>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <div className='flex flex-row '>
@@ -243,14 +244,17 @@ export default function PolicyCard({
                                                 : consentDetails?.version_number || '1.0')}
                                     </span>
                                 </Button>
-                                <ChevronDown
-                                    className={`ml-0 mt-2 ${policyStatus !== 2 ? 'text-muted-foreground' : ''}`}
-                                />
+                                <ChevronDown className={` mt-2 ${policyStatus !== 2 ? 'text-muted-foreground' : ''}`} />
                             </div>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
                             <DropdownMenuItem className='py-1 px-1 text-xs' onSelect={handleVersionHistory}>
-                                <Eye className='mr-2 h-4 w-4' />
+                                <Eye
+                                    className={`h-4 w-4 ${
+                                        util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'ml-2' : 'mr-2'
+                                    }`}
+                                />
+
                                 <span>{t('labels:view_version_history')}</span>
                             </DropdownMenuItem>
                         </DropdownMenuContent>
@@ -260,7 +264,12 @@ export default function PolicyCard({
                         className='px-2 py-1 text-sm h-8'
                         onClick={addVersionHandler}
                         disabled={policyStatus !== 2}>
-                        <Plus className='mr-2 h-4 w-4' />
+                        <Plus
+                            className={`h-4 w-4 ${
+                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'ml-2' : 'mr-2'
+                            }`}
+                        />
+
                         {t('labels:add_version')}
                     </Button>
                     <Button
@@ -270,7 +279,12 @@ export default function PolicyCard({
                         disabled={
                             !(policyStatus === 1 || policyStatus === 2) || isConsentNameChanged || descriptionModified
                         }>
-                        <RiTranslate2 className='mr-2 h-4 w-4' />
+                        <RiTranslate2
+                            className={`h-4 w-4 ${
+                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'ml-2' : 'mr-2'
+                            }`}
+                        />
+
                         {t('labels:translate')}
                     </Button>
                     {policyType !== 'CONTACT_POLICY' && (
@@ -278,7 +292,12 @@ export default function PolicyCard({
                             variant='destructive'
                             className='px-2 py-1 text-sm h-8'
                             onClick={() => handelDeletePolicy(consent?.id)}>
-                            <Trash2 className='mr-2 h-4 w-4' />
+                            <Trash2
+                                className={`h-4 w-4 ${
+                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'ml-2' : 'mr-2'
+                                }`}
+                            />
+
                             {t('labels:delete_policy')}
                         </Button>
                     )}
@@ -287,9 +306,17 @@ export default function PolicyCard({
             <CardContent>
                 {policyType !== 'CONTACT_POLICY' && (
                     <div className='mb-4'>
-                        <label className='block text-sm font-medium text-gray-700 mb-1'>
+                        <label
+                            className={`block text-sm font-medium text-gray-700 mb-1 ${
+                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-5' : 'ml-7'
+                            }`}>
                             {t('labels:policy_title')}
-                            <span className='text-red-500 ml-1'>*</span>
+                            <span
+                                className={`text-red-500 ${
+                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-1' : 'ml-1'
+                                }`}>
+                                *
+                            </span>
                         </label>
                         <Input
                             disabled={policyStatus === 2}
@@ -302,48 +329,73 @@ export default function PolicyCard({
                                 }
                             }}
                             value={policyStatus === 2 ? consentDisplayName : consentName}
-                            className='max-w-[40%] ml-4'
+                            className={`max-w-[40%] mt-1 ${
+                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-3' : 'ml-12'
+                            }`}
                         />
                     </div>
                 )}
                 <div className='mb-4 '>
-                    <label className='block text-sm font-medium text-gray-700 mb-1'>
+                    <label
+                        className={`block text-sm font-medium text-gray-700 mb-1 ${
+                            util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-5' : 'ml-7'
+                        }`}>
                         {t('labels:policy_description')}
-                        <span className='text-red-500 ml-1'>*</span>
+                        <span
+                            className={`text-red-500 ${
+                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-1' : 'ml-1'
+                            }`}>
+                            *
+                        </span>
                     </label>
-
-                    <ReactQuill
-                        theme='snow'
-                        value={description}
-                        readOnly={policyStatus === 2}
-                        onChange={handelDescriptionChange}
-                        modules={modules}
-                        formats={formats}
-                        placeholder={t('labels:enter_policy_description')}
-                        className={`w-[600px] min-h-[100px] h-auto px-3 py-1.5 overflow-hidden ${policyStatus === 2 ? 'opacity-40 bg-gray-100' : ''}`}
-                    />
+                    <div className='policy-card-container'>
+                        <ReactQuill
+                            theme='snow'
+                            value={description}
+                            readOnly={policyStatus === 2}
+                            onChange={handelDescriptionChange}
+                            modules={modules}
+                            formats={formats}
+                            placeholder={t('labels:enter_policy_description')}
+                            className={`w-[600px] h-auto px-3 py-1.5 overflow-hidden ${
+                                policyStatus === 2 ? 'opacity-40 bg-gray-100' : ''
+                            } ${util.getSelectedLanguageDirection()?.toUpperCase() === 'LTR' ? 'mr-10' : 'ml-1'} ml-10`}
+                        />
+                    </div>
                 </div>
                 <div className='flex items-center text-sm text-gray-500'>
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <Info className='mr-1 h-4 w-4' />
+                                <Info
+                                    className={`h-4 w-4 ${
+                                        util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'ml-1' : 'mr-1'
+                                    }`}
+                                />
                             </TooltipTrigger>
                             <TooltipContent>{t('messages:last_update_info')}</TooltipContent>
                         </Tooltip>
                     </TooltipProvider>
                     <span>{t('labels:last_updated')}</span>
                     {policyStatus !== 2 ? (
-                        <span className='ml-1'>{t('messages:not_updated_yet')}</span>
+                        <span
+                            className={`${
+                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-1' : 'ml-1'
+                            }`}>
+                            {t('messages:not_updated_yet')}
+                        </span>
                     ) : (
-                        <span className='font-semibold ml-1'>
+                        <span
+                            className={`font-semibold ${
+                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-1' : 'ml-1'
+                            }`}>
                             {getDate(consent?.version_details[0]?.updated_on) || ''}
                         </span>
                     )}
                 </div>
             </CardContent>
             {policyStatus !== 2 && (
-                <CardFooter className='flex justify-start space-x-2'>
+                <CardFooter className='flex justify-start gap-2'>
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger asChild>
@@ -418,7 +470,7 @@ export default function PolicyCard({
             </StoreModal>
             <StoreModal
                 isVisible={translatePolicy}
-                title={<h2 className='text-xl font-bold text-gray-900'>{t('labels:translate')}</h2>}
+                title={<h2 className='text-xl font-bold ml-5 text-gray-900'>{t('labels:translate')}</h2>}
                 isSpin={false}
                 cancelCallback={() => setTranslatePolicy(false)}
                 width={1000}

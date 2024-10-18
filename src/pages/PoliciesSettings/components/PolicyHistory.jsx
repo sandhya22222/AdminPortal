@@ -7,7 +7,7 @@ import {
     DropdownMenuTrigger,
 } from '../../../shadcnComponents/ui/dropdownMenu'
 import { Skeleton } from '../../../shadcnComponents/ui/skeleton'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../../shadcnComponents/ui/tabs'
+import { ShadCNTabs, ShadCNTabsTrigger } from '../../../shadcnComponents/customComponents/ShadCNTabs'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../../../shadcnComponents/ui/tooltip'
 import { ChevronDown } from 'lucide-react'
 import moment from 'moment'
@@ -104,30 +104,29 @@ function PolicyHistory() {
             ) : (
                 <>
                     <div className='h-[400px] overflow-y-auto overflow-x-hidden'>
-                        <Tabs
+                        <ShadCNTabs
                             value={activeKey}
-                            onValueChange={handleTabChange}
+                            onTabClick={handleTabChange}
                             orientation='vertical'
+                            borderPosition='right'
                             className='w-[200px]'>
-                            <TabsList className='bg-background h-full flex-col items-start'>
-                                {policyData?.map((data) => (
-                                    <TabsTrigger key={data?.id} value={data?.id} className='justify-start w-full'>
-                                        <TooltipProvider>
-                                            <Tooltip>
-                                                <TooltipTrigger asChild>
-                                                    <span className='truncate w-[100px] text-left'>
-                                                        {data?.policyTitle}
-                                                    </span>
-                                                </TooltipTrigger>
-                                                <TooltipContent side='right'>
-                                                    <p>{data?.policyTitle}</p>
-                                                </TooltipContent>
-                                            </Tooltip>
-                                        </TooltipProvider>
-                                    </TabsTrigger>
-                                ))}
-                            </TabsList>
-                        </Tabs>
+                            {policyData?.map((data) => (
+                                <ShadCNTabsTrigger key={data?.id} value={data?.id} className='justify-start w-full'>
+                                    <TooltipProvider>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <span className='truncate w-[100px] text-left'>
+                                                    {data?.policyTitle}
+                                                </span>
+                                            </TooltipTrigger>
+                                            <TooltipContent side='right'>
+                                                <p>{data?.policyTitle}</p>
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
+                                </ShadCNTabsTrigger>
+                            ))}
+                        </ShadCNTabs>
                     </div>
                     <div>
                         <DropdownMenu>
@@ -148,24 +147,19 @@ function PolicyHistory() {
                         <div>
                             <Card className='w-[680px] max-h-[300px] overflow-y-auto'>
                                 <CardContent className='p-0'>
-                                    <ReactQuill
-                                        value={policyDescription}
-                                        modules={{ toolbar: false }}
-                                        readOnly={true}
-                                        style={{ width: '100%', height: '250px' }}
-                                    />
+                                    <div className='custom-editor-container'>
+                                        <ReactQuill
+                                            value={policyDescription}
+                                            modules={{ toolbar: false }}
+                                            readOnly={true}
+                                            style={{ width: '100%', height: '250px' }}
+                                        />
+                                    </div>
                                 </CardContent>
                             </Card>
                             <p className='py-2 text-muted-foreground'>
                                 {t('labels:last_updated') + ': ' + getDate(policyUpdatedOn)}
                             </p>
-                            {/* Commented out as in the original code
-                            <div className="mt-4 flex justify-end">
-                                <Button onClick={""}>
-                                    {t("labels:create_new_version")}
-                                </Button>
-                            </div>
-                            */}
                         </div>
                     </div>
                 </>
