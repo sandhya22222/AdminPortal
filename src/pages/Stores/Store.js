@@ -224,7 +224,7 @@ const Stores = () => {
                                 position={
                                     util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'left' : 'right'
                                 }>
-                                <Info className='text-foreground' />
+                                <Info className='text-foreground w-4' />
                             </ShadCNTooltip>
                         </div>
                         <Input
@@ -325,7 +325,7 @@ const Stores = () => {
                                 position={
                                     util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'left' : 'right'
                                 }>
-                                <Info className='text-foreground' />
+                                <Info className='text-foreground w-4' />
                             </ShadCNTooltip>
                         </div>
                         <div>
@@ -487,10 +487,7 @@ const Stores = () => {
                                 style={{ textDecoration: 'none' }}
                                 // className=" pl-[10px] font-semibold app-table-data-title"
                             >
-                                <ShadCNTooltip
-                                    content={
-                                        t('labels:view_details').length > 20 ? t('labels:view_details') : undefined
-                                    }>
+                                <ShadCNTooltip content={t('labels:view_details')}>
                                     {t('labels:view_details')}
                                 </ShadCNTooltip>
                             </Link>
@@ -1195,7 +1192,7 @@ const Stores = () => {
                                                                     <Alert
                                                                         variant='default'
                                                                         className='flex items-center !w-full'>
-                                                                        <Info className='text-foreground' />{' '}
+                                                                        <Info className='text-foreground w-4' />{' '}
                                                                         {/* Icon */}
                                                                         <div className='ml-2'>
                                                                             <AlertTitle>
@@ -1219,7 +1216,7 @@ const Stores = () => {
                                                                         <Alert
                                                                             variant='default'
                                                                             className='flex items-center !w-full'>
-                                                                            <Info className='text-foreground' />{' '}
+                                                                            <Info className='text-foreground w-4' />{' '}
                                                                             {/* Icon */}
                                                                             <div className='ml-2'>
                                                                                 <AlertTitle>
@@ -1518,7 +1515,7 @@ const Stores = () => {
                                     {/* alert 3 */}
                                     <div className='px-3 my-4'>
                                         <Alert variant='default' className='flex items-start !w-full'>
-                                            <Info className='text-foreground' /> {/* Icon */}
+                                            <Info className='text-foreground w-4' /> {/* Icon */}
                                             <div className='ml-2'>
                                                 <AlertTitle>
                                                     <p className='mr-1 text-brandGray1'>{t('labels:note')}:</p>
