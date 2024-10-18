@@ -10,6 +10,7 @@ import { Alert, AlertDescription } from "../../../shadcnComponents/ui/alert"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../shadcnComponents/ui/select"
 import { Card, CardContent } from "../../../shadcnComponents/ui/card"
 import { Skeleton } from "../../../shadcnComponents/ui/skeleton"
+import util from '../../../util/common'
 
 import useCreateVersionDisplayname from '../hooks/useCreateVersionDisplayname'
 import useGetStoreLanguage from '../hooks/useGetStoreLanguage'
@@ -229,38 +230,38 @@ export default function TranslatePolicy({
     const language = "English";
     console.log(languages,'Languages')
     return (
-        <div className="space-y-4">
+        <div className="flex flex-col h-[520px] w-[980px] p-4 space-y-2">
             {translateSuccessMessage && (
-                <Alert>
+                <Alert className="mb-2">
                     <AlertDescription>{translateSuccessMessage}</AlertDescription>
                 </Alert>
             )}
             {isLoading ? (
-                <Skeleton className="w-full h-[400px]" />
+                <Skeleton className="w-full h-[450px]" />
             ) : (
-                <div className="grid grid-cols-5 gap-8">
-                    <div className="space-y-4 col-span-2">
-                        <div className="flex items-center space-x-3">
-                            <span className="text-sm font-medium">{t('labels:translate_from')}:</span>
-                            <span className="font-bold"> {language}</span>
+                <div className="grid grid-cols-5 gap-4 h-[440px]">
+                    <div className="space-y-2 col-span-2">
+                        <div className="flex items-center gap-2">
+                            <span className="text-sm font-medium">{t('labels:translate_from')}</span>
+                            <span className="font-bold">{selectedLanguage.label}</span>
                         </div>
-                        <h3 className="text-lg font-semibold">{userConsentBaseName}</h3>
-                        <div className="w-full h-[390px] border rounded-md overflow-hidden">
+                        <h3 className="text-base font-semibold truncate">{userConsentBaseName}</h3>
+                        <div className="w-full h-[370px]  overflow-hidden">
                             <ReactQuill
                                 value={userConsentBaseDescription}
                                 modules={{ toolbar: false }}
                                 readOnly={true}
-                                className="h-full"
+                                className="h-[300px]"
                             />
                         </div>
                     </div>
-                    <div className="space-y-4 col-span-3">
-                        <div className="flex items-center space-x-10 justify-between">
-                            <div className="flex items-center space-x-2">
-                                <span className="text-sm font-medium whitespace-nowrap ">{t('labels:translate_to')}:</span>
+                    <div className="space-y-2 col-span-3">
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                                <span className="text-sm font-medium whitespace-nowrap">{t('labels:translate_to')}</span>
                                 <Select onValueChange={handleLanguageChange} value={selectedLanguage.key}>
-                                    <SelectTrigger className="w-[120px]">
-                                        <SelectValue placeholder="Select language" />
+                                    <SelectTrigger className="w-[120px] h-8">
+                                        <SelectValue className="truncate" placeholder="Select language" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {languages.map((lang) => (
@@ -271,21 +272,24 @@ export default function TranslatePolicy({
                                     </SelectContent>
                                 </Select>
                             </div>
-                            <div className="flex flex-row items-center space-x-2 ">
+                            <div className="flex flex-row items-center gap-2">
                                 <Progress 
                                     value={(consentDisplayNameData?.filter(data => data.translatedVersionId !== '').length / consentDisplayNameData?.length) * 100} 
-                                    className="w-[100px]"
+                                    className="w-[80px] h-2"
                                 />
-                                <span className="text-sm  ">
-                                    {`${consentDisplayNameData?.filter(data => data.translatedVersionId !== '').length} of ${consentDisplayNameData?.length} ${t('labels:language_translated')}`}
+                                <span className="text-xs">
+                                    {`${consentDisplayNameData?.filter(data => data.translatedVersionId !== '').length}/${consentDisplayNameData?.length} ${t('labels:translated')}`}
                                 </span>
                             </div>
                         </div>
-                        <div className="space-y-2 ">
+                        <div className="space-y-1">
                             <label className="text-sm font-medium">
                                 {t('labels:policy_title')}
-                                <span className="text-red-500">*</span>
-                            </label>
+                                <span    className={`text-red-500 ${
+        util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-1' : 'ml-1'
+    }`}
+> *</span>
+                     </label>
                             <Input
                                 placeholder={t('labels:enter_policy_title')}
                                 onChange={(e) => consentNameHandler(e.target.value)}
@@ -297,16 +301,16 @@ export default function TranslatePolicy({
                                         consentNameHandler(e.target.value.trim().replace(/\s+/g, ' '))
                                     }
                                 }}
-                                className="h-10 px-2"
+                                className="h-8 px-2"
                             />
                         </div>
-                        <div className="space-y-2 ">
+                        <div className="space-y-1">
                             <label className="text-sm font-medium">
                                 {t('labels:policy_description')}
-                                <span className="text-red-500">*</span>
+                                <span className={`text-red-500 ${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-1' : 'ml-1'}`}>*</span>
                             </label>
                             <Card className={`w-full h-[200px] overflow-hidden ${policyStatus === 2 ? 'opacity-40 cursor-not-allowed' : ''}`}>
-                                <CardContent className="p-0">
+                                <CardContent className="p-0 h-full">
                                     <ReactQuill
                                         theme="snow"
                                         value={selectedConsentDisplayNameData?.consentDescriptionDisplayName}
@@ -315,15 +319,15 @@ export default function TranslatePolicy({
                                         formats={formats}
                                         placeholder={t('labels:enter_policy_description')}
                                         readOnly={policyStatus === 2}
-                                        className="h-[230px]"
+                                        className="h-full"
                                     />
                                 </CardContent>
                             </Card>
-                        
                         </div>
-                        <div className="flex justify-end space-x-2 mt-96 ">
+                        <div className="flex justify-end gap-2 pt-2 pb-1">
                 <Button variant="outline" onClick={() => {
                     setTranslatePolicy(false)
+                    
                     refetchUserConsent()
                 }}>
                     {t('labels:cancel')}

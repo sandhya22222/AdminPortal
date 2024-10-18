@@ -20,6 +20,7 @@ import {
 import { cn } from '../../lib/utils'
 import ShadCNDataTable from '../../../src/shadcnComponents/customComponents/ShadCNDataTable'
 import HeaderForTitle from '../../components/header/HeaderForTitle'
+import util from '../../../src/util/common'
 
 const itemsPerPageFromEnv = process.env.REACT_APP_ITEM_PER_PAGE
 const groupsAPI = process.env.REACT_APP_GROUPS_API
@@ -279,7 +280,7 @@ export default function UserAccessControl() {
                         </div>
                     </div>
 
-                    <div className='mt-4 w-full'>
+                    <div className='mt-3 w-full'>
                         <TabNavigation />
                     </div>
                 </div>
@@ -299,7 +300,7 @@ export default function UserAccessControl() {
     )
 
     const TabNavigation = () => (
-        <div className='flex border-b border-gray-200 '>
+        <div className='flex  '>
             <button
                 className={cn(
                     'px-4 py-2 font-medium text-sm focus:outline-none',
@@ -375,11 +376,20 @@ export default function UserAccessControl() {
                             <DialogTitle>{t('labels:warning')}</DialogTitle>
                             <DialogDescription>{t('messages:are_you_sure_you_want_delete_the_user')}</DialogDescription>
                         </DialogHeader>
-                        <DialogFooter>
-                            <Button variant='outline' onClick={() => setShowDeleteUserModal(false)}>
+                        <DialogFooter className='mt-3'>
+                            <Button
+                                variant='outline'
+                                onClick={() => setShowDeleteUserModal(false)}
+                                className={`${
+                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'ml-2' : 'mr-2'
+                                }`}>
                                 {t('labels:cancel')}
                             </Button>
-                            <Button onClick={removeUser} disable={deleteModalLoading}>
+
+                            <Button
+                                onClick={removeUser}
+                                disabled={deleteModalLoading} // Corrected from "disable" to "disabled"
+                            >
                                 {t('labels:yes')}
                             </Button>
                         </DialogFooter>
@@ -396,10 +406,16 @@ export default function UserAccessControl() {
                                     : t('messages:are_you_sure_you_want_enable_status')}
                             </DialogDescription>
                         </DialogHeader>
-                        <DialogFooter>
-                            <Button variant='outline' onClick={() => setShowUserEnableDisableModal(false)}>
+                        <DialogFooter className='mt-3'>
+                            <Button
+                                variant='outline'
+                                onClick={() => setShowUserEnableDisableModal(false)}
+                                className={`${
+                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'LTR' ? 'mr-2' : 'ml-2'
+                                }`}>
                                 {t('labels:cancel')}
                             </Button>
+
                             <Button onClick={enableDisableUserFromServer} disabled={deleteModalLoading}>
                                 {t('labels:yes')}
                             </Button>

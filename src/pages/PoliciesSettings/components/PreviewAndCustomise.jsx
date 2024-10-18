@@ -14,6 +14,7 @@ import MarketplaceToaster from '../../../util/marketplaceToaster'
 import useUpdateConsentLead from '../hooks/useUpdateConsentLead'
 import useUpdateConsentsOrder from '../hooks/useUpdateConsentsOrder'
 import useGetPreviewContentData from '../hooks/useGETPreviewContentData'
+import util from '../../../util/common'
 
 const portalInfo = JSON.parse(process.env.REACT_APP_PORTAL_INFO)
 
@@ -123,7 +124,7 @@ export default function PreviewAndCustomise({ closeModal, refetchUserConsent, st
 
     return (
         <div className='flex flex-col h-[400px] w-[950px] space-y-4'>
-            <div className='flex space-x-6 h-full overflow-hidden'>
+            <div className='flex gap-6 h-full overflow-hidden'>
                 {/* Preview Section */}
                 <div className='shrink-0 w-[550px] h-full'>
                     <h3 className='text-black text-opacity-40 font-bold py-3 mb-0'>{t('labels:preview')}</h3>
@@ -176,7 +177,7 @@ export default function PreviewAndCustomise({ closeModal, refetchUserConsent, st
                                 value={leadInLine}
                                 onChange={handelLeadInLine}
                                 maxLength={100}
-                                className='resize-none'
+                                className={`${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-1' : 'ml-1'} resize-none w-72`}
                             />
                             <p className='text-sm text-gray-500'>{`${leadInLine.length}/100`}</p>
                         </div>
@@ -231,7 +232,7 @@ export default function PreviewAndCustomise({ closeModal, refetchUserConsent, st
             </div>
 
             {/* Footer Section */}
-            <div className='flex justify-end space-x-2'>
+            <div className='flex justify-end gap-2'>
                 <Button variant='outline' onClick={closeModal}>
                     {t('labels:cancel')}
                 </Button>
