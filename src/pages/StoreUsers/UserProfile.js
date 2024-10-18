@@ -75,7 +75,7 @@ const UserProfile = () => {
                         <p>{t('messages:network_error')}</p>
                     </div>
                 ) : (
-                    <div className=' border-1 border-solid border-brandGray rounded-lg'>
+                    <div className='border border-1 border-solid border-brandGray rounded-lg'>
                         <div className='  border-b border-solid border-brandGray'>
                             <div className='!mb-4 !mt-6 !mx-3 !font-semibold !text-lg !text-regal-blue'>
                                 {t('labels:profile_information')}
