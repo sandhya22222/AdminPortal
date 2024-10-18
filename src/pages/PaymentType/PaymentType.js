@@ -8,7 +8,7 @@ import { Separator } from '../../shadcnComponents/ui/separator'
 import { FaPlus, FaMinus } from 'react-icons/fa'
 
 export default function PaymentSettings() {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
     const [isOpen, setIsOpen] = useState(false)
 
     React.useEffect(() => {
@@ -19,8 +19,11 @@ export default function PaymentSettings() {
         setIsOpen(!isOpen)
     }
 
+    // Detect RTL
+    const isRTL = i18n.dir() === 'rtl'
+
     return (
-        <div className=' mt-10 w-full flex flex-col gap-[10px]'>
+        <div className='mt-10 w-full flex flex-col gap-[10px]'>
             <HeaderForTitle
                 className=''
                 title={
@@ -37,19 +40,27 @@ export default function PaymentSettings() {
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead className=' w-full !p-[16px]'>{t('labels:payment_types')}</TableHead>
+                                    <TableHead className={`w-full !p-[16px] ${isRTL ? 'text-right' : ''}`}>
+                                        {t('labels:payment_types')}
+                                    </TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 <TableRow>
-                                    <TableCell className=' pl-[46px] pb-4 '>{t('labels:cash_on_delivery')}</TableCell>
+                                    <TableCell
+                                        className='pb-4'
+                                        style={{
+                                            paddingInlineStart: isRTL ? '16px' : '46px',
+                                        }}>
+                                        {t('labels:cash_on_delivery')}
+                                    </TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell className='!p-0'>
                                         <Accordion type='single' collapsible className='w-full'>
                                             <AccordionItem value='online-payment' className='!border-none'>
                                                 <AccordionTrigger
-                                                    className=' !m-[16px] flex items-center justify-start gap-2 hover:no-underline' // Added hover:no-underline here
+                                                    className='!m-[16px] flex items-center justify-start gap-2 hover:no-underline'
                                                     onClick={toggleAccordion}>
                                                     <span
                                                         className={`ml-2 p-[2px] transition-transform duration-300 border rounded-[4px] ${
@@ -71,10 +82,22 @@ export default function PaymentSettings() {
                                                 <Separator />
 
                                                 <AccordionContent>
-                                                    <div className='pl-0  '>
-                                                        <p className=' py-[16px] pl-[60px]'>{t('labels:stripe')}</p>
+                                                    <div className='pl-0'>
+                                                        <p
+                                                            className='py-[16px]'
+                                                            style={{
+                                                                paddingInlineStart: isRTL ? '16px' : '60px',
+                                                            }}>
+                                                            {t('labels:stripe')}
+                                                        </p>
                                                         <Separator />
-                                                        <p className=' py-[16px] pl-[60px]'>{t('labels:cash_free')}</p>
+                                                        <p
+                                                            className='py-[16px]'
+                                                            style={{
+                                                                paddingInlineStart: isRTL ? '16px' : '60px',
+                                                            }}>
+                                                            {t('labels:cash_free')}
+                                                        </p>
                                                     </div>
                                                 </AccordionContent>
                                             </AccordionItem>
