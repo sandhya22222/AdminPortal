@@ -10,7 +10,7 @@ import { useFavicon } from './hooks/useFavicon'
 import axios from 'axios'
 import { useAuth } from 'react-oidc-context'
 import NewDashboard from './pages/NewDashboard/Newdashboard'
-import Header2 from "./components/header/Header2"
+import Header2 from './components/header/Header2'
 import { lazyWithRetry } from './components/loading/LazyRetry'
 import MarketplaceServices from './services/axios/MarketplaceServices'
 import util from './util/common'
@@ -29,10 +29,10 @@ const CreateRoles = lazyWithRetry(() => import('./pages/usersandroles/CreateRole
 const LogOut = lazyWithRetry(() => import('./components/LogOut'))
 const StoreLimitComponent = lazyWithRetry(() => import('./pages/adminPlatform/StoreLimitComponent'))
 const ListCurrency = lazyWithRetry(() => import('./pages/storeCurrency/ListCurrency'))
-const EditCurrency=lazyWithRetry(()=>import('./pages/storeCurrency/EditCurrency'))
-const MyProfile=lazyWithRetry(()=>import('./pages/StoreUsers/MyProfile'))
-const StoreSettingsLayout=lazyWithRetry(()=>import('./pages/StoreSetting/StoreSettingsLayout'))
-const PlatformAdmin=lazyWithRetry(()=>import('./pages/adminPlatform/PlatformAdmin'))
+const EditCurrency = lazyWithRetry(() => import('./pages/storeCurrency/EditCurrency'))
+const MyProfile = lazyWithRetry(() => import('./pages/StoreUsers/MyProfile'))
+const StoreSettingsLayout = lazyWithRetry(() => import('./pages/StoreSetting/StoreSettingsLayout'))
+const PlatformAdmin = lazyWithRetry(() => import('./pages/adminPlatform/PlatformAdmin'))
 
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL
 
@@ -109,7 +109,7 @@ const App = () => {
             <Container fluid className='p-0 bg-[#F4F4F4] text-[#393939]'>
                 <Routes>
                     <Route path='/' element={<Home />} />
-                    
+
                     <Route path='/logout' element={<LogOut />} />
 
                     {auth.isAuthenticated ? (
@@ -124,11 +124,11 @@ const App = () => {
                             }>
                             <Route path='' element={<NewDashboard />} />
                             <>
-                                <Route path='language' element={<Language />} />
+                                <Route path='language' element={<Language collapsed={collapsed} />} />
                                 <Route path='language/language-settings' element={<LanguageSettings />} />
                                 <Route path='store' element={<Store />} />
                                 <Route path='store/storesetting' element={<StoreSettingsLayout />} />
-                                <Route path='currency' element={<ListCurrency />} />
+                                <Route path='currency' element={<ListCurrency collapsed={collapsed} />} />
                                 <Route path='currency/edit-currency' element={<EditCurrency />} />
                                 <Route path='preview' element={<Preview />} />
 
@@ -143,7 +143,6 @@ const App = () => {
                                     <Route path='edit-user' element={<CreateUsers />} />
                                     <Route path='add-roles' element={<CreateRoles />} />
                                     <Route path='edit-roles' element={<CreateRoles />} />
-
                                 </Route>
                             </>
                         </Route>

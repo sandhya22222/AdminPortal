@@ -181,7 +181,7 @@ const ChangePassword = ({ isPasswordChangeModalOpen, setIsPasswordChangeModalOpe
             {isPasswordChangeModalOpen ? (
                 <StoreModal
                     className='bg-black w-[80%] h-[80%]'
-                    width='w-4/5 min-w-[80%]'
+                    width='80%'
                     isVisible={isPasswordChangeModalOpen}
                     title={<div className=' font-bold text-[18px] leading-[26px]'>{t('labels:change_password')}</div>}
                     okCallback={() => handleOkPasswordChangeModal()}
@@ -271,10 +271,9 @@ const ChangePassword = ({ isPasswordChangeModalOpen, setIsPasswordChangeModalOpe
                             </div>
                         </div>
                         {/* Password Requirements */}
-                        <div className='flex-row  border-l-2 border-gray-300 pl-4 w-[45%] min-w-[400px]'>
-                            <h5 className='text-lg font-semibold text-regal-blue'>
-                                {t('labels:your_password_must_contain')}
-                            </h5>
+                        <div
+                            className={`flex flex-col ${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'border-r-4 pr-4' : 'border-l-4 pl-4'}   border-gray-300  w-[45%] min-w-[400px]`}>
+                            <h5 className='text-lg font-semibold '>{t('labels:your_password_must_contain')}</h5>
                             <p
                                 className={`!mb-0 pb-2 ${password && password.length >= minPasswordLength ? 'text-green-400' : 'text-brandGray1'}`}>
                                 <IoMdCheckmarkCircleOutline

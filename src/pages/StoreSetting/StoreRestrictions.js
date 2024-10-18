@@ -970,7 +970,7 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
     }, [])
 
     return (
-        <div className='p-4'>
+        <div className='pt-4 pb-4'>
             {isStoreLimitDataLoading ? (
                 <div className='bg-white p-3 !rounded-md mt-[2.0rem]'>
                     <Skeleton className='h-10 w-[70%] mb-3' />
@@ -981,14 +981,16 @@ const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
             ) : isStoreDataLimitSaving ? (
                 <Spin />
             ) : (
-                <div className='bg-white flex flex-col gap-4 !rounded-md border'>
-                    <div className='pl-4 pt-4'>
+                <div className='bg-white flex flex-col gap-4 p-3 !rounded-md border'>
+                    <div
+                        className={`${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'pr-4' : 'pl-4'}  pt-4`}>
                         <h2 className='text-lg font-semibold'>{t('labels:store_restrictions')}</h2>
                     </div>
                     {storeLimitValues && analysisCount ? (
                         <ShadCNDataTable data={data} columns={StoreTableColumnThreshold} />
                     ) : null}
-                    <div className='flex gap-5 pb-4 pl-4'>
+                    <div
+                        className={` ${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'pr-4' : 'pl-4'} flex gap-5 pb-4 `}>
                         <Button
                             variant='default'
                             disabled={!isStoreDataLimitChanged}

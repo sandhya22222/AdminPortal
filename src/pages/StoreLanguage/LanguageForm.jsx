@@ -353,7 +353,7 @@ const LanguageForm = ({
                             (txtLanguage !== defaultTxtLanguage ||
                                 txtLanguageCode !== defaultTxtLanguageCode ||
                                 scriptDirection !== defaultScriptDirection) && (
-                                <div className='flex space-x-2 mt-4'>
+                                <div className='flex  mt-4 gap-5'>
                                     <Button
                                         onClick={() => {
                                             if (
