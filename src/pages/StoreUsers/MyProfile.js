@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import HeaderForTitle from '../../components/header/HeaderForTitle'
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '../../shadcnComponents/ui/tabs'
+import { ShadCNTabs, ShadCNTabsContent, ShadCNTabsTrigger } from '../../shadcnComponents/customComponents/ShadCNTabs'
 
 import ListPolicies from './ListPolicies'
 import UserProfile from './UserProfile'
@@ -69,25 +69,28 @@ const MyProfile = () => {
                             className=' !h-full'
                         /> */}
 
-                        <Tabs
-                            defaultActiveKey='profile'
-                            activeKey={searchParams.get('tab') || USER_PROFILE_TABS_OPTIONS.PROFILE_INFORMATION}
-                            onTabClick={handelMyProfileTabChange}
-                            orientation='vertical'
-                            className='h-full'>
-                            <TabsList orientation='vertical'>
+                        <ShadCNTabs
+                            value={searchParams.get('tab') || USER_PROFILE_TABS_OPTIONS.PROFILE_INFORMATION}
+                            onValueChange={handelMyProfileTabChange}
+                            className='h-full'
+                            orientation='vertical'>
+                            <div className='flex flex-col !h-full space-y-3'>
                                 {myProfileTabData.map((tab) => (
-                                    <TabsTrigger key={tab.key} value={tab.key} borderPosition='right'>
+                                    <ShadCNTabsTrigger key={tab.key} value={tab.key} borderPosition='right'>
                                         {tab.label}
-                                    </TabsTrigger>
+                                    </ShadCNTabsTrigger>
                                 ))}
-                            </TabsList>
-                            {myProfileTabData.map((tab) => (
-                                <TabsContent key={tab.key} value={tab.key}>
-                                    {tab.content}
-                                </TabsContent>
-                            ))}
-                        </Tabs>
+                            </div>
+
+                            {/* Content Area */}
+                            <div>
+                                {myProfileTabData.map((tab) => (
+                                    <ShadCNTabsContent key={tab.key} value={tab.key}>
+                                        {tab.content}
+                                    </ShadCNTabsContent>
+                                ))}
+                            </div>
+                        </ShadCNTabs>
                     </div>
                     <div className=' w-full '>
                         {searchParams.get('tab') === USER_PROFILE_TABS_OPTIONS.PROFILE_INFORMATION && <UserProfile />}

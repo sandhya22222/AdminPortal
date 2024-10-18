@@ -412,7 +412,7 @@ const StoreSettingsLayout = () => {
 
             <div className='!px-6 !pb-6  !mt-[12.5rem]'>
                 <div className=' w-full bg-white rounded shadow-brandShadow flex p-3 justify-start'>
-                    <div className=' py-5 h-full px-1 '>
+                    <div className=' py-5 h-full'>
                         {permissionValue?.length > 0 ? (
                             permissionValue?.includes('UI-product-admin') === true ? (
                                 // <Tabs
@@ -426,25 +426,29 @@ const StoreSettingsLayout = () => {
                                 //     type='line'
                                 //     className=' !h-full '
                                 // />
-                                <Tabs
+
+                                <ShadCNTabs
                                     value={searchParams.get('tab') || STORE_SETTINGS_TABS_OPTIONS.STORE_RESTRICTIONS}
                                     onValueChange={handelMyProfileTabChange}
                                     className='h-full'
                                     orientation='vertical'>
-                                    <TabsList className='!h-full px-3' orientation='vertical'>
+                                    <div className='flex flex-col !h-full space-y-3'>
                                         {hideStoreSettingsTabData.map((tab) => (
-                                            <TabsTrigger key={tab.key} value={tab.key} borderPosition='right'>
+                                            <ShadCNTabsTrigger key={tab.key} value={tab.key} borderPosition='right'>
                                                 {tab.label}
-                                            </TabsTrigger>
+                                            </ShadCNTabsTrigger>
                                         ))}
-                                    </TabsList>
+                                    </div>
 
-                                    {hideStoreSettingsTabData.map((tab) => (
-                                        <TabsContent key={tab.key} value={tab.key}>
-                                            {tab.content}
-                                        </TabsContent>
-                                    ))}
-                                </Tabs>
+                                    {/* Content Area */}
+                                    <div>
+                                        {hideStoreSettingsTabData.map((tab) => (
+                                            <ShadCNTabsContent key={tab.key} value={tab.key}>
+                                                {tab.content}
+                                            </ShadCNTabsContent>
+                                        ))}
+                                    </div>
+                                </ShadCNTabs>
                             ) : (
                                 // <Tabs
                                 //     items={storeSettingsTabData}
@@ -458,7 +462,7 @@ const StoreSettingsLayout = () => {
                                 <ShadCNTabs
                                     value={searchParams.get('tab') || STORE_SETTINGS_TABS_OPTIONS.OVERVIEW}
                                     onValueChange={handelMyProfileTabChange}
-                                    className='h-full px-3'
+                                    className='h-full'
                                     orientation='vertical'>
                                     <div className='flex flex-col !h-full space-y-3'>
                                         {storeSettingsTabData.map((tab) => (
