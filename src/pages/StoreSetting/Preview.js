@@ -23,10 +23,10 @@ const Preview = ({
     const absoluteStoreImageInfo = useSelector((state) => state.reducerAbsoluteStoreImageInfo.absoluteStoreImageInfo)
 
     return (
-        <div>
+        <div className='flex flex-col'>
             <div style={{ margin: '8px 0', borderBottom: '1px solid #f0f0f0' }}></div>
             <div className='flex !mb-2 bg-[var(--mp-theme-preview-header-background-color)]'>
-                <div className='flex justify-start !py-2 !w-[48%]'>
+                <div className='flex justify-start !py-2 !w-full'>
                     {getImageData && getImageData.length > 0 ? (
                         absoluteStoreImageInfo && absoluteStoreImageInfo.type === 'store_logo' ? (
                             <img
@@ -45,11 +45,11 @@ const Preview = ({
                 <div className='!w-[62%] !mt-4 !text-[#6d7b88]'>{t('labels:header_content_of_the_page')}</div>
             </div>
             <div style={{ margin: '8px 0', borderBottom: '1px solid #f0f0f0' }}></div>
-            <div className='min-h-[320px] justify-center text-center bg-[var(--mp-theme-preview-page-content-background-color)]'>
-                <p className='text-bold !text-[#6d7b88] !mt-8 !mx-auto'>
+            <div className=' flex flex-col justify-center gap-[60px] my-[60px] text-center bg-[var(--mp-theme-preview-page-content-background-color)]'>
+                <p className='text-bold !text-[#6d7b88] '>
                     {t('labels:main_content_of_the_page')}
                 </p>
-                <div className='text-center pt-24'>
+                <div className='flex flex-row justify-between align-center'>
                     <Button
                         style={{
                             backgroundColor: buttonPrimaryBackgroundColor,
