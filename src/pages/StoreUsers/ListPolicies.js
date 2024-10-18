@@ -13,7 +13,7 @@ import { usePageTitle } from '../../hooks/usePageTitle'
 import { EmptySVG } from '../../constants/media'
 
 const ListPolicies = ({ searchParams, setSearchParams }) => {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation() // Get language direction
     const navigate = useNavigate()
     usePageTitle(t('labels:policies'))
     const search = useLocation().search
@@ -26,6 +26,8 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
     const policyRefs = useRef([])
     const navRef = useRef(null)
     const scrollbarRef = useRef(null)
+
+    const isRTL = i18n.dir() === 'rtl' // Check if the layout is RTL
 
     useEffect(() => {
         if (storeAdminStatus === 'success') {
@@ -109,7 +111,7 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
     }, [policiesTab])
 
     return (
-        <div className='w-full h-full p-4'>
+        <div className={`w-full h-full p-4 ${isRTL ? 'text-right' : 'text-left'}`}>
             {storeAdminStatus === 'pending' && (
                 <div className='p-4 w-full'>
                     <Skeleton className='w-full h-12 mb-4' />
@@ -118,10 +120,12 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
             )}
             {storeAdminStatus === 'success' && (
                 <div className='border rounded'>
-                    <div className='text-xl font-medium p-3 text-regal-blue'>{t('labels:policies')}</div>
+                    <div className={`text-xl font-medium p-3 ${isRTL ? 'text-right' : 'text-left'} text-regal-blue`}>
+                        {t('labels:policies')}
+                    </div>
                     <Separator className='my-0' />
                     {policiesTab.length > 0 && (
-                        <div className='flex p-3'>
+                        <div className={`flex p-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
                             <div className='flex-1'>
                                 <ScrollArea className='overflow-auto'>
                                     <div className='flex flex-col'>
@@ -150,7 +154,7 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
                                 </ScrollArea>
                             </div>
 
-                            <div className='col-span-1 relative'>
+                            <div className={`col-span-1 relative ${isRTL ? 'pr-0 pl-3' : ''}`}>
                                 <div className='sticky top-0 right-0 p-3 flex'>
                                     <ScrollArea className='h-[calc(100vh-200px)] pr-6'>
                                         <TooltipProvider>
