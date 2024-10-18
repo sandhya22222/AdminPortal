@@ -19,7 +19,7 @@ const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE)
 
 //! Destructure the ant design components
 
-const ListCurrency = () => {
+const ListCurrency = ({ collapsed }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     usePageTitle(t('labels:currency'))
@@ -37,19 +37,23 @@ const ListCurrency = () => {
             value: 'currency_name',
             ellipsis: true,
             render: (text, record) => (
-                <div className='flex items-center'>
+                <div className=' gap-1 flex items-center'>
                     {record.is_default ? (
-                        <ShadCNTooltip content={record.currency_name}>
-                            <div
-                                className={`mx-1 ${record.is_default ? '!max-w-[68px] truncate' : '!max-w-[150px]'}`}
-                                style={{
-                                    whiteSpace: 'nowrap',
-                                    overflow: 'hidden',
-                                    textOverflow: 'ellipsis',
-                                }}>
-                                {record.currency_name}
-                            </div>
-                        </ShadCNTooltip>
+                        !collapsed ? (
+                            <ShadCNTooltip content={record.currency_name}>
+                                <div
+                                    className={`mx-1  ${record.is_default ? '!max-w-[68px] truncate' : '!max-w-[150px]'}`}
+                                    style={{
+                                        whiteSpace: 'nowrap',
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                    }}>
+                                    {record.currency_name}
+                                </div>
+                            </ShadCNTooltip>
+                        ) : (
+                            <div>{record.currency_name}</div>
+                        )
                     ) : (
                         <div>{record.currency_name}</div>
                     )}

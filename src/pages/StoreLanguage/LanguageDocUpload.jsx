@@ -226,7 +226,9 @@ export default function LanguageDocUpload({ langCode }) {
                                 variant='outline'
                                 disabled={!langCode || isFrontendLoading}
                                 onClick={() => handleUploadClick(frontendFileInputRef)}>
-                                <UploadIcon className='mr-2 h-4 w-4' />
+                                <UploadIcon
+                                    className={`${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'ml-1' : 'mr-1'}  h-4 w-4`}
+                                />
                                 {t('labels:click_to_upload')}
                             </Button>
                             <Button
@@ -270,7 +272,9 @@ export default function LanguageDocUpload({ langCode }) {
                                 variant='outline'
                                 disabled={!langCode || isBackendLoading}
                                 onClick={() => handleUploadClick(backendFileInputRef)}>
-                                <UploadIcon className='mr-2 h-4 w-4' />
+                                <UploadIcon
+                                    className={` ${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'ml-1' : 'mr-1'} h-4 w-4`}
+                                />
                                 {t('labels:click_to_upload')}
                             </Button>
                             <Button

@@ -31,7 +31,7 @@ const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE)
 const LanguageDownloadAPI = process.env.REACT_APP_DOWNLOAD_LANGUAGE_TRANSLATION_CSV
 const downloadBackendKeysAPI = process.env.REACT_APP_DOWNLOAD_ADMIN_BACKEND_MESSAGE_DETAILS
 
-const Language = () => {
+const Language = ({ collapsed }) => {
     const { t } = useTranslation()
 
     usePageTitle(t('labels:language_settings'))
@@ -81,27 +81,34 @@ const Language = () => {
             header: <span>{t('labels:language')}</span>,
             value: 'language',
             width: '25%',
-            ellipsis: true,
+
             render: (text, record) => (
-                <div className='flex gap-2  items-center'>
+                <div className=' flex gap-1 items-center'>
                     {record.is_default ? (
-                        <Ellipsis
-                            text={record.language}
-                            styles={{
-                                maxWidth: '50px',
-                                padding: '5px',
-                                fontSize: '14px',
-                            }}
-                        />
+                        !collapsed ? (
+                            <ShadCNTooltip content={record.language}>
+                                <div
+                                    className={` mx-1 ${record.is_default ? '!max-w-[40px] truncate' : '!max-w-[50px]'}`}
+                                    style={{
+                                        whiteSpace: 'nowrap',
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                    }}>
+                                    {record.language}
+                                </div>
+                            </ShadCNTooltip>
+                        ) : (
+                            <div>{record.language}</div>
+                        )
                     ) : (
                         <div>{record.language}</div>
                     )}
                     {record.is_default && (
                         <Badge
-                            variant='default'
-                            className='inline-flex items-center gap-1 px-2  py-0.5 text-xs rounded-2xl'
+                            variant=''
+                            className='inline-flex items-center gap-1 rounded-xl  w-[123px]'
                             color='#FB8500'>
-                            {t('labels:default_language')}
+                            {t('labels:default_currency')}
                         </Badge>
                     )}
                 </div>
