@@ -179,11 +179,13 @@ const Currency = ({ storeUUId }) => {
             {isVendorsOnBoarded && (
                 <Alert className='my-4 px-4 !w-full bg-[#E6F7FF] border border-[#1677ff]'>
                     <AlertDescription>
-                        <div className='flex items-center space-x-2'>
+                        <div
+                            className={`flex items-center space-x-2 ${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'space-x-reverse' : ''}`}>
                             <MdInfo className='font-bold' color='#1677ff' size={25} />
                             <span className='font-medium'>{t('labels:currency_info')}</span>
                         </div>
-                        <div className='px-3 mt-1 text-sm'>
+                        <div
+                            className={`px-3 mt-1 text-sm ${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'text-right' : 'text-left'}`}>
                             <ul style={{ listStyleType: 'disc' }}>
                                 <li>{t('messages:currency_info_note_one')}</li>
                                 <li>{t('messages:currency_info_note_two')}</li>
@@ -323,18 +325,41 @@ const Currency = ({ storeUUId }) => {
                     isVisible={currencyChangeFLag}
                     okButtonText={t('labels:yes')}
                     title={
-                        <span className='text-regal-blue font-bold text-[18px] leading-[26px]'>
+                        <span
+                            className={`text-regal-blue font-bold text-[18px] leading-[26px] ${
+                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                    ? 'text-right w-full block pr-5'
+                                    : ''
+                            }`}>
                             {t('labels:change_currency_details')}
                         </span>
                     }
                     okCallback={() => handleCurrencyChange()}
                     cancelCallback={() => closeCurrencyChangeConsentModal()}
                     isSpin={isCurrencyLoading}
-                    width={'400px'}
+                    width={'450px'}
                     hideCloseButton={true}>
                     <div className='text-muted-foreground'>
-                        <p className='mb-2'>{t('messages:currency_warning_message')}</p>
-                        <p>{t('messages:currency_message')}</p>
+                        <p
+                            className={`${
+                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                    ? 'ml-2 text-right'
+                                    : 'mr-2 text-left'
+                            } mb-2`}>
+                            {util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                ? t('messages:currency_warning_message').replace('?', '') + '?'
+                                : t('messages:currency_warning_message')}
+                        </p>
+                        <p
+                            className={`${
+                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                    ? 'ml-2 text-right'
+                                    : 'mr-2 text-left'
+                            }`}>
+                            {util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                ? t('messages:currency_message').replace('.', '') + '.'
+                                : t('messages:currency_message')}
+                        </p>
                     </div>
                 </StoreModal>
             </Card>

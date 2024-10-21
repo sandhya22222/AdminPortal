@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Layout, Col, Input, Skeleton } from 'antd'
 import HeaderForTitle from '../../components/header/HeaderForTitle'
 import { useTranslation } from 'react-i18next'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
-const { Content } = Layout
+import { Input } from '../../shadcnComponents/ui/input'
+import { Skeleton } from '../../shadcnComponents/ui/skeleton'
 
 const usersAllAPI = process.env.REACT_APP_USERS_ALL_API
 
@@ -36,43 +36,43 @@ const PlatformAdmin = () => {
     }, [])
 
     return (
-        <Content className=''>
+        <div className=''>
             <HeaderForTitle
                 title={
-                    <Content>
+                    <div>
                         <div className='!font-semibold text-2xl mb-4 text-regal-blue'>{t('labels:platform_admin')}</div>
-                    </Content>
+                    </div>
                 }
             />
 
-            <Content className='bg-white p-3 mx-3 rounded-md shadow-brandShadow !mt-[10.5rem]'>
+            <div className='bg-white p-3 mx-3 rounded-md shadow-brandShadow !mt-[10.5rem]'>
                 {isUsersLoading ? (
-                    <Content className='bg-white p-3 !mb-3 !rounded-md '>
-                        <Skeleton
-                            active
-                            paragraph={{
-                                rows: 4,
-                            }}></Skeleton>
-                    </Content>
+                    <div className='bg-white p-3 !mb-3 !rounded-md space-y-4 w-96'>
+                        <Skeleton className={'h-4'} />
+                        <Skeleton className={'h-4'} />
+                        <Skeleton className={'h-4'} />
+                        <Skeleton className={'h-4'} />
+                        <Skeleton className={'h-4'} />
+                    </div>
                 ) : isNetworkError ? (
-                    <Content className='!text-center  p-3 '>{t('messages:store_network_error')}</Content>
+                    <div className='!text-center  p-3 '>{t('messages:store_network_error')}</div>
                 ) : (
-                    <Content className='mx-1'>
+                    <div className='mx-1'>
                         <label className='font-semibold text-base mb-4'>{t('labels:contact_details')}</label>
-                        <Col span={12} className='mb-3 mt-2'>
-                            <label className='text-brandGray2 font-normal text-sm mb-2'>{t('labels:email')}</label>
+                        <div className='mb-3 mt-2 w-96'>
+                            <label className='text-brandGray2 font-normal text-sm'>{t('labels:email')}</label>
                             <span className='mandatory-symbol-color text-sm text-center ml-1'>*</span>
                             <Input value={userAllAPIData[0]?.email} disabled={true} className={``} />
-                        </Col>
-                        <Col span={12} className='mb-3'>
-                            <label className='text-brandGray2 font-normal text-sm mb-2'>{t('labels:user_name')}</label>
+                        </div>
+                        <div className='mb-3 w-96'>
+                            <label className='text-brandGray2 font-normal text-sm'>{t('labels:user_name')}</label>
                             <span className='mandatory-symbol-color text-sm text-center ml-1'>*</span>
                             <Input value={userAllAPIData[0]?.username} disabled={true} className={``} />
-                        </Col>
-                    </Content>
+                        </div>
+                    </div>
                 )}
-            </Content>
-        </Content>
+            </div>
+        </div>
     )
 }
 

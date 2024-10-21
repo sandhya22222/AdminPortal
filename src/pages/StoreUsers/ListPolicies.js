@@ -11,6 +11,7 @@ import './DisplayPolicy.css'
 import { getGenerateDateAndTime } from '../../util/util'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import { EmptySVG } from '../../constants/media'
+import util from '../../util/common'
 
 const ListPolicies = ({ searchParams, setSearchParams }) => {
     const { t } = useTranslation()
@@ -131,20 +132,35 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
                                                 key={data.id}
                                                 className='mb-4'
                                                 ref={(el) => (policyRefs.current[data.id] = el)}>
-                                                <div className='text-lg font-semibold mb-3 text-brandGray1'>
+                                                <div
+                                                    className={`text-lg font-semibold mb-3 text-brandGray1 ${
+                                                        util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                            ? 'text-right'
+                                                            : 'text-left'
+                                                    }`}>
                                                     {data?.version_details?.consent_display_name}:
                                                 </div>
-                                                <div className='text-sm font-semibold mb-2 text-brandGray1'>
+                                                <div
+                                                    className={`text-sm font-semibold mb-2 text-brandGray1 ${
+                                                        util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                            ? 'text-right'
+                                                            : 'text-left'
+                                                    }`}>
                                                     {t('labels:last_updated')}:{' '}
                                                     {getGenerateDateAndTime(data?.updated_on, 'D MMMM YYYY')}
                                                 </div>
                                                 <ReactQuill
-                                                    value={data?.version_details?.consent_display_description}
-                                                    modules={{ toolbar: false }}
-                                                    readOnly
-                                                    className='mb-3 mr-2 text-base editor quill text-brandGray2'
-                                                />
-                                            </div>
+                                                value={data?.version_details?.consent_display_description}
+                                                modules={{ toolbar: false }}
+                                                readOnly
+                                                className={`mb-3 ${
+                                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'ml-2' : 'mr-2'
+                                                } text-base editor quill text-brandGray2`}
+                                                style={{
+                                                    textAlign: util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'right' : 'left',
+                                                }}
+                                            />
+                                        </div>
                                         ))}
                                     </div>
                                 </ScrollArea>
@@ -180,7 +196,7 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
                                             </nav>
                                         </TooltipProvider>
                                     </ScrollArea>
-                                    <div ref={scrollbarRef} className='w-1 bg-gray-200 rounded-full  ml-2 sticky top-0'>
+                                    <div ref={scrollbarRef} className='w-1 bg-gray-200 rounded-full ml-2 sticky top-0'>
                                         <div
                                             className='w-3 h-3 bg-regal-orange rounded-full absolute -left-1'
                                             style={{ top: `${indicatorPosition}%` }}

@@ -1,6 +1,6 @@
-import { UploadOutlined } from '@ant-design/icons'
-import { Image, Spin, Typography, Upload } from 'antd'
-import React, { useState } from 'react'
+import { MdOutlineFileUpload, MdRemoveRedEye, MdClose } from 'react-icons/md'
+import Spin from '../../shadcnComponents/customComponents/Spin'
+import React, { useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { profileFallBackImage } from '../../constants/media'
 import MarketplaceToaster from '../../util/marketplaceToaster'
@@ -8,19 +8,23 @@ import useDeleteProfileImage from './hooks/useDeleteProfileImage'
 import useGetProfileImage from './hooks/useGetProfileImage'
 import useUploadProfileImage from './hooks/useUploadProfileImage'
 import { Button } from '../../shadcnComponents/ui/button'
-import './UserProfile.css'
 import StoreModal from '../../components/storeModal/StoreModal'
+import './UserProfile.css'
+import util from '../../util/common'
+
 const supportedFileExtensions = process.env.REACT_APP_IMAGES_EXTENSIONS
 const supportedFileTypes = ['image/png', 'image/jpeg']
+const MAX_FILE_SIZE_MB = 2
 
 const ProfileImage = ({ imagePath, refetchUserData }) => {
     const { t } = useTranslation()
-    const { Text } = Typography
-
-    const [fileList, setFileList] = useState([])
+    const fileInputRef = useRef(null)
+    const [selectedFile, setSelectedFile] = useState(null)
     const [fileError, setFileError] = useState(null)
     const [isImageModalVisible, setIsImageModalVisible] = useState(false)
+    const [isPreviewModalVisible, setIsPreviewModalVisible] = useState(false)
     const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+    const [isHovered, setIsHovered] = useState(false)
 
     const {
         data: profileImage,
@@ -31,61 +35,93 @@ const ProfileImage = ({ imagePath, refetchUserData }) => {
     const { mutate: uploadImageMutation, status: uploadImageStatus, reset: resetUploadImage } = useUploadProfileImage()
     const { mutate: deleteImageMutation, status: deleteImageStatus } = useDeleteProfileImage()
 
+    const resetFileInput = () => {
+        if (fileInputRef.current) {
+            fileInputRef.current.value = ''
+        }
+    }
+
     const handleCloseImageModal = () => {
         resetUploadImage()
         setIsImageModalVisible(false)
         setFileError(null)
-        setFileList([])
+        setSelectedFile(null)
+        resetFileInput()
     }
-    function bytesToMegabytes(bytes) {
-        // There are 1,048,576 bytes in a megabyte (1024 * 1024)
-        const megabytes = bytes / 1048576
-        return megabytes
+
+    const bytesToMegabytes = (bytes) => {
+        return bytes / 1048576
     }
+
+    const validateFile = (file) => {
+        if (!file) {
+            setFileError(t('messages:please_select_file'))
+            return false
+        }
+
+        if (!supportedFileTypes.includes(file.type)) {
+            setFileError(t('messages:upload_valid_image'))
+            resetFileInput()
+            return false
+        }
+
+        if (bytesToMegabytes(file.size) > MAX_FILE_SIZE_MB) {
+            setFileError(t('messages:image_size_error'))
+            resetFileInput()
+            return false
+        }
+
+        return true
+    }
+
+    const handleFileSelect = (event) => {
+        const file = event.target.files[0]
+        setFileError(null)
+
+        if (validateFile(file)) {
+            setSelectedFile(file)
+        } else {
+            setSelectedFile(null)
+        }
+    }
+
+    const handleUploadClick = () => {
+        resetFileInput()
+        fileInputRef.current?.click()
+    }
+
+    const handleImageUpload = () => {
+        if (!selectedFile) return
+
+        const imageFormData = new FormData()
+        imageFormData.append('profile_image', selectedFile)
+
+        uploadImageMutation(
+            { data: imageFormData, imagePath: imagePath },
+            {
+                onSuccess: (response) => {
+                    refetchProfileImage()
+                    refetchUserData()
+                    MarketplaceToaster.showToast(response)
+                    handleCloseImageModal()
+                },
+                onError: (err) => {
+                    refetchProfileImage()
+                    MarketplaceToaster.showToast(err.response)
+                    handleCloseImageModal()
+                },
+            }
+        )
+    }
+
     const handleDeleteClick = () => {
         setDeleteModalOpen(true)
     }
-    const handelFileSelect = (e) => {
-        const file = e.fileList?.[0]
-        if (e.fileList?.length <= 0 || supportedFileTypes?.includes(file?.type)) {
-            if (bytesToMegabytes(file?.size) > 2) {
-                setFileList([])
-                setFileError(t('messages:image_size_error'))
-            } else {
-                setFileList(e.fileList)
-                setFileError(null)
-            }
-        } else {
-            setFileError(t('messages:upload_valid_image'))
-        }
-    }
-    const handleImageUpload = () => {
-        const file = fileList?.[0]
-        const fileType = file?.type
-        if (supportedFileTypes.includes(fileType)) {
-            let imageFormData = new FormData()
-            imageFormData.append('profile_image ', file?.originFileObj)
 
-            uploadImageMutation(
-                { data: imageFormData, imagePath: imagePath },
-                {
-                    onSuccess: (response) => {
-                        refetchProfileImage()
-                        refetchUserData()
-                        MarketplaceToaster.showToast(response)
-                        handleCloseImageModal()
-                    },
-                    onError: (err) => {
-                        refetchProfileImage()
-                        MarketplaceToaster.showToast(err.response)
-                        handleCloseImageModal()
-                    },
-                }
-            )
-        } else {
-            MarketplaceToaster.showToast('error')
-        }
+    const handlePreviewClick = () => {
+        setIsPreviewModalVisible(true)
     }
+
     const handleDeleteProfileImage = (imagePath) => {
         deleteImageMutation(
             { data: imagePath },
@@ -104,28 +140,43 @@ const ProfileImage = ({ imagePath, refetchUserData }) => {
         )
     }
 
+    const getCurrentImage = () => {
+        if (profileImageStatus === 'success' && profileImage) return profileImage
+        return profileFallBackImage
+    }
+
     return (
         <div>
             <div className='flex gap-[16px]'>
-                {imagePath ? (
-                    <>
-                        {profileImageStatus === 'pending' && isProfileImageFetching && <Spin />}
-                        {profileImageStatus === 'success' && profileImage && (
-                            <Image
-                                src={profileImage}
-                                fallback={profileFallBackImage}
-                                width={140}
-                                preview={{ mask: t('labels:preview') }}
-                            />
-                        )}
-                    </>
+                {profileImageStatus === 'pending' && isProfileImageFetching ? (
+                    <Spin />
                 ) : (
-                    <Image src={profileFallBackImage} width={140} preview={{ mask: t('labels:preview') }} />
+                    <div
+                        className='relative group'
+                        onMouseEnter={() => setIsHovered(true)}
+                        onMouseLeave={() => setIsHovered(false)}>
+                        <img
+                            src={getCurrentImage()}
+                            alt='Profile'
+                            width={140}
+                            height={140}
+                            className='object-cover rounded-md'
+                        />
+                        <Button
+                            variant='secondary'
+                            size='sm'
+                            className={`absolute top-2 right-2 transition-opacity duration-200 ${
+                                isHovered ? 'opacity-100' : 'opacity-0'
+                            }`}
+                            onClick={handlePreviewClick}>
+                            <MdRemoveRedEye className='w-4 h-4' />
+                        </Button>
+                    </div>
                 )}
                 <div className='self-end flex gap-[16px]'>
                     <Button
                         className='flex items-center gap-2'
-                        type='link'
+                        variant='default'
                         onClick={() => setIsImageModalVisible(true)}>
                         <svg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'>
                             <path
@@ -136,7 +187,7 @@ const ProfileImage = ({ imagePath, refetchUserData }) => {
                         {t('labels:change_profile_picture')}
                     </Button>
                     <Button
-                        onClick={() => handleDeleteClick()}
+                        onClick={handleDeleteClick}
                         disabled={!imagePath}
                         variant='secondary'
                         className='delete-profile-btn flex items-center justify-center gap-2'>
@@ -150,37 +201,107 @@ const ProfileImage = ({ imagePath, refetchUserData }) => {
                     </Button>
                 </div>
             </div>
+
             {isImageModalVisible && (
                 <StoreModal
                     isVisible={isImageModalVisible}
-                    cancelCallback={() => handleCloseImageModal()}
-                    okCallback={() => handleImageUpload()}
+                    cancelCallback={handleCloseImageModal}
+                    okCallback={handleImageUpload}
                     isSpin={uploadImageStatus === 'pending'}
                     okButtonText={t('labels:save')}
                     cancelButtonText={t('labels:cancel')}
-                    isOkButtonDisabled={fileList?.length === 0 || uploadImageStatus === 'pending'}
-                    title={t('labels:add_new_file')}>
-                    <Upload
-                        fileList={fileList}
-                        accept={supportedFileExtensions}
-                        maxCount={1}
-                        showUploadList={true}
-                        beforeUpload={() => {
-                            return false
-                        }}
-                        className='custom-upload-delete-btn'
-                        onChange={(e) => handelFileSelect(e)}>
+                    isOkButtonDisabled={!selectedFile || uploadImageStatus === 'pending'}
+                    title={
+                        <h2
+                            className={`${
+                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                    ? 'text-right pr-5' // Add padding-right for spacing
+                                    : 'text-left'
+                            }`}>
+                            {t('labels:add_new_file')}
+                        </h2>
+                    }>
+                    <div className='space-y-4'>
+                        <input
+                            ref={fileInputRef}
+                            type='file'
+                            accept={supportedFileExtensions}
+                            onChange={handleFileSelect}
+                            className='hidden'
+                            id='file-upload'
+                        />
+
                         <Button
-                            className={' flex items-center mt-6 hover:text-brandPrimaryColor'}
+                            className='flex items-center mt-6 hover:text-brandPrimaryColor w-auto justify-center'
                             variant='outline'
-                            icon={<UploadOutlined />}>
-                            {t('labels:click_to_upload')}
+                            onClick={handleUploadClick}>
+                            <MdOutlineFileUpload
+                                className={`w-4 h-4 ${
+                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'ml-2' : 'mr-2'
+                                }`}
+                            />
+                            <span
+                                className={`${
+                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'ml-2' : 'mr-2'
+                                }`}>
+                                {t('labels:click_to_upload')}
+                            </span>
                         </Button>
-                    </Upload>
-                    {fileError && <p className='text-sm !mb-0 text-dangerColor mt-2'>{fileError}</p>}
-                    <p className='mb-6 !mt-2'>{t('messages:accepted_image_formats')}</p>
+
+                        {selectedFile && (
+                            <div className='w-auto mt-4 p-4'>
+                                <div className='flex items-center gap-[30px]'>
+                                    <div>
+                                        <p className='text-sm font-medium'>{selectedFile.name}</p>
+                                        <p className='text-xs text-gray-500'>
+                                            {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
+                                        </p>
+                                    </div>
+                                    <Button
+                                        variant='ghost'
+                                        size='sm'
+                                        onClick={() => {
+                                            setSelectedFile(null)
+                                            resetFileInput()
+                                        }}
+                                        className='text-gray-500'>
+                                        <MdClose className='w-4 h-4' />
+                                    </Button>
+                                </div>
+                            </div>
+                        )}
+
+                        {fileError && <p className='text-sm text-red-500'>{fileError}</p>}
+                        <p className='text-sm text-gray-500'>{t('messages:accepted_image_formats')}</p>
+                    </div>
                 </StoreModal>
             )}
+
+            {/* Preview Modal */}
+            {isPreviewModalVisible && (
+                <div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75'>
+                    <div className='relative w-full max-w-4xl'>
+                        <div className='flex justify-end mb-4'>
+                            <Button
+                                variant='ghost'
+                                size='sm'
+                                onClick={() => setIsPreviewModalVisible(false)}
+                                className='text-white hover:bg-white/10'>
+                                <MdClose className='w-6 h-6' />
+                            </Button>
+                        </div>
+                        <div className='p-4'>
+                            <img
+                                src={getCurrentImage()}
+                                alt='Preview'
+                                className='max-w-full max-h-[80vh] object-contain mx-auto'
+                            />
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Delete Confirmation Modal */}
             <StoreModal
                 isVisible={deleteModalOpen}
                 okButtonText={t('labels:delete')}
@@ -190,13 +311,9 @@ const ProfileImage = ({ imagePath, refetchUserData }) => {
                 okCallback={() => handleDeleteProfileImage(imagePath)}
                 cancelCallback={() => setDeleteModalOpen(false)}
                 isSpin={deleteImageStatus === 'pending'}>
-                {
-                    <div className='mb-6'>
-                        <>
-                            <p>{t('messages:delete_profile_picture_confirmation')}</p>
-                        </>
-                    </div>
-                }
+                <div className='mb-6'>
+                    <p>{t('messages:delete_profile_picture_confirmation')}</p>
+                </div>
             </StoreModal>
         </div>
     )

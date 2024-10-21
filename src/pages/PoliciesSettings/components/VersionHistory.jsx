@@ -2,7 +2,7 @@ import { Button } from '../../../shadcnComponents/ui/button'
 import { Card, CardContent } from '../../../shadcnComponents/ui/card'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../../../shadcnComponents/ui/dialog'
 import { Skeleton } from '../../../shadcnComponents/ui/skeleton'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../../shadcnComponents/ui/tabs'
+import { ShadCNTabs, ShadCNTabsTrigger } from '../../../shadcnComponents/customComponents/ShadCNTabs'
 import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -10,6 +10,7 @@ import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import useGetUserConsentVersionDetails from '../hooks/useGetUserConsentVersionDetails'
 import AddVersion from './AddVersion'
+import '../policiesSettings.css'
 
 export default function VersionHistory({ userConsentId, refetchUserConsent, setVersionHistory }) {
     const { t } = useTranslation()
@@ -60,29 +61,32 @@ export default function VersionHistory({ userConsentId, refetchUserConsent, setV
             {userConsentVersionStatus === 'pending' ? (
                 <Skeleton className='w-full h-[400px]' />
             ) : userConsentVersionStatus === 'success' ? (
-                <div className='flex space-x-6'>
+                <div className='flex gap-6'>
                     {/* Tab Card */}
                     <Card className='w-[300px] h-[300px] border-none'>
                         <CardContent className='p-0'>
-                            <Tabs value={activeKey} onValueChange={handleTabChange} orientation='vertical'>
-                                <TabsList className='bg-background h-full flex-col items-start'>
-                                    {versionTabData?.map((data) => (
-                                        <TabsTrigger
-                                            key={data?.id}
-                                            value={String(data?.id)}
-                                            className='w-full text-left'>
-                                            <div className='flex flex-col items-start'>
-                                                <div className='font-semibold truncate'>
-                                                    {data?.version === 1 ? 'V1.0' : 'V' + data?.version}
-                                                </div>
-                                                <span className='text-sm text-muted-foreground'>
-                                                    {getDate(data?.created_on)}
-                                                </span>
+                            <ShadCNTabs
+                                value={activeKey}
+                                onTabClick={handleTabChange}
+                                orientation='vertical'
+                                borderPosition='right'
+                                className='h-full'>
+                                {versionTabData?.map((data) => (
+                                    <ShadCNTabsTrigger
+                                        key={data?.id}
+                                        value={String(data?.id)}
+                                        className='w-full text-left'>
+                                        <div className='flex flex-col items-start'>
+                                            <div className='font-semibold truncate'>
+                                                {data?.version === 1 ? 'V1.0' : 'V' + data?.version}
                                             </div>
-                                        </TabsTrigger>
-                                    ))}
-                                </TabsList>
-                            </Tabs>
+                                            <span className='text-sm text-muted-foreground'>
+                                                {getDate(data?.created_on)}
+                                            </span>
+                                        </div>
+                                    </ShadCNTabsTrigger>
+                                ))}
+                            </ShadCNTabs>
                         </CardContent>
                     </Card>
 
@@ -94,13 +98,11 @@ export default function VersionHistory({ userConsentId, refetchUserConsent, setV
                         <Card className='w-[550px] h-[250px] overflow-hidden'>
                             <CardContent className='p-0 h-full'>
                                 <div className='h-full overflow-y-auto'>
-                                    {' '}
-                                    {/* Added wrapper for scrolling */}
                                     <ReactQuill
                                         value={userConsentVersionDetails?.consent_display_description}
                                         modules={{ toolbar: false }}
                                         readOnly={true}
-                                        style={{ width: '100%', height: 'auto' }} // Set height to auto
+                                        style={{ width: '100%', height: 'auto' }}
                                     />
                                 </div>
                             </CardContent>
@@ -109,7 +111,7 @@ export default function VersionHistory({ userConsentId, refetchUserConsent, setV
                         <p className='py-2 text-muted-foreground'>
                             {t('labels:last_updated') + ': ' + getDate(userConsentVersionDetails?.updated_on)}
                         </p>
-                        <div className='mr-10  flex justify-end'>
+                        <div className='mr-10 flex justify-end'>
                             <Button variant='default' onClick={() => setAddVersion(true)}>
                                 {t('labels:create_new_version')}
                             </Button>
@@ -122,7 +124,7 @@ export default function VersionHistory({ userConsentId, refetchUserConsent, setV
             <Dialog open={addVersion} onOpenChange={setAddVersion}>
                 <DialogContent className='sm:max-w-[400px]'>
                     <DialogHeader>
-                        <DialogTitle className=' font-bold text-lg'>{t('labels:add_version')}</DialogTitle>
+                        <DialogTitle className='font-bold text-lg'>{t('labels:add_version')}</DialogTitle>
                     </DialogHeader>
                     <AddVersion
                         versionNumber={userConsentVersionDetails?.version_number}

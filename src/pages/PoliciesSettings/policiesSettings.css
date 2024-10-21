@@ -7,7 +7,17 @@
     color: #00000073 !important; /* Change the color of the close icon */
 }
 
-
-.policy-tab .ant-tabs-nav-list{
+.policy-tab .ant-tabs-nav-list {
     height: 520px !important;
+}
+
+.custom-editor-container .ql-editor {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.policy-card-container .ql-container {
+    min-height: 150px;
+    max-height: 300px;
+    overflow-y: auto;
 }

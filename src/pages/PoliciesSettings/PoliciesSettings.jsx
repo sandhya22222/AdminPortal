@@ -26,6 +26,7 @@ import VersionBanner from './components/VersionBanner'
 import useDeleteUserConsent from './hooks/useDeleteUserConsent'
 import useGetUserConsent from './hooks/useGetUserConsent'
 import './policiesSettings.css'
+import util from '../../../src/util/common'
 
 const CONTACT_INFORMATION = 'Contact Information'
 
@@ -62,10 +63,13 @@ export default function PoliciesSettings({ storeName }) {
             setAddNewPolicy(true)
 
             setTimeout(() => {
-                newPolicyRef.current.scrollIntoView({
-                    behavior: 'smooth', // Enables smooth scrolling
-                    block: 'end', // Scrolls to the bottom of the element
-                    inline: 'nearest',
+                const cardRect = newPolicyRef.current.getBoundingClientRect()
+                const parentRect = newPolicyRef.current.parentElement.getBoundingClientRect()
+                const distanceFromParentTop = cardRect.top - parentRect.top
+                const containerPosition = document.documentElement.scrollTop || document.body.scrollTop
+                window.scrollTo({
+                    top: containerPosition + distanceFromParentTop + 270,
+                    behavior: 'smooth',
                 })
             }, 100)
         } else {
@@ -209,7 +213,7 @@ export default function PoliciesSettings({ storeName }) {
                                 </div>
                             ) : null}
                             <div className='flex items-center'>
-                                <div className='flex items-center space-x-2'>
+                                <div className='flex items-center gap-2'>
                                     <Checkbox
                                         id='contact-info'
                                         checked={addContactInfo}
@@ -223,7 +227,10 @@ export default function PoliciesSettings({ storeName }) {
                                 </div>
                             </div>
                             <div>
-                                <Alert className='mt-2 ml-7 w-[420px] bg-blue-50 border-blue-200'>
+                                <Alert
+                                    className={`mt-2 w-[420px] bg-blue-50 border-blue-200 ${
+                                        util.getSelectedLanguageDirection()?.toUpperCase() === 'LTR' ? 'ml-7' : ''
+                                    }`}>
                                     <InfoIcon className=' h-4 w-4 text-blue-500 mr-2' />
                                     <AlertDescription className='whitespace-nowrap'>
                                         {t('messages:contact_info')}
@@ -270,9 +277,13 @@ export default function PoliciesSettings({ storeName }) {
                         <Button
                             variant='outline'
                             onClick={() => setDeletePolicy(null)}
-                            disabled={deleteStoreUserConsentStatus === 'pending'}>
+                            disabled={deleteStoreUserConsentStatus === 'pending'}
+                            className={`${
+                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'ml-2' : 'mr-2'
+                            }`}>
                             {t('labels:cancel')}
                         </Button>
+
                         <Button
                             variant='destructive'
                             onClick={() => deletePolicyById(deletePolicy)}

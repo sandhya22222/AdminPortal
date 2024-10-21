@@ -20,6 +20,12 @@ import {
 import { cn } from '../../lib/utils'
 import ShadCNDataTable from '../../../src/shadcnComponents/customComponents/ShadCNDataTable'
 import HeaderForTitle from '../../components/header/HeaderForTitle'
+import util from '../../../src/util/common'
+import {
+    ShadCNTabs,
+    ShadCNTabsTrigger,
+    ShadCNTabsContent,
+} from '../../../src/shadcnComponents/customComponents/ShadCNTabs'
 
 const itemsPerPageFromEnv = process.env.REACT_APP_ITEM_PER_PAGE
 const groupsAPI = process.env.REACT_APP_GROUPS_API
@@ -266,7 +272,6 @@ export default function UserAccessControl() {
         <HeaderForTitle
             title={
                 <div className='relative flex flex-col justify-between items-start w-full'>
-                    {/* Top section: Title and button */}
                     <div className='w-full'>
                         <div className='flex items-center'>
                             {/* Left side: Title and description */}
@@ -279,7 +284,8 @@ export default function UserAccessControl() {
                         </div>
                     </div>
 
-                    <div className='mt-4 w-full'>
+                    <div
+                        className={`${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'items-end' : 'items-start'}`}>
                         <TabNavigation />
                     </div>
                 </div>
@@ -299,28 +305,12 @@ export default function UserAccessControl() {
     )
 
     const TabNavigation = () => (
-        <div className='flex border-b border-gray-200 '>
-            <button
-                className={cn(
-                    'px-4 py-2 font-medium text-sm focus:outline-none',
-                    activeTab === 'users'
-                        ? 'text-primary border-b-2 border-primary'
-                        : 'text-muted-foreground hover:text-primary'
-                )}
-                onClick={() => handleTabChange('users')}>
+        <ShadCNTabs defaultActiveKey={activeTab} activeKey={activeTab} onTabClick={handleTabChange} className='w-full '>
+            <ShadCNTabsTrigger className='' value='users'>
                 {t('labels:users')}
-            </button>
-            <button
-                className={cn(
-                    'px-4 py-2 font-medium text-sm focus:outline-none',
-                    activeTab === 'roles'
-                        ? 'text-primary border-b-2 border-primary'
-                        : 'text-muted-foreground hover:text-primary'
-                )}
-                onClick={() => handleTabChange('roles')}>
-                {t('labels:roles')}
-            </button>
-        </div>
+            </ShadCNTabsTrigger>
+            <ShadCNTabsTrigger value='roles'>{t('labels:roles')}</ShadCNTabsTrigger>
+        </ShadCNTabs>
     )
 
     const renderContent = () => {
@@ -375,11 +365,20 @@ export default function UserAccessControl() {
                             <DialogTitle>{t('labels:warning')}</DialogTitle>
                             <DialogDescription>{t('messages:are_you_sure_you_want_delete_the_user')}</DialogDescription>
                         </DialogHeader>
-                        <DialogFooter>
-                            <Button variant='outline' onClick={() => setShowDeleteUserModal(false)}>
+                        <DialogFooter className='mt-3'>
+                            <Button
+                                variant='outline'
+                                onClick={() => setShowDeleteUserModal(false)}
+                                className={`${
+                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'ml-2' : 'mr-2'
+                                }`}>
                                 {t('labels:cancel')}
                             </Button>
-                            <Button onClick={removeUser} disable={deleteModalLoading}>
+
+                            <Button
+                                onClick={removeUser}
+                                disabled={deleteModalLoading} // Corrected from "disable" to "disabled"
+                            >
                                 {t('labels:yes')}
                             </Button>
                         </DialogFooter>
@@ -396,10 +395,16 @@ export default function UserAccessControl() {
                                     : t('messages:are_you_sure_you_want_enable_status')}
                             </DialogDescription>
                         </DialogHeader>
-                        <DialogFooter>
-                            <Button variant='outline' onClick={() => setShowUserEnableDisableModal(false)}>
+                        <DialogFooter className='mt-3'>
+                            <Button
+                                variant='outline'
+                                onClick={() => setShowUserEnableDisableModal(false)}
+                                className={`${
+                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'LTR' ? 'mr-2' : 'ml-2'
+                                }`}>
                                 {t('labels:cancel')}
                             </Button>
+
                             <Button onClick={enableDisableUserFromServer} disabled={deleteModalLoading}>
                                 {t('labels:yes')}
                             </Button>

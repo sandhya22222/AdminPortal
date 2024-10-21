@@ -2,6 +2,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import useGetStoreAdminConsent from '../../hooks/useGetStoreAdminConsent'
+import util from '../../util/common'
 
 const portalInfo = JSON.parse(process.env.REACT_APP_PORTAL_INFO)
 

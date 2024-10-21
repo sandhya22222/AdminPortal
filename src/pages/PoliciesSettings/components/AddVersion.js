@@ -129,7 +129,7 @@ function AddVersion({
                     }}
                 />
             </div>
-            <div className='flex justify-end'>
+            <div className='flex justify-end gap-2'>
                 <Button
                     onClick={() => {
                         setAddVersion(false)

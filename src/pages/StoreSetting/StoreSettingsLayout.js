@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { Spin, Row, Col, Button } from 'antd'
 import { useAuth } from 'react-oidc-context'
 import HeaderForTitle from '../../components/header/HeaderForTitle'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
@@ -20,6 +19,9 @@ import { Star } from 'lucide-react'
 import { Badge } from '../../shadcnComponents/ui/badge'
 import { ShadCNTabs, ShadCNTabsTrigger, ShadCNTabsContent } from '../../shadcnComponents/customComponents/ShadCNTabs'
 
+import { Tabs, TabsContent, TabsTrigger, TabsList } from '../../shadcnComponents/ui/tabs'
+import Spin from '../../shadcnComponents/customComponents/Spin'
+import { Button } from '../../shadcnComponents/ui/button'
 const storeAPI = process.env.REACT_APP_STORE_API
 const storeImagesAPI = process.env.REACT_APP_STORE_IMAGES_API
 const storeBannerImageAPI = process.env.REACT_APP_STORE_BANNER_IMAGES_API
@@ -361,11 +363,11 @@ const StoreSettingsLayout = () => {
                             </div>
 
                             <div className='flex flex-col gap-2'>
-                                <div className='flex items-baseline'>
+                                <div className='flex items-baseline gap-2'>
                                     <h2 className='font-semibold text-2xl'>{storeName}</h2>
                                     <Badge
                                         variant={changeSwitchStatus === 1 ? 'green' : 'secondary'}
-                                        className='ml-2 rounded-xl'>
+                                        className='rounded-xl'>
                                         {changeSwitchStatus === 1 ? `${t('labels:active')}` : `${t('labels:inactive')}`}
                                     </Badge>
                                 </div>
@@ -410,7 +412,7 @@ const StoreSettingsLayout = () => {
 
             <div className='!px-6 !pb-6  !mt-[12.5rem]'>
                 <div className=' w-full bg-white rounded shadow-brandShadow flex p-3 justify-start'>
-                    <div className=' py-5 h-full px-1 '>
+                    <div className=' py-5 h-full'>
                         {permissionValue?.length > 0 ? (
                             permissionValue?.includes('UI-product-admin') === true ? (
                                 // <Tabs
@@ -424,25 +426,29 @@ const StoreSettingsLayout = () => {
                                 //     type='line'
                                 //     className=' !h-full '
                                 // />
-                                <Tabs
+
+                                <ShadCNTabs
                                     value={searchParams.get('tab') || STORE_SETTINGS_TABS_OPTIONS.STORE_RESTRICTIONS}
                                     onValueChange={handelMyProfileTabChange}
                                     className='h-full'
                                     orientation='vertical'>
-                                    <TabsList className='!h-full px-3' orientation='vertical'>
+                                    <div className='flex flex-col !h-full space-y-3'>
                                         {hideStoreSettingsTabData.map((tab) => (
-                                            <TabsTrigger key={tab.key} value={tab.key} borderPosition='right'>
+                                            <ShadCNTabsTrigger key={tab.key} value={tab.key} borderPosition='right'>
                                                 {tab.label}
-                                            </TabsTrigger>
+                                            </ShadCNTabsTrigger>
                                         ))}
-                                    </TabsList>
+                                    </div>
 
-                                    {hideStoreSettingsTabData.map((tab) => (
-                                        <TabsContent key={tab.key} value={tab.key}>
-                                            {tab.content}
-                                        </TabsContent>
-                                    ))}
-                                </Tabs>
+                                    {/* Content Area */}
+                                    <div>
+                                        {hideStoreSettingsTabData.map((tab) => (
+                                            <ShadCNTabsContent key={tab.key} value={tab.key}>
+                                                {tab.content}
+                                            </ShadCNTabsContent>
+                                        ))}
+                                    </div>
+                                </ShadCNTabs>
                             ) : (
                                 // <Tabs
                                 //     items={storeSettingsTabData}
@@ -456,7 +462,7 @@ const StoreSettingsLayout = () => {
                                 <ShadCNTabs
                                     value={searchParams.get('tab') || STORE_SETTINGS_TABS_OPTIONS.OVERVIEW}
                                     onValueChange={handelMyProfileTabChange}
-                                    className='h-full px-3'
+                                    className='h-full'
                                     orientation='vertical'>
                                     <div className='flex flex-col !h-full space-y-3'>
                                         {storeSettingsTabData.map((tab) => (
@@ -486,75 +492,66 @@ const StoreSettingsLayout = () => {
                             <>
                                 {disableMediaButton ? (
                                     ''
+                                ) : isUpLoading ? (
+                                    <Spin />
                                 ) : (
-                                    <Spin tip={t('labels:please_wait')} size='large' spinning={isUpLoading}>
-                                        <div className='bg-white p-3 !rounded-md border my-4'>
-                                            <label className='text-lg mb-3 font-semibold text-regal-blue'>
-                                                {t('labels:media')}
-                                            </label>
-                                            <Row class='flex space-x-4'>
-                                                <Col className='my-3'>
-                                                    <StoreImages
-                                                        title={`${t('labels:store_logo')}`}
-                                                        type={'store_logo'}
-                                                        storeId={id}
-                                                        imagesUpload={imagesUpload}
-                                                        setImagesUpload={setImagesUpload}
-                                                        getImageData={getImageData && getImageData[0]}
-                                                        isSingleUpload={true}
-                                                        disabelMediaButton={disableMediaButton}
-                                                    />
-                                                </Col>
-                                            </Row>
-                                            <StoreImages
-                                                title={`${t('labels:banner_logo')}`}
-                                                type={'banner_images'}
-                                                storeId={id}
-                                                imagesUpload={imagesUpload}
-                                                bannerAbsoluteImage={bannerAbsoluteImage}
-                                                setImagesUpload={setImagesUpload}
-                                                isSingleUpload={false}
-                                                disabelMediaButton={disableMediaButton}
-                                            />
-                                            <div className='mt-4'>
-                                                <Row className='gap-2'>
-                                                    <Col>
-                                                        <Button
-                                                            className={'app-btn-primary'}
-                                                            disabled={
-                                                                imagesUpload && imagesUpload.length > 0 ? false : true
-                                                            }
-                                                            onClick={() => {
-                                                                if (imagesUpload && imagesUpload.length > 0) {
-                                                                    postImageOnClickSave()
-                                                                } else {
-                                                                    MarketplaceToaster.showToast(
-                                                                        util.getToastObject(
-                                                                            `${t('messages:no_changes_were_detected')}`,
-                                                                            'info'
-                                                                        )
-                                                                    )
-                                                                }
-                                                            }}>
-                                                            {t('labels:save')}
-                                                        </Button>
-                                                    </Col>
-                                                    <Col className=''>
-                                                        <Button
-                                                            className={'app-btn-secondary'}
-                                                            disabled={
-                                                                imagesUpload && imagesUpload.length > 0 ? false : true
-                                                            }
-                                                            onClick={() => {
-                                                                navigate('/dashboard/store?m_t=1')
-                                                            }}>
-                                                            {t('labels:discard')}
-                                                        </Button>
-                                                    </Col>
-                                                </Row>
+                                    <div className='bg-white p-3 !rounded-md border my-4'>
+                                        <label className='text-lg mb-3 font-semibold text-regal-blue'>
+                                            {t('labels:media')}
+                                        </label>
+                                        <div class='flex space-x-4'>
+                                            <div className='my-3'>
+                                                <StoreImages
+                                                    title={`${t('labels:store_logo')}`}
+                                                    type={'store_logo'}
+                                                    storeId={id}
+                                                    imagesUpload={imagesUpload}
+                                                    setImagesUpload={setImagesUpload}
+                                                    getImageData={getImageData && getImageData[0]}
+                                                    isSingleUpload={true}
+                                                    disabelMediaButton={disableMediaButton}
+                                                />
                                             </div>
                                         </div>
-                                    </Spin>
+                                        <StoreImages
+                                            title={`${t('labels:banner_logo')}`}
+                                            type={'banner_images'}
+                                            storeId={id}
+                                            imagesUpload={imagesUpload}
+                                            bannerAbsoluteImage={bannerAbsoluteImage}
+                                            setImagesUpload={setImagesUpload}
+                                            isSingleUpload={false}
+                                            disabelMediaButton={disableMediaButton}
+                                        />
+                                        <div className='mt-4'>
+                                            <div className='gap-2 flex'>
+                                                <Button
+                                                    disabled={imagesUpload && imagesUpload.length > 0 ? false : true}
+                                                    onClick={() => {
+                                                        if (imagesUpload && imagesUpload.length > 0) {
+                                                            postImageOnClickSave()
+                                                        } else {
+                                                            MarketplaceToaster.showToast(
+                                                                util.getToastObject(
+                                                                    `${t('messages:no_changes_were_detected')}`,
+                                                                    'info'
+                                                                )
+                                                            )
+                                                        }
+                                                    }}>
+                                                    {t('labels:save')}
+                                                </Button>
+                                                <Button
+                                                    variant='outline'
+                                                    disabled={imagesUpload && imagesUpload.length > 0 ? false : true}
+                                                    onClick={() => {
+                                                        navigate('/dashboard/store?m_t=1')
+                                                    }}>
+                                                    {t('labels:discard')}
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 )}
                             </>
                         )}
