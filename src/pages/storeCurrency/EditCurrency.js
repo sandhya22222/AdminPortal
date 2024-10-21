@@ -169,7 +169,7 @@ const EditCurrency = () => {
                     titleContent={
                         <>
                             {/* This content is related to currency checkbox default currency */}
-                            <div className='flex space-x-2 items-center'>
+                            <div className='flex gap-2 items-center'>
                                 <Checkbox
                                     className=''
                                     checked={currencyDetails.is_default}

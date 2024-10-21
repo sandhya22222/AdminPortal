@@ -9,6 +9,7 @@ import { Input } from '../../shadcnComponents/ui/input'
 import { Skeleton } from '../../shadcnComponents/ui/skeleton'
 import { Button } from '../../shadcnComponents/ui/button'
 import { Tabs, TabsTrigger, TabsList } from '../../shadcnComponents/ui/tabs'
+import Spin from '../../shadcnComponents/customComponents/Spin'
 const usersAllAPI = process.env.REACT_APP_USERS_ALL_API
 
 const updateStoreDistributorAPI = process.env.REACT_APP_UPDATE_STORE_DISTRIBUTOR
@@ -75,7 +76,6 @@ const StoreOverview = ({ realmName }) => {
         setStoreType(val)
     }
 
-    console.log('userAllAPIData', storeType, storeTypeFromURL)
     useEffect(() => {
         findAllUserAllAPI()
     }, [])
@@ -93,13 +93,10 @@ const StoreOverview = ({ realmName }) => {
                 </div>
             ) : isNetworkError ? (
                 <div className='!text-center  p-3 '>{t('messages:store_network_error')}</div>
+            ) : isStoreTypeLoading ? (
+                <Spin />
             ) : (
                 <>
-                    {/* <Spin
-                        tip={t('labels:please_wait')}
-                        size='large'
-                        // spinning={action === "edit" && isLoadingProductTemplatesById}
-                        spinning={isStoreTypeLoading}> */}
                     <label className='text-lg  font-semibold text-regal-blue !mb-6'>{t('labels:overview')}</label>
                     <div className=''>
                         <div className='mb-3 w-[500px]'>
@@ -136,25 +133,25 @@ const StoreOverview = ({ realmName }) => {
                             </TabsList>
                         </Tabs>
 
-                        <div className='w-full !flex-col !gap-2 !justify-start'>
+                        <div className='w-full flex flex-row  justify-start'>
                             <div
-                                className={`justify-items-start  !inline-block  !w-[35%] ${
+                                className={`inline-block w-[35%] ${
                                     util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
                                         ? 'text-left ml-2'
-                                        : 'text-right mr-2 '
+                                        : 'text-right mr-2'
                                 }`}>
-                                <label className='text-brandGray1  my-3 flex'>
+                                <label className='text-brandGray1 my-3 flex'>
                                     {t('labels:store_front_url')}
                                     <span
                                         className={
                                             util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                                ? '!mr-[108px]'
-                                                : '!ml-[120px]'
+                                                ? 'mr-[108px]'
+                                                : 'ml-[120px]'
                                         }>
                                         :
                                     </span>
                                 </label>
-                                <label className='text-brandGray1  my-3 flex'>
+                                <label className='text-brandGray1 my-3 flex'>
                                     {t('labels:store_management_portal_url')}
                                     <span
                                         className={
@@ -166,14 +163,10 @@ const StoreOverview = ({ realmName }) => {
                                     </span>
                                 </label>
                             </div>
-                            <div
-                                className={`${
-                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                        ? 'w-[62%] !inline-block '
-                                        : ' w-[62%] !inline-block '
-                                }`}>
-                                <p className='!font-semibold my-3'>
-                                    {userAllAPIData[0]?.store_front_url !== null ? (
+
+                            <div className={` w-[62%]`}>
+                                <div className='font-semibold my-3'>
+                                    {userAllAPIData[0]?.store_front_url ? (
                                         <a
                                             className='cursor-pointer text-brandPrimaryColor no-underline'
                                             target='_blank'
@@ -184,9 +177,9 @@ const StoreOverview = ({ realmName }) => {
                                     ) : (
                                         `${t('labels:not_available')}`
                                     )}
-                                </p>
-                                <p className='!font-semibold my-3'>
-                                    {userAllAPIData[0]?.store_redirect_url !== null ? (
+                                </div>
+                                <div className='font-semibold my-3'>
+                                    {userAllAPIData[0]?.store_redirect_url ? (
                                         <a
                                             className='cursor-pointer text-brandPrimaryColor no-underline'
                                             target='_blank'
@@ -197,9 +190,10 @@ const StoreOverview = ({ realmName }) => {
                                     ) : (
                                         `${t('labels:not_available')}`
                                     )}
-                                </p>
+                                </div>
                             </div>
                         </div>
+
                         <label className='my-2 text-regal-blue font-bold text-base'>
                             {t('labels:store_administrator_details')}
                         </label>
@@ -235,7 +229,6 @@ const StoreOverview = ({ realmName }) => {
                             </Button>
                         </div>
                     )}
-                    {/* </Spin> */}
                 </>
             )}
         </div>
