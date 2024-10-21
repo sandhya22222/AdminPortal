@@ -230,8 +230,8 @@ const Header2 = ({ collapsed, setCollapsed, setIsLanguageSelected }) => {
                                     {storeUsersData?.attributes?.profile_image_path?.[0] ? (
                                         <AvatarImage src={profileImage} alt='Profile Image' />
                                     ) : (
-                                        <AvatarFallback>
-                                            <RiUserLine />
+                                        <AvatarFallback className='bg-gray-400 '>
+                                            <RiUserLine className='text-white ' />
                                         </AvatarFallback>
                                     )}
                                 </Avatar>
