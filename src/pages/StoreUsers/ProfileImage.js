@@ -10,6 +10,7 @@ import useUploadProfileImage from './hooks/useUploadProfileImage'
 import { Button } from '../../shadcnComponents/ui/button'
 import StoreModal from '../../components/storeModal/StoreModal'
 import './UserProfile.css'
+import util from '../../util/common'
 
 const supportedFileExtensions = process.env.REACT_APP_IMAGES_EXTENSIONS
 const supportedFileTypes = ['image/png', 'image/jpeg']
@@ -201,7 +202,6 @@ const ProfileImage = ({ imagePath, refetchUserData }) => {
                 </div>
             </div>
 
-            {/* Upload Modal */}
             {isImageModalVisible && (
                 <StoreModal
                     isVisible={isImageModalVisible}
@@ -211,7 +211,16 @@ const ProfileImage = ({ imagePath, refetchUserData }) => {
                     okButtonText={t('labels:save')}
                     cancelButtonText={t('labels:cancel')}
                     isOkButtonDisabled={!selectedFile || uploadImageStatus === 'pending'}
-                    title={t('labels:add_new_file')}>
+                    title={
+                        <h2
+                            className={`${
+                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                    ? 'text-right pr-5' // Add padding-right for spacing
+                                    : 'text-left'
+                            }`}>
+                            {t('labels:add_new_file')}
+                        </h2>
+                    }>
                     <div className='space-y-4'>
                         <input
                             ref={fileInputRef}
@@ -226,8 +235,17 @@ const ProfileImage = ({ imagePath, refetchUserData }) => {
                             className='flex items-center mt-6 hover:text-brandPrimaryColor w-auto justify-center'
                             variant='outline'
                             onClick={handleUploadClick}>
-                            <MdOutlineFileUpload className='w-4 h-4 mr-2' />
-                            {t('labels:click_to_upload')}
+                            <MdOutlineFileUpload
+                                className={`w-4 h-4 ${
+                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'ml-2' : 'mr-2'
+                                }`}
+                            />
+                            <span
+                                className={`${
+                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'ml-2' : 'mr-2'
+                                }`}>
+                                {t('labels:click_to_upload')}
+                            </span>
                         </Button>
 
                         {selectedFile && (

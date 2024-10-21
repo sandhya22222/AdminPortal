@@ -11,9 +11,10 @@ import './DisplayPolicy.css'
 import { getGenerateDateAndTime } from '../../util/util'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import { EmptySVG } from '../../constants/media'
+import util from '../../util/common'
 
 const ListPolicies = ({ searchParams, setSearchParams }) => {
-    const { t, i18n } = useTranslation() // Get language direction
+    const { t } = useTranslation()
     const navigate = useNavigate()
     usePageTitle(t('labels:policies'))
     const search = useLocation().search
@@ -26,8 +27,6 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
     const policyRefs = useRef([])
     const navRef = useRef(null)
     const scrollbarRef = useRef(null)
-
-    const isRTL = i18n.dir() === 'rtl' // Check if the layout is RTL
 
     useEffect(() => {
         if (storeAdminStatus === 'success') {
@@ -111,7 +110,7 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
     }, [policiesTab])
 
     return (
-        <div className={`w-full h-full p-4 ${isRTL ? 'text-right' : 'text-left'}`}>
+        <div className='w-full h-full p-4'>
             {storeAdminStatus === 'pending' && (
                 <div className='p-4 w-full'>
                     <Skeleton className='w-full h-12 mb-4' />
@@ -120,12 +119,10 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
             )}
             {storeAdminStatus === 'success' && (
                 <div className='border rounded'>
-                    <div className={`text-xl font-medium p-3 ${isRTL ? 'text-right' : 'text-left'} text-regal-blue`}>
-                        {t('labels:policies')}
-                    </div>
+                    <div className='text-xl font-medium p-3 text-regal-blue'>{t('labels:policies')}</div>
                     <Separator className='my-0' />
                     {policiesTab.length > 0 && (
-                        <div className={`flex p-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <div className='flex p-3'>
                             <div className='flex-1'>
                                 <ScrollArea className='overflow-auto'>
                                     <div className='flex flex-col'>
@@ -135,26 +132,41 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
                                                 key={data.id}
                                                 className='mb-4'
                                                 ref={(el) => (policyRefs.current[data.id] = el)}>
-                                                <div className='text-lg font-semibold mb-3 text-brandGray1'>
+                                                <div
+                                                    className={`text-lg font-semibold mb-3 text-brandGray1 ${
+                                                        util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                            ? 'text-right'
+                                                            : 'text-left'
+                                                    }`}>
                                                     {data?.version_details?.consent_display_name}:
                                                 </div>
-                                                <div className='text-sm font-semibold mb-2 text-brandGray1'>
+                                                <div
+                                                    className={`text-sm font-semibold mb-2 text-brandGray1 ${
+                                                        util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                            ? 'text-right'
+                                                            : 'text-left'
+                                                    }`}>
                                                     {t('labels:last_updated')}:{' '}
                                                     {getGenerateDateAndTime(data?.updated_on, 'D MMMM YYYY')}
                                                 </div>
                                                 <ReactQuill
-                                                    value={data?.version_details?.consent_display_description}
-                                                    modules={{ toolbar: false }}
-                                                    readOnly
-                                                    className='mb-3 mr-2 text-base editor quill text-brandGray2'
-                                                />
-                                            </div>
+                                                value={data?.version_details?.consent_display_description}
+                                                modules={{ toolbar: false }}
+                                                readOnly
+                                                className={`mb-3 ${
+                                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'ml-2' : 'mr-2'
+                                                } text-base editor quill text-brandGray2`}
+                                                style={{
+                                                    textAlign: util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'right' : 'left',
+                                                }}
+                                            />
+                                        </div>
                                         ))}
                                     </div>
                                 </ScrollArea>
                             </div>
 
-                            <div className={`col-span-1 relative ${isRTL ? 'pr-0 pl-3' : ''}`}>
+                            <div className='col-span-1 relative'>
                                 <div className='sticky top-0 right-0 p-3 flex'>
                                     <ScrollArea className='h-[calc(100vh-200px)] pr-6'>
                                         <TooltipProvider>
@@ -184,7 +196,7 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
                                             </nav>
                                         </TooltipProvider>
                                     </ScrollArea>
-                                    <div ref={scrollbarRef} className='w-1 bg-gray-200 rounded-full  ml-2 sticky top-0'>
+                                    <div ref={scrollbarRef} className='w-1 bg-gray-200 rounded-full ml-2 sticky top-0'>
                                         <div
                                             className='w-3 h-3 bg-regal-orange rounded-full absolute -left-1'
                                             style={{ top: `${indicatorPosition}%` }}
