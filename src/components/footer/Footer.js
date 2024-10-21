@@ -42,7 +42,7 @@ const NewFooter = () => {
                     )}
                 </div>
             ) : null}
-            {t('messages:footer_content') !== 'Not Applicable' && (
+            {t('messages:footer_content') !== '-' && (
                 <p className='text-gray-500 text-xs mb-0'>{t('messages:footer_content')}</p>
             )}
         </div>
