@@ -17,7 +17,7 @@ const currencyAPI = process.env.REACT_APP_CHANGE_CURRENCY_API
 const storeSettingAPI = process.env.REACT_APP_STORE_FRONT_SETTINGS_API
 
 const Currency = ({ storeUUId }) => {
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
     const navigate = useNavigate()
     const [isCurrencyLoading, setIsCurrencyLoading] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
@@ -31,7 +31,6 @@ const Currency = ({ storeUUId }) => {
     const [selectedCurrency, setSelectedCurrency] = useState(null)
 
     //!get call of list currency
-    const isRTL = i18n.dir() === 'rtl'
     const findByPageCurrencyData = () => {
         MarketplaceServices.findAllWithoutPage(currencyAPI, null, false)
             .then(function (response) {
@@ -176,16 +175,18 @@ const Currency = ({ storeUUId }) => {
     }, [])
 
     return (
-        <div className={isRTL ? 'rtl' : 'ltr'}>
+        <>
             {isVendorsOnBoarded && (
                 <Alert className='my-4 px-4 !w-full bg-[#E6F7FF] border border-[#1677ff]'>
                     <AlertDescription>
-                        <div className='flex items-center space-x-2 rtl:space-x-reverse'>
+                        <div
+                            className={`flex items-center space-x-2 ${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'space-x-reverse' : ''}`}>
                             <MdInfo className='font-bold' color='#1677ff' size={25} />
                             <span className='font-medium'>{t('labels:currency_info')}</span>
                         </div>
-                        <div className='px-3 mt-1 text-sm'>
-                            <ul className='list-disc list-inside rtl:pr-5 ltr:pl-5'>
+                        <div
+                            className={`px-3 mt-1 text-sm ${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'text-right' : 'text-left'}`}>
+                            <ul style={{ listStyleType: 'disc' }}>
                                 <li>{t('messages:currency_info_note_one')}</li>
                                 <li>{t('messages:currency_info_note_two')}</li>
                             </ul>
@@ -193,7 +194,9 @@ const Currency = ({ storeUUId }) => {
                     </AlertDescription>
                 </Alert>
             )}
-            <Card className='w-full my-4'>
+            <Card
+                className='w-full my-4
+        '>
                 {isLoading ? (
                     <CardContent className='p-6'>
                         <Skeleton className='h-4 w-[250px] mb-4' />
@@ -204,28 +207,28 @@ const Currency = ({ storeUUId }) => {
                         <Skeleton className='h-4 w-[150px] mb-2' />
                         <Skeleton className='h-4 w-[150px] mb-2' />
                         <Skeleton className='h-4 w-[150px] mb-6' />
-                        <div className='flex gap-2 rtl:flex-row-reverse'>
+                        <div className='flex gap-2'>
                             <Skeleton className='h-10 w-[100px]' />
                             <Skeleton className='h-10 w-[100px]' />
                         </div>
                     </CardContent>
                 ) : (
-                    <div className='flex flex-col'>
+                    <div className='flex flex-col '>
                         <CardContent className='px-4 py-4'>
                             <CardHeader className='px-0 pt-0'>
-                                <CardTitle className='text-[19px] font-semibold text-regal-blue'>
+                                <CardTitle className='text-[19px] font-semibold  text-regal-blue'>
                                     {t('labels:currency')}
                                 </CardTitle>
                             </CardHeader>
                             <div className='mb-6'>
-                                <label className='text-[14px] mb-3 rtl:mr-1 ltr:ml-1 input-label-color block'>
+                                <label className='text-[14px] mb-3 ml-1 input-label-color'>
                                     {t('labels:choose_store_currency')}
                                 </label>
                                 <Select
                                     disabled={isVendorsOnBoarded}
                                     value={currencyData?.iso_currency_code || ''}
                                     onValueChange={(e) => currencyChangeConsent(e)}>
-                                    <SelectTrigger className='w-[300px] text-[14px] my-2'>
+                                    <SelectTrigger className='w-[300px] text-[14px] my-2 '>
                                         <SelectValue placeholder={t('messages:please_choose_a_store_currency')} />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -241,37 +244,73 @@ const Currency = ({ storeUUId }) => {
                                 <div className='mb-6'>
                                     <h3 className='text-md font-semibold mb-4'>{t('labels:currency_details')}</h3>
                                     <div className='space-y-2'>
-                                        {[
-                                            'currency_code',
-                                            'conversion',
-                                            'unit_price_name',
-                                            'min_amount',
-                                            'currency_symbol',
-                                            'no_of_decimals',
-                                        ].map((item) => (
-                                            <div key={item} className='flex items-center'>
-                                                <div className='w-1/5 text-sm text-muted-foreground'>
-                                                    {t(`labels:${item}`)}
-                                                </div>
-                                                <div className='w-4 text-center text-muted-foreground mx-3'>:</div>
-                                                <div className='flex-1 text-sm font-medium'>
-                                                    {currencyData[item.replace(/_/g, '_')] || t('labels:not_available')}
-                                                </div>
+                                        <div className='flex items-center'>
+                                            <div className='w-1/5 text-sm text-muted-foreground'>
+                                                {t('labels:currency_code')}
                                             </div>
-                                        ))}
+                                            <div className='w-4 text-center text-muted-foreground mr-3'>:</div>
+                                            <div className='flex-1 text-sm font-medium'>
+                                                {currencyData.iso_currency_code || t('labels:not_available')}
+                                            </div>
+                                        </div>
+                                        <div className='flex items-center'>
+                                            <div className='w-1/5 text-sm text-muted-foreground'>
+                                                {t('labels:conversion')}
+                                            </div>
+                                            <div className='w-4 text-center text-muted-foreground mr-3'>:</div>
+                                            <div className='flex-1 text-sm font-medium'>
+                                                {currencyData.unit_conversion || t('labels:not_available')}
+                                            </div>
+                                        </div>
+                                        <div className='flex items-center'>
+                                            <div className='w-1/5 text-sm text-muted-foreground'>
+                                                {t('labels:unit_price_name')}
+                                            </div>
+                                            <div className='w-4 text-center text-muted-foreground mr-3'>:</div>
+                                            <div className='flex-1 text-sm font-medium'>
+                                                {currencyData.unit_price_name || t('labels:not_available')}
+                                            </div>
+                                        </div>
+                                        <div className='flex items-center'>
+                                            <div className='w-1/5 text-sm text-muted-foreground'>
+                                                {t('labels:min_amount')}
+                                            </div>
+                                            <div className='w-4 text-center text-muted-foreground mr-3'>:</div>
+                                            <div className='flex-1 text-sm font-medium'>
+                                                {currencyData.minimum_amount || t('labels:not_available')}
+                                            </div>
+                                        </div>
+                                        <div className='flex items-center'>
+                                            <div className='w-1/5 text-sm text-muted-foreground'>
+                                                {t('labels:currency_symbol')}
+                                            </div>
+                                            <div className='w-4 text-center text-muted-foreground mr-3'>:</div>
+                                            <div className='flex-1 text-sm font-medium'>
+                                                {currencyData.symbol || t('labels:not_available')}
+                                            </div>
+                                        </div>
+                                        <div className='flex items-center'>
+                                            <div className='w-1/5 text-sm text-muted-foreground'>
+                                                {t('labels:no_of_decimals')}
+                                            </div>
+                                            <div className='w-4 text-center text-muted-foreground mr-3'>:</div>
+                                            <div className='flex-1 text-sm font-medium'>
+                                                {currencyData.no_of_decimal || t('labels:not_available')}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             )}
                             {!isVendorsOnBoarded && (
-                                <div className='flex gap-2 rtl:flex-row-reverse'>
+                                <div className='flex gap-2'>
                                     <Button
-                                        className='app-btn-primary'
+                                        className='app-btn-primary '
                                         onClick={() => updateStoreCurrencyApi()}
                                         disabled={!currencyOnChange}>
                                         {t('labels:save')}
                                     </Button>
                                     <Button
-                                        className='app-btn-secondary'
+                                        className=' app-btn-secondary'
                                         variant='outline'
                                         disabled={!currencyOnChange}
                                         onClick={() => navigate('/dashboard/store?m_t=1')}>
@@ -286,22 +325,45 @@ const Currency = ({ storeUUId }) => {
                     isVisible={currencyChangeFLag}
                     okButtonText={t('labels:yes')}
                     title={
-                        <span className='text-regal-blue font-bold text-[18px] leading-[26px]'>
+                        <span
+                            className={`text-regal-blue font-bold text-[18px] leading-[26px] ${
+                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                    ? 'text-right w-full block pr-5'
+                                    : ''
+                            }`}>
                             {t('labels:change_currency_details')}
                         </span>
                     }
                     okCallback={() => handleCurrencyChange()}
                     cancelCallback={() => closeCurrencyChangeConsentModal()}
                     isSpin={isCurrencyLoading}
-                    width={'400px'}
+                    width={'450px'}
                     hideCloseButton={true}>
                     <div className='text-muted-foreground'>
-                        <p className='mb-2'>{t('messages:currency_warning_message')}</p>
-                        <p>{t('messages:currency_message')}</p>
+                        <p
+                            className={`${
+                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                    ? 'ml-2 text-right'
+                                    : 'mr-2 text-left'
+                            } mb-2`}>
+                            {util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                ? t('messages:currency_warning_message').replace('?', '') + '?'
+                                : t('messages:currency_warning_message')}
+                        </p>
+                        <p
+                            className={`${
+                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                    ? 'ml-2 text-right'
+                                    : 'mr-2 text-left'
+                            }`}>
+                            {util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                ? t('messages:currency_message').replace('.', '') + '.'
+                                : t('messages:currency_message')}
+                        </p>
                     </div>
                 </StoreModal>
             </Card>
-        </div>
+        </>
     )
 }
 
