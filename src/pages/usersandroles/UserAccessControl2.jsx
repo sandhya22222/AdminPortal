@@ -21,6 +21,11 @@ import { cn } from '../../lib/utils'
 import ShadCNDataTable from '../../../src/shadcnComponents/customComponents/ShadCNDataTable'
 import HeaderForTitle from '../../components/header/HeaderForTitle'
 import util from '../../../src/util/common'
+import {
+    ShadCNTabs,
+    ShadCNTabsTrigger,
+    ShadCNTabsContent,
+} from '../../../src/shadcnComponents/customComponents/ShadCNTabs'
 
 const itemsPerPageFromEnv = process.env.REACT_APP_ITEM_PER_PAGE
 const groupsAPI = process.env.REACT_APP_GROUPS_API
@@ -267,7 +272,6 @@ export default function UserAccessControl() {
         <HeaderForTitle
             title={
                 <div className='relative flex flex-col justify-between items-start w-full'>
-                    {/* Top section: Title and button */}
                     <div className='w-full'>
                         <div className='flex items-center'>
                             {/* Left side: Title and description */}
@@ -280,7 +284,8 @@ export default function UserAccessControl() {
                         </div>
                     </div>
 
-                    <div className='mt-3 w-full'>
+                    <div
+                        className={`${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'items-end' : 'items-start'}`}>
                         <TabNavigation />
                     </div>
                 </div>
@@ -300,28 +305,12 @@ export default function UserAccessControl() {
     )
 
     const TabNavigation = () => (
-        <div className='flex  '>
-            <button
-                className={cn(
-                    'px-4 py-2 font-medium text-sm focus:outline-none',
-                    activeTab === 'users'
-                        ? 'text-primary border-b-2 border-primary'
-                        : 'text-muted-foreground hover:text-primary'
-                )}
-                onClick={() => handleTabChange('users')}>
+        <ShadCNTabs defaultActiveKey={activeTab} activeKey={activeTab} onTabClick={handleTabChange} className='w-full '>
+            <ShadCNTabsTrigger className='' value='users'>
                 {t('labels:users')}
-            </button>
-            <button
-                className={cn(
-                    'px-4 py-2 font-medium text-sm focus:outline-none',
-                    activeTab === 'roles'
-                        ? 'text-primary border-b-2 border-primary'
-                        : 'text-muted-foreground hover:text-primary'
-                )}
-                onClick={() => handleTabChange('roles')}>
-                {t('labels:roles')}
-            </button>
-        </div>
+            </ShadCNTabsTrigger>
+            <ShadCNTabsTrigger value='roles'>{t('labels:roles')}</ShadCNTabsTrigger>
+        </ShadCNTabs>
     )
 
     const renderContent = () => {
