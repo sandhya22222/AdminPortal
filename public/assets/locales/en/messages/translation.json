@@ -153,7 +153,7 @@
     "currency_warning_message": "Are you sure you want to change the currency?",
     "currency_message": "Once it's done, you can't change it again.",
     "language_document_data": "Please upload a language support document utf-8 CSV format containing translated values, and we will use it to update the respective portals with the new language content.",
-    "footer_content": "",
+    "footer_content": "-",
     "language_code_helper_text": "Only lower case letters are allowed",
     "store_type_info_partner": "A partner store is a subset of distributor store.",
     "store_type_info_distributor": "A distributor store can supervise partner store’s performance and also has the ability to display its products in any of them if it chooses.",
