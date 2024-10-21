@@ -495,6 +495,7 @@ const Theme = ({ id, getImageData }) => {
                                 </div>
                             </div>
                             <StoreModal
+                                width='700px'
                                 isVisible={isModalOpen}
                                 title={`${t('labels:sample_preview_page_for_store_front')}`}
                                 cancelCallback={() => closeModal()}
@@ -521,111 +522,117 @@ const Theme = ({ id, getImageData }) => {
                         <div className='flex flex-row flex-wrap mt-4 gap-10'>
                             {/* rowONe */}
                             <TooltipProvider>
-    <div className=''>
-        <Label>{t('labels:primary_button_background_color')}</Label>
-        <div className='flex gap-2 mt-1 items-center'>
-            <div
-                className='w-9 h-9 rounded border cursor-pointer'
-                style={{ backgroundColor: buttonPrimaryBackgroundColor }}
-                onClick={() => setShowColorPicker(!showColorPicker)}></div>
+                                <div className=''>
+                                    <Label>{t('labels:primary_button_background_color')}</Label>
+                                    <div className='flex gap-2 mt-1 items-center'>
+                                        <div
+                                            className='w-9 h-9 rounded border cursor-pointer'
+                                            style={{ backgroundColor: buttonPrimaryBackgroundColor }}
+                                            onClick={() => setShowColorPicker(!showColorPicker)}></div>
 
-            <div className='relative flex items-center'>
-                <Input
-                    value={buttonPrimaryBackgroundColor}
-                    maxLength={7}
-                    className='w-[150px]'
-                    onChange={(e) => {
-                        const newColor = e.target.value;
-                        setButtonPrimaryBackgroundColor(newColor);
+                                        <div className='relative flex items-center'>
+                                            <Input
+                                                value={buttonPrimaryBackgroundColor}
+                                                maxLength={7}
+                                                className='w-[150px]'
+                                                onChange={(e) => {
+                                                    const newColor = e.target.value
+                                                    setButtonPrimaryBackgroundColor(newColor)
 
-                        // Validate hex code
-                        const isValidHex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(newColor);
-                        setColorCodeValidation((prev) => ({
-                            ...prev,
-                            primaryBgValidation: !isValidHex,
-                        }));
+                                                    // Validate hex code
+                                                    const isValidHex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(
+                                                        newColor
+                                                    )
+                                                    setColorCodeValidation((prev) => ({
+                                                        ...prev,
+                                                        primaryBgValidation: !isValidHex,
+                                                    }))
 
-                        // Update the theme with the new color
-                        const themeUpdate = { ...copyImageOfStoreSettingsPageTheme };
-                        themeUpdate['btn_primary_bg_color'] = newColor;
-                        setCopyImageOfStoreSettingsPageTheme(themeUpdate);
+                                                    // Update the theme with the new color
+                                                    const themeUpdate = { ...copyImageOfStoreSettingsPageTheme }
+                                                    themeUpdate['btn_primary_bg_color'] = newColor
+                                                    setCopyImageOfStoreSettingsPageTheme(themeUpdate)
 
-                        // Compare the new color with the original to detect changes
-                        const hasChanged = newColor !== btnPrimaryBgColor;
-                        setOnChangeValues(hasChanged);
+                                                    // Compare the new color with the original to detect changes
+                                                    const hasChanged = newColor !== btnPrimaryBgColor
+                                                    setOnChangeValues(hasChanged)
 
-                        console.log('New Color:', newColor, 'Has Changed:', hasChanged);
-                    }}
-                />
+                                                    console.log('New Color:', newColor, 'Has Changed:', hasChanged)
+                                                }}
+                                            />
 
-                <Tooltip>
-                    <TooltipTrigger>
-                        <Undo
-                            className='cursor-pointer ml-2'
-                            onClick={() => {
-                                setButtonPrimaryBackgroundColor(btnPrimaryBgColor);
+                                            <Tooltip>
+                                                <TooltipTrigger>
+                                                    <Undo
+                                                        className='cursor-pointer ml-2'
+                                                        onClick={() => {
+                                                            setButtonPrimaryBackgroundColor(btnPrimaryBgColor)
 
-                                setColorCodeValidation((prev) => ({
-                                    ...prev,
-                                    primaryBgValidation: false,
-                                }));
+                                                            setColorCodeValidation((prev) => ({
+                                                                ...prev,
+                                                                primaryBgValidation: false,
+                                                            }))
 
-                                setOnChangeValues(false);
+                                                            setOnChangeValues(false)
 
-                                // Reset the theme to the original value
-                                const themeUpdate = { ...copyImageOfStoreSettingsPageTheme };
-                                themeUpdate['btn_primary_bg_color'] = btnPrimaryBgColor;
-                                setCopyImageOfStoreSettingsPageTheme(themeUpdate);
+                                                            // Reset the theme to the original value
+                                                            const themeUpdate = { ...copyImageOfStoreSettingsPageTheme }
+                                                            themeUpdate['btn_primary_bg_color'] = btnPrimaryBgColor
+                                                            setCopyImageOfStoreSettingsPageTheme(themeUpdate)
 
-                                console.log('Reset to original value:', btnPrimaryBgColor);
-                            }}
-                            size={14}
-                        />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                        {t('messages:reset_to_the_original_value')}
-                    </TooltipContent>
-                </Tooltip>
-            </div>
-        </div>
+                                                            console.log('Reset to original value:', btnPrimaryBgColor)
+                                                        }}
+                                                        size={14}
+                                                    />
+                                                </TooltipTrigger>
+                                                <TooltipContent>
+                                                    {t('messages:reset_to_the_original_value')}
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        </div>
+                                    </div>
 
-        {showColorPicker && (
-            <div className='absolute mt-2 z-10'>
-                <SketchPicker
-                    color={buttonPrimaryBackgroundColor}
-                    onChangeComplete={(color) => {
-                        setButtonPrimaryBackgroundColor(color.hex);
+                                    {showColorPicker && (
+                                        <div className='absolute mt-2 z-10'>
+                                            <SketchPicker
+                                                color={buttonPrimaryBackgroundColor}
+                                                onChangeComplete={(color) => {
+                                                    setButtonPrimaryBackgroundColor(color.hex)
 
-                        // Reset validation when a valid color is chosen
-                        setColorCodeValidation((prev) => ({
-                            ...prev,
-                            primaryBgValidation: false,
-                        }));
+                                                    // Reset validation when a valid color is chosen
+                                                    setColorCodeValidation((prev) => ({
+                                                        ...prev,
+                                                        primaryBgValidation: false,
+                                                    }))
 
-                        // Update the theme with the new color
-                        const themeUpdate = { ...copyImageOfStoreSettingsPageTheme };
-                        themeUpdate['btn_primary_bg_color'] = color.hex;
-                        setCopyImageOfStoreSettingsPageTheme(themeUpdate);
+                                                    // Update the theme with the new color
+                                                    const themeUpdate = { ...copyImageOfStoreSettingsPageTheme }
+                                                    themeUpdate['btn_primary_bg_color'] = color.hex
+                                                    setCopyImageOfStoreSettingsPageTheme(themeUpdate)
 
-                        // Detect change and set the state accordingly
-                        const hasChanged = color.hex !== btnPrimaryBgColor;
-                        setOnChangeValues(hasChanged);
+                                                    // Detect change and set the state accordingly
+                                                    const hasChanged = color.hex !== btnPrimaryBgColor
+                                                    setOnChangeValues(hasChanged)
 
-                        console.log('Color changed to:', color.hex, 'Has Changed:', hasChanged);
-                    }}
-                />
-            </div>
-        )}
+                                                    console.log(
+                                                        'Color changed to:',
+                                                        color.hex,
+                                                        'Has Changed:',
+                                                        hasChanged
+                                                    )
+                                                }}
+                                            />
+                                        </div>
+                                    )}
 
-        {colorCodeValidation.primaryBgValidation && (
-            <p className='text-red-600 text-sm'>
-                {t('messages:please_enter_valid_hexadecimal_code')} <br />
-                {t('messages:ex_ffffff_for_white_000000_for_black')}
-            </p>
-        )}
-    </div>
-</TooltipProvider>
-
+                                    {colorCodeValidation.primaryBgValidation && (
+                                        <p className='text-red-600 text-sm'>
+                                            {t('messages:please_enter_valid_hexadecimal_code')} <br />
+                                            {t('messages:ex_ffffff_for_white_000000_for_black')}
+                                        </p>
+                                    )}
+                                </div>
+                            </TooltipProvider>
 
                             {/* row2 */}
                             <TooltipProvider>
