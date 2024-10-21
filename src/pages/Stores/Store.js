@@ -20,6 +20,7 @@ import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import Status from './Status'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import util from '../../util/common'
+import AddStores from './AddStores'
 
 import { Toggle } from '../../shadcnComponents/ui/toggle'
 import { useAuth } from 'react-oidc-context'
@@ -42,12 +43,13 @@ import ThresholdConfiguration from './ThresholdConfiguration'
 //! Get all required details from .env file
 const storeAPI = process.env.REACT_APP_STORE_API
 const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE)
-const emailMinLength = process.env.REACT_APP_EMAIL_MIN_LENGTH
-const emailMaxLength = process.env.REACT_APP_EMAIL_MAX_LENGTH
-const storeNameMinLength = process.env.REACT_APP_STORE_NAME_MIN_LENGTH
-const storeNameMaxLength = process.env.REACT_APP_STORE_NAME_MAX_LENGTH
-const userNameMinLength = process.env.REACT_APP_USERNAME_MIN_LENGTH
-const userNameMaxLength = process.env.REACT_APP_USERNAME_MAX_LENGTH
+
+const storeLimitApi = process.env.REACT_APP_STORE_PLATFORM_LIMIT_API
+const dm4sightAnalysisCountAPI = process.env.REACT_APP_4SIGHT_GETANALYSISCOUNT_API
+const dm4sightClientID = process.env.REACT_APP_4SIGHT_CLIENT_ID
+const dm4sightBaseURL = process.env.REACT_APP_4SIGHT_BASE_URL
+const currentUserDetailsAPI = process.env.REACT_APP_USER_PROFILE_API
+const maxDataLimit = process.env.REACT_APP_MAX_DATA_LIMIT
 const emailRegexPattern = process.env.REACT_APP_REGEX_PATTERN_EMAIL
 const searchMaxLength = process.env.REACT_APP_SEARCH_MAX_LENGTH
 const domainName = process.env.REACT_APP_DOMAIN_NAME
@@ -698,13 +700,13 @@ const Stores = () => {
         }
     }
 
-    const handleStoreTypeChange = (val) => {
-        if (storeType === 'partner') {
-            setIsOpenModalForMakingDistributor(true)
-        } else {
-            setStoreType(val)
-        }
-    }
+    // const handleStoreTypeChange = (val) => {
+    //     if (storeType === 'partner') {
+    //         setIsOpenModalForMakingDistributor(true)
+    //     } else {
+    //         setStoreType(val)
+    //     }
+    // }
     const handleStoreTypeChangeConfirmation = () => {
         setStoreType('distributor')
         setIsOpenModalForMakingDistributor(false)
@@ -1010,285 +1012,27 @@ const Stores = () => {
                         <>
                             {!isUpLoading ? (
                                 <>
-                                    <div>
-                                        <label
-                                            className='text-[14px] leading-[22px] font-normal text-brandGray2 mb-2 ml-1 '
-                                            id='labStNam'>
-                                            {t('labels:store_domain_name')}
-                                        </label>
-                                        <span className='mandatory-symbol-color text-sm ml-1'>*</span>
-                                    </div>
-                                    <div className='flex'>
-                                        <Input
-                                            placeholder={t('placeholders:enter_store_name')}
-                                            value={name}
-                                            minLength={storeNameMinLength}
-                                            maxLength={storeNameMaxLength}
-                                            className={`!w-[50%] mt-2 ${
-                                                inValidName
-                                                    ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400 '
-                                                    : ''
-                                            }`}
-                                            onChange={(e) => {
-                                                const alphaWithoutSpaces = /^[a-zA-Z0-9]+$/
-                                                if (
-                                                    e.target.value !== '' &&
-                                                    validator.matches(e.target.value, alphaWithoutSpaces)
-                                                ) {
-                                                    setName(e.target.value)
-                                                    setOnChangeValues(true)
-                                                } else if (e.target.value === '') {
-                                                    setName(e.target.value)
-                                                    setOnChangeValues(false)
-                                                }
-                                                setInValidName(false)
-                                            }}
-                                            onBlur={() => {
-                                                const trimmed = name.trim()
-                                                const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
-                                                setName(trimmedUpdate)
-                                            }}
-                                        />
-                                        <span className='mx-3 mt-2 text-brandGray2'>{domainName}</span>
-                                    </div>
-                                    {inValidName && name === '' && (
-                                        <div className='text-red-600 flex gap-1 mt-1'>
-                                            <img src={warningInfoIcon} alt='warningInfoIcon' />{' '}
-                                            {t('messages:empty_store_name_message')}
-                                        </div>
-                                    )}
-                                    {inValidName && name && name?.length < 3 && (
-                                        <div className='text-red-600 flex gap-1 mt-1'>
-                                            <img src={warningInfoIcon} alt='warningInfoIcon' />{' '}
-                                            {t('messages:enter_valid_store_name_message')}
-                                        </div>
-                                    )}
-                                    <div className='flex !mt-5'>
-                                        <label
-                                            className='text-[14px] leading-[22px] font-normal text-brandGray2 mb-2 ml-1 '
-                                            id='labStNam'>
-                                            {t('labels:store_type')}
-                                        </label>
-                                        <span className='mandatory-symbol-color text-sm ml-1'>*</span>
-                                        <span className='mt-1 ml-1'>
-                                            <ShadCNTooltip
-                                                // autoAdjustOverflow={true}
-                                                content={
-                                                    <>
-                                                        <ul
-                                                            style={{
-                                                                listStyleType: 'disc',
-                                                                marginLeft: 0,
-                                                                paddingLeft: '20px',
-                                                            }}>
-                                                            <li>{t('messages:store_type_info_partner')}</li>
-                                                            <li>{t('messages:store_type_info_distributor')}</li>
-                                                        </ul>
-                                                    </>
-                                                }
-                                                position={
-                                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                                        ? 'left'
-                                                        : 'right'
-                                                }
-                                                width='400px'>
-                                                <img src={InfoSymbol} alt='InfoSymbol' />
-                                            </ShadCNTooltip>
-                                        </span>
-                                    </div>
-                                    <div className='flex'>
-                                        <Toggle
-                                            pressed={storeType === 'partner'} // Check if 'partner' is selected
-                                            onPressedChange={() => handleStoreTypeChange('partner')}
-                                            className={`${isDistributor ? 'opacity-50 cursor-not-allowed' : ''} ${
-                                                storeType === 'partner'
-                                                    ? 'border-2 border-primary text-primary' // Apply border and text color for selected state
-                                                    : 'border border-gray-300 text-gray-700 hover:border-gray-400' // Default border for unselected
-                                            } transition-all`}
-                                            disabled={isDistributor}>
-                                            {t('labels:partner')}
-                                        </Toggle>
-
-                                        <Toggle
-                                            pressed={storeType === 'distributor'} // Check if 'distributor' is selected
-                                            onPressedChange={() => handleStoreTypeChange('distributor')}
-                                            className={`${isDistributor ? 'opacity-50 cursor-not-allowed' : ''} ${
-                                                storeType === 'distributor'
-                                                    ? 'border-2 border-primary text-primary' // Apply border and text color for selected state
-                                                    : 'border border-gray-300 text-gray-700 hover:border-gray-400' // Default border for unselected
-                                            } transition-all`}
-                                            disabled={isDistributor}>
-                                            {t('labels:Distributor')}
-                                        </Toggle>
-                                    </div>
-
-                                    <div className='font-bold  mt-[24px] text-[16px] leading-[24px] text-regal-blue'>
-                                        {t('labels:store_administrator_details')}
-                                    </div>
-                                    {/* alert 3 */}
-                                    <div className='px-3 my-4'>
-                                        <Alert variant='default' className='flex items-start !w-full'>
-                                            <Info className='text-foreground w-4' /> {/* Icon */}
-                                            <div className='ml-2'>
-                                                <AlertTitle>
-                                                    <p className='mr-1 text-brandGray1'>{t('labels:note')}:</p>
-                                                </AlertTitle>
-                                                <AlertDescription>
-                                                    <p className='text-brandGray1'>
-                                                        {t('messages:add_store_description')}{' '}
-                                                        <span className='font-bold'>
-                                                            {t('labels:store_management_portal')}
-                                                        </span>
-                                                    </p>
-                                                </AlertDescription>
-                                            </div>
-                                        </Alert>
-                                    </div>
-                                    <div>
-                                        <label
-                                            className='mb-2 ml-1 text-[14px] leading-[22px] font-normal text-brandGray2'
-                                            id='labStEmail'>
-                                            {t('labels:email')}
-                                        </label>
-                                        <span className='mandatory-symbol-color text-sm ml-1'>*</span>
-                                    </div>
-                                    <Input
-                                        placeholder={t('placeholders:enter_email')}
-                                        value={storeEmail}
-                                        minLength={emailMinLength}
-                                        maxLength={emailMaxLength}
-                                        className={`!w-[50%] mt-2 ${
-                                            inValidEmail
-                                                ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400'
-                                                : ''
-                                        }`}
-                                        onChange={(e) => {
-                                            setInValidEmail(false)
-                                            if (e.target.value === '') {
-                                                setOnChangeValues(false)
-                                                setStoreEmail(e.target.value)
-                                            } else {
-                                                setOnChangeValues(true)
-                                                setStoreEmail(e.target.value.trim())
-                                            }
-                                        }}
-                                        onBlur={() => {
-                                            const trimmed = storeEmail.trim()
-                                            const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
-                                            setStoreEmail(trimmedUpdate)
-                                        }}
+                                    <AddStores
+                                        onClose={onClose}
+                                        validateStorePostField={validateStorePostField}
+                                        storeUserName={storeUserName}
+                                        setStoreUserName={setStoreUserName}
+                                        inValidUserName={inValidUserName}
+                                        setInValidUserName={setInValidUserName}
+                                        storeEmail={storeEmail}
+                                        setStoreEmail={setStoreEmail}
+                                        inValidEmail={inValidEmail}
+                                        setInValidEmail={setInValidEmail}
+                                        inValidEmailFormat={inValidEmailFormat}
+                                        onChangeValues={onChangeValues}
+                                        setOnChangeValues={setOnChangeValues}
+                                        isDistributor={isDistributor}
+                                        name={name}
+                                        setName={setName}
+                                        inValidName={inValidName}
+                                        setInValidName={setInValidName}
+                                        domainName={domainName}
                                     />
-                                    {inValidEmail && storeEmail === '' && (
-                                        <div className='text-red-600 flex gap-1 mt-1'>
-                                            <img src={warningInfoIcon} alt='warningInfoIcon' />{' '}
-                                            {t('messages:empty_email_name_message')}
-                                        </div>
-                                    )}
-                                    {inValidEmail && storeEmail && inValidEmailFormat && (
-                                        <div className='text-red-600 flex gap-1 mt-1'>
-                                            <img alt='warningInfoIcon' src={warningInfoIcon} />{' '}
-                                            {t('messages:enter_valid_email_message')}
-                                        </div>
-                                    )}
-                                    <div className='flex mt-3'>
-                                        <label
-                                            className=' ml-1 text-[14px] leading-[22px] font-normal text-brandGray2'
-                                            id='labStUseName'>
-                                            {t('labels:username')}
-                                        </label>
-                                        <span className='mandatory-symbol-color text-sm ml-1'>*</span>
-                                        <span className='mt-1 ml-1'>
-                                            <ShadCNTooltip
-                                                content={
-                                                    <div className='text-sm text-white'>
-                                                        <p className='m-0 p-0'>
-                                                            {t('labels:your_username_can_include')}
-                                                            <span>:</span>
-                                                        </p>
-                                                        <ul className='list-disc !ml-3 space-y-1 mb-0'>
-                                                            <li>{t('messages:uppercase_letters')}</li>
-                                                            <li>{t('messages:lowercase_letters')}</li>
-                                                            <li>{t('messages:digits')}</li>
-                                                            <li>{t('messages:underscore')}</li>
-                                                            <li>{t('messages:hyphens')}</li>
-                                                        </ul>
-                                                        <p className='p-0 m-0'>
-                                                            {t('messages:username_acceptance_criteria_note')}
-                                                        </p>
-                                                    </div>
-                                                }
-                                                position={
-                                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                                        ? 'left'
-                                                        : 'right'
-                                                }
-                                                width='400px'
-                                                // overlayClassName='usernameTooltip'
-                                                // overlayInnerStyle={{ width: '400px' }}
-                                            >
-                                                <img src={InfoSymbol} alt='InfoSymbol' />
-                                            </ShadCNTooltip>
-                                        </span>
-                                    </div>
-                                    <Input
-                                        placeholder={t('placeholders:enter_username')}
-                                        value={storeUserName}
-                                        minLength={userNameMinLength}
-                                        maxLength={userNameMaxLength}
-                                        className={`!w-[50%] mt-2 ${
-                                            inValidUserName
-                                                ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400'
-                                                : ''
-                                        }`}
-                                        // prefix={<UserOutlined className='site-form-item-icon' />}
-                                        onChange={(e) => {
-                                            const regex = /^[A-Za-z0-9_\- ]+$/
-                                            if (e.target.value !== '' && validator.matches(e.target.value, regex)) {
-                                                setInValidUserName(false)
-                                                setStoreUserName(String(e.target.value).toLowerCase().trim())
-                                                setOnChangeValues(true)
-                                            } else if (e.target.value === '') {
-                                                setStoreUserName(e.target.value)
-                                                setOnChangeValues(false)
-                                            }
-                                        }}
-                                        onBlur={() => {
-                                            const trimmed = storeUserName.trim()
-                                            const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
-                                            setStoreUserName(trimmedUpdate)
-                                        }}
-                                    />
-                                    {inValidUserName && storeUserName === '' && (
-                                        <div className='text-red-600 flex gap-1 mt-1'>
-                                            <img src={warningInfoIcon} alt='warningInfoIcon' />{' '}
-                                            {t('messages:empty_user_name_message')}
-                                        </div>
-                                    )}
-                                    {inValidUserName && storeUserName && storeUserName?.length < 3 && (
-                                        <div className='text-red-600 flex gap-1 mt-1'>
-                                            <img src={warningInfoIcon} alt='warningInfoIcon' />{' '}
-                                            {t('messages:enter_valid_user_name_message')}
-                                        </div>
-                                    )}
-
-                                    <div className='flex space-x-3 !justify-end'>
-                                        <Button
-                                            className={'app-btn-secondary'}
-                                            // disabled={!onChangeValues}
-                                            onClick={() => {
-                                                onClose()
-                                            }}>
-                                            {t('labels:cancel')}
-                                        </Button>
-                                        <Button
-                                            className={'app-btn-primary'}
-                                            // disabled={!onChangeValues}
-                                            onClick={() => {
-                                                validateStorePostField()
-                                            }}>
-                                            {t('labels:save')}
-                                        </Button>
-                                    </div>
                                 </>
                             ) : (
                                 <Spin />
