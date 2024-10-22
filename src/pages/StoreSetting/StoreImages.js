@@ -44,38 +44,44 @@ const StoreImages = ({
     const [bannerImagesLength, setBannerImagesLength] = useState(0)
     const [previewModalOpen, setPreviewModalOpen] = useState(false)
     const [previewUrl, setPreviewUrl] = useState('')
+    const [removedFile, setRemovedFile] = useState()
+    const [isHovered, setIsHovered] = useState(false)
+
     var selectedImageArrayOfObject = []
 
     const handleChange = (e) => {
-        const files = Array.from(e.target.files)
-        console.log('firstttt', files)
-        const validImages = files.filter((file) => file.type.startsWith('image/'))
-
+        let files = Array.from(e.target.files) // Get the selected files as an array
+        const validImages = files.filter((file) => file.type.startsWith('image/')) // Filter only images
+        console.log('e.target.value', e.target.files)
+        // Declare variables outside the if block
+        let alreadyUploadedCount = allImageUrl?.length || 0
+        let selectedImagesCount = validImages.length
+        let totalBannerImagesCount = alreadyUploadedCount + selectedImagesCount
+        let remainingSlots = 8 - alreadyUploadedCount // Calculate remaining slots
         if (validImages.length > 0) {
-            // Map through valid images and assign a unique `uid`
-            const newFilesWithUid = validImages.map((file) => {
-                // Create a new object with the original properties and add the uid
-                return {
-                    uid: `${file.name}-${Date.now()}`,
-                    name: file.name,
-                    size: file.size,
-                    type: file.type,
-                    lastModified: file.lastModified,
-                    lastModifiedDate: file.lastModifiedDate,
-                    originFileObj: file,
-                    // Add any other properties you need
-                }
-            })
-            // Generate preview URLs using the original validImages array
-            const newPreviews = validImages.map((file) => {
-                return URL.createObjectURL(file)
-            })
+            // Restrict validImages to the available slots
+            if (totalBannerImagesCount > 8) {
+                validImages.splice(remainingSlots) // Keep only the allowed number of images
+            }
 
-            // Update state with new files and previews
+            const newFilesWithUid = validImages.map((file) => ({
+                uid: `${file.name}-${Date.now()}`,
+                name: file.name,
+                size: file.size,
+                type: file.type,
+                lastModified: file.lastModified,
+                lastModifiedDate: file.lastModifiedDate,
+                originFileObj: file,
+                status: 'uploading', // Set initial status
+            }))
+
+            const newPreviews = validImages.map((file) => URL.createObjectURL(file))
+
+            // Update the state with the new files and previews
             setFileList((prevFiles) => [...prevFiles, ...newFilesWithUid])
             setPreviewImage((prevPreviews) => [...prevPreviews, ...newPreviews])
         } else {
-            console.error('No valid image files selected')
+            console.error('No valid image files selected.')
         }
         if (type === 'store_logo') {
             if (e.target.files.length === 0) {
@@ -88,27 +94,28 @@ const StoreImages = ({
             }
         }
         if (type === 'banner_images') {
-            setBannerImagesLength(parseInt(allImageUrl?.length) + parseInt(e.target.files?.length))
-            files.forEach((obj) => {
-                selectedImageArrayOfObject.push(obj)
+            setBannerImagesLength(alreadyUploadedCount + validImages.length)
+
+            // Add the valid images to `selectedImageArrayOfObject`
+            validImages.forEach((file) => {
+                selectedImageArrayOfObject.push(file)
             })
-
-            console.log('selectedImageArrayOfObject', selectedImageArrayOfObject)
-            let sampleBannerImagesLength = parseInt(allImageUrl?.length) + parseInt(e.target.files?.length)
-
             if (e.target.files.length === 0) {
                 let temp = imagesUpload.filter((e) => e.type !== 'banner_images')
                 setImagesUpload(temp)
             } else {
-                let totalSelectLength = e.target.files.length
-                if (sampleBannerImagesLength > parseInt(BannerImagesUploadLength)) {
-                    let imagesUploadLength = sampleBannerImagesLength - parseInt(BannerImagesUploadLength)
-                    let imagesSelect = sampleBannerImagesLength - imagesUploadLength
-                    totalSelectLength = imagesSelect - allImageUrl.length
-                    files.splice(totalSelectLength) // Limit the fileList to eight files
+                // If the total number of images exceeds the upload limit (8)
+                let remainingSlots = 8 - alreadyUploadedCount
+
+                // Restrict the selection to remaining available slots
+                if (totalBannerImagesCount > 8) {
+                    validImages.splice(remainingSlots)
                 }
+
+                // Limit `selectedImageArrayOfObject` based on available slots
+                selectedImageArrayOfObject.splice(remainingSlots)
+
                 let copyImageData = [...imagesUpload]
-                selectedImageArrayOfObject.splice(totalSelectLength)
                 let index = copyImageData.findIndex((item) => item.type === 'banner_images')
                 console.log('index', index)
                 if (index === -1) {
@@ -126,8 +133,10 @@ const StoreImages = ({
                 } else {
                     let bannerImagesData = copyImageData[index]
                     let duplicateValues = [...bannerImagesData.imageValue]
-                    if (e.target.files[0].status === 'removed') {
-                        let filteredDuplicateValues = duplicateValues.filter((ele) => ele.uid !== e.target.files[0].uid)
+                    if (removedFile !== undefined && removedFile.status === 'removed') {
+                        let filteredDuplicateValues = duplicateValues.filter(
+                            (ele) => ele.name !== e.target.files[0].name
+                        )
                         bannerImagesData['imageValue'] = filteredDuplicateValues
                     } else {
                         duplicateValues.push(e.target.files[0])
@@ -139,41 +148,10 @@ const StoreImages = ({
             }
         }
     }
-    useEffect(() => {
-        if (getImageData && getImageData !== undefined) {
-            if (type === 'store_logo') {
-                let temp = getImageData && getImageData.store_logo_path
-                if (temp !== '' && temp !== null && temp !== undefined) {
-                    findAllWithoutPageStoreAbsoluteImagesApi(temp)
-                } else {
-                    setImagePathShow()
-                }
-            }
-        }
-        selectedImageArrayOfObject = []
-    }, [getImageData])
-
-    useEffect(() => {
-        setImagePathShow()
-    }, [])
-
-    useEffect(() => {
-        if (bannerAbsoluteImage && bannerAbsoluteImage.length > 0) {
-            let temp = []
-            for (let i = 0; i < bannerAbsoluteImage.length; i++) {
-                if (type === 'banner_images') {
-                    temp.push(baseURL + bannerAbsoluteImage[i].image_fullpath)
-                }
-            }
-            setAllImageUrl(temp)
-            setImagePathShow(temp)
-        }
-    }, [bannerAbsoluteImage])
 
     const handleCancel = () => setPreviewOpen(false)
 
     const handlePreview = (file) => {
-        console.log('filessssss', file)
         const originalFile = file.originFileObj // Access the original File object if it exists
 
         if (originalFile) {
@@ -191,21 +169,37 @@ const StoreImages = ({
     }
 
     const onRemove = (index) => {
-        // Ensure the file list exists and is not empty
         if (fileList && fileList.length > 0) {
             const removedFile = fileList[index]
 
-            // Step 1: Remove from fileList by matching the `uid`
+            // Step 1: Set status to 'removed' for the file being removed
+            removedFile.status = 'removed'
+
+            // Step 2: Filter out the removed file from the file list and preview image
             const updatedFileList = fileList.filter((file) => file.uid !== removedFile.uid)
             setFileList(updatedFileList)
-
-            // Step 2: Remove from preview images using the same index
+            setRemovedFile(removedFile)
             const updatedPreviewImage = previewImage.filter((_, i) => i !== index)
             setPreviewImage(updatedPreviewImage)
 
-            // Step 3: Optionally, remove from any other related state (e.g., imagesUpload)
-            const updatedImagesUpload = imagesUpload.filter((img) => img.imageValue.uid !== removedFile.uid)
-            setImagesUpload(updatedImagesUpload)
+            // Step 3: Update imagesUpload to remove the file from banner_images
+            let updatedImagesUpload = imagesUpload.map((img) => {
+                if (img.type === 'banner_images') {
+                    img.imageValue = img.imageValue.filter((image) => image.name !== removedFile.name)
+                }
+                return img
+            })
+
+            // Step 4: Check if all imageValues are empty, and clear imagesUpload if so
+            const hasImages = updatedImagesUpload.some((img) => img.imageValue.length > 0)
+
+            if (!hasImages) {
+                // If no images left in imageValue, clear imagesUpload state
+                setImagesUpload([])
+            } else {
+                // Otherwise, set the updated imagesUpload state
+                setImagesUpload(updatedImagesUpload)
+            }
         }
     }
 
@@ -213,7 +207,6 @@ const StoreImages = ({
         let url = baseURL + imagePath
         let temp = []
         temp.push(url)
-        console.log('temp', temp)
         setAllImageUrl(temp)
         if (absoluteStoreImageInfo && absoluteStoreImageInfo.length > 0) {
             let imageData = [...absoluteStoreImageInfo]
@@ -281,6 +274,37 @@ const StoreImages = ({
     }
 
     useEffect(() => {
+        if (getImageData && getImageData !== undefined) {
+            if (type === 'store_logo') {
+                let temp = getImageData && getImageData.store_logo_path
+                if (temp !== '' && temp !== null && temp !== undefined) {
+                    findAllWithoutPageStoreAbsoluteImagesApi(temp)
+                } else {
+                    setImagePathShow()
+                }
+            }
+        }
+        selectedImageArrayOfObject = []
+    }, [getImageData])
+
+    useEffect(() => {
+        setImagePathShow()
+    }, [])
+
+    useEffect(() => {
+        if (bannerAbsoluteImage && bannerAbsoluteImage.length > 0) {
+            let temp = []
+            for (let i = 0; i < bannerAbsoluteImage.length; i++) {
+                if (type === 'banner_images') {
+                    temp.push(baseURL + bannerAbsoluteImage[i].image_fullpath)
+                }
+            }
+            setAllImageUrl(temp)
+            setImagePathShow(temp)
+        }
+    }, [bannerAbsoluteImage])
+
+    useEffect(() => {
         if (imagesUpload && imagesUpload.length === 0) {
             setFileList([])
         }
@@ -290,7 +314,6 @@ const StoreImages = ({
         setBannerImagesLength(bannerAbsoluteImage && bannerAbsoluteImage.length)
     }, [bannerAbsoluteImage])
 
-    console.log('bannerImagesLength', fileList.length)
     return (
         <div className=' mb-2'>
             <div className='flex !mb-3 gap-1'>
@@ -372,22 +395,28 @@ const StoreImages = ({
                             allImageUrl.map((ele, index) => {
                                 return (
                                     <div
-                                        className={
-                                            util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                                ? '!relative !ml-6'
-                                                : '!relative '
-                                        }>
+                                        onMouseEnter={() => setIsHovered(true)}
+                                        onMouseLeave={() => setIsHovered(false)}
+                                        className={`
+                                            ${
+                                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                    ? '!relative !ml-6'
+                                                    : '!relative'
+                                            }
+                                        `}>
                                         <img
                                             src={ele}
                                             alt='ele'
-                                            className='!w-[140px] !h-[102px] hover:bg-brandGray'
+                                            width={140}
+                                            className={`!h-[94px] `}
                                             // preview={{ mask: t('labels:preview') }}
                                         />
 
-                                        <div className='absolute inset-0 flex justify-center items-center'>
+                                        <div
+                                            className={`absolute top-9  flex justify-center items-center ${type === 'banner_images' ? 'right-11' : 'right-16'} `}>
                                             <button
                                                 type='button'
-                                                className='p-1 bg-brandGray1 text-white rounded-full hover:bg-gray-600'
+                                                className={`transition-opacity duration-200 ${isHovered ? 'opacity-100' : 'opacity-0'} `}
                                                 onClick={() => handlePreviewForImage(ele)}>
                                                 <MdRemoveRedEye />
                                             </button>
