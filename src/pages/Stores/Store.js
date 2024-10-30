@@ -767,13 +767,12 @@ const Stores = () => {
             <div className='!p-5'>
                 <div className=''>
                     {isLoading ? (
-                        <div className='bg-white p-3 space-y-4 w-full '>
-                            <Skeleton className={'h-4'} />
-                            <Skeleton className={'h-4'} />
-                            <Skeleton className={'h-4'} />
-                            <Skeleton className={'h-4'} />
-                            <Skeleton className={'h-4'} />
-                            <Skeleton className={'h-4'} />
+                        <div className='bg-white p-3 space-y-4 w-full'>
+                            {Array(6)
+                                .fill(null)
+                                .map((_, index) => (
+                                    <Skeleton key={index} className='h-4' />
+                                ))}
                         </div>
                     ) : isNetworkError ? (
                         <div className='!mt-[1.7rem] !text-center bg-white p-3 !rounded-md'>

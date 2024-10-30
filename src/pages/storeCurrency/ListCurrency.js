@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query'
 import HeaderForTitle from '../../components/header/HeaderForTitle'
 import { useTranslation } from 'react-i18next'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
-import SkeletonComponent from '../../components/Skeleton/SkeletonComponent'
+import { Skeleton } from '../../shadcnComponents/ui/skeleton'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import ShadCNTooltip from '../../shadcnComponents/customComponents/ShadCNTooltip'
 import { Badge } from '../../shadcnComponents/ui/badge'
@@ -159,8 +159,12 @@ const ListCurrency = ({ collapsed }) => {
             </div>
             <div className='p-3 mt-[8.8rem]'>
                 {isLoading ? (
-                    <div className=' bg-white text-center !p-2 rounded-md'>
-                        <SkeletonComponent />
+                    <div className=' bg-white p-3 space-y-4 w-full'>
+                        {Array(6)
+                            .fill(null)
+                            .map((_, index) => (
+                                <Skeleton key={index} className='h-4' />
+                            ))}
                     </div>
                 ) : isNetworkError ? (
                     <div className='pt-[2.3rem] px-3 pb-3 text-center ml-2 '>

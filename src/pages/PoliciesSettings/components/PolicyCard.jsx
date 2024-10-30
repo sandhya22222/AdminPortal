@@ -308,7 +308,7 @@ export default function PolicyCard({
                     <div className='mb-4'>
                         <label
                             className={`block text-sm font-medium text-gray-700 mb-1 ${
-                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-5' : 'ml-7'
+                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-5' : ''
                             }`}>
                             {t('labels:policy_title')}
                             <span
@@ -330,7 +330,7 @@ export default function PolicyCard({
                             }}
                             value={policyStatus === 2 ? consentDisplayName : consentName}
                             className={`max-w-[40%] mt-1 ${
-                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-3' : 'ml-12'
+                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-3' : ''
                             }`}
                         />
                     </div>
@@ -338,7 +338,7 @@ export default function PolicyCard({
                 <div className='mb-4 '>
                     <label
                         className={`block text-sm font-medium text-gray-700 mb-1 ${
-                            util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-5' : 'ml-7'
+                            util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-5' : ''
                         }`}>
                         {t('labels:policy_description')}
                         <span
@@ -359,7 +359,7 @@ export default function PolicyCard({
                             placeholder={t('labels:enter_policy_description')}
                             className={`w-[600px] h-auto px-3 py-1.5 overflow-hidden ${
                                 policyStatus === 2 ? 'opacity-40 bg-gray-100' : ''
-                            } ${util.getSelectedLanguageDirection()?.toUpperCase() === 'LTR' ? 'mr-10' : 'ml-1'} ml-10`}
+                            } ${util.getSelectedLanguageDirection()?.toUpperCase() === 'LTR' ? 'mr-10' : 'ml-1'} `}
                         />
                     </div>
                 </div>
