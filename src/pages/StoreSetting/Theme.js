@@ -465,12 +465,12 @@ const Theme = ({ id, getImageData }) => {
     return (
         <div>
             {themeLoading ? (
-                <div className='bg-white p-3 !rounded-md mt-[2.0rem]'>
-                    <Skeleton className='space-y-4'>
-                        {Array.from({ length: 6 }).map((_, index) => (
-                            <div key={index} className='h-4 bg-gray-200 rounded'></div>
+                <div className='bg-white p-3 space-y-4 w-full mt-[2.0rem]'>
+                    {Array(6)
+                        .fill(null)
+                        .map((_, index) => (
+                            <Skeleton key={index} className='h-4' />
                         ))}
-                    </Skeleton>
                 </div>
             ) : (
                 <div className='bg-white my-4 p-4 rounded-lg border w-auto'>
