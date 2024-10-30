@@ -389,7 +389,7 @@ const StoreImages = ({
                 </div>
             ) : (
                 <>
-                    <div className=' flex !space-x-4 !w-full'>
+                    <div className=' flex flex-wrap gap-x-4 gap-y-4 !w-full max-w-full'>
                         {allImageUrl &&
                             allImageUrl.length > 0 &&
                             allImageUrl.map((ele, index) => {
@@ -403,17 +403,18 @@ const StoreImages = ({
                                                     ? '!relative !ml-6'
                                                     : '!relative'
                                             }
+                                             
                                         `}>
                                         <img
                                             src={ele}
                                             alt='ele'
                                             width={140}
-                                            className={`!h-[94px] `}
+                                            style={{ maxWidth: 140 }}
+                                            className={`!h-[94px]`}
                                             // preview={{ mask: t('labels:preview') }}
                                         />
 
-                                        <div
-                                            className={`absolute top-9  flex justify-center items-center ${type === 'banner_images' ? 'right-11' : 'right-16'} `}>
+                                        <div className={`absolute top-9  flex justify-center items-center right-16`}>
                                             <button
                                                 type='button'
                                                 className={`transition-opacity duration-200 ${isHovered ? 'opacity-100' : 'opacity-0'} `}
