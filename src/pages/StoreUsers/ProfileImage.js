@@ -165,7 +165,7 @@ const ProfileImage = ({ imagePath, refetchUserData }) => {
                         <Button
                             variant='secondary'
                             size='sm'
-                            className={`absolute top-2 right-2 transition-opacity duration-200 ${
+                            className={`absolute  top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-opacityy duration-200 ${
                                 isHovered ? 'opacity-100' : 'opacity-0'
                             }`}
                             onClick={handlePreviewClick}>
