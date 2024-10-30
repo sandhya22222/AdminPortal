@@ -417,7 +417,7 @@ const StoreImages = ({
                                         <div className={`absolute top-9  flex justify-center items-center right-16`}>
                                             <button
                                                 type='button'
-                                                className={`transition-opacity duration-200 ${isHovered ? 'opacity-100' : 'opacity-0'} `}
+                                                className={`transition-opacity duration-200 ${isHovered ? 'opacity-100 text-brandPrimaryColor' : 'opacity-0'} `}
                                                 onClick={() => handlePreviewForImage(ele)}>
                                                 <MdRemoveRedEye />
                                             </button>
@@ -434,21 +434,23 @@ const StoreImages = ({
                                     </div>
                                 )
                             })}
-                        {type === 'banner_images' && (
-                            <CustomImageUpload
-                                selectedFile={fileList}
-                                preview={previewImage}
-                                onFileSelect={(e) => {
-                                    handleChange(e)
-                                }}
-                                multiple={true}
-                                handlePreview={handlePreview}
-                                disabled={disabelMediaButton}
-                                onRemove={onRemove}
-                                maxImages={BannerImagesUploadLength}
-                                bannerImagesLength={allImageUrl}
-                            />
-                        )}
+                        <div>
+                            {type === 'banner_images' && (
+                                <CustomImageUpload
+                                    selectedFile={fileList}
+                                    preview={previewImage}
+                                    onFileSelect={(e) => {
+                                        handleChange(e)
+                                    }}
+                                    multiple={true}
+                                    handlePreview={handlePreview}
+                                    disabled={disabelMediaButton}
+                                    onRemove={onRemove}
+                                    maxImages={BannerImagesUploadLength}
+                                    bannerImagesLength={allImageUrl}
+                                />
+                            )}
+                        </div>
                     </div>
                     <div className='!mt-4'>
                         {type === 'banner_images' ? (
