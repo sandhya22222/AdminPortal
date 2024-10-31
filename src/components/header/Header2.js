@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import './header2.css'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import { RiArrowDropDownLine, RiUserLine, RiLogoutCircleRLine } from 'react-icons/ri'
-
+import { Button } from '../../shadcnComponents/ui/button'
 //! Import user defined services
 import {
     fnSelectedLanguage,
@@ -13,7 +13,7 @@ import {
     fnDefaultLanguage,
 } from '../../services/redux/actions/ActionStoreLanguage'
 import { fnUserProfileInfo } from '../../services/redux/actions/ActionUserProfile'
-import { marketPlaceLogo } from '../../constants/media'
+import { marketPlaceLogo, Collapse, BackIcon } from '../../constants/media'
 
 import util from '../../util/common'
 import { useAuth } from 'react-oidc-context'
@@ -169,30 +169,30 @@ const Header2 = ({ collapsed, setCollapsed, setIsLanguageSelected }) => {
                 <div className='px-3 border-b-[1px] !h-[72px] flex flex-row !justify-between items-center '>
                     {/* Left content which displays brand logo and other stuffs */}
                     <div className='flex flex-row items-center'>
-                        {/* <div
+                        <div
                             className={`${
                                 util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'ml-4 mr-2' : 'ml-2 mr-4'
                             } `}>
                             <Button
-                                type='text'
-                                icon={
-                                    collapsed ? (
-                                        <img src={Collapse} alt='Collapse' />
-                                    ) : (
-                                        <img
-                                            className={`  ${
-                                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                                    ? 'rotate-180'
-                                                    : ''
-                                            }`}
-                                            src={BackIcon}
-                                            alt='BackButton'
-                                        />
-                                    )
-                                }
-                                onClick={() => setCollapsed(!collapsed)}
-                            />
-                        </div> */}
+                                // type='text'
+                                size='sm'
+                                variant='outline'
+                                onClick={() => setCollapsed(!collapsed)}>
+                                {collapsed ? (
+                                    <img src={Collapse} alt='Collapse' />
+                                ) : (
+                                    <img
+                                        className={`  ${
+                                            util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                ? 'rotate-180'
+                                                : ''
+                                        }`}
+                                        src={BackIcon}
+                                        alt='BackButton'
+                                    />
+                                )}
+                            </Button>
+                        </div>
                         <div className='flex items-center mx-2 '>
                             <Link to='/dashboard'>
                                 <img
