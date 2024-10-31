@@ -165,11 +165,8 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
 
     return (
         <TooltipProvider delayDuration={0}>
-            <ResizablePanelGroup
-                direction='horizontal'
-                className='h-full min-h-screen bg-white '
-                style={{ transition: 'width 0.3s ease-in-out' }}>
-                <ResizablePanel
+            <div className='h-full min-h-screen bg-white '>
+                <div
                     onCollapse={() => setCollapsed(true)}
                     collapsible={true}
                     onMouseEnter={() => setIsHovering(true)}
@@ -339,8 +336,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                                                                                                     ? child.label
                                                                                                     : undefined
                                                                                             }
-                                                                                            position={'up'}
-                                                                                            style={{}}></Ellipsis>
+                                                                                            position={'up'}></Ellipsis>
                                                                                     </span>
                                                                                 ) : (
                                                                                     <span>{child.label}</span>
@@ -387,8 +383,7 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                                                                                 ?.toUpperCase() === 'RTL'
                                                                                 ? 'left'
                                                                                 : 'right'
-                                                                        }
-                                                                        style={{}}></Ellipsis>
+                                                                        }></Ellipsis>
                                                                 </span>
                                                             ) : (
                                                                 <span>{item.label}</span>
@@ -416,8 +411,8 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                             )}
                         </div>
                     )}
-                </ResizablePanel>
-                <ResizableHandle
+                </div>
+                {/* <ResizableHandle
                     withHandle
                     style={{
                         position: 'fixed', // Keep it fixed relative to the viewport
@@ -430,32 +425,32 @@ const SidebarNew = ({ permissionValue, collapsed, setCollapsed }) => {
                         cursor: 'col-resize', // Show resize cursor
                         transition: 'all 0.3s ease',
                     }}
-                />
-                <ResizablePanel>
-                    <div
-                        className={`flex flex-col min-h-screen transition-all ${
-                            util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                ? `${collapsed ? 'mr-[50px]' : 'mr-[252px]'}`
-                                : `${collapsed ? 'ml-[50px]' : 'ml-[252px]'}`
-                        }`}
-                        // style={{ marginLeft: collapsed ? 50 : 252 }}
-                    >
-                        <div className='!bg-[#F4F4F4]  flex-grow '>
-                            <Suspense
-                                fallback={
-                                    <div className='mt-[200px] text-center'>
-                                        <Spin />
-                                    </div>
-                                }>
-                                <Outlet />
-                            </Suspense>
-                        </div>
-                        <div className='flex-grow-0  !w-[100%] '>
-                            <NewFooter />
-                        </div>
+                /> */}
+                {/* <ResizablePanel> */}
+                <div
+                    className={`flex flex-col min-h-screen transition-all ${
+                        util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                            ? `${collapsed ? 'mr-[50px]' : 'mr-[252px]'}`
+                            : `${collapsed ? 'ml-[50px]' : 'ml-[252px]'}`
+                    }`}
+                    // style={{ marginLeft: collapsed ? 50 : 252 }}
+                >
+                    <div className='!bg-[#F4F4F4]  flex-grow '>
+                        <Suspense
+                            fallback={
+                                <div className='mt-[200px] text-center'>
+                                    <Spin />
+                                </div>
+                            }>
+                            <Outlet />
+                        </Suspense>
                     </div>
-                </ResizablePanel>
-            </ResizablePanelGroup>
+                    <div className='flex-grow-0  !w-[100%] '>
+                        <NewFooter />
+                    </div>
+                </div>
+                {/* </ResizablePanel> */}
+            </div>
         </TooltipProvider>
     )
 }
