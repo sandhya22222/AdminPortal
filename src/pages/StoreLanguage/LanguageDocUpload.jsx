@@ -207,7 +207,7 @@ export default function LanguageDocUpload({ langCode }) {
                                 className='flex gap-2 items-center'
                                 onClick={() => findAllSupportDocumentTemplateDownload(1, null)}
                                 disabled={isFrontendLoading}>
-                                <DownloadIconSVG />
+                                <Download className='h-4 w-4' />
                                 {t('labels:get_frontend_support_template')}
                             </Button>
                         </div>
@@ -253,7 +253,7 @@ export default function LanguageDocUpload({ langCode }) {
                                 className='flex gap-2 items-center'
                                 onClick={() => downloadBEKeysFile(1, null)}
                                 disabled={isBackendLoading}>
-                                <DownloadIconSVG />
+                                <Download className='h-4 w-4' />
                                 {t('labels:get_backend_support_template')}
                             </Button>
                         </div>
