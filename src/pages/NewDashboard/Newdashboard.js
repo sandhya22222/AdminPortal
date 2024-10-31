@@ -247,8 +247,8 @@ const Newdashboard = () => {
                                         : '!w-full mr-0 pr-0 flex flex-col justify-center items-baseline'
                                 }>
                                 <div className='text-[#637381] text-base !font-bold flex justify-left gap-1 items-center'>
-                                    <div className='flex items-center'>
-                                        <span className='inline-block w-1.5 h-1.5 bg-green-500 rounded-full mr-2'></span>
+                                    <div className='flex items-center gap-2'>
+                                        <span className='inline-block w-1.5 h-1.5 bg-green-500 rounded-full'></span>
                                         <span className='!text-brandGray2 text-[14px] font-bold'>
                                             {t('labels:active_stores')}
                                         </span>
@@ -296,8 +296,8 @@ const Newdashboard = () => {
                                  }`}>
                                 <div>
                                     <div className='text-[#637381] text-base !font-bold flex justify-left gap-1 items-center'>
-                                        <div className='flex items-center'>
-                                            <span className='inline-block w-1.5 h-1.5 bg-gray-400 rounded-full mr-2'></span>
+                                        <div className='flex items-center gap-2'>
+                                            <span className='inline-block w-1.5 h-1.5 bg-gray-400 rounded-full '></span>
                                             <span className='!text-brandGray2 text-[14px] font-bold'>
                                                 {t('labels:inactive_stores')}
                                             </span>
