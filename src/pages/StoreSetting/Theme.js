@@ -593,7 +593,10 @@ const Theme = ({ id, getImageData }) => {
                                     </div>
 
                                     {showColorPicker && (
-                                        <div className='absolute mt-2 z-10'>
+                                        <div className='absolute mt-2 z-10'
+                                        tabIndex={-1} 
+                                        onBlur={() => setShowColorPicker(false)}
+                                        >
                                             <SketchPicker
                                                 color={buttonPrimaryBackgroundColor}
                                                 onChangeComplete={(color) => {
@@ -700,7 +703,10 @@ const Theme = ({ id, getImageData }) => {
                                     </div>
 
                                     {showSecondaryColorPicker && (
-                                        <div className='absolute mt-2 z-10'>
+                                        <div className='absolute mt-2 z-10'
+                                        tabIndex={-1} 
+                                        onBlur={() => setShowSecondaryColorPicker(false)}
+                                        >
                                             <SketchPicker
                                                 color={buttonSecondaryBackgroundColor}
                                                 onChangeComplete={(color) => {
@@ -791,7 +797,10 @@ const Theme = ({ id, getImageData }) => {
                                 </div>
 
                                 {showTertiaryColorPicker && (
-                                    <div className='absolute mt-2 z-10'>
+                                    <div className='absolute mt-2 z-10'
+                                    tabIndex={-1} 
+                                    onBlur={() => setShowTertiaryColorPicker(false)}
+                                    >
                                         <SketchPicker
                                             color={buttonTeritaryForegroundColor}
                                             onChangeComplete={(color) => {
@@ -887,7 +896,10 @@ const Theme = ({ id, getImageData }) => {
 
                                 {/* Show the color picker for primary button text color */}
                                 {showPrimaryColorPicker && (
-                                    <div className='absolute mt-2 z-10'>
+                                    <div className='absolute mt-2 z-10'
+                                    tabIndex={-1} 
+                                    onBlur={() => setShowPrimaryColorPicker(false)}
+                                    >
                                         <SketchPicker
                                             color={buttonPrimaryForegroundColor} // Use the primary foreground color for the picker
                                             onChangeComplete={(color) => {
@@ -980,7 +992,10 @@ const Theme = ({ id, getImageData }) => {
                                     </div>
 
                                     {showSecondaryTextColorPicker && (
-                                        <div className='absolute mt-2 z-10'>
+                                        <div className='absolute mt-2 z-10'
+                                        tabIndex={-1} 
+                                        onBlur={() => setShowSecondaryTextColorPicker(false)}
+                                        >
                                             <SketchPicker
                                                 color={buttonSecondaryForegroundColor}
                                                 onChangeComplete={(color) => {
