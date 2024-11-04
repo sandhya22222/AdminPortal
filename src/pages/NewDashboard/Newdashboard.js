@@ -324,7 +324,7 @@ const Newdashboard = () => {
                         </div>
                     </div>
                 ) : dashboardDataNetWorkError ? (
-                    <div className='text-center !bg-[var(--mp-bright-color)] !p-3 mt-5 !rounded-md'>
+                    <div className='text-center !bg-[var(--mp-bright-color)] !p-3 mt-28 !rounded-md'>
                         {t('messages:dashboard_network_error')}
                     </div>
                 ) : (

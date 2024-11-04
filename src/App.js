@@ -127,7 +127,10 @@ const App = () => {
                                 <Route path='language' element={<Language collapsed={collapsed} />} />
                                 <Route path='language/language-settings' element={<LanguageSettings />} />
                                 <Route path='store' element={<Store />} />
-                                <Route path='store/storesetting' element={<StoreSettingsLayout />} />
+                                <Route
+                                    path='store/storesetting'
+                                    element={<StoreSettingsLayout collapsed={collapsed} />}
+                                />
                                 <Route path='currency' element={<ListCurrency collapsed={collapsed} />} />
                                 <Route path='currency/edit-currency' element={<EditCurrency />} />
                                 <Route path='preview' element={<Preview />} />

@@ -194,7 +194,7 @@ export default function LanguageDocUpload({ langCode }) {
 
     return (
         <div className='w-full max-w-3xl'>
-            <h2 className='font-semibold text-2xl mb-2'>{t('labels:support_document')}</h2>
+            <label className='font-semibold text-2xl !mb-2 text-regal-blue'>{t('labels:support_document')}</label>
             <p className='text-muted-foreground mb-4'>{t('messages:language_document_data')}</p>
             <div className='space-y-4'>
                 <Card>
