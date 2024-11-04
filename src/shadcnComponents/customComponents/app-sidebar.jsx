@@ -217,9 +217,9 @@ export const AppSidebar = ({ permissionValue = [], collapsed = false, setCollaps
                                                                                     )
                                                                                 }
                                                                                 className={cn(
-                                                                                    'text-[#0F172A] cursor-pointer', // Explicitly set text color to #0F172A
+                                                                                    '!text-[#0F172A] cursor-pointer', // Explicitly set text color to #0F172A
                                                                                     selectedItem === subItem.key
-                                                                                        ? 'bg-accent text-regal-orange'
+                                                                                        ? 'bg-accent !text-regal-orange'
                                                                                         : '',
                                                                                     hoveredItem === subItem.key
                                                                                         ? 'bg-accent/50'
