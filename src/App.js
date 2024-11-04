@@ -9,7 +9,7 @@ import { useFavicon } from './hooks/useFavicon'
 import axios from 'axios'
 import { useAuth } from 'react-oidc-context'
 import { LoadingOutlined } from '@ant-design/icons'
-import { AppSidebar } from './shadcnComponents/app-sidebar'
+import { AppSidebar } from './shadcnComponents/customComponents/app-sidebar'
 
 import MarketplaceServices from './services/axios/MarketplaceServices'
 import util from './util/common'

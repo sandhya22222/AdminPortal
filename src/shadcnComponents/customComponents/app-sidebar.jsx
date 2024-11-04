@@ -2,12 +2,11 @@ import * as React from 'react'
 import { ChevronRight, Spin } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { Collapsible, CollapsibleContent } from '../shadcnComponents/ui/collapsible'
+import { Collapsible, CollapsibleContent } from '../ui/collapsible'
 import {
     Sidebar,
     SidebarContent,
     SidebarGroup,
-    SidebarGroupLabel,
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
@@ -16,13 +15,13 @@ import {
     SidebarMenuSubItem,
     SidebarRail,
     SidebarProvider,
-} from '../shadcnComponents/ui/sidebar'
+} from '../ui/sidebar'
 
-import { DashboardSVG } from '../components/Sidebar2.0.js/components/DashboardSVG'
-import { StoresSVG } from '../components/Sidebar2.0.js/components/StoresSVG'
-import { SettingsSVG } from '../components/Sidebar2.0.js/components/SettingsSVG'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../shadcnComponents/ui/tooltip'
-import { cn } from '../lib/utils'
+import { DashboardSVG } from '../../components/Sidebar2.0.js/components/DashboardSVG'
+import { StoresSVG } from '../../components/Sidebar2.0.js/components/StoresSVG'
+import { SettingsSVG } from '../../components/Sidebar2.0.js/components/SettingsSVG'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip'
+import { cn } from '../../lib/utils'
 import { useAuth } from 'react-oidc-context'
 
 const pageLimitFromENV = process.env.REACT_APP_ITEM_PER_PAGE || '10'
@@ -172,7 +171,7 @@ export const AppSidebar = ({ permissionValue = [], collapsed = false, setCollaps
                                                                     : handleClick(item.key, item.path)
                                                             }
                                                             className={cn(
-                                                                'text-[#0F172A]', 
+                                                                'text-[#0F172A]',
                                                                 selectedItem === item.key
                                                                     ? 'bg-accent text-regal-orange'
                                                                     : '',
@@ -218,7 +217,7 @@ export const AppSidebar = ({ permissionValue = [], collapsed = false, setCollaps
                                                                                     )
                                                                                 }
                                                                                 className={cn(
-                                                                                    'text-[#0F172A]', // Explicitly set text color to #0F172A
+                                                                                    'text-[#0F172A] cursor-pointer', // Explicitly set text color to #0F172A
                                                                                     selectedItem === subItem.key
                                                                                         ? 'bg-accent text-regal-orange'
                                                                                         : '',
