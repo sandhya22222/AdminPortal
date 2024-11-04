@@ -155,13 +155,21 @@ const ProfileImage = ({ imagePath, refetchUserData }) => {
                         className='relative group'
                         onMouseEnter={() => setIsHovered(true)}
                         onMouseLeave={() => setIsHovered(false)}>
-                        <img
-                            src={getCurrentImage()}
-                            alt='Profile'
-                            width={140}
-                            height={140}
-                            className='object-cover rounded-md'
-                        />
+                        {imagePath ? (
+                            <>
+                                {profileImageStatus === 'pending' && <Spin className='w-36 h-36' />}
+                                {profileImageStatus === 'success' && profileImage && (
+                                    <img
+                                        src={profileImage}
+                                        fallback={profileFallBackImage}
+                                        width={140}
+                                        preview={t('user_profile:preview')}
+                                    />
+                                )}
+                            </>
+                        ) : (
+                            <img src={profileFallBackImage} width={140} preview={t('user_profile:preview')} />
+                        )}
                         <Button
                             variant='secondary'
                             size='sm'
