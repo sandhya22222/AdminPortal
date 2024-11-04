@@ -49,7 +49,7 @@ const AddStores = ({
     }
 
     return (
-        <div>
+        <div className='p-2'>
             <div>
                 <label className='text-[14px] leading-[22px] font-normal text-brandGray2 mb-2 ml-1 ' id='labStNam'>
                     {t('labels:store_domain_name')}
@@ -62,7 +62,7 @@ const AddStores = ({
                     value={name}
                     minLength={storeNameMinLength}
                     maxLength={storeNameMaxLength}
-                    className={`!w-[50%] mt-2 ${
+                    className={`!w-[100%] mt-2 ${
                         inValidName ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400' : ''
                     }`}
                     onChange={(e) => {

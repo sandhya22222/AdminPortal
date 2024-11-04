@@ -19,7 +19,6 @@ import { Star } from 'lucide-react'
 import { Badge } from '../../shadcnComponents/ui/badge'
 import { ShadCNTabs, ShadCNTabsTrigger, ShadCNTabsContent } from '../../shadcnComponents/customComponents/ShadCNTabs'
 
-import { Tabs, TabsContent, TabsTrigger, TabsList } from '../../shadcnComponents/ui/tabs'
 import Spin from '../../shadcnComponents/customComponents/Spin'
 import { Button } from '../../shadcnComponents/ui/button'
 const storeAPI = process.env.REACT_APP_STORE_API
@@ -27,7 +26,7 @@ const storeImagesAPI = process.env.REACT_APP_STORE_IMAGES_API
 const storeBannerImageAPI = process.env.REACT_APP_STORE_BANNER_IMAGES_API
 const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE)
 
-const StoreSettingsLayout = () => {
+const StoreSettingsLayout = ({ collapsed }) => {
     const { t } = useTranslation()
     usePageTitle(t('labels:stores'))
     const navigate = useNavigate()
@@ -356,7 +355,7 @@ const StoreSettingsLayout = () => {
         <div>
             <HeaderForTitle
                 title={
-                    <div className='flex w-[85vw] my-3'>
+                    <div className={`flex ${collapsed ? 'w-[105vw]' : 'w-[85vw]'} my-3`}>
                         <div className='w-[75%] gap-2 !mt-2 flex'>
                             <div>
                                 <img src={storeDefaultImage} alt='storeDefaultImage' className='aspect-square !mt-2' />

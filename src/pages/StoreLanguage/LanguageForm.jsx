@@ -240,7 +240,7 @@ const LanguageForm = ({
     return (
         <Card className='w-[750px]'>
             <CardHeader>
-                <CardTitle>{t('labels:language_details')}</CardTitle>
+                <CardTitle className='text-regal-blue '>{t('labels:language_details')}</CardTitle>
             </CardHeader>
             <Separator />
             <CardContent>
@@ -265,7 +265,7 @@ const LanguageForm = ({
                                     minLength={titleMinLength}
                                     maxLength={titleMaxLength}
                                     disabled={parseInt(languageStatus) === 1}
-                                    className={`${isEditLanguageFieldEmpty ? 'border-destructive' : ''} w-4/6`}
+                                    className={`${isEditLanguageFieldEmpty ? 'border-destructive' : ''} w-4/6 mt-2`}
                                     onChange={(e) => {
                                         if (e.target.value !== '' && validator.isAlpha(e.target.value)) {
                                             setTxtLanguage(e.target.value)
@@ -300,7 +300,7 @@ const LanguageForm = ({
                                         const lowerCaseLettersRegex = /^[a-z]+$/
                                         setIsHelperTextVisible(!lowerCaseLettersRegex.test(e.nativeEvent.data))
                                     }}
-                                    className={`${isEditLanguageCodeFieldEmpty ? 'border-destructive' : ''}w-4/6`}
+                                    className={`${isEditLanguageCodeFieldEmpty ? 'border-destructive' : ''} w-4/6 mt-2`}
                                     onChange={(e) => {
                                         const languageCodeRegex = /^[a-z\-]+$/
                                         if (
@@ -331,7 +331,7 @@ const LanguageForm = ({
                                 <Label>{t('labels:script_direction')}</Label>
                                 <Tabs
                                     value={scriptDirection}
-                                    className='w-4/6'
+                                    className='w-4/6 mt-2'
                                     onValueChange={(value) => {
                                         if (value) {
                                             handleScriptDirectionChange(value)

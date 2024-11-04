@@ -1,17 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Search } from 'lucide-react'
-
-import validator from 'validator'
 import { Info } from 'lucide-react'
 import { Link, useLocation, useSearchParams, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import {
-    saveStoreConfirmationImage,
-    InfoSymbol,
-    ExclamationCircle,
-    storeDefaultImage,
-    warningInfoIcon,
-} from '../../constants/media'
+import { saveStoreConfirmationImage, ExclamationCircle, storeDefaultImage } from '../../constants/media'
 //! Import user defined components
 import HeaderForTitle from '../../components/header/HeaderForTitle'
 import StoreModal from '../../components/storeModal/StoreModal'
@@ -30,7 +22,6 @@ import { Plus, Star } from 'lucide-react'
 import { Badge } from '../../shadcnComponents/ui/badge'
 import ShadCNPagination from '../../shadcnComponents/customComponents/ShadCNPagination'
 import ShadCNTooltip from '../../shadcnComponents/customComponents/ShadCNTooltip'
-import { Input } from '../../shadcnComponents/ui/input'
 import { Button } from '../../shadcnComponents/ui/button'
 import SearchInput from './SearchInput'
 import { PAGE_NUMBER_TO_SEARCH } from '../../constants/constants'
@@ -44,12 +35,6 @@ import ThresholdConfiguration from './ThresholdConfiguration'
 const storeAPI = process.env.REACT_APP_STORE_API
 const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE)
 
-const storeLimitApi = process.env.REACT_APP_STORE_PLATFORM_LIMIT_API
-const dm4sightAnalysisCountAPI = process.env.REACT_APP_4SIGHT_GETANALYSISCOUNT_API
-const dm4sightClientID = process.env.REACT_APP_4SIGHT_CLIENT_ID
-const dm4sightBaseURL = process.env.REACT_APP_4SIGHT_BASE_URL
-const currentUserDetailsAPI = process.env.REACT_APP_USER_PROFILE_API
-const maxDataLimit = process.env.REACT_APP_MAX_DATA_LIMIT
 const emailRegexPattern = process.env.REACT_APP_REGEX_PATTERN_EMAIL
 const searchMaxLength = process.env.REACT_APP_SEARCH_MAX_LENGTH
 const domainName = process.env.REACT_APP_DOMAIN_NAME
@@ -1003,39 +988,34 @@ const Stores = () => {
                 okCallback={() => validateStorePostField()}
                 hideCloseButton={true}
                 cancelCallback={() => onClose()}
-                isSpin={false}
+                isSpin={isUpLoading}
                 width={800}
+                height={600}
                 isScroll={false}>
-                <div>
+                <div className='overflow-y-auto !h-auto'>
                     {drawerAction && drawerAction === 'post' ? (
                         <>
-                            {!isUpLoading ? (
-                                <>
-                                    <AddStores
-                                        onClose={onClose}
-                                        validateStorePostField={validateStorePostField}
-                                        storeUserName={storeUserName}
-                                        setStoreUserName={setStoreUserName}
-                                        inValidUserName={inValidUserName}
-                                        setInValidUserName={setInValidUserName}
-                                        storeEmail={storeEmail}
-                                        setStoreEmail={setStoreEmail}
-                                        inValidEmail={inValidEmail}
-                                        setInValidEmail={setInValidEmail}
-                                        inValidEmailFormat={inValidEmailFormat}
-                                        onChangeValues={onChangeValues}
-                                        setOnChangeValues={setOnChangeValues}
-                                        isDistributor={isDistributor}
-                                        name={name}
-                                        setName={setName}
-                                        inValidName={inValidName}
-                                        setInValidName={setInValidName}
-                                        domainName={domainName}
-                                    />
-                                </>
-                            ) : (
-                                <Spin />
-                            )}
+                            <AddStores
+                                onClose={onClose}
+                                validateStorePostField={validateStorePostField}
+                                storeUserName={storeUserName}
+                                setStoreUserName={setStoreUserName}
+                                inValidUserName={inValidUserName}
+                                setInValidUserName={setInValidUserName}
+                                storeEmail={storeEmail}
+                                setStoreEmail={setStoreEmail}
+                                inValidEmail={inValidEmail}
+                                setInValidEmail={setInValidEmail}
+                                inValidEmailFormat={inValidEmailFormat}
+                                onChangeValues={onChangeValues}
+                                setOnChangeValues={setOnChangeValues}
+                                isDistributor={isDistributor}
+                                name={name}
+                                setName={setName}
+                                inValidName={inValidName}
+                                setInValidName={setInValidName}
+                                domainName={domainName}
+                            />
                         </>
                     ) : null}
                 </div>
