@@ -10,7 +10,7 @@ import axios from 'axios'
 import { useAuth } from 'react-oidc-context'
 import { LoadingOutlined } from '@ant-design/icons'
 import { AppSidebar } from './shadcnComponents/customComponents/app-sidebar'
-
+import { lazyWithRetry } from './components/loading/LazyRetry'
 import MarketplaceServices from './services/axios/MarketplaceServices'
 import util from './util/common'
 
