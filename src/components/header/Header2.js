@@ -217,9 +217,9 @@ const Header2 = ({ setIsLanguageSelected }) => {
                                     </span>
                                     <DropdownMenu>
                                         <DropdownMenuTrigger className='cursor-pointer'>
-                                            <p className='text-xs text-[#8899A8] !leading-[14px] flex items-center'>
-                                                {userRole ? userRole : ''}
-                                                <RiArrowDropDownLine className='text-[22px]' />
+                                            <p className='text-xs text-[#8899A8] !leading-[20px] font-normal whitespace-nowrap flex flex-row items-center'>
+                                                {userRole ? userRole.replace(/-/g, ' ') : ''}
+                                                <RiArrowDropDownLine className='text-2xl mx-1' />
                                             </p>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent>
@@ -245,7 +245,9 @@ const Header2 = ({ setIsLanguageSelected }) => {
                         {multilingualFunctionalityEnabled && (
                             <div
                                 className={`flex items-center ${
-                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-[5px]' : 'ml-[5px]'
+                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                        ? 'mr-[5px]'
+                                        : 'ml-[5px]'
                                 }`}>
                                 <Select value={storeSelectedLngCode} onValueChange={handleLanguageClick}>
                                     <SelectTrigger className='min-w-[100px] border-none'>
