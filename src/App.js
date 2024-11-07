@@ -13,6 +13,7 @@ import { AppSidebar } from './shadcnComponents/customComponents/app-sidebar'
 import { lazyWithRetry } from './components/loading/LazyRetry'
 import MarketplaceServices from './services/axios/MarketplaceServices'
 import util from './util/common'
+import NewFooter from './components/footer/Footer'  // Import your footer
 
 // Lazy load components
 const Home = lazyWithRetry(() => import('./pages/home/Home'))
@@ -89,7 +90,7 @@ const App = () => {
 
     return (
         <Router>
-            <div className='flex flex-col min-h-screen '>
+            <div className='flex flex-col min-h-screen'>
                 <ToastContainer
                     rtl={util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'}
                     position={util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'top-left' : 'top-right'}
@@ -149,6 +150,7 @@ const App = () => {
                         )}
                     </Routes>
                 </React.Suspense>
+                <NewFooter /> {/* Add Footer here */}
             </div>
         </Router>
     )
