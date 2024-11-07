@@ -13,7 +13,7 @@ import {
     fnDefaultLanguage,
 } from '../../services/redux/actions/ActionStoreLanguage'
 import { fnUserProfileInfo } from '../../services/redux/actions/ActionUserProfile'
-import { marketPlaceLogo, Collapse, BackIcon } from '../../constants/media'
+import { marketPlaceLogo, BackIcon } from '../../constants/media'
 
 import util from '../../util/common'
 import { useAuth } from 'react-oidc-context'
@@ -34,7 +34,7 @@ const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API
 const storeUsersAPI = process.env.REACT_APP_USERS_API
 const portalInfo = JSON.parse(process.env.REACT_APP_PORTAL_INFO)
 
-const Header2 = ({ collapsed, setCollapsed, setIsLanguageSelected }) => {
+const Header2 = ({ setIsLanguageSelected }) => {
     const { t } = useTranslation()
     const dispatch = useDispatch()
     const auth = useAuth()
@@ -165,34 +165,10 @@ const Header2 = ({ collapsed, setCollapsed, setIsLanguageSelected }) => {
 
     return (
         <div>
-            <div className='fixed z-20 top-0 p-0  !h-[72px] w-full header'>
+            <div className='fixed z-20 top-0 p-0 !h-[72px] w-full header'>
                 <div className='px-3 border-b-[1px] !h-[72px] flex flex-row !justify-between items-center '>
                     {/* Left content which displays brand logo and other stuffs */}
                     <div className='flex flex-row items-center'>
-                        <div
-                            className={`${
-                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'ml-4 mr-2' : 'ml-2 mr-4'
-                            } `}>
-                            <Button
-                                // type='text'
-                                size='sm'
-                                variant='outline'
-                                onClick={() => setCollapsed(!collapsed)}>
-                                {collapsed ? (
-                                    <img src={Collapse} alt='Collapse' />
-                                ) : (
-                                    <img
-                                        className={`  ${
-                                            util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                                ? 'rotate-180'
-                                                : ''
-                                        }`}
-                                        src={BackIcon}
-                                        alt='BackButton'
-                                    />
-                                )}
-                            </Button>
-                        </div>
                         <div className='flex items-center mx-2 '>
                             <Link to='/dashboard'>
                                 <img
@@ -241,53 +217,50 @@ const Header2 = ({ collapsed, setCollapsed, setIsLanguageSelected }) => {
                                     </span>
                                     <DropdownMenu>
                                         <DropdownMenuTrigger className='cursor-pointer'>
-                                            <p className='text-xs text-[#8899A8] !leading-[20px] font-normal whitespace-nowrap flex flex-row items-center'>
-                                                {userRole ? userRole.replace(/-/g, ' ') : ''}
-                                                <RiArrowDropDownLine className='text-2xl mx-1' />
+                                            <p className='text-xs text-[#8899A8] !leading-[14px] flex items-center'>
+                                                {userRole ? userRole : ''}
+                                                <RiArrowDropDownLine className='text-[22px]' />
                                             </p>
                                         </DropdownMenuTrigger>
-
-                                        <DropdownMenuContent className='fixed overflow-visible z-20'>
+                                        <DropdownMenuContent>
                                             {userItems.map((item) => (
-                                                <DropdownMenuItem
-                                                    key={item.key}
-                                                    onClick={() => handleMenuClick(item)}
-                                                    className='whitespace-nowrap cursor-pointer gap-2 hover:bg-dangerColor hover:text-white text-dangerColor'>
-                                                    {item.icon} {item.label}
+                                                <DropdownMenuItem key={item.key} onClick={handleMenuClick}>
+                                                    {item.icon}
+                                                    {item.label}
                                                 </DropdownMenuItem>
                                             ))}
                                         </DropdownMenuContent>
                                     </DropdownMenu>
                                 </div>
                             </div>
-                        ) : null}
-                        {/* Display language dropdown only if store has more than 1 language. */}
-
-                        {multilingualFunctionalityEnabled === 'true' && languageItems.length > 0 ? (
-                            <Select
-                                defaultValue={storeSelectedLngCode || defaultLanguageCode}
-                                onValueChange={(value) => handleLanguageClick(value)}
-                                disabled={languageItems.length === 1}
-                                className='header-select !max-w-[90px]'>
-                                <SelectTrigger className='w-full'>
-                                    <SelectValue placeholder='Select Language' />
-                                </SelectTrigger>
-
-                                <SelectContent position='popper' className='w-[90px]'>
-                                    {languageItems.map((option) => (
-                                        <SelectItem
-                                            key={option.value}
-                                            value={option.value}
-                                            className='headerSelectOption'>
-                                            <span className='overflow-hidden whitespace-nowrap'>
-                                                {option.value?.toUpperCase()}
-                                            </span>
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
                         ) : (
-                            <></>
+                            <Button
+                                className={`!p-0 !ml-[5px] ${
+                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'ml-[5px]' : ''
+                                }`}>
+                                <RiUserLine className='text-[24px] text-[#637381]' />
+                            </Button>
+                        )}
+
+                        {multilingualFunctionalityEnabled && (
+                            <div
+                                className={`flex items-center ${
+                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-[5px]' : 'ml-[5px]'
+                                }`}>
+                                <Select value={storeSelectedLngCode} onValueChange={handleLanguageClick}>
+                                    <SelectTrigger className='min-w-[100px] border-none'>
+                                        <SelectValue placeholder='Select Language' />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {languageItems &&
+                                            languageItems.map((item) => (
+                                                <SelectItem key={item.value} value={item.value}>
+                                                    {item.label}
+                                                </SelectItem>
+                                            ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
                         )}
                     </div>
                 </div>
