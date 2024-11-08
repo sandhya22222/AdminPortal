@@ -4,15 +4,14 @@ import { getGenerateDateAndTime } from '../../util/util'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { usePageTitle } from '../../hooks/usePageTitle'
-import SkeletonComponent from '../../components/Skeleton/SkeletonComponent'
 import useGetStoreUserData from '../../hooks/useGetStoreUsersData'
 import './UserProfile.css'
 import ProfileImage from './ProfileImage'
 import { Button } from '../../shadcnComponents/ui/button'
 import ChangePassword from './ChangePassword'
+import { Skeleton } from '../../shadcnComponents/ui/skeleton'
 
 const storeUsersAPI = process.env.REACT_APP_USERS_API
-const maxPasswordLength = process.env.REACT_APP_PASSWORD_MAX_LENGTH
 
 const UserProfile = () => {
     const { t } = useTranslation()
@@ -68,7 +67,11 @@ const UserProfile = () => {
             <div>
                 {userDataStatus === 'pending' ? (
                     <div className=' bg-white p-3 !mx-4 '>
-                        <SkeletonComponent />
+                        {Array(6)
+                            .fill(null)
+                            .map((_, index) => (
+                                <Skeleton key={index} className='h-4' />
+                            ))}
                     </div>
                 ) : userDataStatus === 'error' ? (
                     <div className='p-3 text-center !mx-4 bg-[#F4F4F4]'>
