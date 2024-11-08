@@ -1,5 +1,6 @@
 import { toast } from 'react-toastify'
 import moment from 'moment'
+import DOMPurify from 'dompurify'
 // to get image URL using image path
 const baseUrl = process.env.REACT_APP_BASE_URL
 const absoluteImageUrl = process.env.REACT_APP_ABSOLUTE_IMAGE_API
@@ -454,4 +455,14 @@ export const removeUrlSearchData = () => {
     url.search = ''
     const newUrl = url.toString()
     window.history.replaceState({}, document.title, newUrl)
+}
+
+/**
+ * Utility function to sanitize HTML content.
+ * @param {string} html - The HTML string to be sanitized.
+ * @returns {string} - The sanitized HTML string.
+ */
+export const sanitizeHtml = (html) => {
+    if (!html) return ''
+    return DOMPurify.sanitize(html)
 }

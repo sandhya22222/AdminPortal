@@ -8,7 +8,7 @@ import { ScrollArea } from '../../shadcnComponents/ui/scroll-area'
 import { Skeleton } from '../../shadcnComponents/ui/skeleton'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../../shadcnComponents/ui/tooltip'
 import './DisplayPolicy.css'
-import { getGenerateDateAndTime } from '../../util/util'
+import { getGenerateDateAndTime, sanitizeHtml } from '../../util/util'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import { EmptySVG } from '../../constants/media'
 import util from '../../util/common'
@@ -150,7 +150,7 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
                                                     {getGenerateDateAndTime(data?.updated_on, 'D MMMM YYYY')}
                                                 </div>
                                                 <ReactQuill
-                                                value={data?.version_details?.consent_display_description}
+                                                value={sanitizeHtml(data?.version_details?.consent_display_description)}
                                                 modules={{ toolbar: false }}
                                                 readOnly
                                                 className={`mb-3 ${

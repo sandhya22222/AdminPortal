@@ -16,6 +16,7 @@ import useCreateVersionDisplayname from '../hooks/useCreateVersionDisplayname'
 import useGetStoreLanguage from '../hooks/useGetStoreLanguage'
 import useGetUserConsentVersionDisplayName from '../hooks/useGetUserConsentVersionDisplayName'
 import useUpdateVersionDisplayname from '../hooks/useUpdateVersionDisplayname'
+import { sanitizeHtml } from '../../../util/util'
 
 const CONSENT_NAME_LENGTH = 100
 
@@ -232,7 +233,7 @@ export default function TranslatePolicy({
         if (source === 'user') {
             let copyOfSelectedConsentDisplayNameData = {
                 ...selectedConsentDisplayNameData,
-                consentDescriptionDisplayName: content,
+                consentDescriptionDisplayName: sanitizeHtml(content),
                 consentDescriptionDisplayNameText: editor.getText(content)?.trim(),
             }
             let copyOfConsentDisplayNameData = consentDisplayNameData.map((data) =>
@@ -278,7 +279,7 @@ export default function TranslatePolicy({
                         <h3 className='text-base font-semibold truncate'>{userConsentBaseName}</h3>
                         <div className='w-full h-[370px]  overflow-hidden'>
                             <ReactQuill
-                                value={userConsentBaseDescription}
+                                value={sanitizeHtml(userConsentBaseDescription)}
                                 modules={{ toolbar: false }}
                                 readOnly={true}
                                 className='h-[300px]'
@@ -357,7 +358,7 @@ export default function TranslatePolicy({
                                 <CardContent className='p-0 h-full'>
                                     <ReactQuill
                                         theme='snow'
-                                        value={selectedConsentDisplayNameData?.consentDescriptionDisplayName}
+                                        value={sanitizeHtml(selectedConsentDisplayNameData?.consentDescriptionDisplayName)}
                                         onChange={consentDescriptionHandler}
                                         modules={modules}
                                         formats={formats}
