@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom'
 import util from '../../util/common'
 import ReactQuill from 'react-quill'
 import './DisplayPolicy.css'
-import { getGenerateDateAndTime } from '../../util/util'
+import { getGenerateDateAndTime, sanitizeHtml } from '../../util/util'
 import { usePageTitle } from '../../hooks/usePageTitle'
 import { EmptySVG } from '../../constants/media'
 const { Content } = Layout
@@ -117,7 +117,9 @@ const ListPolicies = ({ searchParams, setSearchParams }) => {
                                                           {getGenerateDateAndTime(data?.updated_on, 'D MMMM YYYY')}
                                                       </div>
                                                       <ReactQuill
-                                                          value={data?.version_details?.consent_display_description}
+                                                          value={sanitizeHtml(
+                                                              data?.version_details?.consent_display_description
+                                                          )}
                                                           modules={{ toolbar: false }}
                                                           readOnly
                                                           className='mb-3 mr-2 text-base editor quill !text-brandGray2'
