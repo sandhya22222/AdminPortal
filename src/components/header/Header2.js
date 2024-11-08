@@ -222,11 +222,14 @@ const Header2 = ({ setIsLanguageSelected }) => {
                                                 <RiArrowDropDownLine className='text-2xl mx-1' />
                                             </p>
                                         </DropdownMenuTrigger>
-                                        <DropdownMenuContent>
+
+                                        <DropdownMenuContent className='fixed overflow-visible z-20'>
                                             {userItems.map((item) => (
-                                                <DropdownMenuItem key={item.key} onClick={handleMenuClick}>
-                                                    {item.icon}
-                                                    {item.label}
+                                                <DropdownMenuItem
+                                                    key={item.key}
+                                                    onClick={() => handleMenuClick(item)}
+                                                    className='whitespace-nowrap cursor-pointer gap-2 hover:bg-dangerColor hover:text-white text-dangerColor'>
+                                                    {item.icon} {item.label}
                                                 </DropdownMenuItem>
                                             ))}
                                         </DropdownMenuContent>

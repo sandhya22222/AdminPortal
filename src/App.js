@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Layout, Spin } from 'antd'
-import { BrowserRouter as Router, Route, Routes, Navigate, Outlet } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
 import './core-ui/app.css'
@@ -13,7 +12,7 @@ import { AppSidebar } from './shadcnComponents/customComponents/app-sidebar'
 import { lazyWithRetry } from './components/loading/LazyRetry'
 import MarketplaceServices from './services/axios/MarketplaceServices'
 import util from './util/common'
-import NewFooter from './components/footer/Footer'  // Import your footer
+import NewFooter from './components/footer/Footer' // Import your footer
 
 // Lazy load components
 const Home = lazyWithRetry(() => import('./pages/home/Home'))
@@ -39,8 +38,6 @@ axios.defaults.baseURL = process.env.REACT_APP_BASE_URL
 
 const getPermissionsUrl = process.env.REACT_APP_USER_PROFILE_API
 const umsBaseUrl = process.env.REACT_APP_USM_BASE_URL
-
-const { Content } = Layout
 
 // Layout component for the dashboard
 
@@ -77,11 +74,11 @@ const App = () => {
     if (auth.isLoading || isLanguageSelected) {
         util.removePermission()
         return (
-            <Layout className='h-screen'>
-                <Content className='grid place-items-center'>
-                    <Spin indicator={<LoadingOutlined style={{ fontSize: 54 }} spin />} />
-                </Content>
-            </Layout>
+            <div className='h-screen'>
+                <div className='grid place-items-center'>
+                    <div className='w-14 h-14 border-4 border-gray-300 border-t-brandPrimaryColor rounded-full animate-spin'></div>
+                </div>
+            </div>
         )
     }
     if (auth.error) {
@@ -101,11 +98,10 @@ const App = () => {
                     setCollapsed={setCollapsed}
                     setIsLanguageSelected={setIsLanguageSelected}
                 />
-
                 <React.Suspense
                     fallback={
                         <div className='grid place-items-center h-screen'>
-                            <Spin indicator={<LoadingOutlined style={{ fontSize: 54 }} spin />} />
+                            <div className='w-14 h-14 border-4 border-gray-300 border-t-brandPrimaryColor rounded-full animate-spin'></div>
                         </div>
                     }>
                     <Routes>
