@@ -1,11 +1,8 @@
-import { Image, Layout } from 'antd'
 import React, { useEffect } from 'react'
 import { useAuth } from 'react-oidc-context'
 import { useTranslation } from 'react-i18next'
 
 import { Logout503 } from '../constants/media'
-
-const { Content } = Layout
 
 function LogOut() {
     const { t } = useTranslation()
@@ -14,8 +11,8 @@ function LogOut() {
         void auth.signoutSilent()
     }, [auth])
     return (
-        <Content className='grid justify-items-center align-items-center my-28 bg-white'>
-            <Image height={310} preview={false} src={Logout503} fallback={Logout503} />
+        <div className='grid justify-items-center align-items-center my-28 bg-white'>
+            <img height={310} src={Logout503} alt='' fallback={Logout503} />
 
             <h3
                 style={{
@@ -35,7 +32,7 @@ function LogOut() {
                 }}>
                 Please remain on hold momentarily while we securely log you out of the application.
             </h3>
-        </Content>
+        </div>
     )
 }
 

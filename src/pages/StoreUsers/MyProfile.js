@@ -1,4 +1,3 @@
-import { Typography, Layout } from 'antd'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
@@ -7,9 +6,6 @@ import { ShadCNTabs, ShadCNTabsContent, ShadCNTabsTrigger } from '../../shadcnCo
 
 import ListPolicies from './ListPolicies'
 import UserProfile from './UserProfile'
-
-const { Title } = Typography
-const { Content } = Layout
 
 const USER_PROFILE_TABS_OPTIONS = {
     PROFILE_INFORMATION: 'profile_information',
@@ -48,13 +44,11 @@ const MyProfile = () => {
         <>
             <HeaderForTitle
                 title={
-                    <Content className=''>
-                        <Title level={3} className='!font-semibold !text-regal-blue text-2xl'>
-                            {t('labels:profile')}
-                        </Title>
-                    </Content>
+                    <div className=''>
+                        <label className='!font-semibold !text-regal-blue text-2xl'>{t('labels:profile')}</label>
+                    </div>
                 }
-                headerContent={<Content className=' !pt-14 text-brandGray1'>{t('messages:profile_note')}</Content>}
+                headerContent={<div className=' !pt-14 text-brandGray1'>{t('messages:profile_note')}</div>}
             />
             <div className='!px-6 !pb-6 !mt-6'>
                 <div className=' w-full bg-white rounded flex  justify-start shadow-brandShadow'>

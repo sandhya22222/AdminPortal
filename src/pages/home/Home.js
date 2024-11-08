@@ -1,6 +1,5 @@
 //! Import libraries & components
 import React, { useEffect } from 'react'
-import { Layout } from 'antd'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 //! Import CSS libraries
@@ -15,7 +14,6 @@ import { usePageTitle } from '../../hooks/usePageTitle'
 //! Import user defined CSS
 import './home.css'
 //! Destructure the components
-const { Content } = Layout
 
 //! Get all required details from .env file
 
@@ -28,7 +26,7 @@ const Home = () => {
         navigate('/dashboard')
     }, [location.search])
 
-    return <Content className=' temppic grid justify-items-center p-3 h-[100vh] bg-bottom '></Content>
+    return <div className=' temppic grid justify-items-center p-3 h-[100vh] bg-bottom '></div>
 }
 
 export default Home

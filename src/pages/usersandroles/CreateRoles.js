@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { Layout, Typography, Button, Input, Row, Col, Spin, Tooltip } from 'antd'
-
 import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import HeaderForTitle from '../../components/header/HeaderForTitle'
-
+import { Button } from '../../shadcnComponents/ui/button'
+import { Textarea } from '../../shadcnComponents/ui/textarea'
+import { Input } from '../../shadcnComponents/ui/input'
+import ShadCNTooltip from '../../shadcnComponents/customComponents/ShadCNTooltip'
+import Spin from '../../shadcnComponents/customComponents/Spin'
 //! Import CSS libraries
 
 const titleMaxLength = parseInt(process.env.REACT_APP_TITLE_MAX_LENGTH)
-
-const { Title } = Typography
-const { Content } = Layout
-const { TextArea } = Input
 
 const CreateRoles = () => {
     const { t } = useTranslation()
@@ -29,14 +27,14 @@ const CreateRoles = () => {
     }, [])
 
     return (
-        <Content className=''>
+        <div className=''>
             <HeaderForTitle
                 title={
-                    <Tooltip title={pageAction !== 'add' ? 'Edit' : 'Add'} zIndex={11} placement='bottom'>
-                        <Title level={3} className='!font-normal max-w-[800px]' ellipsis>
+                    <ShadCNTooltip content={pageAction !== 'add' ? 'Edit' : 'Add'} zIndex={11} position='bottom'>
+                        <label className='!font-normal max-w-[800px] text-2xl ' ellipsis>
                             {pageAction === 'add' ? `${t('labels:add_role')} ` : 'Edit Roles'}
-                        </Title>
-                    </Tooltip>
+                        </label>
+                    </ShadCNTooltip>
                 }
                 type={'categories'}
                 action={pageAction === 'add' ? 'add' : 'edit'}
@@ -45,56 +43,58 @@ const CreateRoles = () => {
                 isVisible={pageAction === 'edit' ? false : true}
                 showButtons={pageAction === 'edit' ? true : false}
             />
-            <Content className='!min-h-screen mt-[4.5rem] p-3'>
-                <Spin tip={t('labels:please_wait')} size='large' spinning={isLoading}>
-                    <Content className='bg-white p-3'>
-                        <Row>
-                            <Col span={14} className=''>
-                                <Content className='my-3'>
-                                    <Typography className='input-label-color mb-2 flex gap-1'>
+            <div className='!min-h-screen mt-[4.5rem] p-3'>
+                {isLoading ? (
+                    <Spin />
+                ) : (
+                    <div className='bg-white p-3'>
+                        <div>
+                            <div className='w-[58.33%]'>
+                                <div className='my-3'>
+                                    <p className='input-label-color mb-2 flex gap-1'>
                                         {t('labels:role_name')}
                                         <span className='mandatory-symbol-color text-sm '>*</span>
-                                    </Typography>
-                                    <Content className='flex'>
-                                        <Content className=''>
+                                    </p>
+                                    <div className='flex'>
+                                        <div className=''>
                                             <Input
                                                 disabled={pageAction === 'add' ? false : true}
                                                 maxLength={titleMaxLength}
                                                 placeholder={t('placeholders:role_name_placeholder')}
                                             />
-                                        </Content>
-                                    </Content>
-                                </Content>
-                                <Content className='my-3'>
-                                    <Typography className='input-label-color mb-2 flex gap-1'>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className='my-3'>
+                                    <p className='input-label-color mb-2 flex gap-1'>
                                         {t('common:description')}
                                         <span className='mandatory-symbol-color text-sm '>*</span>
-                                    </Typography>
-                                    <Content className={`flex ${pageAction === 'edit' ? ' relative' : ''}`}>
-                                        <TextArea
+                                    </p>
+                                    <div className={`flex ${pageAction === 'edit' ? ' relative' : ''}`}>
+                                        <Textarea
                                             disabled={pageAction === 'add' ? false : true}
                                             placeholder={t('placeholders:role_description_placeholder')}
                                             autoSize={true}
                                             rows={1}
                                         />
-                                    </Content>
-                                </Content>
+                                    </div>
+                                </div>
                                 {pageAction === 'add' ? (
-                                    <Content className='my-2'>
+                                    <div className='my-2'>
                                         <Button
                                             onClick={roleFormValidation}
                                             className={`app-btn-primary ml-1
                        `}>
                                             {pageAction === 'edit' ? t('labels:update') : t('labels:save')}
                                         </Button>
-                                    </Content>
+                                    </div>
                                 ) : null}
-                            </Col>
-                        </Row>
-                    </Content>
-                </Spin>
-            </Content>
-        </Content>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </div>
     )
 }
 
