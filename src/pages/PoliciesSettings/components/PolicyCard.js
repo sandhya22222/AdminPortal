@@ -15,6 +15,7 @@ import useUpdateUserConsent from '../hooks/useUpdateUserConsent'
 import AddVersion from './AddVersion'
 import TranslatePolicy from './TranslatePolicy'
 import VersionHistory from './VersionHistory'
+import { sanitizeHtml } from '../../../util/util'
 const { Text } = Typography
 const Link = Quill.import('formats/link')
 Link.sanitize = function (url) {
@@ -86,7 +87,7 @@ const PolicyCard = ({
     const [consentDisplayName, setConsentDisplayName] = useState('')
     const [consentDiscriptionDisplayName, setConsentDiscriptionDisplayName] = useState('')
     const [consentName, setConsentName] = useState(consentDetails?.consent_name || policyName)
-    const [description, setDescription] = useState(consentDetails?.consent_description)
+    const [description, setDescription] = useState(sanitizeHtml(consentDetails?.consent_description))
     const [descriptionText, setDescriptionText] = useState(consentDetails?.consent_description)
     const [descriptionModified, setDescriptionModified] = useState(false)
     const [policyConfirmation, setPolicyConfirmation] = useState(false)
@@ -135,7 +136,7 @@ const PolicyCard = ({
 
     const handelDescriptionChange = (content, delta, source, editor) => {
         if ((policyStatus === 1 || isNewPolicy) && source === 'user') {
-            setDescription(content)
+            setDescription(sanitizeHtml(content))
             setDescriptionText(editor.getText(content)?.trim())
             if (!descriptionModified) setDescriptionModified(true)
         }

@@ -9,6 +9,7 @@ import useCreateVersionDisplayname from '../hooks/useCreateVersionDisplayname'
 import useGetStoreLanguage from '../hooks/useGetStoreLanguage'
 import useGetUserConsentVersionDisplayName from '../hooks/useGetUserConsentVersionDisplayName'
 import useUpdateVersionDisplayname from '../hooks/useUpdateVersionDisplayname'
+import { sanitizeHtml } from '../../../util/util'
 
 const CONSENT_NAME_LENGTH = 100
 const Link = Quill.import('formats/link')
@@ -306,7 +307,7 @@ function TranslatePolicy({
                     data.consentDescriptionDisplayNameText = editor.getText(content)?.trim()
                 }
             })
-            copyOfSelectedConsentDisplayNameData.consentDescriptionDisplayName = content
+            copyOfSelectedConsentDisplayNameData.consentDescriptionDisplayName = sanitizeHtml(content)
             copyOfSelectedConsentDisplayNameData.consentDescriptionDisplayNameText = editor.getText(content)?.trim()
             setSelectedConsentDisplayNameData(copyOfSelectedConsentDisplayNameData)
             setSelectedConsentDisplayNameData(copyOfSelectedConsentDisplayNameData)
@@ -367,7 +368,7 @@ function TranslatePolicy({
                                         </div>
                                         <div className='!w-[400px] '>
                                             <ReactQuill
-                                                value={userConsentBaseDescription}
+                                                value={sanitizeHtml(userConsentBaseDescription)}
                                                 modules={{ toolbar: false }}
                                                 readOnly={true}
                                                 style={{ width: '100%', height: '390px' }}
@@ -449,7 +450,9 @@ function TranslatePolicy({
                                             <ReactQuill
                                                 theme='snow'
                                                 style={{ width: '100%' }}
-                                                value={selectedConsentDisplayNameData?.consentDescriptionDisplayName}
+                                                value={sanitizeHtml(
+                                                    selectedConsentDisplayNameData?.consentDescriptionDisplayName
+                                                )}
                                                 onChange={consentDescriptionHandler}
                                                 modules={modules}
                                                 formats={formats}

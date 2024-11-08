@@ -7,6 +7,7 @@ import StoreModal from '../../../components/storeModal/StoreModal'
 import useGetUserConsentVersionDetails from '../hooks/useGetUserConsentVersionDetails'
 import AddVersion from './AddVersion'
 import '../policiesSettings.css'
+import { sanitizeHtml } from '../../../util/util'
 const { Text } = Typography
 function VersionHistory({ userConsentId, refetchUserConsent, setVersionHistory }) {
     const { t } = useTranslation()
@@ -104,7 +105,7 @@ function VersionHistory({ userConsentId, refetchUserConsent, setVersionHistory }
                         <div>
                             <div className='!w-[690px] rounded border-[1px]'>
                                 <ReactQuill
-                                    value={userConsentVersionDetails?.consent_display_description}
+                                    value={sanitizeHtml(userConsentVersionDetails?.consent_display_description)}
                                     modules={{ toolbar: false }}
                                     readOnly={true}
                                     style={{ width: '100%', height: '400px' }}
