@@ -17,6 +17,7 @@ import { useLocation } from 'react-router-dom'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import useGetPolicyHistory from '../hooks/useGetPolicyHistory'
+import { sanitizeHtml } from '../../../util/util'
 
 function PolicyHistory() {
     const { t } = useTranslation()
@@ -74,7 +75,7 @@ function PolicyHistory() {
             setSelectedPolicyData(processedData[0])
             setActiveKey(processedData[0]?.id)
             setDropDownLabel(processedData[0]?.versionDataForDropdown[0]?.label)
-            setPolicyDescription(processedData[0]?.versionDetails[0]?.consent_display_description)
+            setPolicyDescription(sanitizeHtml(processedData[0]?.versionDetails[0]?.consent_display_description))
             setPolicyUpdatedOn(processedData[0]?.versionDetails[0]?.updated_on)
         }
     }, [policiesWithoutContactInformation, versionDetails])
@@ -83,7 +84,7 @@ function PolicyHistory() {
         setActiveKey(key)
         let selectedPolicyTab = policyData?.filter((data) => data.id === key)[0]
         setSelectedPolicyData(selectedPolicyTab)
-        setPolicyDescription(selectedPolicyTab.versionDetails[0]?.consent_display_description)
+        setPolicyDescription(sanitizeHtml(selectedPolicyTab.versionDetails[0]?.consent_display_description))
         setPolicyUpdatedOn(selectedPolicyTab.versionDetails[0]?.updated_on)
         let processedData = processPolicyHistoryData()
         setDropDownLabel(processedData[0]?.versionDataForDropdown[0]?.label)
@@ -93,7 +94,7 @@ function PolicyHistory() {
         console.log('click', key)
         let selectedVersionDetails = selectedPolicyData?.versionDetails?.filter((data) => data.version_number == key)[0]
         setDropDownLabel(key == 1 ? 'V1.0' : 'V' + key)
-        setPolicyDescription(selectedVersionDetails.consent_display_description)
+        setPolicyDescription(sanitizeHtml(selectedVersionDetails.consent_display_description))
         setPolicyUpdatedOn(selectedVersionDetails.updated_on)
     }
 
