@@ -23,6 +23,7 @@ import { SettingsSVG } from '../../components/Sidebar2.0.js/components/SettingsS
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip'
 import { cn } from '../../lib/utils'
 import { useAuth } from 'react-oidc-context'
+import util from '../../util/common'
 
 const pageLimitFromENV = process.env.REACT_APP_ITEM_PER_PAGE || '10'
 
@@ -171,7 +172,7 @@ export const AppSidebar = ({ permissionValue = [], collapsed = false, setCollaps
                                                                     : handleClick(item.key, item.path)
                                                             }
                                                             className={cn(
-                                                                'text-[#0F172A]',
+                                                                'text-[#0F172A] relative flex items-center px-4', // Keep basic flex layout
                                                                 selectedItem === item.key
                                                                     ? 'bg-accent text-regal-orange'
                                                                     : '',
@@ -181,13 +182,19 @@ export const AppSidebar = ({ permissionValue = [], collapsed = false, setCollaps
                                                             onMouseLeave={() => setHoveredItem(null)}>
                                                             {item.icon}
                                                             {!collapsed && <span>{item.title}</span>}
+
                                                             {item.items && (
-                                                                <ChevronRight
-                                                                    className={cn(
-                                                                        'ml-auto h-4 w-4 transition-transform duration-200',
-                                                                        openedItem === item.key && 'rotate-90'
-                                                                    )}
-                                                                />
+                                                                <div>
+                                                                    <ChevronRight
+                                                                        className={cn(
+                                                                            `
+        ${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-16' : 'ml-16'}
+        `,
+                                                                            'h-4 w-4  text-gray-500 transition-transform duration-200',
+                                                                            openedItem === item.key ? 'rotate-90' : ''
+                                                                        )}
+                                                                    />
+                                                                </div>
                                                             )}
                                                         </SidebarMenuButton>
                                                     </SidebarMenuItem>
@@ -250,7 +257,7 @@ export const AppSidebar = ({ permissionValue = [], collapsed = false, setCollaps
                 </SidebarProvider>
             </TooltipProvider>
 
-            <div className='w-full'>
+            <div className='flex flex-col flex-1 bg-[#F4F4F4] overflow-auto'>
                 <Outlet />
             </div>
         </div>
