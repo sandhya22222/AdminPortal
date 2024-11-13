@@ -3,11 +3,14 @@ import { useAuth } from 'react-oidc-context'
 import { useTranslation } from 'react-i18next'
 
 import { Logout503 } from '../constants/media'
+import util from '../util/common'
 
 function LogOut() {
     const { t } = useTranslation()
     const auth = useAuth()
     useEffect(() => {
+        util.removeAuthToken()
+        util.removeIsAuthorized()
         void auth.signoutSilent()
     }, [auth])
     return (
