@@ -12,12 +12,12 @@ import { lazyWithRetry } from './components/loading/LazyRetry'
 import MarketplaceServices from './services/axios/MarketplaceServices'
 import util from './util/common'
 import NewFooter from './components/footer/Footer' // Import your footer
+import Header2 from './components/header/Header2'
+import Home from './pages/home/Home'
 
 // Lazy load components
-const Home = lazyWithRetry(() => import('./pages/home/Home'))
 const NewDashboard = lazyWithRetry(() => import('./pages/NewDashboard/Newdashboard'))
 const Store = lazyWithRetry(() => import('./pages/Stores/Store'))
-const Header2 = React.lazy(() => import('./components/header/Header2'))
 const PaymentType = lazyWithRetry(() => import('./pages/PaymentType/PaymentType'))
 const Preview = lazyWithRetry(() => import('./pages/StoreSetting/Preview'))
 const Language = lazyWithRetry(() => import('./pages/StoreLanguage/Language-v2'))
@@ -63,10 +63,15 @@ const App = () => {
 
     useEffect(() => {
         if (auth?.user?.access_token) {
+            util.setAuthToken(auth.user?.access_token)
+            util.setIsAuthorized(true)
             getPermissions()
+        } else {
+            util.removeAuthToken()
+            util.removeIsAuthorized()
         }
     }, [auth])
-
+ 
     // Loading states
     if (auth.activeNavigator === 'signinSilent') return <div />
     if (auth.activeNavigator === 'signoutRedirect') return null

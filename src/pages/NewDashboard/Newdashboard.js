@@ -71,15 +71,7 @@ const Newdashboard = () => {
         },
     }
 
-    useEffect(() => {
-        if (auth && auth.user && auth.user?.access_token) {
-            util.setAuthToken(auth.user?.access_token)
-            util.setIsAuthorized(true)
-        } else {
-            util.removeAuthToken()
-            util.removeIsAuthorized()
-        }
-    }, [auth])
+ 
     useEffect(() => {
         if (util.getSelectedLanguageDirection()) {
             setLangDirection(util.getSelectedLanguageDirection()?.toLowerCase())
