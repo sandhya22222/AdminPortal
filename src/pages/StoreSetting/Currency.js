@@ -92,7 +92,7 @@ const Currency = ({ storeUUId }) => {
             storeCurrencyAPI,
             {
                 store_id: storeUUId,
-                currency_id: currencyData && currencyData.length > 0 && currencyData[0].id,
+                currency_id: currencyData?.id,
             },
             null
         )
