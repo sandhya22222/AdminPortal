@@ -22,6 +22,7 @@ const portalInfo = JSON.parse(process.env.REACT_APP_PORTAL_INFO)
 
 export default function PreviewAndCustomise({ closeModal, refetchUserConsent, storeName, storeId }) {
     const { t } = useTranslation()
+
     const {
         data: userConsents,
         status: userConsentsStatus,
@@ -123,6 +124,7 @@ export default function PreviewAndCustomise({ closeModal, refetchUserConsent, st
         }
     }
 
+    
     const handelExplicitChange = (checked) => {
         setExplicit(checked)
     }
@@ -307,6 +309,7 @@ export default function PreviewAndCustomise({ closeModal, refetchUserConsent, st
                         setLeadInLine={setLeadInLine}
                         loadingSkelton={loadingSkelton}
                         setLoadingSkelton={setLoadingSkelton}
+                        refetchUserConsents={refetchUserConsents}
                     />
                 </div>
             </StoreModal>

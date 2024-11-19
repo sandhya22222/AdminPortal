@@ -5,6 +5,8 @@ import validator from 'validator'
 import MarketplaceServices from '../../../services/axios/MarketplaceServices'
 import util from '../../../util/common'
 import MarketplaceToaster from '../../../util/marketplaceToaster'
+import useGetStoreLanguage from '../hooks/useGetStoreLanguage'
+import { useLocation } from 'react-router-dom'
 import { deepCopy } from '../../../util/util'
 import { Button } from '../../../shadcnComponents/ui/button'
 import { Progress } from '../../../shadcnComponents/ui/progress'
@@ -32,12 +34,13 @@ const TranslatorModal = ({
     setLeadInLine,
     loadingSkelton,
     setLoadingSkelton,
+    refetchUserConsents,
 }) => {
     const dispatch = useDispatch()
     const { t } = useTranslation()
+    const search = useLocation().search
 
-    const storeLanguageFromReduxState = useSelector((state) => state.reducerStoreLanguage.storeLanguage)
-
+    const storeUUID = new URLSearchParams(search).get('id')
     const userSelectedLanguageCode = util.getUserSelectedLngCode()
     // const productTemplateSelectedInfo = useSelector((state) => state.reducerProducts.productTemplateSelectedInfo)
     const [displayNameDataJson, setDisplayNameDataJson] = useState(dataJson)
@@ -55,17 +58,20 @@ const TranslatorModal = ({
     const [isInputFieldsValidationModalOpen, setIsInputFieldsValidationModalOpen] = useState(false)
     const [invalidName, setInvalidName] = useState(false)
     const [invalidDescription, setInvalidDescription] = useState(false)
-
     const [mainTitle, setMainTitle] = useState()
     const [title, setTitle] = useState()
     const [label, setLabel] = useState()
     const [objectForDetailsUpdate, setObjectForDetailsUpdate] = useState()
     const [displayNameApiData, setDisplayNameApiData] = useState([])
     const [alreadyTranslatedCount, setAlreadyTranslatedCount] = useState(0)
+    const [languages, setLanguages] = useState([{ label: 'English', key: 'en' }])
+
+    const { data: userConsentLanguageData, status: userConsentLanguageStatus } = useGetStoreLanguage({
+        storeUUID,
+    })
 
     const getStoreLanguageData = (getDisplayNameApiEndPoint) => {
-        const StoreLanguageResponse = storeLanguageFromReduxState
-
+        const StoreLanguageResponse = userConsentLanguageData?.data
         setStoreLanguages(StoreLanguageResponse)
         const defaultLanguageCode =
             StoreLanguageResponse &&
@@ -105,27 +111,27 @@ const TranslatorModal = ({
                 console.log('edit selected get displayname response : ', response.data)
                 let tempArray
                 let displayNameData
+                let updatedDisplayNameData
                 if (response.data) {
                     switch (componentType) {
                         case 'leadline':
                             tempArray = deepCopy(response.data.response_body.User_Consent_leadline_Displaynames)
-                            setDisplayNameApiData(tempArray)
-                            setAllDisplayNameData(response.data.response_body.User_Consent_leadline_Displaynames)
-                            displayNameData = response.data.response_body.User_Consent_leadline_Displaynames
+                            updatedDisplayNameData = tempArray.map((item) => {
+                                const { language, ...rest } = item
+                                return {
+                                    ...rest,
+                                    language_code: language,
+                                }
+                            })
+                            setDisplayNameApiData(updatedDisplayNameData)
+                            setAllDisplayNameData(updatedDisplayNameData)
+                            displayNameData = updatedDisplayNameData
                             break
 
                         default:
                             return null
                     }
                     let finalObjectWithAllData = []
-
-                    const updatedDisplayNameData = displayNameData.map((item) => {
-                        const { language, ...rest } = item
-                        return {
-                            ...rest,
-                            language_code: language,
-                        }
-                    })
                     setCommonDataContainingAllObject(updatedDisplayNameData)
                     for (let i = 0; i < StoreLanguageResponse.length; i++) {
                         let storeLanguageDataIsAvailableInDisplayNameData =
@@ -167,15 +173,12 @@ const TranslatorModal = ({
         setIsLoadingStoreLanguage(false)
     }
 
-    console.log('commonDataContainingAllObject', commonDataContainingAllObject)
-    console.log('isLoadingStoreLanguagee', isLoadingStoreLanguage)
-
     //! doing put call for  display name
     const updateMultilingualDetails = (putDisplayNameApiEndPoint, changedDataForPutCall, postApiStatus) => {
         let finalPutBody
         switch (componentType) {
             case 'leadline':
-                finalPutBody = { adminuserconsentleadline_displayname: changedDataForPutCall }
+                finalPutBody = { userconsentleadline_displayname: changedDataForPutCall }
                 break
             default:
                 return null
@@ -189,7 +192,6 @@ const TranslatorModal = ({
             default:
                 return null
         }
-
         MarketplaceServices.update(putDisplayNameApiEndPoint, finalPutBody, putParams)
             .then((response) => {
                 console.log('put call for updateMultilingualDetails', response.data)
@@ -197,16 +199,16 @@ const TranslatorModal = ({
                 switch (componentType) {
                     case 'leadline':
                         if (response.data) {
+                            refetchUserConsents()
                             const selectedLangDisplayAdded =
                                 response.data &&
-                                response.data.response_body.product_displaynames &&
-                                response.data.response_body.product_displaynames.length > 0 &&
-                                response.data.response_body.product_displaynames.filter(
+                                response.data.response_body &&
+                                response.data.response_body.length > 0 &&
+                                response.data.response_body.filter(
                                     (val) => val.language_code === userSelectedLanguageCode
                                 )
-                            console.log('selectedLangDisplayAdded', selectedLangDisplayAdded)
                             if (selectedLangDisplayAdded && selectedLangDisplayAdded.length > 0) {
-                                setLeadInLine(selectedLangDisplayAdded[0]?.display_name.trim())
+                                // setLeadInLine(selectedLangDisplayAdded[0]?.display_name.trim())
                             }
                         }
                         break
@@ -242,6 +244,7 @@ const TranslatorModal = ({
     }
     const validationOfDataForPutCall = (tempArrDataWithDisplayNameId) => {
         let finalPutBody = []
+        console.log('displayNameApiDataaa', displayNameApiData)
         for (let i = 0; i < displayNameApiData.length; i++) {
             const id = displayNameApiData[i].id
             const localData =
@@ -251,6 +254,7 @@ const TranslatorModal = ({
             let obj = {}
             obj['id'] = displayNameApiData[i].id
             obj['language_code'] = displayNameApiData[i].language_code
+            obj['store'] = displayNameApiData[i].store
             if (displayNameApiData[i].display_name !== localData.display_name) {
                 obj['display_name'] = localData.display_name
                 obj['description'] = localData.description
@@ -286,20 +290,18 @@ const TranslatorModal = ({
 
         MarketplaceServices.save(putDisplayNameApiEndPoint, finalPostBody, null)
             .then((response) => {
-                console.log('responseee', response)
                 switch (componentType) {
                     case 'leadline':
                         if (response.data) {
+                            refetchUserConsents()
                             const selectedLangDisplayAdded =
                                 response.data &&
                                 response.data.response_body.length > 0 &&
                                 response.data.response_body.filter(
                                     (val) => val.language_code === userSelectedLanguageCode
                                 )
-                            console.log('selectedLangDisplayAddedOne', selectedLangDisplayAdded)
                             if (selectedLangDisplayAdded && selectedLangDisplayAdded.length > 0) {
-                                console.log('selectedLangDisplayAdded', selectedLangDisplayAdded)
-                                setLeadInLine(selectedLangDisplayAdded[0]?.display_name.trim())
+                                // setLeadInLine(selectedLangDisplayAdded[0]?.display_name.trim())
                             }
                         }
                         break
@@ -331,7 +333,6 @@ const TranslatorModal = ({
             })
     }
 
-    console.log('checkTheCommonObject', commonDataContainingAllObject)
     const InputValuesValidationFromAllLanguages = (
         commonDataContainingAllObject,
         callWithDefaultDetails,
@@ -500,13 +501,13 @@ const TranslatorModal = ({
             default:
                 return null
         }
-        if (onChangeDisableFields && loadingSkelton) {
+        if (onChangeDisableFields && loadingSkelton && userConsentLanguageStatus) {
             setCommonDataContainingAllObject([])
             setTimeout(function () {
                 getStoreLanguageData(getDisplayNameApiEndPoint)
             }, 500)
         }
-    }, [dataJson])
+    }, [dataJson, userConsentLanguageData, userConsentLanguageStatus])
 
     useEffect(() => {
         setDisplayNameDataJson([
@@ -646,9 +647,19 @@ const TranslatorModal = ({
         setInvalidDescription(false)
         setInvalidName(false)
     }
+    useEffect(() => {
+        if (userConsentLanguageStatus === 'success') {
+            if (userConsentLanguageData?.data?.length > 0) {
+                setLanguages(
+                    userConsentLanguageData.data.map((data) => ({
+                        label: data.language,
+                        key: data.language_code,
+                    }))
+                )
+            }
+        }
+    }, [userConsentLanguageData, userConsentLanguageStatus])
 
-    console.log('selectedLanguageFromDropDown', selectedLanguageFromDropDown)
-    console.log('allDisplayNameData', allDisplayNameData)
     console.log('commonDataContainingAllObject#', commonDataContainingAllObject)
 
     return (
