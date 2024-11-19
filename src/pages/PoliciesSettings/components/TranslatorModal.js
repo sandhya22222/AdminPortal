@@ -997,7 +997,7 @@ const TranslatorModal = ({
                                         util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? '!ml-2' : '!mr-2'
                                     }`}
                                     onClick={() => handleTranslatorDiscard()}>
-                                    {t('common:discard')}
+                                    {t('labels:discard')}
                                 </Button>
                                 <Button
                                     variant='outline'
@@ -1035,7 +1035,7 @@ const TranslatorModal = ({
                                                 : true
                                             : true
                                     }>
-                                    {t('common:save')}
+                                    {t('labels:save')}
                                 </Button>
                             </div>
                         </>
