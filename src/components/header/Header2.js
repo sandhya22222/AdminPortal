@@ -253,14 +253,14 @@ const Header2 = ({ setIsLanguageSelected }) => {
                                         : 'ml-[5px]'
                                 }`}>
                                 <Select value={storeSelectedLngCode} onValueChange={handleLanguageClick}>
-                                    <SelectTrigger className='min-w-[100px] border-none'>
+                                    <SelectTrigger className=' border-none'>
                                         <SelectValue placeholder='Select Language' />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {languageItems &&
                                             languageItems.map((item) => (
                                                 <SelectItem key={item.value} value={item.value}>
-                                                    {item.label}
+                                                    {item.value?.toUpperCase()}
                                                 </SelectItem>
                                             ))}
                                     </SelectContent>
