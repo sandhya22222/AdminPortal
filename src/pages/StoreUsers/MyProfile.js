@@ -6,10 +6,12 @@ import { ShadCNTabs, ShadCNTabsContent, ShadCNTabsTrigger } from '../../shadcnCo
 
 import ListPolicies from './ListPolicies'
 import UserProfile from './UserProfile'
+import LoginSessions from '../LoginSessions/LoginSessions'
 
 const USER_PROFILE_TABS_OPTIONS = {
     PROFILE_INFORMATION: 'profile_information',
     POLICIES: 'policies',
+    LOGIN_SESSIONS: 'login_sessions',
 }
 
 const MyProfile = () => {
@@ -33,6 +35,11 @@ const MyProfile = () => {
             key: USER_PROFILE_TABS_OPTIONS.POLICIES,
             label: `${t('labels:policies')}`,
             value: 1,
+        },
+        {
+            key: USER_PROFILE_TABS_OPTIONS.LOGIN_SESSIONS,
+            label: `${t('profile:logged_in_devices')}`,
+            value: 2,
         },
     ]
     const handelMyProfileTabChange = (tabKey) => {
@@ -91,6 +98,7 @@ const MyProfile = () => {
                         {searchParams.get('tab') === USER_PROFILE_TABS_OPTIONS.POLICIES && (
                             <ListPolicies searchParams={searchParams} setSearchParams={setSearchParams} />
                         )}
+                        {searchParams.get('tab') === USER_PROFILE_TABS_OPTIONS.LOGIN_SESSIONS && <LoginSessions />}
                     </div>
                 </div>
             </div>

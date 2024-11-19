@@ -68,7 +68,7 @@ i18n.use(Backend)
         backend: {
             loadPath: getCurrentHost,
         },
-        ns: ['placeholders', 'messages', 'labels'],
+        ns: ['placeholders', 'messages', 'labels', 'profile'],
         interpolation: {
             escapeValue: false,
         },
