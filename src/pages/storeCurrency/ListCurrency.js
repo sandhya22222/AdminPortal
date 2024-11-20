@@ -1,28 +1,25 @@
 //! Import libraries
 import React, { useState, useEffect } from 'react'
-import { Layout, Typography, Col, Tag, Tooltip, Image, Table, Button } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-
 //! Import user defined components
 import HeaderForTitle from '../../components/header/HeaderForTitle'
 import { useTranslation } from 'react-i18next'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
-import SkeletonComponent from '../../components/Skeleton/SkeletonComponent'
-import DmPagination from '../../components/DmPagination/DmPagination'
+import { Skeleton } from '../../shadcnComponents/ui/skeleton'
 import { usePageTitle } from '../../hooks/usePageTitle'
-import util from '../../util/common'
-import { starIcon } from '../../constants/media'
-
+import ShadCNTooltip from '../../shadcnComponents/customComponents/ShadCNTooltip'
+import { Badge } from '../../shadcnComponents/ui/badge'
+import ShadCNDataTable from '../../shadcnComponents/customComponents/ShadCNDataTable'
+import { Button } from '../../shadcnComponents/ui/button'
+import ShadCNPagination from '../../shadcnComponents/customComponents/ShadCNPagination'
 //! Get all required details from .env file
 const currencyAPI = process.env.REACT_APP_CHANGE_CURRENCY_API
 const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE)
 
 //! Destructure the ant design components
-const { Content } = Layout
-const { Title, Text } = Typography
 
-const ListCurrency = () => {
+const ListCurrency = ({ collapsed }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     usePageTitle(t('labels:currency'))
@@ -36,132 +33,83 @@ const ListCurrency = () => {
     //! columns for currency
     const listCurrencyColumns = [
         {
-            title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:title')}</Text>,
-            dataIndex: 'currencyName',
-            key: 'currencyName',
-            width: '28%',
+            header: t('labels:title'),
+            value: 'currency_name',
             ellipsis: true,
-            render: (text, record) => {
-                return (
-                    <Content className='inline-block'>
-                        <Text
-                            className={`mx-1 text-brandGray1
-                   ${record.is_default === true ? '!max-w-[68px]' : '!max-w-[150px]'} `}
-                            ellipsis={{ tooltip: record.currency_name }}>
-                            {record.currency_name}
-                        </Text>
-                        {record.is_default === true ? (
-                            <Tag
-                                // icon={<img src={starIcon} className='mr-1 flex !items-center ' alt='defaultIcon' />}
-                                className='inline-flex items-center gap-1 rounded-xl'
-                                color='#FB8500'>
-                                {t('labels:default_currency')}
-                            </Tag>
+            render: (text, record) => (
+                <div className=' gap-1 flex items-center'>
+                    {record.is_default ? (
+                        !collapsed ? (
+                            <ShadCNTooltip content={record.currency_name}>
+                                <div
+                                    className={`mx-1  ${record.is_default ? '!max-w-[68px] truncate' : '!max-w-[150px]'}`}
+                                    style={{
+                                        whiteSpace: 'nowrap',
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                    }}>
+                                    {record.currency_name}
+                                </div>
+                            </ShadCNTooltip>
                         ) : (
-                            ''
-                        )}
-                    </Content>
-                )
-            },
-        },
-        {
-            title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:code')}</Text>,
-            dataIndex: 'currency_code',
-            key: 'currency_code',
-            width: '8%',
-            render: (text, record) => {
-                return (
-                    <>
-                        <Tooltip title={record.iso_currency_code}>
-                            <Text className='max-w-xs text-brandGray1' ellipsis={{ tooltip: record.iso_currency_code }}>
-                                {record.iso_currency_code}
-                            </Text>
-                        </Tooltip>
-                    </>
-                )
-            },
-        },
-        {
-            title: (
-                <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:conversation')}</Text>
+                            <div>{record.currency_name}</div>
+                        )
+                    ) : (
+                        <div>{record.currency_name}</div>
+                    )}
+                    {record.is_default && (
+                        <Badge
+                            variant=''
+                            className='inline-flex items-center gap-1 rounded-xl  w-[123px]'
+                            color='#FB8500'>
+                            {t('labels:default_currency')}
+                        </Badge>
+                    )}
+                </div>
             ),
-            dataIndex: 'conversation',
-            key: 'conversation',
-            ellipsis: true,
-            width: '13%',
-            render: (text, record) => {
-                return <Text className='text-brandGray1'>{record.unit_conversion}</Text>
-            },
         },
         {
-            title: (
-                <Text className='text-regal-blue text-sm font-medium leading-[22px]'>
-                    {t('labels:unit_price_name')}
-                </Text>
-            ),
-            dataIndex: 'unitPriceName',
-            key: 'unitPriceName',
+            header: t('labels:code'),
+            value: 'iso_currency_code',
             width: '10%',
-            render: (text, record) => {
-                return <Text className='text-brandGray1'>{record.unit_price_name}</Text>
-            },
         },
         {
-            title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:min_amount')}</Text>,
-            dataIndex: 'minAmount',
-            key: 'minAmount',
-            width: '10%',
-            render: (text, record) => {
-                return <Text className='text-brandGray1'>{record.minimum_amount}</Text>
-            },
-        },
-        {
-            title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:symbol')}</Text>,
-            dataIndex: 'symbol',
-            key: 'symbol',
-            width: '10%',
-            render: (text, record) => {
-                return <Text className='text-brandGray1'>{record.symbol}</Text>
-            },
-        },
-        {
-            title: (
-                <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:no_of_decimals')}</Text>
-            ),
-            dataIndex: 'noOfDecimals',
-            key: 'noOfDecimals',
-            width: '10%',
-            render: (text, record) => {
-                return <Text className='text-brandGray1'>{record.no_of_decimal}</Text>
-            },
-        },
-        {
-            title: <Text className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:action')}</Text>,
-            dataIndex: '',
-            key: '',
+            header: t('labels:conversation'),
+            value: 'unit_conversion',
             width: '12%',
-            ellipsis: true,
-            // align: 'center',
+        },
+        {
+            header: t('labels:unit_price_name'),
+            value: 'unit_price_name',
+            width: '15%',
+        },
+        {
+            header: t('labels:min_amount'),
+            value: 'minimum_amount',
+            width: '10%',
+        },
+        {
+            header: t('labels:symbol'),
+            value: 'symbol',
+            width: '10%',
+        },
+        {
+            header: t('labels:no_of_decimals'),
+            value: 'no_of_decimal',
+            width: '10%',
+        },
+        {
+            header: t('labels:action'),
+            value: 'action',
             render: (text, record) => {
                 return (
                     <Button
-                        type='text'
-                        className='app-btn-text !mr-1 font-medium'
+                        variant='ghost'
+                        className='app-btn-text text-sm font-medium rounded hover:bg-slate-100'
                         onClick={() => {
                             navigate(`/dashboard/currency/edit-currency?k=${record.id}`)
                         }}>
-                        <Text
-                            ellipsis={{
-                                tooltip: {
-                                    title: t('labels:view_details'),
-                                    mouseLeaveDelay: 0,
-                                    mouseEnterDelay: 0.5,
-                                    placement: 'bottom',
-                                },
-                            }}
-                            className='app-primary-color w-[80px]'>
-                            {t('labels:view_details')}
-                        </Text>
+                        {t('labels:view_details')}
                     </Button>
                 )
             },
@@ -201,47 +149,45 @@ const ListCurrency = () => {
 
     //!JSX for list currency page
     return (
-        <Content>
+        <div>
             <div className='!shadow-lg'>
                 <HeaderForTitle
                     className=''
-                    title={
-                        <Content className=''>
-                            <div className='!font-semibold text-2xl mb-4 text-regal-blue'>{t('labels:currency')}</div>
-                        </Content>
-                    }
-                    titleContent={<Content className=' !flex items-center !justify-end gap-3'></Content>}
+                    title={<div className='!font-semibold text-2xl mb-4 text-regal-blue'>{t('labels:currency')}</div>}
+                    titleContent={<div className=' !flex items-center !justify-end gap-3'></div>}
                 />
             </div>
-            <Content className='p-3 mt-[9.5rem]'>
+            <div className='p-3 mt-[8.8rem]'>
                 {isLoading ? (
-                    <Content className=' bg-white text-center !p-2 rounded-md'>
-                        <SkeletonComponent />
-                    </Content>
+                    <div className=' bg-white p-3 space-y-4 w-full'>
+                        {Array(6)
+                            .fill(null)
+                            .map((_, index) => (
+                                <Skeleton key={index} className='h-4' />
+                            ))}
+                    </div>
                 ) : isNetworkError ? (
-                    <Content className='pt-[2.3rem] px-3 pb-3 text-center ml-2 '>
+                    <div className='pt-[2.3rem] px-3 pb-3 text-center ml-2 '>
                         <p>{`${t('messages:network_error')}`}</p>
-                    </Content>
+                    </div>
                 ) : (
-                    <Content className='bg-white p-3 shadow-brandShadow rounded-md'>
-                        <Table dataSource={listCurrencyData?.data} columns={listCurrencyColumns} pagination={false} />
+                    <div className='bg-white p-3 !shadow-brandShadow !rounded-md'>
+                        <ShadCNDataTable columns={listCurrencyColumns} data={listCurrencyData?.data} />
                         {listCurrencyData && listCurrencyData?.count >= pageLimit ? (
-                            <Content className=' grid justify-items-end'>
-                                <DmPagination
-                                    currentPage={currencyPaginationData.pageNumber}
+                            <div className=' grid justify-items-end'>
+                                <ShadCNPagination
                                     totalItemsCount={listCurrencyData?.count}
-                                    pageSize={currencyPaginationData.pageSize}
                                     handlePageNumberChange={handleCurrencyPageNumberChange}
-                                    showSizeChanger={true}
-                                    showTotal={true}
+                                    currentPage={currencyPaginationData.pageNumber}
+                                    itemsPerPage={currencyPaginationData.pageSize}
                                     showQuickJumper={true}
                                 />
-                            </Content>
+                            </div>
                         ) : null}
-                    </Content>
+                    </div>
                 )}
-            </Content>
-        </Content>
+            </div>
+        </div>
     )
 }
 

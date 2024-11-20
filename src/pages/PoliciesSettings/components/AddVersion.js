@@ -1,8 +1,9 @@
-import { Button, InputNumber, Typography } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import MarketplaceToaster from '../../../util/marketplaceToaster'
 import useCreateVersion from '../hooks/useCreateVersion'
+import { Input } from '../../../shadcnComponents/ui/input'
+import { Button } from '../../../shadcnComponents/ui/button'
 const MAX_LIMIT_FOR_THE_VERSION = '999.9'
 
 function AddVersion({
@@ -39,18 +40,19 @@ function AddVersion({
         }
     }, [versionNumber])
 
-
-    const inputHandlerfirst = (value) => {
-        if (value === null) {
-            setInputValueFirst(null)
+    const inputHandlerfirst = (e) => {
+        const value = e.target.value
+        if (value === '') {
+            setInputValueFirst('')
         } else if (value <= 999) {
             setInputValueFirst(value)
         }
     }
 
-    const inputHandlerSecond = (value) => {
-        if (value === null) {
-            setInputValueSecond(null)
+    const inputHandlerSecond = (e) => {
+        const value = e.target.value
+        if (value === '') {
+            setInputValueSecond('')
         } else if (value <= 9) {
             setInputValueSecond(value)
         }
@@ -86,8 +88,9 @@ function AddVersion({
         <div>
             <p className='text-brandGray1'>{t('messages:add_version_note')}</p>
             <div className='mb-10 flex items-center'>
-                <Typography>{t('labels:version')}</Typography>
-                <InputNumber
+                <h2>{t('labels:version')}</h2>
+                <Input
+                    type='number'
                     style={{ width: '60px', margin: '0 8px 0 14px' }}
                     value={inputValuefirst}
                     onChange={inputHandlerfirst}
@@ -104,7 +107,8 @@ function AddVersion({
                         }
                     }}
                 />
-                <InputNumber
+                <Input
+                    type='number'
                     style={{ width: '60px' }}
                     value={inputValueSecond}
                     min={'0'}
@@ -125,7 +129,7 @@ function AddVersion({
                     }}
                 />
             </div>
-            <div className='flex justify-end'>
+            <div className='flex justify-end gap-2'>
                 <Button
                     onClick={() => {
                         setAddVersion(false)
@@ -135,6 +139,7 @@ function AddVersion({
                     {t('labels:cancel')}
                 </Button>
                 <Button
+                    variant='outline'
                     className='app-btn-primary'
                     onClick={handelSaveVersion}
                     loading={createNewVersionStatus === 'pending'}>
@@ -145,4 +150,4 @@ function AddVersion({
     )
 }
 
-export default AddVersion
+export default AddVersion;

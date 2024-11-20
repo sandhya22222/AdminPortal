@@ -1,40 +1,10 @@
-import { UserOutlined, InfoCircleOutlined, PlusOutlined, SearchOutlined, StarFilled } from '@ant-design/icons'
-import {
-    Button,
-    Divider,
-    Drawer,
-    Input,
-    Layout,
-    Row,
-    Skeleton,
-    Spin,
-    Tooltip,
-    Typography,
-    Radio,
-    Tabs,
-    Progress,
-    InputNumber,
-    Alert,
-    Badge,
-    Empty,
-    Segmented,
-    Tag,
-} from 'antd'
 import React, { useEffect, useState } from 'react'
-import validator from 'validator'
-import { MdInfo } from 'react-icons/md'
+import { Search } from 'lucide-react'
+import { Info } from 'lucide-react'
 import { Link, useLocation, useSearchParams, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import {
-    saveStoreConfirmationImage,
-    InfoSymbol,
-    ExclamationCircle,
-    storeDefaultImage,
-    warningInfoIcon,
-} from '../../constants/media'
+import { saveStoreConfirmationImage, ExclamationCircle, storeDefaultImage } from '../../constants/media'
 //! Import user defined components
-import DmPagination from '../../components/DmPagination/DmPagination'
-import DynamicTable from '../../components/DynamicTable/DynamicTable'
 import HeaderForTitle from '../../components/header/HeaderForTitle'
 import StoreModal from '../../components/storeModal/StoreModal'
 import { usePageTitle } from '../../hooks/usePageTitle'
@@ -42,29 +12,29 @@ import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import Status from './Status'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import util from '../../util/common'
+import AddStores from './AddStores'
 
-import axios from 'axios'
+import { Toggle } from '../../shadcnComponents/ui/toggle'
 import { useAuth } from 'react-oidc-context'
-import { validatePositiveNumber } from '../../util/validation'
+import { Alert, AlertTitle, AlertDescription } from '../../shadcnComponents/ui/alert'
+import ShadCNDataTable from '../../shadcnComponents/customComponents/ShadCNDataTable'
+import { Plus, Star } from 'lucide-react'
+import { Badge } from '../../shadcnComponents/ui/badge'
+import ShadCNPagination from '../../shadcnComponents/customComponents/ShadCNPagination'
+import ShadCNTooltip from '../../shadcnComponents/customComponents/ShadCNTooltip'
+import { Button } from '../../shadcnComponents/ui/button'
+import SearchInput from './SearchInput'
+import { PAGE_NUMBER_TO_SEARCH } from '../../constants/constants'
+import { Avatar, AvatarFallback, AvatarImage } from '../../shadcnComponents/ui/avatar'
+import { ShadCNTabs, ShadCNTabsTrigger } from '../../shadcnComponents/customComponents/ShadCNTabs'
+import { Skeleton } from '../../shadcnComponents/ui/skeleton'
+import Spin from '../../shadcnComponents/customComponents/Spin'
+import ThresholdConfiguration from './ThresholdConfiguration'
 
-const { Content } = Layout
-const { Title, Text } = Typography
-const { Search } = Input
 //! Get all required details from .env file
 const storeAPI = process.env.REACT_APP_STORE_API
 const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE)
-const emailMinLength = process.env.REACT_APP_EMAIL_MIN_LENGTH
-const emailMaxLength = process.env.REACT_APP_EMAIL_MAX_LENGTH
-const storeNameMinLength = process.env.REACT_APP_STORE_NAME_MIN_LENGTH
-const storeNameMaxLength = process.env.REACT_APP_STORE_NAME_MAX_LENGTH
-const userNameMinLength = process.env.REACT_APP_USERNAME_MIN_LENGTH
-const userNameMaxLength = process.env.REACT_APP_USERNAME_MAX_LENGTH
-const storeLimitApi = process.env.REACT_APP_STORE_PLATFORM_LIMIT_API
-const dm4sightAnalysisCountAPI = process.env.REACT_APP_4SIGHT_GETANALYSISCOUNT_API
-const dm4sightClientID = process.env.REACT_APP_4SIGHT_CLIENT_ID
-const dm4sightBaseURL = process.env.REACT_APP_4SIGHT_BASE_URL
-const currentUserDetailsAPI = process.env.REACT_APP_USER_PROFILE_API
-const maxDataLimit = process.env.REACT_APP_MAX_DATA_LIMIT
+
 const emailRegexPattern = process.env.REACT_APP_REGEX_PATTERN_EMAIL
 const searchMaxLength = process.env.REACT_APP_SEARCH_MAX_LENGTH
 const domainName = process.env.REACT_APP_DOMAIN_NAME
@@ -73,7 +43,6 @@ const Stores = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     usePageTitle(t('labels:stores'))
-    const instance = axios.create()
     const search = useLocation().search
     const m_tab_id = new URLSearchParams(search).get('m_t')
     const tab = new URLSearchParams(search).get('tab')
@@ -97,12 +66,8 @@ const Stores = () => {
     const [activeCount, setActiveCount] = useState('')
     const [onChangeValues, setOnChangeValues] = useState(false)
     const [currentTab, setCurrentTab] = useState(1)
-    const [storeLimitValues, setStoreLimitValues] = useState()
-    const [duplicateStoreLimitValues, setDuplicateStoreLimitValues] = useState([])
-    const [analysisCount, setAnalysisCount] = useState()
     const [countForStore, setCountForStore] = useState()
     const [isStoreDeleting, setIsStoreDeleting] = useState(false)
-    const [superAdmin, setSuperAdmin] = useState(false)
     const [hideAddStoreButton, setHideAddStoreButton] = useState(false)
     const [saveStoreModalOpen, setSaveStoreModalOpen] = useState(false)
     const [storeStatusLoading, setStoreStatusLoading] = useState(false)
@@ -110,89 +75,28 @@ const Stores = () => {
     const [statusInprogressData, setStatusInprogressData] = useState([])
     const [value, setValue] = useState(0)
     const [previousStatus, setPreviousStatus] = useState([])
-    const [errorField, setErrorField] = useState('')
     const [searchValue, setSearchValue] = useState('')
     const [isSearchTriggered, setIsSearchTriggered] = useState(false)
     const [storeType, setStoreType] = useState('partner')
     const [isDistributor, setIsDistributor] = useState(false)
-    const [errors, setErrors] = useState({})
     const [isOpenModalForMakingDistributor, setIsOpenModalForMakingDistributor] = useState(false)
     const [inValidEmailFormat, setInValidEmailFormat] = useState(false)
     const [isDistributorStoreActive, setIsDistributorStoreActive] = useState(false)
 
     const auth = useAuth()
     const permissionValue = util.getPermissionData() || []
-    let keyCLoak = sessionStorage.getItem('keycloakData')
-    keyCLoak = JSON.parse(keyCLoak)
-    let realmName = keyCLoak.clientId.replace(/-client$/, '')
 
-    const dm4sightHeaders = {
-        headers: {
-            token: auth.user && auth.user?.access_token,
-            realmname: realmName,
-            dmClientId: dm4sightClientID,
-            client: 'admin',
-        },
-    }
-
-    const getCurrentUserDetails = () => {
-        MarketplaceServices.findAll(currentUserDetailsAPI, null, false)
-            .then((res) => {
-                console.log('get access token res', res)
-                if (res.data.response_body.resource_access['dmadmin-client'].roles.includes('UI-product-admin')) {
-                    setSuperAdmin(true)
-                }
-                console.log(
-                    'response',
-                    res.data.response_body.resource_access['dmadmin-client'].roles.includes('UI-product-admin')
-                )
-            })
-            .catch((err) => {
-                console.log('get access token err', err)
-            })
-    }
-
-    const handleRadioChange = (e) => {
+    const handleToggleChange = (selectedValue) => {
+        console.log('Toggle changed to:', selectedValue)
         setSearchValue('')
-        setValue(e.target.value)
+        setValue(selectedValue)
         setSearchParams({
             m_t: m_tab_id,
-            tab: e.target.value,
+            tab: selectedValue,
             page: 1,
-            limit: parseInt(searchParams.get('limit')) ? parseInt(searchParams.get('limit')) : pageLimit,
+            limit: parseInt(searchParams.get('limit')) || pageLimit,
         })
-        console.log('object status', e.target.value)
     }
-
-    useEffect(() => {
-        setErrorField('')
-    }, [currentTab])
-
-    useEffect(() => {
-        getCurrentUserDetails()
-    }, [])
-
-    useEffect(() => {
-        if (parseInt(currentTab) === 2) {
-            console.log('storeLimitApi', storeLimitApi)
-            MarketplaceServices.findAll(storeLimitApi)
-                .then(function (response) {
-                    console.log('Server Response from store limit API: ', response.data.response_body)
-                    setStoreLimitValues(response.data.response_body)
-                    setDuplicateStoreLimitValues(response.data.response_body)
-                })
-                .catch((error) => {
-                    // setIsLoading(false);
-                    console.log('Server error from store limit API ', error.response)
-                })
-
-            instance.get(dm4sightBaseURL + dm4sightAnalysisCountAPI, dm4sightHeaders).then((res) => {
-                setAnalysisCount(res.data)
-                console.log('redddd', res)
-            })
-        }
-        // setValue(0);
-    }, [currentTab])
 
     useEffect(() => {
         setHideAddStoreButton(
@@ -206,233 +110,62 @@ const Stores = () => {
         )
     }, [auth, permissionValue])
 
-    const StoreTableColumnThreshold1 = [
-        {
-            title: `${t('labels:limits')}`,
-            dataIndex: 'limits',
-            key: 'limits',
-            width: '30%',
-            render: (text) => {
-                const [limitName, limitValue, keyName, tooltip] = text.split(',')
-                return (
-                    <Content className='flex flex-col gap-2'>
-                        <div className='flex gap-2 items-center text-[#8899A8]'>
-                            {limitName}
-                            <Tooltip
-                                overlayStyle={{ zIndex: 1 }}
-                                title={tooltip}
-                                placement={
-                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'left' : 'right'
-                                }>
-                                <InfoCircleOutlined />
-                            </Tooltip>
-                        </div>
-
-                        <InputNumber
-                            value={storeLimitValues?.[keyName] > 0 ? storeLimitValues?.[keyName] : ''}
-                            min={0}
-                            max={maxDataLimit}
-                            maxLength={10}
-                            onKeyDown={(e) => {
-                                validatePositiveNumber(e, /[0-9]/)
-                            }}
-                            status={keyName === errorField ? 'error' : ''}
-                            onFocus={() => {
-                                setErrorField('')
-                            }}
-                            onChange={(value) => {
-                                let copyofStoreLimitValues = { ...storeLimitValues }
-                                copyofStoreLimitValues[keyName] = value
-                                setStoreLimitValues(copyofStoreLimitValues)
-                            }}
-                            onPaste={(e) => {
-                                e.preventDefault()
-                                setErrorField('')
-
-                                const pastedText = e.clipboardData.getData('text/plain')
-                                const numericValue = pastedText.replace(/[^0-9]/g, '')
-                                const truncatedValue = numericValue.substring(0, 12)
-
-                                // Check if the resulting value is a positive number
-                                if (/^[0-9]+$/.test(truncatedValue)) {
-                                    let copyOfStoreLimitValues = { ...storeLimitValues }
-                                    copyOfStoreLimitValues[keyName] = truncatedValue
-                                    setStoreLimitValues(copyOfStoreLimitValues)
-                                }
-                            }}
-                            disabled={!superAdmin}
-                            className='w-28'
-                            placeholder={t('labels:placeholder_unlimited')}
-                        />
-                    </Content>
-                )
-            },
-        },
-
-        {
-            title: `${t('labels:stats_name')}`,
-            dataIndex: 'stats',
-            key: 'stats',
-            width: '20%',
-
-            render: (text) => {
-                const [count, total, keyName] = text.split(',')
-                return (
-                    <Content>
-                        {count === 'undefined' || total === 'undefined' ? null : count !== 'undefined' && total ? (
-                            <Content className='flex flex-col'>
-                                <div
-                                    className={
-                                        util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                            ? 'flex flex-row-reverse !justify-end !space-x-1'
-                                            : 'flex !space-x-1'
-                                    }>
-                                    <p>{count}</p>
-                                    {total > 0 ? (
-                                        <>
-                                            <p>{t('labels:of')}</p>
-                                            <p>{total}</p>
-                                        </>
-                                    ) : (
-                                        ''
-                                    )}
-                                    <p>{keyName === 'store_limit' ? t('labels:active_stores') : null}</p>
-                                </div>
-                                {total > 0 ? (
-                                    <Progress
-                                        strokeColor={'#FA8C16'}
-                                        className='w-24'
-                                        size='small'
-                                        percent={(count / total) * 100}
-                                        showInfo={false}
-                                    />
-                                ) : null}
-                            </Content>
-                        ) : (
-                            <Spin tip='Loading'></Spin>
-                        )}
-                    </Content>
-                )
-            },
-        },
-    ]
-
-    const StoreTableColumnThreshold2 = [
-        {
-            title: `${t('labels:limits')}`,
-            dataIndex: 'limits',
-            key: 'limits',
-            width: '30%',
-            render: (text) => {
-                const [limitName, limitValue, keyName, tooltip] = text.split(',')
-                return (
-                    <Content className='flex flex-col gap-2'>
-                        <div className='flex gap-2 items-center text-[#8899A8]'>
-                            {limitName}
-                            <Tooltip
-                                overlayStyle={{ zIndex: 1 }}
-                                title={tooltip}
-                                placement={
-                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'left' : 'right'
-                                }>
-                                <InfoCircleOutlined />
-                            </Tooltip>
-                        </div>
-                        <Content>
-                            <InputNumber
-                                value={storeLimitValues?.[keyName] > 0 ? storeLimitValues?.[keyName] : ''}
-                                status={keyName === errorField ? 'error' : ''}
-                                min={0}
-                                max={maxDataLimit}
-                                maxLength={10}
-                                onFocus={() => {
-                                    setErrorField('')
-                                }}
-                                onKeyDown={(e) => {
-                                    validatePositiveNumber(e, /[0-9]/)
-                                }}
-                                onChange={(value) => {
-                                    let copyofStoreimitValues = { ...storeLimitValues }
-                                    copyofStoreimitValues[keyName] = value
-                                    setStoreLimitValues(copyofStoreimitValues)
-                                }}
-                                onPaste={(e) => {
-                                    setErrorField('')
-                                    // Prevent pasting non-numeric characters and limit to 12 characters
-                                    e.preventDefault()
-                                    const pastedValue = e.clipboardData
-                                        .getData('text/plain')
-                                        .replace(/[^0-9]/g, '')
-                                        .substring(0, 12)
-                                    document.execCommand('insertText', false, pastedValue)
-                                }}
-                                disabled={!superAdmin}
-                                className={'w-28'}
-                                placeholder={t('labels:placeholder_unlimited')}
-                            />
-                        </Content>
-                    </Content>
-                )
-            },
-        },
-    ]
-
     //! table columns
     const StoreTableColumn = [
         {
-            title: `${t('labels:store_name')}`,
-            dataIndex: 'name',
-            key: 'name',
-            width: '30%',
+            header: `${t('labels:store_name')}`,
+            value: 'name',
             ellipsis: true,
             render: (text, record) => {
                 return (
                     <>
-                        <div className='flex'>
+                        <div className='flex items-center'>
                             <div className=''>
-                                <img src={storeDefaultImage} alt='storeDefaultImage' className='aspect-square mt-1' />
+                                <Avatar className='mx-2'>
+                                    <AvatarImage src={storeDefaultImage} alt='Avatar' className />
+                                    <AvatarFallback>Avatar</AvatarFallback>
+                                </Avatar>
+                                {/* <img src={storeDefaultImage} alt='storeDefaultImage' className='aspect-square mt-1' /> */}
                             </div>
-                            <div className=''>
-                                <Row>
-                                    <Tooltip title={record.name} placement='top'>
-                                        <Text
-                                            className='text-brandGray1 mb-1 !max-w-[150px]'
-                                            ellipsis={{ tooltip: record.name }}
-                                            disabled={record.status === 3 ? true : false}>
-                                            {record.name}
-                                        </Text>
-                                    </Tooltip>
-                                </Row>
-                                <Row>
+                            <div className='ml-0 space-y-1'>
+                                <div>
+                                    <p
+                                        className=' !max-w-[150px]'
+                                        ellipsis={{ tooltip: record.name }}
+                                        disabled={record.status === 3 ? true : false}>
+                                        {record.name}
+                                    </p>
+                                </div>
+                                <div>
                                     {record.isDistributor ? (
-                                        <Tag color='blue'>
-                                            <StarFilled /> {t('labels:distributor')}
-                                        </Tag>
+                                        <Badge className='bg-[#E6F4FF] border-[#91CAFF] text-[#0958D9] rounded-[5px] flex items-center'>
+                                            <Star className='w-3 h-3 mr-1' fill='#0958D9' strokeWidth={0} />{' '}
+                                            {t('labels:distributor')}
+                                        </Badge>
                                     ) : (
-                                        <Tag color='cyan'>{t('labels:partner')}</Tag>
+                                        <Badge className='bg-[#E6FFFB] border-[#87E8DE] text-[#08979C] rounded-[5px]'>
+                                            {t('labels:partner')}
+                                        </Badge>
                                     )}{' '}
                                     {!isDistributor && (
-                                        <Tooltip title={t('messages:store_type_info')}>
+                                        <ShadCNTooltip content={t('messages:store_type_info')}>
                                             <img
                                                 src={ExclamationCircle}
                                                 alt='ExclamationCircleIcon'
                                                 width={15}
                                                 height={15}
                                             />
-                                        </Tooltip>
+                                        </ShadCNTooltip>
                                     )}
-                                </Row>
+                                </div>
                                 {record.status === 3 ? (
-                                    <Spin spinning={storeStatusLoading}>
-                                        {console.log('storeId === record.storeId', storeId, record.storeId)}
-                                        <div
-                                            className='flex space-x-1'
-                                            // onLoad={handleStoreDataStore(record.id, record.storeId)}
-                                        >
-                                            <Badge status='processing' />
-                                            <Text>{t('labels:processing')}</Text>
-                                        </div>
-                                    </Spin>
+                                    <div className='flex items-center space-x-1'>
+                                        {storeStatusLoading && (
+                                            <div className='w-4 h-4 border-2 border-blue-500 border-t-transparent border-solid rounded-full animate-spin'></div>
+                                        )}
+                                        <div className='h-1.5 w-1.5 rounded-full bg-blue-500'></div>
+                                        <p>{t('labels:processing')}</p>
+                                    </div>
                                 ) : null}
                             </div>
                         </div>
@@ -441,10 +174,9 @@ const Stores = () => {
             },
         },
         {
-            title: `${t('labels:status')}`,
-            dataIndex: 'status',
+            header: `${t('labels:status')}`,
+            value: 'status',
             key: 'status',
-            width: '20%',
             render: (text, record) => {
                 return (
                     <Status
@@ -469,23 +201,20 @@ const Stores = () => {
             },
         },
         {
-            title: `${t('labels:updated_date_and_time')}`,
-            dataIndex: 'updated_on',
+            header: `${t('labels:created_date_and_time')}`,
+            value: 'updated_on',
             key: 'updated_on',
-            width: '30%',
             render: (text, record) => {
                 return (
-                    <Text disabled={record.status === 3 ? true : false} className='text-brandGray1'>
-                        {new Date(record.updated_on).toLocaleString()}
-                    </Text>
+                    // <p disabled={record.status === 3 ? true : false} className=''>
+                    new Date(record.updated_on).toLocaleString()
+                    // {/* </p> */}
                 )
             },
         },
         {
-            title: `${t('labels:action')}`,
-            dataIndex: '',
-            key: '',
-            width: '12%',
+            header: `${t('labels:action')}`,
+            value: '',
             render: (text, record) => {
                 return (
                     <>
@@ -502,15 +231,15 @@ const Stores = () => {
                                 style={{ textDecoration: 'none' }}
                                 // className=" pl-[10px] font-semibold app-table-data-title"
                             >
-                                <Tooltip
-                                    title={t('labels:view_details').length > 20 ? t('labels:view_details') : undefined}>
+                                <ShadCNTooltip content={t('labels:view_details')}>
                                     {t('labels:view_details')}
-                                </Tooltip>
+                                </ShadCNTooltip>
                             </Link>
                         ) : (
                             <Button
                                 type='text'
                                 className='app-btn-icon'
+                                variant='ghost'
                                 disabled={record.status === 3 ? true : false}
                                 onClick={() => {
                                     navigate(
@@ -540,14 +269,6 @@ const Stores = () => {
         },
     ]
 
-    //!pagination
-    const pagination = [
-        {
-            defaultSize: 10,
-            showPageSizeChanger: false,
-            pageSizeOptions: ['5', '10'],
-        },
-    ]
     //!storeData to get the table data
     const tableStoreData = (filteredData) => {
         const tempArray = []
@@ -578,34 +299,6 @@ const Stores = () => {
         setSelectedTabTableContent(tempArray)
     }
 
-    const tablePropsThreshold1 = {
-        table_header: StoreTableColumnThreshold1,
-        table_content: [
-            {
-                key: '1',
-                limits: `${t('labels:maximum_store_creation_limit')},${storeLimitValues?.store_limit},store_limit,
-        ${t('labels:store_limit_tooltip')}`,
-                stats: analysisCount?.store_count + ',' + storeLimitValues?.store_limit + ',' + 'store_limit',
-            },
-        ],
-        pagenationSettings: pagination,
-        search_settings: {
-            is_enabled: false,
-            search_title: 'Search by name',
-            search_data: ['name'],
-        },
-        filter_settings: {
-            is_enabled: false,
-            filter_title: "Filter's",
-            filter_data: [],
-        },
-        sorting_settings: {
-            is_enabled: false,
-            sorting_title: 'Sorting by',
-            sorting_data: [],
-        },
-    }
-
     //!this useEffect for tab(initial rendering)
     useEffect(() => {
         if (storeApiData && storeApiData.length > 0 && !isLoading) {
@@ -615,86 +308,6 @@ const Stores = () => {
             setSelectedTabTableContent([])
         }
     }, [storeApiData])
-
-    const storeTableData = {
-        table_header: StoreTableColumn,
-        table_content: selectedTabTableContent,
-        search_settings: {
-            is_enabled: false,
-            search_title: 'Search by name',
-            search_data: ['name'],
-        },
-        filter_settings: {
-            is_enabled: false,
-            filter_title: "Filter's",
-            filter_data: [],
-        },
-        sorting_settings: {
-            is_enabled: false,
-            sorting_title: 'Sorting by',
-            sorting_data: [],
-        },
-    }
-
-    const tablePropsThreshold2 = {
-        table_header: StoreTableColumnThreshold2,
-        table_content: [
-            {
-                key: '1',
-
-                limits: `${t('labels:max_vendor_onboarding_limit')},${
-                    storeLimitValues?.vendor_limit
-                },vendor_limit, ${t('labels:vendor_limit_tooltip')}`,
-            },
-
-            {
-                key: '2',
-                limits: `${t('labels:max_customer_onboarding_limit')},${
-                    storeLimitValues?.customer_limit
-                },customer_limit, ${t('labels:customer_limit_tooltip')}`,
-            },
-            {
-                key: '3',
-                limits: `${t('labels:max_product_limit')},${
-                    storeLimitValues?.product_limit
-                },product_limit, ${t('labels:product_limit_tooltip')}`,
-            },
-            {
-                key: '4',
-                limits: `${t('labels:max_order_limit')} ,${
-                    storeLimitValues?.order_limit_per_day
-                },order_limit_per_day, ${t('labels:order_limit_tooltip')}`,
-            },
-            {
-                key: '5',
-                limits: `${t('labels:max_language_limit')} ,${
-                    storeLimitValues?.langauge_limit
-                },langauge_limit, ${t('labels:language_limit_tooltip')}`,
-            },
-            {
-                key: '6',
-                limits: `${t('labels:max_product_template_limit')},${
-                    storeLimitValues?.product_template_limit
-                },product_template_limit, ${t('labels:product_template_limit_tooltip')}`,
-            },
-        ],
-        pagenationSettings: pagination,
-        search_settings: {
-            is_enabled: false,
-            search_title: 'Search by name',
-            search_data: ['name'],
-        },
-        filter_settings: {
-            is_enabled: false,
-            filter_title: "Filter's",
-            filter_data: [],
-        },
-        sorting_settings: {
-            is_enabled: false,
-            sorting_title: 'Sorting by',
-            sorting_data: [],
-        },
-    }
 
     //! add drawer
     const showAddDrawer = () => {
@@ -722,7 +335,6 @@ const Stores = () => {
 
     //!get call for stores
     const findByPageStoreApi = (pageNumber, pageLimit, storeStatus, searchKey) => {
-        console.log('pageNumber--->', pageNumber, 'storeStatus--->', storeStatus)
         setIsLoading(true)
         let params = {}
         params['status'] = storeStatus ? storeStatus : null
@@ -730,7 +342,13 @@ const Stores = () => {
             params['search'] = String(searchKey)
             setIsSearchTriggered(true)
         }
-        MarketplaceServices.findByPage(storeAPI, params, pageNumber, pageLimit, false)
+        MarketplaceServices.findByPage(
+            storeAPI,
+            params,
+            searchKey ? PAGE_NUMBER_TO_SEARCH : pageNumber,
+            pageLimit,
+            false
+        )
             .then(function (response) {
                 setActiveCount({
                     totalStores:
@@ -897,103 +515,6 @@ const Stores = () => {
         return () => clearInterval(intervalId)
     }, [statusInprogressData, storeApiData])
 
-    // //! validation for post call
-    // const validateStorePostField = () => {
-    //     const emailRegex = new RegExp(emailRegexPattern)
-    //     let count = 3
-    //     if (storeEmail === '' && storeUserName === '' && name === '') {
-    //         setInValidEmail(true)
-    //         setInValidUserName(true)
-    //         setInValidName(true)
-    //         count--
-    //         MarketplaceToaster.showToast(
-    //             util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-    //         )
-    //     } else if (storeEmail === '' && storeUserName === '' && name !== '') {
-    //         setInValidEmail(true)
-    //         setInValidUserName(true)
-    //         count--
-    //         MarketplaceToaster.showToast(
-    //             util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-    //         )
-    //     } else if (storeEmail !== '' && storeUserName === '' && name === '') {
-    //         setInValidUserName(true)
-    //         setInValidName(true)
-    //         count--
-    //         MarketplaceToaster.showToast(
-    //             util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-    //         )
-    //     } else if (storeEmail === '' && storeUserName !== '' && name === '') {
-    //         setInValidEmail(true)
-    //         setInValidName(true)
-    //         count--
-    //         MarketplaceToaster.showToast(
-    //             util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-    //         )
-    //     } else if (storeEmail === '' && storeUserName !== '' && name !== '') {
-    //         setInValidEmail(true)
-    //         count--
-    //         MarketplaceToaster.showToast(
-    //             util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-    //         )
-    //     } else if (storeEmail !== '' && storeUserName === '' && name !== '') {
-    //         setInValidUserName(true)
-    //         count--
-    //         MarketplaceToaster.showToast(
-    //             util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-    //         )
-    //     } else if (storeEmail !== '' && storeUserName !== '' && name === '') {
-    //         setInValidName(true)
-    //         count--
-    //         MarketplaceToaster.showToast(
-    //             util.getToastObject(`${t('messages:please_provide_values_for_the_mandatory_fields')}`, 'error')
-    //         )
-    //     } else if (
-    //         name &&
-    //         validator.isLength(name.trim(), {
-    //             min: storeNameMinLength,
-    //             max: storeNameMaxLength,
-    //         }) === false
-    //     ) {
-    //         setInValidName(true)
-    //         count--
-    //         MarketplaceToaster.showToast(
-    //             util.getToastObject(
-    //                 `${t('messages:store_name_must_contain_minimum_of')} ${storeNameMinLength}, ${t(
-    //                     'messages:maximum_of'
-    //                 )} ${storeNameMaxLength} ${t('messages:characters')}`,
-    //                 'error'
-    //             )
-    //         )
-    //     } else if (storeEmail && emailRegex.test(storeEmail) === false) {
-    //         setInValidEmail(true)
-    //         count--
-    //         MarketplaceToaster.showToast(
-    //             util.getToastObject(`${t('messages:please_enter_the_valid_email_address')}`, 'error')
-    //         )
-    //     } else if (
-    //         storeUserName &&
-    //         validator.isLength(storeUserName.trim(), {
-    //             min: userNameMinLength,
-    //             max: userNameMaxLength,
-    //         }) === false
-    //     ) {
-    //         setInValidUserName(true)
-    //         count--
-    //         MarketplaceToaster.showToast(
-    //             util.getToastObject(
-    //                 `${t('messages:username_must_contain_minimum_of')} ${userNameMinLength}, ${t(
-    //                     'messages:maximum_of'
-    //                 )} ${userNameMaxLength} ${t('messages:characters')}`,
-    //                 'error'
-    //             )
-    //         )
-    //     }
-    //     if (count === 3) {
-    //         saveStoreData()
-    //     }
-    // }
-
     const validateStorePostField = () => {
         const emailRegex = new RegExp(emailRegexPattern)
         let count = 3
@@ -1052,53 +573,6 @@ const Stores = () => {
 
                 console.log('Error response from the store post call', error.response)
             })
-    }
-
-    //! Post call for the store store limit api
-    const saveStoreLimit = () => {
-        const postBody = storeLimitValues
-        MarketplaceServices.save(storeLimitApi, postBody)
-            .then((response) => {
-                setDuplicateStoreLimitValues(response.data.response_body)
-                console.log('response meeeeeeeeee', response)
-                setErrorField('')
-                MarketplaceToaster.showToast(response)
-            })
-            .catch((error) => {
-                console.log('Error Response From storelimit', error.response)
-                console.log('errory', error.response.data.response_body.message)
-                let errField = error.response.data.response_body.message.split(' ')?.[0]
-                if (errField === 'language_limit') {
-                    setErrorField('langauge_limit')
-                } else if (errField === 'Store') {
-                    setErrorField('store_limit')
-                } else {
-                    setErrorField(errField)
-                }
-                console.log('errorField', errField)
-                MarketplaceToaster.showToast(error.response)
-            })
-    }
-
-    const validationForSaveStoreLimit = () => {
-        if (
-            duplicateStoreLimitValues?.customer_limit === storeLimitValues?.customer_limit &&
-            duplicateStoreLimitValues?.dm_language_limit === storeLimitValues?.dm_language_limit &&
-            duplicateStoreLimitValues?.dm_user_limit === storeLimitValues?.dm_user_limit &&
-            duplicateStoreLimitValues?.order_limit_per_day === storeLimitValues?.order_limit_per_day &&
-            duplicateStoreLimitValues?.product_limit === storeLimitValues?.product_limit &&
-            duplicateStoreLimitValues?.product_template_limit === storeLimitValues?.product_template_limit &&
-            duplicateStoreLimitValues?.store_limit === storeLimitValues?.store_limit &&
-            duplicateStoreLimitValues?.store_users_limit === storeLimitValues?.store_users_limit &&
-            duplicateStoreLimitValues?.vendor_limit === storeLimitValues?.vendor_limit &&
-            duplicateStoreLimitValues?.vendor_users_limit === storeLimitValues?.vendor_users_limit &&
-            duplicateStoreLimitValues?.langauge_limit === storeLimitValues?.langauge_limit
-        ) {
-            setErrorField('')
-            MarketplaceToaster.showToast(util.getToastObject(`${t('messages:no_changes_were_detected')}`, 'info'))
-        } else {
-            saveStoreLimit()
-        }
     }
 
     useEffect(() => {
@@ -1180,26 +654,8 @@ const Stores = () => {
         } else {
             if (isSearchTriggered) {
                 findByPageStoreApi(
-                    undefined,
-                    undefined,
-                    parseInt(searchParams.get('tab')) && parseInt(searchParams.get('tab')) <= 2
-                        ? parseInt(searchParams.get('tab'))
-                        : '',
-                    undefined
-                )
-                setIsSearchTriggered(false)
-            }
-        }
-    }
-    const handleInputChange = (event) => {
-        const trimmed = String(event.target.value.trimStart())
-        const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
-        setSearchValue(trimmedUpdate)
-        if (event.target.value == '') {
-            if (isSearchTriggered) {
-                findByPageStoreApi(
-                    undefined,
-                    undefined,
+                    searchParams.get('page') ? parseInt(searchParams.get('page')) : 1,
+                    searchParams.get('limit') ? parseInt(searchParams.get('limit')) : pageLimit,
                     parseInt(searchParams.get('tab')) && parseInt(searchParams.get('tab')) <= 2
                         ? parseInt(searchParams.get('tab'))
                         : '',
@@ -1210,13 +666,32 @@ const Stores = () => {
         }
     }
 
-    const handleStoreTypeChange = (val) => {
-        if (storeType === 'partner') {
-            setIsOpenModalForMakingDistributor(true)
-        } else {
-            setStoreType(val)
+    const handleInputChange = (event) => {
+        const trimmed = String(event.target.value.trimStart())
+        const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
+        setSearchValue(trimmedUpdate)
+        if (event.target.value == '') {
+            if (isSearchTriggered) {
+                findByPageStoreApi(
+                    searchParams.get('page') ? parseInt(searchParams.get('page')) : 1,
+                    searchParams.get('limit') ? parseInt(searchParams.get('limit')) : pageLimit,
+                    parseInt(searchParams.get('tab')) && parseInt(searchParams.get('tab')) <= 2
+                        ? parseInt(searchParams.get('tab'))
+                        : '',
+                    undefined
+                )
+                setIsSearchTriggered(false)
+            }
         }
     }
+
+    // const handleStoreTypeChange = (val) => {
+    //     if (storeType === 'partner') {
+    //         setIsOpenModalForMakingDistributor(true)
+    //     } else {
+    //         setStoreType(val)
+    //     }
+    // }
     const handleStoreTypeChangeConfirmation = () => {
         setStoreType('distributor')
         setIsOpenModalForMakingDistributor(false)
@@ -1226,96 +701,112 @@ const Stores = () => {
     }
 
     const customButton = (
-        <Button type='primary' disabled={searchValue?.trim() === '' ? true : false} icon={<SearchOutlined />} />
+        <Button disabled={searchValue?.trim() === ''}>
+            <Search className='text-foreground' /> {/* Using Lucide icon */}
+        </Button>
     )
+    useEffect(() => {
+        const tab = searchParams.get('m_t') || '1'
+        setCurrentTab(tab)
+    }, [searchParams])
+
+    const handleTabChange = (value) => {
+        setCurrentTab(value)
+        setSearchParams({ m_t: value })
+    }
 
     return (
-        <Content className=''>
+        <div className=''>
             <HeaderForTitle
                 title={
-                    <Content>
-                        <Content className='flex  flex-row justify-between items-center h-[42px]'>
-                            <div className='!font-semibold text-2xl mb-4 !text-regal-blue'>{t('labels:stores')}</div>
-                            <div>
-                                {' '}
-                                {parseInt(currentTab) === 1 ? (
-                                    hideAddStoreButton ? (
-                                        ''
-                                    ) : (
-                                        <Button
-                                            className='app-btn-primary mt-2 !h-[32px] flex items-center'
-                                            onClick={showAddDrawer}>
-                                            <PlusOutlined />
-                                            {t('labels:add_store')}
-                                        </Button>
-                                    )
-                                ) : null}
-                            </div>
-                        </Content>
-                        <div className='!w-[60%]'>
-                            <p className='!font-normal !text-brandGray1 !mt-2 !mb-6'>{t('labels:store_desc')}</p>
-                        </div>
-                    </Content>
+                    <>
+                        <h1 className='font-semibold text-2xl mb-4 text-regal-blue'>{t('labels:stores')}</h1>
+                        <p className='text-brandGray1 font-normal'>{t('messages:store_desc')}</p>
+                    </>
                 }
-                titleContent={<Content className=' !flex !justify-end'></Content>}
+                titleContent={
+                    parseInt(currentTab) === 1 &&
+                    !hideAddStoreButton && (
+                        <Button className='mt-2 h-8 flex items-center' onClick={showAddDrawer}>
+                            <Plus className='mr-2 h-4 w-4' />
+                            {t('labels:add_store')}
+                        </Button>
+                    )
+                }
                 headerContent={
-                    <Content className='!h-[2.6rem] !mt-28'>
-                        <Tabs
-                            activeKey={currentTab}
-                            defaultActiveKey='1'
-                            items={[
-                                {
-                                    key: '1',
-                                    label: <span className=''>{t('labels:my_stores')}</span>,
-                                },
-                                {
-                                    key: '2',
-                                    label: <span className='!mr-3 '>{t('labels:threshold_configuration')}</span>,
-                                },
-                            ]}
-                            onChange={(key) => {
-                                setCurrentTab(key)
-                                setSearchParams({
-                                    m_t: key,
-                                })
-                            }}
-                        />
-                    </Content>
+                    <div className='mt-24'>
+                        <ShadCNTabs
+                            value={currentTab}
+                            onValueChange={handleTabChange}
+                            direction={util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'rtl' : 'ltr'}>
+                            <ShadCNTabsTrigger value='1' borderPosition='bottom'>
+                                {t('labels:my_stores')}
+                            </ShadCNTabsTrigger>
+                            <ShadCNTabsTrigger value='2' borderPosition='bottom'>
+                                {t('labels:threshold_configuration')}
+                            </ShadCNTabsTrigger>
+                        </ShadCNTabs>
+                    </div>
                 }
             />
             <div className='!p-5'>
-                <Content className=''>
+                <div className=''>
                     {isLoading ? (
-                        <Skeleton
-                            className='px-3 w-full'
-                            active
-                            paragraph={{
-                                rows: 6,
-                            }}></Skeleton>
+                        <div className='bg-white p-3 space-y-4 w-full'>
+                            {Array(6)
+                                .fill(null)
+                                .map((_, index) => (
+                                    <Skeleton key={index} className='h-4' />
+                                ))}
+                        </div>
                     ) : isNetworkError ? (
-                        <Content className='!mt-[1.7rem] !text-center bg-white p-3 !rounded-md'>
+                        <div className='!mt-[1.7rem] !text-center bg-white p-3 !rounded-md'>
                             {t('messages:store_network_error')}
-                        </Content>
+                        </div>
                     ) : (
                         <>
-                            <Content className=''>
+                            <div className=''>
                                 {parseInt(currentTab) === 1 ? (
-                                    <Content className='bg-white p-3 shadow-brandShadow rounded-md '>
+                                    <div className='bg-white p-3 shadow-brandShadow rounded-md '>
                                         <div className='flex w-full justify-between items-center py-3 px-3'>
                                             <div className='text-base font-semibold text-regal-blue'>
                                                 {t('labels:my_stores')}
                                             </div>
-                                            <div className='flex items-center justify-end gap-2 flex-row flex-grow'>
-                                                <Radio.Group
-                                                    className={`min-w-min`}
-                                                    optionType='button'
-                                                    onChange={handleRadioChange}
-                                                    value={value}>
-                                                    <Radio value={0}>{t('labels:all')}</Radio>
-                                                    <Radio value={1}>{t('labels:active')}</Radio>
-                                                    <Radio value={2}>{t('labels:inactive')}</Radio>
-                                                </Radio.Group>
-                                                <Search
+                                            <div className='flex items-center justify-end flex-row gap-3 flex-grow'>
+                                                <div className='flex flex-row'>
+                                                    <Toggle
+                                                        className={`${
+                                                            util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                                ? 'rounded-r-[7px]'
+                                                                : 'rounded-l-[7px]'
+                                                        } ${value === 0 ? 'border-brandOrange text-brandOrange' : 'border-defaultColor text-defaultColor'}`}
+                                                        variant={value === 0 ? 'active' : 'default'}
+                                                        checked={value === 0}
+                                                        onClick={() => handleToggleChange(0)}>
+                                                        {t('labels:all')}
+                                                    </Toggle>
+
+                                                    <Toggle
+                                                        className={`${value === 1 ? 'border-brandOrange text-brandOrange' : ''}`}
+                                                        variant={value === 1 ? 'active' : 'default'}
+                                                        checked={value === 1}
+                                                        onClick={() => handleToggleChange(1)}>
+                                                        {t('labels:active')}
+                                                    </Toggle>
+                                                    <Toggle
+                                                        className={`${
+                                                            util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                                ? 'rounded-l-[7px]'
+                                                                : 'rounded-r-[7px]'
+                                                        } ${value === 2 ? 'border-brandOrange text-brandOrange' : ''}`}
+                                                        variant={value === 2 ? 'active' : 'default'}
+                                                        checked={value === 2}
+                                                        onClick={() => handleToggleChange(2)}>
+                                                        {t('labels:inactive')}
+                                                    </Toggle>
+                                                </div>
+
+                                                <SearchInput
                                                     placeholder={t('placeholders:please_enter_search_text_here')}
                                                     onSearch={handleSearchChange}
                                                     onChange={handleInputChange}
@@ -1324,153 +815,133 @@ const Stores = () => {
                                                     maxLength={searchMaxLength}
                                                     enterButton={customButton}
                                                     allowClear
-                                                    className='w-[250px]'
+                                                    className={`${
+                                                        util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                            ? 'text-left'
+                                                            : 'text-right'
+                                                    } `}
                                                 />
                                             </div>
                                         </div>
                                         {selectedTabTableContent?.length === 0 &&
                                         isSearchTriggered &&
                                         searchValue?.length > 0 ? (
-                                            <Content className='text-center font-semibold ml-2 mt-3 '>
-                                                <Text>{t('placeholders:not_able_to_find_searched_details')}</Text>
-                                            </Content>
+                                            <div className='text-center font-semibold ml-2 mt-3 '>
+                                                <p>{t('placeholders:not_able_to_find_searched_details')}</p>
+                                            </div>
                                         ) : (
                                             <>
                                                 {selectedTabTableContent?.length > 0 ? (
-                                                    <Content className=''>
+                                                    <div className=''>
                                                         {!isDistributor && (
                                                             <div className='px-3 my-2'>
-                                                                <Alert
-                                                                    icon={<MdInfo className='font-bold !text-center' />}
-                                                                    message={
-                                                                        <div className=''>
-                                                                            <Text className='text-brandGray1'>
-                                                                                {t(
-                                                                                    'messages:no_distributor_store_present_info'
-                                                                                )}{' '}
-                                                                            </Text>
+                                                                {/* Distributor Alert 1 */}
+                                                                <div className='px-3 my-2'>
+                                                                    <Alert
+                                                                        variant='default'
+                                                                        className='flex items-center !w-full'>
+                                                                        <Info className='text-foreground w-4' />{' '}
+                                                                        {/* Icon */}
+                                                                        <div className='ml-2'>
+                                                                            <AlertTitle>
+                                                                                <p className='text-brandGray1'>
+                                                                                    {t(
+                                                                                        'messages:no_distributor_store_present_info'
+                                                                                    )}
+                                                                                </p>
+                                                                            </AlertTitle>
                                                                         </div>
-                                                                    }
-                                                                    type='info'
-                                                                    showIcon
-                                                                    className=''
-                                                                />
+                                                                    </Alert>
+                                                                </div>
                                                             </div>
                                                         )}
 
                                                         {isDistributor === true &&
                                                             isDistributorStoreActive === false && (
                                                                 <div className='px-3 my-2'>
-                                                                    <Alert
-                                                                        icon={
-                                                                            <MdInfo className='font-bold !text-center' />
-                                                                        }
-                                                                        message={
-                                                                            <div className=''>
-                                                                                <Text className='text-brandGray1'>
+                                                                    {/* Alert 2  */}
+                                                                    <div className='px-3 my-2'>
+                                                                        <Alert
+                                                                            variant='default'
+                                                                            className='flex items-center !w-full'>
+                                                                            <Info className='text-foreground w-4' />{' '}
+                                                                            {/* Icon */}
+                                                                            <div className='ml-2'>
+                                                                                <AlertTitle>
                                                                                     {t(
                                                                                         'messages:distributor_store_inactive_msg'
-                                                                                    )}{' '}
-                                                                                </Text>
+                                                                                    )}
+                                                                                </AlertTitle>
+                                                                                <AlertDescription>
+                                                                                    <p className='text-brandGray1'>
+                                                                                        {t(
+                                                                                            'messages:distributor_store_inactive_msg'
+                                                                                        )}
+                                                                                    </p>
+                                                                                </AlertDescription>
                                                                             </div>
-                                                                        }
-                                                                        type='info'
-                                                                        showIcon
-                                                                        className=''
-                                                                    />
+                                                                        </Alert>
+                                                                    </div>
                                                                 </div>
                                                             )}
-                                                        <DynamicTable tableComponentData={storeTableData} />
+                                                        <ShadCNDataTable
+                                                            columns={StoreTableColumn}
+                                                            data={selectedTabTableContent}
+                                                        />
                                                         {parseInt(m_tab_id) === 1 ? (
-                                                            <Content className=' grid justify-items-end mx-3 h-fit'>
+                                                            <div className=' grid justify-items-end mx-3 h-fit'>
                                                                 {countForStore && countForStore >= pageLimit ? (
-                                                                    <DmPagination
+                                                                    <ShadCNPagination
+                                                                        totalItemsCount={countForStore}
+                                                                        handlePageNumberChange={handlePageNumberChange}
                                                                         currentPage={
                                                                             parseInt(searchParams.get('page'))
                                                                                 ? parseInt(searchParams.get('page'))
                                                                                 : 1
                                                                         }
-                                                                        presentPage={
-                                                                            parseInt(searchParams.get('page'))
-                                                                                ? parseInt(searchParams.get('page'))
-                                                                                : 1
-                                                                        }
-                                                                        totalItemsCount={countForStore}
-                                                                        defaultPageSize={pageLimit}
-                                                                        pageSize={
+                                                                        itemsPerPage={
                                                                             parseInt(searchParams.get('limit'))
                                                                                 ? parseInt(searchParams.get('limit'))
                                                                                 : pageLimit
                                                                         }
-                                                                        handlePageNumberChange={handlePageNumberChange}
-                                                                        showSizeChanger={true}
-                                                                        showTotal={true}
                                                                         showQuickJumper={true}
                                                                     />
                                                                 ) : null}
-                                                            </Content>
+                                                            </div>
                                                         ) : null}
-                                                    </Content>
+                                                    </div>
                                                 ) : (
-                                                    <Content className='pb-4'>
-                                                        <Empty description={t('messages:no_data_available')} />
-                                                    </Content>
+                                                    <div className='flex justify-center items center pb-4'>
+                                                        <p>{t('messages:no_data_available')}</p>
+                                                    </div>
                                                 )}
                                             </>
                                         )}
-                                    </Content>
+                                    </div>
                                 ) : parseInt(currentTab) === 2 ? (
                                     <>
-                                        <Content className='shadow-brandShadow rounded-md bg-white mb-4'>
-                                            <Title className='!text-regal-blue pt-4 ml-6' level={4}>
-                                                {t('labels:account_restrictions')}
-                                            </Title>
-                                            <Divider className='w-full mt-2 mb-2' />
-                                            <DynamicTable tableComponentData={tablePropsThreshold1} />
-                                        </Content>
-                                        <Content className='shadow-brandShadow rounded-md bg-white'>
-                                            <Title className='!text-regal-blue  pt-4 ml-6' level={4}>
-                                                {t('labels:store_restrictions')}
-                                            </Title>
-                                            <Divider className='w-full mt-2 mb-2' />
-                                            <DynamicTable tableComponentData={tablePropsThreshold2} />
-                                        </Content>
-                                        {hideAddStoreButton ? (
-                                            <Content className='flex gap-2 !ml-6 !pb-6'>
-                                                <Button
-                                                    className={'app-btn-primary'}
-                                                    onClick={() => validationForSaveStoreLimit()}>
-                                                    {t('labels:save')}
-                                                </Button>
-                                                <Button
-                                                    className='app-btn-secondary'
-                                                    onClick={() => {
-                                                        setCurrentTab(1)
-                                                        sessionStorage.setItem('currentStoretab', 1)
-                                                    }}>
-                                                    {t('labels:discard')}
-                                                </Button>
-                                            </Content>
-                                        ) : (
-                                            ''
-                                        )}
+                                        <ThresholdConfiguration
+                                            currentTab={currentTab}
+                                            setCurrentTab={setCurrentTab}
+                                            hideAddStoreButton={hideAddStoreButton}
+                                        />
                                     </>
                                 ) : (
-                                    <Content className='!mt-[1.7rem] !text-center bg-white p-3 !rounded-md'>
+                                    <div className='!mt-[1.7rem] !text-center bg-white p-3 !rounded-md'>
                                         {t('messages:store_network_error')}
-                                    </Content>
+                                    </div>
                                 )}
-                            </Content>
+                            </div>
                         </>
                     )}
-                </Content>
+                </div>
             </div>
             <StoreModal isVisible={saveStoreModalOpen} isSpin={false} hideCloseButton={false} width={800}>
                 {
-                    <Content className='!text-center'>
-                        <Text className=' text-lg leading-[26px] font-bold text-regal-blue'>
+                    <div className='!text-center'>
+                        <p className=' text-lg leading-[26px] font-bold text-regal-blue'>
                             {t('labels:building_store')}
-                        </Text>
+                        </p>
                         <div className='mt-5 mb-3'>
                             <img
                                 src={saveStoreConfirmationImage}
@@ -1490,7 +961,7 @@ const Stores = () => {
                             }}>
                             {t('labels:close_message')}
                         </Button>
-                    </Content>
+                    </div>
                 }
             </StoreModal>
             <StoreModal
@@ -1517,266 +988,37 @@ const Stores = () => {
                 okCallback={() => validateStorePostField()}
                 hideCloseButton={true}
                 cancelCallback={() => onClose()}
-                isSpin={false}
+                isSpin={isUpLoading}
                 width={800}
+                height={600}
                 isScroll={false}>
-                <Content>
+                <div className='overflow-y-auto !h-auto'>
                     {drawerAction && drawerAction === 'post' ? (
                         <>
-                            <Spin tip={t('labels:please_wait')} size='large' spinning={isUpLoading}>
-                                <div>
-                                    <label
-                                        className='text-[14px] leading-[22px] font-normal text-brandGray2 mb-2 ml-1 '
-                                        id='labStNam'>
-                                        {t('labels:store_domain_name')}
-                                    </label>
-                                    <span className='mandatory-symbol-color text-sm ml-1'>*</span>
-                                </div>
-                                <div className='flex'>
-                                    <Input
-                                        placeholder={t('placeholders:enter_store_name')}
-                                        value={name}
-                                        minLength={storeNameMinLength}
-                                        maxLength={storeNameMaxLength}
-                                        className={`!w-[50%] mt-2 ${
-                                            inValidName
-                                                ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400 '
-                                                : ''
-                                        }`}
-                                        onChange={(e) => {
-                                            const alphaWithoutSpaces = /^[a-zA-Z0-9]+$/
-                                            if (
-                                                e.target.value !== '' &&
-                                                validator.matches(e.target.value, alphaWithoutSpaces)
-                                            ) {
-                                                setName(e.target.value)
-                                                setOnChangeValues(true)
-                                            } else if (e.target.value === '') {
-                                                setName(e.target.value)
-                                                setOnChangeValues(false)
-                                            }
-                                            setInValidName(false)
-                                        }}
-                                        onBlur={() => {
-                                            const trimmed = name.trim()
-                                            const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
-                                            setName(trimmedUpdate)
-                                        }}
-                                    />
-                                    <span className='mx-3 mt-2 text-brandGray2'>{domainName}</span>
-                                </div>
-                                {inValidName && name === '' && (
-                                    <div className='text-red-600 flex gap-1 mt-1'>
-                                        <img src={warningInfoIcon} /> {t('messages:empty_store_name_message')}
-                                    </div>
-                                )}
-                                {inValidName && name && name?.length < 3 && (
-                                    <div className='text-red-600 flex gap-1 mt-1'>
-                                        <img src={warningInfoIcon} /> {t('messages:enter_valid_store_name_message')}
-                                    </div>
-                                )}
-                                <div className='flex !mt-5'>
-                                    <label
-                                        className='text-[14px] leading-[22px] font-normal text-brandGray2 mb-2 ml-1 '
-                                        id='labStNam'>
-                                        {t('labels:store_type')}
-                                    </label>
-                                    <span className='mandatory-symbol-color text-sm ml-1'>*</span>
-                                    <span className='mt-1 ml-1'>
-                                        <Tooltip
-                                            autoAdjustOverflow={true}
-                                            title={
-                                                <>
-                                                    <ul
-                                                        style={{
-                                                            listStyleType: 'disc',
-                                                            marginLeft: 0,
-                                                            paddingLeft: '20px',
-                                                        }}>
-                                                        <li>{t('messages:store_type_info_partner')}</li>
-                                                        <li>{t('messages:store_type_info_distributor')}</li>
-                                                    </ul>
-                                                </>
-                                            }>
-                                            <img src={InfoSymbol} alt='InfoSymbol' />
-                                        </Tooltip>
-                                    </span>
-                                </div>
-                                <Segmented
-                                    options={[
-                                        {
-                                            value: 'partner',
-                                            label: t('labels:partner'),
-                                        },
-                                        {
-                                            value: 'distributor',
-                                            label: t('labels:Distributor'),
-                                        },
-                                    ]}
-                                    block={true}
-                                    className='w-[35%] custom-segmented'
-                                    value={storeType}
-                                    onChange={(value) => {
-                                        handleStoreTypeChange(value)
-                                    }}
-                                    disabled={isDistributor}
-                                />
-                                <div className='font-bold  mt-[24px] text-[16px] leading-[24px] text-regal-blue'>
-                                    {t('labels:store_administrator_details')}
-                                </div>
-                                <Alert
-                                    icon={<MdInfo className='font-bold !text-center' />}
-                                    message={
-                                        <div className=''>
-                                            <Text className=' mr-1 text-brandGray1'> {t('labels:note')}:</Text>
-                                            <Text className='text-brandGray1'>
-                                                {t('messages:add_store_description')}{' '}
-                                                <span className='font-bold'>{t('labels:store_management_portal')}</span>
-                                            </Text>
-                                        </div>
-                                    }
-                                    type='info'
-                                    showIcon
-                                    className='my-4 !w-[89%]'
-                                />
-                                <div>
-                                    <label
-                                        className='mb-2 ml-1 text-[14px] leading-[22px] font-normal text-brandGray2'
-                                        id='labStEmail'>
-                                        {t('labels:email')}
-                                    </label>
-                                    <span className='mandatory-symbol-color text-sm ml-1'>*</span>
-                                </div>
-                                <Input
-                                    placeholder={t('placeholders:enter_email')}
-                                    value={storeEmail}
-                                    minLength={emailMinLength}
-                                    maxLength={emailMaxLength}
-                                    className={`!w-[50%] mt-2 ${
-                                        inValidEmail
-                                            ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400'
-                                            : ''
-                                    }`}
-                                    onChange={(e) => {
-                                        setInValidEmail(false)
-                                        if (e.target.value === '') {
-                                            setOnChangeValues(false)
-                                            setStoreEmail(e.target.value)
-                                        } else {
-                                            setOnChangeValues(true)
-                                            setStoreEmail(e.target.value.trim())
-                                        }
-                                    }}
-                                    onBlur={() => {
-                                        const trimmed = storeEmail.trim()
-                                        const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
-                                        setStoreEmail(trimmedUpdate)
-                                    }}
-                                />
-                                {inValidEmail && storeEmail === '' && (
-                                    <div className='text-red-600 flex gap-1 mt-1'>
-                                        <img src={warningInfoIcon} /> {t('messages:empty_email_name_message')}
-                                    </div>
-                                )}
-                                {inValidEmail && storeEmail && inValidEmailFormat && (
-                                    <div className='text-red-600 flex gap-1 mt-1'>
-                                        <img src={warningInfoIcon} /> {t('messages:enter_valid_email_message')}
-                                    </div>
-                                )}
-                                <div className='flex mt-3'>
-                                    <label
-                                        className=' ml-1 text-[14px] leading-[22px] font-normal text-brandGray2'
-                                        id='labStUseName'>
-                                        {t('labels:username')}
-                                    </label>
-                                    <span className='mandatory-symbol-color text-sm ml-1'>*</span>
-                                    <span className='mt-1 ml-1'>
-                                        <Tooltip
-                                            title={
-                                                <div className='text-sm text-white'>
-                                                    <p className='m-0 p-0'>
-                                                        {t('labels:your_username_can_include')}
-                                                        <span>:</span>
-                                                    </p>
-                                                    <ul className='list-disc !ml-3 space-y-1 mb-0'>
-                                                        <li>{t('messages:uppercase_letters')}</li>
-                                                        <li>{t('messages:lowercase_letters')}</li>
-                                                        <li>{t('messages:digits')}</li>
-                                                        <li>{t('messages:underscore')}</li>
-                                                        <li>{t('messages:hyphens')}</li>
-                                                    </ul>
-                                                    <p className='p-0 m-0'>
-                                                        {t('messages:username_acceptance_criteria_note')}
-                                                    </p>
-                                                </div>
-                                            }
-                                            placement='topLeft'
-                                            overlayClassName='usernameTooltip'
-                                            overlayInnerStyle={{ width: '400px' }}>
-                                            <img src={InfoSymbol} alt='InfoSymbol' />
-                                        </Tooltip>
-                                    </span>
-                                </div>
-                                <Input
-                                    placeholder={t('placeholders:enter_username')}
-                                    value={storeUserName}
-                                    minLength={userNameMinLength}
-                                    maxLength={userNameMaxLength}
-                                    className={`!w-[50%] mt-2 ${
-                                        inValidUserName
-                                            ? 'border-red-400 border-solid focus:border-red-400 hover:border-red-400'
-                                            : ''
-                                    }`}
-                                    // prefix={<UserOutlined className='site-form-item-icon' />}
-                                    onChange={(e) => {
-                                        const regex = /^[A-Za-z0-9_\- ]+$/
-                                        if (e.target.value !== '' && validator.matches(e.target.value, regex)) {
-                                            setInValidUserName(false)
-                                            setStoreUserName(String(e.target.value).toLowerCase().trim())
-                                            setOnChangeValues(true)
-                                        } else if (e.target.value === '') {
-                                            setStoreUserName(e.target.value)
-                                            setOnChangeValues(false)
-                                        }
-                                    }}
-                                    onBlur={() => {
-                                        const trimmed = storeUserName.trim()
-                                        const trimmedUpdate = trimmed.replace(/\s+/g, ' ')
-                                        setStoreUserName(trimmedUpdate)
-                                    }}
-                                />
-                                {inValidUserName && storeUserName === '' && (
-                                    <div className='text-red-600 flex gap-1 mt-1'>
-                                        <img src={warningInfoIcon} /> {t('messages:empty_user_name_message')}
-                                    </div>
-                                )}
-                                {inValidUserName && storeUserName && storeUserName?.length < 3 && (
-                                    <div className='text-red-600 flex gap-1 mt-1'>
-                                        <img src={warningInfoIcon} /> {t('messages:enter_valid_user_name_message')}
-                                    </div>
-                                )}
-                                <Content className='flex space-x-3 !justify-end'>
-                                    <Button
-                                        className={'app-btn-secondary'}
-                                        // disabled={!onChangeValues}
-                                        onClick={() => {
-                                            onClose()
-                                        }}>
-                                        {t('labels:cancel')}
-                                    </Button>
-                                    <Button
-                                        className={'app-btn-primary'}
-                                        // disabled={!onChangeValues}
-                                        onClick={() => {
-                                            validateStorePostField()
-                                        }}>
-                                        {t('labels:save')}
-                                    </Button>
-                                </Content>
-                            </Spin>
+                            <AddStores
+                                onClose={onClose}
+                                validateStorePostField={validateStorePostField}
+                                storeUserName={storeUserName}
+                                setStoreUserName={setStoreUserName}
+                                inValidUserName={inValidUserName}
+                                setInValidUserName={setInValidUserName}
+                                storeEmail={storeEmail}
+                                setStoreEmail={setStoreEmail}
+                                inValidEmail={inValidEmail}
+                                setInValidEmail={setInValidEmail}
+                                inValidEmailFormat={inValidEmailFormat}
+                                onChangeValues={onChangeValues}
+                                setOnChangeValues={setOnChangeValues}
+                                isDistributor={isDistributor}
+                                name={name}
+                                setName={setName}
+                                inValidName={inValidName}
+                                setInValidName={setInValidName}
+                                domainName={domainName}
+                            />
                         </>
                     ) : null}
-                </Content>
+                </div>
             </StoreModal>
             <StoreModal
                 title={
@@ -1798,7 +1040,7 @@ const Stores = () => {
                     <p>{t('messages:set_as_distributor_store_desc')}</p>
                 </div>
             </StoreModal>
-        </Content>
+        </div>
     )
 }
 export default Stores

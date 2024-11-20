@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Layout, Typography, Space, Checkbox, Button, Input, Col, Row, Spin, InputNumber } from 'antd'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { CheckCircleFilled } from '@ant-design/icons'
 //! Import user defined components
 import HeaderForTitle from '../../components/header/HeaderForTitle'
 import { useTranslation } from 'react-i18next'
@@ -10,9 +8,9 @@ import util from '../../util/common'
 import StoreModal from '../../components/storeModal/StoreModal'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import { usePageTitle } from '../../hooks/usePageTitle'
-const { Content } = Layout
-const { Title } = Typography
-
+import { Checkbox } from '../../shadcnComponents/ui/checkbox'
+import { Skeleton } from '../../shadcnComponents/ui/skeleton'
+import { Button } from '../../shadcnComponents/ui/button'
 const currencyAPI = process.env.REACT_APP_CHANGE_CURRENCY_API
 const defaultCurrencyAPI = process.env.REACT_APP_DEFAULT_CURRENCY_API
 
@@ -147,12 +145,6 @@ const EditCurrency = () => {
         setIsDeleteCurrencyModalOpen(false)
     }
 
-    // opening the default currency warning model pop up
-    const openCurrencyDefaultWaringModal = (e) => {
-        setWarningCurrencyDefaultModal(true)
-        setDefaultChecked(e)
-    }
-
     // closing the default currency warning model pop up
     const closeCurrencyDefaultWaringModal = () => {
         setWarningCurrencyDefaultModal(false)
@@ -162,231 +154,126 @@ const EditCurrency = () => {
         findByPageCurrencyData()
         window.scroll(0, 0)
     }, [cId])
-
+    console.log('warningCurrencyDefaultModal', warningCurrencyDefaultModal)
     return (
-        <Content>
-            <Content className=''>
+        <div>
+            <div className=''>
                 <HeaderForTitle
                     title={
-                        <Content className='!mb-4'>
+                        <div className='!mb-4'>
                             <div className='!font-semibold text-2xl items-center mt-2'>
                                 {currencyDetails.currency_name}
                             </div>
-                        </Content>
+                        </div>
                     }
                     titleContent={
-                        <Content className='!flex gap-3 items-center'>
+                        <>
                             {/* This content is related to currency checkbox default currency */}
-                            <Content className=''>
-                                <Space direction='horizontal'>
-                                    <Checkbox
-                                        className=''
-                                        checked={currencyDetails.is_default}
-                                        onChange={(e) => {
-                                            openCurrencyDefaultWaringModal(e.target.checked)
-                                        }}
-                                        disabled={!currencyDetails.is_default ? false : true}></Checkbox>
-                                    <Typography> {t('labels:make_currency_as_default')}</Typography>
-                                </Space>
-                            </Content>
-                        </Content>
+                            <div className='flex gap-2 items-center'>
+                                <Checkbox
+                                    className=''
+                                    checked={currencyDetails.is_default}
+                                    onCheckedChange={(e) => {
+                                        console.log('iisChecked', e)
+                                        setWarningCurrencyDefaultModal(true)
+                                        setDefaultChecked(e)
+                                    }}
+                                    disabled={!currencyDetails.is_default ? false : true}
+                                />
+                                <label> {t('labels:make_currency_as_default')}</label>
+                            </div>
+                        </>
                     }
                     backNavigationPath={`/dashboard/currency`}
                     showArrowIcon={true}
                     showButtons={false}
                 />
-            </Content>
-            <Content className='!p-3 !mt-[9.5rem] !min-h-screen '>
-                <Spin tip={t('labels:please_wait')} size='large' spinning={isLoading}>
-                    <Content className=' !bg-white !p-4 shadow-brandShadow rounded'>
+            </div>
+
+            <div className='!p-3 !mt-[9.5rem] !min-h-screen '>
+                {isLoading ? (
+                    <div className='space-y-2 bg-white p-4'>
+                        <Skeleton className={'h-4 w-[300px] '} />
+                        <Skeleton className={'h-4 w-[350px] '} />
+                        <Skeleton className={'h-4 w-[350px] '} />
+                        <Skeleton className={'h-4 w-[350px] '} />
+                    </div>
+                ) : (
+                    <div className=' !bg-white !p-4 shadow-brandShadow rounded'>
                         <div className='font-semibold  text-lg my-2 '>{t('labels:currency_details')}</div>
-                        <Row className='w-[100%]'>
-                            <Col
-                                className={`justify-items-start !inline-block   ${
+                        <div className='w-[100%]'>
+                            <div
+                                className={`justify-items-start  !inline-block font-normal text-sm  flex${
                                     util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                        ? 'text-right mr-2 '
-                                        : 'text-left ml-2'
+                                        ? 'text-left ml-2 '
+                                        : 'text-right mr-2 '
                                 }`}>
-                                <p className='input-label-color my-4 flex font-normal text-sm'>
-                                    {t('labels:currency_code')}{' '}
-                                </p>
-                                <p className='input-label-color my-4 flex'>{t('labels:conversation')}</p>
-                                <p className='input-label-color my-4 flex'>{t('labels:unit_price_name')}</p>
-                                <p className='input-label-color my-4 flex'>{t('labels:min_amount')}</p>
-                                <p className='input-label-color my-3 flex'>{t('labels:currency_symbol')}</p>
-                                <p className='input-label-color my-4 flex'>{t('labels:no_of_decimals')}</p>
-                            </Col>
-                            <Col
-                                className={`${
+                                <p className='input-label-color my-4  '>{t('labels:currency_code')} </p>
+                                <p className='input-label-color my-4  '>{t('labels:conversation')}</p>
+                                <p className='input-label-color my-4 '>{t('labels:unit_price_name')}</p>
+                                <p className='input-label-color my-4 '>{t('labels:min_amount')}</p>
+                                <p className='input-label-color my-3  '>{t('labels:currency_symbol')}</p>
+                                <p className='input-label-color my-4 '>{t('labels:no_of_decimals')}</p>
+                            </div>
+                            <div
+                                className={`!inline-block !text-brandGray1 text-sm ${
                                     util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                        ? 'mr-6 w-[4%] !inline-block '
-                                        : 'ml-6 w-[4%] !inline-block '
+                                        ? 'mr-6 w-[4%] '
+                                        : 'ml-6 w-[4%] '
                                 }`}>
                                 <p className='!font-semibold my-4  '>
                                     <span>:</span>
                                 </p>
-                                <p className='!font-semibold my-4 !text-brandGray1'>
+                                <p className='!font-semibold my-4 '>
                                     <span>:</span>
                                 </p>
-                                <p className='!font-semibold my-4 !text-brandGray1'>
+                                <p className='!font-semibold my-4 '>
                                     <span>:</span>
                                 </p>
-                                <p className='!font-semibold my-4 !text-brandGray1'>
+                                <p className='!font-semibold my-4 '>
                                     <span>:</span>
                                 </p>
-                                <p className='!font-semibold my-4 !text-brandGray1'>
+                                <p className='!font-semibold my-4 '>
                                     <span>:</span>
                                 </p>
-                                <p className='!font-semibold my-4 !text-brandGray1'>
-                                    <span>:</span>
-                                </p>
-                            </Col>
-                            <Col className='w-[50%] !inline-block'>
                                 <p className='!font-semibold my-4'>
+                                    <span>:</span>
+                                </p>
+                            </div>
+                            <div className='w-[50%] !inline-block text-sm !font-semibold'>
+                                <p className=' my-4'>
                                     {currencyDetails?.iso_currency_code !== null
                                         ? currencyDetails?.iso_currency_code
                                         : `${t('labels:not_available')}`}
                                 </p>
-                                <p className='!font-semibold my-4'>
+                                <p className=' my-4'>
                                     {currencyDetails?.unit_conversion !== null
                                         ? currencyDetails?.unit_conversion
                                         : `${t('labels:not_available')}`}
                                 </p>
-                                <p className='!font-semibold my-4'>
+                                <p className=' my-4'>
                                     {currencyDetails?.unit_price_name !== null
                                         ? currencyDetails?.unit_price_name
                                         : `${t('labels:not_available')}`}
                                 </p>
-                                <p className='!font-semibold my-4'>
+                                <p className=' my-4'>
                                     {currencyDetails?.minimum_amount !== null
                                         ? currencyDetails?.minimum_amount
                                         : `${t('labels:not_available')}`}
                                 </p>
-                                <p className='!font-semibold my-4'>
+                                <p className='my-4'>
                                     {currencyDetails?.symbol ? currencyDetails?.symbol : `${t('labels:not_available')}`}
                                 </p>
-                                <p className='!font-semibold my-4'>
+                                <p className='my-4'>
                                     {currencyDetails?.no_of_decimal
                                         ? currencyDetails?.no_of_decimal
                                         : `${t('labels:not_available')}`}
                                 </p>
-                            </Col>
-                        </Row>
-
-                        {/* <Col span={12} className='mb-4'>
-                            <label className='text-[14px] mb-2 ml-1 input-label-color'>
-                                {t('labels:currency_name')}
-                            </label>
-                            <Input
-                                className=''
-                                disabled
-                                value={currencyDetails.currency_name}
-                                placeholder={t('messages:enter_currency_name')}
-                            />
-                        </Col>
-                        <Row className='mb-4 gap-4'>
-                            <Col span={3}>
-                                <label className='text-[14px] mb-2 ml-1 input-label-color'>
-                                    {t('labels:currency_code')}
-                                </label>
-                                <Input
-                                    className=''
-                                    disabled
-                                    placeholder={t('messages:enter_currency_code')}
-                                    value={currencyDetails.symbol}
-                                />
-                            </Col>
-                            <Col span={4}>
-                                <label className='text-[14px] mb-2 ml-1 input-label-color'>
-                                    {t('labels:unit_conversation')}
-                                </label>
-                                <Input
-                                    className=''
-                                    disabled
-                                    placeholder={t('messages:enter_unit_conversation')}
-                                    value={currencyDetails.unit_conversion}
-                                />
-                            </Col>
-                            <Col span={3}>
-                                <label className='text-[14px] mb-2 ml-1 input-label-color'>
-                                    {t('labels:min_amount')}
-                                </label>
-                                <Input
-                                    className=''
-                                    disabled
-                                    placeholder={t('messages:enter_min_amount')}
-                                    value={currencyDetails.minimum_amount}
-                                />
-                            </Col>
-                        </Row>
-                        <Col span={12} className='mb-4'>
-                            <label className='text-[14px] mb-2 ml-1 input-label-color'>
-                                {t('labels:unit_price_name')}
-                            </label>
-                            <Input
-                                disabled
-                                className=''
-                                value={currencyDetails.unit_price_name}
-                                placeholder={t('messages:enter_unit_price_name')}
-                            />
-                        </Col>
-                        <Row className='mb-6 gap-4'>
-                            <Col span={3}>
-                                <label className='text-[14px] mb-2 ml-1 input-label-color'>
-                                    {t('labels:currency_symbol')}
-                                </label>
-                                <Input
-                                    className=''
-                                    disabled
-                                    placeholder='Enter currency symbol'
-                                    value={currencyDetails.symbol}
-                                />
-                            </Col>
-                            <Col span={3}>
-                                <label className='text-[14px] mb-2 ml-1 input-label-color'>
-                                    {t('labels:no_of_decimals')}
-                                </label>
-                                <InputNumber
-                                    className=''
-                                    min={1}
-                                    max={4294967295}
-                                    minLength={1}
-                                    maxLength={4294967295}
-                                    disabled
-                                    placeholder='Enter no of decimals'
-                                    value={currencyDetails.no_of_decimal}
-                                    onChange={(e) => {
-                                        if (e !== '' && e !== null && e !== undefined) {
-                                            currencyHandler('no_of_decimal', e)
-                                            setOnChangeDisable(true)
-                                        }
-                                    }}
-                                />
-                            </Col>
-                        </Row> */}
-                        {/* <Row className="mb-3 gap-3">
-              <Col>
-                <Button
-                  className="app-btn-primary"
-                  disabled={!onChangeDisable}
-                  onClick={() => makeAsDefaultCurrency()}
-                >
-                  {t("labels:save")}
-                </Button>
-              </Col>
-              <Col>
-                <Button
-                  className="app-btn-secondary"
-                  disabled={!onChangeDisable}
-                  onClick={() => navigate(`/dashboard/currency`)}
-                >
-                  {t("labels:discard")}
-                </Button>
-              </Col>
-            </Row> */}
-                    </Content>
-                </Spin>
-            </Content>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
             <StoreModal
                 isVisible={isDeleteCurrencyModalOpen}
                 okButtonText={t('labels:yes')}
@@ -410,21 +297,18 @@ const EditCurrency = () => {
                 hideCloseButton={false}
                 cancelButtonText={null}
                 isSpin={false}>
-                <Content className='flex flex-col justify-center items-center'>
-                    <CheckCircleFilled className=' text-[#52c41a] text-[30px]' />
-                    <Title level={4} className='!mt-5 !mb-0'>
-                        {t('messages:language_deleted_successfully')}
-                    </Title>
-                    <Content className='mt-3'>
+                <div className='flex flex-col justify-center items-center'>
+                    {/* <CheckCircleFilled className=' text-[#52c41a] text-[30px]' /> */}
+                    <div className='!mt-5 !mb-0'>{t('messages:language_deleted_successfully')}</div>
+                    <div className='mt-3'>
                         <Button
-                            className='app-btn-primary'
                             onClick={() => {
                                 navigate(`/dashboard/currency`)
                             }}>
                             {t('labels:close')}
                         </Button>
-                    </Content>
-                </Content>
+                    </div>
+                </div>
             </StoreModal>
             <StoreModal
                 isVisible={warningCurrencyDefaultModal}
@@ -448,7 +332,7 @@ const EditCurrency = () => {
                     </div>
                 }
             </StoreModal>
-        </Content>
+        </div>
     )
 }
 

@@ -1,27 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import { Layout, Typography, Row, Input, Button, Col, Avatar } from 'antd'
-import { UserOutlined } from '@ant-design/icons'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
-import HeaderForTitle from '../../components/header/HeaderForTitle'
 import { getGenerateDateAndTime } from '../../util/util'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { usePageTitle } from '../../hooks/usePageTitle'
-import util from '../../util/common'
-import StoreModal from '../../components/storeModal/StoreModal'
-import { IoMdCheckmarkCircleOutline } from 'react-icons/io'
-import MarketplaceToaster from '../../util/marketplaceToaster'
-import SkeletonComponent from '../../components/Skeleton/SkeletonComponent'
 import useGetStoreUserData from '../../hooks/useGetStoreUsersData'
 import './UserProfile.css'
 import ProfileImage from './ProfileImage'
+import { Button } from '../../shadcnComponents/ui/button'
+import ChangePassword from './ChangePassword'
+import { Skeleton } from '../../shadcnComponents/ui/skeleton'
 
-const { Content } = Layout
-const { Text, Title } = Typography
-const changePasswordAPI = process.env.REACT_APP_CHANGE_PASSWORD_API
 const storeUsersAPI = process.env.REACT_APP_USERS_API
-const maxPasswordLength = process.env.REACT_APP_PASSWORD_MAX_LENGTH
-const minPasswordLength = process.env.REACT_APP_PASSWORD_MIN_LENGTH
 
 const UserProfile = () => {
     const { t } = useTranslation()
@@ -34,134 +24,9 @@ const UserProfile = () => {
     const [userName, setUserName] = useState()
     const [relmname, setRelmName] = useState()
     const [isPasswordChangeModalOpen, setIsPasswordChangeModalOpen] = useState(false)
-    const [password, setPassword] = useState('')
-    const [confirmPassword, setConfirmPassword] = useState('')
-    const [currentPassword, setCurrentPassword] = useState('')
-    const [isPasswordValid, setIsPasswordValid] = useState(false)
-    const [isConfirmPasswordValid, setIsConfirmPasswordValid] = useState(true)
-    const [isNewPasswordValid, setIsNewPasswordValid] = useState(true)
-    const [isCurrentPasswordValid, setIsCurrentPasswordValid] = useState(true)
     const showPasswordChangeModal = () => {
         setIsPasswordChangeModalOpen(true)
     }
-
-    // saving password
-    const handleOkPasswordChangeModal = () => {
-        //check wether the current password is same as in api call
-        // check wether the new password is equal to confirm password
-        // make the api call for changing the password
-        setIsConfirmPasswordValid(true)
-        setIsCurrentPasswordValid(true)
-        setIsNewPasswordValid(true)
-        if (currentPassword === '') {
-            setIsCurrentPasswordValid(false)
-        }
-        if (password === '') {
-            setIsNewPasswordValid(false)
-        }
-        if (confirmPassword === '') {
-            setIsConfirmPasswordValid(false)
-        }
-        if (currentPassword !== null && currentPassword !== '' && currentPassword.length > 0) {
-            if (validatePassword()) {
-                if (password === confirmPassword) {
-                    changePasswordAPICall()
-                } else {
-                    MarketplaceToaster.showToast(
-                        util.getToastObject(`${t('labels:new_password_and_confirm_password_should_be_same')}`, 'error')
-                    )
-                }
-            } else {
-                MarketplaceToaster.showToast(
-                    util.getToastObject(`${t('labels:please_enter_a_valid_password')}`, 'error')
-                )
-            }
-        } else {
-            MarketplaceToaster.showToast(
-                util.getToastObject(`${t('labels:please_enter_your_current_password')}`, 'error')
-            )
-        }
-    }
-
-    // handling Closing password modal
-    const handleCancelPasswordChangeModal = () => {
-        setIsPasswordChangeModalOpen(false)
-        setIsConfirmPasswordValid(true)
-        setIsCurrentPasswordValid(true)
-        setIsNewPasswordValid(true)
-        setPassword('')
-        setConfirmPassword('')
-        setCurrentPassword('')
-    }
-
-    // function to validate password
-    function validatePassword() {
-        // Check for at least 12 characters
-        if (password.length < 12) {
-            return false
-        }
-        // Check for at least one uppercase letter
-        if (!/[A-Z]/.test(password)) {
-            return false
-        }
-        // Check for at least one special character or symbol
-        if (!/[!@#$%^&*"'()_+{}\[\]:;<>,.?~\\/-]/.test(password)) {
-            return false
-        }
-        // Check for at least one lowercase letter
-        if (!/[a-z]/.test(password)) {
-            return false
-        }
-        // Check for at least one number
-        if (!/\d/.test(password)) {
-            return false
-        }
-        return true
-    }
-
-    const handlePasswordChange = (e) => {
-        const newPassword = e.target.value
-        setPassword(newPassword)
-        if (e.target.value !== '') {
-            if (String(e.target.value) === String(currentPassword)) {
-                setIsNewPasswordValid(false)
-            } else {
-                setIsNewPasswordValid(true)
-            }
-        }
-    }
-    const handleConfirmPasswordChange = (e) => {
-        const newPassword = e.target.value
-        setConfirmPassword(newPassword)
-        if (e.target.value !== '') {
-            if (String(e.target.value) === currentPassword) {
-                setIsConfirmPasswordValid(false)
-            } else {
-                setIsConfirmPasswordValid(true)
-            }
-        }
-    }
-    const handleCurrentPasswordChange = (e) => {
-        const newPassword = e.target.value
-        setCurrentPassword(newPassword)
-        if (e.target.value !== '') {
-            if (String(e.target.value) === String(confirmPassword)) {
-                setIsConfirmPasswordValid(false)
-            } else {
-                setIsConfirmPasswordValid(true)
-            }
-            if (String(e.target.value) === String(password)) {
-                setIsNewPasswordValid(false)
-            } else {
-                setIsNewPasswordValid(true)
-            }
-        }
-    }
-
-    // checking whether the password is valid or not
-    useEffect(() => {
-        setIsPasswordValid(validatePassword())
-    }, [password])
 
     const findAllWithoutPageStoreUsers = () => {
         MarketplaceServices.findAllWithoutPage(storeUsersAPI, null, false)
@@ -191,61 +56,33 @@ const UserProfile = () => {
                 }
             })
     }
-    const changePasswordAPICall = () => {
-        MarketplaceServices.save(
-            changePasswordAPI,
-            {
-                old_password: currentPassword,
-                new_password: password,
-            },
-            false
-        )
-            .then(function (response) {
-                console.log('get from  store user server response-----> ', response.data)
-                MarketplaceToaster.showToast(response)
-                setPassword('')
-                setCurrentPassword('')
-                setConfirmPassword('')
-                setIsPasswordChangeModalOpen(false)
-            })
-            .catch((error) => {
-                console.log('error from store all users API ====>', error.response)
-                MarketplaceToaster.showToast(error.response)
-                if (error.response.status === 400 && error.response.data.response_code === 'UMS-000079-09') {
-                    setIsCurrentPasswordValid(false)
-                }
-                if (Number(error.response.status) === 400 && error.response.data.response_code === 'UMS-000079-04') {
-                    setIsConfirmPasswordValid(false)
-                    setIsNewPasswordValid(false)
-                }
-                setPassword('')
-                setCurrentPassword('')
-                setConfirmPassword('')
-            })
-    }
 
     useEffect(() => {
-        // findAllWithoutPageStoreUsers()
+        findAllWithoutPageStoreUsers()
         window.scroll(0, 0)
     }, [])
 
     return (
-        <Content className='my-4 mx-3'>
-            <Content>
+        <div className='my-4 mx-3'>
+            <div>
                 {userDataStatus === 'pending' ? (
-                    <Content className=' bg-white p-3 !mx-4 '>
-                        <SkeletonComponent />
-                    </Content>
+                    <div className=' bg-white p-3 !mx-4 '>
+                        {Array(6)
+                            .fill(null)
+                            .map((_, index) => (
+                                <Skeleton key={index} className='h-4' />
+                            ))}
+                    </div>
                 ) : userDataStatus === 'error' ? (
-                    <Content className='p-3 text-center !mx-4 bg-[#F4F4F4]'>
+                    <div className='p-3 text-center !mx-4 bg-[#F4F4F4]'>
                         <p>{t('messages:network_error')}</p>
-                    </Content>
+                    </div>
                 ) : (
-                    <div className=' border-1 border-solid border-brandGray rounded-lg'>
+                    <div className='border border-1 border-solid border-brandGray rounded-lg'>
                         <div className='  border-b border-solid border-brandGray'>
-                            <Title className='!mb-4 !mt-6 !mx-3 !font-semibold !text-lg !text-regal-blue'>
+                            <div className='!mb-4 !mt-6 !mx-3 !font-semibold !text-lg !text-regal-blue'>
                                 {t('labels:profile_information')}
-                            </Title>
+                            </div>
                         </div>
                         <div className='mx-6 mb-6'>
                             <div className='my-6 flex gap-4 items-center'>
@@ -258,80 +95,65 @@ const UserProfile = () => {
                             <div className='mt-3 flex flex-col gap-6'>
                                 {storeUsersData && storeUsersData?.username && (
                                     <div>
-                                        <Typography className='input-label-color !text-[16px]'>
-                                            {t('labels:user_name')}
-                                        </Typography>
-                                        <Text className='text-regal-blue text-lg font-semibold'>
+                                        <p className='input-label-color !text-[16px]'>{t('labels:user_name')}</p>
+                                        <p className='text-regal-blue text-lg font-semibold'>
                                             {storeUsersData && storeUsersData.username}
-                                        </Text>
+                                        </p>
                                     </div>
                                 )}
                                 {storeUsersData && storeUsersData?.firstName && (
                                     <div>
-                                        <Typography className='input-label-color !text-[16px]'>
-                                            {t('labels:first_name')}
-                                        </Typography>
-                                        <Text className='text-regal-blue text-lg font-semibold'>
+                                        <p className='input-label-color !text-[16px]'>{t('labels:first_name')}</p>
+                                        <p className='text-regal-blue text-lg font-semibold'>
                                             {storeUsersData && storeUsersData.firstName}
-                                        </Text>
+                                        </p>
                                     </div>
                                 )}
                                 {storeUsersData && storeUsersData?.lastName && (
                                     <div>
-                                        <Typography className='input-label-color !text-[16px]'>
-                                            {t('labels:last_name')}
-                                        </Typography>
-                                        <Text className='text-regal-blue text-lg font-semibold'>
+                                        <p className='input-label-color !text-[16px]'>{t('labels:last_name')}</p>
+                                        <p className='text-regal-blue text-lg font-semibold'>
                                             {storeUsersData.lastName}
-                                        </Text>
+                                        </p>
                                     </div>
                                 )}
                                 {storeUsersData && storeUsersData?.email && (
                                     <div>
-                                        <Typography className='input-label-color !text-[16px]'>
-                                            {t('labels:email')}
-                                        </Typography>
-                                        <Text className='text-regal-blue text-lg font-semibold'>
-                                            {storeUsersData.email}
-                                        </Text>
+                                        <p className='input-label-color !text-[16px]'>{t('labels:email')}</p>
+                                        <p className='text-regal-blue text-lg font-semibold'>{storeUsersData.email}</p>
                                     </div>
                                 )}
                                 {storeUsersData && storeUsersData?.attributes?.mobile && (
                                     <div>
-                                        <Typography className='input-label-color !text-[16px]'>
-                                            {t('labels:mobile_number')}
-                                        </Typography>
-                                        <Text className='text-regal-blue text-lg font-semibold'>
+                                        <p className='input-label-color !text-[16px]'>{t('labels:mobile_number')}</p>
+                                        <p className='text-regal-blue text-lg font-semibold'>
                                             {storeUsersData.attributes.mobile && storeUsersData.attributes.mobile[0]}
-                                        </Text>
+                                        </p>
                                     </div>
                                 )}
                                 <div>
-                                    <Typography className='input-label-color !text-[16px]'>
-                                        {t('labels:role')}
-                                    </Typography>
-                                    <Text className='text-regal-blue text-lg font-semibold'>
+                                    <p className='input-label-color !text-[16px]'>{t('labels:role')}</p>
+                                    <p className='text-regal-blue text-lg font-semibold'>
                                         {storeUsersData &&
                                             storeUsersData.groups.length > 0 &&
                                             storeUsersData.groups.map((ele, index) => (
                                                 <span key={index}>{ele.name.replace(/-/g, ' ')}</span>
                                             ))}
-                                    </Text>
+                                    </p>
                                 </div>
                                 <div>
-                                    <Typography className='input-label-color !text-[16px]'>
-                                        {t('labels:onboarded_on')}
-                                    </Typography>
-                                    <Text className='text-regal-blue text-lg font-semibold'>
+                                    <p className='input-label-color !text-[16px]'>{t('labels:onboarded_on')}</p>
+                                    <p className='text-regal-blue text-lg font-semibold'>
                                         {getGenerateDateAndTime(
                                             storeUsersData && storeUsersData.createdTimestamp,
                                             'MMM D YYYY'
                                         ).replace(/(\w{3} \d{1,2}) (\d{4})/, '$1, $2')}
-                                    </Text>
+                                    </p>
                                 </div>
                                 <Button
                                     onClick={showPasswordChangeModal}
-                                    className='app-btn-secondary changePasswordBtn flex items-center justify-center gap-1 max-w-min min-h-10'>
+                                    variant='outline'
+                                    className='changePasswordBtn flex items-center justify-center gap-1 max-w-min min-h-10 hover:text-brandPrimaryColor'>
                                     <svg
                                         width='14'
                                         height='14'
@@ -357,171 +179,11 @@ const UserProfile = () => {
                         </div>
                     </div>
                 )}
-            </Content>
-            {/* Change password modal */}
-            {isPasswordChangeModalOpen ? (
-                <StoreModal
-                    isVisible={isPasswordChangeModalOpen}
-                    title={
-                        <div className='text-regal-blue font-bold text-[18px] leading-[26px]'>
-                            {t('labels:change_password')}
-                        </div>
-                    }
-                    okCallback={() => handleOkPasswordChangeModal()}
-                    cancelCallback={() => handleCancelPasswordChangeModal()}
-                    okButtonText={`${t('labels:save')}`}
-                    cancelButtonText={`${t('labels:cancel')}`}
-                    isOkButtonDisabled={
-                        password === '' ||
-                        confirmPassword === '' ||
-                        currentPassword === '' ||
-                        confirmPassword !== password ||
-                        !validatePassword()
-                    }
-                    hideCloseButton={false}
-                    isSpin={''}
-                    width={1000}>
-                    <hr />
-                    <Content className='mt-2'>
-                        <Row gutter={50}>
-                            <Col span={12}>
-                                <Content>
-                                    <Typography className='input-label-color py-2'>
-                                        {t('labels:current_password')}
-                                        <span className='mandatory-symbol-color text-sm mx-1'>*</span>
-                                    </Typography>
-                                    <Input.Password
-                                        placeholder={t('placeholders:enter_password')}
-                                        value={currentPassword}
-                                        status={isCurrentPasswordValid ? '' : 'error'}
-                                        maxLength={maxPasswordLength}
-                                        minLength={minPasswordLength}
-                                        onChange={handleCurrentPasswordChange}
-                                    />
-                                </Content>
-                            </Col>
-                        </Row>
-                        <Row gutter={50} className='mt-6 mb-2'>
-                            <Col span={12}>
-                                <Content className='mb-2'>
-                                    <Typography className='input-label-color py-2'>
-                                        {t('labels:new_password')}
-                                        <span className='mandatory-symbol-color text-sm mx-1'>*</span>
-                                    </Typography>
-
-                                    <Input.Password
-                                        placeholder={t('placeholders:enter_your_new_password')}
-                                        value={password}
-                                        maxLength={maxPasswordLength}
-                                        minLength={minPasswordLength}
-                                        status={
-                                            isNewPasswordValid ? (password && !isPasswordValid ? 'error' : '') : 'error'
-                                        }
-                                        onChange={handlePasswordChange}
-                                    />
-                                    {password && !isPasswordValid && (
-                                        <div style={{ color: 'red' }}>{t('labels:please_enter_a_valid_password')}</div>
-                                    )}
-                                    {password && password === currentPassword && (
-                                        <div style={{ color: 'red' }}>{t('labels:password_should_not_be_same')}</div>
-                                    )}
-                                </Content>
-                                <Content>
-                                    <Typography className='input-label-color py-2'>
-                                        {t('labels:confirm_password')}
-                                        <span className='mandatory-symbol-color text-sm mx-1'>*</span>
-                                    </Typography>
-                                    <Input.Password
-                                        placeholder={t('placeholders:enter_your_confirm_password')}
-                                        value={confirmPassword}
-                                        onChange={handleConfirmPasswordChange}
-                                        status={isConfirmPasswordValid ? '' : 'error'}
-                                        maxLength={maxPasswordLength}
-                                        minLength={minPasswordLength}
-                                        className={
-                                            password &&
-                                            confirmPassword &&
-                                            password !== '' &&
-                                            confirmPassword !== '' &&
-                                            password !== confirmPassword
-                                                ? 'custom-error-input'
-                                                : null
-                                        }
-                                    />
-                                    {password &&
-                                        confirmPassword &&
-                                        password !== '' &&
-                                        confirmPassword !== '' &&
-                                        password !== confirmPassword && (
-                                            <div style={{ color: 'red' }}>{t('messages:password_mismatch')}</div>
-                                        )}
-                                    {confirmPassword && confirmPassword === currentPassword && (
-                                        <div style={{ color: 'red' }}>{t('labels:password_should_not_be_same')}</div>
-                                    )}
-                                </Content>
-                            </Col>
-                            <Col span={12} className=' border-l-2 border-gray-300'>
-                                <Content>
-                                    <Title level={5} className='!text-regal-blue'>
-                                        {t('labels:your_password_must_contain')}
-                                    </Title>
-                                    <p className='!mb-0 pb-2 text-brandGray1'>
-                                        <IoMdCheckmarkCircleOutline
-                                            style={{
-                                                color: `${password && password.length >= 12 ? 'green' : 'text-brandGray1'}`,
-                                                display: 'inline',
-                                            }}
-                                        />{' '}
-                                        {t('messages:at_least_12_characters')}
-                                    </p>
-                                    <p className='!mb-0 pb-2 text-brandGray1'>
-                                        <IoMdCheckmarkCircleOutline
-                                            style={{
-                                                color: `${password && /[A-Z]/.test(password) ? 'green' : 'text-brandGray1'}`,
-                                                display: 'inline',
-                                            }}
-                                        />{' '}
-                                        {t('messages:one_or_more_upper_case_letter')}
-                                    </p>
-                                    <p className='!mb-0 pb-2 text-brandGray1'>
-                                        <IoMdCheckmarkCircleOutline
-                                            style={{
-                                                color: `${
-                                                    password && /[!@#$%^&*"'()_+{}\[\]:;<>,.?~\\/-]/.test(password)
-                                                        ? 'green'
-                                                        : 'text-brandGray1'
-                                                }`,
-                                                display: 'inline',
-                                            }}
-                                        />{' '}
-                                        {t('messages:one_or_more_special_character_or_symbols')}
-                                    </p>
-                                    <p className='!mb-0 pb-2 text-brandGray1'>
-                                        <IoMdCheckmarkCircleOutline
-                                            style={{
-                                                color: `${password && /[a-z]/.test(password) ? 'green' : 'text-brandGray1'}`,
-                                                display: 'inline',
-                                            }}
-                                        />{' '}
-                                        {t('messages:one_or_more_lower_case_letters')}
-                                    </p>
-                                    <p className='!mb-0 pb-2 text-brandGray1'>
-                                        <IoMdCheckmarkCircleOutline
-                                            style={{
-                                                color: `${password && /[\d]/.test(password) ? 'green' : 'text-brandGray1'}`,
-                                                display: 'inline',
-                                            }}
-                                        />{' '}
-                                        {t('messages:one_or_more_numbers')}
-                                    </p>
-                                </Content>
-                            </Col>
-                        </Row>
-                    </Content>
-                    <hr />
-                </StoreModal>
-            ) : null}
-        </Content>
+            </div>
+            <ChangePassword
+                isPasswordChangeModalOpen={isPasswordChangeModalOpen}
+                setIsPasswordChangeModalOpen={setIsPasswordChangeModalOpen}></ChangePassword>
+        </div>
     )
 }
 

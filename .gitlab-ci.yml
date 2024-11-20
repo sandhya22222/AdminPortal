@@ -3,7 +3,6 @@ stages:
   - deploy
   - notify
 
-
 variables:
   CI_TAG: "291-cicd"
 
@@ -18,7 +17,7 @@ build:
         - cd devops
         - ansible-playbook -i inventory portals/AP/create_build.yml --extra-vars "branchname=$CI_COMMIT_BRANCH"
     only:
-        - version2.9.4
+        - feature-shadcn
 
 deploy:
     stage: deploy
@@ -36,7 +35,7 @@ deploy:
         - echo -e "[ap]\n$IP_THMP291 ansible_user=rocky ansible_ssh_private_key_file=$SSH_PRIVATE_KEY_THMP291" > inventory
         - ansible-playbook -i inventory --extra-vars "@portals.yml" --extra-vars "branchname=$CI_COMMIT_BRANCH" AP/upgradeap.yml
     only:
-        - version2.9.4
+        - feature-shadcn
     needs: [build]    
 
 notify_build_success:
