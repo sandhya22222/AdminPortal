@@ -332,6 +332,6 @@
     "proceed_without_translations": "Proceed Without Translations",
     "the_multi_lingual_details_for": "Translations are needed for the following language(s):",
     "click_continue_to_save": "Please select the respective language from the dropdown menu and provide the translation values to complete them",
-    "enter_title_here": "Enter name here"
-
+    "enter_title_here": "Enter name here",
+    "restart":"Restart"
 }
