@@ -54,11 +54,11 @@ function Status({
     }, [])
 
     const updateStoreStatus = async () => {
-        const reqbody = {
-            status: changeSwitchStatus === true ? 1 : 2,
+        const reqBody = {
+            status: isDistributor ? 1 : changeSwitchStatus === true ? 1 : 2,
         }
         setIsLoading(true)
-        MarketplaceServices.update(storeEditStatusAPI, reqbody, {
+        MarketplaceServices.update(storeEditStatusAPI, reqBody, {
             store_id: storeId,
         })
             .then((response) => {
@@ -66,13 +66,15 @@ function Status({
                 setSwitchStatus(false)
                 closeModal()
                 setIsLoading(false)
-                if (
-                    (response && response.data.response_body.status === 5) ||
-                    (response && response.data.response_body.status === 4)
-                ) {
-                    setActiveConfirmationModalOpen(true)
+                if (!isDistributor) {
+                    if (
+                        (response && response.data.response_body.status === 5) ||
+                        (response && response.data.response_body.status === 4)
+                    ) {
+                        setActiveConfirmationModalOpen(true)
+                    }
                 }
-                setStoreCheckStatus(response.data.response_body.status)
+                setStoreCheckStatus(response.data.response_body?.status)
                 let temp = [...storeApiData]
                 let index = temp.findIndex((ele) => ele.id === response.data.response_body.id)
                 temp[index]['status'] = response.data.response_body.status
@@ -129,6 +131,7 @@ function Status({
                 console.log('Error from the status response ===>', error)
             })
     }
+    
 
     const onChange = (checked) => {
         setChangeSwitchStatus(checked)
@@ -177,7 +180,7 @@ function Status({
                 <div className='relative inline-flex items-center'>
                     {statusInprogress === 4 || statusInprogress === 5 ? (
                         <div className='absolute  flex items-center justify-center animate-spin rounded-full h-6 w-6 border-b-2 border-brandPrimaryColor border-t-transparent border-solid  opacity-75 !mb-3'></div>
-                    ) : (
+                    ) : !isDistributor ? (
                         <Switch
                             checked={switchStatus}
                             onCheckedChange={onChange}
@@ -189,6 +192,10 @@ function Status({
                                 statusInprogress === 5
                             }
                         />
+                    ) : (
+                        <Button size='sm' onClick={() => updateStoreStatus()} disabled={disableStatus}>
+                            {t('labels:restart')}
+                        </Button>
                     )}
                 </div>
             </div>

@@ -6,12 +6,29 @@ import { Check, ChevronRight, Circle } from 'lucide-react'
 
 import { cn } from '../../lib/utils'
 
-const DropdownMenu = DropdownMenuPrimitive.Root
+// const DropdownMenu = DropdownMenuPrimitive.Root
 const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger
 const DropdownMenuGroup = DropdownMenuPrimitive.Group
 const DropdownMenuPortal = DropdownMenuPrimitive.Portal
 const DropdownMenuSub = DropdownMenuPrimitive.Sub
 const DropdownMenuRadioGroup = DropdownMenuPrimitive.RadioGroup
+
+const DropdownMenu = ({ onOpenChange, ...props }) => {
+    const handleOpenChange = (open) => {
+        if (open) {
+            document.body.style.cssText += 'overflow: auto !important;'
+        } else {
+            document.body.style.overflow = '' // Reset to default or previous value
+        }
+
+        // Propagate to parent if needed
+        if (onOpenChange) {
+            onOpenChange(open)
+        }
+    }
+
+    return <DropdownMenuPrimitive.Root onOpenChange={handleOpenChange} {...props} />
+}
 
 const DropdownMenuSubTrigger = React.forwardRef(({ className, inset, children, ...props }, ref) => (
     <DropdownMenuPrimitive.SubTrigger
