@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { Layout, Dropdown, Typography, Tag, Button, Select, Avatar, Image } from 'antd'
-import { DownOutlined, UserOutlined, LogoutOutlined } from '@ant-design/icons'
 import { Link, useNavigate } from 'react-router-dom'
 import './header2.css'
-
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
+import { RiArrowDropDownLine, RiUserLine, RiLogoutCircleRLine } from 'react-icons/ri'
+import { Button } from '../../shadcnComponents/ui/button'
 //! Import user defined services
 import {
     fnSelectedLanguage,
@@ -14,25 +13,30 @@ import {
     fnDefaultLanguage,
 } from '../../services/redux/actions/ActionStoreLanguage'
 import { fnUserProfileInfo } from '../../services/redux/actions/ActionUserProfile'
-import { marketPlaceLogo, Collapse, BackIcon } from '../../constants/media'
+import { marketPlaceLogo, BackIcon } from '../../constants/media'
 
 import util from '../../util/common'
 import { useAuth } from 'react-oidc-context'
 import useGetStoreUserData from '../../hooks/useGetStoreUsersData'
 import useGetProfileImage from '../../pages/StoreUsers/hooks/useGetProfileImage'
-
-const { Header, Content } = Layout
-const { Option } = Select
+import { Badge } from '../../shadcnComponents/ui/badge'
+import { Select, SelectContent, SelectTrigger, SelectValue, SelectItem } from '../../shadcnComponents/ui/select'
+import {
+    DropdownMenu,
+    DropdownMenuTrigger,
+    DropdownMenuContent,
+    DropdownMenuItem,
+} from '../../shadcnComponents/ui/dropdownMenu'
+import { Avatar, AvatarImage, AvatarFallback } from '../../shadcnComponents/ui/avatar'
 
 const multilingualFunctionalityEnabled = process.env.REACT_APP_IS_MULTILINGUAL_ENABLED
 const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API
 const storeUsersAPI = process.env.REACT_APP_USERS_API
 const portalInfo = JSON.parse(process.env.REACT_APP_PORTAL_INFO)
 
-const Header2 = ({ collapsed, setCollapsed, setIsLanguageSelected }) => {
+const Header2 = ({ setIsLanguageSelected }) => {
     const { t } = useTranslation()
     const dispatch = useDispatch()
-    const { Text } = Typography
     const auth = useAuth()
     const navigate = useNavigate()
 
@@ -60,7 +64,7 @@ const Header2 = ({ collapsed, setCollapsed, setIsLanguageSelected }) => {
         {
             label: `${t('labels:logout')}`,
             key: 'logout',
-            icon: <LogoutOutlined />,
+            icon: <RiLogoutCircleRLine />,
             danger: true,
         },
     ]
@@ -160,40 +164,15 @@ const Header2 = ({ collapsed, setCollapsed, setIsLanguageSelected }) => {
     }, [selectedLanguage])
 
     return (
-        <Content>
-            <Header className='fixed z-20 top-0 p-0  !h-[72px] w-full header'>
-                <Content className='px-3 border-b-[1px] !h-[72px] flex flex-row !justify-between items-center '>
+        <div>
+            <div className='fixed z-20 top-0 p-0 !h-[72px] w-full header'>
+                <div className='px-3 border-b-[1px] !h-[72px] flex flex-row !justify-between items-center '>
                     {/* Left content which displays brand logo and other stuffs */}
                     <div className='flex flex-row items-center'>
-                        <div
-                            className={`${
-                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'ml-4 mr-2' : 'ml-2 mr-4'
-                            } `}>
-                            <Button
-                                type='text'
-                                icon={
-                                    collapsed ? (
-                                        <img src={Collapse} alt='Collapse' />
-                                    ) : (
-                                        <img
-                                            className={`  ${
-                                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
-                                                    ? 'rotate-180'
-                                                    : ''
-                                            }`}
-                                            src={BackIcon}
-                                            alt='BackButton'
-                                        />
-                                    )
-                                }
-                                onClick={() => setCollapsed(!collapsed)}
-                            />
-                        </div>
                         <div className='flex items-center mx-2 '>
                             <Link to='/dashboard'>
-                                <Image
+                                <img
                                     alt='marketPlaceLogo'
-                                    preview={false}
                                     src={marketPlaceLogo}
                                     className='cursor-pointer'
                                     height={40}
@@ -201,18 +180,18 @@ const Header2 = ({ collapsed, setCollapsed, setIsLanguageSelected }) => {
                             </Link>
                         </div>
                         <div className='mx-2 flex items-center'>
-                            <Tag className='portalNameTag'>
-                                <Text className='!px-2 text-[12px] text-white font-medium leading-5'>
+                            <Badge className='portalNameTag'>
+                                <p className='!px-2 text-[12px] text-white font-medium leading-5'>
                                     {portalInfo && portalInfo.title.toUpperCase()}
-                                </Text>
-                            </Tag>
+                                </p>
+                            </Badge>
                         </div>
                     </div>
 
                     {/* Center content to display any item if required */}
-                    <Content className='flex flex-1'></Content>
+                    <div className='flex flex-1'></div>
                     {/* Right content to display user menus, login icon, language icon and other stuffs */}
-                    <Content className='!flex  !justify-end !items-center px-2'>
+                    <div className='!flex  !justify-end !items-center px-2'>
                         {/* Display user dropdown if user is logged in otherwise display login icon */}
                         {auth.isAuthenticated ? (
                             <div
@@ -222,67 +201,76 @@ const Header2 = ({ collapsed, setCollapsed, setIsLanguageSelected }) => {
                                         : 'mr-[5px]'
                                 }`}>
                                 <Avatar
-                                    className={`bg-gray-400 mx-1 !leading-10  ${profileImage && 'custom-avatar'}`}
-                                    size={48}
-                                    src={
-                                        storeUsersData?.attributes?.profile_image_path?.[0] ? (
-                                            profileImage || <UserOutlined />
-                                        ) : (
-                                            <UserOutlined />
-                                        )
-                                    }
-                                />
-                                <Text className={`!flex flex-col`}>
-                                    <Text className='font-normal text-sm text-[#637381] leading-[22px] whitespace-nowrap *:'>
+                                    className={`bg-gray-400 mx-1 !leading-10 ${profileImage && 'custom-avatar'}`}
+                                    style={{ width: 48, height: 48 }}>
+                                    {storeUsersData?.attributes?.profile_image_path?.[0] ? (
+                                        <AvatarImage src={profileImage} alt='Profile Image' />
+                                    ) : (
+                                        <AvatarFallback className='bg-gray-400 '>
+                                            <RiUserLine className='text-white ' />
+                                        </AvatarFallback>
+                                    )}
+                                </Avatar>
+                                <div className={`!flex flex-col`}>
+                                    <span className='font-normal text-sm text-[#637381] leading-[22px] whitespace-nowrap *:'>
                                         {userName ? userName : userProfileInfo}{' '}
-                                    </Text>
-                                    <Dropdown
-                                        menu={{
-                                            items: userItems,
-                                            onClick: handleMenuClick,
-                                        }}
-                                        placement='bottom'
-                                        trigger={['click']}
-                                        className='cursor-pointer'
-                                        overlayStyle={{ position: 'fixed', overflow: 'visible', zIndex: 20, top: 64 }}>
-                                        <Text className='text-xs text-[#8899A8] !leading-[20px] font-normal whitespace-nowrap flex flex-row items-center'>
-                                            {userRole ? userRole.replace(/-/g, ' ') : ''}{' '}
-                                            <DownOutlined className='text-xs mx-1' />
-                                        </Text>
-                                    </Dropdown>
-                                </Text>
-                            </div>
-                        ) : null}
-                        {/* Display language dropdown only if store has more than 1 language. */}
+                                    </span>
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger className='cursor-pointer'>
+                                            <p className='text-xs text-[#8899A8] !leading-[20px] font-normal whitespace-nowrap flex flex-row items-center'>
+                                                {userRole ? userRole.replace(/-/g, ' ') : ''}
+                                                <RiArrowDropDownLine className='text-2xl mx-1' />
+                                            </p>
+                                        </DropdownMenuTrigger>
 
-                        {multilingualFunctionalityEnabled === 'true' && languageItems.length > 0 ? (
-                            <Select
-                                bordered={false}
-                                placeholder='Select Language'
-                                defaultValue={storeSelectedLngCode || defaultLanguageCode}
-                                disabled={languageItems.length === 1 ? true : false}
-                                onChange={(value) => handleLanguageClick(value)}
-                                className='header-select !max-w-[90px]'
-                                dropdownStyle={{ position: 'fixed', width: '90' }}
-                                key={storeSelectedLngCode}>
-                                {languageItems.map((option) => (
-                                    <>
-                                        {' '}
-                                        <Option key={option.value} value={option.value} className='headerSelectOption'>
-                                            <span className='overflow-hidden whitespace-nowrap'>
-                                                {option.value?.toUpperCase()}
-                                            </span>
-                                        </Option>
-                                    </>
-                                ))}
-                            </Select>
+                                        <DropdownMenuContent className='fixed overflow-visible z-20'>
+                                            {userItems.map((item) => (
+                                                <DropdownMenuItem
+                                                    key={item.key}
+                                                    onClick={() => handleMenuClick(item)}
+                                                    className='whitespace-nowrap cursor-pointer gap-2 hover:bg-dangerColor hover:text-white text-dangerColor'>
+                                                    {item.icon} {item.label}
+                                                </DropdownMenuItem>
+                                            ))}
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
+                                </div>
+                            </div>
                         ) : (
-                            <></>
+                            <Button
+                                className={`!p-0 !ml-[5px] ${
+                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'ml-[5px]' : ''
+                                }`}>
+                                <RiUserLine className='text-[24px] text-[#637381]' />
+                            </Button>
                         )}
-                    </Content>
-                </Content>
-            </Header>
-        </Content>
+
+                        {multilingualFunctionalityEnabled && (
+                            <div
+                                className={`flex items-center ${
+                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                        ? 'mr-[5px]'
+                                        : 'ml-[5px]'
+                                }`}>
+                                <Select value={storeSelectedLngCode} onValueChange={handleLanguageClick}>
+                                    <SelectTrigger className=' border-none'>
+                                        <SelectValue placeholder='Select Language' />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {languageItems &&
+                                            languageItems.map((item) => (
+                                                <SelectItem key={item.value} value={item.value}>
+                                                    {item.value?.toUpperCase()}
+                                                </SelectItem>
+                                            ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
+        </div>
     )
 }
 

@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { Switch, Space, Row, Col, Layout, Button, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
+import { Switch } from '../../shadcnComponents/ui/switch'
+import { Button } from '../../shadcnComponents/ui/button'
 import StoreModal from '../../components/storeModal/StoreModal'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import { storeActiveConfirmationImage } from '../../constants/media'
 const storeEditStatusAPI = process.env.REACT_APP_STORE_STATUS_API
 
-const { Content } = Layout
-const { Text } = Typography
 function Status({
     storeId,
     storeStatus,
@@ -26,7 +25,8 @@ function Status({
     setPreviousStatus,
     setDuplicateStoreStatus,
     previousStatus,
-    isDistributor
+    isDistributor,
+    isCancelButtonDisabled,
 }) {
     const { t } = useTranslation()
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -36,19 +36,15 @@ function Status({
     const [activeConfirmationModalOpen, setActiveConfirmationModalOpen] = useState(false)
     const [storeCheckStatus, setStoreCheckStatus] = useState()
 
-    // closing the delete popup model
     const closeModal = () => {
         setIsModalOpen(false)
     }
-
+    const closeModalconfirmation = () => {
+        setActiveConfirmationModalOpen(false)
+    }
     useEffect(() => {
         setSwitchStatus(storeStatus)
     }, [storeStatus])
-
-    // opening the delete popup model
-    const openModal = () => {
-        setIsModalOpen(true)
-    }
 
     useEffect(() => {
         setIsLoading(false)
@@ -58,12 +54,11 @@ function Status({
     }, [])
 
     const updateStoreStatus = async () => {
-        const reqbody = {
-            status: changeSwitchStatus === true ? 1 : 2,
+        const reqBody = {
+            status: isDistributor ? 1 : changeSwitchStatus === true ? 1 : 2,
         }
-        // Enabling spinner
         setIsLoading(true)
-        MarketplaceServices.update(storeEditStatusAPI, reqbody, {
+        MarketplaceServices.update(storeEditStatusAPI, reqBody, {
             store_id: storeId,
         })
             .then((response) => {
@@ -71,14 +66,15 @@ function Status({
                 setSwitchStatus(false)
                 closeModal()
                 setIsLoading(false)
-                if (
-                    (response && response.data.response_body.status === 5) ||
-                    (response && response.data.response_body.status === 4)
-                ) {
-                    setActiveConfirmationModalOpen(true)
+                if (!isDistributor) {
+                    if (
+                        (response && response.data.response_body.status === 5) ||
+                        (response && response.data.response_body.status === 4)
+                    ) {
+                        setActiveConfirmationModalOpen(true)
+                    }
                 }
-                setStoreCheckStatus(response.data.response_body.status)
-                // MarketplaceToaster.showToast(response);
+                setStoreCheckStatus(response.data.response_body?.status)
                 let temp = [...storeApiData]
                 let index = temp.findIndex((ele) => ele.id === response.data.response_body.id)
                 temp[index]['status'] = response.data.response_body.status
@@ -127,7 +123,6 @@ function Status({
                         setSelectedTabTableContent(temp)
                     }
                 }
-                // setIsLoading(false);
             })
             .catch((error) => {
                 setIsLoading(false)
@@ -136,13 +131,19 @@ function Status({
                 console.log('Error from the status response ===>', error)
             })
     }
+    
 
     const onChange = (checked) => {
         setChangeSwitchStatus(checked)
         setIsModalOpen(true)
     }
 
-    console.log('switchStatus', switchStatus)
+    console.log(
+        'switchStatus',
+        statusInprogress,
+        disableStatus || statusInprogress === 3 || (isDistributor && switchStatus)
+    )
+
     return (
         <div>
             <StoreModal
@@ -150,20 +151,20 @@ function Status({
                 okButtonText={t('labels:proceed')}
                 title={
                     changeSwitchStatus ? (
-                        <Text className='text-regal-blue font-bold text-[18px] leading-[26px]'>
+                        <span className='text-regal-blue font-bold text-[18px] leading-[26px]'>
                             {t('messages:store_activation_confirmation')}
-                        </Text>
+                        </span>
                     ) : (
-                        <Text className='text-regal-blue font-bold text-[18px] leading-[26px]'>
+                        <span className='text-regal-blue font-bold text-[18px] leading-[26px]'>
                             {t('messages:store_deactivation_confirmation')}
-                        </Text>
+                        </span>
                     )
                 }
                 cancelButtonText={t('labels:cancel')}
                 okCallback={() => updateStoreStatus()}
                 cancelCallback={() => closeModal()}
                 isSpin={isLoading}
-                hideCloseButton={false}>
+                hideCloseButton={true}>
                 {changeSwitchStatus ? (
                     <div className='text-brandGray1'>
                         <p className='!mb-0'>{t('messages:store_active_confirmation_message')}</p>
@@ -176,37 +177,42 @@ function Status({
                 )}
             </StoreModal>
 
-            <Row className='gap-1'>
-                <Col>
-                    <Space direction='vertical'>
+            <div className='flex gap-1'>
+                <div className='relative inline-flex items-center'>
+                    {statusInprogress === 4 || statusInprogress === 5 ? (
+                        <div className='absolute  flex items-center justify-center animate-spin rounded-full h-6 w-6 border-b-2 border-brandPrimaryColor border-t-transparent border-solid  opacity-75 !mb-3'></div>
+                    ) : !isDistributor ? (
                         <Switch
-                            loading={statusInprogress === 4 || statusInprogress === 5 ? true : false}
-                            // className={switchStatus ? '!bg-green-500' : '!bg-gray-400'}
                             checked={switchStatus}
-                            onChange={onChange}
-                            onClick={() => {
-                                openModal()
-                            }}
-                            disabled={disableStatus || statusInprogress === 3 || (isDistributor && switchStatus)}
+                            onCheckedChange={onChange}
+                            disabled={
+                                disableStatus ||
+                                statusInprogress === 3 ||
+                                (isDistributor && switchStatus) ||
+                                statusInprogress === 4 ||
+                                statusInprogress === 5
+                            }
                         />
-                    </Space>
-                </Col>
-            </Row>
-            <StoreModal isVisible={activeConfirmationModalOpen} isSpin={false} hideCloseButton={false} width={800}>
+                    ) : (
+                        <Button size='sm' onClick={() => updateStoreStatus()} disabled={disableStatus}>
+                            {t('labels:restart')}
+                        </Button>
+                    )}
+                </div>
+            </div>
+            <StoreModal
+                isVisible={activeConfirmationModalOpen}
+                isSpin={false}
+                hideCloseButton={true}
+                cancelCallback={() => closeModalconfirmation()}
+                width={800}>
                 {storeCheckStatus === 4 ? (
-                    <Content className='text-center'>
-                        <Text className=' text-lg leading-[26px] font-bold text-regal-blue]'>
+                    <div className='text-center'>
+                        <div className='text-lg leading-[26px] font-bold text-regal-blue'>
                             {t('labels:activating_store')}
-                        </Text>
-                        <div
-                            className='mt-5 mb-3'
-                            // style={{ "text-align": "-webkit-center" }}
-                        >
-                            <img
-                                src={storeActiveConfirmationImage}
-                                alt='storeActiveConfirmationImage'
-                                className='ml-[270px]'
-                            />
+                        </div>
+                        <div className='flex justify-center mt-5 mb-3'>
+                            <img src={storeActiveConfirmationImage} alt='storeActiveConfirmationImage' />
                         </div>
                         <div className='mb-3 text-brandGray1'>
                             <p className='!mb-0'>{t('messages:patience_is_a_virtue')}</p>
@@ -219,19 +225,15 @@ function Status({
                             }}>
                             {t('labels:close_message')}
                         </Button>
-                    </Content>
+                    </div>
                 ) : null}
                 {storeCheckStatus === 5 ? (
-                    <Content className='!text-center'>
-                        <Text className=' text-lg leading-[26px] font-bold text-regal-blue'>
+                    <div className='!text-center'>
+                        <div className='text-lg leading-[26px] font-bold text-regal-blue'>
                             {t('labels:deactivating_store')}
-                        </Text>
-                        <div className='mt-5 mb-3'>
-                            <img
-                                src={storeActiveConfirmationImage}
-                                alt='storeActiveConfirmationImage'
-                                className='ml-[270px]'
-                            />
+                        </div>
+                        <div className='flex justify-center mt-5 mb-3'>
+                            <img src={storeActiveConfirmationImage} alt='storeActiveConfirmationImage' />
                         </div>
                         <div className='mb-3 text-brandGray1'>
                             <p className='!mb-0'>{t('messages:patience_is_a_virtue')}</p>
@@ -244,7 +246,7 @@ function Status({
                             }}>
                             {t('labels:close_message')}
                         </Button>
-                    </Content>
+                    </div>
                 ) : null}
             </StoreModal>
         </div>

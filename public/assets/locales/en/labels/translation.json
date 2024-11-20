@@ -324,5 +324,14 @@
     "add_new_file": "Add Profile Image",
     "leading_line": "I have read and agreed to the following policies",
     "updated_date_and_time": "Updated Date and Time",
-    "store_desc": "Store enable you to create store name and manage partner and distributor stores, ensuring they remain active at all times and allowing you to configure thresholds as needed."
+    "loading": "Loading",
+    "base_language": "Base Language",
+    "languages_translated": "Languages translated",
+    "language_with_invalid_inputs": "Translations for multiple languages are missing",
+    "enter_translations": "Enter Translations",
+    "proceed_without_translations": "Proceed Without Translations",
+    "the_multi_lingual_details_for": "Translations are needed for the following language(s):",
+    "click_continue_to_save": "Please select the respective language from the dropdown menu and provide the translation values to complete them",
+    "enter_title_here": "Enter name here",
+    "restart":"Restart"
 }

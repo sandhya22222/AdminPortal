@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Layout, Typography, Button, Input, Spin } from 'antd'
 import { useTranslation } from 'react-i18next'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import util from '../../util/common'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
-
+import { Button } from '../../shadcnComponents/ui/button'
+import { Input } from '../../shadcnComponents/ui/input'
+import Spin from '../../shadcnComponents/customComponents/Spin'
 const groupsAPI = process.env.REACT_APP_GROUPS_API
-
-const { Text } = Typography
-const { Content } = Layout
 
 const CreateGroup = ({ groupNameProps, setShowGroupModal }) => {
     const { t } = useTranslation()
@@ -16,7 +14,7 @@ const CreateGroup = ({ groupNameProps, setShowGroupModal }) => {
     const [groupName, setGroupName] = useState('')
     const [invalidGroupName, setInvalidGroupName] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
-    const [ setKey] = useState(0)
+    const [setKey] = useState(0)
 
     //!Handle discard button
     const handleDiscardBtn = () => {
@@ -94,45 +92,48 @@ const CreateGroup = ({ groupNameProps, setShowGroupModal }) => {
     }, [groupNameProps])
 
     return (
-        <Content className='pb-4'>
-            <Spin tip={t('labels:please_wait')} spinning={isLoading}>
-                <Text className='text-xl font-semibold'>
-                    {groupNameProps === '' ? t('users_roles:add_group') : t('users_roles:edit_group')}
-                </Text>
-
-                <Content>
-                    <Content className='my-3'>
-                        <Typography className='input-label-color mb-2 flex gap-1'>
-                            {t('users_roles:group_name')}
-                            <span className='mandatory-symbol-color text-sm '>*</span>
-                        </Typography>
-                        <Content>
-                            <Input
-                                className={`${
-                                    invalidGroupName
-                                        ? 'border-red-400  border-[1px] rounded-lg border-solid focus:border-red-400 hover:border-red-400'
-                                        : ' border-solid border-[#C6C6C6]'
-                                }`}
-                                value={groupName}
-                                onChange={(e) => {
-                                    setGroupName(e.target.value)
-                                    setInvalidGroupName(false)
-                                }}
-                                placeholder={t('users_roles:enter_the_group_name')}
-                            />
-                        </Content>
-                    </Content>
-                    <Content className='float-right'>
-                        <Button className='mr-2 app-btn-secondary' onClick={() => handleDiscardBtn()}>
-                            {t('common:discard')}
-                        </Button>
-                        <Button className='app-btn-primary' onClick={() => handleValidationGroup()}>
-                            {groupNameProps === '' ? t('common:save') : t('common:update')}
-                        </Button>
-                    </Content>
-                </Content>
-            </Spin>
-        </Content>
+        <div className='pb-4'>
+            {isLoading ? (
+                <Spin />
+            ) : (
+                <>
+                    <label className='text-xl font-semibold'>
+                        {groupNameProps === '' ? t('users_roles:add_group') : t('users_roles:edit_group')}
+                    </label>
+                    <div>
+                        <div className='my-3'>
+                            <p className='input-label-color mb-2 flex gap-1'>
+                                {t('users_roles:group_name')}
+                                <span className='mandatory-symbol-color text-sm '>*</span>
+                            </p>
+                            <div>
+                                <Input
+                                    className={`${
+                                        invalidGroupName
+                                            ? 'border-red-400  border-[1px] rounded-lg border-solid focus:border-red-400 hover:border-red-400'
+                                            : ' border-solid border-[#C6C6C6]'
+                                    }`}
+                                    value={groupName}
+                                    onChange={(e) => {
+                                        setGroupName(e.target.value)
+                                        setInvalidGroupName(false)
+                                    }}
+                                    placeholder={t('users_roles:enter_the_group_name')}
+                                />
+                            </div>
+                        </div>
+                        <div className='float-right'>
+                            <Button className='mr-2 app-btn-secondary' onClick={() => handleDiscardBtn()}>
+                                {t('common:discard')}
+                            </Button>
+                            <Button className='app-btn-primary' onClick={() => handleValidationGroup()}>
+                                {groupNameProps === '' ? t('common:save') : t('common:update')}
+                            </Button>
+                        </div>
+                    </div>
+                </>
+            )}
+        </div>
     )
 }
 

@@ -1,0 +1,10 @@
+{
+    "logged_in_devices": "Logged in Devices",
+    "remove": "Remove",
+    "last_logged": "Last Logged",
+    "current_session": "Current Session",
+    "last_logged_in_at": "Last logged in at",
+    "logged_out_confirmation_title": "Are you sure",
+    "logged_out_confirmation_description": "You will be logged out of this device",
+    "device_not_found": "No devices found in this category. Please log in on a device to view it here."
+}

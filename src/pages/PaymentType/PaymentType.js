@@ -1,71 +1,129 @@
-import React, { useEffect } from 'react'
-import { Layout, Table } from 'antd'
-
-import HeaderForTitle from '../../components/header/HeaderForTitle'
-import { usePageTitle } from '../../hooks/usePageTitle'
+import React, { useState } from 'react'
+import { Card, CardContent } from '../../shadcnComponents/ui/card'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../../shadcnComponents/ui/accordion'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../shadcnComponents/ui/table'
 import { useTranslation } from 'react-i18next'
-const { Content } = Layout
+import HeaderForTitle from '../../components/header/HeaderForTitle'
+import { Separator } from '../../shadcnComponents/ui/separator'
+import { FaPlus, FaMinus } from 'react-icons/fa'
+import util from '../../util/common'
 
-const PaymentType = () => {
+export default function PaymentSettings() {
     const { t } = useTranslation()
-    usePageTitle(t('labels:payment_settings'))
-    useEffect(() => {
+    const [isOpen, setIsOpen] = useState(false)
+
+    React.useEffect(() => {
         window.scroll(0, 0)
     }, [])
 
-    const paymentTypeColumns = [
-        {
-            title: <div className='text-regal-blue text-sm font-medium leading-[22px]'>{t('labels:payment_types')}</div>,
-            dataIndex: 'name',
-            key: 'name',
-            width: '40%',
-        },
-    ]
-
-    const data = [
-        {
-            key: 1,
-            name: <div className='text-brandGray1'>{t('labels:cash_on_delivery')}</div>,
-            is_payment_gateway: false,
-        },
-        {
-            key: 2,
-            name: <div className='text-brandGray1'>{t('labels:online_payment')}</div>,
-            is_payment_gateway: true,
-            children: [
-                // {
-                //   key: 21,
-                //   name: `${t("labels:razor_pay")}`,
-                //   is_payment_gateway: true,
-                // },
-                {
-                    key: 22,
-                    name: <div className='text-brandGray1'>{t('labels:stripe')}</div>,
-                    is_payment_gateway: true,
-                },
-                {
-                    key: 23,
-                    name: <div className='text-brandGray1'>{t('labels:cash_free')}</div>,
-                    is_payment_gateway: true,
-                },
-            ],
-        },
-    ]
+    const toggleAccordion = () => {
+        setIsOpen(!isOpen)
+    }
 
     return (
-        <Content className=''>
+        <div className=' mt-10 w-full flex flex-col gap-[10px]'>
             <HeaderForTitle
+                className=''
                 title={
-                    <Content>
-                        <div className='!font-semibold text-2xl mb-4 text-regal-blue'>{t('labels:payment_setting')}</div>
-                    </Content>
+                    <div className=''>
+                        <div className='!font-semibold text-2xl mb-4 text-regal-blue'>
+                            {t('labels:payment_settings')}
+                        </div>
+                    </div>
                 }
             />
-            <Content className='!p-3 !mt-[10.5rem] mx-3 bg-white  rounded-md shadow-brandShadow'>
-                <Table dataSource={data} columns={paymentTypeColumns} pagination={false} />
-            </Content>
-        </Content>
+            <div className='p-3 mt-24'>
+    <Card className='w-full p-3 bg-white shadow-lg'>
+        <CardContent className='!p-0'>
+            <Table>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead
+                            className={`w-full !p-[16px] ${
+                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'text-right' : 'text-left'
+                            }`}
+                        >
+                            {t('labels:payment_types')}
+                        </TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    <TableRow>
+                        <TableCell
+                            className={`${
+                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'pr-[46px]' : 'pl-[46px]'
+                            } pb-4`}
+                        >
+                            {t('labels:cash_on_delivery')}
+                        </TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell className='!p-0'>
+                            <Accordion type='single' collapsible className='w-full'>
+                                <AccordionItem value='online-payment' className='!border-none'>
+                                    <AccordionTrigger
+                                        className={`!m-[16px] flex items-center justify-start gap-2 hover:no-underline`}
+                                        onClick={toggleAccordion}
+                                    >
+                                        <span
+                                            className={`${
+                                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                    ? 'mr-3'
+                                                    : 'ml-3'
+                                            } p-[2px] transition-transform duration-300 border rounded-[4px] ${
+                                                isOpen ? 'rotate-180 border-regal-orange' : 'rotate-0'
+                                            } group hover:border-regal-orange`}
+                                        >
+                                            {isOpen ? (
+                                                <FaMinus className='text-[10px] text-regal-orange group-hover:text-regal-orange transition-colors duration-200' />
+                                            ) : (
+                                                <FaPlus
+                                                    className={`text-[10px] ${
+                                                        isOpen
+                                                            ? 'text-regal-orange'
+                                                            : 'text-brandGray1'
+                                                    } group-hover:text-regal-orange transition-colors duration-200`}
+                                                />
+                                            )}
+                                        </span>
+                                        <span>{t('labels:online_payment')}</span>
+                                    </AccordionTrigger>
+
+                                    <Separator />
+
+                                    <AccordionContent>
+                                        <div className='pl-0'>
+                                            <p
+                                                className={`py-[16px] ${
+                                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                        ? 'pr-[70px]'
+                                                        : 'pl-[70px]'
+                                                }`}
+                                            >
+                                                {t('labels:stripe')}
+                                            </p>
+                                            <Separator />
+                                            <p
+                                                className={`py-[16px] ${
+                                                    util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                        ? 'pr-[60px]'
+                                                        : 'pl-[60px]'
+                                                }`}
+                                            >
+                                                {t('labels:cash_free')}
+                                            </p>
+                                        </div>
+                                    </AccordionContent>
+                                </AccordionItem>
+                            </Accordion>
+                        </TableCell>
+                    </TableRow>
+                </TableBody>
+            </Table>
+        </CardContent>
+    </Card>
+</div>
+
+        </div>
     )
 }
-
-export default PaymentType

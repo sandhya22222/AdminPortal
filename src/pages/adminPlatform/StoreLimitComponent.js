@@ -1,13 +1,14 @@
 import React from 'react'
-import { Button, Col, Input, Layout, Row, Skeleton, Spin, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
 import HeaderForTitle from '../../components/header/HeaderForTitle'
 import { useState } from 'react'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
+import { Button } from '../../shadcnComponents/ui/button'
+import { Input } from '../../shadcnComponents/ui/input'
 import { useEffect } from 'react'
-const { Content } = Layout
-const {  Title } = Typography
+import Spin from '../../shadcnComponents/customComponents/Spin'
+import { Skeleton } from '../../shadcnComponents/ui/skeleton'
 const storeLimitApi = process.env.REACT_APP_STORE_PLATFORM_LIMIT_API
 
 function StoreLimitComponent() {
@@ -77,121 +78,125 @@ function StoreLimitComponent() {
     }, [])
 
     return (
-        <Content>
+        <div>
             <HeaderForTitle
                 title={
-                    <Content className=''>
-                        <Title level={3} className='!font-normal'>
-                            {t('labels:admin_menu')}
-                        </Title>
-                    </Content>
+                    <div className=''>
+                        <label className='!font-normal text-2xl font-semibold'>{t('labels:admin_menu')}</label>
+                    </div>
                 }
             />
-            <Spin tip={t('labels:please_wait')} size='large' spinning={isStoreLimitSaving}>
-                {isLoading ? (
-                    // <Content className="!text-center !p-6">
-                    <Content className='inline-block shadow-sm  bg-[#FFFFFF] !rounded-md mt-[9rem] w-[100%] py-3'>
-                        <Skeleton
-                            active
-                            paragraph={{
-                                rows: 5,
-                            }}
-                            className='p-3'></Skeleton>
-                    </Content>
-                ) : (
-                    // </Content>
-                    <Content className='bg-white mt-[9rem] px-3 py-4 !rounded-md'>
-                        <Content className='flex flex-col'>
-                            <label className='text-[13px] mb-2 ml-1 input-label-color'>{t('labels:store_limit')}</label>
-                            <Input
-                                className='w-[50%]'
-                                placeholder={t('labels:placeholder_unlimited')}
-                                // defaultValue={storeSettingData.store_currency["symbol"]}
-                                value={storeLimitValues.store_limit > 0 ? storeLimitValues.store_limit : ''}
-                                onChange={(e) => {
-                                    let number = /^[0-9]*$/.test(e.target.value)
-                                    let copyofStoreLimitValue = { ...storeLimitValues }
-                                    // to allow only 10 digits
-                                    if (number && e.target.value.length <= 10) {
-                                        copyofStoreLimitValue.store_limit = e.target.value
-                                        setIsStoreLimitChanged(true)
-                                        setStoreLimitValues(copyofStoreLimitValue)
-                                    } else if (e.target.value === '') {
-                                        // setIsStoreDataLimitChanged(false);
-                                        copyofStoreLimitValue.store_limit = e.target.value
-                                        setStoreLimitValues(copyofStoreLimitValue)
+            {isStoreLimitSaving ? (
+                <Spin />
+            ) : (
+                <>
+                    {isLoading ? (
+                        // <div className="!text-center !p-6">
+                        <div className='inline-block shadow-sm  bg-[#FFFFFF] !rounded-md mt-[9rem] w-[100%] py-3'>
+                            {Array(4)
+                                .fill(null)
+                                .map((_, index) => (
+                                    <Skeleton key={index} className='h-4' />
+                                ))}
+                        </div>
+                    ) : (
+                        // </div>
+                        <div className='bg-white mt-[9rem] px-3 py-4 !rounded-md'>
+                            <div className='flex flex-col'>
+                                <label className='text-[13px] mb-2 ml-1 input-label-color'>
+                                    {t('labels:store_limit')}
+                                </label>
+                                <Input
+                                    className='w-[50%]'
+                                    placeholder={t('labels:placeholder_unlimited')}
+                                    // defaultValue={storeSettingData.store_currency["symbol"]}
+                                    value={storeLimitValues.store_limit > 0 ? storeLimitValues.store_limit : ''}
+                                    onChange={(e) => {
+                                        let number = /^[0-9]*$/.test(e.target.value)
+                                        let copyofStoreLimitValue = { ...storeLimitValues }
+                                        // to allow only 10 digits
+                                        if (number && e.target.value.length <= 10) {
+                                            copyofStoreLimitValue.store_limit = e.target.value
+                                            setIsStoreLimitChanged(true)
+                                            setStoreLimitValues(copyofStoreLimitValue)
+                                        } else if (e.target.value === '') {
+                                            // setIsStoreDataLimitChanged(false);
+                                            copyofStoreLimitValue.store_limit = e.target.value
+                                            setStoreLimitValues(copyofStoreLimitValue)
+                                        }
+                                    }}
+                                />
+                            </div>
+                            <div className='mt-[1rem] flex flex-col'>
+                                <label className='text-[13px] mb-2 ml-1 input-label-color'>
+                                    {t('labels:dm_language_limit')}
+                                </label>
+                                <Input
+                                    className='w-[50%]'
+                                    placeholder={t('labels:placeholder_unlimited')}
+                                    // defaultValue={storeSettingData.store_currency["symbol"]}
+                                    value={
+                                        storeLimitValues.dm_language_limit > 0 ? storeLimitValues.dm_language_limit : ''
                                     }
-                                }}
-                            />
-                        </Content>
-                        <Content className='mt-[1rem] flex flex-col'>
-                            <label className='text-[13px] mb-2 ml-1 input-label-color'>
-                                {t('labels:dm_language_limit')}
-                            </label>
-                            <Input
-                                className='w-[50%]'
-                                placeholder={t('labels:placeholder_unlimited')}
-                                // defaultValue={storeSettingData.store_currency["symbol"]}
-                                value={storeLimitValues.dm_language_limit > 0 ? storeLimitValues.dm_language_limit : ''}
-                                onChange={(e) => {
-                                    let number = /^[0-9]*$/.test(e.target.value)
-                                    let copyofStoreLimitValue = { ...storeLimitValues }
-                                    // to allow only 10 digits
-                                    if (number && e.target.value.length <= 10) {
-                                        copyofStoreLimitValue.dm_language_limit = e.target.value
-                                        setIsStoreLimitChanged(true)
-                                        setStoreLimitValues(copyofStoreLimitValue)
-                                    } else if (e.target.value === '') {
-                                        // setIsStoreDataLimitChanged(false);
-                                        copyofStoreLimitValue.dm_language_limit = e.target.value
-                                        setStoreLimitValues(copyofStoreLimitValue)
-                                    }
-                                }}
-                            />
-                        </Content>
-                        <Content className='mt-[1rem] flex flex-col'>
-                            <label className='text-[13px] mb-2 ml-1 input-label-color'>
-                                {t('labels:admin_user_limit')}
-                            </label>
-                            <Input
-                                className='w-[50%]'
-                                placeholder={t('labels:placeholder_unlimited')}
-                                // defaultValue={storeSettingData.store_currency["symbol"]}
-                                value={storeLimitValues.dm_user_limit > 0 ? storeLimitValues.dm_user_limit : ''}
-                                onChange={(e) => {
-                                    let number = /^[0-9]*$/.test(e.target.value)
-                                    let copyofStoreLimitValue = { ...storeLimitValues }
-                                    // to allow only 10 digits
-                                    if (number && e.target.value.length <= 10) {
-                                        copyofStoreLimitValue.dm_user_limit = e.target.value
-                                        setIsStoreLimitChanged(true)
-                                        setStoreLimitValues(copyofStoreLimitValue)
-                                    } else if (e.target.value === '') {
-                                        // setIsStoreDataLimitChanged(false);
-                                        copyofStoreLimitValue.dm_user_limit = e.target.value
-                                        setStoreLimitValues(copyofStoreLimitValue)
-                                    }
-                                }}
-                            />
-                        </Content>
-                        <Content className='mt-4'>
-                            <Row className='gap-2'>
-                                <Col>
+                                    onChange={(e) => {
+                                        let number = /^[0-9]*$/.test(e.target.value)
+                                        let copyofStoreLimitValue = { ...storeLimitValues }
+                                        // to allow only 10 digits
+                                        if (number && e.target.value.length <= 10) {
+                                            copyofStoreLimitValue.dm_language_limit = e.target.value
+                                            setIsStoreLimitChanged(true)
+                                            setStoreLimitValues(copyofStoreLimitValue)
+                                        } else if (e.target.value === '') {
+                                            // setIsStoreDataLimitChanged(false);
+                                            copyofStoreLimitValue.dm_language_limit = e.target.value
+                                            setStoreLimitValues(copyofStoreLimitValue)
+                                        }
+                                    }}
+                                />
+                            </div>
+                            <div className='mt-[1rem] flex flex-col'>
+                                <label className='text-[13px] mb-2 ml-1 input-label-color'>
+                                    {t('labels:admin_user_limit')}
+                                </label>
+                                <Input
+                                    className='w-[50%]'
+                                    placeholder={t('labels:placeholder_unlimited')}
+                                    // defaultValue={storeSettingData.store_currency["symbol"]}
+                                    value={storeLimitValues.dm_user_limit > 0 ? storeLimitValues.dm_user_limit : ''}
+                                    onChange={(e) => {
+                                        let number = /^[0-9]*$/.test(e.target.value)
+                                        let copyofStoreLimitValue = { ...storeLimitValues }
+                                        // to allow only 10 digits
+                                        if (number && e.target.value.length <= 10) {
+                                            copyofStoreLimitValue.dm_user_limit = e.target.value
+                                            setIsStoreLimitChanged(true)
+                                            setStoreLimitValues(copyofStoreLimitValue)
+                                        } else if (e.target.value === '') {
+                                            // setIsStoreDataLimitChanged(false);
+                                            copyofStoreLimitValue.dm_user_limit = e.target.value
+                                            setStoreLimitValues(copyofStoreLimitValue)
+                                        }
+                                    }}
+                                />
+                            </div>
+                            <div className='mt-4'>
+                                <div className=''>
                                     <Button
-                                        className={isStoreLimitChanged ? 'app-btn-primary' : '!opacity-75'}
+                                        // className={isStoreLimitChanged ? 'app-btn-primary' : '!opacity-75'}
+                                        size='sm'
                                         disabled={!isStoreLimitChanged}
                                         onClick={() => {
                                             saveStoreLimit()
                                         }}>
                                         {t('labels:save')}
                                     </Button>
-                                </Col>
-                            </Row>
-                        </Content>
-                    </Content>
-                )}
-            </Spin>
-        </Content>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </>
+            )}
+        </div>
     )
 }
 
