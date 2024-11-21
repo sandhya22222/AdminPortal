@@ -349,14 +349,14 @@ const StoreSettingsLayout = ({ collapsed }) => {
         }
     }, [searchParams, hideActionButton, permissionValue])
 
-    console.log('isDistributor---->', typeof isDistributor)
+    console.log('isDistributor---->', isDistributor)
 
     return (
         <div>
             <HeaderForTitle
                 title={
                     <div className={`flex ${collapsed ? 'w-[105vw]' : 'w-[85vw]'} my-3`}>
-                        <div className='w-[75%] gap-2 !mt-2 flex'>
+                        <div className={`${isDistributor === 'true' ? '!w-[73%]' : '!w-[75%]'} gap-2 !mt-2 flex`}>
                             <div>
                                 <img src={storeDefaultImage} alt='storeDefaultImage' className='aspect-square !mt-2' />
                             </div>
