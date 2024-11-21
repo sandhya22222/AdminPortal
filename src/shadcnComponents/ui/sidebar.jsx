@@ -2,8 +2,8 @@
 import * as React from 'react'
 import { Slot } from '@radix-ui/react-slot'
 import { cva } from 'class-variance-authority'
-import { PanelLeft } from 'lucide-react'
-
+import { Menu } from 'lucide-react'
+import util from '../../util/common'
 import { useIsMobile } from '../../hooks/use-mobile'
 import { cn } from '../../lib/utils'
 import { Button } from './button'
@@ -12,7 +12,7 @@ import { Separator } from './separator'
 import { Sheet, SheetContent } from './sheet'
 import { Skeleton } from './skeleton'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './tooltip'
-import util from '../../util/common'
+
 
 const SIDEBAR_COOKIE_NAME = 'sidebar:state'
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
@@ -36,31 +36,25 @@ const SidebarProvider = React.forwardRef(
     ({ defaultOpen = true, open: openProp, onOpenChange: setOpenProp, className, style, children, ...props }, ref) => {
         const isMobile = useIsMobile()
         const [openMobile, setOpenMobile] = React.useState(false)
-
-        // This is the internal state of the sidebar.
-        // We use openProp and setOpenProp for control from outside the component.
         const [_open, _setOpen] = React.useState(defaultOpen)
         const open = openProp ?? _open
         const setOpen = React.useCallback(
             (value) => {
+                const openState = typeof value === 'function' ? value(open) : value
                 if (setOpenProp) {
-                    return setOpenProp?.(typeof value === 'function' ? value(open) : value)
+                    setOpenProp(openState)
+                } else {
+                    _setOpen(openState)
                 }
-
-                _setOpen(value)
-
-                // This sets the cookie to keep the sidebar state.
-                document.cookie = `${SIDEBAR_COOKIE_NAME}=${open}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`
+                document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`
             },
             [setOpenProp, open]
         )
 
-        // Helper to toggle the sidebar.
         const toggleSidebar = React.useCallback(() => {
             return isMobile ? setOpenMobile((open) => !open) : setOpen((open) => !open)
         }, [isMobile, setOpen, setOpenMobile])
 
-        // Adds a keyboard shortcut to toggle the sidebar.
         React.useEffect(() => {
             const handleKeyDown = (event) => {
                 if (event.key === SIDEBAR_KEYBOARD_SHORTCUT && (event.metaKey || event.ctrlKey)) {
@@ -68,15 +62,11 @@ const SidebarProvider = React.forwardRef(
                     toggleSidebar()
                 }
             }
-
             window.addEventListener('keydown', handleKeyDown)
             return () => window.removeEventListener('keydown', handleKeyDown)
         }, [toggleSidebar])
 
-        // We add a state so that we can do data-state="expanded" or "collapsed".
-        // This makes it easier to style the sidebar with Tailwind classes.
         const state = open ? 'expanded' : 'collapsed'
-
         const contextValue = React.useMemo(
             () => ({
                 state,
@@ -100,7 +90,7 @@ const SidebarProvider = React.forwardRef(
                             ...style,
                         }}
                         className={cn(
-                            'group/sidebar-wrapper flex min-h-svh  has-[[data-variant=inset]]:bg-sidebar ',
+                            'group/sidebar-wrapper flex min-h-svh has-[[data-variant=inset]]:bg-sidebar',
                             className
                         )}
                         ref={ref}
@@ -123,13 +113,13 @@ const Sidebar = React.forwardRef(
         const adjustedSide = languageDirection === 'RTL' ? 'right' : side
 
         // Determine alignment class based on language direction
-        const alignmentClass = languageDirection === 'RTL' ? 'items-start' : 'items-start'
+        const alignmentClass = languageDirection === 'RTL' ? 'items-end' : 'items-start'
 
         if (collapsible === 'none') {
             return (
                 <div
                     className={cn(
-                        `flex h-full w-[--sidebar-width] flex-col bg-sidebar text-sidebar-foreground  ${alignmentClass}`,
+                        'flex h-full w-[--sidebar-width] flex-col bg-white text-sidebar-foreground',
                         className
                     )}
                     ref={ref}
@@ -145,12 +135,13 @@ const Sidebar = React.forwardRef(
                     <SheetContent
                         data-sidebar='sidebar'
                         data-mobile='true'
-                        className={`w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden ${alignmentClass}`}
+                        className='w-[--sidebar-width] bg-white p-0 text-sidebar-foreground [&>button]:hidden'
                         style={{
                             '--sidebar-width': SIDEBAR_WIDTH_MOBILE,
                         }}
-                        side={adjustedSide} // Apply the dynamically adjusted side
-                    >
+                        side={adjustedSide}>
+                        {' '}
+                        {/* Apply the dynamically adjusted side */}
                         <div className={`flex h-full w-full flex-col ${alignmentClass}`}>{children}</div>
                     </SheetContent>
                 </Sheet>
@@ -164,8 +155,10 @@ const Sidebar = React.forwardRef(
                 data-state={state}
                 data-collapsible={state === 'collapsed' ? collapsible : ''}
                 data-variant={variant}
-                data-side={adjustedSide} // Apply the dynamically adjusted side
-            >
+                data-side={adjustedSide}>
+                {' '}
+                {/* Apply the dynamically adjusted side */}
+                {/* This is what handles the sidebar gap on desktop */}
                 <div
                     className={cn(
                         'duration-200 relative h-svh w-[--sidebar-width] bg-transparent transition-[width] ease-linear',
@@ -182,6 +175,7 @@ const Sidebar = React.forwardRef(
                         adjustedSide === 'left'
                             ? 'left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]'
                             : 'right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]',
+                        // Adjust the padding for floating and inset variants.
                         variant === 'floating' || variant === 'inset'
                             ? 'p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4)_+2px)]'
                             : 'group-data-[collapsible=icon]:w-[--sidebar-width-icon] group-data-[side=left]:border-r group-data-[side=right]:border-l',
@@ -190,7 +184,7 @@ const Sidebar = React.forwardRef(
                     {...props}>
                     <div
                         data-sidebar='sidebar'
-                        className={`flex h-full w-full flex-col bg-sidebar group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:shadow ${alignmentClass}`}>
+                        className='flex h-full w-full flex-col bg-white group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:shadow'>
                         {children}
                     </div>
                 </div>
@@ -216,7 +210,7 @@ const SidebarTrigger = React.forwardRef(({ className, onClick, ...props }, ref) 
                 toggleSidebar()
             }}
             {...props}>
-            <PanelLeft />
+            <Menu size={24} />
             <span className='sr-only'>Toggle Sidebar</span>
         </Button>
     )
@@ -235,7 +229,7 @@ const SidebarRail = React.forwardRef(({ className, ...props }, ref) => {
             onClick={toggleSidebar}
             title='Toggle Sidebar'
             className={cn(
-                'absolute inset-y-0 z-20 hidden w-4 -translate-x-1/2 transition-all ease-linear after:absolute after:inset-y-0 after:left-1/2 after:w-[2px] hover:after:bg-sidebar-border group-data-[side=left]:-right-4 group-data-[side=right]:left-0 sm:flex',
+                'absolute inset-y-0 z-20 hidden w-4 -translate-x-1/2 transition-all ease-linear after:absolute after:inset-y-0 after:left-1/2 after:w-[2px] group-data-[side=left]:-right-4 group-data-[side=right]:left-0 sm:flex',
                 '[[data-side=left]_&]:cursor-w-resize [[data-side=right]_&]:cursor-e-resize',
                 '[[data-side=left][data-state=collapsed]_&]:cursor-e-resize [[data-side=right][data-state=collapsed]_&]:cursor-w-resize',
                 'group-data-[collapsible=offcanvas]:translate-x-0 group-data-[collapsible=offcanvas]:after:left-full group-data-[collapsible=offcanvas]:hover:bg-sidebar',
@@ -251,7 +245,7 @@ const SidebarRail = React.forwardRef(({ className, ...props }, ref) => {
                 viewBox='0 0 15 15'
                 fill='none'
                 xmlns='http://www.w3.org/2000/svg'
-                className='h-5 w-5'>
+                className='h-5 w-5 -mt-1 '>
                 <path
                     d='M5.5 4.625C6.12132 4.625 6.625 4.12132 6.625 3.5C6.625 2.87868 6.12132 2.375 5.5 2.375C4.87868 2.375 4.375 2.87868 4.375 3.5C4.375 4.12132 4.87868 4.625 5.5 4.625ZM9.5 4.625C10.1213 4.625 10.625 4.12132 10.625 3.5C10.625 2.87868 10.1213 2.375 9.5 2.375C8.87868 2.375 8.375 2.87868 8.375 3.5C8.375 4.12132 8.87868 4.625 9.5 4.625ZM10.625 7.5C10.625 8.12132 10.1213 8.625 9.5 8.625C8.87868 8.625 8.375 8.12132 8.375 7.5C8.375 6.87868 8.87868 6.375 9.5 6.375C10.1213 6.375 10.625 6.87868 10.625 7.5ZM5.5 8.625C6.12132 8.625 6.625 8.12132 6.625 7.5C6.625 6.87868 6.12132 6.375 5.5 6.375C4.87868 6.375 4.375 6.87868 4.375 7.5C4.375 8.12132 4.87868 8.625 5.5 8.625ZM10.625 11.5C10.625 12.1213 10.1213 12.625 9.5 12.625C8.87868 12.625 8.375 12.1213 8.375 11.5C8.375 10.8787 8.87868 10.375 9.5 10.375C10.1213 10.375 10.625 10.8787 10.625 11.5ZM5.5 12.625C6.12132 12.625 6.625 12.1213 6.625 11.5C6.625 10.8787 6.12132 10.375 5.5 10.375C4.87868 10.375 4.375 10.8787 4.375 11.5C4.375 12.1213 4.87868 12.625 5.5 12.625Z'
                     fill='currentColor'
@@ -323,7 +317,7 @@ const SidebarContent = React.forwardRef(({ className, ...props }, ref) => {
             ref={ref}
             data-sidebar='content'
             className={cn(
-                'flex min-h-0 flex-1 flex-col gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden',
+                'flex min-h-0 flex-1 flex-col gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden ',
                 className
             )}
             {...props}
@@ -531,7 +525,7 @@ const SidebarMenuSub = React.forwardRef(({ className, ...props }, ref) => (
         ref={ref}
         data-sidebar='menu-sub'
         className={cn(
-            'mx-3.5 flex min-w-0 translate-x-px flex-col gap-1 px-2.5 py-0.5',
+            'mx-3.5 flex min-w-0 translate-x-px flex-col gap-1  px-2.5 py-0.5',
             'group-data-[collapsible=icon]:hidden',
             className
         )}
@@ -554,8 +548,8 @@ const SidebarMenuSubButton = React.forwardRef(
                 data-size={size}
                 data-active={isActive}
                 className={cn(
-                    'flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 outline-none',
-                    'disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50',
+                    'flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 text-sidebar-foreground outline-none ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-sidebar-accent-foreground',
+                    'data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground',
                     size === 'sm' && 'text-xs',
                     size === 'md' && 'text-sm',
                     'group-data-[collapsible=icon]:hidden',
