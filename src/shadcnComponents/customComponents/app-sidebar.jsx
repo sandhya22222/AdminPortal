@@ -52,7 +52,7 @@ export const AppSidebar = ({ permissionValue = [], collapsed = false, setCollaps
                     key: '2',
                     icon: <StoresSVG />,
                     title: t('labels:stores'),
-                    path: '/dashboard/store',
+                    path: '/dashboard/store?m_t=1',
                     show_in_menu: true,
                 },
                 {
@@ -105,26 +105,45 @@ export const AppSidebar = ({ permissionValue = [], collapsed = false, setCollaps
     )
 
     React.useEffect(() => {
-        const currentPath = location.pathname
-
-        const findMatchingItem = (items) => {
-            for (const item of items) {
-                if (currentPath === item.path) {
-                    return item.key
-                }
-                if (item.items) {
-                    const subItem = item.items.find((sub) => currentPath === sub.path)
-                    if (subItem) {
-                        setOpenedItem(item.key)
-                        return subItem.key
-                    }
-                }
-            }
-            return '1' // Default to dashboard if no match
+        const currentPath = location.pathname + location.search
+    
+        const isPathMatch = (itemPath, currentPath) => {
+          const [itemPathBase, itemQuery] = itemPath.split('?')
+          const [currentPathBase, currentQuery] = currentPath.split('?')
+    
+          if (itemPathBase !== currentPathBase) return false
+    
+          if (!itemQuery) return true
+    
+          const itemParams = new URLSearchParams(itemQuery)
+          const currentParams = new URLSearchParams(currentQuery)
+    
+          for (const [key, value] of itemParams) {
+            if (currentParams.get(key) !== value) return false
+          }
+    
+          return true
         }
-
+    
+        const findMatchingItem = (items) => {
+          for (const item of items) {
+            if (isPathMatch(item.path, currentPath)) {
+              return item.key
+            }
+            if (item.items) {
+              const subItem = item.items.find((sub) => isPathMatch(sub.path, currentPath))
+              if (subItem) {
+                setOpenedItem(item.key)
+                return subItem.key
+              }
+            }
+          }
+          return '1' // Default to dashboard if no match
+        }
+    
         setSelectedItem(findMatchingItem(data.navMain))
-    }, [location.pathname, data.navMain])
+      }, [location.pathname, location.search])
+    
 
     const handleClick = (key, path, queryParams = {}) => {
         setSelectedItem(key)
@@ -188,7 +207,7 @@ export const AppSidebar = ({ permissionValue = [], collapsed = false, setCollaps
                                                                     <ChevronRight
                                                                         className={cn(
                                                                             `
-        ${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-16' : 'ml-16'}
+        ${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-20' : 'ml-24'}
         `,
                                                                             'h-4 w-4  text-gray-500 transition-transform duration-200',
                                                                             openedItem === item.key ? 'rotate-90' : ''
