@@ -13,7 +13,8 @@ const SelectValue = SelectPrimitive.Value
 const Select = ({ onOpenChange, ...props }) => {
     const handleOpenChange = (open) => {
         if (open) {
-            document.body.style.cssText += 'overflow: auto !important;'
+            document.body.style.cssText += 'overflow: auto !important'
+            document.body.style.cssText += 'margin-right : 0px !important'
         } else {
             document.body.style.overflow = '' // Reset to default or previous value
         }
