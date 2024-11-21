@@ -36,11 +36,11 @@ const MyProfile = () => {
             label: `${t('labels:policies')}`,
             value: 1,
         },
-        {
-            key: USER_PROFILE_TABS_OPTIONS.LOGIN_SESSIONS,
-            label: `${t('profile:logged_in_devices')}`,
-            value: 2,
-        },
+        // {
+        //     key: USER_PROFILE_TABS_OPTIONS.LOGIN_SESSIONS,
+        //     label: `${t('profile:logged_in_devices')}`,
+        //     value: 2,
+        // },
     ]
     const handelMyProfileTabChange = (tabKey) => {
         setSearchParams({
@@ -98,7 +98,7 @@ const MyProfile = () => {
                         {searchParams.get('tab') === USER_PROFILE_TABS_OPTIONS.POLICIES && (
                             <ListPolicies searchParams={searchParams} setSearchParams={setSearchParams} />
                         )}
-                        {searchParams.get('tab') === USER_PROFILE_TABS_OPTIONS.LOGIN_SESSIONS && <LoginSessions />}
+                        {/* {searchParams.get('tab') === USER_PROFILE_TABS_OPTIONS.LOGIN_SESSIONS && <LoginSessions />} */}
                     </div>
                 </div>
             </div>
