@@ -288,7 +288,7 @@ export const AppSidebar = ({ permissionValue = [], collapsed = false, setCollaps
                     fallback={
                         <div className='h-[100vh]'>
                             <div className='grid justify-items-center align-items-center h-full pt-[20%]'>
-                                <Spin text={t('common:please_wait')} />
+                                <Spin text={t('labels:please_wait')} />
                             </div>
                         </div>
                     }>
