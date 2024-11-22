@@ -488,9 +488,9 @@ const Theme = ({ id, getImageData }) => {
                                     </Button>
                                     <Button
                                         variant='outline'
-                                        className='app-btn-secondary flex justify-center items-center'
+                                        className='app-btn-secondary flex gap-2 justify-center items-center'
                                         onClick={() => openModal()}>
-                                        <Eye className='mr-2 w-4 h-4' /> {t('labels:preview')}
+                                        <Eye className='w-4 h-4' /> {t('labels:preview')}
                                     </Button>
                                 </div>
                             </div>

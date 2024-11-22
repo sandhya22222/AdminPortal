@@ -91,7 +91,7 @@ const Stores = () => {
         setSearchValue('')
         setValue(selectedValue)
         setSearchParams({
-            m_t: m_tab_id,
+            m_t: m_tab_id !== null ? m_tab_id : 1,
             tab: selectedValue,
             page: 1,
             limit: parseInt(searchParams.get('limit')) || pageLimit,
@@ -599,7 +599,7 @@ const Stores = () => {
 
     const handlePageNumberChange = (page, pageSize) => {
         setSearchParams({
-            m_t: m_tab_id,
+            m_t: m_tab_id !== null ? m_tab_id : 1,
             tab: tab === null || tab === '' ? '0' : tab,
             page: parseInt(page) ? parseInt(page) : 1,
             limit: parseInt(pageSize) ? parseInt(pageSize) : pageLimit,
