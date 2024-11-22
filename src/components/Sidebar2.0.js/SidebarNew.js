@@ -14,7 +14,6 @@ import util from '../../util/common'
 
 //! Import user defined CSS
 import { useAuth } from 'react-oidc-context'
-import './SidebarNewUpdated.css'
 import { DashboardSVG } from './components/DashboardSVG'
 import { StoresSVG } from './components/StoresSVG'
 import { SettingsSVG } from './components/SettingsSVG'
