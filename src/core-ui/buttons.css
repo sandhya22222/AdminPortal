@@ -100,18 +100,6 @@
     color: var(--mp-secondary-text-color-h) !important;
     height: unset !important;
 }
-
-.ant-btn.ant-btn-sm {
-    border-radius: 4px;
-    font-size: 14px;
-    height: 24px;
-}
-.ant-btn.ant-btn-sm:hover {
-    border-radius: 4px;
-    font-size: 14px;
-    height: 24px;
-}
-
 .app-btn-icon {
     align-items: center !important;
     color: var(--mp-primary-color) !important;

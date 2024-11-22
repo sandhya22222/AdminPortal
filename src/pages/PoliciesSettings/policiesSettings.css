@@ -3,14 +3,6 @@
     overflow: auto !important;
 }
 
-.policy-tag .ant-tag-close-icon {
-    color: #00000073 !important; /* Change the color of the close icon */
-}
-
-.policy-tab .ant-tabs-nav-list {
-    height: 520px !important;
-}
-
 .custom-editor-container .ql-editor {
     border: none !important;
     box-shadow: none !important;
