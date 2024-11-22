@@ -41,11 +41,8 @@ const AddStores = ({
     const [isOpenModalForMakingDistributor, setIsOpenModalForMakingDistributor] = useState(false)
 
     const handleStoreTypeChange = (val) => {
-        if (storeType === 'partner') {
-            setIsOpenModalForMakingDistributor(true)
-        } else {
-            setStoreType(val)
-        }
+        console.log('Selected store type:', val)
+        setStoreType(val)
     }
 
     return (
@@ -118,11 +115,7 @@ const AddStores = ({
                 <Toggle
                     pressed={storeType === 'partner'}
                     onPressedChange={() => handleStoreTypeChange('partner')}
-                    className={`${isDistributor ? 'opacity-50 cursor-not-allowed' : ''} ${
-                        storeType === 'partner'
-                            ? 'border-2 border-primary text-primary'
-                            : 'border border-gray-300 text-gray-700 hover:border-gray-400'
-                    } transition-all`}
+                    className={`${isDistributor ? 'opacity-50 cursor-not-allowed' : ''} ${storeType === 'partner' ? 'border-2 border-primary text-primary' : 'border border-gray-300 text-gray-700 hover:border-gray-400'} transition-all`}
                     disabled={isDistributor}>
                     {t('labels:partner')}
                 </Toggle>
@@ -130,11 +123,8 @@ const AddStores = ({
                 <Toggle
                     pressed={storeType === 'distributor'}
                     onPressedChange={() => handleStoreTypeChange('distributor')}
-                    className={`${isDistributor ? 'opacity-50 cursor-not-allowed' : ''} ${
-                        storeType === 'distributor'
-                            ? 'border-2 border-primary text-primary'
-                            : 'border border-gray-300 text-gray-700 hover:border-gray-400'
-                    } transition-all`}
+                    className={`${storeType === 'distributor' ? 'border-2 border-primary text-primary cursor' : 'border border-gray-300 text-gray-700 hover:border-gray-400'} 
+                ${isDistributor ? 'opacity-50 cursor-not-allowed' : ''} transition-all`}
                     disabled={isDistributor}>
                     {t('labels:distributor')}
                 </Toggle>
