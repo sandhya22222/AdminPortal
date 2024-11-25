@@ -1,6 +1,8 @@
 import { useMutation } from '@tanstack/react-query'
 import MarketplaceServices from '../../../services/axios/MarketplaceServices'
-const versionUrl = process.env.REACT_APP_USER_CONSENT_VERSION
+import API_ENDPOINTS from '../../../services/API/apis'
+
+const versionUrl = API_ENDPOINTS.REACT_APP_USER_CONSENT_VERSION
 
 const useCreateVersion = () => {
     const createUserConsent = async ({ body }) => {

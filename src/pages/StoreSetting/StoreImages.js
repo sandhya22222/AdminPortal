@@ -8,10 +8,12 @@ import { TiDelete } from 'react-icons/ti'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import util from '../../util/common'
+import API_ENDPOINTS from '../../services/API/apis'
+
 import CustomImageUpload from '../../components/UploadImageLayout/CustomImageUpload'
 import { MdRemoveRedEye } from 'react-icons/md'
 import { Alert, AlertDescription } from '../../shadcnComponents/ui/alert'
-const storeDeleteImagesAPI = process.env.REACT_APP_STORE_DELETE_IMAGES_API
+const storeDeleteImagesAPI = API_ENDPOINTS.REACT_APP_STORE_DELETE_IMAGES_API
 const baseURL = process.env.REACT_APP_BASE_URL
 const BannerImagesUploadLength = process.env.REACT_APP_BANNER_IMAGES_MAX_LENGTH
 

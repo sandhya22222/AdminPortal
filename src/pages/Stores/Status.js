@@ -6,7 +6,9 @@ import StoreModal from '../../components/storeModal/StoreModal'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import { storeActiveConfirmationImage } from '../../constants/media'
-const storeEditStatusAPI = process.env.REACT_APP_STORE_STATUS_API
+import API_ENDPOINTS from '../../services/API/apis'
+
+const storeEditStatusAPI = API_ENDPOINTS.REACT_APP_STORE_STATUS_API
 
 function Status({
     storeId,
@@ -131,7 +133,6 @@ function Status({
                 console.log('Error from the status response ===>', error)
             })
     }
-    
 
     const onChange = (checked) => {
         setChangeSwitchStatus(checked)

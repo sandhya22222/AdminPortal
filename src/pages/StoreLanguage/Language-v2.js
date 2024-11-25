@@ -25,11 +25,12 @@ import ShadCNDataTable from '../../shadcnComponents/customComponents/ShadCNDataT
 import ShadCNPagination from '../../shadcnComponents/customComponents/ShadCNPagination'
 import Ellipsis from '../../shadcnComponents/customComponents/Ellipsis'
 import HeaderForTitle from '../../components/header/HeaderForTitle'
+import API_ENDPOINTS from '../../services/API/apis'
 
-const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API
+const languageAPI = API_ENDPOINTS.REACT_APP_STORE_LANGUAGE_API
 const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE)
-const LanguageDownloadAPI = process.env.REACT_APP_DOWNLOAD_LANGUAGE_TRANSLATION_CSV
-const downloadBackendKeysAPI = process.env.REACT_APP_DOWNLOAD_ADMIN_BACKEND_MESSAGE_DETAILS
+const LanguageDownloadAPI = API_ENDPOINTS.REACT_APP_DOWNLOAD_LANGUAGE_TRANSLATION_CSV
+const downloadBackendKeysAPI = API_ENDPOINTS.REACT_APP_DOWNLOAD_ADMIN_BACKEND_MESSAGE_DETAILS
 
 const Language = ({ collapsed }) => {
     const { t } = useTranslation()

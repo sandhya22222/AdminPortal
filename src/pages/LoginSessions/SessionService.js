@@ -1,5 +1,7 @@
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
-const SESSION_API = process.env.REACT_APP_SESSION_API
+import API_ENDPOINTS from '../../services/API/apis'
+const SESSION_API = API_ENDPOINTS.REACT_APP_SESSION_API
+
 const fetchData = async (api, params) => {
     try {
         const res = await MarketplaceServices.findAllWithoutPage(api, params)

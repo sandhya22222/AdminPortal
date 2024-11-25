@@ -17,8 +17,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import StoreModal from '../../../components/storeModal/StoreModal'
 import { Input } from '../../../shadcnComponents/ui/input'
 import { Textarea } from '../../../shadcnComponents/ui/textarea'
-
-const leadlineDisplayNameAPI = process.env.REACT_APP_LEADLINE_DISPLAYNAME
+import API_ENDPOINTS from '../../../services/API/apis'
+const leadlineDisplayNameAPI = API_ENDPOINTS.REACT_APP_LEADLINE_DISPLAYNAME
 
 // ! input fields properties
 const titleMaxLength = process.env.REACT_APP_TITLE_MAX_LENGTH

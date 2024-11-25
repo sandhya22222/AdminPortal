@@ -18,12 +18,13 @@ import { usePageTitle } from '../../hooks/usePageTitle'
 import { Star } from 'lucide-react'
 import { Badge } from '../../shadcnComponents/ui/badge'
 import { ShadCNTabs, ShadCNTabsTrigger, ShadCNTabsContent } from '../../shadcnComponents/customComponents/ShadCNTabs'
+import API_ENDPOINTS from '../../services/API/apis'
 
 import Spin from '../../shadcnComponents/customComponents/Spin'
 import { Button } from '../../shadcnComponents/ui/button'
-const storeAPI = process.env.REACT_APP_STORE_API
-const storeImagesAPI = process.env.REACT_APP_STORE_IMAGES_API
-const storeBannerImageAPI = process.env.REACT_APP_STORE_BANNER_IMAGES_API
+const storeAPI = API_ENDPOINTS.REACT_APP_STORE_API
+const storeImagesAPI = API_ENDPOINTS.REACT_APP_STORE_IMAGES_API
+const storeBannerImageAPI = API_ENDPOINTS.REACT_APP_STORE_BANNER_IMAGES_API
 const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE)
 
 const StoreSettingsLayout = ({ collapsed }) => {

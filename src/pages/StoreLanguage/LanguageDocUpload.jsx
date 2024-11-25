@@ -11,13 +11,14 @@ import { DownloadIconSVG } from './DownloadIconSVG'
 import { codeJsonIcon, tableIcon } from '../../constants/media'
 import StoreModal from '../../components/storeModal/StoreModal'
 import Spin from '../../shadcnComponents/customComponents/Spin'
+import API_ENDPOINTS from '../../services/API/apis'
 
-const storeLanguageKeysUploadAPI = process.env.REACT_APP_UPLOAD_LANGUAGE_TRANSLATION_CSV
-const LanguageDownloadApiCsv = process.env.REACT_APP_DOWNLOAD_LANGUAGE_TRANSLATION_CSV
-const LanguageDownloadApiZip = process.env.REACT_APP_DOWNLOAD_LANGUAGE_TRANSLATION_ZIP
-const AdminBackendKeyUploadAPI = process.env.REACT_APP_UPLOAD_ADMIN_BACKEND_MESSAGE_DETAILS
-const downloadBackendKeysAPI = process.env.REACT_APP_DOWNLOAD_ADMIN_BACKEND_MESSAGE_DETAILS
-const LanguageDownloadAPI = process.env.REACT_APP_DOWNLOAD_LANGUAGE_TRANSLATION_CSV
+const storeLanguageKeysUploadAPI = API_ENDPOINTS.REACT_APP_UPLOAD_LANGUAGE_TRANSLATION_CSV
+const LanguageDownloadApiCsv = API_ENDPOINTS.REACT_APP_DOWNLOAD_LANGUAGE_TRANSLATION_CSV
+const LanguageDownloadApiZip = API_ENDPOINTS.REACT_APP_DOWNLOAD_LANGUAGE_TRANSLATION_ZIP
+const AdminBackendKeyUploadAPI = API_ENDPOINTS.REACT_APP_UPLOAD_ADMIN_BACKEND_MESSAGE_DETAILS
+const downloadBackendKeysAPI = API_ENDPOINTS.REACT_APP_DOWNLOAD_ADMIN_BACKEND_MESSAGE_DETAILS
+const LanguageDownloadAPI = API_ENDPOINTS.REACT_APP_DOWNLOAD_LANGUAGE_TRANSLATION_CSV
 
 export default function LanguageDocUpload({ langCode }) {
     const [chooseDownloadModalVisible, setChooseDownloadModalVisible] = useState(false)

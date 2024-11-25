@@ -9,7 +9,8 @@ import { Input } from '../../shadcnComponents/ui/input'
 import { useEffect } from 'react'
 import Spin from '../../shadcnComponents/customComponents/Spin'
 import { Skeleton } from '../../shadcnComponents/ui/skeleton'
-const storeLimitApi = process.env.REACT_APP_STORE_PLATFORM_LIMIT_API
+import API_ENDPOINTS from '../../services/API/apis'
+const storeLimitApi = API_ENDPOINTS.REACT_APP_STORE_PLATFORM_LIMIT_API
 
 function StoreLimitComponent() {
     const [isStoreLimitChanged, setIsStoreLimitChanged] = useState(false)

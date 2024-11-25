@@ -10,8 +10,9 @@ import ProfileImage from './ProfileImage'
 import { Button } from '../../shadcnComponents/ui/button'
 import ChangePassword from './ChangePassword'
 import { Skeleton } from '../../shadcnComponents/ui/skeleton'
+import API_ENDPOINTS from '../../services/API/apis'
 
-const storeUsersAPI = process.env.REACT_APP_USERS_API
+const storeUsersAPI = API_ENDPOINTS.REACT_APP_USERS_API
 
 const UserProfile = () => {
     const { t } = useTranslation()

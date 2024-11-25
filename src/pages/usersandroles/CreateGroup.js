@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import util from '../../util/common'
+import API_ENDPOINTS from '../../services/API/apis'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import { Button } from '../../shadcnComponents/ui/button'
 import { Input } from '../../shadcnComponents/ui/input'
 import Spin from '../../shadcnComponents/customComponents/Spin'
-const groupsAPI = process.env.REACT_APP_GROUPS_API
+const groupsAPI = API_ENDPOINTS.REACT_APP_GROUPS_API
 
 const CreateGroup = ({ groupNameProps, setShowGroupModal }) => {
     const { t } = useTranslation()

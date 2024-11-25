@@ -14,12 +14,13 @@ import { Tabs, TabsList, TabsTrigger } from '../../shadcnComponents/ui/tabs'
 import { Card, CardContent, CardHeader, CardTitle } from '../../shadcnComponents/ui/card'
 import { Loader2 } from 'lucide-react'
 import { Separator } from '@radix-ui/react-dropdown-menu'
+import API_ENDPOINTS from '../../services/API/apis'
 
 const titleMinLength = process.env.REACT_APP_TITLE_MIN_LENGTH
 const titleMaxLength = process.env.REACT_APP_TITLE_MAX_LENGTH
 const languageCodeMinLength = process.env.REACT_APP_LANGUAGE_CODE_MIN_LENGTH
 const languageCodeMaxLength = process.env.REACT_APP_LANGUAGE_CODE_MAX_LENGTH
-const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API
+const languageAPI = API_ENDPOINTS.REACT_APP_STORE_LANGUAGE_API
 
 const LanguageForm = ({
     languageCode,

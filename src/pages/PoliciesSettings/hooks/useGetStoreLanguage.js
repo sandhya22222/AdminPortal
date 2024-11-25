@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import MarketplaceServices from '../../../services/axios/MarketplaceServices'
-const StoreLanguageUri = process.env.REACT_APP_STORE_LANGUAGE
+import API_ENDPOINTS from '../../../services/API/apis'
+
+const StoreLanguageUri = API_ENDPOINTS.REACT_APP_STORE_LANGUAGE
 
 const useGetStoreLanguage = ({ storeUUID }) => {
     const getUserConsentVersionDisplayNames = async () => {
