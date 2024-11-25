@@ -1,15 +1,51 @@
-import { useQuery } from '@tanstack/react-query'
 import React, { createContext, useContext } from 'react'
-import { fetchSessions } from './SessionService'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { fetchSessions, requestOtp, sendOtpRequest } from './SessionService'
+import MarketplaceToaster from '../../util/marketplaceToaster'
+import util from '../../util/common'
 
 const SessionsContext = createContext()
 
 export const SessionsProvider = ({ children }) => {
-    const { data, isLoading, isFetching, error, isError } = useQuery({
+    const { data, refetch, isLoading, isFetching, error, isError } = useQuery({
         queryKey: ['Sessions'],
         queryFn: () => fetchSessions(),
         staleTime: 0,
         cacheTime: 0,
+    })
+    const {
+        mutate: sendOtp,
+        isLoading: otpLoading,
+        isError: otpError,
+        error: otpErrorMessage,
+    } = useMutation({
+        mutationFn: requestOtp,
+        onSuccess: (data) => {
+            console.log('OTP sent successfully:', data)
+        },
+        onError: (error) => {
+            console.error('OTP request failed:', error.message)
+        },
+    })
+    const {
+        mutate: submitOtp,
+        isLoading: otpConfirmLoading,
+        isError: otpConfirmError,
+        error: otpConfirmErrorMessage,
+    } = useMutation({
+        mutationFn: sendOtpRequest,
+        onSuccess: (data) => {
+            console.log('OTP sent successfully:', data)
+            const message = 'Session has been removed successfully'
+
+            MarketplaceToaster.showToast(util.getToastObject(message, 'success'))
+        },
+        onError: (error) => {
+            console.error('OTP request failed:', error.message)
+            const message = 'Enter a valid otp'
+
+            MarketplaceToaster.showToast(util.getToastObject(message, 'error'))
+        },
     })
     const values = {
         data,
@@ -17,6 +53,15 @@ export const SessionsProvider = ({ children }) => {
         isFetching,
         error,
         isError,
+        sendOtp,
+        refetch,
+        otpLoading,
+        otpError,
+        otpErrorMessage,
+        submitOtp,
+        otpConfirmError,
+        otpConfirmErrorMessage,
+        otpConfirmLoading,
     }
     return <SessionsContext.Provider value={values}>{children}</SessionsContext.Provider>
 }
