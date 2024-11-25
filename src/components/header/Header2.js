@@ -228,7 +228,7 @@ const Header2 = ({ setIsLanguageSelected }) => {
                                                 <DropdownMenuItem
                                                     key={item.key}
                                                     onClick={() => handleMenuClick(item)}
-                                                    className='whitespace-nowrap cursor-pointer gap-2 hover:bg-dangerColor hover:text-white text-dangerColor'>
+                                                    className='whitespace-nowrap cursor-pointer gap-2 hover:bg-dangerColor hover:text-white text-dangerColor '>
                                                     {item.icon} {item.label}
                                                 </DropdownMenuItem>
                                             ))}
