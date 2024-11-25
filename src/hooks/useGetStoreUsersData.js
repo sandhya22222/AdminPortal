@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import MarketplaceServices from '../services/axios/MarketplaceServices'
-const BASE_URL = process.env.REACT_APP_USERS_API
+import API_ENDPOINTS from '../services/API/apis'
+const BASE_URL = API_ENDPOINTS.REACT_APP_USERS_API
 
 const useGetStoreUserData = () => {
     const getStoreUsersData = async () => {

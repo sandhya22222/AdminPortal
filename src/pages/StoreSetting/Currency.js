@@ -11,10 +11,11 @@ import { Button } from '../../shadcnComponents/ui/button'
 import { Alert, AlertDescription } from '../../shadcnComponents/ui/alert'
 import { Skeleton } from '../../shadcnComponents/ui/skeleton'
 import { MdInfo } from 'react-icons/md'
+import API_ENDPOINTS from '../../services/API/apis'
 
-const storeCurrencyAPI = process.env.REACT_APP_STORE_CURRENCY_API
-const currencyAPI = process.env.REACT_APP_CHANGE_CURRENCY_API
-const storeSettingAPI = process.env.REACT_APP_STORE_FRONT_SETTINGS_API
+const storeCurrencyAPI = API_ENDPOINTS.REACT_APP_STORE_CURRENCY_API
+const currencyAPI = API_ENDPOINTS.REACT_APP_CHANGE_CURRENCY_API
+const storeSettingAPI = API_ENDPOINTS.REACT_APP_STORE_FRONT_SETTINGS_API
 
 const Currency = ({ storeUUId }) => {
     const { t } = useTranslation()

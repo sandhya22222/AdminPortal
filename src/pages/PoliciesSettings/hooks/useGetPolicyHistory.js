@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import MarketplaceServices from '../../../services/axios/MarketplaceServices'
 import useGetUserConsent from './useGetUserConsent'
+import API_ENDPOINTS from '../../../services/API/apis'
 
-const VERSION_DETAILS_URL = process.env.REACT_APP_USER_CONSENT_DETAILS
+const VERSION_DETAILS_URL = API_ENDPOINTS.REACT_APP_USER_CONSENT_DETAILS
 
 const useGetPolicyHistory = ({ storeId }) => {
     const [isFetching, setIsFetching] = useState(false)

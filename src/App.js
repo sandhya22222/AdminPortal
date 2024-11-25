@@ -14,7 +14,7 @@ import util from './util/common'
 import NewFooter from './components/footer/Footer' // Import your footer
 import Header2 from './components/header/Header2'
 import Home from './pages/home/Home'
-
+import API_ENDPOINTS from './services/API/apis'
 // Lazy load components
 const NewDashboard = lazyWithRetry(() => import('./pages/NewDashboard/Newdashboard'))
 const Store = lazyWithRetry(() => import('./pages/Stores/Store'))
@@ -35,7 +35,7 @@ const PlatformAdmin = lazyWithRetry(() => import('./pages/adminPlatform/Platform
 
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL
 
-const getPermissionsUrl = process.env.REACT_APP_USER_PROFILE_API
+const getPermissionsUrl = API_ENDPOINTS.REACT_APP_USER_PROFILE_API
 const umsBaseUrl = process.env.REACT_APP_USM_BASE_URL
 
 // Layout component for the dashboard
@@ -71,7 +71,7 @@ const App = () => {
             util.removeIsAuthorized()
         }
     }, [auth])
- 
+
     // Loading states
     if (auth.activeNavigator === 'signinSilent') return <div />
     if (auth.activeNavigator === 'signoutRedirect') return null

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import util from '../../util/common'
+import API_ENDPOINTS from '../../services/API/apis'
 
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import MarketplaceToaster from '../../util/marketplaceToaster'
@@ -10,9 +11,9 @@ import { Skeleton } from '../../shadcnComponents/ui/skeleton'
 import { Button } from '../../shadcnComponents/ui/button'
 import { Tabs, TabsTrigger, TabsList } from '../../shadcnComponents/ui/tabs'
 import Spin from '../../shadcnComponents/customComponents/Spin'
-const usersAllAPI = process.env.REACT_APP_USERS_ALL_API
+const usersAllAPI = API_ENDPOINTS.REACT_APP_USERS_ALL_API
 
-const updateStoreDistributorAPI = process.env.REACT_APP_UPDATE_STORE_DISTRIBUTOR
+const updateStoreDistributorAPI = API_ENDPOINTS.REACT_APP_UPDATE_STORE_DISTRIBUTOR
 const domainName = process.env.REACT_APP_DOMAIN_NAME
 
 const StoreOverview = ({ realmName }) => {

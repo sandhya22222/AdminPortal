@@ -11,9 +11,10 @@ import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import { fnStoreLanguage, fnSelectedLanguage } from '../../services/redux/actions/ActionStoreLanguage'
 import util from '../../util/common'
+import API_ENDPOINTS from '../../services/API/apis'
 
-const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API
-const languageEditStatusAPI = process.env.REACT_APP_STORE_LANGUAGE_STATUS_API
+const languageAPI = API_ENDPOINTS.REACT_APP_STORE_LANGUAGE_API
+const languageEditStatusAPI = API_ENDPOINTS.REACT_APP_STORE_LANGUAGE_STATUS_API
 
 export default function LanguageHeaderAction({
     languageId,

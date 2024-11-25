@@ -28,10 +28,10 @@ import {
     DropdownMenuItem,
 } from '../../shadcnComponents/ui/dropdownMenu'
 import { Avatar, AvatarImage, AvatarFallback } from '../../shadcnComponents/ui/avatar'
-
+import API_ENDPOINTS from '../../services/API/apis'
 const multilingualFunctionalityEnabled = process.env.REACT_APP_IS_MULTILINGUAL_ENABLED
-const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API
-const storeUsersAPI = process.env.REACT_APP_USERS_API
+const languageAPI = API_ENDPOINTS.REACT_APP_STORE_LANGUAGE_API
+const storeUsersAPI = API_ENDPOINTS.REACT_APP_USERS_API
 const portalInfo = JSON.parse(process.env.REACT_APP_PORTAL_INFO)
 
 const Header2 = ({ setIsLanguageSelected }) => {

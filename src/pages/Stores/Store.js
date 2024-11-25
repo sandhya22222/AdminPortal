@@ -30,9 +30,10 @@ import { ShadCNTabs, ShadCNTabsTrigger } from '../../shadcnComponents/customComp
 import { Skeleton } from '../../shadcnComponents/ui/skeleton'
 import Spin from '../../shadcnComponents/customComponents/Spin'
 import ThresholdConfiguration from './ThresholdConfiguration'
+import API_ENDPOINTS from '../../services/API/apis'
 
 //! Get all required details from .env file
-const storeAPI = process.env.REACT_APP_STORE_API
+const storeAPI = API_ENDPOINTS.REACT_APP_STORE_API
 const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE)
 
 const emailRegexPattern = process.env.REACT_APP_REGEX_PATTERN_EMAIL

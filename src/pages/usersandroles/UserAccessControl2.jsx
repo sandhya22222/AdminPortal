@@ -26,13 +26,14 @@ import {
     ShadCNTabsTrigger,
     ShadCNTabsContent,
 } from '../../../src/shadcnComponents/customComponents/ShadCNTabs'
+import API_ENDPOINTS from '../../services/API/apis'
 
 const itemsPerPageFromEnv = process.env.REACT_APP_ITEM_PER_PAGE
-const groupsAPI = process.env.REACT_APP_GROUPS_API
-const usersAllAPI = process.env.REACT_APP_USERS_ALL_API
-const userAPI = process.env.REACT_APP_USERS_API
-const updateUserStatusAPI = process.env.REACT_APP_USER_STATUS_API
-const currentUserDetailsAPI = process.env.REACT_APP_USER_PROFILE_API
+const groupsAPI = API_ENDPOINTS.REACT_APP_GROUPS_API
+const usersAllAPI = API_ENDPOINTS.REACT_APP_USERS_ALL_API
+const userAPI = API_ENDPOINTS.REACT_APP_USERS_API
+const updateUserStatusAPI = API_ENDPOINTS.REACT_APP_USER_STATUS_API
+const currentUserDetailsAPI = API_ENDPOINTS.REACT_APP_USER_PROFILE_API
 
 export default function UserAccessControl() {
     const { t } = useTranslation()

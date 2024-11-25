@@ -14,13 +14,14 @@ import ShadCNDataTable from '../../shadcnComponents/customComponents/ShadCNDataT
 import { Skeleton } from '../../shadcnComponents/ui/skeleton'
 import { Button } from '../../shadcnComponents/ui/button'
 import Spin from '../../shadcnComponents/customComponents/Spin'
+import API_ENDPOINTS from '../../services/API/apis'
 
-const dm4sightDataLimitAnalysisDetailsCountAPI = process.env.REACT_APP_4SIGHT_GET_DATA_ANALYSISDETAIL_API
+const dm4sightDataLimitAnalysisDetailsCountAPI = API_ENDPOINTS.REACT_APP_4SIGHT_GET_DATA_ANALYSISDETAIL_API
 const dm4sightClientID = process.env.REACT_APP_4SIGHT_CLIENT_ID
 const dm4sightBaseURL = process.env.REACT_APP_4SIGHT_BASE_URL
 const maxDataLimit = process.env.REACT_APP_MAX_DATA_LIMIT
-const storeLimitAPI = process.env.REACT_APP_STORE_LIMIT
-const storePlatformAPI = process.env.REACT_APP_STORE_PLATFORM_LIMIT_API
+const storeLimitAPI = API_ENDPOINTS.REACT_APP_STORE_LIMIT
+const storePlatformAPI = API_ENDPOINTS.REACT_APP_STORE_PLATFORM_LIMIT_API
 
 const StoreRestrictions = ({ hideActionButton, storeIdFromUrl }) => {
     const { t } = useTranslation()

@@ -1,6 +1,8 @@
 import { useMutation } from '@tanstack/react-query'
 import MarketplaceServices from '../../../services/axios/MarketplaceServices'
-const userConsentUpdateUrl = process.env.REACT_APP_USER_CONSENT_UPDATE
+import API_ENDPOINTS from '../../../services/API/apis'
+
+const userConsentUpdateUrl = API_ENDPOINTS.REACT_APP_USER_CONSENT_UPDATE
 
 const usePublishUserConsent = () => {
     const publishUserConsent = async ({ userConsentVersionId, body }) => {
