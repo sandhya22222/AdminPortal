@@ -1,30 +1,109 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Separator } from '../../shadcnComponents/ui/separator'
 import { Button } from '../../shadcnComponents/ui/button'
-import { Badge } from '../../shadcnComponents/ui/badge'
-import { Smartphone, LaptopIcon, Monitor, Tablet } from 'lucide-react'
 import { Alert, AlertTitle, AlertDescription } from '../../shadcnComponents/ui/alert'
 import StoreModal from '../../components/storeModal/StoreModal'
 import './LoginSessions.css'
 import { useSession } from './useSession'
 import { Skeleton } from '../../shadcnComponents/ui/skeleton'
 import { XCircle } from 'lucide-react'
-import util from '../../util/common'
-
+import { Check } from 'lucide-react'
+import { X } from 'lucide-react'
+import { InputOTP, InputOTPGroup, InputOTPSlot } from '../../shadcnComponents/ui/input-otp'
+import Spin from '../../shadcnComponents/customComponents/Spin'
+import ListSession from './ListSession'
 const SessionsDisplay = () => {
+    const resendSeconds = 30
     const { t } = useTranslation()
     const [openRemoveHandler, setOpenRemoveHandler] = useState(false)
-    const { data: sessions, isError, error, isLoading } = useSession()
-    console.log(sessions)
+    const [openOtpHandler, setOpenOtpHandler] = useState(false)
+    const [seconds, setSeconds] = useState(resendSeconds)
+    const [sessionId, setSessionId] = useState(null)
+    const [resendMessage, setResendMessage] = useState('')
+    const [resendingOtp, setResendingOtp] = useState(false)
+    const {
+        data: sessions,
+        isError,
+        error,
+        isLoading,
+        sendOtp,
+        otpLoading,
+        submitOtp,
+        otpConfirmLoading,
+        refetch,
+    } = useSession()
+    useEffect(() => {
+        if (seconds <= 0) {
+            return
+        }
+        const interval = setInterval(() => {
+            setSeconds((prev) => prev - 1)
+        }, 1000)
+        return () => clearInterval(interval)
+    }, [seconds])
+    const [otp, setOtp] = useState('')
+    const [errorMessage, setErrorMessage] = useState('')
+
+    const handleOtpChange = (newOtp) => {
+        setOtp(newOtp)
+        setErrorMessage('')
+        setResendMessage('')
+    }
+    async function submitHandler() {
+        try {
+            setErrorMessage('')
+            setResendMessage('')
+
+            await submitOtp(
+                { sessionId, otp },
+                {
+                    onSuccess: () => {
+                        setErrorMessage('')
+                        setResendMessage('')
+                        setOpenOtpHandler(false)
+                        refetch()
+                    },
+                    onError: () => {
+                        setErrorMessage(t('profile:invalid_otp'))
+                        setResendMessage('')
+                    },
+                }
+            )
+        } catch (err) {
+            setErrorMessage(t('profile:unexpected_error'))
+        }
+    }
+
+    async function resendHandler() {
+        try {
+            setErrorMessage('')
+            setResendMessage('')
+            setResendingOtp(true)
+            await sendOtp(sessionId, {
+                onSuccess: () => {
+                    setResendMessage(t('profile:otp_sent'))
+                    setResendingOtp(false)
+                },
+                onError: () => {
+                    setErrorMessage(t('profile:resend_failed'))
+                    setResendingOtp(false)
+                },
+            })
+        } catch (err) {
+            console.error(t('profile:unexpected_resend_error'), err)
+            setErrorMessage(t('profile:unexpected_error'))
+        }
+    }
+
     if (isError) {
-        const errorMessage = error?.message || 'Something went wrong. Please try again.' // Extract the error message or use a default
+        const errorMessage = error?.message || t('profile:something_went_wrong')
 
         return (
             <Alert variant='destructive' className='mt-4'>
                 <XCircle className='h-5 w-5 text-red-600' />
                 <div className='flex flex-col ml-2'>
-                    <AlertTitle className='text-red-600'>Error</AlertTitle>
+                    <AlertTitle className='text-red-600'>{t('profile:error')}</AlertTitle>
                     <AlertDescription>{errorMessage}</AlertDescription>
                 </div>
             </Alert>
@@ -33,7 +112,7 @@ const SessionsDisplay = () => {
 
     if (isLoading || sessions == null || sessions == undefined) {
         return (
-            <div className='flex flex-col gap-2 space-y-1'>
+            <div className='flex flex-col gap-2 space-y-1 mt-5'>
                 <Skeleton className='w-full h-6 ' />
                 <Skeleton className='w-full h-6 ' />
                 <Skeleton className='w-full h-6 ' />
@@ -41,153 +120,13 @@ const SessionsDisplay = () => {
             </div>
         )
     }
-    // Helper to transform and sort session data
-    const groupSessionsByDeviceType = (sessions) => {
-        const groupedDevices = {
-            'Phones and tablets': [],
-            'Desktops and laptops': [],
-            'Other Devices': [],
-        }
-
-        sessions?.forEach((session) => {
-            const isMobileOrTablet = session.mobile
-            let deviceType = isMobileOrTablet ? 'Phones and tablets' : 'Desktops and laptops'
-            deviceType = session.os === 'Other' ? 'Other Devices' : deviceType
-            session?.sessions.forEach((deviceSession) => {
-                const name = `${deviceSession.browser} (${session.os} ${session.osVersion}) - ${session.device}`
-
-                groupedDevices[deviceType].push({
-                    name: name,
-                    location: deviceSession.location,
-                    lastLogged: new Date(deviceSession.lastAccess * 1000).toLocaleString(),
-                    isCurrentSession: deviceSession?.current || false,
-                    deviceType: deviceType === 'Phones and tablets' ? 'smartphone' : 'laptop',
-                })
-            })
-        })
-
-        // Sort devices in each category by current session
-        Object.keys(groupedDevices).forEach((category) => {
-            groupedDevices[category] = groupedDevices[category]?.sort((a, b) => b.isCurrentSession - a.isCurrentSession)
-        })
-
-        return groupedDevices
-    }
-
-    const prioritizeCurrentSessionCategory = (groupedDevices) => {
-        const categoryOrder = Object.keys(groupedDevices).sort((a, b) => {
-            const aHasCurrentSession = groupedDevices[a]?.some((device) => device.isCurrentSession)
-            const bHasCurrentSession = groupedDevices[b]?.some((device) => device.isCurrentSession)
-            return bHasCurrentSession - aHasCurrentSession // Prioritize category with current session
-        })
-
-        return categoryOrder?.map((category) => ({ name: category, devices: groupedDevices[category] }))
-    }
-
-    const groupedDevices = sessions && groupSessionsByDeviceType(sessions || [])
-    const prioritizedCategories = sessions && prioritizeCurrentSessionCategory(groupedDevices)
-    const direction = util.getSelectedLanguageDirection().toUpperCase()
-    // Helper to return the appropriate icon
-    const getDeviceIcon = (deviceType) => {
-        switch (deviceType) {
-            case 'smartphone':
-                return <Smartphone className='h-8 w-8' />
-            case 'tablet':
-                return <Tablet className='h-8 w-8' />
-            case 'laptop':
-                return <LaptopIcon className='h-8 w-8' />
-            case 'computer':
-                return <Monitor className='h-8 w-8' />
-            default:
-                return <Smartphone className='h-8 w-8' />
-        }
-    }
-
     return (
-        <div className='h-[100vh] overflow-auto bg-white border m-5 rounded-lg  custom-scrollbar'>
+        <div className='h-[100vh] overflow-auto bg-white border mx-5  rounded-lg  custom-scrollbar m-5'>
             <div className='p-4'>
                 <p className='!text-xl font-bold'>{t('profile:logged_in_devices')}</p>
             </div>
             <Separator className='my-0' />
-
-            <div className='p-4 space-y-6'>
-                {prioritizedCategories
-                    .filter(({ devices }) => devices.length > 0) // Exclude categories with no devices
-                    .map(({ name: category, devices }) => (
-                        <div key={category}>
-                            <h3 className='text-lg font-semibold'>{category}</h3>
-                            <div className='space-y-4'>
-                                {devices.length > 0 ? (
-                                    devices.map((device, idx) => (
-                                        <div
-                                            key={idx}
-                                            className='flex flex-col sm:flex-row items-start sm:items-center justify-between py-3 border-b'>
-                                            <div className='flex items-start sm:items-center space-x-3'>
-                                                <div className={`text-gray-500 ${direction === 'RTL' ? 'ml-4' : ''}`}>
-                                                    {getDeviceIcon(device.deviceType)}
-                                                </div>{' '}
-                                                <div className='space-y-1'>
-                                                    <p className='font-semibold'>{device.name}</p>
-                                                    <div className='flex flex-col sm:flex-row gap-2 !sm:space-y-0'>
-                                                        <p className='text-sm text-gray-500'>{device.location}</p>
-                                                        <p className='text-sm text-gray-500 sm:ml-2'>
-                                                            <span className='hidden sm:inline'>{'\u2022'} </span>
-                                                            {t('profile:last_logged_in_at')} {device.lastLogged}
-                                                        </p>
-                                                    </div>
-                                                    {device.isCurrentSession ? (
-                                                        <div className='flex flex-row items-center gap-2'>
-                                                            <Badge
-                                                                variant='outline'
-                                                                className={`w-2 h-2 p-0 rounded-full bg-green-500`}
-                                                            />
-                                                            <p className='text-green-500'>
-                                                                {t('profile:current_session')}
-                                                            </p>
-                                                        </div>
-                                                    ) : (
-                                                        <div className='flex flex-row items-center gap-2'>
-                                                            <Badge
-                                                                variant='outline'
-                                                                className={`w-2 h-2 p-0 rounded-full bg-brandPrimaryColor`}
-                                                            />
-                                                            <p className='text-brandPrimaryColor'>
-                                                                {t('profile:last_logged')}
-                                                            </p>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            </div>
-                                            {!device.isCurrentSession && (
-                                                <>
-                                                    {/* Wrapper for small devices */}
-                                                    <div className='flex items-end justify-end w-full sm:hidden'>
-                                                        <Button
-                                                            onClick={() => setOpenRemoveHandler(true)}
-                                                            size='sm'
-                                                            className='mt-2'>
-                                                            {t('profile:remove')}
-                                                        </Button>
-                                                    </div>
-
-                                                    {/* Button for medium and larger devices */}
-                                                    <Button
-                                                        onClick={() => setOpenRemoveHandler(true)}
-                                                        size='sm'
-                                                        className='hidden sm:inline mt-2 sm:mt-0'>
-                                                        {t('profile:remove')}
-                                                    </Button>
-                                                </>
-                                            )}
-                                        </div>
-                                    ))
-                                ) : (
-                                    <p className='text-sm text-gray-500'>{t('profile:device_not_found')}</p>
-                                )}
-                            </div>
-                        </div>
-                    ))}
-            </div>
+            <ListSession setSessionId={setSessionId} setOpenRemoveHandler={setOpenRemoveHandler} />
             <StoreModal
                 title={t('profile:logged_out_confirmation_title')}
                 isVisible={openRemoveHandler}
@@ -197,8 +136,84 @@ const SessionsDisplay = () => {
                 <div className='!pb-0'>
                     <p>{t('profile:logged_out_confirmation_description')}</p>
                     <div className='flex items-end justify-end mt-4'>
-                        <Button className='ml-auto'>{t('profile:remove')}</Button>
+                        <Button
+                            className='ml-auto'
+                            onClick={() => {
+                                setSeconds(resendSeconds)
+                                setOpenOtpHandler(true)
+                                setOpenRemoveHandler(false)
+                                sendOtp(sessionId)
+                                setErrorMessage('')
+                                setResendMessage('')
+                            }}>
+                            {t('profile:confirm')}
+                        </Button>
                     </div>
+                </div>
+            </StoreModal>
+
+            <StoreModal
+                title={t('profile:otp_verification')}
+                isVisible={openOtpHandler}
+                cancelCallback={() => setOpenOtpHandler(false)}
+                isSpin={false}
+                width={600}>
+                <div className='!pb-0 '>
+                    <p>{t('profile:otp_message')}</p>
+                    <div className='flex flex-col mt-4'>
+                        {errorMessage && (
+                            <Alert className='mb-4 flex items-center gap-2 bg-red-100' variant='destructive'>
+                                <div className='flex items-center justify-center h-4 w-4 rounded-full bg-red-500'>
+                                    <X className='h-3 w-3 text-white' />
+                                </div>
+                                <span className='text-sm'>{errorMessage}</span>
+                            </Alert>
+                        )}
+                        {resendMessage && (
+                            <Alert className='mb-4 flex items-center gap-2 bg-green-100 ' variant='success'>
+                                <div className='flex items-center justify-center h-4 w-4 rounded-full bg-green-500'>
+                                    <Check className='h-3 w-3 text-white' />
+                                </div>
+                                <span className='text-sm'>{resendMessage}</span>
+                            </Alert>
+                        )}
+
+                        <div>{t('profile:enter_otp')}</div>
+                        <InputOTP className='max-w-[500px]' maxLength={6} onChange={handleOtpChange}>
+                            <InputOTPGroup>
+                                <InputOTPSlot index={0} />
+                                <InputOTPSlot index={1} />
+                                <InputOTPSlot index={2} />
+                                <InputOTPSlot index={3} />
+                                <InputOTPSlot index={4} />
+                                <InputOTPSlot index={5} />
+                            </InputOTPGroup>
+                        </InputOTP>
+
+                        {seconds > 0 && (
+                            <div className='flex flex-row items-start justify-start mt-5 gap-2'>
+                                <span>{t('profile:resend_countdown', { seconds })}</span>
+                            </div>
+                        )}
+                        {resendingOtp && (
+                            <span className='mt-5 text-brandGray1'>
+                                {t('profile:sending_otp')} <Spin />
+                            </span>
+                        )}
+                        {seconds === 0 && !resendingOtp && (
+                            <Button
+                                className='flex justify-start text-primary t items-start h-2 p-0 m-0 mt-5 hover:bg-inherit hover:text-mp-primary-background-h'
+                                onClick={resendHandler}
+                                variant='ghost'>
+                                {t('profile:resend_otp')}
+                            </Button>
+                        )}
+                    </div>
+                </div>
+                <div className='w-full flex justify-end'>
+                    <Button className='' disabled={otp.length !== 6} onClick={submitHandler}>
+                        {otpConfirmLoading ? t('profile:verifying') : t('profile:remove')}
+                    </Button>
                 </div>
             </StoreModal>
         </div>

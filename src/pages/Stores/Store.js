@@ -991,9 +991,9 @@ const Stores = () => {
                 cancelCallback={() => onClose()}
                 isSpin={isUpLoading}
                 width={800}
-                height={600}
+                height={500}
                 isScroll={false}>
-                <div className='overflow-y-auto !h-auto'>
+                <div className='overflow-y-auto max-h-[400px]'>
                     {drawerAction && drawerAction === 'post' ? (
                         <>
                             <AddStores

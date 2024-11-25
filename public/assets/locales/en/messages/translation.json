@@ -177,5 +177,6 @@
     "upload_valid_image": "Please upload valid image file",
     "accepted_image_formats": "Accepted image formats include .png, .jpg, .jpeg. Please ensure that the image size falls within the range of 1KB to 2MB.",
     "image_size_error": "Please choose image file less than 2MB.",
-    "store_desc": "Store enable you to create store name and manage partner and distributor stores, ensuring they remain active at all times and allowing you to configure thresholds as needed."
+    "store_desc": "Store enable you to create store name and manage partner and distributor stores, ensuring they remain active at all times and allowing you to configure thresholds as needed.",
+    "empty_email_message":"Email cannot be empty. Please enter a valid email."
 }
