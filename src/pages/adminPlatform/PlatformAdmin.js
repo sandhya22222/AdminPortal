@@ -4,12 +4,12 @@ import { useTranslation } from 'react-i18next'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import { Input } from '../../shadcnComponents/ui/input'
 import { Skeleton } from '../../shadcnComponents/ui/skeleton'
-
+import { usePageTitle } from '../../../src/hooks/usePageTitle'
 const usersAllAPI = process.env.REACT_APP_USERS_ALL_API
 
 const PlatformAdmin = () => {
     const { t } = useTranslation()
-
+    usePageTitle(t('labels:platform_admin'))
     const [userAllAPIData, setUserAllAPIData] = useState([])
     const [isUsersLoading, setIsUsersLoading] = useState(false)
     const [isNetworkError, setIsNetworkError] = useState(false)
