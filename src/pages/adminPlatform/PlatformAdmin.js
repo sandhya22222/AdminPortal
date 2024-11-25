@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import { Input } from '../../shadcnComponents/ui/input'
 import { Skeleton } from '../../shadcnComponents/ui/skeleton'
-
-const usersAllAPI = process.env.REACT_APP_USERS_ALL_API
+import API_ENDPOINTS from '../../services/API/apis'
+const usersAllAPI = API_ENDPOINTS.REACT_APP_USERS_ALL_API
 
 const PlatformAdmin = () => {
     const { t } = useTranslation()

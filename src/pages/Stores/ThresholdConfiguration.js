@@ -9,6 +9,7 @@ import MarketplaceToaster from '../../util/marketplaceToaster'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import { Info } from 'lucide-react'
 import { validatePositiveNumber } from '../../util/validation'
+import API_ENDPOINTS from '../../services/API/apis'
 
 //! Import ShadCN components
 import ShadCNDataTable from '../../shadcnComponents/customComponents/ShadCNDataTable'
@@ -19,12 +20,12 @@ import { Button } from '../../shadcnComponents/ui/button'
 import { Input } from '../../shadcnComponents/ui/input'
 
 //! Get all required details from .env file
-const storeLimitApi = process.env.REACT_APP_STORE_PLATFORM_LIMIT_API
+const storeLimitApi = API_ENDPOINTS.REACT_APP_STORE_PLATFORM_LIMIT_API
 const maxDataLimit = process.env.REACT_APP_MAX_DATA_LIMIT
-const dm4sightAnalysisCountAPI = process.env.REACT_APP_4SIGHT_GETANALYSISCOUNT_API
+const dm4sightAnalysisCountAPI = API_ENDPOINTS.REACT_APP_4SIGHT_GETANALYSISCOUNT_API
 const dm4sightClientID = process.env.REACT_APP_4SIGHT_CLIENT_ID
 const dm4sightBaseURL = process.env.REACT_APP_4SIGHT_BASE_URL
-const currentUserDetailsAPI = process.env.REACT_APP_USER_PROFILE_API
+const currentUserDetailsAPI = API_ENDPOINTS.REACT_APP_USER_PROFILE_API
 
 const ThresholdConfiguration = ({ currentTab, setCurrentTab, hideAddStoreButton }) => {
     const { t } = useTranslation()

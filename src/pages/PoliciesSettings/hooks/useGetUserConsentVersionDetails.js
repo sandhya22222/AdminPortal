@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import MarketplaceServices from '../../../services/axios/MarketplaceServices'
-const VERSION_DETAILS_URL = process.env.REACT_APP_USER_CONSENT_DETAILS
+import API_ENDPOINTS from '../../../services/API/apis'
+
+const VERSION_DETAILS_URL = API_ENDPOINTS.REACT_APP_USER_CONSENT_DETAILS
 
 const useGetUserConsentVersionDetails = ({ userConsentId }) => {
     const getUserConsentVersionDetails = async () => {

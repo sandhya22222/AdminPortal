@@ -10,6 +10,7 @@ import { Eye } from 'lucide-react'
 import { SketchPicker } from 'react-color'
 import util from '../../util/common'
 import Preview from './Preview'
+import API_ENDPOINTS from '../../services/API/apis'
 
 //shadcn
 import Spin from '../../shadcnComponents/customComponents/Spin'
@@ -19,8 +20,8 @@ import { Skeleton } from '../../shadcnComponents/ui/skeleton'
 import { Input } from '../../shadcnComponents/ui/input'
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '../../shadcnComponents/ui/tooltip'
 
-const storeSettingAPI = process.env.REACT_APP_STORE_FRONT_SETTINGS_API
-const storeSettingsRestoreFactorAPI = process.env.REACT_APP_STORE_FRONT_SETTINGS_RESTORE_FACTOR_API
+const storeSettingAPI = API_ENDPOINTS.REACT_APP_STORE_FRONT_SETTINGS_API
+const storeSettingsRestoreFactorAPI = API_ENDPOINTS.REACT_APP_STORE_FRONT_SETTINGS_RESTORE_FACTOR_API
 
 const Theme = ({ id, getImageData }) => {
     const { t } = useTranslation()
@@ -593,10 +594,10 @@ const Theme = ({ id, getImageData }) => {
                                     </div>
 
                                     {showColorPicker && (
-                                        <div className='absolute mt-2 z-10'
-                                        tabIndex={-1} 
-                                        onBlur={() => setShowColorPicker(false)}
-                                        >
+                                        <div
+                                            className='absolute mt-2 z-10'
+                                            tabIndex={-1}
+                                            onBlur={() => setShowColorPicker(false)}>
                                             <SketchPicker
                                                 color={buttonPrimaryBackgroundColor}
                                                 onChangeComplete={(color) => {
@@ -703,10 +704,10 @@ const Theme = ({ id, getImageData }) => {
                                     </div>
 
                                     {showSecondaryColorPicker && (
-                                        <div className='absolute mt-2 z-10'
-                                        tabIndex={-1} 
-                                        onBlur={() => setShowSecondaryColorPicker(false)}
-                                        >
+                                        <div
+                                            className='absolute mt-2 z-10'
+                                            tabIndex={-1}
+                                            onBlur={() => setShowSecondaryColorPicker(false)}>
                                             <SketchPicker
                                                 color={buttonSecondaryBackgroundColor}
                                                 onChangeComplete={(color) => {
@@ -797,10 +798,10 @@ const Theme = ({ id, getImageData }) => {
                                 </div>
 
                                 {showTertiaryColorPicker && (
-                                    <div className='absolute mt-2 z-10'
-                                    tabIndex={-1} 
-                                    onBlur={() => setShowTertiaryColorPicker(false)}
-                                    >
+                                    <div
+                                        className='absolute mt-2 z-10'
+                                        tabIndex={-1}
+                                        onBlur={() => setShowTertiaryColorPicker(false)}>
                                         <SketchPicker
                                             color={buttonTeritaryForegroundColor}
                                             onChangeComplete={(color) => {
@@ -896,10 +897,10 @@ const Theme = ({ id, getImageData }) => {
 
                                 {/* Show the color picker for primary button text color */}
                                 {showPrimaryColorPicker && (
-                                    <div className='absolute mt-2 z-10'
-                                    tabIndex={-1} 
-                                    onBlur={() => setShowPrimaryColorPicker(false)}
-                                    >
+                                    <div
+                                        className='absolute mt-2 z-10'
+                                        tabIndex={-1}
+                                        onBlur={() => setShowPrimaryColorPicker(false)}>
                                         <SketchPicker
                                             color={buttonPrimaryForegroundColor} // Use the primary foreground color for the picker
                                             onChangeComplete={(color) => {
@@ -992,10 +993,10 @@ const Theme = ({ id, getImageData }) => {
                                     </div>
 
                                     {showSecondaryTextColorPicker && (
-                                        <div className='absolute mt-2 z-10'
-                                        tabIndex={-1} 
-                                        onBlur={() => setShowSecondaryTextColorPicker(false)}
-                                        >
+                                        <div
+                                            className='absolute mt-2 z-10'
+                                            tabIndex={-1}
+                                            onBlur={() => setShowSecondaryTextColorPicker(false)}>
                                             <SketchPicker
                                                 color={buttonSecondaryForegroundColor}
                                                 onChangeComplete={(color) => {

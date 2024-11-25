@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import MarketplaceServices from '../../../services/axios/MarketplaceServices'
-const profileImageApi = process.env.REACT_APP_PROFILE_IMAGE_API
+import API_ENDPOINTS from '../../../services/API/apis'
+
+const profileImageApi = API_ENDPOINTS.REACT_APP_PROFILE_IMAGE_API
 
 const useGetProfileImage = (imagePath) => {
     const getProfileImage = async () => {

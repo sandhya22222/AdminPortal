@@ -23,7 +23,7 @@ import { useAuth } from 'react-oidc-context'
 import HeaderForTitle from '../../components/header/HeaderForTitle'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import util from '../../util/common'
-
+import API_ENDPOINTS from '../../services/API/apis'
 import OrdersIcon from '../../assets/images/dashboard/ordersIcon.svg'
 import PerformanceIcon from '../../assets/images/dashboard/performanceIcon.svg'
 import StatisticsIcon from '../../assets/images/dashboard/statisticsIcon.svg'
@@ -35,10 +35,10 @@ import { Button } from '../../shadcnComponents/ui/button'
 const dm4sightBaseURL = process.env.REACT_APP_4SIGHT_BASE_URL
 const dm4sightClientID = process.env.REACT_APP_4SIGHT_CLIENT_ID
 const dm4sightEnabled = process.env.REACT_APP_4SIGHT_DATA_ENABLED
-const dm4sightGetAnalysisDetailAPI = process.env.REACT_APP_4SIGHT_GETANALYSISDETAIL_API
+const dm4sightGetAnalysisDetailAPI = API_ENDPOINTS.REACT_APP_4SIGHT_GETANALYSISDETAIL_API
 
-const storePlatformLimitApi = process.env.REACT_APP_STORE_PLATFORM_LIMIT_API
-const userProfileApi = process.env.REACT_APP_USER_PROFILE_API
+const storePlatformLimitApi = API_ENDPOINTS.REACT_APP_STORE_PLATFORM_LIMIT_API
+const userProfileApi = API_ENDPOINTS.REACT_APP_USER_PROFILE_API
 
 //! Destructure the components
 const instance = axios.create()
@@ -71,7 +71,6 @@ const Newdashboard = () => {
         },
     }
 
- 
     useEffect(() => {
         if (util.getSelectedLanguageDirection()) {
             setLangDirection(util.getSelectedLanguageDirection()?.toLowerCase())

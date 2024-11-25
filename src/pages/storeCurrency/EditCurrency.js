@@ -11,8 +11,9 @@ import { usePageTitle } from '../../hooks/usePageTitle'
 import { Checkbox } from '../../shadcnComponents/ui/checkbox'
 import { Skeleton } from '../../shadcnComponents/ui/skeleton'
 import { Button } from '../../shadcnComponents/ui/button'
-const currencyAPI = process.env.REACT_APP_CHANGE_CURRENCY_API
-const defaultCurrencyAPI = process.env.REACT_APP_DEFAULT_CURRENCY_API
+import API_ENDPOINTS from '../../services/API/apis'
+const currencyAPI = API_ENDPOINTS.REACT_APP_CHANGE_CURRENCY_API
+const defaultCurrencyAPI = API_ENDPOINTS.REACT_APP_DEFAULT_CURRENCY_API
 
 const EditCurrency = () => {
     const { t } = useTranslation()

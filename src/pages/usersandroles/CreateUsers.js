@@ -17,21 +17,23 @@ import ShadCNTooltip from '../../shadcnComponents/customComponents/ShadCNTooltip
 import { Select, SelectContent, SelectItem, SelectValue, SelectTrigger } from '../../shadcnComponents/ui/select'
 import { Switch } from '../../shadcnComponents/ui/switch'
 import Spin from '../../shadcnComponents/customComponents/Spin'
+import API_ENDPOINTS from '../../services/API/apis'
+
 //! Import CSS libraries
 
-const userAPI = process.env.REACT_APP_USERS_API
+const userAPI = API_ENDPOINTS.REACT_APP_USERS_API
 
-const groupsAPI = process.env.REACT_APP_GROUPS_API
+const groupsAPI = API_ENDPOINTS.REACT_APP_GROUPS_API
 const userNameMinLength = process.env.REACT_APP_USERNAME_MIN_LENGTH
 const userNameMaxLength = process.env.REACT_APP_USERNAME_MAX_LENGTH
 const nameMinLength = process.env.REACT_APP_NAME_MIN_LENGTH
 const nameMaxLength = process.env.REACT_APP_NAME_MAX_LENGTH
 const emailMaxLength = process.env.REACT_APP_EMAIL_MAX_LENGTH
-const usersAllAPI = process.env.REACT_APP_USERS_ALL_API
+const usersAllAPI = API_ENDPOINTS.REACT_APP_USERS_ALL_API
 const emailRegexPattern = process.env.REACT_APP_REGEX_PATTERN_EMAIL
-const updateUserPreferenceAPI = process.env.REACT_APP_UPDATE_OWNER_PREFERENCE
-const updateUserStatusAPI = process.env.REACT_APP_USER_STATUS_API
-const useInfoAPI = process.env.REACT_APP_USER_PROFILE_API
+const updateUserPreferenceAPI = API_ENDPOINTS.REACT_APP_UPDATE_OWNER_PREFERENCE
+const updateUserStatusAPI = API_ENDPOINTS.REACT_APP_USER_STATUS_API
+const useInfoAPI = API_ENDPOINTS.REACT_APP_USER_PROFILE_API
 
 const CreateUsers = () => {
     const { t } = useTranslation()

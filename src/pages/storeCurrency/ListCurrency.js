@@ -14,7 +14,9 @@ import ShadCNDataTable from '../../shadcnComponents/customComponents/ShadCNDataT
 import { Button } from '../../shadcnComponents/ui/button'
 import ShadCNPagination from '../../shadcnComponents/customComponents/ShadCNPagination'
 //! Get all required details from .env file
-const currencyAPI = process.env.REACT_APP_CHANGE_CURRENCY_API
+import API_ENDPOINTS from '../../services/API/apis'
+
+const currencyAPI = API_ENDPOINTS.REACT_APP_CHANGE_CURRENCY_API
 const pageLimit = parseInt(process.env.REACT_APP_ITEM_PER_PAGE)
 
 //! Destructure the ant design components

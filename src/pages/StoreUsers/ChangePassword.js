@@ -6,8 +6,9 @@ import { Input } from '../../shadcnComponents/ui/input'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import util from '../../util/common'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
+import API_ENDPOINTS from '../../services/API/apis'
 
-const changePasswordAPI = process.env.REACT_APP_CHANGE_PASSWORD_API
+const changePasswordAPI = API_ENDPOINTS.REACT_APP_CHANGE_PASSWORD_API
 const minPasswordLength = process.env.REACT_APP_PASSWORD_MIN_LENGTH
 
 const ChangePassword = ({ isPasswordChangeModalOpen, setIsPasswordChangeModalOpen }) => {
