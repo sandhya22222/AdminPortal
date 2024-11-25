@@ -145,7 +145,12 @@ const ThresholdConfiguration = ({ currentTab, setCurrentTab, hideAddStoreButton 
                                     <p>{keyName === 'store_limit' ? t('labels:active_stores') : null}</p>
                                 </div>
                                 {total > 0 ? (
-                                    <Progress className='w-24 h-[6px] mt-2' value={(count / total) * 100} />
+                                    <Progress
+                                        className='w-24 h-2 text-brandPrimaryColor mt-2'
+                                        size='small'
+                                        value={(count / total) * 100}
+                                        showInfo={false}
+                                    />
                                 ) : null}
                             </div>
                         ) : (
@@ -266,7 +271,6 @@ const ThresholdConfiguration = ({ currentTab, setCurrentTab, hideAddStoreButton 
             stats: analysisCount?.store_count + ',' + storeLimitValues?.store_limit + ',' + 'store_limit',
         },
     ]
-
     //!Get call to get the current user details
     const getCurrentUserDetails = () => {
         MarketplaceServices.findAll(currentUserDetailsAPI, null, false)
@@ -314,7 +318,7 @@ const ThresholdConfiguration = ({ currentTab, setCurrentTab, hideAddStoreButton 
                 setIsLoading(false)
                 setOnChangeValues(true)
                 setDuplicateStoreLimitValues(response.data.response_body)
-                console.log('response meeeeeeeeee', response)
+                console.log('response ', response)
                 setErrorField('')
                 MarketplaceToaster.showToast(response)
             })

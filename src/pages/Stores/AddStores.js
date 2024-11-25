@@ -79,17 +79,15 @@ const AddStores = ({
                         setName(trimmedUpdate)
                     }}
                 />
-                <span className='mx-3 mt-2 text-brandGray2'>{domainName}</span>
+                <span className='mx-3 mt-4 text-brandGray2'>{domainName}</span>
             </div>
             {inValidName && name === '' && (
-                <div className='text-red-600 flex gap-1 mt-1'>
-                    <Info className='w-4 h-4 text-brandGray2' /> {t('messages:empty_store_name_message')}
+                <div className='text-red-600 flex gap-1 mt-1 items-center'>
+                    {t('messages:empty_store_name_message')}
                 </div>
             )}
             {inValidName && name && name.length < 3 && (
-                <div className='text-red-600 flex gap-1 mt-1'>
-                    <Info className='w-4 h-4 text-brandGray2' /> {t('messages:enter_valid_store_name_message')}
-                </div>
+                <div className='text-red-600 flex gap-1 mt-1'>{t('messages:enter_valid_store_name_message')}</div>
             )}
             <div className='flex !mt-5'>
                 <label className='text-[14px] leading-[22px] font-normal text-brandGray2 mb-2 ml-1' id='labStNam'>
@@ -133,19 +131,15 @@ const AddStores = ({
             <div className='font-bold mt-[24px] text-[16px] leading-[24px] text-regal-blue'>
                 {t('labels:store_administrator_details')}
             </div>
-            <div className='px-3 my-4'>
-                <Alert variant='default' className='flex items-start !w-full'>
-                    <Info className='text-foreground' />
-                    <div className='ml-2'>
-                        <AlertTitle>
-                            <p className='mr-1 text-brandGray1'>{t('labels:note')}:</p>
-                        </AlertTitle>
-                        <AlertDescription>
-                            <p className='text-brandGray1'>
-                                {t('messages:add_store_description')}{' '}
-                                <span className='font-bold'>{t('labels:store_management_portal')}</span>
-                            </p>
-                        </AlertDescription>
+            <div className='my-4'>
+                <Alert variant='default' className='flex !w-full'>
+                    <Info className='text-foreground h-5 w-5 mt-0.5' />
+                    <div className='ml-1 flex mt-1'>
+                        <span className='mr-1 text-brandGray1 text-sm'>{t('labels:note')}:</span>
+                        <span className='text-brandGray1 text-sm'>
+                            {t('messages:add_store_description')}{' '}
+                            <span className='font-bold'>{t('labels:store_management_portal')}</span>
+                        </span>
                     </div>
                 </Alert>
             </div>
@@ -207,16 +201,10 @@ const AddStores = ({
             />
 
             {inValidUserName && storeUserName === '' && (
-                <div className='text-red-600 flex gap-1 mt-1'>
-                    <Info className='text-red-600' />
-                    {t('messages:empty_user_name_message')}
-                </div>
+                <div className='text-red-600 flex gap-1 mt-1'>{t('messages:empty_user_name_message')}</div>
             )}
             {inValidUserName && storeUserName && storeUserName.length < 3 && (
-                <div className='text-red-600 flex gap-1 mt-1'>
-                    <Info className='text-red-600' />
-                    {t('messages:enter_valid_user_name_message')}
-                </div>
+                <div className='text-red-600 flex gap-1 mt-1'>{t('messages:enter_valid_user_name_message')}</div>
             )}
 
             <div className='flex mt-3'>
@@ -251,16 +239,10 @@ const AddStores = ({
             />
 
             {inValidEmail && storeEmail === '' && (
-                <div className='text-red-600 flex gap-1 mt-1'>
-                    <Info className='text-red-600' />
-                    {t('messages:empty_email_message')}
-                </div>
+                <div className='text-red-600 flex gap-1 mt-1'>{t('messages:empty_email_message')}</div>
             )}
             {inValidEmailFormat && storeEmail && (
-                <div className='text-red-600 flex gap-1 mt-1'>
-                    <Info className='text-red-600' />
-                    {t('messages:invalid_email_format_message')}
-                </div>
+                <div className='text-red-600 flex gap-1 mt-1'>{t('messages:invalid_email_format_message')}</div>
             )}
 
             <div className='flex space-x-3 !justify-end mt-4'>

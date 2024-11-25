@@ -39,7 +39,7 @@ export const AppSidebar = ({ permissionValue = [], collapsed = false, setCollaps
     const auth = useAuth()
     const location = useLocation()
     const navigate = useNavigate()
-
+    console.log('permissionValue', permissionValue)
     const data = React.useMemo(
         () => ({
             navMain: [
@@ -54,7 +54,8 @@ export const AppSidebar = ({ permissionValue = [], collapsed = false, setCollaps
                     key: '2',
                     icon: <StoresSVG />,
                     title: t('labels:stores'),
-                    path: '/dashboard/store?m_t=1',
+                    path: '/dashboard/store',
+                    queryParams: { m_t: 0 },
                     show_in_menu: true,
                 },
                 {
@@ -69,8 +70,10 @@ export const AppSidebar = ({ permissionValue = [], collapsed = false, setCollaps
                             title: t('labels:language_settings'),
                             path: '/dashboard/language',
                             show_in_menu:
-                                auth.isAuthenticated &&
-                                (permissionValue.includes('UI-product-admin') || permissionValue.length === 0),
+                                !auth.isAuthenticated ||
+                                (auth.isAuthenticated && permissionValue.includes('UI-product-admin'))
+                                    ? false
+                                    : true,
                         },
                         {
                             key: '13',
@@ -85,13 +88,26 @@ export const AppSidebar = ({ permissionValue = [], collapsed = false, setCollaps
                             show_in_menu: true,
                         },
                         {
+                            key: '7',
+                            title: ` ${t('labels:platform_admin')}`,
+                            path: '/dashboard/platformadmin',
+                            show_in_menu:
+                                !auth.isAuthenticated ||
+                                (auth.isAuthenticated && permissionValue.includes('UI-user-access-control'))
+                                    ? false
+                                    : true,
+                        },
+
+                        {
                             key: '12',
                             title: t('labels:user_access_control'),
                             path: `/dashboard/user-access-control/list-user-roles`,
                             queryParams: { tab: 0, page: 1, limit: pageLimitFromENV },
                             show_in_menu:
-                                auth.isAuthenticated &&
-                                (permissionValue.includes('UI-user-access-control') || permissionValue.length === 0),
+                                !auth.isAuthenticated ||
+                                (auth.isAuthenticated && permissionValue.includes('UI-user-access-control'))
+                                    ? true
+                                    : false,
                         },
                         {
                             key: '6',

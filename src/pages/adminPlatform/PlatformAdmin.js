@@ -6,10 +6,11 @@ import { Input } from '../../shadcnComponents/ui/input'
 import { Skeleton } from '../../shadcnComponents/ui/skeleton'
 import API_ENDPOINTS from '../../services/API/apis'
 const usersAllAPI = API_ENDPOINTS.REACT_APP_USERS_ALL_API
+import { usePageTitle } from '../../../src/hooks/usePageTitle'
 
 const PlatformAdmin = () => {
     const { t } = useTranslation()
-
+    usePageTitle(t('labels:platform_admin'))
     const [userAllAPIData, setUserAllAPIData] = useState([])
     const [isUsersLoading, setIsUsersLoading] = useState(false)
     const [isNetworkError, setIsNetworkError] = useState(false)
