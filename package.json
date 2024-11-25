@@ -36,6 +36,7 @@
         "i18next": "^23.11.1",
         "i18next-browser-languagedetector": "^7.2.1",
         "i18next-http-backend": "^2.5.0",
+        "input-otp": "^1.4.1",
         "js-cookie": "^3.0.5",
         "latest": "^0.2.0",
         "lucide-react": "^0.439.0",
