@@ -94,7 +94,7 @@ const ListSession = ({ setSessionId, setOpenRemoveHandler }) => {
                                                     <p className='text-sm text-gray-500'>{device.location}</p>
                                                     <p className='text-sm text-gray-500 sm:ml-2'>
                                                         <span className='hidden sm:inline'>{'\u2022'} </span>
-                                                        {t('profile:last_logged_in_at')} {device.lastLogged}
+                                                        {t('labels:last_logged_in_at')} {device.lastLogged}
                                                     </p>
                                                 </div>
                                                 {device.isCurrentSession ? (
@@ -103,7 +103,7 @@ const ListSession = ({ setSessionId, setOpenRemoveHandler }) => {
                                                             variant='outline'
                                                             className={`w-2 h-2 p-0 rounded-full bg-green-500`}
                                                         />
-                                                        <p className='text-green-500'>{t('profile:current_session')}</p>
+                                                        <p className='text-green-500'>{t('labels:current_session')}</p>
                                                     </div>
                                                 ) : (
                                                     <div className='flex flex-row items-center gap-2'>
@@ -112,7 +112,7 @@ const ListSession = ({ setSessionId, setOpenRemoveHandler }) => {
                                                             className={`w-2 h-2 p-0 rounded-full bg-brandPrimaryColor`}
                                                         />
                                                         <p className='text-brandPrimaryColor'>
-                                                            {t('profile:last_logged')}
+                                                            {t('labels:last_logged')}
                                                         </p>
                                                     </div>
                                                 )}
@@ -129,7 +129,7 @@ const ListSession = ({ setSessionId, setOpenRemoveHandler }) => {
                                                         }}
                                                         size='sm'
                                                         className='mt-2'>
-                                                        {t('profile:remove')}
+                                                        {t('labels:remove')}
                                                     </Button>
                                                 </div>
 
@@ -141,14 +141,14 @@ const ListSession = ({ setSessionId, setOpenRemoveHandler }) => {
                                                     }}
                                                     size='sm'
                                                     className='hidden sm:inline mt-2 sm:mt-0'>
-                                                    {t('profile:remove')}
+                                                    {t('labels:remove')}
                                                 </Button>
                                             </>
                                         )}
                                     </div>
                                 ))
                             ) : (
-                                <p className='text-sm text-gray-500'>{t('profile:device_not_found')}</p>
+                                <p className='text-sm text-gray-500'>{t('labels:device_not_found')}</p>
                             )}
                         </div>
                     </div>

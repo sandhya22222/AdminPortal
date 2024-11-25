@@ -38,7 +38,7 @@ const MyProfile = () => {
         },
         {
             key: USER_PROFILE_TABS_OPTIONS.LOGIN_SESSIONS,
-            label: `${t('profile:logged_in_devices')}`,
+            label: `${t('labels:logged_in_devices')}`,
             value: 2,
         },
     ]
