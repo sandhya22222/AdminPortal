@@ -65,13 +65,13 @@ const SessionsDisplay = () => {
                         refetch()
                     },
                     onError: () => {
-                        setErrorMessage(t('profile:invalid_otp'))
+                        setErrorMessage(t('labels:invalid_otp'))
                         setResendMessage('')
                     },
                 }
             )
         } catch (err) {
-            setErrorMessage(t('profile:unexpected_error'))
+            setErrorMessage(t('labels:unexpected_error'))
         }
     }
 
@@ -82,28 +82,28 @@ const SessionsDisplay = () => {
             setResendingOtp(true)
             await sendOtp(sessionId, {
                 onSuccess: () => {
-                    setResendMessage(t('profile:otp_sent'))
+                    setResendMessage(t('labels:otp_sent'))
                     setResendingOtp(false)
                 },
                 onError: () => {
-                    setErrorMessage(t('profile:resend_failed'))
+                    setErrorMessage(t('labels:resend_failed'))
                     setResendingOtp(false)
                 },
             })
         } catch (err) {
-            console.error(t('profile:unexpected_resend_error'), err)
-            setErrorMessage(t('profile:unexpected_error'))
+            console.error(t('labels:unexpected_resend_error'), err)
+            setErrorMessage(t('labels:unexpected_error'))
         }
     }
 
     if (isError) {
-        const errorMessage = error?.message || t('profile:something_went_wrong')
+        const errorMessage = error?.message || t('labels:something_went_wrong')
 
         return (
             <Alert variant='destructive' className='mt-4'>
                 <XCircle className='h-5 w-5 text-red-600' />
                 <div className='flex flex-col ml-2'>
-                    <AlertTitle className='text-red-600'>{t('profile:error')}</AlertTitle>
+                    <AlertTitle className='text-red-600'>{t('labels:error')}</AlertTitle>
                     <AlertDescription>{errorMessage}</AlertDescription>
                 </div>
             </Alert>
@@ -123,18 +123,18 @@ const SessionsDisplay = () => {
     return (
         <div className='h-[100vh] overflow-auto bg-white border mx-5  rounded-lg  custom-scrollbar m-5'>
             <div className='p-4'>
-                <p className='!text-xl font-bold'>{t('profile:logged_in_devices')}</p>
+                <p className='!text-xl font-bold'>{t('labels:logged_in_devices')}</p>
             </div>
             <Separator className='my-0' />
             <ListSession setSessionId={setSessionId} setOpenRemoveHandler={setOpenRemoveHandler} />
             <StoreModal
-                title={t('profile:logged_out_confirmation_title')}
+                title={t('labels:logged_out_confirmation_title')}
                 isVisible={openRemoveHandler}
                 cancelCallback={() => setOpenRemoveHandler(false)}
                 isSpin={false}
                 width={600}>
                 <div className='!pb-0'>
-                    <p>{t('profile:logged_out_confirmation_description')}</p>
+                    <p>{t('labels:logged_out_confirmation_description')}</p>
                     <div className='flex items-end justify-end mt-4'>
                         <Button
                             className='ml-auto'
@@ -146,20 +146,20 @@ const SessionsDisplay = () => {
                                 setErrorMessage('')
                                 setResendMessage('')
                             }}>
-                            {t('profile:confirm')}
+                            {t('labels:confirm')}
                         </Button>
                     </div>
                 </div>
             </StoreModal>
 
             <StoreModal
-                title={t('profile:otp_verification')}
+                title={t('labels:otp_verification')}
                 isVisible={openOtpHandler}
                 cancelCallback={() => setOpenOtpHandler(false)}
                 isSpin={false}
                 width={600}>
                 <div className='!pb-0 '>
-                    <p>{t('profile:otp_message')}</p>
+                    <p>{t('labels:otp_message')}</p>
                     <div className='flex flex-col mt-4'>
                         {errorMessage && (
                             <Alert className='mb-4 flex items-center gap-2 bg-red-100' variant='destructive'>
@@ -178,7 +178,7 @@ const SessionsDisplay = () => {
                             </Alert>
                         )}
 
-                        <div>{t('profile:enter_otp')}</div>
+                        <div>{t('labels:enter_otp')}</div>
                         <InputOTP className='max-w-[500px]' maxLength={6} onChange={handleOtpChange}>
                             <InputOTPGroup>
                                 <InputOTPSlot index={0} />
@@ -192,12 +192,12 @@ const SessionsDisplay = () => {
 
                         {seconds > 0 && (
                             <div className='flex flex-row items-start justify-start mt-5 gap-2'>
-                                <span>{t('profile:resend_countdown', { seconds })}</span>
+                                <span>{t('labels:resend_countdown', { seconds })}</span>
                             </div>
                         )}
                         {resendingOtp && (
                             <span className='mt-5 text-brandGray1'>
-                                {t('profile:sending_otp')} <Spin />
+                                {t('labels:sending_otp')} <Spin />
                             </span>
                         )}
                         {seconds === 0 && !resendingOtp && (
@@ -205,14 +205,14 @@ const SessionsDisplay = () => {
                                 className='flex justify-start text-primary t items-start h-2 p-0 m-0 mt-5 hover:bg-inherit hover:text-mp-primary-background-h'
                                 onClick={resendHandler}
                                 variant='ghost'>
-                                {t('profile:resend_otp')}
+                                {t('labels:resend_otp')}
                             </Button>
                         )}
                     </div>
                 </div>
                 <div className='w-full flex justify-end'>
                     <Button className='' disabled={otp.length !== 6} onClick={submitHandler}>
-                        {otpConfirmLoading ? t('profile:verifying') : t('profile:remove')}
+                        {otpConfirmLoading ? t('labels:verifying') : t('labels:remove')}
                     </Button>
                 </div>
             </StoreModal>
