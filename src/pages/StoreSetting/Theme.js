@@ -798,7 +798,7 @@ const Theme = ({ id, getImageData }) => {
 
                                 {showTertiaryColorPicker && (
                                     <div
-                                        className='absolute mt-2 z-10'
+                                        className='absolute mt-2 z-20 !top-[26%]'
                                         tabIndex={-1}
                                         onBlur={() => setShowTertiaryColorPicker(false)}>
                                         <SketchPicker
@@ -897,7 +897,7 @@ const Theme = ({ id, getImageData }) => {
                                 {/* Show the color picker for primary button text color */}
                                 {showPrimaryColorPicker && (
                                     <div
-                                        className='absolute mt-2 z-10'
+                                        className='absolute mt-2 z-20 !top-[41%]'
                                         tabIndex={-1}
                                         onBlur={() => setShowPrimaryColorPicker(false)}>
                                         <SketchPicker
@@ -993,7 +993,7 @@ const Theme = ({ id, getImageData }) => {
 
                                     {showSecondaryTextColorPicker && (
                                         <div
-                                            className='absolute mt-2 z-10'
+                                            className='absolute mt-2 z-20 !top-[41%]'
                                             tabIndex={-1}
                                             onBlur={() => setShowSecondaryTextColorPicker(false)}>
                                             <SketchPicker
