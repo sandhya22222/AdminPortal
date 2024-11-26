@@ -492,7 +492,9 @@ const StoreSettingsLayout = ({ collapsed }) => {
                                 {disableMediaButton ? (
                                     ''
                                 ) : isUpLoading ? (
-                                    <Spin />
+                                    <div className='flex justify-center !mt-44'>
+                                        <Spin />
+                                    </div>
                                 ) : (
                                     <div className='bg-white p-3 !rounded-md border my-4'>
                                         <label className='text-lg mb-3 font-semibold text-regal-blue'>
