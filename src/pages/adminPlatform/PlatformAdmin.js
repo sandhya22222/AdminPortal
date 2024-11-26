@@ -5,8 +5,9 @@ import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import { Input } from '../../shadcnComponents/ui/input'
 import { Skeleton } from '../../shadcnComponents/ui/skeleton'
 import API_ENDPOINTS from '../../services/API/apis'
-const usersAllAPI = API_ENDPOINTS.REACT_APP_USERS_ALL_API
 import { usePageTitle } from '../../../src/hooks/usePageTitle'
+
+const usersAllAPI = API_ENDPOINTS.REACT_APP_USERS_ALL_API
 
 const PlatformAdmin = () => {
     const { t } = useTranslation()
