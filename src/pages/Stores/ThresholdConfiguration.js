@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import axios from 'axios'
 import { useAuth } from 'react-oidc-context'
@@ -52,6 +52,28 @@ const ThresholdConfiguration = ({ currentTab, setCurrentTab, hideAddStoreButton 
         },
     }
 
+    const inputRef = useRef(null)
+
+    // Attach event listener on mount
+    useEffect(() => {
+        const inputElement = inputRef.current
+
+        const preventScroll = (e) => {
+            e.preventDefault() // Prevent scrolling behavior
+        }
+
+        if (inputElement) {
+            inputElement.addEventListener('wheel', preventScroll)
+        }
+
+        // Cleanup event listener on unmount
+        return () => {
+            if (inputElement) {
+                inputElement.removeEventListener('wheel', preventScroll)
+            }
+        }
+    }, [])
+
     //! column for account restrictions
     const accountRestrictionsColumn = [
         {
@@ -73,7 +95,9 @@ const ThresholdConfiguration = ({ currentTab, setCurrentTab, hideAddStoreButton 
                                 <Info className='text-foreground w-4' />
                             </ShadCNTooltip>
                         </div>
+
                         <Input
+                            ref={inputRef}
                             type='number'
                             className={`w-28 ${keyName === errorField ? 'error' : ''}`} // Add error border class
                             placeholder={t('labels:placeholder_unlimited')}
@@ -89,6 +113,7 @@ const ThresholdConfiguration = ({ currentTab, setCurrentTab, hideAddStoreButton 
                                     copyOfStoreLimitValues[keyName] = numericValue // Update value only if within the max limit
                                     setStoreLimitValues(copyOfStoreLimitValues)
                                     setOnChangeValues(false)
+                                    console.log('copyOfStoreLimitValues', copyOfStoreLimitValues)
                                 }
                             }}
                             onKeyDown={(e) => {
@@ -188,6 +213,7 @@ const ThresholdConfiguration = ({ currentTab, setCurrentTab, hideAddStoreButton 
                         </div>
                         <div>
                             <Input
+                                ref={inputRef}
                                 type='number'
                                 value={storeLimitValues?.[keyName] > 0 ? storeLimitValues?.[keyName] : ''}
                                 min={0}
