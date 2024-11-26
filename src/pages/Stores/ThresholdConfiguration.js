@@ -79,13 +79,17 @@ const ThresholdConfiguration = ({ currentTab, setCurrentTab, hideAddStoreButton 
                             placeholder={t('labels:placeholder_unlimited')}
                             value={storeLimitValues?.[keyName] > 0 ? storeLimitValues?.[keyName] : ''}
                             min={0}
-                            max={maxDataLimit}
+                            max={parseInt(maxDataLimit)}
                             onChange={(e) => {
-                                console.log('e.target.value', typeof e.target.value)
-                                let copyofStoreLimitValues = { ...storeLimitValues }
-                                copyofStoreLimitValues[keyName] = parseInt(e.target.value) // Access value from event
-                                setStoreLimitValues(copyofStoreLimitValues)
-                                setOnChangeValues(false)
+                                const inputValue = e.target.value
+                                const numericValue = parseInt(inputValue)
+
+                                if (!isNaN(numericValue) && numericValue <= parseInt(maxDataLimit)) {
+                                    let copyOfStoreLimitValues = { ...storeLimitValues }
+                                    copyOfStoreLimitValues[keyName] = numericValue // Update value only if within the max limit
+                                    setStoreLimitValues(copyOfStoreLimitValues)
+                                    setOnChangeValues(false)
+                                }
                             }}
                             onKeyDown={(e) => {
                                 validatePositiveNumber(e, /[0-9]/)
@@ -187,7 +191,7 @@ const ThresholdConfiguration = ({ currentTab, setCurrentTab, hideAddStoreButton 
                                 type='number'
                                 value={storeLimitValues?.[keyName] > 0 ? storeLimitValues?.[keyName] : ''}
                                 min={0}
-                                max={maxDataLimit}
+                                max={parseInt(maxDataLimit)}
                                 onFocus={() => {
                                     setErrorField('')
                                 }}
@@ -195,10 +199,15 @@ const ThresholdConfiguration = ({ currentTab, setCurrentTab, hideAddStoreButton 
                                     validatePositiveNumber(e, /[0-9]/)
                                 }}
                                 onChange={(e) => {
-                                    let copyOfStoreLimitValues = { ...storeLimitValues }
-                                    copyOfStoreLimitValues[keyName] = parseInt(e.target.value)
-                                    setStoreLimitValues(copyOfStoreLimitValues)
-                                    setOnChangeValues(false)
+                                    const inputValue = e.target.value
+                                    const numericValue = parseInt(inputValue)
+
+                                    if (!isNaN(numericValue) && numericValue <= parseInt(maxDataLimit)) {
+                                        let copyOfStoreLimitValues = { ...storeLimitValues }
+                                        copyOfStoreLimitValues[keyName] = numericValue // Update value only if within the max limit
+                                        setStoreLimitValues(copyOfStoreLimitValues)
+                                        setOnChangeValues(false)
+                                    }
                                 }}
                                 onPaste={(e) => {
                                     setErrorField('')
