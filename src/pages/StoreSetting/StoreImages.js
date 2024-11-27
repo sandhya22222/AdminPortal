@@ -35,7 +35,6 @@ const StoreImages = ({
     const [fileList, setFileList] = useState([])
     const [previewOpen, setPreviewOpen] = useState(false)
     const [previewImage, setPreviewImage] = useState('')
-    const [previewTitle, setPreviewTitle] = useState('')
     const [imagePathShow, setImagePathShow] = useState()
     const [allImageUrl, setAllImageUrl] = useState([])
     const [imageIndex, setImageIndex] = useState()
@@ -53,7 +52,6 @@ const StoreImages = ({
     const handleChange = (e) => {
         let files = Array.from(e.target.files) // Get the selected files as an array
         const validImages = files.filter((file) => file.type.startsWith('image/')) // Filter only images
-        console.log('e.target.value', e.target.files)
         // Declare variables outside the if block
         let alreadyUploadedCount = allImageUrl?.length || 0
         let selectedImagesCount = validImages.length
@@ -288,9 +286,9 @@ const StoreImages = ({
         selectedImageArrayOfObject = []
     }, [getImageData])
 
-    useEffect(() => {
-        setImagePathShow()
-    }, [])
+    // useEffect(() => {
+    //     setImagePathShow()
+    // }, [])
 
     useEffect(() => {
         if (bannerAbsoluteImage && bannerAbsoluteImage.length > 0) {
