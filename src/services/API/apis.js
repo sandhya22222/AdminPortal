@@ -50,6 +50,8 @@ const API_ENDPOINTS = {
     REACT_APP_UPDATE_OWNER_PREFERENCE: '/ums/rest/v3/update-owner-preference',
     REACT_APP_PROFILE_IMAGE_API: '/ums/rest/v3/user-profile-image',
     REACT_APP_SESSION_API: '/ums/rest/v3/devices',
+    REACT_APP_SESSION_OTP_API: '/ums/rest/v3/devices/send-otp',
+    REACT_APP_SESSION_REMOVAL_API: '/ums/rest/v3/devices',
     REACT_APP_LEADLINE_DISPLAYNAME: '/ams/rest/v3/user-consent-leadline-displayname',
 }
 
