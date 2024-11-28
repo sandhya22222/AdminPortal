@@ -1,12 +1,15 @@
 import React, { createContext, useContext } from 'react'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { fetchSessions, requestOtp, sendOtpRequest } from './SessionService'
 import MarketplaceToaster from '../../util/marketplaceToaster'
 import util from '../../util/common'
+import { useTranslation } from 'react-i18next'
 
 const SessionsContext = createContext()
 
 export const SessionsProvider = ({ children }) => {
+    const { t } = useTranslation()
+    const queryClient = useQueryClient()
     const { data, refetch, isLoading, isFetching, error, isError } = useQuery({
         queryKey: ['Sessions'],
         queryFn: () => fetchSessions(),
@@ -21,7 +24,7 @@ export const SessionsProvider = ({ children }) => {
     } = useMutation({
         mutationFn: requestOtp,
         onSuccess: (data) => {
-            console.log('OTP sent successfully:', data)
+            queryClient.invalidateQueries(['Sessions'])
         },
         onError: (error) => {
             console.error('OTP request failed:', error.message)
@@ -35,14 +38,13 @@ export const SessionsProvider = ({ children }) => {
     } = useMutation({
         mutationFn: sendOtpRequest,
         onSuccess: (data) => {
-            console.log('OTP sent successfully:', data)
-            const message = 'Session has been removed successfully'
-
+            const message = t('labels:remove_session')
+            queryClient.invalidateQueries(['Sessions'])
             MarketplaceToaster.showToast(util.getToastObject(message, 'success'))
         },
         onError: (error) => {
             console.error('OTP request failed:', error.message)
-            const message = 'Enter a valid otp'
+            const message = t('labels:invalid_otp')
 
             MarketplaceToaster.showToast(util.getToastObject(message, 'error'))
         },

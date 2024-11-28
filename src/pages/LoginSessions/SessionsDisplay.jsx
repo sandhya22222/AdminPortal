@@ -192,7 +192,9 @@ const SessionsDisplay = () => {
 
                         {seconds > 0 && (
                             <div className='flex flex-row items-start justify-start mt-5 gap-2'>
-                                <span>{t('labels:resend_countdown', { seconds })}</span>
+                                <span>
+                                    {t('labels:resend_countdown')} {seconds}
+                                </span>
                             </div>
                         )}
                         {resendingOtp && (
