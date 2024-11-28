@@ -89,6 +89,7 @@ export default function LanguageDocUpload({ langCode }) {
     }
     const handleUploadClick = (inputRef) => {
         if (inputRef.current) {
+            inputRef.current.value = ''
             inputRef.current.click()
         }
     }
@@ -199,95 +200,115 @@ export default function LanguageDocUpload({ langCode }) {
             <p className='text-muted-foreground mb-4'>{t('messages:language_document_data')}</p>
             <div className='space-y-4'>
                 <Card>
-                    <CardContent className='relative p-4'>
-                        {isFrontendLoading && <Spin />}
-                        <div className='flex justify-between items-center mb-4'>
-                            <h3 className='text-base font-semibold '>{t('labels:frontend_keys')}</h3>
-                            <Button
-                                variant='outline'
-                                className='flex gap-2 items-center'
-                                onClick={() => findAllSupportDocumentTemplateDownload(1, null)}
-                                disabled={isFrontendLoading}>
-                                <Download className='h-4 w-4' />
-                                {t('labels:get_frontend_support_template')}
-                            </Button>
-                        </div>
-                        <Separator className='absolute left-0 right-0 my-3' />
-                        <p className='text-muted-foreground mb-4 mt-12'>{t('messages:frontend_document')}</p>
-                        <div className='flex gap-4'>
-                            <input
-                                type='file'
-                                accept='.csv'
-                                ref={frontendFileInputRef}
-                                className='hidden'
-                                onChange={(e) => handleFileChange(e, uploadStoreLanguageKeys)}
-                                disabled={!langCode || isFrontendLoading}
-                            />
-                            <Button
-                                variant='outline'
-                                disabled={!langCode || isFrontendLoading}
-                                onClick={() => handleUploadClick(frontendFileInputRef)}>
-                                <UploadIcon
-                                    className={`${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'ml-1' : 'mr-1'}  h-4 w-4`}
+                    <div className='relative'>
+                        {isFrontendLoading && (
+                            <div className='absolute inset-0 flex justify-center items-center backdrop-blur-sm bg-white/60 z-10'>
+                                <Spin size='large' />
+                            </div>
+                        )}
+                        <CardContent className='relative p-4'>
+                            <div className='flex justify-between items-center mb-4'>
+                                <h3 className='text-base font-semibold'>{t('labels:frontend_keys')}</h3>
+                                <Button
+                                    variant='outline'
+                                    className='flex gap-2 items-center'
+                                    onClick={() => findAllSupportDocumentTemplateDownload(1, null)}
+                                    disabled={isFrontendLoading}>
+                                    <Download className='h-4 w-4' />
+                                    {t('labels:get_frontend_support_template')}
+                                </Button>
+                            </div>
+                            <Separator className='absolute left-0 right-0 my-3' />
+                            <p className='text-muted-foreground mb-4 mt-12'>{t('messages:frontend_document')}</p>
+                            <div className='flex gap-4'>
+                                <input
+                                    type='file'
+                                    accept='.csv'
+                                    ref={frontendFileInputRef}
+                                    className='hidden'
+                                    onChange={(e) => handleFileChange(e, uploadStoreLanguageKeys)}
+                                    disabled={!langCode || isFrontendLoading}
                                 />
-                                {t('labels:click_to_upload')}
-                            </Button>
-                            <Button
-                                variant='ghost'
-                                className='flex items-center gap-1'
-                                onClick={() => setChooseDownloadModalVisible(true)}
-                                disabled={!langCode || isFrontendLoading}>
-                                <Download className='h-4 w-4' />
-                                {t('messages:download_current_document')}
-                            </Button>
-                        </div>
-                    </CardContent>
+                                <Button
+                                    variant='outline'
+                                    disabled={!langCode || isFrontendLoading}
+                                    onClick={() => handleUploadClick(frontendFileInputRef)}>
+                                    <UploadIcon
+                                        className={`${
+                                            util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                ? 'ml-1'
+                                                : 'mr-1'
+                                        }  h-4 w-4`}
+                                    />
+                                    {t('labels:click_to_upload')}
+                                </Button>
+                                <Button
+                                    variant='ghost'
+                                    className='flex items-center gap-1'
+                                    onClick={() => setChooseDownloadModalVisible(true)}
+                                    disabled={!langCode || isFrontendLoading}>
+                                    <Download className='h-4 w-4' />
+                                    {t('messages:download_current_document')}
+                                </Button>
+                            </div>
+                        </CardContent>
+                    </div>
                 </Card>
 
                 <Card>
-                    <CardContent className='relative p-4'>
-                        {isBackendLoading && <Spin />}
-                        <div className='flex justify-between items-center mb-4'>
-                            <h3 className='text-base font-semibold'>{t('labels:backend_keys')}</h3>
-                            <Button
-                                variant='outline'
-                                className='flex gap-2 items-center'
-                                onClick={() => downloadBEKeysFile(1, null)}
-                                disabled={isBackendLoading}>
-                                <Download className='h-4 w-4' />
-                                {t('labels:get_backend_support_template')}
-                            </Button>
-                        </div>
-                        <Separator className='absolute left-0 right-0 my-3' />
-                        <p className='text-muted-foreground mb-4 mt-12'>{t('messages:backend_document')}</p>
-                        <div className='flex gap-4'>
-                            <input
-                                type='file'
-                                accept='.csv'
-                                ref={backendFileInputRef}
-                                className='hidden'
-                                onChange={(e) => handleFileChange(e, uploadStoreBackendKeys)}
-                                disabled={!langCode || isBackendLoading}
-                            />
-                            <Button
-                                variant='outline'
-                                disabled={!langCode || isBackendLoading}
-                                onClick={() => handleUploadClick(backendFileInputRef)}>
-                                <UploadIcon
-                                    className={` ${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'ml-1' : 'mr-1'} h-4 w-4`}
+                    <div className='relative'>
+                        {isBackendLoading && (
+                            <div className='absolute inset-0 flex justify-center items-center backdrop-blur-sm bg-white/60 z-10'>
+                                <Spin size='large' />
+                            </div>
+                        )}
+                        <CardContent className='relative p-4'>
+                            <div className='flex justify-between items-center mb-4'>
+                                <h3 className='text-base font-semibold'>{t('labels:backend_keys')}</h3>
+                                <Button
+                                    variant='outline'
+                                    className='flex gap-2 items-center'
+                                    onClick={() => downloadBEKeysFile(1, null)}
+                                    disabled={isBackendLoading}>
+                                    <Download className='h-4 w-4' />
+                                    {t('labels:get_backend_support_template')}
+                                </Button>
+                            </div>
+                            <Separator className='absolute left-0 right-0 my-3' />
+                            <p className='text-muted-foreground mb-4 mt-12'>{t('messages:backend_document')}</p>
+                            <div className='flex gap-4'>
+                                <input
+                                    type='file'
+                                    accept='.csv'
+                                    ref={backendFileInputRef}
+                                    className='hidden'
+                                    onChange={(e) => handleFileChange(e, uploadStoreBackendKeys)}
+                                    disabled={!langCode || isBackendLoading}
                                 />
-                                {t('labels:click_to_upload')}
-                            </Button>
-                            <Button
-                                variant='ghost'
-                                className='flex items-center gap-1'
-                                onClick={() => setChooseDownloadModalVisible(true)}
-                                disabled={!langCode || isBackendLoading}>
-                                <Download className='h-4 w-4' />
-                                {t('messages:download_current_document')}
-                            </Button>
-                        </div>
-                    </CardContent>
+                                <Button
+                                    variant='outline'
+                                    disabled={!langCode || isBackendLoading}
+                                    onClick={() => handleUploadClick(backendFileInputRef)}>
+                                    <UploadIcon
+                                        className={`${
+                                            util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                ? 'ml-1'
+                                                : 'mr-1'
+                                        } h-4 w-4`}
+                                    />
+                                    {t('labels:click_to_upload')}
+                                </Button>
+                                <Button
+                                    variant='ghost'
+                                    className='flex items-center gap-1'
+                                    onClick={() => setChooseDownloadModalVisible(true)}
+                                    disabled={!langCode || isBackendLoading}>
+                                    <Download className='h-4 w-4' />
+                                    {t('messages:download_current_document')}
+                                </Button>
+                            </div>
+                        </CardContent>
+                    </div>
                 </Card>
             </div>
             <StoreModal
@@ -298,26 +319,36 @@ export default function LanguageDocUpload({ langCode }) {
                 hideCloseButton={false}>
                 <div className='grid grid-cols-2 gap-4 mt-6'>
                     <div className='relative'>
-                        {isCSVLoading && <Spin />}
                         <Button
                             variant='ghost'
                             className='flex flex-col items-center gap-1 border border-gray-300 rounded-md p-16 w-full h-full'
                             onClick={downloadCSV}
                             disabled={isCSVLoading || isZIPLoading}>
-                            <img alt='table icon' src={tableIcon} className='mb-2' />
-                            <span>{t('labels:csv_format')}</span>
+                            {isCSVLoading ? (
+                                <Spin />
+                            ) : (
+                                <>
+                                    <img alt='table icon' src={tableIcon} className='mb-2' />
+                                    <span>{t('labels:csv_format')}</span>
+                                </>
+                            )}
                         </Button>
                     </div>
 
                     <div className='relative'>
-                        {isZIPLoading && <Spin />}
                         <Button
                             variant='ghost'
                             className='flex flex-col items-center gap-1 border border-gray-300 rounded-md p-16 w-full h-full'
                             onClick={downloadZIP}
                             disabled={isCSVLoading || isZIPLoading}>
-                            <img src={codeJsonIcon} alt='json icon' className='mb-2' />
-                            <span>{t('labels:zip_format')}</span>
+                            {isZIPLoading ? (
+                                <Spin />
+                            ) : (
+                                <>
+                                    <img src={codeJsonIcon} alt='json icon' className='mb-2' />
+                                    <span>{t('labels:zip_format')}</span>
+                                </>
+                            )}
                         </Button>
                     </div>
                 </div>
