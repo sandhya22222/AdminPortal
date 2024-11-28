@@ -98,7 +98,7 @@ const MyProfile = () => {
                         {searchParams.get('tab') === USER_PROFILE_TABS_OPTIONS.POLICIES && (
                             <ListPolicies searchParams={searchParams} setSearchParams={setSearchParams} />
                         )}
-                        {/* {searchParams.get('tab') === USER_PROFILE_TABS_OPTIONS.LOGIN_SESSIONS && <LoginSessions />} */}
+                        {searchParams.get('tab') === USER_PROFILE_TABS_OPTIONS.LOGIN_SESSIONS && <LoginSessions />}
                     </div>
                 </div>
             </div>
