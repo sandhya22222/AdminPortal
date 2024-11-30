@@ -267,32 +267,20 @@ export default function PoliciesSettings({ storeName }) {
                     )}
                 </div>
             </CardContent>
-            <Dialog open={deletePolicy !== null} onOpenChange={() => setDeletePolicy(null)}>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>{t('labels:delete_policies')}</DialogTitle>
-                        <DialogDescription>{t('messages:delete_confirmation')}</DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter>
-                        <Button
-                            variant='outline'
-                            onClick={() => setDeletePolicy(null)}
-                            disabled={deleteStoreUserConsentStatus === 'pending'}
-                            className={`${
-                                util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'ml-2' : 'mr-2'
-                            }`}>
-                            {t('labels:cancel')}
-                        </Button>
-
-                        <Button
-                            variant='destructive'
-                            onClick={() => deletePolicyById(deletePolicy)}
-                            disabled={deleteStoreUserConsentStatus === 'pending'}>
-                            {t('labels:yes')}
-                        </Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
+            <StoreModal
+                isVisible={deletePolicy}
+                title={<div className='text-xl font-bold text-regal-blue'>{t('labels:delete_policies')}</div>}
+                isSpin={false}
+                cancelButtonText={t('labels:cancel')}
+                okCallback={() => {
+                    deletePolicyById(deletePolicy)
+                }}
+                okButtonText={t('labels:yes')}
+                cancelCallback={() => setDeletePolicy(null)}
+                destroyOnClose={true}
+                style={{ overflow: 'hidden' }}>
+                <p>{t('messages:delete_confirmation')}</p>
+            </StoreModal>
             <StoreModal
                 isVisible={previewAndCustomise}
                 title={<div className='text-xl font-bold text-gray-900'>{t('labels:preview_and_customise')}</div>}
