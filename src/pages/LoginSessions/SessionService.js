@@ -47,7 +47,7 @@ export const sendOtpRequest = async ({ sessionId, otp }) => {
         console.log(params, requestBody)
         const response = await MarketplaceServices.save(REMOVE_SESSION_API, requestBody, params)
         console.log(response)
-        return response
+        return response?.data
     } catch (error) {
         console.error('Error requesting OTP:', error.message)
         throw error

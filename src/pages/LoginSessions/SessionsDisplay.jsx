@@ -112,7 +112,7 @@ const SessionsDisplay = () => {
 
     if (isLoading || sessions == null || sessions == undefined) {
         return (
-            <div className='flex flex-col gap-2 space-y-1 mt-5'>
+            <div className='flex flex-col gap-2 space-y-1 mt-5 px-4'>
                 <Skeleton className='w-full h-6 ' />
                 <Skeleton className='w-full h-6 ' />
                 <Skeleton className='w-full h-6 ' />
