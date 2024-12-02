@@ -38,15 +38,13 @@ export const SessionsProvider = ({ children }) => {
     } = useMutation({
         mutationFn: sendOtpRequest,
         onSuccess: (data) => {
-            const message = t('labels:remove_session')
             queryClient.invalidateQueries(['Sessions'])
-            MarketplaceToaster.showToast(util.getToastObject(message, 'success'))
+            MarketplaceToaster.showToast(util.getToastObject(data.response_message, 'success'))
         },
         onError: (error) => {
             console.error('OTP request failed:', error.message)
-            const message = t('labels:invalid_otp')
-
-            MarketplaceToaster.showToast(util.getToastObject(message, 'error'))
+            console.log(error)
+            MarketplaceToaster.showToast(util.getToastObject(error?.response?.data?.response_body?.message, 'error'))
         },
     })
     const values = {
