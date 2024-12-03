@@ -9,8 +9,8 @@ import { useLocation, useSearchParams } from 'react-router-dom'
 import { Input } from '../../shadcnComponents/ui/input'
 import { Skeleton } from '../../shadcnComponents/ui/skeleton'
 import { Button } from '../../shadcnComponents/ui/button'
-import { Tabs, TabsTrigger, TabsList } from '../../shadcnComponents/ui/tabs'
 import Spin from '../../shadcnComponents/customComponents/Spin'
+import { Toggle } from '../../shadcnComponents/ui/toggle'
 const usersAllAPI = API_ENDPOINTS.REACT_APP_USERS_ALL_API
 
 const updateStoreDistributorAPI = API_ENDPOINTS.REACT_APP_UPDATE_STORE_DISTRIBUTOR
@@ -118,21 +118,22 @@ const StoreOverview = ({ realmName }) => {
                             </label>
                             <span className='mandatory-symbol-color text-sm text-center ml-1'>*</span>
                         </div>
-
-                        <Tabs
-                            value={storeType}
-                            className='w-[30%]'
-                            onValueChange={(value) => {
-                                if (value) {
-                                    handleStoreTypeChange(value)
-                                }
-                            }}
-                            disabled={isDistributor === 'true'}>
-                            <TabsList className='grid  grid-cols-2'>
-                                <TabsTrigger value='partner'>{t('labels:partner')}</TabsTrigger>
-                                <TabsTrigger value='distributor'> {t('labels:distributor')}</TabsTrigger>
-                            </TabsList>
-                        </Tabs>
+                        <div className='flex bg-gray-200 p-1 rounded-md w-max'>
+                            <Toggle
+                                pressed={storeType === 'partner'}
+                                onPressedChange={() => handleStoreTypeChange('partner')}
+                                className={`font-semibold b-0 text-gray-800 hover:text-gray-800 ${isDistributor ? 'opacity-50 cursor-not-allowed' : ''} ${storeType === 'partner' && 'bg-white text-black hover:text-black font-bold'} transition-all`}
+                                disabled={isDistributor}>
+                                {t('labels:partner')}
+                            </Toggle>
+                            <Toggle
+                                pressed={storeType === 'distributor'}
+                                onPressedChange={() => handleStoreTypeChange('distributor')}
+                                className={`font-semibold b-0 text-gray-800 hover:text-gray-800 ${storeType === 'distributor' && 'bg-white text-black hover:text-black font-bold'} ${isDistributor ? 'opacity-50 cursor-not-allowed' : ''} transition-all`}
+                                disabled={isDistributor}>
+                                {t('labels:distributor')}
+                            </Toggle>
+                        </div>
 
                         <div className='w-full flex flex-row  justify-start'>
                             <div

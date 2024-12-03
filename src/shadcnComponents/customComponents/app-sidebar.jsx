@@ -29,7 +29,7 @@ import { ScrollArea } from '../ui/scroll-area'
 
 const pageLimitFromENV = process.env.REACT_APP_ITEM_PER_PAGE || '10'
 
-export const AppSidebar = ({ permissionValue = [], collapsed = false, setCollapsed, ...props }) => {
+export const AppSidebar = ({ permissionData = [], collapsed = false, setCollapsed, ...props }) => {
     const { t } = useTranslation()
     const [selectedItem, setSelectedItem] = React.useState('')
     const [openedItem, setOpenedItem] = React.useState(null)
@@ -39,7 +39,8 @@ export const AppSidebar = ({ permissionValue = [], collapsed = false, setCollaps
     const auth = useAuth()
     const location = useLocation()
     const navigate = useNavigate()
-    console.log('permissionValue', permissionValue)
+    console.log('permissionValue', permissionData)
+
     const data = React.useMemo(
         () => ({
             navMain: [
@@ -54,15 +55,15 @@ export const AppSidebar = ({ permissionValue = [], collapsed = false, setCollaps
                     key: '2',
                     icon: <StoresSVG />,
                     title: t('labels:stores'),
-                    path: '/dashboard/store',
-                    queryParams: { m_t: 0 },
+                    path: '/dashboard/store?m_t=1',
+                    // queryParams: { m_t: 1 },
                     show_in_menu: true,
                 },
                 {
                     key: '15',
                     icon: <SettingsSVG />,
                     title: t('labels:settings'),
-                    path: '/dashboard/settings',
+                    path: '/dashboard/',
                     show_in_menu: true,
                     items: [
                         {
@@ -71,7 +72,7 @@ export const AppSidebar = ({ permissionValue = [], collapsed = false, setCollaps
                             path: '/dashboard/language',
                             show_in_menu:
                                 !auth.isAuthenticated ||
-                                (auth.isAuthenticated && permissionValue.includes('UI-product-admin'))
+                                (auth.isAuthenticated && permissionData.includes('UI-product-admin'))
                                     ? false
                                     : true,
                         },
@@ -93,7 +94,7 @@ export const AppSidebar = ({ permissionValue = [], collapsed = false, setCollaps
                             path: '/dashboard/platformadmin',
                             show_in_menu:
                                 !auth.isAuthenticated ||
-                                (auth.isAuthenticated && permissionValue.includes('UI-user-access-control'))
+                                (auth.isAuthenticated && permissionData.includes('UI-user-access-control'))
                                     ? false
                                     : true,
                         },
@@ -105,7 +106,7 @@ export const AppSidebar = ({ permissionValue = [], collapsed = false, setCollaps
                             queryParams: { tab: 0, page: 1, limit: pageLimitFromENV },
                             show_in_menu:
                                 !auth.isAuthenticated ||
-                                (auth.isAuthenticated && permissionValue.includes('UI-user-access-control'))
+                                (auth.isAuthenticated && permissionData.includes('UI-user-access-control'))
                                     ? true
                                     : false,
                         },
@@ -119,7 +120,7 @@ export const AppSidebar = ({ permissionValue = [], collapsed = false, setCollaps
                 },
             ],
         }),
-        [t, auth.isAuthenticated, permissionValue]
+        [t, auth.isAuthenticated, permissionData]
     )
 
     React.useEffect(() => {
