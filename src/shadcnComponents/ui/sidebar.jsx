@@ -13,7 +13,6 @@ import { Sheet, SheetContent } from './sheet'
 import { Skeleton } from './skeleton'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './tooltip'
 
-
 const SIDEBAR_COOKIE_NAME = 'sidebar:state'
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
 const SIDEBAR_WIDTH = '15rem'
@@ -520,18 +519,29 @@ const SidebarMenuSkeleton = React.forwardRef(({ className, showIcon = false, ...
 })
 SidebarMenuSkeleton.displayName = 'SidebarMenuSkeleton'
 
-const SidebarMenuSub = React.forwardRef(({ className, ...props }, ref) => (
-    <ul
-        ref={ref}
-        data-sidebar='menu-sub'
-        className={cn(
-            'mx-3.5 flex min-w-0 translate-x-px flex-col gap-1  px-2.5 py-0.5',
-            'group-data-[collapsible=icon]:hidden',
-            className
-        )}
-        {...props}
-    />
-))
+const SidebarMenuSub = React.forwardRef(({ className, ...props }, ref) => {
+    const languageDirection = util.getSelectedLanguageDirection()?.toUpperCase() // Get the language direction (RTL or LTR)
+
+    // Apply alignment class based on language direction
+    const alignmentClass = languageDirection === 'RTL' ? 'items-end' : 'items-start'
+
+    return (
+        <ul
+            ref={ref}
+            data-sidebar='menu-sub'
+            className={cn(
+                'mx-3.5 flex min-w-0 translate-x-px flex-col gap-1 px-2.5 py-0.5',
+                'group-data-[collapsible=icon]:hidden',
+                className,
+                alignmentClass // Apply the dynamic alignment class based on RTL or LTR
+            )}
+            {...props}
+        />
+    )
+})
+
+SidebarMenuSub.displayName = 'SidebarMenuSub'
+
 SidebarMenuSub.displayName = 'SidebarMenuSub'
 
 const SidebarMenuSubItem = React.forwardRef(({ ...props }, ref) => <li ref={ref} {...props} />)
