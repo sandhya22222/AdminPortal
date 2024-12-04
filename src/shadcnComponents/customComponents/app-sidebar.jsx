@@ -199,12 +199,12 @@ export const AppSidebar = ({ permissionData = [], collapsed = false, setCollapse
                         <SidebarContent>
                             <SidebarGroup>
                                 <SidebarMenu className='mt-20'>
-                                    <ScrollArea className=''>
+                                    <ScrollArea>
                                         {data.navMain.map((item) => (
                                             <React.Fragment key={item.key}>
                                                 <Tooltip>
                                                     <TooltipTrigger asChild>
-                                                        <SidebarMenuItem className=''>
+                                                        <SidebarMenuItem>
                                                             <SidebarMenuButton
                                                                 tooltip={collapsed ? item.title : undefined}
                                                                 onClick={() =>
@@ -213,28 +213,47 @@ export const AppSidebar = ({ permissionData = [], collapsed = false, setCollapse
                                                                         : handleClick(item.key, item.path)
                                                                 }
                                                                 className={cn(
-                                                                    'text-[#0F172A] relative flex items-center px-4', // Keep basic flex layout
+                                                                    'relative flex items-center px-4',
+                                                                    'text-[#0F172A]',
                                                                     selectedItem === item.key
                                                                         ? 'bg-accent text-regal-orange'
                                                                         : '',
-                                                                    hoveredItem === item.key ? 'bg-accent/50' : ''
+                                                                    hoveredItem === item.key ? 'bg-accent/50' : '',
+                                                                    util
+                                                                        .getSelectedLanguageDirection()
+                                                                        ?.toUpperCase() === 'RTL'
+                                                                        ? 'justify-between flex-row-reverse'
+                                                                        : 'justify-start'
                                                                 )}
                                                                 onMouseEnter={() => setHoveredItem(item.key)}
                                                                 onMouseLeave={() => setHoveredItem(null)}>
                                                                 {item.icon}
-                                                                {!collapsed && <span>{item.title}</span>}
+                                                                {!collapsed && (
+                                                                    <span
+                                                                        className={cn(
+                                                                            util
+                                                                                .getSelectedLanguageDirection()
+                                                                                ?.toUpperCase() === 'RTL'
+                                                                                ? 'ml-auto text-right'
+                                                                                : 'ml-2'
+                                                                        )}>
+                                                                        {item.title}
+                                                                    </span>
+                                                                )}
 
                                                                 {item.items && (
                                                                     <div>
                                                                         <ChevronRight
                                                                             className={cn(
-                                                                                `
-        ${util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL' ? 'mr-20' : 'ml-24'}
-        `,
-                                                                                'h-4 w-4  text-gray-500 transition-transform duration-200',
+                                                                                'h-4 w-4 text-gray-500 transition-transform duration-200',
                                                                                 openedItem === item.key
                                                                                     ? 'rotate-90'
-                                                                                    : ''
+                                                                                    : '',
+                                                                                util
+                                                                                    .getSelectedLanguageDirection()
+                                                                                    ?.toUpperCase() === 'RTL'
+                                                                                    ? 'mr-0 ml-4'
+                                                                                    : 'ml-8 mr-4'
                                                                             )}
                                                                         />
                                                                     </div>
@@ -253,7 +272,14 @@ export const AppSidebar = ({ permissionData = [], collapsed = false, setCollapse
                                                         open={openedItem === item.key}
                                                         onOpenChange={() => toggleSubMenu(item.key)}>
                                                         <CollapsibleContent>
-                                                            <SidebarMenuSub>
+                                                            <SidebarMenuSub
+                                                                className={`${
+                                                                    util
+                                                                        .getSelectedLanguageDirection()
+                                                                        ?.toUpperCase() === 'RTL'
+                                                                        ? 'mt-2'
+                                                                        : ''
+                                                                }`}>
                                                                 {item.items.map(
                                                                     (subItem) =>
                                                                         subItem.show_in_menu && (
@@ -267,13 +293,18 @@ export const AppSidebar = ({ permissionData = [], collapsed = false, setCollapse
                                                                                         )
                                                                                     }
                                                                                     className={cn(
-                                                                                        '!text-[#0F172A] cursor-pointer', // Explicitly set text color to #0F172A
+                                                                                        '!text-[#0F172A] cursor-pointer',
                                                                                         selectedItem === subItem.key
                                                                                             ? 'bg-accent !text-regal-orange'
                                                                                             : '',
                                                                                         hoveredItem === subItem.key
                                                                                             ? 'bg-accent/50'
-                                                                                            : ''
+                                                                                            : '',
+                                                                                        util
+                                                                                            .getSelectedLanguageDirection()
+                                                                                            ?.toUpperCase() === 'RTL'
+                                                                                            ? 'items-start'
+                                                                                            : 'items-end'
                                                                                     )}
                                                                                     onMouseEnter={() =>
                                                                                         setHoveredItem(subItem.key)
