@@ -126,7 +126,7 @@ const App = () => {
                                     <Route index element={<NewDashboard />} />
                                     <Route path='language' element={<Language collapsed={collapsed} />} />
                                     <Route path='language/language-settings' element={<LanguageSettings />} />
-                                    <Route path='store' element={<Store />} />
+                                    <Route path='store' element={<Store permissionData={permissionData} />} />
                                     <Route path='store/storesetting' element={<StoreSettingsLayout />} />
                                     <Route path='currency' element={<ListCurrency collapsed={collapsed} />} />
                                     <Route path='currency/edit-currency' element={<EditCurrency />} />
