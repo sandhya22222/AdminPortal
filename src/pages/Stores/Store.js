@@ -39,7 +39,7 @@ const emailRegexPattern = process.env.REACT_APP_REGEX_PATTERN_EMAIL
 const searchMaxLength = process.env.REACT_APP_SEARCH_MAX_LENGTH
 const domainName = process.env.REACT_APP_DOMAIN_NAME
 
-const Stores = () => {
+const Stores = ({ permissionData }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     usePageTitle(t('labels:stores'))
@@ -721,7 +721,14 @@ const Stores = () => {
                 title={
                     <>
                         <h1 className='font-semibold text-2xl mb-4 text-regal-blue'>{t('labels:stores')}</h1>
-                        <p className='text-brandGray1 font-normal'>{t('messages:store_desc')}</p>
+                        <p className='text-brandGray1 font-normal'>
+                            {' '}
+                            {`${
+                                permissionData.includes('UI-product-admin') === true
+                                    ? `${t('messages:store_desc_message')}`
+                                    : `${t('messages:store_desc')}`
+                            }`}
+                        </p>
                     </>
                 }
                 titleContent={
