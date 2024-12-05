@@ -5,6 +5,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import './header2.css'
 import MarketplaceServices from '../../services/axios/MarketplaceServices'
 import { RiArrowDropDownLine, RiUserLine, RiLogoutCircleRLine } from 'react-icons/ri'
+import { ChevronDown ,LogOut } from 'lucide-react'
+
 import { Button } from '../../shadcnComponents/ui/button'
 //! Import user defined services
 import {
@@ -27,11 +29,12 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
 } from '../../shadcnComponents/ui/dropdownMenu'
+import { Popover, PopoverContent, PopoverTrigger } from '../../shadcnComponents/ui/popover'
 import { Avatar, AvatarImage, AvatarFallback } from '../../shadcnComponents/ui/avatar'
-import API_ENDPOINTS from '../../services/API/apis'
+
 const multilingualFunctionalityEnabled = process.env.REACT_APP_IS_MULTILINGUAL_ENABLED
-const languageAPI = API_ENDPOINTS.REACT_APP_STORE_LANGUAGE_API
-const storeUsersAPI = API_ENDPOINTS.REACT_APP_USERS_API
+const languageAPI = process.env.REACT_APP_STORE_LANGUAGE_API
+const storeUsersAPI = process.env.REACT_APP_USERS_API
 const portalInfo = JSON.parse(process.env.REACT_APP_PORTAL_INFO)
 
 const Header2 = ({ setIsLanguageSelected }) => {
@@ -62,19 +65,19 @@ const Header2 = ({ setIsLanguageSelected }) => {
 
     const userItems = [
         {
-            label: `${t('labels:logout')}`,
+            label: <p className='text-dangerColor'> {t('common:logout')} </p>,
             key: 'logout',
-            icon: <RiLogoutCircleRLine />,
+            icon: <LogOut size={16} color='red' />,
             danger: true,
         },
     ]
 
     const handleMenuClick = (e) => {
-        if (e.key === 'logout') {
+        if (e === 'logout') {
             util.removeIsAuthorized()
             void auth.signoutRedirect()
         }
-        if (e.key === 'profile') {
+        if (e === 'profile') {
             navigate('dashboard/userprofile')
         }
     }
@@ -215,7 +218,7 @@ const Header2 = ({ setIsLanguageSelected }) => {
                                     <span className='font-normal text-sm text-[#637381] leading-[22px] whitespace-nowrap *:'>
                                         {userName ? userName : userProfileInfo}{' '}
                                     </span>
-                                    <DropdownMenu>
+                                    {/* <DropdownMenu>
                                         <DropdownMenuTrigger className='cursor-pointer'>
                                             <p className='text-xs text-[#8899A8] !leading-[20px] font-normal whitespace-nowrap flex flex-row items-center'>
                                                 {userRole ? userRole.replace(/-/g, ' ') : ''}
@@ -233,7 +236,23 @@ const Header2 = ({ setIsLanguageSelected }) => {
                                                 </DropdownMenuItem>
                                             ))}
                                         </DropdownMenuContent>
-                                    </DropdownMenu>
+                                    </DropdownMenu> */}
+                                    <Popover className='cursor-pointer'>
+                                        <PopoverTrigger className='flex flex-row items-center whitespace-nowrap text-xs font-normal !leading-[20px] text-[#8899A8]'>
+                                            {userRole ? userRole.replace(/-/g, ' ') : ''} <ChevronDown size={16} />
+                                        </PopoverTrigger>
+                                        {userItems?.map((item) => (
+                                            <PopoverContent
+                                                key={item.key}
+                                                onClick={() => handleMenuClick(item.key)}
+                                                className='w-max cursor-pointer p-2'>
+                                                <div className='flex flex-row items-center justify-center gap-2'>
+                                                    <div>{item.icon}</div>
+                                                    <span>{item.label}</span>
+                                                </div>
+                                            </PopoverContent>
+                                        ))}
+                                    </Popover>
                                 </div>
                             </div>
                         ) : (
