@@ -51,6 +51,7 @@ const StoreSettingsLayout = ({ collapsed }) => {
     const [isUpLoading, setIsUpLoading] = useState(false)
     const [bannerAbsoluteImage, setBannerAbsoluteImage] = useState([])
     const [hideActionButton, setHideActionButton] = useState(false)
+    const [isDistributorStorePresent, setIsDistributorStorePresent] = useState(false)
 
     const auth = useAuth()
     const permissionValue = util.getPermissionData() || []
@@ -111,6 +112,7 @@ const StoreSettingsLayout = ({ collapsed }) => {
                 console.log('Server Response from getStoreApi Function: ', response.data.response_body)
                 setStoreData(response.data.response_body.data)
                 if (response && response.data.response_body && response.data.response_body.data.length > 0) {
+                    setIsDistributorStorePresent(response.data.response_body?.distributor_store)
                     let selectedStore = response.data.response_body.data.filter((element) => element.store_uuid === id)
                     if (selectedStore.length > 0) {
                         setStoreName(selectedStore[0].name)
@@ -486,7 +488,16 @@ const StoreSettingsLayout = ({ collapsed }) => {
                     </div>
                     <div className='w-full'>
                         {searchParams.get('tab') === STORE_SETTINGS_TABS_OPTIONS.OVERVIEW && (
-                            <>{hideActionButton ? '' : <StoreOverview realmName={realmName} />}</>
+                            <>
+                                {hideActionButton ? (
+                                    ''
+                                ) : (
+                                    <StoreOverview
+                                        realmName={realmName}
+                                        isDistributorStorePresent={isDistributorStorePresent}
+                                    />
+                                )}
+                            </>
                         )}
                         {searchParams.get('tab') === STORE_SETTINGS_TABS_OPTIONS.MEDIA && (
                             <>
