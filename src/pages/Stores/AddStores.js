@@ -29,6 +29,8 @@ const AddStores = ({
     inValidName,
     setInValidName,
     domainName,
+    storeType,
+    setStoreType,
 }) => {
     const { t } = useTranslation()
     const emailMinLength = process.env.REACT_APP_EMAIL_MIN_LENGTH
@@ -37,7 +39,6 @@ const AddStores = ({
     const storeNameMaxLength = process.env.REACT_APP_STORE_NAME_MAX_LENGTH
     const userNameMinLength = process.env.REACT_APP_USERNAME_MIN_LENGTH
     const userNameMaxLength = process.env.REACT_APP_USERNAME_MAX_LENGTH
-    const [storeType, setStoreType] = useState('partner')
     const [isOpenModalForMakingDistributor, setIsOpenModalForMakingDistributor] = useState(false)
 
     const handleStoreTypeChange = (val) => {

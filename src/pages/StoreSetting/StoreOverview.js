@@ -11,17 +11,17 @@ import { Skeleton } from '../../shadcnComponents/ui/skeleton'
 import { Button } from '../../shadcnComponents/ui/button'
 import Spin from '../../shadcnComponents/customComponents/Spin'
 import { Toggle } from '../../shadcnComponents/ui/toggle'
-const usersAllAPI = API_ENDPOINTS.REACT_APP_USERS_ALL_API
 
+const usersAllAPI = API_ENDPOINTS.REACT_APP_USERS_ALL_API
 const updateStoreDistributorAPI = API_ENDPOINTS.REACT_APP_UPDATE_STORE_DISTRIBUTOR
 const domainName = process.env.REACT_APP_DOMAIN_NAME
 
-const StoreOverview = ({ realmName }) => {
+const StoreOverview = ({ realmName, isDistributorStorePresent }) => {
     const { t } = useTranslation()
     const search = useLocation().search
     const storeUuid = new URLSearchParams(search).get('id')
     const storeTypeFromURL = new URLSearchParams(search).get('storeType')
-    const isDistributor = new URLSearchParams(search).get('isDistributor')
+    const isDistributor = new URLSearchParams(search).get('isDistributor') === 'false' ? false : true
 
     const [searchParams, setSearchParams] = useSearchParams()
     const [userAllAPIData, setUserAllAPIData] = useState([])
@@ -122,15 +122,15 @@ const StoreOverview = ({ realmName }) => {
                             <Toggle
                                 pressed={storeType === 'partner'}
                                 onPressedChange={() => handleStoreTypeChange('partner')}
-                                className={`font-semibold b-0 text-gray-800 hover:text-gray-800 ${isDistributor ? 'opacity-50 cursor-not-allowed' : ''} ${storeType === 'partner' && 'bg-white text-black hover:text-black font-bold'} transition-all`}
-                                disabled={isDistributor}>
+                                className={`font-semibold b-0 text-gray-800 hover:text-gray-800 ${isDistributor || isDistributorStorePresent ? 'opacity-50 cursor-not-allowed' : ''} ${storeType === 'partner' && 'bg-white text-black hover:text-black font-bold'} transition-all`}
+                                disabled={isDistributor || isDistributorStorePresent}>
                                 {t('labels:partner')}
                             </Toggle>
                             <Toggle
                                 pressed={storeType === 'distributor'}
                                 onPressedChange={() => handleStoreTypeChange('distributor')}
-                                className={`font-semibold b-0 text-gray-800 hover:text-gray-800 ${storeType === 'distributor' && 'bg-white text-black hover:text-black font-bold'} ${isDistributor ? 'opacity-50 cursor-not-allowed' : ''} transition-all`}
-                                disabled={isDistributor}>
+                                className={`font-semibold b-0 text-gray-800 hover:text-gray-800 ${storeType === 'distributor' && 'bg-white text-black hover:text-black font-bold'} ${isDistributor || isDistributorStorePresent ? 'opacity-50 cursor-not-allowed' : ''} transition-all`}
+                                disabled={isDistributor || isDistributorStorePresent}>
                                 {t('labels:distributor')}
                             </Toggle>
                         </div>
@@ -212,7 +212,7 @@ const StoreOverview = ({ realmName }) => {
                             <Input value={userAllAPIData[0]?.username} disabled={true} className={``} />
                         </div>
                     </div>
-                    {isDistributor === 'false' && (
+                    {!isDistributor && (
                         <div className='flex space-x-3 !justify-start !pt-3'>
                             <Button
                                 disabled={storeTypeFromURL === storeType}

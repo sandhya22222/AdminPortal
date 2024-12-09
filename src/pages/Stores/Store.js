@@ -1023,6 +1023,8 @@ const Stores = ({ permissionData }) => {
                                 inValidName={inValidName}
                                 setInValidName={setInValidName}
                                 domainName={domainName}
+                                storeType={storeType}
+                                setStoreType={setStoreType}
                             />
                         </>
                     ) : null}
