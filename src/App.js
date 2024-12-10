@@ -150,7 +150,7 @@ const App = () => {
                         )}
                     </Routes>
                 </React.Suspense>
-                <NewFooter /> {/* Add Footer here */}
+                <NewFooter setIsLanguageSelected={setIsLanguageSelected} />
             </div>
         </Router>
     )
