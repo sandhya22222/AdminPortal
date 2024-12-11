@@ -160,9 +160,7 @@ const NewFooter = ({ setIsLanguageSelected }) => {
                                 disabled={languageItems && languageItems?.length === 1}>
                                 <span className='flex flex-row items-center gap-1 gap-x-2  py-2 px-4 border-[1px] border-border cursor-pointer'>
                                     {<Globe size={18} />}
-                                    {getLanguageLabel(
-                                        storeSelectedLngCode?.toUpperCase() || defaultLanguageCode?.toUpperCase()
-                                    )}
+                                    {getLanguageLabel(storeSelectedLngCode || defaultLanguageCode)}
                                 </span>
                             </PopoverTrigger>
                             <PopoverContent className='w-max cursor-pointer'>
