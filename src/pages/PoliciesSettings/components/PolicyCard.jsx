@@ -357,9 +357,9 @@ export default function PolicyCard({
                             modules={modules}
                             formats={formats}
                             placeholder={t('labels:enter_policy_description')}
-                            className={`w-[600px] h-auto px-3 py-1.5 overflow-hidden ${
+                            className={`w-[600px] h-auto  py-1.5 overflow-hidden ${
                                 policyStatus === 2 ? 'opacity-40 bg-gray-100' : ''
-                            } ${util.getSelectedLanguageDirection()?.toUpperCase() === 'LTR' ? 'mr-10' : 'ml-1'} `}
+                            } ${util.getSelectedLanguageDirection()?.toUpperCase() === 'LTR' ? 'mr-16' : 'ml-1 px-3'} `}
                         />
                     </div>
                 </div>
