@@ -194,7 +194,10 @@ function Status({
                             }
                         />
                     ) : (
-                        <Button size='sm' onClick={() => updateStoreStatus()} disabled={disableStatus}>
+                        <Button
+                            size='sm'
+                            onClick={() => updateStoreStatus()}
+                            disabled={disableStatus || statusInprogress === 3}>
                             {t('labels:restart')}
                         </Button>
                     )}
