@@ -139,10 +139,35 @@ const Stores = ({ permissionData }) => {
                                 </div>
                                 <div>
                                     {record.isDistributor ? (
-                                        <Badge className='bg-[#E6F4FF] border-[#91CAFF] text-[#0958D9] rounded-[5px] flex items-center'>
-                                            <Star className='w-3 h-3 mr-1' fill='#0958D9' strokeWidth={0} />{' '}
-                                            {t('labels:distributor')}
-                                        </Badge>
+                                        <div className='flex gap-2'>
+                                            <Badge className='bg-[#E6F4FF] border-[#91CAFF] text-[#0958D9] rounded-[5px] flex items-center'>
+                                                <Star className='w-3 h-3 mr-1' fill='#0958D9' strokeWidth={0} />{' '}
+                                                {t('labels:distributor')}
+                                            </Badge>
+                                            {hideAddStoreButton ? (
+                                                ''
+                                            ) : (
+                                                <ShadCNTooltip
+                                                    content={
+                                                        <div className='w-96'>
+                                                            <p>{t('messages:distributor_content')}</p>
+                                                            <p>{t('messages:distributor_content1')}</p>
+                                                        </div>
+                                                    }
+                                                    position={
+                                                        util.getSelectedLanguageDirection()?.toUpperCase() === 'RTL'
+                                                            ? 'left'
+                                                            : 'right'
+                                                    }>
+                                                    <img
+                                                        src={ExclamationCircle}
+                                                        alt='ExclamationCircleIcon'
+                                                        width={15}
+                                                        height={15}
+                                                    />
+                                                </ShadCNTooltip>
+                                            )}
+                                        </div>
                                     ) : (
                                         <Badge className='bg-[#E6FFFB] border-[#87E8DE] text-[#08979C] rounded-[5px]'>
                                             {t('labels:partner')}
