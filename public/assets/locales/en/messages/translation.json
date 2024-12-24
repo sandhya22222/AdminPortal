@@ -179,5 +179,8 @@
     "image_size_error": "Please choose image file less than 2MB.",
     "store_desc": "Store enable you to create store name and manage partner and distributor stores, ensuring they remain active at all times and allowing you to configure thresholds as needed.",
     "empty_email_message": "Email cannot be empty. Please enter a valid email.",
-    "store_desc_message":"The store feature allows you to configure thresholds and view the store related data."
+    "store_desc_message": "The store feature allows you to configure thresholds and view the store related data.",
+    "What_is_a_distributor_store": "What is a distributor store?",
+    "distributor_content": "Only one distributor store is allowed to create, and once the store is created, it cannot be modified.",
+    "distributor_content1":"Deactivating the distributor store is not permitted; however, the store can be restarted to apply any new changes or updated."
 }

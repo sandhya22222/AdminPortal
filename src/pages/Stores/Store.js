@@ -31,6 +31,7 @@ import { Skeleton } from '../../shadcnComponents/ui/skeleton'
 import Spin from '../../shadcnComponents/customComponents/Spin'
 import ThresholdConfiguration from './ThresholdConfiguration'
 import API_ENDPOINTS from '../../services/API/apis'
+import GeneralInformation from './GeneralInformation'
 
 //! Get all required details from .env file
 const storeAPI = API_ENDPOINTS.REACT_APP_STORE_API
@@ -753,6 +754,9 @@ const Stores = ({ permissionData }) => {
                             <ShadCNTabsTrigger value='2' borderPosition='bottom'>
                                 {t('labels:threshold_configuration')}
                             </ShadCNTabsTrigger>
+                            <ShadCNTabsTrigger value='3' borderPosition='bottom'>
+                                {t('labels:general_information')}
+                            </ShadCNTabsTrigger>
                         </ShadCNTabs>
                     </div>
                 }
@@ -933,6 +937,10 @@ const Stores = ({ permissionData }) => {
                                             setCurrentTab={setCurrentTab}
                                             hideAddStoreButton={hideAddStoreButton}
                                         />
+                                    </>
+                                ) : parseInt(currentTab) === 3 ? (
+                                    <>
+                                        <GeneralInformation />
                                     </>
                                 ) : (
                                     <div className='!mt-[1.7rem] !text-center bg-white p-3 !rounded-md'>
