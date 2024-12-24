@@ -84,35 +84,39 @@ const Language = ({ collapsed }) => {
             width: '25%',
 
             render: (text, record) => (
-                <div className=' flex gap-1 items-center'>
-                    {record.is_default ? (
-                        !collapsed ? (
-                            <ShadCNTooltip content={record.language}>
-                                <div
-                                    className={` mx-1 ${record.is_default ? '!max-w-[40px] truncate' : '!max-w-[50px]'}`}
-                                    style={{
-                                        whiteSpace: 'nowrap',
-                                        overflow: 'hidden',
-                                        textOverflow: 'ellipsis',
-                                    }}>
-                                    {record.language}
-                                </div>
-                            </ShadCNTooltip>
+                <>
+                    <div className='  gap-1 items-center'>
+                        {record.is_default ? (
+                            !collapsed ? (
+                                <ShadCNTooltip content={record.language}>
+                                    <div
+                                        className={` mx-1`}
+                                        style={{
+                                            whiteSpace: 'nowrap',
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis',
+                                        }}>
+                                        {record.language}
+                                    </div>
+                                </ShadCNTooltip>
+                            ) : (
+                                <div>{record.language}</div>
+                            )
                         ) : (
                             <div>{record.language}</div>
-                        )
-                    ) : (
-                        <div>{record.language}</div>
-                    )}
-                    {record.is_default && (
-                        <Badge
-                            variant=''
-                            className='inline-flex items-center gap-1 rounded-xl  w-[123px]'
-                            color='#FB8500'>
-                            {t('labels:default_currency')}
-                        </Badge>
-                    )}
-                </div>
+                        )}
+                    </div>
+                    <div>
+                        {record.is_default && (
+                            <Badge
+                                variant=''
+                                className=' items-center gap-1 rounded-xl'
+                                color='#FB8500'>
+                                {t('labels:default_language')}
+                            </Badge>
+                        )}
+                    </div>
+                </>
             ),
         },
         {
