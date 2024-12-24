@@ -355,7 +355,5 @@
     "enter_otp": "Enter OTP",
     "resend_otp": "Resend OTP",
     "sending_otp": "Resending OTP...",
-    "remove_session": "Session has been removed successfully",
-    "general_information":"General Information",
-    "distributor_store":"Distributor Store"
+    "remove_session": "Session has been removed successfully"
 }
