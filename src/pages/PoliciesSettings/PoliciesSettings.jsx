@@ -201,7 +201,7 @@ export default function PoliciesSettings({ storeName }) {
                                         policyType='NEW_POLICY'
                                         isNewPolicy
                                         refetchUserConsent={refetchUserConsent}
-                                        setAddNewPolicy={setAddNewPolicy}
+                                        setAddNewPolicy={() => setAddNewPolicy}
                                         handelDeletePolicy={handelDeletePolicy}
                                         storeId={storeId}
                                         storeUUID={storeUUID}

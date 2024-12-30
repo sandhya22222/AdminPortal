@@ -182,5 +182,7 @@
     "store_desc_message": "The store feature allows you to configure thresholds and view the store related data.",
     "distributor_content": "Only one distributor store is allowed to create, and once the store is created, it cannot be modified.",
     "distributor_content1":"Deactivating the distributor store is not permitted; however, the store can be restarted to apply any new changes or updated.",
-    "invalid_email_format_message":"Please enter a valid email address."
+    "invalid_email_format_message":"Please enter a valid email address.",
+    "lead_in_line_updated":"User consent lead line updated successfully",
+    "consent_order_updated":"Consent Order Updated"
 }
